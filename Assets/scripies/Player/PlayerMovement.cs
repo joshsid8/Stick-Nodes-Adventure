@@ -1,0 +1,510 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem; // For the Input System (though not fully implemented yet)
+
+public class PlayerController : MonoBehaviour
+{
+    public PlayerStats playerStats;
+    public bool canAct = true;
+    [SerializeField] private bool canFlip = true;
+    
+    // Simply move speed
+    public bool canMove = true;
+    public float movementSpeed = 12.0f;
+    public float originalMovementSpeed;
+    [SerializeField] private bool isMoving;
+    
+    // Jumping
+    public float originalJumpForce;
+    public float jumpForce = 8.0f;
+    public float maxFallSpeed;
+    public float fallMultiplier;
+    public float lowJumpMultiplier;
+    private int availableJumps = 1; 
+    [SerializeField] private int availableJumpsLeft;
+    private bool isJumping;
+    public bool canDoubleJump;
+    [SerializeField] private bool doublejump;
+
+    // Jump optimisations
+    [SerializeField] private float coyoteTime = 0.2f; // Adjust as needed
+    [SerializeField] private float coyoteTimeCounter;
+    [SerializeField] private float jumpBufferTime = 0.1f; // Adjust as needed
+    [SerializeField] private float jumpBufferCounter;
+    
+    // Wall Jumping
+    public float wallSlideSpeed;
+    public float wallJumpForce;
+
+    public bool canWallJump;
+    
+    private bool isTouchingWall;
+    [HideInInspector] public bool isWallSliding;
+    [SerializeField] private bool isWallJumping;
+    [SerializeField] private int availableWalls;
+    [SerializeField] private int availableWallsLeft;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask whatIsWall;
+    [SerializeField] private float wallCheckRay;
+
+    // Ground Check
+    [SerializeField] private float groundCheckCircle;
+    public Transform groundCheck;
+    public LayerMask whatIsGround;
+    [HideInInspector]public bool isGrounded;
+    
+    // Dashing
+    public float dashSpeed;
+    public float startDashTime;
+    public float dashCooldown;
+    public bool dashAbility;
+    private float currentDashTime;
+    [HideInInspector] public bool isDashing;
+    [HideInInspector] public bool canDash;
+    private float dashDirection; 
+    private float dashCooldownTimer; 
+    private bool hasDashedInAir;
+    public float dashEnergyCost;
+    
+    // Physics and QoL
+    private float defaultGravity;
+    [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public Animator animator;
+    [SerializeField] private float inputDirection;
+    public bool inCombat;
+    public float combatTimer;
+    public float currentCombatTimer;
+    public LayerMask oneWayPlatformLayer; // Assign the "OneWayPlatform" layer in the Inspector
+    public float dropThroughDuration = 0.3f; 
+
+    // Related to running and flipping
+    private bool isRunning;
+    public bool isFacingRight = true;
+    
+	//Extra Components
+	private PlayerCombat pco;
+    private PlayerDefense pdf;
+    private PlayerAbility pab;
+    
+    private PlayerHealth ph;
+    public GameObject combatIndicator;
+    
+    // Start is called before the first frame update
+    private void Start()
+    {
+        SetValues();
+        canAct = true;
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        availableJumpsLeft = availableJumps;
+        defaultGravity = GetComponent<Rigidbody2D>().gravityScale;
+        originalMovementSpeed = movementSpeed;
+        originalJumpForce = jumpForce;
+        availableWallsLeft = availableWalls;
+        
+        pco = GetComponent<PlayerCombat>();
+        pdf = GetComponent<PlayerDefense>();
+        pab = GetComponent<PlayerAbility>();
+        
+        ph  = GetComponent<PlayerHealth>();
+        currentCombatTimer = 0;
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        CheckInput();
+        CheckMovementDirection();
+        UpdateAnimation();
+        CheckIfCanJump();
+        Dash();
+        Jump();
+        VariableJumpHeight();
+        WallSlide();
+        Other();
+        InCombat();
+    }
+
+    private void FixedUpdate()
+    {
+        ApplyMovement();
+        CheckEnvironment();
+        if (isDashing)
+        {
+            rb.linearVelocity = transform.right * dashDirection * dashSpeed;
+            currentDashTime -= Time.deltaTime;
+            if (currentDashTime <= 0)
+            {
+                isDashing = false;
+            }
+        }
+    }
+
+    private void SetValues()
+    {
+        if (playerStats != null)
+        {
+            movementSpeed = playerStats.MovementSpeed;
+            dashSpeed = playerStats.DashSpeed;
+            startDashTime = playerStats.StartDashTime;
+            dashCooldown = playerStats.DashCooldown;
+            dashEnergyCost = playerStats.DashEnergyCost;
+        }
+        else
+        {
+            Debug.LogError("There isn't a scriptable object found");
+        }
+
+    }
+    private void CheckInput()
+    {
+        inputDirection = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+    }
+
+    private void Dash()
+    {
+        if (Input.GetButtonDown("Dash") && canDash && dashAbility && !pco.isAttacking && !pco.isAirAttacking && pab.energy >= dashEnergyCost && !pab.isPerformingAbility)
+        {
+            canDash = false;
+            isDashing = true;
+            pab.energy -= dashEnergyCost;
+            currentDashTime = startDashTime;
+            if (isWallSliding)
+            {
+                isWallSliding = false;
+                Flip();
+                dashDirection = (int)Mathf.Sign(isFacingRight ? -Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Horizontal"));
+            }
+            else
+            {
+                dashDirection = (int)Mathf.Sign(isFacingRight ? Input.GetAxisRaw("Horizontal") : -Input.GetAxisRaw("Horizontal"));
+            }
+            dashCooldownTimer = dashCooldown;
+            
+            if (!isGrounded)
+            {
+                hasDashedInAir = true;
+            }
+        }
+
+        if (hasDashedInAir)
+        {
+            canDash = false;
+        }
+
+        if (isDashing)
+        {
+            rb.linearVelocity = transform.right * dashDirection * dashSpeed;
+            currentDashTime -= Time.deltaTime;
+            if (currentDashTime <= 0)
+            {
+                isDashing = false;
+                canFlip = true;
+            }
+        }
+
+        if (dashCooldownTimer >= 0)
+        {
+            dashCooldownTimer -= Time.deltaTime;
+            canDash = false; // Disable dash while on cooldown
+        }
+        else if (dashCooldownTimer <= 0 && hasDashedInAir)
+        {
+            canDash = false;
+        }
+        else
+        {
+            canDash = dashAbility; // Allow dash when cooldown is over
+        }
+    }
+
+    private void WallSlide()
+    {
+        if (isTouchingWall && !isGrounded && rb.linearVelocity.y < 0 && canWallJump)
+        {
+            jumpBufferCounter = 0f;
+            isWallSliding = true;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
+            WallJump();
+        }
+        else
+        {
+            isWallSliding = false;
+        }
+    }
+
+    private void WallJump()
+    {
+        if (isWallSliding && Input.GetButtonDown("Jump") && canWallJump && availableWallsLeft > 0 && !isDashing && !pab.isPerformingAbility)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, wallJumpForce);
+            isWallSliding = false;
+            isWallJumping = true;
+            availableWallsLeft--;
+        }
+    }
+
+    private void VariableJumpHeight()
+    {
+        if (rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (rb.linearVelocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+            coyoteTimeCounter = 0f;
+        }
+        // Coyote and jump buffer
+        if (isGrounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+    }
+    
+    private void Jump()
+    {
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && availableJumpsLeft > -1 && !pab.isPerformingAbility)
+        {
+            isJumping = true;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            availableJumpsLeft--;
+            jumpBufferCounter = 0f;
+            coyoteTimeCounter = 0f; // Reset coyote time after jumping
+        }
+        else if (doublejump && canDoubleJump)
+        {
+            DoubleJump();
+        }
+    }
+    private void CheckIfCanJump()
+    {
+        if (isGrounded && rb.linearVelocity.y < 0.01f)
+        {
+            availableJumpsLeft = availableJumps;
+            doublejump = canDoubleJump; //reset the double jump on if the player can
+            isWallJumping = false; // Reset wall jumping flag
+        }
+        
+        if (isJumping && isGrounded)
+        {
+            isJumping = false;
+            isWallJumping = false;
+        }
+    }
+
+    private void DoubleJump()
+    {
+        if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding && !pab.isPerformingAbility)
+        {
+            isJumping = true;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            availableJumpsLeft--;
+            doublejump = false;
+        }
+    }
+    
+    private void ApplyMovement()
+    {
+        if (canMove)
+        {
+            if (inputDirection > 0 || inputDirection < 0)
+            {
+                isMoving = true;
+                rb.linearVelocity = new Vector2(movementSpeed * inputDirection, rb.linearVelocity.y);
+            }
+            else
+            {
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                isMoving = false;
+            }
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
+
+        if (!isMoving)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+        }
+    }
+
+    private void CheckMovementDirection()
+    {
+        if (isFacingRight && inputDirection < 0)
+        {
+            Flip();
+        }
+        else if (!isFacingRight && inputDirection > 0)
+        {
+            Flip();
+        }
+
+        if (rb.linearVelocity.x <= -0.5f || rb.linearVelocity.x >= 0.5f)
+        {
+            isRunning = true;
+        }
+        else
+        {
+            isRunning = false;
+        }
+    }
+
+    private void Other()
+    {
+        //dash optimisations
+        if (isDashing)
+        {
+            isJumping = false;
+            rb.gravityScale = 0f;
+            canFlip = false;
+        }
+        else
+        {
+            rb.gravityScale = defaultGravity;
+            canFlip = canMove;
+        }
+        if (rb.linearVelocity.y > 0)
+        {
+            isJumping = true;
+        }
+        else if (rb.linearVelocity.y < 0)
+        {
+            isJumping = false;
+            isWallJumping = false;
+            rb.gravityScale = defaultGravity - 1f;
+            if (isGrounded)
+            {
+                rb.gravityScale = defaultGravity;
+            }
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -maxFallSpeed));
+        }
+        //standing still
+        if (!canAct)
+        {
+            canMove = false;
+            jumpForce = 0f; 
+            dashAbility = false;
+            pdf.enabled = false;
+            pco.enabled = false;
+            pab.enabled = false;
+        }
+        else
+        {
+            canMove = true;
+            jumpForce = originalJumpForce; 
+            dashAbility = true;
+            pdf.enabled = true;
+            pco.enabled = true;
+            pab.enabled = true;
+        }
+        if (isGrounded)
+        {
+            isWallJumping = false;
+            hasDashedInAir = false;
+            availableWallsLeft = availableWalls;
+        }
+        
+        if (Input.GetAxisRaw("Vertical") < 0 && Input.GetButtonDown("Jump") && isGrounded)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckCircle + 0.1f, oneWayPlatformLayer);
+            if (hit.collider != null && hit.collider.GetComponent<PlatformEffector2D>() != null)
+            {
+                StartCoroutine(DropThroughPlatform(hit.collider));
+                jumpBufferCounter = 0f;
+                coyoteTimeCounter = 0f;
+            }
+        }
+    }
+    
+    private void UpdateAnimation()
+    {
+        animator.SetBool("isRunning", isRunning);
+        animator.SetBool("isJumping", isJumping);
+        animator.SetBool("isGrounded", isGrounded);
+        animator.SetBool("isWallSliding", isWallSliding);
+        animator.SetBool("isDashing", isDashing);
+        animator.SetBool("isWallJumping", isWallJumping);
+    }
+
+    private void Flip()
+    {
+        if (canFlip)
+        {
+            isFacingRight = !isFacingRight;
+            transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
+    }
+
+    private void InCombat()
+    {
+        if (currentCombatTimer > 0) inCombat = true;
+        if (inCombat)
+        {
+            combatIndicator.SetActive(true);
+            
+            ph.regenerationMultiplier = ph.modRegenerationMultiplier;
+            pab.energyRefill = pab.modEnergyRefill;
+            
+            currentCombatTimer -= Time.deltaTime;
+            if (currentCombatTimer <= 0) inCombat = false;
+        }
+        if (!inCombat)
+        {
+            combatIndicator.SetActive(false);
+            
+            ph.regenerationMultiplier = ph.originalRegenerationMultiplier;
+            pab.energyRefill = pab.originalEnergyRefill;
+        }
+    }
+    private IEnumerator DropThroughPlatform(Collider2D platformCollider)
+    {
+        Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), platformCollider, true);
+        
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, -5f);
+
+        yield return new WaitForSeconds(dropThroughDuration);
+        
+        Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), platformCollider, false);
+    }
+    private void CheckEnvironment()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckCircle, whatIsGround);
+        isTouchingWall = Physics2D.Raycast(wallCheck.position, Vector2.up * transform.localScale.y, wallCheckRay, whatIsWall); 
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckCircle);
+        Gizmos.color = Color.green;
+        Vector3 rayDirection = Vector2.up * transform.localScale.y * wallCheckRay;
+        Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection);
+    }
+}
+
+/*
+What to do:
+    
+    Boss Logic!
+        Make separate methods for the abilities they hold.
+        invoke these in animations
+        
+    When you are done: Find the one piece.
+ */
+    
