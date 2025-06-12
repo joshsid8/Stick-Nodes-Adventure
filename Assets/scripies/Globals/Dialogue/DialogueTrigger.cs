@@ -45,7 +45,6 @@ public class DialogueTrigger : MonoBehaviour
             if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
             {
                 isTriggered = true;
-                Debug.Log("pop");
                 dialogueUI.ShowDialogue(dialogue);
             }
         }

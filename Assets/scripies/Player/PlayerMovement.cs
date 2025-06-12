@@ -400,18 +400,14 @@ public class PlayerController : MonoBehaviour
             canMove = false;
             jumpForce = 0f; 
             dashAbility = false;
-            pdf.enabled = false;
             pco.enabled = false;
-            pab.enabled = false;
         }
         else
         {
             canMove = true;
             jumpForce = originalJumpForce; 
             dashAbility = true;
-            pdf.enabled = true;
             pco.enabled = true;
-            pab.enabled = true;
         }
         if (isGrounded)
         {

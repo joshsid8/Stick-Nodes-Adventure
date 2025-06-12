@@ -10,33 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d963bb97c50ed4248ad6f1bed88e3067, type: 3}
-  m_Name: Evasive
+  m_Name: Defensive
   m_EditorClassIdentifier: 
-  maxHealth: 80
-  regenerationMultiplier: 5
-  modRegenerationMultiplier: 3
-  movementSpeed: 11
-  dashSpeed: 28
-  startDashTime: 0.45
-  dashCooldown: 0.35
-  dashEnergyCost: 5
-  maxEnergy: 75
-  energyRefill: 5
+  maxHealth: 120
+  regenerationMultiplier: 3
+  modRegenerationMultiplier: 2
+  movementSpeed: 7
+  dashSpeed: 20
+  startDashTime: 0.65
+  dashCooldown: 0.7
+  dashEnergyCost: 7.5
+  maxEnergy: 50
+  energyRefill: 4
   modEnergyRefill: 2
   abilityEnergyCost: 10
-  abilityCooldown: 0.75
+  damageMultiplier: 1
+  abilityCooldown: 1
   m1Ability: 1
-  groundDamageAmount: 10
-  groundAttackCooldown: 0.5
+  groundDamageAmount: 15
+  groundAttackCooldown: 0.3
   groundAttackEnergy: 5
-  airDamageAmount: 15
-  airAttackForce: 15
-  airAttackCooldown: 0.3
+  airDamageAmount: 12
+  airAttackForce: 10
+  airAttackCooldown: 0.15
   playerAttackStunTime: 0.3
-  blockDamageResistance: 0.5
-  stunMultiplier: 1.2
-  counterAbility: 0
+  blockDamageResistance: 0.6
+  stunMultiplier: 0.5
+  counterAbility: 1
   counterTime: 0.2
-  counterDamageResistance: 0.2
-  counterDamage: 10
+  counterDamageResistance: 0.1
+  counterDamage: 30
   counterStun: 1

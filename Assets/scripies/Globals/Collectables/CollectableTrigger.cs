@@ -1,16 +1,21 @@
+using System;
 using UnityEngine;
 
 public class CollectableTrigger : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Collectable collectable;
+
+    private void Awake()
     {
-        
+        collectable = GetComponent<Collectable>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision.CompareTag("Player"))
+        {
+            collectable.Collect(collision.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

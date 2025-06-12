@@ -13,7 +13,11 @@ public class PlayerStats : ScriptableObject
     public float RegenerationMultiplier => regenerationMultiplier;
     [Tooltip("For when they are fighting!")]
     [SerializeField] private float modRegenerationMultiplier = 1f;
+    
     public float ModRegenerationMultiplier => modRegenerationMultiplier;
+    [Tooltip("Stun multiplier when the player gets stunned! (e.g., 0 for no stun)")]
+    [SerializeField] private float stunMultiplier = 1f;
+    public float StunMultiplier => stunMultiplier;
 
     [Header("Agility")]
     [Tooltip("The base movement speed of the player")]
@@ -99,10 +103,6 @@ public class PlayerStats : ScriptableObject
     [Tooltip("normal block dmg resistance")]
     [SerializeField] private float blockDamageResistance = 0.5f;
     public float BlockDamageResistance => blockDamageResistance;
-
-    [Tooltip("stun multiplier when the player gets stunned (e.g., 0 for no stun)")]
-    [SerializeField] private float stunMultiplier = 1f;
-    public float StunMultiplier => stunMultiplier;
 
     [Tooltip("counter check")]
     [SerializeField] private bool counterAbility = false;

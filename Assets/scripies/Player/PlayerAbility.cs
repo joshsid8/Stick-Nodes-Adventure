@@ -67,7 +67,7 @@ public class PlayerAbility : MonoBehaviour
     }
     void Fire()
     {
-        if (Input.GetButtonDown("Fire") && canAbility && !pc.isDashing && !pc.isWallSliding && !pd.isBlocking && pc.isGrounded && energy > energyCost)
+        if (Input.GetButtonDown("Fire") && canAbility && !pc.isDashing && !pc.isWallSliding && !pd.isBlocking && pc.isGrounded && energy > energyCost && pc.canAct)
         {
             canAbility = false;
             pc.rb.linearVelocity = Vector2.zero;

@@ -6,14 +6,15 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     // the bools
-    public bool playerCanDoubleJump;
-    public bool playerHasDashAbility;
+    private bool playerCanDoubleJump;
+    private bool playerHasDashAbility;
     
     // big stuff
     private PlayerController playerController;
     private PlayerHealth playerHealth;
     private PlayerAbility playerAbility;
-
+    private PlayerCurrency playerCurrency;
+    private PlayerDefense playerDefense;
     private void Awake()
     {
         // Implement Singleton pattern
@@ -28,6 +29,9 @@ public class GameManager : MonoBehaviour
         playerController = FindAnyObjectByType<PlayerController>();
         playerHealth = FindAnyObjectByType<PlayerHealth>();
         playerAbility = FindAnyObjectByType<PlayerAbility>();
+        playerCurrency = FindAnyObjectByType<PlayerCurrency>();
+        playerDefense = FindAnyObjectByType<PlayerDefense>();
+        
         if (playerController != null)
         {
             playerCanDoubleJump = playerController.canDoubleJump;
@@ -70,6 +74,9 @@ public class GameManager : MonoBehaviour
                 break;
             case "CombatTimer":
                 if (playerController != null) playerController.currentCombatTimer = value;
+                break;
+            case "Money":
+                if (playerCurrency != null) playerCurrency.nodeBucks += value;
                 break;
             default:
                 Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");

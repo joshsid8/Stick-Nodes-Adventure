@@ -44,7 +44,7 @@ public class PlayerDefense : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetButton("Block") && !pc.isWallSliding)
+        if (Input.GetButton("Block") && !pc.isWallSliding && pc.canAct)
         { 
             isBlocking = true;
         }
@@ -87,7 +87,7 @@ public class PlayerDefense : MonoBehaviour
                 counterWindow = true;
             }
             
-            if (Input.GetButtonUp("Block"))
+            if (Input.GetButtonUp("Block") || !pc.canAct)
             {
                 isBlocking = false;
                 hp.stunMultiplier = hp.originalStunMultiplier;

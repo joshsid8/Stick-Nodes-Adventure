@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(CollectableTrigger))]
 public class Collectable : MonoBehaviour
 {
+    [SerializeField] private CollectableSOBase collectable;
     private void Reset()
     {
         GetComponent<CircleCollider2D>().isTrigger = true;
@@ -11,6 +12,6 @@ public class Collectable : MonoBehaviour
 
     public void Collect(GameObject objectCollected)
     {
-        
+        collectable.Collect(objectCollected);
     }
 }

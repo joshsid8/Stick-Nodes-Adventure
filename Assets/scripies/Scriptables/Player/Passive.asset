@@ -18,12 +18,13 @@ MonoBehaviour:
   movementSpeed: 11
   dashSpeed: 28
   startDashTime: 0.45
-  dashCooldown: 0.35
+  dashCooldown: 0.4
   dashEnergyCost: 5
   maxEnergy: 75
   energyRefill: 5
   modEnergyRefill: 2
   abilityEnergyCost: 10
+  damageMultiplier: 1.1
   abilityCooldown: 0.75
   m1Ability: 1
   groundDamageAmount: 10
