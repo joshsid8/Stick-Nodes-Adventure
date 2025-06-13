@@ -10,11 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcf4ff334f46f4c458c968e37e5e310b, type: 3}
-  m_Name: TestAspect unequip
+  m_Name: Item!
   m_EditorClassIdentifier: 
-  equip: 0
-  health: 0.22
-  energy: 0.1
-  abilityCd: -0.1
-  bdmgres: 0.3
-  stnmult: -0.5
+  itemName: Sandwitch!
+  itemAmount: 21
+  itemDescription: nah wth lol
+  itemSprite: {fileID: 7482667652216324306, guid: 8782da715bf2bd644bc258ba4619dda8, type: 3}

@@ -113,11 +113,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashCooldown: 2
+  dashCooldown: 1
   dashSpeed: 20
   isDashing: 0
   isFlyDashing: 0
-  slashCooldown: 1
+  slashCooldown: 1.5
   stunTime: 0.3
   damageAmount: 20
   attackRange: 2.11
@@ -125,13 +125,15 @@ MonoBehaviour:
   isInRange: 0
   freezeMovement: 0
   isFalling: 0
-  throwCooldown: 0.5
+  throwCooldown: 1
   projectilePoint: {fileID: 1328446686802652935}
   projectile: {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
   projectileSpeed: 20
+  xVector: 0
+  stationaryElement: {fileID: 4635439681108189195, guid: dbee23465e1f4f44184f882544fafa0c, type: 3}
   secondaryProjectileSpeed: 4
   projectileDirection: {x: -3, y: -5}
-  jumpCooldown: 2
+  jumpCooldown: 1.5
   isRandomised: 1
   jumpForceY: 30
   jumpForceX: 8
@@ -175,6 +177,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   isGrounded: 0
+  directionToPlayer: 0
   isTouchingWall: 0
   wallCheck: {fileID: 4082605586263118162}
   wallCheckRay: 3.141592

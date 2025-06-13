@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     public float dashEnergyCost;
     
     // Physics and QoL
-    private float defaultGravity;
+    [HideInInspector] public float defaultGravity;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
     [SerializeField] private float inputDirection;
