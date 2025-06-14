@@ -497,9 +497,9 @@ public class PlayerController : MonoBehaviour
 /*
 What to do:
     
-    Boss Logic!
-        Make separate methods for the abilities they hold.
-        invoke these in animations
+    Inventory
+    Skill Tree
+    Badges/Aspects obtained
         
     When you are done: Find the one piece.
  */

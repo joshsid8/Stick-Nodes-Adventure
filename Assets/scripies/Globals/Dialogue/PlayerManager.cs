@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
     // Singleton instance
-    public static GameManager Instance { get; private set; }
+    public static PlayerManager Instance { get; private set; }
 
     // the bools
     private bool playerCanDoubleJump;
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
                 SetPlayerMaxHealth(value);
                 break;
             case "PlayerHealth":
-                playerHealth.playerHealth = value;
+                playerHealth.playerHealth += value;
                 playerHealth.playerHealth = Mathf.Clamp(playerHealth.playerHealth, 0, playerHealth.playerMaxHealth);
                 break;
             case "PlayerRegen":

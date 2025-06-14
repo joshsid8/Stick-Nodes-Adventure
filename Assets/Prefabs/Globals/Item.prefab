@@ -383,3 +383,5 @@ MonoBehaviour:
   isFull: 0
   amountText: {fileID: 8661469075715003700}
   itemImage: {fileID: 6485723674348527585}
+  selectedShader: {fileID: 1018419514645650798}
+  itemSelected: 0

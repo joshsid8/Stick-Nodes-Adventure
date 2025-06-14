@@ -85,7 +85,7 @@ public class DialogueUI : MonoBehaviour
     }
     private void ApplyCustomEffect(DialogueObject dialogueObject)
     {
-        if (GameManager.Instance == null)
+        if (PlayerManager.Instance == null)
         {
             Debug.LogError("GAAAAAHHHHHHH");
             return;
@@ -93,12 +93,12 @@ public class DialogueUI : MonoBehaviour
 
         if (dialogueObject.appliesFloatChange)
         {
-            GameManager.Instance.SetGlobalFloat(dialogueObject.targetFloatVariableName, dialogueObject.newFloatValue);
+            PlayerManager.Instance.SetGlobalFloat(dialogueObject.targetFloatVariableName, dialogueObject.newFloatValue);
         }
 
         if (dialogueObject.appliesBooleanChange)
         {
-            GameManager.Instance.SetGlobalBool(dialogueObject.targetBooleanVariableName, dialogueObject.newBooleanValue);
+            PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBooleanVariableName, dialogueObject.newBooleanValue);
         }
     }
 }

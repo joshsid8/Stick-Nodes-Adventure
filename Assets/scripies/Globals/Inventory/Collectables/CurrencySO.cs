@@ -6,6 +6,6 @@ public class CurrencySO : CollectableSOBase
     public float amount;
     public override void Collect(GameObject objectCollected)
     {
-        GameManager.Instance.SetGlobalFloat("Money", amount);
+        PlayerManager.Instance.SetGlobalFloat("Money", amount);
     }
 }

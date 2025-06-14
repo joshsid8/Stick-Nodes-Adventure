@@ -1,5 +1,5 @@
-using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InvManager : MonoBehaviour
 {
@@ -7,13 +7,20 @@ public class InvManager : MonoBehaviour
     private bool isActivated;
     PlayerController player;
     public ItemSlot[] itemSlots;
+
+    public Button useButton;
+    public Button destroyButton;
     
+    public Button skillTreeButton;
+    
+    public PlayerManager playerManager;
     void Awake()
     {
         player = FindAnyObjectByType<PlayerController>();
+        playerManager = FindAnyObjectByType<PlayerManager>();
         if (player == null)
         {
-            Debug.LogWarning("InvManager: PlayerController not found in scene!");
+            Debug.LogWarning("InvManager: where is bro");
         }
 
         if (inventoryMenu != null)
@@ -39,27 +46,52 @@ public class InvManager : MonoBehaviour
         }
     }
 
-    public void AddItem(string itemName, int itemAmount, Sprite itemSprite)
+    public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType, float restoreValue)
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {
-            if (itemSlots[i] != null && itemSlots[i].itemName == itemName && !itemSlots[i].isFull)
+            if (itemSlots[i] != null && itemSlots[i].itemName == itemName && itemSlots[i].itemAmount < itemSlots[i].maxItemAmount)
             {
-                itemSlots[i].AddItem(itemName, itemAmount, itemSprite);
-                Debug.Log($"Added {itemAmount} to existing stack of {itemName} in slot {i}.");
-                return;
+                int amountToAdd = Mathf.Min(itemAmount, itemSlots[i].maxItemAmount - itemSlots[i].itemAmount);
+                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue);
+                itemAmount -= amountToAdd;
+                if (itemAmount <= 0) return;
             }
         }
         
         for (int i = 0; i < itemSlots.Length; i++)
         {
-            if (itemSlots[i] != null && !itemSlots[i].isFull)
+            if (itemSlots[i] != null && !itemSlots[i].usedSlot)
             {
-                Debug.Log($"Adding {itemName} to empty slot: {itemSlots[i].gameObject.name}");
-                itemSlots[i].AddItem(itemName, itemAmount, itemSprite);
-                return;
+                int amountToAdd = Mathf.Min(itemAmount, maxItemAmount);
+                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue);
+                itemAmount -= amountToAdd;
+                if (itemAmount <= 0) return;
             }
         }
-        Debug.LogWarning($"Inventory is full! Could not add {itemName}.");
+
+        if (itemAmount > 0)
+        {
+            Debug.LogWarning($"Inventory is full! Could not add {itemAmount} of {itemName}.");
+        }
+    }
+
+    public void SelectSlot()
+    {
+        useButton.onClick.RemoveAllListeners();
+        destroyButton.onClick.RemoveAllListeners();
+        useButton.gameObject.SetActive(true);
+        destroyButton.gameObject.SetActive(true);
+    }
+
+    public void DeselectSlots()
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            itemSlots[i].selectedShader.SetActive(false);
+            itemSlots[i].itemSelected = false;
+            useButton.gameObject.SetActive(false);
+            destroyButton.gameObject.SetActive(false);
+        }
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Item!
   m_EditorClassIdentifier: 
   itemName: Sandwitch!
-  itemAmount: 21
+  itemAmount: 20
   itemDescription: nah wth lol
   itemSprite: {fileID: 7482667652216324306, guid: 8782da715bf2bd644bc258ba4619dda8, type: 3}
+  maxItemAmount: 25

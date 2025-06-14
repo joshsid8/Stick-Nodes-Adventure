@@ -50,20 +50,20 @@ public class DialogueResponseHandler : MonoBehaviour
     }
     private void ApplyCustomEffect(DialogueResponse response)
     {
-        if (GameManager.Instance == null)
+        if (PlayerManager.Instance == null)
         {
-            Debug.LogError("WHERE IS THE GAME MANAGERERERERWHGWH");
+            Debug.LogError("WHERE IS THE PLAYER MANAGERERERERWHGWH");
             return;
         }
 
         if (response.appliesFloatChange)
         {
-            GameManager.Instance.SetGlobalFloat(response.targetFloatVariableName, response.newFloatValue);
+            PlayerManager.Instance.SetGlobalFloat(response.targetFloatVariableName, response.newFloatValue);
         }
 
         if (response.appliesBooleanChange)
         {
-            GameManager.Instance.SetGlobalBool(response.targetBooleanVariableName, response.newBooleanValue);
+            PlayerManager.Instance.SetGlobalBool(response.targetBooleanVariableName, response.newBooleanValue);
         }
     }
 }
