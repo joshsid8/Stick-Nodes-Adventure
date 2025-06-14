@@ -75,6 +75,16 @@ public class InvManager : MonoBehaviour
             Debug.LogWarning($"Inventory is full! Could not add {itemAmount} of {itemName}.");
         }
     }
+    public void AddAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (itemSlots[i] != null && !itemSlots[i].usedSlot)
+            {
+                itemSlots[i].AddAspect(itemName, itemSprite, itemDescription, aspect); return;
+            }
+        }
+    }
 
     public void SelectSlot()
     {

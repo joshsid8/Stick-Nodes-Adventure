@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -7,14 +9,53 @@ public class PlayerManager : MonoBehaviour
 
     // the bools
     private bool playerCanDoubleJump;
-    private bool playerHasDashAbility;
-    
+
     // big stuff
     private PlayerController playerController;
     private PlayerHealth playerHealth;
     private PlayerAbility playerAbility;
     private PlayerCurrency playerCurrency;
     private PlayerDefense playerDefense;
+    private PlayerCombat playerCombat;
+
+    // original values
+    [HideInInspector] public float oMoveSpeed;
+    [HideInInspector] public float oDashSpeed;
+    [HideInInspector] public float oDashStartTime;
+    [HideInInspector] public float oDashCooldown;
+    [HideInInspector] public float oDashEnergyCost;
+
+    [HideInInspector] public float oJumpForce;
+    [HideInInspector] public float oFallMultiplier;
+    [HideInInspector] public float oLowJumpMultiplier;
+
+    [HideInInspector] public float oWallSlideSpeed;
+    [HideInInspector] public int oWallsLeft;
+    [HideInInspector] public float oWallJumpForce;
+
+    [HideInInspector] public float oMaxHealth;
+    [HideInInspector] public float oMaxHealthRegen;
+    [HideInInspector] public float oStunMultiplier;
+    [HideInInspector] public float oInvincibleWindow;
+
+    [HideInInspector] public float oDamageResistance;
+    [HideInInspector] public float oCounterWindow;
+    [HideInInspector] public float oCounterDamage;
+    [HideInInspector] public float oCounterStun;
+    [HideInInspector] public float oCounterResistance;
+    
+    [HideInInspector] public float oGroundAttackDamage;
+    [HideInInspector] public float oGroundDamageCooldown;
+    [HideInInspector] public float oAirAttackDamage;
+    [HideInInspector] public float oAirDamageCooldown;
+    [HideInInspector] public float oAttackEnergy;
+    [HideInInspector] public float oAirAttackForce;
+
+    [HideInInspector] public float oAbilityEnergyRegen;
+    [HideInInspector] public float oAbilityCooldown;
+
+
+
     private void Awake()
     {
         // Implement Singleton pattern
@@ -23,6 +64,7 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
@@ -31,15 +73,54 @@ public class PlayerManager : MonoBehaviour
         playerAbility = FindAnyObjectByType<PlayerAbility>();
         playerCurrency = FindAnyObjectByType<PlayerCurrency>();
         playerDefense = FindAnyObjectByType<PlayerDefense>();
-        
+        playerCombat =  FindAnyObjectByType<PlayerCombat>();
+
+        OriginalValues();
+
         if (playerController != null)
         {
             playerCanDoubleJump = playerController.canDoubleJump;
-            playerHasDashAbility = playerController.dashAbility;
         }
     }
 
-    // Public Methods
+    private void OriginalValues()
+    {
+        oMoveSpeed = playerController.originalMovementSpeed;
+        oDashSpeed = playerController.dashSpeed;
+        oDashStartTime = playerController.startDashTime;
+        oDashCooldown =  playerController.dashCooldown;
+        oDashEnergyCost = playerController.dashEnergyCost;
+
+        oJumpForce =  playerController.originalJumpForce;
+        oFallMultiplier =  playerController.fallMultiplier;
+        oLowJumpMultiplier = playerController.lowJumpMultiplier;
+
+        oWallSlideSpeed = playerController.wallSlideSpeed;
+        oWallJumpForce = playerController.wallJumpForce;
+
+        oMaxHealth = playerHealth.playerMaxHealth;
+        oMaxHealthRegen = playerHealth.originalRegenerationMultiplier;
+        oStunMultiplier = playerHealth.originalStunMultiplier;
+        oInvincibleWindow = playerHealth.invincibleDuration;
+
+        oDamageResistance = playerDefense.damageResistance;
+        oCounterWindow = playerDefense.counterTime;
+        oCounterDamage = playerDefense.counterDamage;
+        oCounterStun = playerDefense.counterStun;
+        oCounterResistance = playerDefense.counterDamageResistance;
+
+        oGroundAttackDamage = playerCombat.damageAmount;
+        oGroundDamageCooldown = playerCombat.attackCooldown;
+        oAirAttackDamage = playerCombat.airAttackCooldown;
+        oAirDamageCooldown = playerCombat.airAttackCooldown;
+        oAttackEnergy = playerCombat.attackEnergy;
+        oAirAttackForce = playerCombat.airAttackForce;
+
+        oAbilityEnergyRegen = playerAbility.originalEnergyRefill;
+        oAbilityCooldown = playerAbility.abilityCooldown;
+    }
+
+// Public Methods
     public void SetGlobalFloat(string variableName, float value)
     {
         switch (variableName)
@@ -72,6 +153,12 @@ public class PlayerManager : MonoBehaviour
             case "PlayerJumpForce":
                 if (playerController != null) playerController.jumpForce = value;
                 break;
+            case "DamageResistance":
+                if (playerDefense != null) playerDefense.damageResistance = value;
+                break;
+            case "CounterWindow":
+                if (playerDefense != null) playerDefense.counterTime = value;
+                break;
             case "CombatTimer":
                 if (playerController != null) playerController.currentCombatTimer = value;
                 break;
@@ -79,7 +166,8 @@ public class PlayerManager : MonoBehaviour
                 if (playerCurrency != null) playerCurrency.nodeBucks += value;
                 break;
             default:
-                Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
+                if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
+                else Debug.LogWarning("BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
                 break;
         }
     }
@@ -90,9 +178,6 @@ public class PlayerManager : MonoBehaviour
         {
             case "PlayerCanDoubleJump":
                 EnablePlayerDoubleJump(value);
-                break;
-            case "PlayerHasDashAbility":
-                EnablePlayerDashAbility(value);
                 break;
             case "PlayerCanAct":
                 if (playerController != null)
@@ -108,7 +193,8 @@ public class PlayerManager : MonoBehaviour
                 break;
             // To be added later
             default:
-                Debug.LogWarning($"GameManager: Unknown bool variable '{variableName}' requested.");
+                if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"zlawg whats a '{variableName}'??");
+                else Debug.LogWarning("BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
                 break;
         }
     }
@@ -124,17 +210,7 @@ public class PlayerManager : MonoBehaviour
             Debug.Log($"GameManager: Player Double Jump: {(enable ? "Enabled" : "Disabled")}");
         }
     }
-
-    private void EnablePlayerDashAbility(bool enable)
-    {
-        playerHasDashAbility = enable;
-        if (playerController != null)
-        {
-            playerController.dashAbility = enable;
-            Debug.Log($"GameManager: Player Dash Ability: {(enable ? "Enabled" : "Disabled")}");
-        }
-    }
-
+    
     private void SetPlayerMaxHealth(float newMax)
     {
         playerHealth.playerMaxHealth = newMax;

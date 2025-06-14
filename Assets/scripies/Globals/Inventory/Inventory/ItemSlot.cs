@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -16,7 +17,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public string itemType;
     public float restoreValue;
-    
+    public TMP_Text useButtonText;
     public bool usedSlot;
     
     [SerializeField] private TMP_Text amountText;
@@ -26,7 +27,10 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public bool itemSelected;
     
     [SerializeField] private InvManager invManager;
-
+    public AspectSO aspectStats;
+    [SerializeField] AspectSlot[] aspectSlot;
+    [SerializeField] private bool aspectSlotFull;
+    
     private void Start()
     {
         if (invManager == null)
@@ -74,6 +78,16 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             itemAmount = potentialNewAmount;
         }
     }
+    public void AddAspect(string item, Sprite sprite, string itemDesc,AspectSO aspect)
+    {
+        itemName = item;
+        itemSprite = sprite;
+        itemDescription = itemDesc;
+        usedSlot = true;
+        itemAmount = 1;
+        aspectStats = aspect;
+        itemType = "Aspect";
+    }
     
     private void UpdateSlotUI()
     {
@@ -83,8 +97,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             {
                 amountText.enabled = true;
                 amountText.text = itemAmount.ToString();
+                if (itemAmount == 1) amountText.text = "";
             }
-            if (itemImage != null)
+            else if (itemImage != null)
             {
                 itemImage.enabled = true;
                 itemImage.sprite = itemSprite;
@@ -103,6 +118,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public void ClearSlot()
     {
         itemName = string.Empty;
+        itemDescription = string.Empty;
         itemAmount = 0;
         itemSprite = null;
         usedSlot = false;
@@ -116,7 +132,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void OnLeftClick()
+    private void OnLeftClick()
     {
         invManager.DeselectSlots();
         selectedShader.SetActive(true);
@@ -125,18 +141,39 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemDescTitle.text = itemName;
         itemDescInfo.text = itemDescription;
         invManager.SelectSlot();
-        invManager.useButton.onClick.AddListener(() => Restore());
+        if (itemType == "Aspect") useButtonText.text = "Equip"; else useButtonText.text = "Use";
+        invManager.useButton.onClick.AddListener(() => ItemType());
         invManager.destroyButton.onClick.AddListener(() => ClearSlot());
         
     }
 
-    public void Restore()
+    private void ItemType()
     {
-        if (itemType != null)
+        if (itemType != null && itemType != "Aspect") Restore();
+        else Aspect();
+    }
+
+    private void Restore()
+    {
+        invManager.playerManager.SetGlobalFloat(itemType, restoreValue);
+        itemAmount--;
+        if (itemAmount <= 0)
         {
-            invManager.playerManager.SetGlobalFloat(itemType, restoreValue);
-            itemAmount--;
-            if (itemAmount <= 0) ClearSlot();
+            itemDescription = string.Empty;
+            itemName = string.Empty;
+            ClearSlot();
+        }
+
+    }
+
+    private void Aspect()
+    {
+        for (int i = 0; i < aspectSlot.Length; i++)
+        {
+            if (aspectSlot[i] != null && !aspectSlot[i].usedSlot)
+            {
+                aspectSlot[i].AddAspect(itemName, itemSprite, itemDescription, aspectStats);
+            }
         }
     }
 }

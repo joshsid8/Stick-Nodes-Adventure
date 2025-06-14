@@ -7,27 +7,27 @@ public class PlayerCombat : MonoBehaviour
     private PlayerController pc;
     private PlayerHealth ph;
     public bool m1Ability;
-    [SerializeField] private float damageAmount = 20f;
+    public float damageAmount = 20f;
     [SerializeField] private Transform attackTransform;
     [SerializeField] private float attackRange = 1.5f;
     [HideInInspector] public bool isAttacking;
     public bool canAttack;
-    [SerializeField] private float currentAttackCooldown;
+    private float currentAttackCooldown;
     public float attackEnergy;
     
-    [SerializeField] private float attackCooldown;
-    [SerializeField] private float airDamageAmount = 20f;
+    public float attackCooldown;
+    public float airDamageAmount = 20f;
     [SerializeField] private Transform airAttackTransform;
     [SerializeField] private float airAttackRange = 1f;
-    [SerializeField] private float airAttackForce = 1f;
+    public float airAttackForce;
     [HideInInspector] public bool isAirAttacking;
     [SerializeField] private bool canAirAttack;
     [SerializeField] private bool hasAirBoosted;
-    [SerializeField] private float airAttackCooldown;
-    [SerializeField] private float currentAirAttackCooldown;
+    public float airAttackCooldown;
+    private float currentAirAttackCooldown;
     
     [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private float stunTime = 0.2f;
+    public float stunTime = 0.2f;
     private RaycastHit2D[] hits;
     private Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
