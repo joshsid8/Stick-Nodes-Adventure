@@ -7,8 +7,8 @@ public class AspectSO : CollectableSOBase
     [SerializeField] [TextArea] private string itemDescription;
     [SerializeField] private Sprite itemSprite;
 
-    [SerializeField] private string[] floatStatsName;
-    [SerializeField] private string[] floatStats;
+    public string[] floatStatsName;
+    public float[] floatStats;
     
     private PlayerManager stats;
     public override void Collect(GameObject objectCollected)
@@ -17,7 +17,7 @@ public class AspectSO : CollectableSOBase
         InvManager manager = FindAnyObjectByType<InvManager>();
         if (manager != null)
         {
-            manager.AddAspect(itemName, itemSprite, itemDescription, this);
+            manager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, this);
         }
         else
         {

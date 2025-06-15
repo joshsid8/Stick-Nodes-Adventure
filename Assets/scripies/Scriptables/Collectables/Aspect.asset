@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Aspect
   m_EditorClassIdentifier: 
   itemName: strenghtmaker
-  itemDescription: gives you strength unnaturally. dont ask whyyyyy
+  itemDescription: gives you health unnaturally. dont ask whyyyyy
   itemSprite: {fileID: 0}
-  itemType: Aspect
-  restoreValue: 23
+  floatStatsName:
+  - PlayerMaxHealth
+  floatStats:
+  - 120

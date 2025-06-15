@@ -379,9 +379,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: 
   itemAmount: 0
+  maxItemAmount: 0
   itemSprite: {fileID: 0}
-  isFull: 0
+  itemDescription: 
+  itemDescTitle: {fileID: 0}
+  itemDescInfo: {fileID: 0}
+  itemType: 
+  restoreValue: 0
+  useButtonText: {fileID: 0}
+  usedSlot: 0
   amountText: {fileID: 8661469075715003700}
   itemImage: {fileID: 6485723674348527585}
   selectedShader: {fileID: 1018419514645650798}
   itemSelected: 0
+  invManager: {fileID: 0}
+  aspectStats: {fileID: 0}
+  aspectSlot: []
+  aspectSlotFull: 0
