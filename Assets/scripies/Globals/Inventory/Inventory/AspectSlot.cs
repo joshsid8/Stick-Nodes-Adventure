@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -24,7 +25,10 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
     // Manager References
     [SerializeField] private InvManager invManager;
     private PlayerManager playerManager;
+    public Prompt choice;
 
+    private bool switchFrom;
+    
     private void Awake()
     {
         if (invManager == null)
@@ -34,8 +38,6 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
         }
         playerManager = FindAnyObjectByType<PlayerManager>();
         if (playerManager == null) Debug.LogError("AspectSlot: PlayerManager not found on Awake!", this);
-
-        UpdateSlotUI();
     }
 
     public void AddAspect(string item, Sprite sprite, string itemDesc, AspectSO aspect)
@@ -50,6 +52,8 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
 
     private void UpdateSlotUI()
     {
+        if (itemDescTitle != null) itemDescTitle.text = itemName;
+        if (itemDescInfo != null) itemDescInfo.text = itemDescription;
         if (usedSlot && itemSprite != null)
         {
             if (itemImage != null)
@@ -58,7 +62,7 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
                 itemImage.sprite = itemSprite;
             }
         }
-        else
+        else if (!usedSlot)
         {
             ClearSlotVisuals();
         }
@@ -71,7 +75,11 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
         itemSprite = null;
         aspectStats = null;
         usedSlot = false;
-        ClearSlotVisuals();
+        if (!switchFrom)
+        {
+            switchFrom = true;
+            ClearSlotVisuals();
+        }
     }
 
     private void ClearSlotVisuals()
@@ -85,8 +93,7 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
         if (itemDescTitle != null) itemDescTitle.text = string.Empty;
         if (itemDescInfo != null) itemDescInfo.text = string.Empty;
     }
-
-    // --- Input Handling ---
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -98,31 +105,54 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
     private void OnLeftClick()
     {
         invManager.DeselectAllSlots();
-        
+        UpdateSlotUI();
         if (selectedShader != null) selectedShader.SetActive(true);
-
-        if (itemDescTitle != null) itemDescTitle.text = itemName;
-        if (itemDescInfo != null) itemDescInfo.text = itemDescription;
-
         invManager.SelectSlot();
-
         if (useButtonText != null) useButtonText.text = "Unequip";
-        
         invManager.useButton.onClick.RemoveAllListeners();
         invManager.destroyButton.onClick.RemoveAllListeners();
 
-        invManager.useButton.onClick.AddListener(() => UnequipAspectAction());
-        invManager.destroyButton.onClick.AddListener(() => ClearSlot());
+        invManager.useButton.onClick.AddListener(() => UnequipAspect());
+        invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
     }
 
-    private void UnequipAspectAction()
+    private void UnequipAspect()
     {
+        for (int i = 0; i < aspectStats.floatStatsName.Length; i++)
+        {
+            invManager.playerManager.SetOriginalFloat(aspectStats.floatStatsName[i]);
+        }
         invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1,"Aspect",0,aspectStats);
-        
+        switchFrom = true;
         ClearSlot();
-        invManager.DeselectAllSlots();
+    }
+    private IEnumerator DestroyItem()
+    {
+        choice.messageText.text = "Do you really want to destroy this Aspect?";
+        choice.Choices();
+        yield return new WaitUntil(() => choice.yes || choice.no);
+        if (choice.yes)
+        {
+            choice.yes = false;
+            for (int i = 0; i < aspectStats.floatStatsName.Length; i++)
+            {
+                invManager.playerManager.SetOriginalFloat(aspectStats.floatStatsName[i]);
+            }
+            ClearSlot();
+            choice.Disable();
+            UpdateSlotUI();
+        }
+        else if (choice.no)
+        {
+            choice.no = false;
+            choice.Disable();
+        }
     }
     
+    public void AspectSelect()
+    {
+        OnLeftClick();
+    }
     public void Deselect()
     {
         if (selectedShader != null) selectedShader.SetActive(false);

@@ -1,8 +1,8 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-using System; // For String.Empty
 
 public class ItemSlot : MonoBehaviour, IPointerClickHandler
 {
@@ -23,25 +23,24 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Image itemImage;
     
     public GameObject selectedShader;
-    public bool itemSelected;
     public bool usedSlot;
     
     [SerializeField] private InvManager invManager;
+    public Prompt choice;
     
     public AspectSO aspectStats; 
     [SerializeField] AspectSlot[] aspectSlot;
     [SerializeField] private bool aspectSlotFull;
+    
+    private bool switchFrom;
 
     private void Awake()
     {
-        
         if (invManager == null)
         {
             invManager = FindAnyObjectByType<InvManager>();
             if (invManager == null) Debug.LogError("ItemSlot: InvManager not found on Awake!", this);
         }
-        
-        UpdateSlotUI();
     }
     
     public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, float value, AspectSO aspect)
@@ -62,6 +61,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     
     private void UpdateSlotUI()
     {
+        if (itemDescTitle != null) itemDescTitle.text = itemName;
+        if (itemDescInfo != null) itemDescInfo.text = itemDescription;
         if (itemAmount > 0 && usedSlot)
         {
             if (itemImage != null)
@@ -77,7 +78,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
                 if (itemType == "Aspect") amountText.text = "";
             }
         }
-        else
+        else if (!usedSlot || itemAmount <= 0)
         {
             ClearSlotVisuals();
         }
@@ -96,9 +97,12 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         aspectStats = null;
 
         usedSlot = false;
-        itemSelected = false;
 
-        ClearSlotVisuals();
+        if (!switchFrom)
+        {
+            switchFrom = true;
+            ClearSlotVisuals();
+        }
     }
 
     
@@ -125,32 +129,23 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     private void OnLeftClick()
     {
-        if (!usedSlot) return;
-
         invManager.DeselectAllSlots();
         
+        UpdateSlotUI();
         if (selectedShader != null) selectedShader.SetActive(true);
-        itemSelected = true;
-
-        
-        if (itemDescTitle != null) itemDescTitle.text = itemName;
-        if (itemDescInfo != null) itemDescInfo.text = itemDescription;
 
         invManager.SelectSlot();
-
-        
         if (useButtonText != null)
         {
             useButtonText.text = (itemType == "Aspect") ? "Equip" : "Use";
         }
-        
         
         invManager.useButton.onClick.RemoveAllListeners();
         invManager.destroyButton.onClick.RemoveAllListeners();
 
         
         invManager.useButton.onClick.AddListener(() => ItemTypeAction());
-        invManager.destroyButton.onClick.AddListener(() => ClearSlot());
+        invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
     }
 
     
@@ -164,15 +159,13 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         {
             RestoreItem();
         }
-
-        invManager.DeselectAllSlots();
     }
 
     private void RestoreItem()
     {
         if (invManager.playerManager != null)
         {
-            invManager.playerManager.SetGlobalFloat(itemType, restoreValue);
+            invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
         }
         else
         {
@@ -183,12 +176,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (itemAmount <= 0)
         {
             ClearSlot();
+            invManager.DeselectAllSlots();
         }
-        else
-        {
-            UpdateSlotUI();
-        }
+        UpdateSlotUI();
     }
+
 
     private void EquipAspect()
     {
@@ -200,39 +192,57 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
                 if (aspectSlot[i] != null && !aspectSlot[i].usedSlot)
                 {
                     aspectSlot[i].AddAspect(itemName, itemSprite, itemDescription, aspectStats);
-                    
                     if (aspectStats != null && invManager.playerManager != null)
                     {
                         for (int j = 0; j < aspectStats.floatStatsName.Length; j++)
                         {
-                            invManager.playerManager.SetGlobalFloat(aspectStats.floatStatsName[j], aspectStats.floatStats[j]);
+                            invManager.playerManager.AlterGlobalFloat(aspectStats.floatStatsName[j],
+                                aspectStats.floatStats[j]);
+                            aspectSlot[i].AspectSelect();
                         }
-                        
                     }
-                    else if (aspectStats == null)
-                    {
-                         Debug.LogWarning("AspectSO not assigned to ItemSlot for equipping!");
-                    }
-                    else if (invManager.playerManager == null)
-                    {
-                         Debug.LogError("PlayerManager not found in InvManager. Cannot apply aspect stats.");
-                    }
+                    else if (aspectStats == null) Debug.LogWarning("AspectSO not assigned to ItemSlot for equipping!");
+                    else if (invManager.playerManager == null) Debug.LogError("PlayerManager not found in InvManager. Cannot apply aspect stats.");
 
+                    switchFrom = true;
                     ClearSlot();
                     equipped = true;
                     break;
                 }
             }
         }
+
         if (!equipped)
         {
             Debug.LogWarning("All Aspect Equipped slots are full! Cannot equip " + itemName);
+        }
+    }
+    public void ItemSelect()
+    {
+        OnLeftClick();
+    }
+    private IEnumerator DestroyItem()
+    {
+        choice.messageText.text = "Do you really want to destroy ALL of this item?";
+        choice.Choices();
+        yield return new WaitUntil(() => choice.yes || choice.no);
+        if (choice.yes)
+        {
+            choice.yes = false;
+            ClearSlot();
+            choice.Disable();
+            UpdateSlotUI();
+        }
+        else if (choice.no)
+        {
+            choice.no = false;
+            choice.Disable();
         }
     }
     
     public void Deselect()
     {
         if (selectedShader != null) selectedShader.SetActive(false);
-        itemSelected = false;
     }
+
 }

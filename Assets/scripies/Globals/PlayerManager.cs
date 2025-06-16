@@ -51,6 +51,7 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public float oAttackEnergy;
     [HideInInspector] public float oAirAttackForce;
 
+    [HideInInspector] public float oMaxEnergy;
     [HideInInspector] public float oAbilityEnergyRegen;
     [HideInInspector] public float oAbilityCooldown;
 
@@ -116,6 +117,7 @@ public class PlayerManager : MonoBehaviour
         oAttackEnergy = playerCombat.attackEnergy;
         oAirAttackForce = playerCombat.airAttackForce;
 
+        oMaxEnergy = playerAbility.maxEnergy;
         oAbilityEnergyRegen = playerAbility.originalEnergyRefill;
         oAbilityCooldown = playerAbility.abilityCooldown;
     }
@@ -129,7 +131,7 @@ public class PlayerManager : MonoBehaviour
                 SetPlayerMaxHealth(value);
                 break;
             case "PlayerHealth":
-                playerHealth.playerHealth += value;
+                playerHealth.playerHealth = value;
                 playerHealth.playerHealth = Mathf.Clamp(playerHealth.playerHealth, 0, playerHealth.playerMaxHealth);
                 break;
             case "PlayerRegen":
@@ -163,7 +165,7 @@ public class PlayerManager : MonoBehaviour
                 if (playerController != null) playerController.currentCombatTimer = value;
                 break;
             case "Money":
-                if (playerCurrency != null) playerCurrency.nodeBucks += value;
+                if (playerCurrency != null) playerCurrency.nodeBucks = value;
                 break;
             default:
                 if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
@@ -199,8 +201,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // --- Helper Methods for specific changes (optional, but good for complex logic) ---
-
     private void EnablePlayerDoubleJump(bool enable)
     {
         playerCanDoubleJump = enable;
@@ -217,6 +217,95 @@ public class PlayerManager : MonoBehaviour
         if (playerHealth.playerHealth > playerHealth.playerMaxHealth) // Adjust current health if max decreases
         {
             playerHealth.playerHealth = playerHealth.playerMaxHealth;
+        }
+    }
+    
+        public void AlterGlobalFloat(string variableName, float value)
+    {
+        switch (variableName)
+        {
+            case "PlayerMaxHealth":
+                playerHealth.playerMaxHealth += value;
+                break;
+            case "PlayerHealth":
+                playerHealth.playerHealth += value;
+                playerHealth.playerHealth = Mathf.Clamp(playerHealth.playerHealth, 0, playerHealth.playerMaxHealth);
+                break;
+            case "PlayerRegen":
+                if (playerHealth != null) playerHealth.regenerationMultiplier += value;
+                break;
+            case "StunMultiplier":
+                if (playerHealth != null) playerHealth.stunMultiplier += value;
+                break;
+            case "PlayerMaxEnergy":
+                if (playerAbility != null) playerAbility.maxEnergy += value;
+                break;
+            case "PlayerEnergy":
+                if (playerAbility != null) playerAbility.energy += value;
+                break;
+            case "PlayerEnergyRefil":
+                if (playerAbility != null) playerAbility.energyRefill += value;
+                break;
+            case "PlayerMovementSpeed":
+                if (playerController != null) playerController.movementSpeed += value;
+                break;
+            case "PlayerJumpForce":
+                if (playerController != null) playerController.jumpForce += value;
+                break;
+            case "DamageResistance":
+                if (playerDefense != null) playerDefense.damageResistance += value;
+                break;
+            case "CounterWindow":
+                if (playerDefense != null) playerDefense.counterTime += value;
+                break;
+            case "CombatTimer":
+                if (playerController != null) playerController.currentCombatTimer += value;
+                break;
+            case "Money":
+                if (playerCurrency != null) playerCurrency.nodeBucks += value;
+                break;
+            default:
+                if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
+                else Debug.LogWarning("BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
+                break;
+        }
+    }
+    
+    public void SetOriginalFloat(string variableName)
+    {
+        switch (variableName)
+        {
+            case "PlayerMaxHealth":
+                playerHealth.playerMaxHealth = oMaxHealth;
+                break;
+            case "PlayerRegen":
+                if (playerHealth != null) playerHealth.regenerationMultiplier = oMaxHealthRegen;
+                break;
+            case "StunMultiplier":
+                if (playerHealth != null) playerHealth.stunMultiplier = oStunMultiplier;
+                break;
+            case "PlayerMaxEnergy":
+                if (playerAbility != null) playerAbility.maxEnergy = oMaxEnergy;
+                break;
+            case "PlayerEnergyRefill":
+                if (playerAbility != null) playerAbility.energyRefill = oAbilityEnergyRegen;
+                break;
+            case "PlayerMovementSpeed":
+                if (playerController != null) playerController.movementSpeed = oMoveSpeed;
+                break;
+            case "PlayerJumpForce":
+                if (playerController != null) playerController.jumpForce = oJumpForce;
+                break;
+            case "DamageResistance":
+                if (playerDefense != null) playerDefense.damageResistance = oDamageResistance;
+                break;
+            case "CounterWindow":
+                if (playerDefense != null) playerDefense.counterTime = oCounterWindow;
+                break;
+            default:
+                if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
+                else Debug.LogWarning("BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
+                break;
         }
     }
     

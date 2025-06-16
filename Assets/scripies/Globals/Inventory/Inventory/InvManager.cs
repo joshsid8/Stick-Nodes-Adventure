@@ -63,8 +63,6 @@ public class InvManager : MonoBehaviour
         {
             player.canAct = !isActivated;
         }
-
-        DeselectAllSlots();
     }
 
     public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType, float restoreValue, AspectSO aspect)
@@ -79,7 +77,7 @@ public class InvManager : MonoBehaviour
 
                 if (itemAmount <= 0)
                 {
-                    Debug.Log($"Added all {amountToAdd} to existing stack of {itemName}.");
+                    itemSlots[i].ItemSelect();
                     return;
                 }
             }
@@ -95,7 +93,7 @@ public class InvManager : MonoBehaviour
 
                 if (itemAmount <= 0)
                 {
-                    Debug.Log($"Added {amountToAdd} of {itemName} to new slot {itemSlots[i].gameObject.name}.");
+                    itemSlots[i].ItemSelect();
                     return;
                 }
             }
