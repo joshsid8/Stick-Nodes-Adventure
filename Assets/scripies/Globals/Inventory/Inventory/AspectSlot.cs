@@ -10,20 +10,20 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
     public string itemName;
     public Sprite itemSprite;
     public string itemDescription;
-    public AspectSO aspectStats; // Reference to the ScriptableObject for this equipped aspect
+    public AspectSO aspectStats;
 
     // UI References
     public TMP_Text itemDescTitle;
     public TMP_Text itemDescInfo;
-    public TMP_Text useButtonText; // Reference to the text on the "Unequip" button
+    public TMP_Text useButtonText;
 
     [SerializeField] private Image itemImage;
     public GameObject selectedShader;
-    public bool usedSlot; // Tracks if this slot contains an equipped aspect
+    public bool usedSlot;
     
     // Manager References
     [SerializeField] private InvManager invManager;
-    private PlayerManager playerManager; // Renamed from playerStats for consistency with GameManager
+    private PlayerManager playerManager;
 
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
         playerManager = FindAnyObjectByType<PlayerManager>();
         if (playerManager == null) Debug.LogError("AspectSlot: PlayerManager not found on Awake!", this);
 
-        UpdateSlotUI(); // Initialize UI state
+        UpdateSlotUI();
     }
 
     public void AddAspect(string item, Sprite sprite, string itemDesc, AspectSO aspect)
@@ -44,8 +44,8 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
         itemSprite = sprite;
         itemDescription = itemDesc;
         aspectStats = aspect;
-        usedSlot = true; // Mark as used
-        UpdateSlotUI(); // Update visuals
+        usedSlot = true;
+        UpdateSlotUI();
     }
 
     private void UpdateSlotUI()
@@ -66,8 +66,8 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
     
     public void ClearSlot()
     {
-        itemName = String.Empty;
-        itemDescription = String.Empty;
+        itemName = string.Empty;
+        itemDescription = string.Empty;
         itemSprite = null;
         aspectStats = null;
         usedSlot = false;
@@ -82,8 +82,8 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
             itemImage.sprite = null;
         }
         if (selectedShader != null) selectedShader.SetActive(false);
-        if (itemDescTitle != null) itemDescTitle.text = String.Empty;
-        if (itemDescInfo != null) itemDescInfo.text = String.Empty;
+        if (itemDescTitle != null) itemDescTitle.text = string.Empty;
+        if (itemDescInfo != null) itemDescInfo.text = string.Empty;
     }
 
     // --- Input Handling ---
@@ -97,35 +97,32 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
 
     private void OnLeftClick()
     {
-        if (!usedSlot) return; // Don't allow selection of empty slots
-
-        invManager.DeselectAllSlots(); // Deselect all other slots first
+        invManager.DeselectAllSlots();
         
         if (selectedShader != null) selectedShader.SetActive(true);
 
         if (itemDescTitle != null) itemDescTitle.text = itemName;
         if (itemDescInfo != null) itemDescInfo.text = itemDescription;
 
-        invManager.SelectSlot(); // Notify InvManager that a slot is selected
+        invManager.SelectSlot();
 
         if (useButtonText != null) useButtonText.text = "Unequip";
         
         invManager.useButton.onClick.RemoveAllListeners();
         invManager.destroyButton.onClick.RemoveAllListeners();
 
-        invManager.useButton.onClick.AddListener(() => UnequipAspectAction()); // Renamed for clarity
-        invManager.destroyButton.onClick.AddListener(() => ClearSlot()); // Destroy logic
+        invManager.useButton.onClick.AddListener(() => UnequipAspectAction());
+        invManager.destroyButton.onClick.AddListener(() => ClearSlot());
     }
 
-    private void UnequipAspectAction() // Renamed for clarity
+    private void UnequipAspectAction()
     {
         invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1,"Aspect",0,aspectStats);
         
-        ClearSlot(); // Clear this equipped aspect slot after it's moved/processed
-        invManager.DeselectAllSlots(); // Deselect after action
+        ClearSlot();
+        invManager.DeselectAllSlots();
     }
-
-    // Called by InvManager.DeselectAllSlots()
+    
     public void Deselect()
     {
         if (selectedShader != null) selectedShader.SetActive(false);

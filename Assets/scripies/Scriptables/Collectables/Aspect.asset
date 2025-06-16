@@ -17,5 +17,7 @@ MonoBehaviour:
   itemSprite: {fileID: 0}
   floatStatsName:
   - PlayerMaxHealth
+  - PlayerEnergy
   floatStats:
   - 120
+  - 27
