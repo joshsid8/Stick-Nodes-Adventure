@@ -7,7 +7,7 @@ public class PlayerCombat : MonoBehaviour
     private PlayerController pc;
     private PlayerHealth ph;
     public bool m1Ability;
-    public float damageAmount = 20f;
+    public float groundDamageAmount = 20f;
     [SerializeField] private Transform attackTransform;
     [SerializeField] private float attackRange = 1.5f;
     [HideInInspector] public bool isAttacking;
@@ -80,7 +80,7 @@ public class PlayerCombat : MonoBehaviour
         if (playerStats != null)
         {
             m1Ability = playerStats.M1Ability;
-            damageAmount = playerStats.GroundDamageAmount;
+            groundDamageAmount = playerStats.GroundDamageAmount;
             attackCooldown = playerStats.GroundAttackCooldown;
             attackEnergy = playerStats.GroundAttackEnergy;
             airDamageAmount = playerStats.AirDamageAmount;
@@ -106,7 +106,7 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(damageAmount);
+                eDamageable.Damage(groundDamageAmount);
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
             }

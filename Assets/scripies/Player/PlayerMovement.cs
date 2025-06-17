@@ -22,16 +22,16 @@ public class PlayerController : MonoBehaviour
     public float fallMultiplier;
     public float lowJumpMultiplier;
     private int availableJumps = 1; 
-    [SerializeField] private int availableJumpsLeft;
+    private int availableJumpsLeft;
     private bool isJumping;
     public bool canDoubleJump;
-    [SerializeField] private bool doublejump;
-
+    private bool doublejump;
+     
     // Jump optimisations
     [SerializeField] private float coyoteTime = 0.2f; // Adjust as needed
-    [SerializeField] private float coyoteTimeCounter;
+    private float coyoteTimeCounter;
     [SerializeField] private float jumpBufferTime = 0.1f; // Adjust as needed
-    [SerializeField] private float jumpBufferCounter;
+    private float jumpBufferCounter;
     
     // Wall Jumping
     public float wallSlideSpeed;
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckCircle;
     public Transform groundCheck;
     public LayerMask whatIsGround;
-    [HideInInspector]public bool isGrounded;
+    [HideInInspector] public bool isGrounded;
     
     // Dashing
     public float dashSpeed;
@@ -493,14 +493,3 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection);
     }
 }
-
-/*
-What to do:
-    
-    Inventory
-    Skill Tree
-    Badges/Aspects obtained
-        
-    When you are done: Find the one piece.
- */
-    

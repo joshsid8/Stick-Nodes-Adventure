@@ -11,19 +11,46 @@ public class PlayerStats : ScriptableObject
     [Tooltip("How quickly does the player regenerate their health?")]
     [SerializeField] private float regenerationMultiplier = 5f;
     public float RegenerationMultiplier => regenerationMultiplier;
-    [Tooltip("For when they are fighting!")]
+    [Tooltip("For when you are fighting!")]
     [SerializeField] private float modRegenerationMultiplier = 1f;
-    
     public float ModRegenerationMultiplier => modRegenerationMultiplier;
     [Tooltip("Stun multiplier when the player gets stunned! (e.g., 0 for no stun)")]
     [SerializeField] private float stunMultiplier = 1f;
     public float StunMultiplier => stunMultiplier;
+
+    [Tooltip("The multiplied amount of damage you take without blocking!")]
+    [SerializeField] private float rawDamageResistance = 1f;
+    public float RawDamageResistance => rawDamageResistance;
+    
+    [Tooltip("Protection after getting hurt!")]
+    public float invincibleDuration = 1f;
+    public float InvincibleDuration => invincibleDuration;
 
     [Header("Agility")]
     [Tooltip("The base movement speed of the player")]
     [SerializeField] private float movementSpeed = 10.0f;
     public float MovementSpeed => movementSpeed;
     
+    [Tooltip("Height of a normal jump")]
+    [SerializeField] private float jumpForce = 27f;
+    public float JumpForce => jumpForce;
+    
+    [Tooltip("Multiplier for falling speed")]
+    [SerializeField] private float fallMultiplier = 3f;
+    public float FallMultiplier => fallMultiplier;
+    
+    [Tooltip("Multiplier for lower jumps")]
+    [SerializeField] private float lowJumpMultiplier = 5f;
+    public float LowJumpMultiplier => lowJumpMultiplier;
+
+    [Tooltip("The apex speed the player can fall")] 
+    [SerializeField] private float maxFallSpeed = 35f;
+    public float MaxFallSpeed => maxFallSpeed;
+    
+    [Tooltip("The amount of wall jumps before landing")]
+    [SerializeField] private float availableWalls;
+    public float AvailableWalls => availableWalls;
+        
     [Tooltip("Speed of the dash")]
     [SerializeField] private float dashSpeed = 25f;
     public float DashSpeed => dashSpeed;
@@ -40,6 +67,14 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float dashEnergyCost = 5f;
     public float DashEnergyCost => dashEnergyCost;
 
+    [Tooltip("The speed of sliding on a wall")]
+    [SerializeField] private float wallSlideSpeed = 1f;
+    public float WallSlideSpeed => wallSlideSpeed;
+    
+    [Tooltip("The force of jumpping off a wall")]
+    [SerializeField] private float wallJumpForce = 25f;
+    public float WallJumpForce => wallJumpForce;
+    
     [Header("Ability")]
     [Tooltip("maximum energy for bros abilities")]
     [SerializeField] private float maxEnergy = 50f;

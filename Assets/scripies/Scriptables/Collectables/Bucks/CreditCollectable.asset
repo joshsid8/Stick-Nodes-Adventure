@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf0ff2653857c174c8ca13d5b5593a7e, type: 3}
   m_Name: CreditCollectable
   m_EditorClassIdentifier: 
-  amount: 20
+  maxItem: 20
+  minItem: 2

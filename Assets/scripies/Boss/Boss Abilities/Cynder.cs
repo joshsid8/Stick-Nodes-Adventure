@@ -76,6 +76,7 @@ public class Cynder : MonoBehaviour
         dashDirection = (ba.playerTransform.position - transform.position).normalized;
         if (rb.linearVelocity.y < 0) isFalling = true; else isFalling = false;
         animator.SetBool("isFalling", isFalling);
+        if (GetComponent<BossHealth>().phase2) animator.speed = 1.2f;
         if (ba.isFacingRight)
         {
             projectileDirection = new Vector2(reverseProjectileDirection.x, projectileDirection.y);
@@ -211,7 +212,8 @@ public class Cynder : MonoBehaviour
     {
         animator.SetTrigger("DAttack");
         transform.position = new Vector3(ba.playerTransform.position.x + 2f, teleportPoint.position.y, transform.position.z);
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, -dropSpeed);
+        if (!GetComponent<BossHealth>().phase2) rb.linearVelocity = new Vector2(rb.linearVelocity.x, -dropSpeed);
+        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, -dropSpeed * 1.2f);
     }
 
     private void FreezeMovement()

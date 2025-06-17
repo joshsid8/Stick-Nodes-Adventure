@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public TMP_Text healthText;
     public float playerMaxHealth = 100;
     public float playerHealth = 100;
+    public float rawDamageResistance = 1f;
 
     public float regenerationMultiplier;
     public float modRegenerationMultiplier;
@@ -79,6 +80,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             regenerationMultiplier = playerStats.RegenerationMultiplier;
             modRegenerationMultiplier = playerStats.ModRegenerationMultiplier;
             stunMultiplier = playerStats.StunMultiplier;
+            rawDamageResistance = playerStats.RawDamageResistance;
         }
         else
         {
@@ -126,7 +128,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
         else
         {
-            playerHealth -= damageAmount;
+            playerHealth -= damageAmount * rawDamageResistance;
             playerController.animator.SetTrigger("Damaged");
             invincibleTrigger = true;
             spriteRenderer.color = damageTint;

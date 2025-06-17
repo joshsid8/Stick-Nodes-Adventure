@@ -47,6 +47,7 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
         itemDescription = itemDesc;
         aspectStats = aspect;
         usedSlot = true;
+        playerManager.ApplyAspectModifiers(aspectStats);
         UpdateSlotUI();
     }
 
@@ -118,13 +119,11 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
 
     private void UnequipAspect()
     {
-        for (int i = 0; i < aspectStats.floatStatsName.Length; i++)
-        {
-            invManager.playerManager.SetOriginalFloat(aspectStats.floatStatsName[i]);
-        }
-        invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1,"Aspect",0,aspectStats);
-        switchFrom = true;
-        ClearSlot();
+        // Notify InvManager to handle stat reversal and moving aspect back to inventory
+        invManager.UnequipAspect(itemName, itemSprite, itemDescription, aspectStats);
+        
+        ClearSlot(); // Clear this equipped aspect slot after it's moved/processed
+        // Deselect all after action is complete (InvManager.DeselectAllSlots handles this)
     }
     private IEnumerator DestroyItem()
     {
@@ -134,10 +133,7 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
         if (choice.yes)
         {
             choice.yes = false;
-            for (int i = 0; i < aspectStats.floatStatsName.Length; i++)
-            {
-                invManager.playerManager.SetOriginalFloat(aspectStats.floatStatsName[i]);
-            }
+            invManager.UnequipAspect(itemName, itemSprite, itemDescription, aspectStats);
             ClearSlot();
             choice.Disable();
             UpdateSlotUI();

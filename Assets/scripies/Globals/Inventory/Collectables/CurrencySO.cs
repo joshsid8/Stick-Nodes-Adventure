@@ -3,9 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CreditCollectable", menuName = "Collectable/Currency")]
 public class CurrencySO : CollectableSOBase
 {
-    public float amount;
+    public float maxItem;
+    public float minItem;
     public override void Collect(GameObject objectCollected)
     {
-        PlayerManager.Instance.AlterGlobalFloat("Money", amount);
+        float rng = Random.Range(minItem, maxItem);
+        PlayerManager.Instance.AlterGlobalFloat("Money", rng);
     }
 }

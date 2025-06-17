@@ -10,9 +10,9 @@ public class CollectableTrigger : MonoBehaviour
         collectable = GetComponent<Collectable>();
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.collider.tag == "Player")
         {
             collectable.Collect(collision.gameObject);
             Destroy(gameObject);

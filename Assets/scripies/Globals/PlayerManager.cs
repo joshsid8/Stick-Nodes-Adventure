@@ -1,65 +1,37 @@
-using System.Diagnostics;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
+using System.Collections.Generic; // For Dictionary
+using System.Linq; // For Linq operations like Sum
 
 public class PlayerManager : MonoBehaviour
 {
     // Singleton instance
     public static PlayerManager Instance { get; private set; }
 
-    // the bools
-    private bool playerCanDoubleJump;
+    // Reference to your base player stats (PlayerStats ScriptableObject)
+    // This holds the "clean" default values for all player attributes.
+    public PlayerStats basePlayerStats; 
 
-    // big stuff
-    private PlayerController playerController;
-    private PlayerHealth playerHealth;
-    private PlayerAbility playerAbility;
-    private PlayerCurrency playerCurrency;
-    private PlayerDefense playerDefense;
-    private PlayerCombat playerCombat;
+    // References to player components (assigned in Awake)
+    private PlayerController pc;
+    private PlayerHealth ph;
+    private PlayerAbility pa;
+    private PlayerCurrency pm; // Assuming you have this script
+    private PlayerDefense pd;
+    private PlayerCombat pf;
 
-    // original values
-    [HideInInspector] public float oMoveSpeed;
-    [HideInInspector] public float oDashSpeed;
-    [HideInInspector] public float oDashStartTime;
-    [HideInInspector] public float oDashCooldown;
-    [HideInInspector] public float oDashEnergyCost;
+    // --- Core Stat Management Dictionaries ---
+    // These dictionaries will hold the *current, modified* values of the player's stats.
+    // They are derived from basePlayerStats + all active modifiers.
+    private Dictionary<string, float> currentFloatStats = new Dictionary<string, float>();
+    private Dictionary<string, bool> currentBooleanStats = new Dictionary<string, bool>();
 
-    [HideInInspector] public float oJumpForce;
-    [HideInInspector] public float oFallMultiplier;
-    [HideInInspector] public float oLowJumpMultiplier;
-
-    [HideInInspector] public float oWallSlideSpeed;
-    [HideInInspector] public int oWallsLeft;
-    [HideInInspector] public float oWallJumpForce;
-
-    [HideInInspector] public float oMaxHealth;
-    [HideInInspector] public float oMaxHealthRegen;
-    [HideInInspector] public float oStunMultiplier;
-    [HideInInspector] public float oInvincibleWindow;
-
-    [HideInInspector] public float oDamageResistance;
-    [HideInInspector] public float oCounterWindow;
-    [HideInInspector] public float oCounterDamage;
-    [HideInInspector] public float oCounterStun;
-    [HideInInspector] public float oCounterResistance;
-    
-    [HideInInspector] public float oGroundAttackDamage;
-    [HideInInspector] public float oGroundDamageCooldown;
-    [HideInInspector] public float oAirAttackDamage;
-    [HideInInspector] public float oAirDamageCooldown;
-    [HideInInspector] public float oAttackEnergy;
-    [HideInInspector] public float oAirAttackForce;
-
-    [HideInInspector] public float oMaxEnergy;
-    [HideInInspector] public float oAbilityEnergyRegen;
-    [HideInInspector] public float oAbilityCooldown;
-
+    // A list to keep track of all active AspectSO references
+    // This is crucial for recalculating stats when an aspect is unequipped.
+    private List<AspectSO> activeAspects = new List<AspectSO>();
 
 
     private void Awake()
     {
-        // Implement Singleton pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -69,103 +41,271 @@ public class PlayerManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        playerController = FindAnyObjectByType<PlayerController>();
-        playerHealth = FindAnyObjectByType<PlayerHealth>();
-        playerAbility = FindAnyObjectByType<PlayerAbility>();
-        playerCurrency = FindAnyObjectByType<PlayerCurrency>();
-        playerDefense = FindAnyObjectByType<PlayerDefense>();
-        playerCombat =  FindAnyObjectByType<PlayerCombat>();
+        // Find and cache references to all player components
+        pc = FindAnyObjectByType<PlayerController>();
+        ph = FindAnyObjectByType<PlayerHealth>();
+        pa = FindAnyObjectByType<PlayerAbility>();
+        pm = FindAnyObjectByType<PlayerCurrency>(); // Ensure this script exists and is on the player
+        pd = FindAnyObjectByType<PlayerDefense>();
+        pf = FindAnyObjectByType<PlayerCombat>();
 
-        OriginalValues();
+        // Log warnings if any critical components are missing
+        if (pc == null) Debug.LogWarning("PlayerManager: PlayerController not found.");
+        if (ph == null) Debug.LogWarning("PlayerManager: PlayerHealth not found.");
+        if (pa == null) Debug.LogWarning("PlayerManager: PlayerAbility not found.");
+        if (pm == null) Debug.LogWarning("PlayerManager: PlayerCurrency not found.");
+        if (pd == null) Debug.LogWarning("PlayerManager: PlayerDefense not found.");
+        if (pf == null) Debug.LogWarning("PlayerManager: PlayerCombat not found.");
 
-        if (playerController != null)
+        // Initialize current stats from the base PlayerStats ScriptableObject
+        if (basePlayerStats != null)
         {
-            playerCanDoubleJump = playerController.canDoubleJump;
+            InitializeBaseStats();
+        }
+        else
+        {
+            Debug.LogError("PlayerManager: basePlayerStats ScriptableObject is not assigned! Player stats will not be correctly initialized.");
         }
     }
 
-    private void OriginalValues()
+    private void InitializeBaseStats()
     {
-        oMoveSpeed = playerController.originalMovementSpeed;
-        oDashSpeed = playerController.dashSpeed;
-        oDashStartTime = playerController.startDashTime;
-        oDashCooldown =  playerController.dashCooldown;
-        oDashEnergyCost = playerController.dashEnergyCost;
+        // Populate _currentFloatStats with initial values from basePlayerStats
+        currentFloatStats["MovementSpeed"] = basePlayerStats.MovementSpeed;
+        currentFloatStats["JumpForce"] = basePlayerStats.JumpForce;
+        currentFloatStats["MaxHealth"] = basePlayerStats.MaxHealth;
+        currentFloatStats["RegenerationMultiplier"] = basePlayerStats.RegenerationMultiplier;
+        currentFloatStats["StunMultiplier"] = basePlayerStats.StunMultiplier;
+        currentFloatStats["RawDamageResistance"] = basePlayerStats.RawDamageResistance;
+        currentFloatStats["InvincibleDuration"] = basePlayerStats.InvincibleDuration;
+        currentFloatStats["MaxEnergy"] = basePlayerStats.MaxEnergy;
+        currentFloatStats["EnergyRefill"] = basePlayerStats.EnergyRefill;
+        currentFloatStats["AbilityEnergyCost"] = basePlayerStats.AbilityEnergyCost;
+        currentFloatStats["AbilityCooldown"] = basePlayerStats.AbilityCooldown;
+        currentFloatStats["DashSpeed"] = basePlayerStats.DashSpeed;
+        currentFloatStats["StartDashTime"] = basePlayerStats.StartDashTime;
+        currentFloatStats["DashCooldown"] = basePlayerStats.DashCooldown;
+        currentFloatStats["DashEnergyCost"] = basePlayerStats.DashEnergyCost;
+        currentFloatStats["WallSlideSpeed"] = basePlayerStats.WallSlideSpeed;
+        currentFloatStats["WallJumpForce"] = basePlayerStats.WallJumpForce;
+        currentFloatStats["GroundDamageAmount"] = basePlayerStats.GroundDamageAmount;
+        currentFloatStats["GroundAttackCooldown"] = basePlayerStats.GroundAttackCooldown;
+        currentFloatStats["GroundAttackEnergy"] = basePlayerStats.GroundAttackEnergy;
+        currentFloatStats["AirDamageAmount"] = basePlayerStats.AirDamageAmount;
+        currentFloatStats["AirAttackForce"] = basePlayerStats.AirAttackForce;
+        currentFloatStats["AirAttackCooldown"] = basePlayerStats.AirAttackCooldown;
+        currentFloatStats["PlayerAttackStunTime"] = basePlayerStats.PlayerAttackStunTime;
+        currentFloatStats["BlockDamageResistance"] = basePlayerStats.BlockDamageResistance;
+        currentFloatStats["CounterTime"] = basePlayerStats.CounterTime;
+        currentFloatStats["CounterDamageResistance"] = basePlayerStats.CounterDamageResistance;
+        currentFloatStats["CounterDamage"] = basePlayerStats.CounterDamage;
+        currentFloatStats["CounterStun"] = basePlayerStats.CounterStun;
+        currentFloatStats["FallMultiplier"] = basePlayerStats.FallMultiplier;
+        currentFloatStats["LowJumpMultiplier"] = basePlayerStats.LowJumpMultiplier;
+        currentFloatStats["MaxFallSpeed"] = basePlayerStats.MaxFallSpeed;
+        currentFloatStats["AvailableWalls"] = basePlayerStats.AvailableWalls;
 
-        oJumpForce =  playerController.originalJumpForce;
-        oFallMultiplier =  playerController.fallMultiplier;
-        oLowJumpMultiplier = playerController.lowJumpMultiplier;
+        // Populate currentBooleanStats with initial values from basePlayerStats
+        currentBooleanStats["CounterAbility"] = basePlayerStats.CounterAbility;
 
-        oWallSlideSpeed = playerController.wallSlideSpeed;
-        oWallJumpForce = playerController.wallJumpForce;
-
-        oMaxHealth = playerHealth.playerMaxHealth;
-        oMaxHealthRegen = playerHealth.originalRegenerationMultiplier;
-        oStunMultiplier = playerHealth.originalStunMultiplier;
-        oInvincibleWindow = playerHealth.invincibleDuration;
-
-        oDamageResistance = playerDefense.damageResistance;
-        oCounterWindow = playerDefense.counterTime;
-        oCounterDamage = playerDefense.counterDamage;
-        oCounterStun = playerDefense.counterStun;
-        oCounterResistance = playerDefense.counterDamageResistance;
-
-        oGroundAttackDamage = playerCombat.damageAmount;
-        oGroundDamageCooldown = playerCombat.attackCooldown;
-        oAirAttackDamage = playerCombat.airAttackCooldown;
-        oAirDamageCooldown = playerCombat.airAttackCooldown;
-        oAttackEnergy = playerCombat.attackEnergy;
-        oAirAttackForce = playerCombat.airAttackForce;
-
-        oMaxEnergy = playerAbility.maxEnergy;
-        oAbilityEnergyRegen = playerAbility.originalEnergyRefill;
-        oAbilityCooldown = playerAbility.abilityCooldown;
+        // Immediately apply these initial stats to the player components
+        ApplyAllStatsToComponents();
     }
 
-// Public Methods
+
+    // --- Public Getters ---
+    public float GetCurrentFloat(string variableName)
+    {
+        if (currentFloatStats.ContainsKey(variableName))
+        {
+            return currentFloatStats[variableName];
+        }
+        Debug.LogWarning($"PlayerManager: Attempted to get unknown float variable '{variableName}'. Returning 0.");
+        return 0f;
+    }
+
+    public bool GetCurrentBool(string variableName)
+    {
+        if (currentBooleanStats.ContainsKey(variableName))
+        {
+            return currentBooleanStats[variableName];
+        }
+        Debug.LogWarning($"PlayerManager: Attempted to get unknown bool variable '{variableName}'. Returning false.");
+        return false;
+    }
+
+    // --- Core Methods for Applying/Removing Aspect Modifiers ---
+
+    // This method is called when an Aspect is EQUIPPED
+    public void ApplyAspectModifiers(AspectSO aspect)
+    {
+        Debug.Log("Applying Stats...");
+        if (!activeAspects.Contains(aspect))
+        {
+            activeAspects.Add(aspect); // Add aspect to active list
+            RecalculateAllStats(); // Recalculate all stats based on new active aspects
+            Debug.Log($"PlayerManager: Applied modifiers from aspect: {aspect.name}.");
+        }
+        else
+        {
+            Debug.LogWarning($"PlayerManager: Attempted to apply already active aspect: {aspect.name}.");
+        }
+    }
+
+    // This method is called when an Aspect is UNEQUIPPED
+    public void RemoveAspectModifiers(AspectSO aspect)
+    {
+        if (activeAspects.Contains(aspect))
+        {
+            activeAspects.Remove(aspect); // Remove aspect from active list
+            RecalculateAllStats(); // Recalculate all stats based on remaining active aspects
+            Debug.Log($"PlayerManager: Removed modifiers from aspect: {aspect.name}.");
+        }
+        else
+        {
+            Debug.LogWarning($"PlayerManager: Attempted to remove inactive aspect: {aspect.name}.");
+        }
+    }
+
+    // --- Recalculation Logic ---
+    private void RecalculateAllStats()
+    {
+        // Start with base stats
+        InitializeBaseStats(); // Resets currentFloatStats to base values
+
+        // Apply modifiers from all active aspects
+        foreach (AspectSO aspect in activeAspects)
+        {
+            for (int i = 0; i < aspect.floatStatsName.Length; i++)
+            {
+                string statName = aspect.floatStatsName[i];
+                float statValue = aspect.floatStats[i]; // This is the 'value' or 'percentage' from the aspect
+
+                if (currentFloatStats.ContainsKey(statName))
+                {
+                    currentFloatStats[statName] += currentFloatStats[statName] * statValue;
+                    // If some values are meant to be percentages, you'd need a separate mechanism
+                    // E.g., AspectSO has floatStatTypes[] { "Flat", "Percent" }
+                    // if (statType == "Percent") _currentFloatStats[statName] *= (1 + statValue);
+                    // else _currentFloatStats[statName] += statValue;
+                }
+                else
+                {
+                    Debug.LogWarning($"PlayerManager: Aspect '{aspect.name}' trying to modify unknown stat: {statName}");
+                }
+            }
+            // For boolean stats, you might need a "OR" logic (if any aspect enables it, it's enabled)
+            // Example:
+            // if (aspect.boolStatsName.Length > 0) {
+            //     for (int i = 0; i < aspect.boolStatsName.Length; i++) {
+            //         string boolStatName = aspect.boolStatsName[i];
+            //         _currentBooleanStats[boolStatName] = _currentBooleanStats[boolStatName] || aspect.boolStatsValue[i];
+            //     }
+            // }
+        }
+
+        // After recalculating all stats, apply them to the actual player components
+        ApplyAllStatsToComponents();
+    }
+
+
+    // --- Apply Stats to Player Components ---
+    // This method is called after any stat change to push values to actual MonoBehaviour components.
+    private void ApplyAllStatsToComponents()
+    {
+        // Apply floats
+        if (pc != null)
+        {
+            pc.movementSpeed = GetCurrentFloat("MovementSpeed");
+            pc.jumpForce = GetCurrentFloat("JumpForce");
+            pc.maxFallSpeed = GetCurrentFloat("MaxFallSpeed");
+            pc.fallMultiplier = GetCurrentFloat("FallMultiplier");
+            pc.lowJumpMultiplier = GetCurrentFloat("LowJumpMultiplier");
+            pc.wallSlideSpeed = GetCurrentFloat("WallSlideSpeed");
+            pc.wallJumpForce = GetCurrentFloat("WallJumpForce");
+            pc.dashSpeed = GetCurrentFloat("DashSpeed");
+            pc.startDashTime = GetCurrentFloat("StartDashTime");
+            pc.dashCooldown = GetCurrentFloat("DashCooldown");
+            pc.dashEnergyCost = GetCurrentFloat("DashEnergyCost");
+        }
+        if (ph != null)
+        {
+            ph.playerMaxHealth = GetCurrentFloat("MaxHealth");
+            ph.regenerationMultiplier = GetCurrentFloat("RegenerationMultiplier");
+            ph.stunMultiplier = GetCurrentFloat("StunMultiplier");
+            ph.rawDamageResistance = GetCurrentFloat("RawDamageResistance");
+            ph.invincibleDuration = GetCurrentFloat("InvincibleDuration");
+        }
+        if (pa != null)
+        {
+            pa.maxEnergy = GetCurrentFloat("MaxEnergy");
+            pa.energyRefill = GetCurrentFloat("EnergyRefill");
+            pa.abilityCooldown = GetCurrentFloat("AbilityCooldown");
+            pa.energyCost = GetCurrentFloat("AbilityEnergyCost");
+        }
+        if (pd != null)
+        {
+            pd.damageResistance = GetCurrentFloat("BlockDamageResistance");
+            pd.counterTime = GetCurrentFloat("CounterTime");
+            pd.counterDamageResistance = GetCurrentFloat("CounterDamageResistance");
+            pd.counterDamage = GetCurrentFloat("CounterDamage");
+            pd.counterStun = GetCurrentFloat("CounterStun");
+        }
+        if (pf != null)
+        {
+            pf.groundDamageAmount = GetCurrentFloat("GroundDamageAmount");
+            pf.attackCooldown = GetCurrentFloat("GroundAttackCooldown");
+            pf.attackEnergy = GetCurrentFloat("GroundAttackEnergy");
+            pf.airDamageAmount = GetCurrentFloat("AirDamageAmount");
+            pf.airAttackForce = GetCurrentFloat("AirAttackForce");
+            pf.airAttackCooldown = GetCurrentFloat("AirAttackCooldown");
+            pf.stunTime = GetCurrentFloat("PlayerAttackStunTime");
+        }
+    }
+
     public void SetGlobalFloat(string variableName, float value)
     {
         switch (variableName)
         {
             case "PlayerMaxHealth":
-                SetPlayerMaxHealth(value);
+                ph.playerMaxHealth = value;
                 break;
             case "PlayerHealth":
-                playerHealth.playerHealth = value;
-                playerHealth.playerHealth = Mathf.Clamp(playerHealth.playerHealth, 0, playerHealth.playerMaxHealth);
+                ph.playerHealth = value;
+                ph.playerHealth = Mathf.Clamp(ph.playerHealth, 0, ph.playerMaxHealth);
                 break;
             case "PlayerRegen":
-                if (playerHealth != null) playerHealth.regenerationMultiplier = value;
+                if (ph != null) ph.regenerationMultiplier = value;
                 break;
             case "StunMultiplier":
-                if (playerHealth != null) playerHealth.stunMultiplier = value;
+                if (ph != null) ph.stunMultiplier = value;
                 break;
             case "PlayerMaxEnergy":
-                if (playerAbility != null) playerAbility.maxEnergy = value;
+                if (pa != null) pa.maxEnergy = value;
                 break;
             case "PlayerEnergy":
-                if (playerAbility != null) playerAbility.energy = value;
+                if (pa != null) pa.energy = value;
                 break;
-            case "PlayerEnergyRefil":
-                if (playerAbility != null) playerAbility.energyRefill = value;
+            case "PlayerEnergyRefill":
+                if (pa != null) pa.energyRefill = value;
                 break;
             case "PlayerMovementSpeed":
-                if (playerController != null) playerController.movementSpeed = value;
+                if (pc != null) pc.movementSpeed = value;
                 break;
             case "PlayerJumpForce":
-                if (playerController != null) playerController.jumpForce = value;
+                if (pc != null) pc.jumpForce = value;
                 break;
             case "DamageResistance":
-                if (playerDefense != null) playerDefense.damageResistance = value;
+                if (pd != null) pd.damageResistance = value;
                 break;
             case "CounterWindow":
-                if (playerDefense != null) playerDefense.counterTime = value;
+                if (pd != null) pd.counterTime = value;
                 break;
             case "CombatTimer":
-                if (playerController != null) playerController.currentCombatTimer = value;
+                if (pc != null) pc.currentCombatTimer = value;
                 break;
             case "Money":
-                if (playerCurrency != null) playerCurrency.nodeBucks = value;
+                if (pm != null) pm.nodeBucks += value;
                 break;
             default:
                 if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
@@ -173,19 +313,19 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-
+    
     public void SetGlobalBool(string variableName, bool value)
     {
         switch (variableName)
         {
             case "PlayerCanDoubleJump":
-                EnablePlayerDoubleJump(value);
+                pc.canDoubleJump = value;
                 break;
             case "PlayerCanAct":
-                if (playerController != null)
+                if (pc != null)
                 {
-                    playerController.canAct = value;
-                    Debug.Log($"GameManager: PlayerCanAct set to {playerController.canAct}");
+                    pc.canAct = value;
+                    Debug.Log($"GameManager: PlayerCanAct set to {pc.canAct}");
                 }
                 else Debug.LogWarning($"PlayerController not found to set PlayerCanAct.");
                 break;
@@ -200,69 +340,25 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-
-    private void EnablePlayerDoubleJump(bool enable)
-    {
-        playerCanDoubleJump = enable;
-        if (playerController != null)
-        {
-            playerController.canDoubleJump = enable;
-            Debug.Log($"GameManager: Player Double Jump: {(enable ? "Enabled" : "Disabled")}");
-        }
-    }
-    
-    private void SetPlayerMaxHealth(float newMax)
-    {
-        playerHealth.playerMaxHealth = newMax;
-        if (playerHealth.playerHealth > playerHealth.playerMaxHealth) // Adjust current health if max decreases
-        {
-            playerHealth.playerHealth = playerHealth.playerMaxHealth;
-        }
-    }
-    
-        public void AlterGlobalFloat(string variableName, float value)
+    public void AlterGlobalFloat(string variableName, float value)
     {
         switch (variableName)
         {
-            case "PlayerMaxHealth":
-                playerHealth.playerMaxHealth += value;
-                break;
             case "PlayerHealth":
-                playerHealth.playerHealth += value;
-                playerHealth.playerHealth = Mathf.Clamp(playerHealth.playerHealth, 0, playerHealth.playerMaxHealth);
-                break;
-            case "PlayerRegen":
-                if (playerHealth != null) playerHealth.regenerationMultiplier += value;
-                break;
-            case "StunMultiplier":
-                if (playerHealth != null) playerHealth.stunMultiplier += value;
-                break;
-            case "PlayerMaxEnergy":
-                if (playerAbility != null) playerAbility.maxEnergy += value;
+                ph.playerHealth += value;
+                ph.playerHealth = Mathf.Clamp(ph.playerHealth, 0, ph.playerMaxHealth);
                 break;
             case "PlayerEnergy":
-                if (playerAbility != null) playerAbility.energy += value;
-                break;
-            case "PlayerEnergyRefil":
-                if (playerAbility != null) playerAbility.energyRefill += value;
-                break;
-            case "PlayerMovementSpeed":
-                if (playerController != null) playerController.movementSpeed += value;
-                break;
-            case "PlayerJumpForce":
-                if (playerController != null) playerController.jumpForce += value;
-                break;
-            case "DamageResistance":
-                if (playerDefense != null) playerDefense.damageResistance += value;
+                if (pa != null) pa.energy += value;
                 break;
             case "CounterWindow":
-                if (playerDefense != null) playerDefense.counterTime += value;
+                if (pd != null) pd.counterTime += value;
                 break;
             case "CombatTimer":
-                if (playerController != null) playerController.currentCombatTimer += value;
+                if (pc != null) pc.currentCombatTimer += value;
                 break;
             case "Money":
-                if (playerCurrency != null) playerCurrency.nodeBucks += value;
+                if (pm != null) pm.nodeBucks += value;
                 break;
             default:
                 if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
@@ -270,43 +366,16 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-    
-    public void SetOriginalFloat(string variableName)
-    {
-        switch (variableName)
-        {
-            case "PlayerMaxHealth":
-                playerHealth.playerMaxHealth = oMaxHealth;
-                break;
-            case "PlayerRegen":
-                if (playerHealth != null) playerHealth.regenerationMultiplier = oMaxHealthRegen;
-                break;
-            case "StunMultiplier":
-                if (playerHealth != null) playerHealth.stunMultiplier = oStunMultiplier;
-                break;
-            case "PlayerMaxEnergy":
-                if (playerAbility != null) playerAbility.maxEnergy = oMaxEnergy;
-                break;
-            case "PlayerEnergyRefill":
-                if (playerAbility != null) playerAbility.energyRefill = oAbilityEnergyRegen;
-                break;
-            case "PlayerMovementSpeed":
-                if (playerController != null) playerController.movementSpeed = oMoveSpeed;
-                break;
-            case "PlayerJumpForce":
-                if (playerController != null) playerController.jumpForce = oJumpForce;
-                break;
-            case "DamageResistance":
-                if (playerDefense != null) playerDefense.damageResistance = oDamageResistance;
-                break;
-            case "CounterWindow":
-                if (playerDefense != null) playerDefense.counterTime = oCounterWindow;
-                break;
-            default:
-                if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
-                else Debug.LogWarning("BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
-                break;
-        }
-    }
-    
 }
+
+/*    
+What to do:
+    
+    Loot System
+    Skill Tree
+        Learn to make a skill tree the player can customise to make amazing builds!
+    Improve the camera script
+
+    When you are done: Find the one piece.
+ */
+

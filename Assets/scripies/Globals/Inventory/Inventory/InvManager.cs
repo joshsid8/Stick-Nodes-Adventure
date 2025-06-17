@@ -105,6 +105,38 @@ public class InvManager : MonoBehaviour
         }
     }
     
+    // This method is called by ItemSlot.EquipAspect
+    public void EquipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
+    {
+        for (int i = 0; i < aspectSlots.Length; i++)
+        {
+            if (aspectSlots[i] != null && !aspectSlots[i].usedSlot && aspectSlots[i].itemName != itemName)
+            {
+                aspectSlots[i].AddAspect(itemName, itemSprite, itemDescription, aspect);
+                Debug.Log($"Equipped aspect {itemName} to slot {aspectSlots[i].gameObject.name}.");
+                
+                if (aspect != null && playerManager != null)
+                {
+                    playerManager.ApplyAspectModifiers(aspect);
+                }
+                return;
+            }
+            else if (aspectSlots[i].itemName == itemName) Debug.Log($"Seems like there is already a {itemName} in your slots");
+        }
+        Debug.LogWarning($"Aspect equipped slots are full! Cannot equip {itemName}.");
+    }
+
+    // This method is called by AspectSlot.UnequipAspectAction
+    public void UnequipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
+    {
+        // NEW: Call PlayerManager to remove modifiers
+        if (aspect != null && playerManager != null)
+        {
+            playerManager.RemoveAspectModifiers(aspect);
+        }
+        // Add the aspect back to a regular item slot
+        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, aspect);
+    }
     public void SelectSlot()
     {
         useButton.onClick.RemoveAllListeners();

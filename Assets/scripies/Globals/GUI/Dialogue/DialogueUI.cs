@@ -14,6 +14,8 @@ public class DialogueUI : MonoBehaviour
     public bool isAnimated;
     private PlayerController player;
     [HideInInspector] public Animator animator;
+    InvManager invManager;
+    [SerializeField] GameObject inventory;
     
     private void Start()
     {
@@ -21,6 +23,7 @@ public class DialogueUI : MonoBehaviour
         handler = GetComponent<DialogueResponseHandler>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         playerBars = GameObject.Find("PlayerBars");
+        invManager = GetComponent<InvManager>();
         CloseDialogue();
     }
 
@@ -31,6 +34,8 @@ public class DialogueUI : MonoBehaviour
         player.jumpForce = 0f;
         isAnimated = dialogueObject.IsAnimated;
         dialogueBox.SetActive(true);
+        invManager.enabled = false;
+        inventory.SetActive(false);
         StartCoroutine(StepThroughDialogue(dialogueObject));
     }
 
@@ -71,6 +76,7 @@ public class DialogueUI : MonoBehaviour
             player.jumpForce = player.originalJumpForce;
         }
         playerBars.SetActive(true);
+        invManager.enabled = true;
     }
 
     private IEnumerator ChoiceDialogue(DialogueObject dialogueObject)

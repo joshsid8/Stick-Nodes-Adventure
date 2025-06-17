@@ -31,6 +31,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public AspectSO aspectStats; 
     [SerializeField] AspectSlot[] aspectSlot;
     [SerializeField] private bool aspectSlotFull;
+    [SerializeField] private AspectSlot[] equippedAspectSlots; // Reference to the equipped AspectSlots in the UI
     
     private bool switchFrom;
 
@@ -40,6 +41,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         {
             invManager = FindAnyObjectByType<InvManager>();
             if (invManager == null) Debug.LogError("ItemSlot: InvManager not found on Awake!", this);
+        }
+        // It's crucial that equippedAspectSlots are assigned in the Inspector
+        if (equippedAspectSlots == null || equippedAspectSlots.Length == 0)
+        {
+            Debug.LogWarning($"ItemSlot {gameObject.name}: No equippedAspectSlots assigned. Aspects cannot be equipped from this slot.");
         }
     }
     
@@ -83,7 +89,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             ClearSlotVisuals();
         }
     }
-
     
     public void ClearSlot()
     {
@@ -185,36 +190,24 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     private void EquipAspect()
     {
         bool equipped = false;
-        if (aspectSlot != null)
+        if (equippedAspectSlots != null)
         {
-            for (int i = 0; i < aspectSlot.Length; i++)
+            for (int i = 0; i < equippedAspectSlots.Length; i++)
             {
-                if (aspectSlot[i] != null && !aspectSlot[i].usedSlot)
+                if (equippedAspectSlots[i] != null && !equippedAspectSlots[i].usedSlot)
                 {
-                    aspectSlot[i].AddAspect(itemName, itemSprite, itemDescription, aspectStats);
-                    if (aspectStats != null && invManager.playerManager != null)
-                    {
-                        for (int j = 0; j < aspectStats.floatStatsName.Length; j++)
-                        {
-                            invManager.playerManager.AlterGlobalFloat(aspectStats.floatStatsName[j],
-                                aspectStats.floatStats[j]);
-                            aspectSlot[i].AspectSelect();
-                        }
-                    }
-                    else if (aspectStats == null) Debug.LogWarning("AspectSO not assigned to ItemSlot for equipping!");
-                    else if (invManager.playerManager == null) Debug.LogError("PlayerManager not found in InvManager. Cannot apply aspect stats.");
+                    // Call InvManager's EquipAspect to handle adding to AspectSlot and applying stats
+                    invManager.EquipAspect(itemName, itemSprite, itemDescription, aspectStats);
 
-                    switchFrom = true;
-                    ClearSlot();
+                    ClearSlot(); // Clear the item slot after successfully equipping
                     equipped = true;
                     break;
                 }
             }
         }
-
         if (!equipped)
         {
-            Debug.LogWarning("All Aspect Equipped slots are full! Cannot equip " + itemName);
+            Debug.LogWarning("All equipped Aspect slots are full! Cannot equip " + itemName);
         }
     }
     public void ItemSelect()
