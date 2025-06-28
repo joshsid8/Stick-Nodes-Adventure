@@ -42,7 +42,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         bossMaxHealth = bossHealth;
-        dialogue = GameObject.Find("Canvas").GetComponent<DialogueUI>();
+        dialogue = FindAnyObjectByType<DialogueUI>();
     }
 
     // Update is called once per frame
@@ -61,6 +61,7 @@ public class BossHealth : MonoBehaviour, EDamageables
     {
         if (isDead)
         {
+            GetComponent<Loot>().DropLoot();
             GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             GetComponent<BossAttack>().isAttacking = false;
             GetComponent<BossAttack>().rangeRadius = 0;

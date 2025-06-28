@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcf4ff334f46f4c458c968e37e5e310b, type: 3}
-  m_Name: huh
+  m_Name: energybooster
   m_EditorClassIdentifier: 
   itemName: We dont know what this is.
   itemAmount: 1

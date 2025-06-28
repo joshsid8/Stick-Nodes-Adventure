@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4495788041319736467}
   - component: {fileID: 7352367289808877247}
   - component: {fileID: 7548842454195305152}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: NodeBucks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 949815
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

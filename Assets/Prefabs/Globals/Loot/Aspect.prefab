@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6782227859726589844}
   - component: {fileID: 3587633842423100324}
   - component: {fileID: 2158844802716763069}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Aspect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 949815
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -178,4 +178,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee92db0584e219440b70c4c4c9890d1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectable: {fileID: 11400000, guid: f766304c6cbec8f4295aafb92993180c, type: 2}
+  collectable: {fileID: 11400000, guid: cb8962a33a8c630488f8c1305482dbc0, type: 2}

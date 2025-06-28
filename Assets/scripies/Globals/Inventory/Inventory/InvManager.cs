@@ -11,7 +11,6 @@ public class InvManager : MonoBehaviour
 
     public Button useButton;
     public Button destroyButton;
-    public Button skillTreeButton;
 
     public PlayerManager playerManager;
 
@@ -52,7 +51,7 @@ public class InvManager : MonoBehaviour
         }
     }
 
-    public void ToggleInventory()
+    private void ToggleInventory()
     {
         isActivated = !isActivated;
         if (inventoryMenu != null)

@@ -22,7 +22,10 @@ MonoBehaviour:
 
     Max Health +0.1
 
-    Max Energy +0.1'
+    Max Energy +0.1
+
+    Melee
+    Damage -0.2'
   itemSprite: {fileID: 0}
   floatStatsName:
   - MaxHealth

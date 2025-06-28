@@ -24,7 +24,7 @@ public class DialogueTrigger : MonoBehaviour
     
     private void Start()
     {
-        dialogueUI = GameObject.Find("Canvas").GetComponent<DialogueUI>();
+        dialogueUI = FindAnyObjectByType<DialogueUI>();
         
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)

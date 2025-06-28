@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private int availableJumpsLeft;
     private bool isJumping;
     public bool canDoubleJump;
-    private bool doublejump;
+    private bool doubleJump;
      
     // Jump optimisations
     [SerializeField] private float coyoteTime = 0.2f; // Adjust as needed
@@ -286,7 +286,7 @@ public class PlayerController : MonoBehaviour
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f; // Reset coyote time after jumping
         }
-        else if (doublejump && canDoubleJump)
+        else if (doubleJump && canDoubleJump)
         {
             DoubleJump();
         }
@@ -296,7 +296,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded && rb.linearVelocity.y < 0.01f)
         {
             availableJumpsLeft = availableJumps;
-            doublejump = canDoubleJump; //reset the double jump on if the player can
+            doubleJump = canDoubleJump; //reset the double jump on if the player can
             isWallJumping = false; // Reset wall jumping flag
         }
         
@@ -314,7 +314,7 @@ public class PlayerController : MonoBehaviour
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             availableJumpsLeft--;
-            doublejump = false;
+            doubleJump = false;
         }
     }
     

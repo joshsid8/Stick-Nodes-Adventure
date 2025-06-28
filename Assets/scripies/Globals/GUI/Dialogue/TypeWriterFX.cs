@@ -10,6 +10,7 @@ public class TypeWriterFX : MonoBehaviour
     public float punctuationPause = 0.2f;
     public float textSpeedMultiplier = 2;
     public int actionFactor;
+    private bool skip;
     
     private bool isFacingRight;
     public Coroutine Run(string textToType, TMP_Text textLabel, TMP_Text npcLabel)
@@ -21,7 +22,7 @@ public class TypeWriterFX : MonoBehaviour
     {
         if (Input.GetButtonDown("Submit") || Input.GetMouseButtonDown(0))
         {
-            typingSpeed = 0;
+            skip = true;
         }
         if (GetComponent<DialogueUI>().isAnimated)
         {
@@ -56,18 +57,19 @@ public class TypeWriterFX : MonoBehaviour
         typingSpeed = originalTypingSpeed;
         textLabel.text = string.Empty;
         actionFactor = 0;
+        skip = false;
         
         for (int i = 0; i < textToType.Length; i++)
         {
             if (textToType[i] == '#')
             {
                 i++;
-                typingSpeed = typingSpeed / textSpeedMultiplier;
+                typingSpeed /= textSpeedMultiplier;
             }
             else if (textToType[i] == '*')
             {
                 i++;
-                typingSpeed = typingSpeed * textSpeedMultiplier;
+                typingSpeed *= textSpeedMultiplier;
             }
 
             if (GetComponent<DialogueUI>().isAnimated)
@@ -90,11 +92,10 @@ public class TypeWriterFX : MonoBehaviour
                     case '~':
                         i++;
                         actionFactor = 0;
-                        break; 
-                        
+                        break;
                 }
             }
-
+            
             textLabel.text += textToType[i];
             
             if (textToType[i] == '.' || textToType[i] == ',' || textToType[i] == '?' || textToType[i] == '!' ||
@@ -105,6 +106,20 @@ public class TypeWriterFX : MonoBehaviour
             else
             {
                 yield return new WaitForSeconds(typingSpeed);
+            }
+
+            if (skip && i >= 1)
+            {
+                for (int l = 0; l < textToType.Length; l++)
+                {
+                    if (textToType[l] == '*' || textToType[l] == '_' || textToType[l] == '|' || textToType[l] == '#')
+                    {
+                        Debug.Log("skipped a character: " + textToType[l]);
+                    }
+                }
+                textLabel.text = textToType;
+                yield return new WaitUntil(() => Input.GetButtonDown("Submit") || Input.GetMouseButtonDown(0));
+                i = textToType.Length;
             }
 
         }

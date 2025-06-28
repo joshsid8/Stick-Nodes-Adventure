@@ -65,6 +65,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     {
         if (isDead)
         {
+            GetComponent<Loot>().DropLoot();
             GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             GetComponent<EnemyAttack>().enabled = false;
             gameObject.layer = LayerMask.NameToLayer("Dead");

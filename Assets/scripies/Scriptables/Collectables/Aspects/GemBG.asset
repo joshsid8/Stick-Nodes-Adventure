@@ -12,25 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a32ff54ed280b44680415a8fecc18fe, type: 3}
   m_Name: GemBG
   m_EditorClassIdentifier: 
-  itemName: Magic Hat of life
-  itemDescription: 'It magically gives a small boost magically to your vitality magically.
-    It doesnt like melee tho
+  itemName: Boxing Gloves
+  itemDescription: 'These look great on you!
 
 
     ---
 
 
-    Max Health +0.1
+    Melee Damage +0.2
 
-    Max Energy +0.1'
+    Stun
+    To Enemies +0.15
+
+    Protection -0.2'
   itemSprite: {fileID: 0}
   floatStatsName:
-  - MaxHealth
-  - MaxEnergy
   - GroundDamageAmount
   - AirDamageAmount
+  - PlayerAttackStunTime
+  - RawDamageResistance
   floatStats:
-  - 0.1
-  - 0.1
-  - -0.2
+  - 0.2
+  - 0.2
+  - 0.15
   - -0.2

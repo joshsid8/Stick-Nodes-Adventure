@@ -213,7 +213,7 @@ public class Cynder : MonoBehaviour
         animator.SetTrigger("DAttack");
         transform.position = new Vector3(ba.playerTransform.position.x + 2f, teleportPoint.position.y, transform.position.z);
         if (!GetComponent<BossHealth>().phase2) rb.linearVelocity = new Vector2(rb.linearVelocity.x, -dropSpeed);
-        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, -dropSpeed * 1.2f);
+        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, -dropSpeed * 1.4f);
     }
 
     private void FreezeMovement()

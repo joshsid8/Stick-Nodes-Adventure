@@ -10,12 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcf4ff334f46f4c458c968e37e5e310b, type: 3}
-  m_Name: Item!
+  m_Name: Sandwich
   m_EditorClassIdentifier: 
-  itemName: Sandwitch!
+  itemName: Sandwich
   itemAmount: 20
   maxItemAmount: 99
-  itemDescription: nah wth lol
+  itemDescription: 'sanwich?
+
+
+    ---
+
+
+    Health +20'
   itemSprite: {fileID: 7482667652216324306, guid: 8782da715bf2bd644bc258ba4619dda8, type: 3}
   itemType: PlayerHealth
   restoreValue: 20

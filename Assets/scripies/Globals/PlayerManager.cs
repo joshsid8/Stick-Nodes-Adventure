@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerController pc;
     private PlayerHealth ph;
     private PlayerAbility pa;
-    private PlayerCurrency pm; // Assuming you have this script
+    private PlayerCurrency pm;
     private PlayerDefense pd;
     private PlayerCombat pf;
 
@@ -367,15 +367,4 @@ public class PlayerManager : MonoBehaviour
         }
     }
 }
-
-/*    
-What to do:
-    
-    Loot System
-    Skill Tree
-        Learn to make a skill tree the player can customise to make amazing builds!
-    Improve the camera script
-
-    When you are done: Find the one piece.
- */
 
