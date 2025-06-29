@@ -139,12 +139,12 @@ public class PlayerManager : MonoBehaviour
     // This method is called when an Aspect is EQUIPPED
     public void ApplyAspectModifiers(AspectSO aspect)
     {
-        Debug.Log("Applying Stats...");
+        //Debug.Log("Applying Stats...");
         if (!activeAspects.Contains(aspect))
         {
             activeAspects.Add(aspect); // Add aspect to active list
             RecalculateAllStats(); // Recalculate all stats based on new active aspects
-            Debug.Log($"PlayerManager: Applied modifiers from aspect: {aspect.name}.");
+            //Debug.Log($"PlayerManager: Applied modifiers from aspect: {aspect.name}.");
         }
         else
         {
@@ -367,4 +367,3 @@ public class PlayerManager : MonoBehaviour
         }
     }
 }
-

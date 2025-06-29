@@ -60,7 +60,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         
         if (itemType == "Aspect") aspectStats = aspect;
         itemAmount += amount;
-
         usedSlot = true;
         UpdateSlotUI();
     }
@@ -84,7 +83,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
                 if (itemType == "Aspect") amountText.text = "";
             }
         }
-        else if (!usedSlot || itemAmount <= 0)
+        else if (!usedSlot)
         {
             ClearSlotVisuals();
         }
@@ -100,9 +99,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemType = string.Empty;
         restoreValue = 0f;
         aspectStats = null;
-
+        selectedShader.SetActive(false);
         usedSlot = false;
-
         if (!switchFrom)
         {
             switchFrom = true;
@@ -196,11 +194,13 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             {
                 if (equippedAspectSlots[i] != null && !equippedAspectSlots[i].usedSlot)
                 {
-                    // Call InvManager's EquipAspect to handle adding to AspectSlot and applying stats
-                    invManager.EquipAspect(itemName, itemSprite, itemDescription, aspectStats);
-
-                    ClearSlot(); // Clear the item slot after successfully equipping
+                    string iName = itemName;
+                    Sprite iSprite = itemSprite; string iDescription = itemDescription; AspectSO aStats = aspectStats;
+                    ClearSlot();
+                    invManager.EquipAspect(iName, iSprite, iDescription, aStats);
+                    
                     equipped = true;
+                    if (!usedSlot) itemImage.enabled = false;
                     break;
                 }
             }

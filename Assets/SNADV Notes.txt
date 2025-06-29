@@ -1,45 +1,43 @@
 SNADV Notes
 
-Ahh man...
-This will be the notes of what will be Fixed, Added, and potentially Changed in the upcoming game.
-
-
-Bugs:
-
-The Item's equip and unequip logic is wonky: when equipping from a selected item, the item tries to transfer the aspect to a part twice. It also does not select to the aspect that has been equipped, thus remaining the green button as 'equip' instead of 'unequip'. 
-Equipping an aspect, 'unequipping', and equipping it again really messes everything up, and a message says that there is nothing to change.
-
-All Stats requires a button component, linking to the description. when pressed, it should update the description on what it says.
-
-
-Optimisations:
-
-Aspect slots need to have a highlighted shader when filled in.
-
-Camera Logic ._.
-
-Add a few more features to NPC dialogue
-Let there be a possible different dialogue
-
-Knockback Logic
-
-Invincibility Logic
-
-
-Things to be added:
-
-Sira, Noxu & TJ Boss Logic.
-
-Update Cynder's phase 2 animations
-
-Shop logic
-
-Quest Logic
-
-Mini Bosses
-
-Obstacles, stray projectiles, natural disasters (thunderstorms etc)
-
-
-When you are done: Find the one piece.
-(This should mean the base has been completed, and designing the levels can be started!)
+    Ahh man...
+    This will be the notes of what will be Fixed, Added, and potentially Changed in the upcoming game.
+    
+    
+    Bugs & Required Additions:
+        
+        All Stats requires a button component, linking to the description. when pressed, it should update the description on what it says.
+    
+    Optimisations:
+        
+        Aspect slots need to have a highlighted shader when filled in.
+        
+        Camera Logic ._.
+        
+        Add a few more features to NPC dialogue
+            Let there be a possible different dialogue after already interacting with them
+        
+        Knockback Logic
+        
+        Invincibility Logic
+        
+    
+    Things to be added:
+        
+        More Enemy Logic
+        
+        Sira, Noxu & TJ Boss Logic
+        
+        Update Cynder's phase 2 animations
+        
+        Shop logic
+        
+        Quest Logic
+        
+        Mini Bosses
+        
+        Obstacles, stray projectiles, natural disasters (thunderstorms etc)
+    
+    
+    When you are done: Find the one piece.
+    (This should mean the base has been completed, and designing the levels can be started!)
