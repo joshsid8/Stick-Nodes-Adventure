@@ -49,6 +49,11 @@ public class InvManager : MonoBehaviour
         {
             ToggleInventory();
         }
+        else if (Input.GetButtonDown("Cancel"))
+        {
+            isActivated = false;
+            inventoryMenu.SetActive(isActivated);
+        }
     }
 
     private void ToggleInventory()

@@ -7,29 +7,76 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TMP_Text statName;
     [SerializeField] private GameObject shader;
     [SerializeField] private TMP_Text statDescription;
-    StatsManager statsManager;
+    [SerializeField] public StatSO stat;
+    
+    public bool isClicked;
+    
+    private PlayerController pc;
+    private PlayerHealth ph;
+    private PlayerAbility pa;
+    private PlayerDefense pd;
+    private PlayerCombat pf;
+    private StatsManager statsManager;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        statsManager = FindAnyObjectByType<StatsManager>();
         statDescription.text = string.Empty;
+        isClicked = false;
+        pc = FindAnyObjectByType<PlayerController>();
+        ph = FindAnyObjectByType<PlayerHealth>();
+        pa = FindAnyObjectByType<PlayerAbility>();
+        pd = FindAnyObjectByType<PlayerDefense>();
+        pf = FindAnyObjectByType<PlayerCombat>();
+        statsManager = FindAnyObjectByType<StatsManager>();
         ClearInfo();
     }
+    private void Update()
+    {
+        switch (stat.StatName)
+        {
+            case "MaxHealth": statName.text = "Max Health: " + ph.playerMaxHealth.ToString("F0"); break;
+            case "RegenerationMultiplier": statName.text = "Regeneration: " + ph.regenerationMultiplier.ToString("F1"); break;
+            case "MovementSpeed": statName.text = "Walk SPD: " + pc.movementSpeed.ToString("F0"); break;
+            case "JumpHeight": statName.text = "Jump Force: " + pc.jumpForce.ToString("F0"); break;
+            case "StunMultiplier": statName.text = "Firmness: " + ph.stunMultiplier.ToString("F2"); break;
+            case "MaxEnergy": statName.text = "Max Energy: " + pa.maxEnergy.ToString("F0"); break;
+            case "RawDamageResistance": statName.text = "Vulnerability: " + ph.rawDamageResistance.ToString("F1"); break;
+            case "EnergyRefill": statName.text = "Energy Regeneration: " + pa.energyRefill.ToString("F1"); break;
+            case "DashSpeed": statName.text = "Dash Speed: " + pc.dashSpeed.ToString("F1"); break;
+            case "DashCooldown": statName.text = "Dash CD: " + pc.dashCooldown.ToString("F1"); break;
+            case "GroundDamageAmount": statName.text = "Ground Attack DMG: " + pf.groundDamageAmount.ToString("F0"); break;
+            case "GroundAttackCooldown": statName.text = "Ground Attack CD: " + pf.attackCooldown.ToString("F1"); break;
+            case "AirDamageAmount": statName.text = "Air Attack DMG: " + pf.airDamageAmount.ToString("F0"); break;
+            case "AirAttackCooldown": statName.text = "Air Attack CD: " + pf.airAttackCooldown.ToString("F1"); break;
+            case "BlockDamageResistance": statName.text = "Block Resistance: " + pd.damageResistance.ToString("F1"); break;
+            case "CounterTime": statName.text = "Counter Window: " + pd.counterTime.ToString("F1"); break;
+            case "CounterDamage": statName.text = "Counter DMG: " + pd.counterDamage.ToString("F0"); break;
+            case "PlayerAttackStun": statName.text = "Shock: " + pf.stunTime.ToString("F2"); break;
 
+            default: statName.text = ""; Debug.LogWarning("Clueless."); break;
+        }
+        shader.SetActive(isClicked);
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnLeftClick();
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            OnLeftClick();
+        }
     }
 
     private void OnLeftClick()
     {
-        shader.SetActive(true);
-        
+        statsManager.ClearShaders();
+        isClicked = true;
+        statName.text = stat.StatName;
+        statDescription.text = stat.StatDescription;
     }
-
-    private void ClearInfo()
+    
+    public void ClearInfo()
     {
-        shader.SetActive(false);
+        isClicked = false;
+        statDescription.text = string.Empty;
     }
 }

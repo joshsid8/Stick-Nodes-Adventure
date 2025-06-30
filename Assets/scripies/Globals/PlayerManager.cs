@@ -159,7 +159,7 @@ public class PlayerManager : MonoBehaviour
         {
             activeAspects.Remove(aspect); // Remove aspect from active list
             RecalculateAllStats(); // Recalculate all stats based on remaining active aspects
-            Debug.Log($"PlayerManager: Removed modifiers from aspect: {aspect.name}.");
+            //Debug.Log($"PlayerManager: Removed modifiers from aspect: {aspect.name}.");
         }
         else
         {
