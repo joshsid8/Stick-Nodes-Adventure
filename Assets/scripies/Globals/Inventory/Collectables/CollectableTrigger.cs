@@ -18,4 +18,12 @@ public class CollectableTrigger : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            collectable.Collect(collision.gameObject);
+            Destroy(gameObject);
+        }
+    }
 }

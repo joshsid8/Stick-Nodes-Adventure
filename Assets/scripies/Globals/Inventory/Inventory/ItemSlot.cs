@@ -142,13 +142,21 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         {
             useButtonText.text = (itemType == "Aspect") ? "Equip" : "Use";
         }
-        
         invManager.useButton.onClick.RemoveAllListeners();
         invManager.destroyButton.onClick.RemoveAllListeners();
-
-        
-        invManager.useButton.onClick.AddListener(() => ItemTypeAction());
-        invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
+                    
+        if (itemName != "")
+        {
+            invManager.destroyButton.gameObject.SetActive(true);
+            invManager.useButton.gameObject.SetActive(true);
+            invManager.useButton.onClick.AddListener(() => ItemTypeAction());
+            invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
+        }
+        else
+        {
+            invManager.destroyButton.gameObject.SetActive(false);
+            invManager.useButton.gameObject.SetActive(false);
+        }
     }
 
     

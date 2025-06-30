@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Stat
   m_EditorClassIdentifier: 
   statName: MaxHealth
-  statDescription: The natural health the player has. Ensure the number doesn't reach
-    0!
+  statDescription: The natural amount of health you have. Ensure the number doesn't
+    reach 0!

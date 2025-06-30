@@ -110,11 +110,22 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
         if (selectedShader != null) selectedShader.SetActive(true);
         invManager.SelectSlot();
         if (useButtonText != null) useButtonText.text = "Unequip";
+        
         invManager.useButton.onClick.RemoveAllListeners();
         invManager.destroyButton.onClick.RemoveAllListeners();
-
-        invManager.useButton.onClick.AddListener(() => UnequipAspect());
-        invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
+        
+        if (!string.IsNullOrEmpty(itemName))
+        {
+            invManager.destroyButton.gameObject.SetActive(true);
+            invManager.useButton.gameObject.SetActive(true);
+            invManager.useButton.onClick.AddListener(() => UnequipAspect());
+            invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
+        }
+        else
+        {
+            invManager.destroyButton.gameObject.SetActive(false);
+            invManager.useButton.gameObject.SetActive(false);
+        }
     }
 
     private void UnequipAspect()

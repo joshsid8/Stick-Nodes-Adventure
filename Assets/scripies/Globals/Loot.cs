@@ -16,6 +16,12 @@ public class Loot : MonoBehaviour
     public float[] aspectChance;
     
     private bool dropping = true;
+
+    [SerializeField] private float minPopX;
+    [SerializeField] private float maxPopX;
+    
+    [SerializeField] private float minPopY;
+    [SerializeField] private float maxPopY;
     
     public void DropLoot()
     {
@@ -30,7 +36,7 @@ public class Loot : MonoBehaviour
                     GameObject item = Instantiate(itemLoot[i], transform.position, transform.rotation);
                     item.GetComponent<Collectable>().collectable = possibleItems[i];
                     item.GetComponent<Rigidbody2D>().linearVelocity =
-                        new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
+                        new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
                 }
             }
 
@@ -42,7 +48,7 @@ public class Loot : MonoBehaviour
                     GameObject aspect = Instantiate(aspectLoot[i], transform.position, transform.rotation);
                     aspect.GetComponent<Collectable>().collectable = possibleAspects[i];
                     aspect.GetComponent<Rigidbody2D>().linearVelocity =
-                        new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
+                        new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
                 }
             }
 
@@ -52,7 +58,7 @@ public class Loot : MonoBehaviour
                 GameObject money = Instantiate(moneyLoot, transform.position, transform.rotation);
                 money.GetComponent<Collectable>().collectable = currencyType;
                 money.GetComponent<Rigidbody2D>().linearVelocity =
-                    new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
+                    new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
             }
         }
     }

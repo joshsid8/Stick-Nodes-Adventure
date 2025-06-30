@@ -184,7 +184,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyLoot: {fileID: 3237700672439869688, guid: f25228cf8dffce34ca1924c8f5226326, type: 3}
-  moneyType: 1
   currencyType: {fileID: 11400000, guid: 41c0bbe2c1b15624cb310fcb1d26d9f5, type: 2}
   minMoneyAmount: 1
   maxMoneyAmount: 5
@@ -209,6 +208,10 @@ MonoBehaviour:
   - 10
   - 10
   - 20
+  minPopX: -5
+  maxPopX: 5
+  minPopY: 5
+  maxPopY: 15
 --- !u!114 &5618687667287828891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePoint: {fileID: 1248520969832997338}
   projectile: {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
-  projectileSpeed: 0
+  projectileSpeed: 10
 --- !u!114 &5774492939275019919
 MonoBehaviour:
   m_ObjectHideFlags: 0

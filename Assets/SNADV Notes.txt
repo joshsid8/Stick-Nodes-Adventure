@@ -1,30 +1,31 @@
 SNADV Notes
 
     Ahh man...
-    This will be the notes of what will be Fixed, Added, and potentially Changed in the upcoming game.
-    
+    This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Bugs & Required Additions:
         
-        All Stats requires a button component, linking to the description. when pressed, it should update the description on what it says.
+        No Significant bugs just yet
     
     Optimisations:
-        
-        Aspect slots need to have a highlighted shader when filled in.
         
         Camera Logic ._.
         
         Add a few more features to NPC dialogue
             Let there be a possible different dialogue after already interacting with them
         
-        Knockback Logic
-        
         Invincibility Logic
+        
+        GUI
+            Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
         
     
     Things to be added:
         
+        Knockback Logic
+        
         More Enemy Logic
+            Flying, blocking, etc
         
         Sira, Noxu & TJ Boss Logic
         
@@ -36,8 +37,11 @@ SNADV Notes
         
         Mini Bosses
         
-        Obstacles, stray projectiles, natural disasters (thunderstorms etc)
+        Obstacles
+            Keys
+            stray projectiles
+            natural disasters (thunderstorms)
     
     
     When you are done: Find the one piece.
-    (This should mean the base has been completed, and designing the levels can be started!)
+    (This should mean the base has been completed, and i can start designing levels!)

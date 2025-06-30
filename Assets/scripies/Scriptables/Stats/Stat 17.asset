@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: Stat 17
   m_EditorClassIdentifier: 
-  statName: CounterDamage
-  statDescription: How much damage your counter attack deals. Countering successfully
-    releases a shockwave, damaging nearby opponents.
+  statName: PlayerAttackStun
+  statDescription: How long you can stun enemies for. The larger the number, the
+    longer the (stunnable) enemies get stunned.
