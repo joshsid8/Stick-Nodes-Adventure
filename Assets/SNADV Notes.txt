@@ -5,11 +5,13 @@ SNADV Notes
     
     Bugs & Required Additions:
         
-        No Significant bugs just yet
+        Continue with the camera optimisations logic
+            The confiner isn't working yet
+            Add more stuff to the cinemachine the make the camera very gud
     
     Optimisations:
         
-        Camera Logic ._.
+        Camera Logic . _.
         
         Add a few more features to NPC dialogue
             Let there be a possible different dialogue after already interacting with them
