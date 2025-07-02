@@ -4,6 +4,7 @@ using UnityEngine;
 public class ObjectiveDoor : MonoBehaviour
 {
     public bool objectiveComplete;
+    public float finishTime;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,7 +17,7 @@ public class ObjectiveDoor : MonoBehaviour
     {
         if (objectiveComplete)
         {
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, finishTime);
         }
     }
 

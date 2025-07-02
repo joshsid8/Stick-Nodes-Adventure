@@ -1,36 +1,27 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class CameraSection : MonoBehaviour
 {
-    public Transform originalCameraTarget;
-    public Transform newCameraTarget;
-    public CameraFollow cf;
-    public float camMoveSpeed;
-    public float camExitSpeed;
-    private float originalCamMoveSpeed;
+    [SerializeField] GameObject cameraObject;
 
-    void Start()
+    private void Start()
     {
-        originalCamMoveSpeed = camMoveSpeed;
+        cameraObject.SetActive(false);
     }
-    
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            cf.FollowSpeed = camMoveSpeed;
-            cf.Target =  newCameraTarget;
+            cameraObject.SetActive(true);
         }
     }
     void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            cf.FollowSpeed = camExitSpeed;
-            cf.Target = originalCameraTarget;
-            cf.FollowSpeed = originalCamMoveSpeed;
+            cameraObject.SetActive(false);
         }
     }
 }

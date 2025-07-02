@@ -5,21 +5,24 @@ SNADV Notes
     
     Bugs & Required Additions:
         
-        Continue with the camera optimisations logic
-            The confiner isn't working yet
-            Add more stuff to the cinemachine the make the camera very gud
+        None yet
     
     Optimisations:
-        
-        Camera Logic . _.
-        
-        Add a few more features to NPC dialogue
+                
+        Add a few more features to NPC dialogue . _.
             Let there be a possible different dialogue after already interacting with them
-        
+
         Invincibility Logic
+            reduce the time of how long you be invincible for drastically.
+            if not, remove this and simply ensure for stuff to be able to hit the player more than once 
+            (YES, IM TALKING ABOUT THE PLAYER CAN GET JUMPED!!!)
         
         GUI
+            Title of where you are popping up
             Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
+        
+        MUSIC!!!
+            Flexibility
         
     
     Things to be added:
