@@ -207,6 +207,22 @@ PrefabInstance:
       propertyPath: pLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: dialogueNoAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a5fe877f9e4656f4f80bb92de2d3a2d7, type: 2}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -492,6 +508,14 @@ PrefabInstance:
       propertyPath: pLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b38a32240b36ccd45b609875a5f781ac, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2044,6 +2068,14 @@ PrefabInstance:
       propertyPath: pLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b1c22cc172bc51d4cbf9fde76941f4ce, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -3364,7 +3396,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.067356, y: 3.435501, z: -0.059537888}
+  m_LocalPosition: {x: 49.774, y: 54.963116, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4258,6 +4290,14 @@ PrefabInstance:
       propertyPath: dialogueBox
       value: 
       objectReference: {fileID: 984429418}
+    - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: bossBar
       value: 
@@ -6633,6 +6673,14 @@ PrefabInstance:
       propertyPath: pLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 61c0502185c97a549a89c594d9567548, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -7766,7 +7814,7 @@ Transform:
   m_GameObject: {fileID: 1579465751}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -26.713163, y: 2.0538735, z: -0.059537888}
+  m_LocalPosition: {x: 58.206837, y: 49.523876, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7893,6 +7941,38 @@ PrefabInstance:
       propertyPath: pLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: dialogueNoAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 50b9294699da0c742930f986cdb938dc, type: 2}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 92c2213285191f340b5ae6a75857dca3, type: 2}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 04e71c63c91af864c98ba8dd9251cba3, type: 2}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8a1ecdc7959551d479209fa0e6481c05, type: 2}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8a1ecdc7959551d479209fa0e6481c05, type: 2}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8a1ecdc7959551d479209fa0e6481c05, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -8154,6 +8234,14 @@ PrefabInstance:
       propertyPath: pLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1cef0c98c408818409bd653b67c64aed, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -11099,11 +11187,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -28.1
+      value: 56.82
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 49.47
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z

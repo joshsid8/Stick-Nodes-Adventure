@@ -28,10 +28,16 @@ public class DialogueObject : ScriptableObject
     public string targetFloatVariableName;
     public float newFloatValue;
 
-    [Space(10)] // Adds some space in the inspector
+    [Space(10)]
     [Tooltip("Check if this response should change a global boolean variable.")]
     public bool appliesBooleanChange;
     [Tooltip("The exact name of the boolean variable in GameManager to change (e.g., 'PlayerCanDoubleJump', 'PlayerHasDashAbility'). Case-sensitive.")]
     public string targetBooleanVariableName;
     public bool newBooleanValue;
+    
+    [Header("Item Drops")]
+    [Tooltip("How many of x items the speaker should give")]
+    public bool canDropItem;
+    public GameObject[] itemDrop;
+    public CollectableSOBase[] itemType;
 }

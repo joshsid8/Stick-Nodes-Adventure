@@ -10,35 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
-  m_Name: No
+  m_Name: angy
   m_EditorClassIdentifier: 
-  npcName: Izuno
-  dialogue:
-  - Oh alr then...
+  npcName: Informaton...
+  dialogue: []
   pendingChoice: 1
-  choiceQuestion: '|Do you want some extra health in case you dont die too easily?'
-  isAnimated: 1
+  choiceQuestion: What do u want bruh?!
+  isAnimated: 0
   yesResponse:
-    responseText: Yes, Please
-    dialogueObject: {fileID: 11400000, guid: 2982a649257fe544fbb070808a92334c, type: 2}
-    appliesFloatChange: 1
-    targetFloatVariableName: PlayerMaxHealth
-    newFloatValue: 150
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
-  noResponse:
-    responseText: No, thanks.
-    dialogueObject: {fileID: 11400000, guid: 61c0502185c97a549a89c594d9567548, type: 2}
+    responseText: I beat the Boss!
+    dialogueObject: {fileID: 11400000, guid: 6b376d4e4e1d06345a4f81578ce78f68, type: 2}
     appliesFloatChange: 0
     targetFloatVariableName: 
     newFloatValue: 0
     appliesBooleanChange: 0
     targetBooleanVariableName: 
     newBooleanValue: 0
-  appliesFloatChange: 1
-  targetFloatVariableName: 
-  newFloatValue: 0
+  noResponse:
+    responseText: Dont worry...
+    dialogueObject: {fileID: 11400000, guid: fa39d40147a02b94a862cf1b2bb78d4a, type: 2}
+    appliesFloatChange: 0
+    targetFloatVariableName: 
+    newFloatValue: 0
+    appliesBooleanChange: 0
+    targetBooleanVariableName: 
+    newBooleanValue: 0
+  appliesFloatChange: 0
+  targetFloatVariableName: PlayerHealth
+  newFloatValue: 200
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0

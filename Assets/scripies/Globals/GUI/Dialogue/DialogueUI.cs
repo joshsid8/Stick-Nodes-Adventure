@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -105,6 +106,16 @@ public class DialogueUI : MonoBehaviour
         if (dialogueObject.appliesBooleanChange)
         {
             PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBooleanVariableName, dialogueObject.newBooleanValue);
+        }
+
+        if (dialogueObject.canDropItem)
+        {
+            for (int i = 0; i < dialogueObject.itemDrop.Length; i++)
+            {
+                dialogueObject.itemDrop[i].GetComponent<Collectable>().collectable = dialogueObject.itemType[i];
+                Instantiate(dialogueObject.itemDrop[i], player.transform.position, Quaternion.identity);
+                print($"Dropped {dialogueObject.itemDrop[i]}, with the type of {dialogueObject.itemType[i]}.");
+            }
         }
     }
 }

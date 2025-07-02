@@ -4,13 +4,14 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Bugs & Required Additions:
-        
-        None yet
+            
+        Typewriting
+            The skip logic either must be typing abnormally fast
+        or
+            The text should instantly display
+                I must find a way i can remove the code symbols, or otherwise, find another way to alter stuff.
     
     Optimisations:
-                
-        Add a few more features to NPC dialogue . _.
-            Let there be a possible different dialogue after already interacting with them
 
         Invincibility Logic
             reduce the time of how long you be invincible for drastically.
@@ -23,6 +24,8 @@ SNADV Notes
         
         MUSIC!!!
             Flexibility
+        SFX
+            vine boom XD
         
     
     Things to be added:

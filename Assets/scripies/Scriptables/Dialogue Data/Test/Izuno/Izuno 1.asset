@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
+  m_Name: Izuno 1
+  m_EditorClassIdentifier: 
+  npcName: Izuno
+  dialogue: []
+  pendingChoice: 1
+  choiceQuestion: Hey man. You need anything?
+  isAnimated: 1
+  yesResponse:
+    responseText: Any spare aspects?
+    dialogueObject: {fileID: 11400000, guid: c93905e77c5f1994abbe22dcb94f162c, type: 2}
+    appliesFloatChange: 0
+    targetFloatVariableName: 
+    newFloatValue: 0
+    appliesBooleanChange: 0
+    targetBooleanVariableName: 
+    newBooleanValue: 0
+  noResponse:
+    responseText: Nothing, thanks.
+    dialogueObject: {fileID: 11400000, guid: 598f319cd7a6e8d479fd235469b7304c, type: 2}
+    appliesFloatChange: 0
+    targetFloatVariableName: PlayerMaxHealth
+    newFloatValue: 150
+    appliesBooleanChange: 0
+    targetBooleanVariableName: 
+    newBooleanValue: 0
+  appliesFloatChange: 0
+  targetFloatVariableName: 
+  newFloatValue: 0
+  appliesBooleanChange: 0
+  targetBooleanVariableName: 
+  newBooleanValue: 0

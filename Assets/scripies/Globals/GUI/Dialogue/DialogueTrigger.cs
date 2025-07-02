@@ -11,7 +11,9 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private bool isForced;
     
     public GameObject indicator;
-    [SerializeField] DialogueObject dialogue;
+    [SerializeField] DialogueObject[] dialogue;
+    [SerializeField] private int dialogueNo;
+    [SerializeField] private int dialogueNoAmount;
     [SerializeField] private LayerMask pLayer;
     [SerializeField] private GameObject dialogueBox;
 
@@ -45,7 +47,8 @@ public class DialogueTrigger : MonoBehaviour
             if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
             {
                 isTriggered = true;
-                dialogueUI.ShowDialogue(dialogue);
+                isForced = false;
+                RollThroughDialogue(dialogueNo);
             }
         }
         else
@@ -55,6 +58,17 @@ public class DialogueTrigger : MonoBehaviour
 
         if (!dialogueBox.gameObject.activeInHierarchy && isTriggered) isTriggered = false;
         //if (isTriggered) indicator.SetActive(false);
+    }
+
+    private void RollThroughDialogue(int dialogueNumber)
+    {
+        dialogueUI.ShowDialogue(dialogue[dialogueNumber]);
+        if (dialogueBox.gameObject.activeInHierarchy && isTriggered && dialogueNoAmount > 0)
+        {
+            dialogueNoAmount--;
+            dialogueNo++;
+            print("incremented");
+        }
     }
     
     private void OnDrawGizmosSelected()

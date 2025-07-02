@@ -179,3 +179,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectable: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
+  onGround: 0
+  edgeCheckRay: 1
