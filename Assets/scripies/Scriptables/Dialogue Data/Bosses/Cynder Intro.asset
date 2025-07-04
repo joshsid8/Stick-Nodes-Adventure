@@ -46,3 +46,14 @@ MonoBehaviour:
   appliesBooleanChange: 1
   targetBooleanVariableName: BossAttack
   newBooleanValue: 1
+  canDropItem: 0
+  itemDrop: []
+  itemType: []
+  canBeColoured: 1
+  colour:
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0.4339623, g: 0, b: 0, a: 1}
+  - {r: 0.8773585, g: 0, b: 0, a: 1}
+  colourIndex: 2
+  canBeBold: 1
+  bold: 000001

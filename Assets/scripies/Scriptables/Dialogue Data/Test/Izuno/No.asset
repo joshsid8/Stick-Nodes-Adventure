@@ -37,9 +37,17 @@ MonoBehaviour:
     appliesBooleanChange: 0
     targetBooleanVariableName: 
     newBooleanValue: 0
-  appliesFloatChange: 1
+  appliesFloatChange: 0
   targetFloatVariableName: 
   newFloatValue: 0
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  canDropItem: 0
+  itemDrop: []
+  itemType: []
+  canBeColoured: 0
+  colour: []
+  colourIndex: 0
+  canBeBold: 0
+  bold: 

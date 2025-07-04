@@ -77,7 +77,7 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["RegenerationMultiplier"] = basePlayerStats.RegenerationMultiplier;
         currentFloatStats["StunMultiplier"] = basePlayerStats.StunMultiplier;
         currentFloatStats["RawDamageResistance"] = basePlayerStats.RawDamageResistance;
-        currentFloatStats["InvincibleDuration"] = basePlayerStats.InvincibleDuration;
+        //currentFloatStats["InvincibleDuration"] = basePlayerStats.InvincibleDuration;
         currentFloatStats["MaxEnergy"] = basePlayerStats.MaxEnergy;
         currentFloatStats["EnergyRefill"] = basePlayerStats.EnergyRefill;
         currentFloatStats["AbilityEnergyCost"] = basePlayerStats.AbilityEnergyCost;
@@ -234,7 +234,7 @@ public class PlayerManager : MonoBehaviour
             ph.regenerationMultiplier = GetCurrentFloat("RegenerationMultiplier");
             ph.stunMultiplier = GetCurrentFloat("StunMultiplier");
             ph.rawDamageResistance = GetCurrentFloat("RawDamageResistance");
-            ph.invincibleDuration = GetCurrentFloat("InvincibleDuration");
+            //ph.invincibleDuration = GetCurrentFloat("InvincibleDuration");
         }
         if (pa != null)
         {

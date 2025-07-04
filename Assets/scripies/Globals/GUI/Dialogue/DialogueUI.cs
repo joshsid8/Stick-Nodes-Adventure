@@ -17,6 +17,10 @@ public class DialogueUI : MonoBehaviour
     [HideInInspector] public Animator animator;
     InvManager invManager;
     [SerializeField] GameObject inventory;
+    [SerializeField] int textIndex;
+    [SerializeField] int currentColourIndex;
+    private bool isBold;
+    [SerializeField] int currentBoldIndex;
     
     private void Start()
     {
@@ -28,6 +32,12 @@ public class DialogueUI : MonoBehaviour
         CloseDialogue();
     }
 
+    private void Update()
+    {
+        textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;
+    }
+
+
     public void ShowDialogue(DialogueObject dialogueObject)
     {
         playerBars.SetActive(false);
@@ -37,6 +47,9 @@ public class DialogueUI : MonoBehaviour
         dialogueBox.SetActive(true);
         invManager.enabled = false;
         inventory.SetActive(false);
+        textIndex = dialogueObject.colourIndex;
+        currentColourIndex = 0;
+        currentBoldIndex = 0;
         StartCoroutine(StepThroughDialogue(dialogueObject));
     }
 
@@ -45,6 +58,12 @@ public class DialogueUI : MonoBehaviour
         foreach (string dialogue in dialogueObject.Dialogue)
         {
             npcNameLabel.text = dialogueObject.NPCName;
+            if (dialogueObject.canBeColoured && currentColourIndex <= textIndex) textLabel.color = dialogueObject.colour[currentColourIndex];
+            else if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
+            if (dialogueObject.canBeColoured) currentColourIndex++;
+            if (dialogueObject.canBeBold) isBold = dialogueObject.bold[currentBoldIndex];
+            else isBold = false;
+            if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
             animator = isAnimated ? GameObject.Find(npcNameLabel.text).GetComponent<Animator>() : null;
             yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
             yield return new WaitUntil(() => Input.GetButtonDown("Submit") || Input.GetMouseButton(0));
@@ -78,6 +97,7 @@ public class DialogueUI : MonoBehaviour
         }
         playerBars.SetActive(true);
         invManager.enabled = true;
+        textLabel.color = Color.black;
     }
 
     private IEnumerator ChoiceDialogue(DialogueObject dialogueObject)
@@ -114,7 +134,7 @@ public class DialogueUI : MonoBehaviour
             {
                 dialogueObject.itemDrop[i].GetComponent<Collectable>().collectable = dialogueObject.itemType[i];
                 Instantiate(dialogueObject.itemDrop[i], player.transform.position, Quaternion.identity);
-                print($"Dropped {dialogueObject.itemDrop[i]}, with the type of {dialogueObject.itemType[i]}.");
+                //print($"Dropped {dialogueObject.itemDrop[i]}, with the type of {dialogueObject.itemType[i]}.");
             }
         }
     }

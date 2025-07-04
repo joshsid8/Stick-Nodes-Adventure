@@ -46,3 +46,12 @@ MonoBehaviour:
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  canDropItem: 0
+  itemDrop: []
+  itemType: []
+  canBeColoured: 1
+  colour:
+  - {r: 1, g: 0, b: 0, a: 1}
+  colourIndex: 0
+  canBeBold: 0
+  bold: 00

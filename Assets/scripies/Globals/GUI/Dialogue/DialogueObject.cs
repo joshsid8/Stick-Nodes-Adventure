@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Dialogue/Dialogue Object")]
@@ -40,4 +41,11 @@ public class DialogueObject : ScriptableObject
     public bool canDropItem;
     public GameObject[] itemDrop;
     public CollectableSOBase[] itemType;
+
+    [Header("Colouring & Font Changes")] [Tooltip("The colour of each text")]
+    public bool canBeColoured;
+    public Color[] colour;
+    public int colourIndex;
+    public bool canBeBold;
+    public bool[] bold;
 }

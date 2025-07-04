@@ -67,7 +67,6 @@ public class DialogueTrigger : MonoBehaviour
         {
             dialogueNoAmount--;
             dialogueNo++;
-            print("incremented");
         }
     }
     

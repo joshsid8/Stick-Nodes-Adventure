@@ -14,14 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Izuno
   dialogue:
-  - Yo. Im Izuno.
-  - '|This area isn''t official, but as of now, /there are a lot of hostile cynderians
-    out there.'
-  - Dont worry bout em tho. |They aint even smart fr
-  - Ill be here for a while if you need me, aight?
+  - 'I hope you''re happy with the Aspect you chose.
+
+    Check your inventory to
+    see it.'
   pendingChoice: 0
   choiceQuestion: 
-  isAnimated: 1
+  isAnimated: 0
   yesResponse:
     responseText: Yes, I'm Ready!
     dialogueObject: {fileID: 11400000, guid: c93905e77c5f1994abbe22dcb94f162c, type: 2}
@@ -46,3 +45,11 @@ MonoBehaviour:
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  canDropItem: 0
+  itemDrop: []
+  itemType: []
+  canBeColoured: 0
+  colour: []
+  colourIndex: 0
+  canBeBold: 0
+  bold: 

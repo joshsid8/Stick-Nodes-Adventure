@@ -19,25 +19,25 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     [HideInInspector] public PlayerController playerController;
     PlayerDefense playerDefense;
 
-    [SerializeField] private bool isDead = false;
+    [SerializeField] private bool isDead;
     
-    [SerializeField] private bool getStunned = false;
-    private bool isStunned = false;
+    [SerializeField] private bool getStunned;
+    private bool isStunned;
     public float stunTime = 0;
     private float currentStunTime = 0;
     public float originalStunMultiplier;
     public float stunMultiplier = 1;
 
-    private bool invincibleTrigger;
-    public bool invincible = false;
+    /*private bool invincibleTrigger;
+    public bool invincible;
     public float invincibleDuration = 2f;
-    private float invincibleTimer;
+    private float invincibleTimer;*/
     
     public Color damageTint = Color.red;
     public float tintDuration = 0.1f;
     public float tintSpeed = 5f;
     private Color originalColor;
-    [SerializeField] private bool isTinting = false;
+    [SerializeField] private bool isTinting;
     private SpriteRenderer spriteRenderer;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -53,7 +53,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         originalStunMultiplier = 1f;
-        invincibleTrigger = false;
+        //invincibleTrigger = false;
     }
 
     // Update is called once per frame
@@ -63,7 +63,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         Death();
         Stunned();
         Tint();
-        StartCoroutine(IFrames());
+        //StartCoroutine(IFrames());
         Regeneration();
         healthBar.fillAmount = playerHealth / playerMaxHealth;
         healthText.text = playerHealth == playerMaxHealth ? playerHealth.ToString("F0") +  " / " + playerMaxHealth.ToString("F0")
@@ -130,7 +130,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             playerHealth -= damageAmount * rawDamageResistance;
             playerController.animator.SetTrigger("Damaged");
-            invincibleTrigger = true;
+            //invincibleTrigger = true;
             spriteRenderer.color = damageTint;
             isTinting = true;
         }
@@ -182,7 +182,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
 
     }
     
-    private IEnumerator IFrames()
+    /*private IEnumerator IFrames()
     {
         if (invincibleTrigger)
         {
@@ -208,7 +208,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             spriteRenderer.enabled = !spriteRenderer.enabled;
         }
         yield return null;
-    }
+    }*/
 
     private void Regeneration()
     {

@@ -4,19 +4,10 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Bugs & Required Additions:
-            
-        Typewriting
-            The skip logic either must be typing abnormally fast
-        or
-            The text should instantly display
-                I must find a way i can remove the code symbols, or otherwise, find another way to alter stuff.
+        
+        None Yet
     
     Optimisations:
-
-        Invincibility Logic
-            reduce the time of how long you be invincible for drastically.
-            if not, remove this and simply ensure for stuff to be able to hit the player more than once 
-            (YES, IM TALKING ABOUT THE PLAYER CAN GET JUMPED!!!)
         
         GUI
             Title of where you are popping up

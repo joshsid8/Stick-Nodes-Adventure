@@ -48,3 +48,8 @@ MonoBehaviour:
   - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
   itemType:
   - {fileID: 11400000, guid: 8b4bae5a0d8ea3d4b84f5514335f1c83, type: 2}
+  canBeColoured: 0
+  colour: []
+  colourIndex: 0
+  canBeBold: 0
+  bold: 

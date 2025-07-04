@@ -55,3 +55,11 @@ MonoBehaviour:
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  canDropItem: 0
+  itemDrop: []
+  itemType: []
+  canBeColoured: 0
+  colour: []
+  colourIndex: 4
+  canBeBold: 0
+  bold: 
