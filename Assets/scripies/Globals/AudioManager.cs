@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -51,8 +52,9 @@ public class AudioManager : MonoBehaviour
             {
                 musicSource.volume = musicVolume;
                 sfxSource.volume = 0.2f;
+
             }
-            else
+            if (!gUI[i].activeInHierarchy)
             {
                 musicSource.volume = 1f;
                 sfxSource.volume = 1f;

@@ -69,9 +69,8 @@ public class BossHealth : MonoBehaviour, EDamageables
             gameObject.layer = LayerMask.NameToLayer("Dead");
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
-            
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().currentCombatTimer = 0;
             yield return new WaitForSeconds(3);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().currentCombatTimer = 0;
             dialogue.ShowDialogue(deathDialogue);
         }
     }

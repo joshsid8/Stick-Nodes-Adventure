@@ -72,9 +72,6 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
             
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().currentCombatTimer = 0;
-            
-            
             yield return new WaitForSeconds(5f);
             for (int i = 0; i < 25; i++)
             {
@@ -83,6 +80,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
                 spriteRenderer.enabled = true;
                 yield return new WaitForSeconds(0.025f);
             }
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().currentCombatTimer = 0;
             Destroy(gameObject);
         }
     }

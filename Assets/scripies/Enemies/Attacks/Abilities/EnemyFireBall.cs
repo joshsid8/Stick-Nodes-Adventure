@@ -94,8 +94,8 @@ public class EnemyFireBall : MonoBehaviour
                 damageable.Stun(projectileStunTime);
 
                 GameObject player = GameObject.FindGameObjectWithTag("Player");
-                player.GetComponent<PlayerController>().currentCombatTimer =
-                    player.GetComponent<PlayerController>().combatTimer;
+                player.GetComponent<PlayerController>().currentCombatTimer =+
+                    player.GetComponent<PlayerController>().combatTimer * 0.5f;
             }
         }
 

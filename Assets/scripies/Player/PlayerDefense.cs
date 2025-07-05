@@ -87,7 +87,7 @@ public class PlayerDefense : MonoBehaviour
                 counterWindow = true;
             }
             
-            if (Input.GetButtonUp("Block") || !pc.canAct)
+            if (Input.GetButtonUp("Block") || !pc.canAct || pc.isWallSliding || pc.isDashing)
             {
                 isBlocking = false;
                 hp.stunMultiplier = hp.originalStunMultiplier;
@@ -122,6 +122,7 @@ public class PlayerDefense : MonoBehaviour
                 pa.energy += 10f;
                 eDamageable.Damage(counterDamage);
                 eDamageable.Stun(counterStun);
+                pc.currentCombatTimer += pc.combatTimer / 2;
             }
         }
     }

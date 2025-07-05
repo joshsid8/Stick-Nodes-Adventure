@@ -33,6 +33,9 @@ public class EnemyFirePillar : MonoBehaviour
             {
                 damageable.Damage(fireDamage);
                 damageable.Stun(0f);
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                player.GetComponent<PlayerController>().currentCombatTimer =+
+                    player.GetComponent<PlayerController>().combatTimer * 0.5f;
             }
         }
     }

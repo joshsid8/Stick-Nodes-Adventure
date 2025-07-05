@@ -3400,7 +3400,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.860771, y: 46.766975, z: -0.059537888}
+  m_LocalPosition: {x: 13.544993, y: 46.77617, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7818,7 +7818,7 @@ Transform:
   m_GameObject: {fileID: 1579465751}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.886837, y: 49.743874, z: -0.059537888}
+  m_LocalPosition: {x: 13.586837, y: 51.553875, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9922,14 +9922,14 @@ MonoBehaviour:
   sfxSource: {fileID: 1044450330}
   backgroundMusic:
   - {fileID: 8300000, guid: fc393531e1e22a84485c076e1c1d9624, type: 3}
-  - {fileID: 8300000, guid: 7a360ec1026e63e48ae4e2e8e4e26085, type: 3}
+  - {fileID: 8300000, guid: 70aea786642af9e4f93925edccda9df4, type: 3}
   sFXMusic: []
   musicVolume: 0.5
   gUI:
-  - {fileID: 984429418}
-  - {fileID: 252827745}
   - {fileID: 926745861}
+  - {fileID: 984429418}
   - {fileID: 1298230473}
+  - {fileID: 252827745}
 --- !u!4 &2058421851
 Transform:
   m_ObjectHideFlags: 0
@@ -11874,6 +11874,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
     - target: {fileID: 261623171632948894, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: combatTimer
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 261623171632948894, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: playerStats
       value: 
       objectReference: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
@@ -11931,11 +11935,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.5
+      value: 12.2
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 49.69
+      value: 51.5
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z

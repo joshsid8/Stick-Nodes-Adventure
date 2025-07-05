@@ -102,7 +102,8 @@ public class Cynder : MonoBehaviour
         if (isFlyDashing)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+            player.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+            player.GetComponent<PlayerController>().isFrozen = true;
             rb.linearVelocity = dashDirection * dashSpeed;
             if (isInRange)
             {
@@ -116,7 +117,9 @@ public class Cynder : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            player.GetComponent<PlayerController>().isFrozen = false;
+            player.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(player.GetComponent<Rigidbody2D>().linearVelocity.x,
+                player.GetComponent<Rigidbody2D>().linearVelocity.y);
         }
     }
     
@@ -144,6 +147,7 @@ public class Cynder : MonoBehaviour
             float rng = Random.Range(-2.0f, 2.0f);
             projectileDirection = new Vector2(projectileDirection.x + rng, projectileDirection.y);
             fireballScript.SetValues(ba.isFacingRight, secondaryProjectileSpeed, projectileDirection, true);
+            
         }
         else
         {
@@ -168,6 +172,7 @@ public class Cynder : MonoBehaviour
             {
                 damageable.Damage(damageAmount);
                 damageable.Stun(stunTime);
+                FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }
         }
         ba.ActionCooldown(slashCooldown * 0.5f);
@@ -199,7 +204,7 @@ public class Cynder : MonoBehaviour
         if (ba.directionToPlayer >= 8f || ba.directionToPlayer <= -8f)
         {
             int rng = Random.Range(0, 101);
-            if (rng <= 20)
+            if (rng <= 33)
             {
                 animator.SetTrigger("Homing");
                 ba.ActionCooldown(3f);

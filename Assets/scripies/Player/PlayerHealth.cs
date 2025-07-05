@@ -133,6 +133,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             //invincibleTrigger = true;
             spriteRenderer.color = damageTint;
             isTinting = true;
+            playerController.currentDashTime = 0f;
         }
          
     }
@@ -144,6 +145,11 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             getStunned = true;
         }
+    }
+
+    public void KnockBack(float knockback)
+    {
+        playerController.rb.linearVelocity = playerController.rb.linearVelocity.normalized * knockback;
     }
 
     private void Stunned()

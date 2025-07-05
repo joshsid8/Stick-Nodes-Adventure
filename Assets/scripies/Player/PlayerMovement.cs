@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public PlayerStats playerStats;
     public bool canAct = true;
     [SerializeField] private bool canFlip = true;
+    public bool isFrozen;
     
     // Simply move speed
     public bool canMove = true;
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour
     public float startDashTime;
     public float dashCooldown;
     public bool dashAbility;
-    private float currentDashTime;
+    [HideInInspector] public float currentDashTime;
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool canDash;
     private float dashDirection; 
@@ -137,6 +138,14 @@ public class PlayerController : MonoBehaviour
             if (currentDashTime <= 0)
             {
                 isDashing = false;
+                canFlip = true;
+                isMoving = true;
+                if (isMoving)
+                {
+                    isMoving = false;
+                    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+                }
             }
         }
     }
@@ -173,7 +182,7 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
-        if (Input.GetButtonDown("Dash") && canDash && dashAbility && !pco.isAttacking && !pco.isAirAttacking && pab.energy >= dashEnergyCost && !pab.isPerformingAbility)
+        if (Input.GetButtonDown("Dash") && canDash && dashAbility && !pco.isAttacking && !pco.isAirAttacking && pab.energy >= dashEnergyCost && !pab.isPerformingAbility && !isFrozen)
         {
             canDash = false;
             isDashing = true;
@@ -210,6 +219,13 @@ public class PlayerController : MonoBehaviour
             {
                 isDashing = false;
                 canFlip = true;
+                isMoving = true;
+                if (isMoving)
+                {
+                    isMoving = false;
+                    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+                }
             }
         }
 
@@ -245,7 +261,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
-        if (isWallSliding && Input.GetButtonDown("Jump") && canWallJump && availableWallsLeft > 0 && !isDashing && !pab.isPerformingAbility)
+        if (isWallSliding && Input.GetButtonDown("Jump") && canWallJump && availableWallsLeft > 0 && !isDashing && !pab.isPerformingAbility && !isFrozen)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, wallJumpForce);
             isWallSliding = false;
@@ -278,7 +294,7 @@ public class PlayerController : MonoBehaviour
     
     private void Jump()
     {
-        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && availableJumpsLeft > -1 && !pab.isPerformingAbility)
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && availableJumpsLeft > -1 && !pab.isPerformingAbility && !isFrozen)
         {
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -309,7 +325,7 @@ public class PlayerController : MonoBehaviour
 
     private void DoubleJump()
     {
-        if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding && !pab.isPerformingAbility)
+        if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding && !pab.isPerformingAbility && !isFrozen)
         {
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -320,27 +336,23 @@ public class PlayerController : MonoBehaviour
     
     private void ApplyMovement()
     {
-        if (canMove)
+        if (canMove && !isFrozen)
         {
             if (inputDirection > 0 || inputDirection < 0)
             {
                 isMoving = true;
                 rb.linearVelocity = new Vector2(movementSpeed * inputDirection, rb.linearVelocity.y);
             }
-            else
+            if (inputDirection == 0 && isMoving)
             {
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
                 isMoving = false;
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
             }
         }
         else
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        }
-
-        if (!isMoving)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
         }
     }
 
@@ -401,6 +413,7 @@ public class PlayerController : MonoBehaviour
             jumpForce = 0f; 
             dashAbility = false;
             pco.enabled = false;
+            canDash = false;
         }
         else
         {

@@ -3,9 +3,9 @@ SNADV Notes
     Ahh man...
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
-    Bugs & Required Additions:
+    Bugs & Priorities:
         
-        None Yet
+        Knockback Logic . _.
     
     Optimisations:
         
@@ -20,8 +20,6 @@ SNADV Notes
         
     
     Things to be added:
-        
-        Knockback Logic
         
         More Enemy Logic
             Flying, blocking, etc

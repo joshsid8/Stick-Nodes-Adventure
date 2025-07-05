@@ -109,6 +109,7 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Damage(groundDamageAmount);
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
+                pc.currentCombatTimer += pc.combatTimer / 3;
             }
         }
 
@@ -145,6 +146,7 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Damage(airDamageAmount);
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
+                pc.currentCombatTimer += pc.combatTimer / 3;
             }
         }
 
