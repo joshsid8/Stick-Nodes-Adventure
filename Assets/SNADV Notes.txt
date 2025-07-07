@@ -5,14 +5,11 @@ SNADV Notes
     
     Bugs & Priorities:
         
-        Find out a way to make the player not move at a constant force when they cannot act or is stunned
-            Knockback Logic . _.
-    
-    Optimisations:
-        
         GUI
             Title of where you are popping up
             Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
+    
+    Optimisations:
         
         MUSIC!!!
             Flexibility

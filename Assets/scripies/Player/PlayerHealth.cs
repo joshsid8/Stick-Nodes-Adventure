@@ -117,7 +117,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
     }
 
-    public void Damage(float damageAmount)
+    public void Damage(float damageAmount, Vector2 knockbackForce)
     {
         if (playerDefense.isBlocking && !playerDefense.counterWindow)
         {
@@ -138,7 +138,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             spriteRenderer.color = damageTint;
             isTinting = true;
             playerController.currentDashTime = 0f;
-            kb.CallKnockback(transform.right,Vector2.up, playerController.inputDirection);
+            kb.CallKnockback(knockbackForce, playerController.inputDirection);
         }
          
     }

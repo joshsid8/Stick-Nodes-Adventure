@@ -9,6 +9,7 @@ public class PlayerFireStationaryElement : MonoBehaviour
     private PlayerAbility pa;
     public float abilityLifeTime;
     public float abilityDamage;
+    public Vector2 abilityKnockbackForce;
 
     private float xVector;
     
@@ -30,7 +31,7 @@ public class PlayerFireStationaryElement : MonoBehaviour
         GameObject newElement = Instantiate(projectile, projectilePoint.position + new Vector3(xVector, -1f, 0f), Quaternion.identity);
         PlayerFirePillar stationaryElement = newElement.GetComponent<PlayerFirePillar>();
         
-        if (stationaryElement != null) stationaryElement.SetValues(abilityLifeTime, abilityDamage * pa.damageMultiplier);
+        if (stationaryElement != null) stationaryElement.SetValues(abilityLifeTime, abilityDamage * pa.damageMultiplier, abilityKnockbackForce);
         else Debug.LogError("where is bro's ability");
     }
 }

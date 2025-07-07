@@ -22,6 +22,8 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     private Color originalColor;
     [SerializeField] private bool isTinting = false;
     private SpriteRenderer spriteRenderer;
+    private Knockback kb;
+    public bool movable = true;
 
     //other
     Animator animator;
@@ -33,6 +35,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         currentStunTime = stunTime * stunMultiplier;
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color; // Store the original color.
+        kb = GetComponent<Knockback>();
     }
 
     // Update is called once per frame
@@ -85,9 +88,10 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         }
     }
 
-    public void Damage(float damageAmount)
+    public void Damage(float damageAmount, Vector2 knockbackForce)
     {
         enemyHealth -= damageAmount;
+        if (movable) kb.CallKnockback(knockbackForce,0);
         if (enemyHealth <= 0)
         {
             enemyHealth = 0;

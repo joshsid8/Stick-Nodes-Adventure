@@ -7,7 +7,9 @@ public class PlayerFireProjectile : MonoBehaviour
     private PlayerController pc;
     private PlayerAbility pa;
     public float abilityDamage;
-    private float abilityStunTime;
+    public float abilityStunTime;
+    public Vector2 abilityKnockbackForce;
+    
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -22,7 +24,7 @@ public class PlayerFireProjectile : MonoBehaviour
         PlayerFireBall fireballScript = newProjectile.GetComponent<PlayerFireBall>();
         if (fireballScript != null)
         {
-            fireballScript.SetValues(pc.isFacingRight, abilityDamage * pa.damageMultiplier, abilityStunTime);
+            fireballScript.SetValues(pc.isFacingRight, abilityDamage * pa.damageMultiplier, abilityStunTime, abilityKnockbackForce);
         }
         else
         {

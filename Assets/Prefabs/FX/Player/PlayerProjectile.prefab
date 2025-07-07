@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collided: 0
   projectileSpeed: 15
+  projectileKnockbackForce: {x: 0.5, y: 0}
   projectileRange: 0.68
   target:
     serializedVersion: 2

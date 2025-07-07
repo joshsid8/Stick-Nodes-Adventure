@@ -6,6 +6,7 @@ public class EnemyFirePillar : MonoBehaviour
 {
     public float fireDamage;
     public float pillarLifeTime;
+    public Vector2 knockbackForce;
     [SerializeField] private bool hasErupted;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,7 +32,7 @@ public class EnemyFirePillar : MonoBehaviour
             PDamageable damageable = collision.gameObject.GetComponent<PDamageable>();
             if (damageable != null && hasErupted)
             {
-                damageable.Damage(fireDamage);
+                damageable.Damage(fireDamage, knockbackForce * transform.up);
                 damageable.Stun(0f);
                 GameObject player = GameObject.FindGameObjectWithTag("Player");
                 player.GetComponent<PlayerController>().currentCombatTimer =+

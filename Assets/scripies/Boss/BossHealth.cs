@@ -33,6 +33,8 @@ public class BossHealth : MonoBehaviour, EDamageables
     Animator animator;
     float stunTime;
     DialogueUI dialogue;
+    private Knockback kb;
+    public bool movable = true;
     
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,6 +45,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         originalColor = spriteRenderer.color;
         bossMaxHealth = bossHealth;
         dialogue = FindAnyObjectByType<DialogueUI>();
+        kb = GetComponent<Knockback>();
     }
 
     // Update is called once per frame
@@ -75,9 +78,10 @@ public class BossHealth : MonoBehaviour, EDamageables
         }
     }
 
-    public void Damage(float damageAmount)
+    public void Damage(float damageAmount, Vector2 knockbackForce)
     {
         bossHealth -= damageAmount;
+        if (movable) kb.CallKnockback(knockbackForce / 2,0);
         if (bossHealth <= 0)
         {
             bossHealth = 0;

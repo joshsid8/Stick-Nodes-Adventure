@@ -13,6 +13,7 @@ public class PlayerDefense : MonoBehaviour
     public float counterRadius;
     public float counterDamage;
     public float counterStun;
+    public Vector2 counterKnockbackForce;
     private RaycastHit2D[] hits;
     public LayerMask eLayer;
     
@@ -116,11 +117,13 @@ public class PlayerDefense : MonoBehaviour
         for (int i = 0; i < hits.Length; i++)
         {
             EDamageables eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
-
+            Vector2 distance = hits[i].collider.gameObject.transform.position - transform.position;
+            int num;
+            if (distance.x >= 0) num = 1; else num = -1;
             if (eDamageable != null)
             {
                 pa.energy += 10f;
-                eDamageable.Damage(counterDamage);
+                eDamageable.Damage(counterDamage, counterKnockbackForce * num);
                 eDamageable.Stun(counterStun);
                 pc.currentCombatTimer += pc.combatTimer / 2;
             }

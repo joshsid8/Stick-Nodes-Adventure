@@ -28,6 +28,7 @@ public class PlayerCombat : MonoBehaviour
     
     [SerializeField] private LayerMask enemyLayer;
     public float stunTime = 0.2f;
+    public Vector2 knockbackForce;
     private RaycastHit2D[] hits;
     private Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -106,7 +107,7 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(groundDamageAmount);
+                eDamageable.Damage(groundDamageAmount, knockbackForce * transform.right);
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
@@ -143,7 +144,7 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(airDamageAmount);
+                eDamageable.Damage(airDamageAmount, knockbackForce * transform.right);
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;

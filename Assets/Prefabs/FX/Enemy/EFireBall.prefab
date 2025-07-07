@@ -53,6 +53,7 @@ MonoBehaviour:
   projectileSpeed: 10
   projectileDamage: 10
   projectileStunTime: 0.2
+  projectileKnockbackForce: {x: 0.5, y: 0}
   isDirectional: 0
   projectileDirection: {x: 0, y: 0}
   projectileRange: 0.65

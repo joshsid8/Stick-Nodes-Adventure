@@ -106,6 +106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireDamage: 20
   pillarLifeTime: 0.5
+  knockbackForce: {x: 1, y: 0}
   hasErupted: 1
 --- !u!50 &2803216028548801259
 Rigidbody2D:

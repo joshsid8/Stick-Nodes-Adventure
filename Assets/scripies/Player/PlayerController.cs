@@ -336,7 +336,7 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove && !isFrozen && !kb.IsBeingKnocked)
         {
-            if (inputDirection > 0 || inputDirection < 0)
+            if (inputDirection != 0)
             {
                 isMoving = true;
                 rb.linearVelocity = new Vector2(movementSpeed * inputDirection, rb.linearVelocity.y);
@@ -407,6 +407,11 @@ public class PlayerController : MonoBehaviour
             dashAbility = false;
             pco.enabled = false;
             canDash = false;
+            if (isMoving)
+            {
+                isMoving = false;
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            }
         }
         else
         {

@@ -1,40 +1,37 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Knockback : MonoBehaviour
 {
     //jump yourself
-    public float knockbackTime = 0.2f;
-    public float hitDirectionForce = 10f;
-    public float constForce = 5f;
-    public float inputForce = 7.5f;
+    public float knockbackTime = 0.25f;
+    public float hitDirectionForce = 1f;
+    public float inputForce = 1.1f;
     public bool IsBeingKnocked {get; private set;}
     private Rigidbody2D rb;
-    private Coroutine knockbackCoroutine;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-    
-    private IEnumerator KnockbackAction (Vector2 hitDirection, Vector2 constantForceDirection, float inputDirection)
+
+    private IEnumerator KnockbackAction (Vector2 hitDirection, float inputDirection)
     {
         IsBeingKnocked = true;
         
         Vector2 hitForce;
-        Vector2 knockbackConstForce;
         Vector2 knockbackForce;
         Vector2 combinedForce;
         
         hitForce = hitDirection * hitDirectionForce;
-        knockbackConstForce = constantForceDirection * constantForceDirection;
         
         float currentTime = 0f;
         while (currentTime < knockbackTime)
         {
             currentTime += Time.fixedDeltaTime;
-            knockbackForce = hitForce + knockbackConstForce;
+            knockbackForce = hitForce;
             if (inputDirection != 0)
             {
                 combinedForce = knockbackForce + new Vector2(inputDirection * inputForce, 0f);
@@ -43,15 +40,18 @@ public class Knockback : MonoBehaviour
             {
                 combinedForce = knockbackForce;
             }
-            rb.linearVelocity = combinedForce;
+            combinedForce.x /= currentTime;
+            if (combinedForce.y == 0) rb.linearVelocity = new Vector2(combinedForce.x, rb.linearVelocity.y);
+            else rb.linearVelocity = combinedForce;
             yield return new WaitForFixedUpdate();
         }
         
         IsBeingKnocked = false;
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
 
-    public void CallKnockback(Vector2 hitDirection, Vector2 constantForceDirection, float inputDirection)
+    public void CallKnockback(Vector2 hitDirection, float inputDirection)
     {
-        knockbackCoroutine = StartCoroutine(KnockbackAction(hitDirection, constantForceDirection, inputDirection));
+        StartCoroutine(KnockbackAction(hitDirection, inputDirection));
     }
 }

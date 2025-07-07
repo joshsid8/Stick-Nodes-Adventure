@@ -7,6 +7,7 @@ public class PlayerFireBall : MonoBehaviour
     public float projectileSpeed;
     private float projectileDamage;
     private float projectileStunTime;
+    public Vector2 projectileKnockbackForce;
     private RaycastHit2D[] hits;
     [SerializeField] private float projectileRange;
     public LayerMask target;
@@ -29,7 +30,7 @@ public class PlayerFireBall : MonoBehaviour
         // Use the passed-in direction to set rotation and initial velocity
         ApplyInitialDirection();
     }
-    public void SetValues(bool facingRight, float damage, float stunTime)
+    public void SetValues(bool facingRight, float damage, float stunTime, Vector2 knockbackForce)
     {
         isFacingRightDirection = facingRight;
         projectileDamage = damage;
@@ -75,7 +76,7 @@ public class PlayerFireBall : MonoBehaviour
             if (eDamageable != null)
             {
                 eDamageable.Stun(projectileStunTime);
-                eDamageable.Damage(projectileDamage);
+                eDamageable.Damage(projectileDamage, projectileKnockbackForce);
             }
         }
         // Destroy the fireball after it has performed its collision logic (e.g., dealt damage)

@@ -11,6 +11,7 @@ public class EnemyFireBall : MonoBehaviour
     private float projectileReverseSpeed;
     public float projectileDamage;
     public float projectileStunTime;
+    public Vector2 projectileKnockbackForce;
     public bool isDirectional;
     public Vector2 projectileDirection;
     
@@ -21,6 +22,7 @@ public class EnemyFireBall : MonoBehaviour
     private Transform playerTransform;
     private EnemyAttack ea;
     private bool isFacingRightDirection;
+    private float playerDirection;
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -63,10 +65,12 @@ public class EnemyFireBall : MonoBehaviour
         if (isFacingRightDirection && !isDirectional)
         {
             transform.eulerAngles = new Vector3(0, 0, 90);
+            playerDirection = 1f;
         }
         else if (!isFacingRightDirection && !isDirectional)
         {
             transform.eulerAngles = new Vector3(0, 0, -90);
+            playerDirection = -1f;
         }
         else transform.eulerAngles = new Vector3(projectileDirection.x, projectileDirection.y, 0);
         // Apply initial velocity based on the direction
@@ -90,7 +94,7 @@ public class EnemyFireBall : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(projectileDamage);
+                damageable.Damage(projectileDamage, projectileKnockbackForce * playerDirection);
                 damageable.Stun(projectileStunTime);
 
                 GameObject player = GameObject.FindGameObjectWithTag("Player");

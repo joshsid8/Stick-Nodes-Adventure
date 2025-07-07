@@ -15,6 +15,7 @@ public class Cynder : MonoBehaviour
     public float slashCooldown;
     public float stunTime;
     public float damageAmount;
+    public Vector2 knockbackForce;
     private RaycastHit2D hit;
     [SerializeField] private float attackRange;
     public Transform attackTransform;
@@ -168,7 +169,7 @@ public class Cynder : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount);
+                damageable.Damage(damageAmount, knockbackForce * transform.right);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }

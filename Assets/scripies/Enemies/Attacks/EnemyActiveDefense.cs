@@ -6,6 +6,7 @@ public class EnemyActiveDefense : MonoBehaviour
     [SerializeField] private float damageAmount;
     private RaycastHit2D hit;
     [SerializeField] private float stunTime = 0.5f;
+    [SerializeField] private Vector2 knockbackForce;
     [SerializeField] private float attackRange;
     public Transform attackTransform;
     private EnemyAttack ea;
@@ -61,7 +62,7 @@ public class EnemyActiveDefense : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount);
+                damageable.Damage(damageAmount, knockbackForce * transform.right);
                 damageable.Stun(stunTime);
                 
                 GameObject player = GameObject.FindGameObjectWithTag("Player");
