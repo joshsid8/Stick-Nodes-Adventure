@@ -42,6 +42,8 @@ public class DialogueUI : MonoBehaviour
     {
         playerBars.SetActive(false);
         player.canAct = false;
+        player.isFrozen = true;
+        player.isFrozen = false;
         player.jumpForce = 0f;
         isAnimated = dialogueObject.IsAnimated;
         dialogueBox.SetActive(true);

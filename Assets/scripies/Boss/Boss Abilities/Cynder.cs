@@ -118,8 +118,6 @@ public class Cynder : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<PlayerController>().isFrozen = false;
-            player.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(player.GetComponent<Rigidbody2D>().linearVelocity.x,
-                player.GetComponent<Rigidbody2D>().linearVelocity.y);
         }
     }
     

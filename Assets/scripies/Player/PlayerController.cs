@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public float defaultGravity;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
-    [SerializeField] private float inputDirection;
+    public float inputDirection;
     public bool inCombat;
     public float combatTimer;
     public float currentCombatTimer;
@@ -87,8 +87,8 @@ public class PlayerController : MonoBehaviour
 	private PlayerCombat pco;
     private PlayerDefense pdf;
     private PlayerAbility pab;
-    
     private PlayerHealth ph;
+    private Knockback kb;
     public GameObject combatIndicator;
     
     // Start is called before the first frame update
@@ -107,8 +107,8 @@ public class PlayerController : MonoBehaviour
         pco = GetComponent<PlayerCombat>();
         pdf = GetComponent<PlayerDefense>();
         pab = GetComponent<PlayerAbility>();
-        
         ph  = GetComponent<PlayerHealth>();
+        kb = GetComponent<Knockback>();
         currentCombatTimer = 0;
     }
 
@@ -119,8 +119,8 @@ public class PlayerController : MonoBehaviour
         CheckMovementDirection();
         UpdateAnimation();
         CheckIfCanJump();
-        Dash();
-        Jump();
+        if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen) Dash();
+        if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen) Jump();
         VariableJumpHeight();
         WallSlide();
         Other();
@@ -144,7 +144,6 @@ public class PlayerController : MonoBehaviour
                 {
                     isMoving = false;
                     rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
                 }
             }
         }
@@ -182,7 +181,7 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
-        if (Input.GetButtonDown("Dash") && canDash && dashAbility && !pco.isAttacking && !pco.isAirAttacking && pab.energy >= dashEnergyCost && !pab.isPerformingAbility && !isFrozen)
+        if (Input.GetButtonDown("Dash") && canDash && dashAbility && !pco.isAttacking && !pco.isAirAttacking && pab.energy >= dashEnergyCost)
         {
             canDash = false;
             isDashing = true;
@@ -224,7 +223,6 @@ public class PlayerController : MonoBehaviour
                 {
                     isMoving = false;
                     rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
                 }
             }
         }
@@ -251,7 +249,7 @@ public class PlayerController : MonoBehaviour
             jumpBufferCounter = 0f;
             isWallSliding = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
-            WallJump();
+            if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen) WallJump();
         }
         else
         {
@@ -261,7 +259,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
-        if (isWallSliding && Input.GetButtonDown("Jump") && canWallJump && availableWallsLeft > 0 && !isDashing && !pab.isPerformingAbility && !isFrozen)
+        if (isWallSliding && Input.GetButtonDown("Jump") && canWallJump && availableWallsLeft > 0 && !isDashing)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, wallJumpForce);
             isWallSliding = false;
@@ -294,7 +292,7 @@ public class PlayerController : MonoBehaviour
     
     private void Jump()
     {
-        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && availableJumpsLeft > -1 && !pab.isPerformingAbility && !isFrozen)
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && availableJumpsLeft > -1)
         {
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -302,7 +300,7 @@ public class PlayerController : MonoBehaviour
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f; // Reset coyote time after jumping
         }
-        else if (doubleJump && canDoubleJump)
+        else if (doubleJump && canDoubleJump && !kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
         {
             DoubleJump();
         }
@@ -325,7 +323,7 @@ public class PlayerController : MonoBehaviour
 
     private void DoubleJump()
     {
-        if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding && !pab.isPerformingAbility && !isFrozen)
+        if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding)
         {
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -336,7 +334,7 @@ public class PlayerController : MonoBehaviour
     
     private void ApplyMovement()
     {
-        if (canMove && !isFrozen)
+        if (canMove && !isFrozen && !kb.IsBeingKnocked)
         {
             if (inputDirection > 0 || inputDirection < 0)
             {
@@ -347,12 +345,7 @@ public class PlayerController : MonoBehaviour
             {
                 isMoving = false;
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
             }
-        }
-        else
-        {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
     }
 
@@ -439,6 +432,7 @@ public class PlayerController : MonoBehaviour
                 coyoteTimeCounter = 0f;
             }
         }
+        if (isFrozen) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
     
     private void UpdateAnimation()

@@ -28,6 +28,9 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public float originalStunMultiplier;
     public float stunMultiplier = 1;
 
+    private Knockback kb;
+    public float knockbackMultiplier = 1;
+
     /*private bool invincibleTrigger;
     public bool invincible;
     public float invincibleDuration = 2f;
@@ -47,6 +50,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         playerController = GetComponent<PlayerController>();
         playerDefense = GetComponent<PlayerDefense>();
         playerController.animator = GetComponent<Animator>();
+        kb = GetComponent<Knockback>();
         
         originalRegenerationMultiplier = regenerationMultiplier;
         currentStunTime = stunTime * stunMultiplier;
@@ -134,6 +138,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             spriteRenderer.color = damageTint;
             isTinting = true;
             playerController.currentDashTime = 0f;
+            kb.CallKnockback(transform.right,Vector2.up, playerController.inputDirection);
         }
          
     }
@@ -145,11 +150,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             getStunned = true;
         }
-    }
-
-    public void KnockBack(float knockback)
-    {
-        playerController.rb.linearVelocity = playerController.rb.linearVelocity.normalized * knockback;
     }
 
     private void Stunned()
@@ -171,6 +171,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 GetComponent<PlayerCombat>().canAttack = true;
                 stunMultiplier = originalStunMultiplier;
                 isStunned = false;
+                playerController.rb.linearVelocity = new Vector2(0, playerController.rb.linearVelocity.y);
             }
         }
     }

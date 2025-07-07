@@ -164,6 +164,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8190457864786111480}
+  - component: {fileID: 5981564579104747636}
+  - component: {fileID: 1682819759057836702}
+  - component: {fileID: 7073844055959212241}
   - component: {fileID: 5951813543701095784}
   - component: {fileID: 386975709121032260}
   - component: {fileID: 3132542422178999997}
@@ -202,6 +205,52 @@ Transform:
   - {fileID: 3612494413874121855}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5981564579104747636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8962740245041502727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackTime: 0.2
+  hitDirectionForce: 10
+  constForce: 5
+  inputForce: 7.5
+--- !u!114 &1682819759057836702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8962740245041502727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d442195e51c8054ab4a9a710aaff0cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeBucks: 0
+  bucksText: {fileID: 0}
+--- !u!114 &7073844055959212241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8962740245041502727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29bf56e9ec733b24187efb7665c13596, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePoint: {fileID: 3612494413874121855}
+  projectile: {fileID: 4635439681108189195, guid: 667e82e968785584b9cacd24dca82004, type: 3}
+  abilityLifeTime: 1
+  abilityDamage: 20
 --- !u!114 &5951813543701095784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,17 +278,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 128938284da0e7142a8a71fc75f5b51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
   energyBar: {fileID: 0}
   energyText: {fileID: 0}
   maxEnergy: 50
   energy: 50
   energyCost: 10
+  damageMultiplier: 0
   originalEnergyRefill: 5
   energyRefill: 5
   modEnergyRefill: 2
   canAbility: 1
   abilityCooldown: 1
-  abilityPoint: {fileID: 3612494413874121855}
+  isPerformingAbility: 0
   ability: {fileID: 5951813543701095784}
 --- !u!114 &3132542422178999997
 MonoBehaviour:
@@ -253,6 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268816325641db34c88cccb86b03d22a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
   counterAbility: 1
   canCounter: 0
   counterWindow: 0
@@ -264,7 +316,7 @@ MonoBehaviour:
   counterStun: 1
   eLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   canBlock: 1
   isBlocking: 0
   damageResistance: 0.5
@@ -282,10 +334,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bab46a9a9c2bf14b9c9bd94e0bce670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: f1a41034b7c01e0458a51d7da1abe627, type: 2}
   healthBar: {fileID: 0}
   healthText: {fileID: 0}
   playerMaxHealth: 100
   playerHealth: 100
+  rawDamageResistance: 1
   regenerationMultiplier: 5
   modRegenerationMultiplier: 1
   originalRegenerationMultiplier: 5
@@ -295,8 +349,7 @@ MonoBehaviour:
   stunTime: 5
   originalStunMultiplier: 0
   stunMultiplier: 1
-  invincible: 0
-  invincibleDuration: 2
+  knockbackMultiplier: 1
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintDuration: 0.1
   tintSpeed: 5
@@ -313,12 +366,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99d46a10026c3e47880182c6e847571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 20
+  playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
+  m1Ability: 0
+  groundDamageAmount: 20
   attackTransform: {fileID: 8318362231415707056}
   attackRange: 1.5
   isAttacking: 0
   canAttack: 0
-  currentAttackCooldown: 0
+  attackEnergy: 5
   attackCooldown: 0.2
   airDamageAmount: 20
   airAttackTransform: {fileID: 8094868948852248977}
@@ -328,10 +383,10 @@ MonoBehaviour:
   canAirAttack: 0
   hasAirBoosted: 0
   airAttackCooldown: 0.15
-  currentAirAttackCooldown: 0
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
+  stunTime: 0.2
 --- !u!114 &261623171632948894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,8 +399,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b6be3f3ee4d1d14d8fe92aecfe1d05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
   canAct: 1
   canFlip: 1
+  isFrozen: 0
   canMove: 1
   movementSpeed: 10
   originalMovementSpeed: 10
@@ -355,13 +412,9 @@ MonoBehaviour:
   maxFallSpeed: 35
   fallMultiplier: 3
   lowJumpMultiplier: 5
-  availableJumpsLeft: 0
   canDoubleJump: 1
-  doublejump: 0
   coyoteTime: 0.2
-  coyoteTimeCounter: 0
   jumpBufferTime: 0.2
-  jumpBufferCounter: 0
   wallSlideSpeed: 1
   wallJumpForce: 25
   canWallJump: 1
@@ -384,8 +437,11 @@ MonoBehaviour:
   startDashTime: 0.65
   dashCooldown: 0.5
   dashAbility: 1
+  currentDashTime: 0
   isDashing: 0
   canDash: 0
+  dashEnergyCost: 5
+  defaultGravity: 0
   rb: {fileID: 0}
   animator: {fileID: 0}
   inputDirection: 0

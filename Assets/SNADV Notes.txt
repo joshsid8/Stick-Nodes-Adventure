@@ -5,7 +5,8 @@ SNADV Notes
     
     Bugs & Priorities:
         
-        Knockback Logic . _.
+        Find out a way to make the player not move at a constant force when they cannot act or is stunned
+            Knockback Logic . _.
     
     Optimisations:
         
