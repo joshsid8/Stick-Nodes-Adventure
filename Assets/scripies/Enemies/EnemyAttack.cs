@@ -11,6 +11,10 @@ public class EnemyAttack : MonoBehaviour
     private bool passiveCheck; // Certain action performed if the player isnt close or far
     private bool evasiveMode; // The enemy evading the player
     private bool passiveMode;
+
+    public string[] activeMoves; 
+    public string[] passiveMoves;
+    public string[] evasiveMoves;
     
     public float defensiveModeRadius;
     public float modDefensiveModeRadius;
@@ -22,16 +26,21 @@ public class EnemyAttack : MonoBehaviour
     
     public MonoBehaviour defensiveScript;
     
+    public float stunTime;
+    public float damageAmount;
+    public Vector2 knockbackForce;
+    private RaycastHit2D hit;
+    [SerializeField] private float attackRange;
+    public Transform attackTransform;
+    
     public LayerMask pLayer;
     private Transform playerTransform;
 
     public bool canAttack;
-    public float attackCooldown = 2f;
-    private bool isOnAttackCooldown;
-    private float currentAttackCooldown;
+    public float currentAttackCooldown;
     public bool stunnable;
     
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private Animator animator;
     private EnemyPatrol ep;
 
@@ -43,6 +52,7 @@ public class EnemyAttack : MonoBehaviour
         ep = GetComponent<EnemyPatrol>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        if (GetComponent<EnemyMovement>() != null) GetComponent<EnemyMovement>().enabled = true;
         originalDefensiveModeRadius = defensiveModeRadius;
         originalPassiveModeRadius = passiveModeRadius;
         
@@ -62,11 +72,7 @@ public class EnemyAttack : MonoBehaviour
         FacePlayer();
         CheckModes();
         StyleFactor();
-        AttackCooldown();
-        if (!canAttack)
-        {
-            isOnAttackCooldown = true;
-        }
+        CooldownTimer();
         
         if (passiveMode)
         {
@@ -116,13 +122,13 @@ public class EnemyAttack : MonoBehaviour
              defensiveCheck = false;
          }
          
-         if (defensiveCheck && !GetComponent<EnemyHealth>().isDead && !evasiveMode)
+         if (defensiveCheck && !GetComponent<EnemyHealth>().isDead && !evasiveMode && defensiveScript != null)
          {
              defensiveScript.enabled = true;
          }
          else
          {
-             defensiveScript.enabled = false;
+             if (defensiveScript != null) defensiveScript.enabled = false;
          }
          
          if (defensiveCheck && activeMode)
@@ -137,72 +143,82 @@ public class EnemyAttack : MonoBehaviour
 
     private void ActiveLogic()
     {
-        if (currentAttackCooldown <= 0)
+        if (canAttack)
         {
             if (!defensiveCheck)
             {
-                animator.SetTrigger("ActiveMove");
+                animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
             }
-            
-            currentAttackCooldown = attackCooldown;
-            canAttack = false;
+            currentAttackCooldown = 100f;
         }
 
     }
 
     private void PassiveLogic()
     {
-        if (currentAttackCooldown <= 0)
+        if (canAttack)
         {
             if (!passiveCheck && !defensiveCheck)
             {
-                animator.SetTrigger("ActiveMove");
+                animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
             }
             else if (defensiveCheck && !passiveCheck)
             {
-                animator.SetTrigger("EvasiveMove");
+                animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
             }
             else
             {
-                animator.SetTrigger("PassiveMove");
+                animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
             }
-            currentAttackCooldown = attackCooldown;
-            canAttack = false;
+            currentAttackCooldown = 100f;
         }
 
     }
 
     private void EvasiveLogic()
     {
-        if (currentAttackCooldown <= 0)
+        if (canAttack)
         {
             if (defensiveCheck)
             {
-                animator.SetTrigger("EvasiveMove");
+                animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
             }
             else if (passiveCheck)
             {
-                animator.SetTrigger("PassiveMove");
+                animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
             }
             else
             {
-                animator.SetTrigger("ActiveMove");
+                animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
             }
-            currentAttackCooldown = attackCooldown;
-            canAttack = false;
+            currentAttackCooldown = 100f;
         }
-            
-
     }
-    void AttackCooldown()
+
+    private void ActivateCooldown(float atkCD)
     {
-        if (isOnAttackCooldown)
-        { 
-            currentAttackCooldown -= Time.deltaTime;
-            if (currentAttackCooldown <= 0)
+        currentAttackCooldown = atkCD;
+        print("foom");
+    }
+
+    void CooldownTimer()
+    {
+        currentAttackCooldown -= Time.deltaTime;
+        if (currentAttackCooldown <= 0) canAttack = true;
+        else canAttack = false;
+    }
+
+    private void Attack()
+    {
+        hit = Physics2D.CircleCast(attackTransform.position, attackRange, transform.right, 0f, LayerMask.GetMask("Player"));
+        if (hit.collider != null)
+        {
+            PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
+            if (damageable != null)
             {
-                isOnAttackCooldown = false;
-                canAttack = true;
+                damageable.Damage(damageAmount, knockbackForce * transform.right);
+                damageable.Stun(stunTime);
+                FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }
         }
     }
@@ -244,6 +260,7 @@ public class EnemyAttack : MonoBehaviour
         else
             Debug.Log("So Clueless.");
     }
+    
     void FacePlayer()
     {
         if (canFacePlayer)
@@ -270,6 +287,8 @@ public class EnemyAttack : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, passiveModeRadius);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, defensiveModeRadius);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(attackTransform.position, attackRange);
     }
     
     void Flip()

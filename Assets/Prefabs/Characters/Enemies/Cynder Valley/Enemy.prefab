@@ -134,10 +134,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8339654333849830333}
   - component: {fileID: 8698436349063629657}
-  - component: {fileID: 5618687667287828891}
+  - component: {fileID: 2131039031582443626}
+  - component: {fileID: 8172104874274776891}
   - component: {fileID: 5774492939275019919}
-  - component: {fileID: 7974459862669153667}
-  - component: {fileID: 67890553153055747}
   - component: {fileID: 8455541738676426996}
   - component: {fileID: 2866762415245452275}
   - component: {fileID: 7115054256094536775}
@@ -212,7 +211,7 @@ MonoBehaviour:
   maxPopX: 5
   minPopY: 5
   maxPopY: 15
---- !u!114 &5618687667287828891
+--- !u!114 &2131039031582443626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,12 +220,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 6953562033605771950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
+  m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePoint: {fileID: 1248520969832997338}
-  projectile: {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
-  projectileSpeed: 10
+  knockbackTime: 0.25
+  hitDirectionForce: 1
+  inputForce: 1.1
+--- !u!114 &8172104874274776891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953562033605771950}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b12b5890efd0d54fa040c8c6dbc29e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashSpeed: 10
+  isDashing: 0
+  dashDirection: {x: 0, y: 0}
+  isFlyDashing: 0
+  jumpForceY: 10
+  jumpForceX: 2
+  isRandomised: 0
+  isHomingPlayer: 0
+  inWater: 0
 --- !u!114 &5774492939275019919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,56 +260,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   styleFactor: 2
-  defensiveModeRadius: 2.2
+  activeMoves:
+  - ActiveMove
+  passiveMoves:
+  - PassiveMove
+  evasiveMoves:
+  - EvasiveMove
+  - DefensiveMove
+  defensiveModeRadius: 4
   modDefensiveModeRadius: 6
-  passiveModeRadius: 12
+  passiveModeRadius: 15
   modPassiveModeRadius: 25
-  defensiveScript: {fileID: 7974459862669153667}
+  defensiveScript: {fileID: 0}
+  stunTime: 0.5
+  damageAmount: 10
+  knockbackForce: {x: 1, y: 0}
+  attackRange: 1.8
+  attackTransform: {fileID: 1463641665037281832}
   pLayer:
     serializedVersion: 2
     m_Bits: 33024
   canAttack: 1
-  attackCooldown: 1.2
+  currentAttackCooldown: 0
   stunnable: 1
+  rb: {fileID: 0}
   canFacePlayer: 1
---- !u!114 &7974459862669153667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6953562033605771950}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093e99145c95fd742ac2046ab5e20daa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageAmount: 20
-  stunTime: 0.5
-  attackRange: 1.9
-  attackTransform: {fileID: 1463641665037281832}
-  canAttack: 0
-  isOnCooldown: 0
-  attackCooldown: 1.6
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 256
---- !u!114 &67890553153055747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6953562033605771950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61ebab57912a3154a91b24aeca1af137, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashSpeed: 15
-  backDashSpeed: 18
-  dashDuration: 0.5
-  backDashDuration: 0.3
 --- !u!114 &8455541738676426996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,20 +298,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalking: 1
-  walkSpeed: 5
+  walkSpeed: 3
   eyeSight: 8.7
   hasFoundPlayer: 0
   playerCheck: {fileID: 5984153268703838876}
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
+  playerTransform: {fileID: 0}
   touchingWall: 0
   wallCheck: {fileID: 4244894846325867973}
   whatIsWall:
     serializedVersion: 2
     m_Bits: 192
   wallCheckRay: 3.5
-  onGround: 0
+  isGrounded: 0
   edgeCheck: {fileID: 2214132920280649281}
   groundLayer:
     serializedVersion: 2
@@ -340,11 +336,12 @@ MonoBehaviour:
   isDead: 0
   getStunned: 0
   currentStunTime: 0
-  stunMultiplier: 1
-  damageTint: {r: 1, g: 0, b: 0, a: 1}
+  stunMultiplier: 1.2
+  damageTint: {r: 1, g: 0.078431375, b: 0, a: 1}
   tintDuration: 0.1
   tintSpeed: 5
   isTinting: 0
+  movable: 1
 --- !u!212 &7115054256094536775
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -389,7 +386,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: e8fc07f1edd448e468a05825c5256534, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0fc783b5e8d6a0d42b4976f95421abc8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -410,7 +407,7 @@ Animator:
   m_GameObject: {fileID: 6953562033605771950}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 55913b38cb9d4b64c97fa9b550301f4d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 64b99967b541b87498e9300b560b3ad8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

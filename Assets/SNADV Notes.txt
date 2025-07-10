@@ -5,8 +5,12 @@ SNADV Notes
     
     Bugs & Priorities:
         
-	New Enemies
-	    Animate and design new enemies for each area
+        Enemies
+            Fishman beam attack to be added
+            Hostile Cynderians need to be adapted to the new attack logic
+        
+        Bugs
+            Player can sometimes slide indefinitely after getting hit
     
     Optimisations:
         

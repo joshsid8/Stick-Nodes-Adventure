@@ -47,5 +47,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1136002909
+    locked: 0
+  - name: Enemies & Bosses
+    uniqueID: 2496189875
+    locked: 0
+  - name: Player & NPCs
+    uniqueID: 2816733267
+    locked: 0
+  - name: FX
+    uniqueID: 1814916733
+    locked: 0
+  - name: Ground
+    uniqueID: 3255245545
+    locked: 0
   m_RenderingLayers:
   - Default

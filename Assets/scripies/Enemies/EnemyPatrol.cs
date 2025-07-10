@@ -10,14 +10,14 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private bool hasFoundPlayer = false;
     public Transform playerCheck;
     public LayerMask playerLayer;
-    private Transform playerTransform;
+    public Transform playerTransform;
     
     [SerializeField] private bool touchingWall;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask whatIsWall;
     [SerializeField] private float wallCheckRay = 2f;
     
-    [SerializeField] private bool onGround;
+    public bool isGrounded;
     [SerializeField] private Transform edgeCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float edgeCheckRay = 2f;
@@ -76,8 +76,8 @@ public class EnemyPatrol : MonoBehaviour
         {
             Flip();
         }
-        onGround = Physics2D.Raycast(edgeCheck.position, Vector2.down * transform.localScale.y, edgeCheckRay, groundLayer);
-        if (!onGround)
+        isGrounded = Physics2D.Raycast(edgeCheck.position, Vector2.down * transform.localScale.y, edgeCheckRay, groundLayer);
+        if (!isGrounded)
         {
             Flip();
         }

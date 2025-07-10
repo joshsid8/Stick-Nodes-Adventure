@@ -27,6 +27,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
 
     //other
     Animator animator;
+    EnemyAttack ea;
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,6 +37,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color; // Store the original color.
         kb = GetComponent<Knockback>();
+        ea = GetComponent<EnemyAttack>();
     }
 
     // Update is called once per frame
@@ -92,6 +94,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     {
         enemyHealth -= damageAmount;
         if (movable) kb.CallKnockback(knockbackForce,0);
+        if (ea.stunnable) ea.currentAttackCooldown = 0.1f;
         if (enemyHealth <= 0)
         {
             enemyHealth = 0;
