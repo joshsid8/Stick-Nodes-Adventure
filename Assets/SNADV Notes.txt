@@ -5,12 +5,15 @@ SNADV Notes
     
     Bugs & Priorities:
         
-        GUI
-            Title of where you are popping up
-            Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
+	New Enemies
+	    Animate and design new enemies for each area
     
     Optimisations:
         
+        GUI
+            Title of where you are popping up
+            Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
+
         MUSIC!!!
             Flexibility
         SFX
