@@ -22,6 +22,7 @@ public class EnemyMovement : MonoBehaviour
     // Checks
     [SerializeField] private bool isHomingPlayer;
     [SerializeField] private bool inWater;
+    [SerializeField] private bool inRange;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,6 +39,7 @@ public class EnemyMovement : MonoBehaviour
         FlyDash();
         animator.SetBool("inWater", inWater);
         if (isHomingPlayer) dashDirection = (ep.playerTransform.position - transform.position).normalized;
+        inRange = Physics2D.OverlapCircle(ea.attackTransform.position, ea.attackRange * 1.5f, LayerMask.GetMask("Player", "Invincible"));
     }
     private void Dash()
     {
@@ -45,13 +47,22 @@ public class EnemyMovement : MonoBehaviour
             : new Vector2(-dashSpeed, ea.rb.linearVelocity.y);
         else if (!isDashing) ea.rb.linearVelocity = new Vector2(ea.rb.linearVelocity.x, ea.rb.linearVelocity.y);
     }
-    
+
     private void FlyDash()
     {
-        if (isFlyDashing) ea.rb.linearVelocity = dashDirection * dashSpeed;
+        if (isFlyDashing)
+        {
+            ea.rb.linearVelocity = dashDirection * dashSpeed;
+            if (inRange)
+            {
+                isFlyDashing = false;
+                animator.SetBool("inRange", true);
+            }
+            else animator.SetBool("inRange", false);
+        }
         else ea.rb.linearVelocity = new Vector2(ea.rb.linearVelocity.x, ea.rb.linearVelocity.y);
     }
-    
+
     private void Jump()
     {
         if (ep.isGrounded)
@@ -63,5 +74,14 @@ public class EnemyMovement : MonoBehaviour
             }
             ea.rb.linearVelocity = new Vector2(jumpForceX, jumpForceY);
         }
+    }
+
+    private void FreezeX()
+    {
+        ea.rb.linearVelocity = new Vector2(0, ea.rb.linearVelocity.y);
+    }
+    private void FreezeY()
+    {
+        ea.rb.linearVelocity = new Vector2(ea.rb.linearVelocity.x, 0);
     }
 }

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 
-public class EnemyFireBall : MonoBehaviour
+public class EnemyFireProjectile : MonoBehaviour
 {
     public bool collided;
     public GameObject projectile; 

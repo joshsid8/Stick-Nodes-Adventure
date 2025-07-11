@@ -30,7 +30,7 @@ public class EnemyAttack : MonoBehaviour
     public float damageAmount;
     public Vector2 knockbackForce;
     private RaycastHit2D hit;
-    [SerializeField] private float attackRange;
+    public float attackRange;
     public Transform attackTransform;
     
     public LayerMask pLayer;
@@ -198,7 +198,6 @@ public class EnemyAttack : MonoBehaviour
     private void ActivateCooldown(float atkCD)
     {
         currentAttackCooldown = atkCD;
-        print("foom");
     }
 
     void CooldownTimer()
@@ -210,7 +209,7 @@ public class EnemyAttack : MonoBehaviour
 
     private void Attack()
     {
-        hit = Physics2D.CircleCast(attackTransform.position, attackRange, transform.right, 0f, LayerMask.GetMask("Player"));
+        hit = Physics2D.CircleCast(attackTransform.position, attackRange, transform.right, 0f, LayerMask.GetMask("Player", "Invincible"));
         if (hit.collider != null)
         {
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();

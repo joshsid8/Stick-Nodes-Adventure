@@ -125,7 +125,7 @@ public class Cynder : MonoBehaviour
     public void ProjectileShoot()
     {
         GameObject newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
-        EnemyFireBall fireballScript = newProjectile.GetComponent<EnemyFireBall>();
+        EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
         if (fireballScript != null)
         {
             fireballScript.SetValues(ba.isFacingRight, projectileSpeed, projectileDirection, false);
@@ -140,7 +140,7 @@ public class Cynder : MonoBehaviour
     public void SecondaryProjectileShoot()
     {
         GameObject newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
-        EnemyFireBall fireballScript = newProjectile.GetComponent<EnemyFireBall>();
+        EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
         if (fireballScript != null)
         {
             float rng = Random.Range(-2.0f, 2.0f);

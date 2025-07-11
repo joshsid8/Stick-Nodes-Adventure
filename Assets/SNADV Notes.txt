@@ -6,7 +6,6 @@ SNADV Notes
     Bugs & Priorities:
         
         Enemies
-            Fishman beam attack to be added
             Hostile Cynderians need to be adapted to the new attack logic
         
         Bugs

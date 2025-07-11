@@ -241,6 +241,13 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0
+    functionName: ShootBeam
+    data: 
+    objectReferenceParameter: {fileID: 8346622259834963805, guid: 2507b6c5f1ab7d043b1c776a3e7e16bd, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.7
     functionName: ActivateCooldown
     data: 
