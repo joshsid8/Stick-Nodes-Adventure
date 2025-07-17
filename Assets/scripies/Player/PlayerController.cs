@@ -438,6 +438,11 @@ public class PlayerController : MonoBehaviour
             }
         }
         if (isFrozen) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        if (!isRunning && !isDashing && !GetComponent<Knockback>().IsBeingKnocked && rb.linearVelocity.x > 0)
+        {
+            print("idk why bro is moving like that, so lets stop em!");
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
     }
     
     private void UpdateAnimation()

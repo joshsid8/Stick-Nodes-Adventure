@@ -38,7 +38,7 @@ public class EnemyMovement : MonoBehaviour
         Dash();
         FlyDash();
         animator.SetBool("inWater", inWater);
-        if (isHomingPlayer) dashDirection = (ep.playerTransform.position - transform.position).normalized;
+        if (isHomingPlayer) dashDirection = (ea.playerTransform.position - transform.position).normalized;
         inRange = Physics2D.OverlapCircle(ea.attackTransform.position, ea.attackRange * 1.5f, LayerMask.GetMask("Player", "Invincible"));
     }
     private void Dash()

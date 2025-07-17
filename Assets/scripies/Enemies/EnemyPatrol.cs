@@ -10,7 +10,6 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private bool hasFoundPlayer = false;
     public Transform playerCheck;
     public LayerMask playerLayer;
-    public Transform playerTransform;
     
     [SerializeField] private bool touchingWall;
     [SerializeField] private Transform wallCheck;
@@ -33,15 +32,6 @@ public class EnemyPatrol : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         isFacingRight = true;
         isWalking = true;
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
-        {
-            playerTransform = playerObject.transform;
-        }
-        else
-        {
-            Debug.LogError("bruh");
-        }
     }
 
     // Update is called once per frame
@@ -83,7 +73,7 @@ public class EnemyPatrol : MonoBehaviour
         }
         
         hasFoundPlayer = Physics2D.Raycast(playerCheck.position, isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x , eyeSight, playerLayer);
-        if (hasFoundPlayer && playerTransform != null || GetComponent<EnemyHealth>().enemyHealth < GetComponent<EnemyHealth>().enemyMaxHealth)
+        if (hasFoundPlayer || GetComponent<EnemyHealth>().enemyHealth < GetComponent<EnemyHealth>().enemyMaxHealth)
         {
             StartCoroutine(FoundPlayer());
         }
@@ -104,7 +94,6 @@ public class EnemyPatrol : MonoBehaviour
         GetComponent<EnemyAttack>().enabled = true;
         GetComponent<EnemyPatrol>().enabled = false;
     }
-    
 
     void Flip()
     {
@@ -114,14 +103,17 @@ public class EnemyPatrol : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.grey;
-        Vector3 rayDirection = isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x * eyeSight;
-        Gizmos.DrawLine(playerCheck.position, playerCheck.position + rayDirection);
-        Gizmos.color = Color.red;
-        Vector3 rayDirection2 = Vector2.down * transform.localScale.y * wallCheckRay;
-        Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection2);
-        Gizmos.color = Color.green;
-        Vector3 rayDirection3 = Vector2.down * transform.localScale.y * edgeCheckRay;
-        Gizmos.DrawLine(edgeCheck.position, edgeCheck.position + rayDirection3);
+        if (!GetComponent<EnemyAttack>())
+        {
+            Gizmos.color = Color.grey;
+            Vector3 rayDirection = isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x * eyeSight;
+            Gizmos.DrawLine(playerCheck.position, playerCheck.position + rayDirection);
+            Gizmos.color = Color.red;
+            Vector3 rayDirection2 = Vector2.down * transform.localScale.y * wallCheckRay;
+            Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection2);
+            Gizmos.color = Color.green;
+            Vector3 rayDirection3 = Vector2.down * transform.localScale.y * edgeCheckRay;
+            Gizmos.DrawLine(edgeCheck.position, edgeCheck.position + rayDirection3);
+        }
     }
 }

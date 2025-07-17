@@ -52,4 +52,4 @@ MonoBehaviour:
   colour: []
   colourIndex: 0
   canBeBold: 1
-  bold: 0100
+  bold: 01000000

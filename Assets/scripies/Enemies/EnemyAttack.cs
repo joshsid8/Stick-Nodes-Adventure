@@ -7,8 +7,8 @@ public class EnemyAttack : MonoBehaviour
     public float styleFactor;
 
     private bool activeMode; // The enemy attack/coming close to the player
-    private bool defensiveCheck; // When the player runs near
-    private bool passiveCheck; // Certain action performed if the player isnt close or far
+    public bool defensiveCheck; // When the player runs near
+    public bool passiveCheck; // Certain action performed if the player isnt close or far
     private bool evasiveMode; // The enemy evading the player
     private bool passiveMode;
 
@@ -24,8 +24,6 @@ public class EnemyAttack : MonoBehaviour
     public float modPassiveModeRadius;
     private float originalPassiveModeRadius;
     
-    public MonoBehaviour defensiveScript;
-    
     public float stunTime;
     public float damageAmount;
     public Vector2 knockbackForce;
@@ -34,9 +32,10 @@ public class EnemyAttack : MonoBehaviour
     public Transform attackTransform;
     
     public LayerMask pLayer;
-    private Transform playerTransform;
+    [HideInInspector] public Transform playerTransform;
 
     public bool canAttack;
+    public bool isAttacking;
     public float currentAttackCooldown;
     public bool stunnable;
     
@@ -57,14 +56,8 @@ public class EnemyAttack : MonoBehaviour
         originalPassiveModeRadius = passiveModeRadius;
         
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
-        {
-            playerTransform = playerObject.transform;
-        }
-        else
-        {
-            Debug.LogError("bruh");
-        }
+        if (playerObject != null) playerTransform = playerObject.transform;
+        else Debug.LogError("bruh");
     }
     
     private void Update()
@@ -90,108 +83,52 @@ public class EnemyAttack : MonoBehaviour
             defensiveModeRadius = originalDefensiveModeRadius;
         }
         
-        if (!stunnable)
-        {
-            GetComponent<EnemyHealth>().stunMultiplier = 0f;
-        }
-        else if (stunnable && passiveMode)
-        {
-            GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
-        }
-        else if (stunnable && evasiveMode)
-        {
-            GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
-        }
-        else
-        {
-            GetComponent<EnemyHealth>().stunMultiplier = 1f;
-        }
+        if (!stunnable) GetComponent<EnemyHealth>().stunMultiplier = 0f;
+        else if (stunnable && passiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
+        else if (stunnable && evasiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
+        else GetComponent<EnemyHealth>().stunMultiplier = 1f;
+        
     }
     
     private void CheckModes()
      {
          defensiveCheck = Physics2D.OverlapCircle(transform.position, defensiveModeRadius, pLayer);
          passiveCheck = Physics2D.OverlapCircle(transform.position, passiveModeRadius, pLayer);
-         
-         if (defensiveCheck)
-         {
-             passiveCheck = false;
-         }
-         else if (passiveCheck)
-         {
-             defensiveCheck = false;
-         }
-         
-         if (defensiveCheck && !GetComponent<EnemyHealth>().isDead && !evasiveMode && defensiveScript != null)
-         {
-             defensiveScript.enabled = true;
-         }
-         else
-         {
-             if (defensiveScript != null) defensiveScript.enabled = false;
-         }
+
+         if (defensiveCheck) passiveCheck = false;
+         else if (passiveCheck) defensiveCheck = false;
          
          if (defensiveCheck && activeMode)
          {
              rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-             if (!activeMode)
-             {
-                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-             }
+             if (!activeMode) rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
          }
      }
 
     private void ActiveLogic()
     {
-        if (canAttack)
-        {
-            if (!defensiveCheck)
-            {
-                animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
-            }
-            currentAttackCooldown = 100f;
-        }
-
+        if (canAttack && !isAttacking) 
+            if (!defensiveCheck) animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
     }
 
     private void PassiveLogic()
     {
-        if (canAttack)
+        if (canAttack && !isAttacking)
         {
-            if (!passiveCheck && !defensiveCheck)
-            {
-                animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
-            }
-            else if (defensiveCheck && !passiveCheck)
-            {
-                animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
-            }
-            else
-            {
-                animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
-            }
-            currentAttackCooldown = 100f;
+            if (!passiveCheck && !defensiveCheck) animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
+            else if (defensiveCheck && !passiveCheck) animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
+            else animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
         }
 
     }
 
     private void EvasiveLogic()
     {
-        if (canAttack)
+        if (canAttack && !isAttacking)
         {
-            if (defensiveCheck)
-            {
-                animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
-            }
-            else if (passiveCheck)
-            {
-                animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
-            }
-            else
-            {
-                animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
-            }
-            currentAttackCooldown = 100f;
+            if (defensiveCheck) animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
+            else if (passiveCheck) animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
+            else animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
         }
     }
 
@@ -250,14 +187,10 @@ public class EnemyAttack : MonoBehaviour
                 break;
         }
 
-        if (activeMode)
-            ActiveLogic();
-        else if (passiveMode) 
-            PassiveLogic();
-        else if (evasiveMode)
-            EvasiveLogic();
-        else
-            Debug.Log("So Clueless.");
+        if (activeMode) ActiveLogic();
+        else if (passiveMode) PassiveLogic();
+        else if (evasiveMode) EvasiveLogic();
+        else Debug.Log("So Clueless.");
     }
     
     void FacePlayer()
@@ -269,14 +202,8 @@ public class EnemyAttack : MonoBehaviour
             // Determine direction to player
             float directionToPlayer = playerTransform.position.x - transform.position.x;
 
-            if (directionToPlayer > 0 && !ep.isFacingRight)
-            {
-                Flip();
-            }
-            else if (directionToPlayer < 0 && ep.isFacingRight)
-            {
-                Flip();
-            }
+            if (directionToPlayer > 0 && !ep.isFacingRight) Flip();
+            else if (directionToPlayer < 0 && ep.isFacingRight) Flip();
         }
     }
 

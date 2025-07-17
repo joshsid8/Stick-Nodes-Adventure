@@ -5,20 +5,17 @@ SNADV Notes
     
     Bugs & Priorities:
         
-        Enemies
-            Hostile Cynderians need to be adapted to the new attack logic
+        GUI
+            Title of which area you are in
+            Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
         
-        Bugs
-            Player can sometimes slide indefinitely after getting hit
-    
+        
     Optimisations:
         
-        GUI
-            Title of where you are popping up
-            Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
-
-        MUSIC!!!
-            Flexibility
+        Music flexibility
+            Rather than the music being paused and played constantly, it just plays.
+            Make it so that the music never stops, but rather silences before moving onto another track
+            
         SFX
             vine boom XD
         

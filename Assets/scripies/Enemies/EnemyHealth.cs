@@ -1,6 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyMovement))]
+[RequireComponent(typeof(EnemyShootBlast))]
+[RequireComponent(typeof(EnemyAttack))]
+[RequireComponent(typeof(EnemyPatrol))]
+[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
+
 public class EnemyHealth : MonoBehaviour, EDamageables
 {
     //Enemy health
@@ -25,6 +33,10 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     private Knockback kb;
     public bool movable = true;
 
+    //phase 2
+    public float phase2;
+    public int phase2Style;
+    
     //other
     Animator animator;
     EnemyAttack ea;
@@ -47,6 +59,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         animator.SetBool("isDead", isDead);
         Stunned();
         Tint();
+        if (enemyHealth <= phase2 && phase2Style > 0) ea.styleFactor = phase2Style;
     }
     
     private void Stunned()

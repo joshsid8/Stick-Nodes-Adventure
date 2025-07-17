@@ -789,6 +789,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isGrounded
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isDashing
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2441048867520430572}
   m_Solo: 0
@@ -891,6 +894,12 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: isWallJumping
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: inWater
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1250,7 +1259,7 @@ AnimatorStateMachine:
     m_Position: {x: -370, y: -300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8655643867849806830}
-    m_Position: {x: -90, y: -70, z: 0}
+    m_Position: {x: -130, y: -80, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -700420781499879444}
     m_Position: {x: 120, y: -410, z: 0}
