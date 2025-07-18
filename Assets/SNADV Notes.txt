@@ -5,8 +5,15 @@ SNADV Notes
     
     Bugs & Priorities:
         
+        Player
+            Optimise melee, ability, and blocking combat logic
+                for abilities, ensure the player can use abilities in the air.
+                for melee, maybe dont use play instead of triggers
+                for blocking, make it so that the player takes normal damage when hit in the back
+        
         GUI
             Title of which area you are in
+            Ability scrolls and a separate ability arsenal
             Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
         
         

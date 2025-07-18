@@ -21,7 +21,7 @@ public class PlayerAbility : MonoBehaviour
     public bool canAbility;
     private float currentAbilityCooldown;
     public float abilityCooldown;
-    [SerializeField] public bool isPerformingAbility;
+    public bool isPerformingAbility;
     
     public MonoBehaviour ability;
     private PlayerController pc;
@@ -67,10 +67,10 @@ public class PlayerAbility : MonoBehaviour
     }
     void Fire()
     {
-        if (Input.GetButtonDown("Fire") && canAbility && !pc.isDashing && !pc.isWallSliding && !pd.isBlocking && pc.isGrounded && energy > energyCost && pc.canAct)
+        if (Input.GetButtonDown("Fire") && canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && !pd.isBlocking && energy > energyCost && pc.canAct)
         {
             canAbility = false;
-            pc.rb.linearVelocity = Vector2.zero;
+            pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
             animator.SetTrigger("Fire");
             pc.movementSpeed = 2f;
             currentAbilityCooldown = abilityCooldown;
