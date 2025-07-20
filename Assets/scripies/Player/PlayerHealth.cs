@@ -23,11 +23,11 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     
     [SerializeField] private bool getStunned;
     private bool isStunned;
-    public float stunTime = 0;
-    private float currentStunTime = 0;
+    public float stunTime;
+    private float currentStunTime;
     public float originalStunMultiplier;
     public float stunMultiplier = 1;
-
+    
     private Knockback kb;
     public float knockbackMultiplier = 1;
 
@@ -51,7 +51,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         playerDefense = GetComponent<PlayerDefense>();
         playerController.animator = GetComponent<Animator>();
         kb = GetComponent<Knockback>();
-        
         originalRegenerationMultiplier = regenerationMultiplier;
         currentStunTime = stunTime * stunMultiplier;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -90,7 +89,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             Debug.LogError("i cant find any scriptable objects!");
             enabled = false;
-            return;
         }
     }
     void Animation()
@@ -117,21 +115,40 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
     }
 
-    public void Damage(float damageAmount, Vector2 knockbackForce)
+    public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageType)
     {
-        if (playerDefense.isBlocking && !playerDefense.counterWindow)
+        if (facingRight && !playerController.isFacingRight || !facingRight && playerController.isFacingRight)
         {
-            playerHealth -= damageAmount * playerDefense.damageResistance;
-        }
-        else if (playerDefense.isBlocking && playerDefense.counterWindow)
-        {
-            playerHealth -= damageAmount * playerDefense.counterDamageResistance;
-            playerController.animator.SetTrigger("Counter");
-            playerDefense.counterWindow = false;
-            playerDefense.isBlocking = false;
+            if (playerDefense.isBlocking && !playerDefense.counterWindow && damageType < 1)
+            {
+                // blocking successfully
+                playerHealth -= damageAmount * playerDefense.damageResistance;
+                kb.CallKnockback(knockbackForce * playerDefense.damageResistance, playerController.inputDirection);
+            }
+            else if (playerDefense.isBlocking && playerDefense.counterWindow && damageType < 2)
+            {
+                // perfect blocking / counter
+                playerHealth -= damageAmount * playerDefense.counterDamageResistance;
+                playerController.animator.SetTrigger("Counter");
+                playerDefense.counterWindow = false;
+                playerDefense.isBlocking = false;
+            }
+            else
+            {
+                // the player not blocking at all
+                playerDefense.isBlocking = false;
+                playerHealth -= damageAmount * rawDamageResistance;
+                playerController.animator.SetTrigger("Damaged");
+                spriteRenderer.color = damageTint;
+                isTinting = true;
+                playerController.currentDashTime = 0f;
+                kb.CallKnockback(knockbackForce, playerController.inputDirection);
+            }
         }
         else
         {
+            // the player blocking but getting hit at the back
+            playerDefense.isBlocking = false;
             playerHealth -= damageAmount * rawDamageResistance;
             playerController.animator.SetTrigger("Damaged");
             //invincibleTrigger = true;

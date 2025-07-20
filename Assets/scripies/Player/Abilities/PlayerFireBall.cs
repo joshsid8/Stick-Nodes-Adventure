@@ -11,6 +11,7 @@ public class PlayerFireBall : MonoBehaviour
     private RaycastHit2D[] hits;
     [SerializeField] private float projectileRange;
     public LayerMask target;
+    private float playerDirection;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -42,10 +43,12 @@ public class PlayerFireBall : MonoBehaviour
         if (isFacingRightDirection)
         {
             transform.eulerAngles = new Vector3(0, 0, 90);
+            playerDirection = 1f;
         }
         else
         {
             transform.eulerAngles = new Vector3(0, 0, -90);
+            playerDirection = -1f;
         }
         // Apply initial velocity based on the direction
         rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
@@ -76,7 +79,7 @@ public class PlayerFireBall : MonoBehaviour
             if (eDamageable != null)
             {
                 eDamageable.Stun(projectileStunTime);
-                eDamageable.Damage(projectileDamage, projectileKnockbackForce);
+                eDamageable.Damage(projectileDamage, projectileKnockbackForce * playerDirection);
             }
         }
         // Destroy the fireball after it has performed its collision logic (e.g., dealt damage)

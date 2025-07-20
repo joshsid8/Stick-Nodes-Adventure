@@ -12,6 +12,8 @@ public class EnemyShootBlast : MonoBehaviour
     // Beam
     public float abilityLifetime;
     public float abilityProc;
+
+    public int damageType;
     
     // Stationary Attack
     
@@ -25,7 +27,7 @@ public class EnemyShootBlast : MonoBehaviour
         GameObject newProjectile = Instantiate(projectile, abilityPoint.position, abilityPoint.rotation);
         EnemyFireProjectile efp = newProjectile.GetComponent<EnemyFireProjectile>();
         
-        if (efp != null) efp.SetValues(ep.isFacingRight, projectileSpeed, Vector2.zero, false);
+        if (efp != null) efp.SetValues(ep.isFacingRight, projectileSpeed, Vector2.zero, false, damageType);
         else Debug.LogError("where is bro's projectile ability");
     }
     public void ShootBeam(GameObject beam)
@@ -33,7 +35,7 @@ public class EnemyShootBlast : MonoBehaviour
         GameObject newBeam = Instantiate(beam, abilityPoint.position, abilityPoint.rotation);
         EnemyBeam eb = newBeam.GetComponent<EnemyBeam>();
         
-        if (eb != null) eb.SetValues(ep.isFacingRight, abilityLifetime, abilityProc, Vector2.zero, false);
+        if (eb != null) eb.SetValues(ep.isFacingRight, abilityLifetime, abilityProc, Vector2.zero, false, damageType);
         else Debug.LogError("where is bro's beam ability");
     }
 }

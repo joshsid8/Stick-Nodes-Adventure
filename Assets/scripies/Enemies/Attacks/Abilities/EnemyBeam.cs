@@ -11,6 +11,7 @@ public class EnemyBeam : MonoBehaviour
     private float beamTimer;
     public bool activeHitbox;
     public float beamProc;
+    public int beamDamageType;
     [SerializeField] private float beamProcTimer;
 
     
@@ -36,13 +37,14 @@ public class EnemyBeam : MonoBehaviour
         beamProcTimer -= Time.deltaTime;
     }
 
-    public void SetValues(bool facingRight, float lifetime, float proc, Vector2 direction, bool directional)
+    public void SetValues(bool facingRight, float lifetime, float proc, Vector2 direction, bool directional, int damageType)
     {
         isFacingRightDirection = facingRight;
         beamLifetime = lifetime;
         beamProc = proc;
         isDirectional = directional;
         if (isDirectional) beamDirection = direction;
+        beamDamageType = damageType;
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -56,7 +58,7 @@ public class EnemyBeam : MonoBehaviour
                     PDamageable damageable = collision.gameObject.GetComponent<PDamageable>();
                     if (damageable != null)
                     {
-                        damageable.Damage(beamDamage, beamKnockbackForce * playerDirection);
+                        damageable.Damage(beamDamage, beamKnockbackForce * playerDirection, isFacingRightDirection, beamDamageType);
                         damageable.Stun(beamStunTime);
 
                         GameObject player = GameObject.FindGameObjectWithTag("Player");

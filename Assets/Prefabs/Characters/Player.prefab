@@ -219,7 +219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackTime: 0.2
   hitDirectionForce: 10
-  constForce: 5
   inputForce: 7.5
 --- !u!114 &1682819759057836702
 MonoBehaviour:
@@ -251,6 +250,7 @@ MonoBehaviour:
   projectile: {fileID: 4635439681108189195, guid: 667e82e968785584b9cacd24dca82004, type: 3}
   abilityLifeTime: 1
   abilityDamage: 20
+  abilityKnockbackForce: {x: 0, y: 0}
 --- !u!114 &5951813543701095784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +266,8 @@ MonoBehaviour:
   projectilePoint: {fileID: 3612494413874121855}
   projectile: {fileID: 4963594003989781806, guid: 9d2d568d70f8f6c4aacdab26ca0c1a3c, type: 3}
   abilityDamage: 10
+  abilityStunTime: 0
+  abilityKnockbackForce: {x: 0, y: 0}
 --- !u!114 &386975709121032260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,6 +316,7 @@ MonoBehaviour:
   counterRadius: 5
   counterDamage: 20
   counterStun: 1
+  counterKnockbackForce: {x: 0, y: 0}
   eLayer:
     serializedVersion: 2
     m_Bits: 1536
@@ -387,6 +390,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1536
   stunTime: 0.2
+  knockbackForce: {x: 0, y: 0}
 --- !u!114 &261623171632948894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,8 +417,8 @@ MonoBehaviour:
   fallMultiplier: 3
   lowJumpMultiplier: 5
   canDoubleJump: 1
-  coyoteTime: 0.2
-  jumpBufferTime: 0.2
+  coyoteTime: 0.1
+  jumpBufferTime: 0.15
   wallSlideSpeed: 1
   wallJumpForce: 25
   canWallJump: 1

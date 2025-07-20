@@ -45,15 +45,9 @@ public class PlayerDefense : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetButton("Block") && !pc.isWallSliding && pc.canAct)
-        { 
-            isBlocking = true;
-        }
-
+        if (Input.GetButton("Block") && !pc.isWallSliding && pc.canAct) isBlocking = true;
         Block();
-        
         animator.SetBool("isBlocking", isBlocking);
-        
     }
     private void SetValues()
     {
@@ -70,14 +64,14 @@ public class PlayerDefense : MonoBehaviour
         {
             Debug.LogError("no scriptable object found");
             enabled = false;
-            return;
         }
     }
     private void Block()
     {
         if (isBlocking && canBlock && !pc.isDashing && !pc.isWallSliding)
         {
-            pc.movementSpeed = blockMovementSpeed;
+            pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
+            if (pc.canMove) pc.canMove = false;
             pc.jumpForce = 0f;
             hp.stunMultiplier = 0f;
             pa.energyRefill = 0f;
@@ -91,8 +85,8 @@ public class PlayerDefense : MonoBehaviour
             if (Input.GetButtonUp("Block") || !pc.canAct || pc.isWallSliding || pc.isDashing)
             {
                 isBlocking = false;
+                pc.canMove = true;
                 hp.stunMultiplier = hp.originalStunMultiplier;
-                pc.movementSpeed = pc.originalMovementSpeed;
                 pc.jumpForce = pc.originalJumpForce;
                 pa.energyRefill = pc.inCombat ? pa.modEnergyRefill : pa.originalEnergyRefill;
                 currentCounterTime = 0f;

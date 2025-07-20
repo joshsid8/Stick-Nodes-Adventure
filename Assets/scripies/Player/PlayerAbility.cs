@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,6 +42,7 @@ public class PlayerAbility : MonoBehaviour
     {
         Fire();
         Energy();
+        animator.SetBool("isPerformingAbility", isPerformingAbility);
     }
 
     void SetValues()
@@ -62,7 +61,6 @@ public class PlayerAbility : MonoBehaviour
         {
             Debug.LogError("where is bros scriptable object");
             enabled = false;
-            return;
         }
     }
     void Fire()
@@ -71,28 +69,21 @@ public class PlayerAbility : MonoBehaviour
         {
             canAbility = false;
             pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
-            animator.SetTrigger("Fire");
-            pc.movementSpeed = 2f;
+            if (pc.isGrounded) animator.Play("Fire"); else animator.Play("AirFire");
             currentAbilityCooldown = abilityCooldown;
         }
 
         if (!canAbility)
         {
             currentAbilityCooldown -= Time.deltaTime;
-            if (currentAbilityCooldown <= 0)
-            {
-                pc.movementSpeed = pc.originalMovementSpeed;
-                canAbility = true;
-            }
+            if (currentAbilityCooldown <= 0) canAbility = true;
         }
     }
 
-    public IEnumerator FireAbility()
+    public void FireAbility()
     {
         energy -= energyCost;
         ability.Invoke("Execute", 0f);
-        yield return new WaitForSeconds(0.2f);
-        pc.movementSpeed = pc.originalMovementSpeed;
     }
 
     private void Energy()

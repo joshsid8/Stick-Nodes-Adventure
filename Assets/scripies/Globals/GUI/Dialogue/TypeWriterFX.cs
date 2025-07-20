@@ -128,7 +128,7 @@ public class TypeWriterFX : MonoBehaviour
             if (skip)
             {
                 textLabel.text = cleanText;
-                yield return new WaitUntil(() => Input.GetButtonDown("Submit") || Input.GetMouseButtonDown(0));
+                yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
                 break;
             }
         }

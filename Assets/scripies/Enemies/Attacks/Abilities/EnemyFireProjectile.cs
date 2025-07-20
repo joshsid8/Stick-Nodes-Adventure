@@ -7,10 +7,9 @@ public class EnemyFireProjectile : MonoBehaviour
     public bool collided;
     public GameObject projectile; 
     public float projectileSpeed;
-    private float projectileOriginalSpeed;
-    private float projectileReverseSpeed;
     public float projectileDamage;
     public float projectileStunTime;
+    public int projectileDamageType;
     public Vector2 projectileKnockbackForce;
     public bool isDirectional;
     public Vector2 projectileDirection;
@@ -34,19 +33,18 @@ public class EnemyFireProjectile : MonoBehaviour
         ea = GetComponent<EnemyAttack>();
         collided = false;
         Destroy(gameObject, 5f);
-        projectileOriginalSpeed = projectileSpeed;
-        projectileReverseSpeed = -projectileSpeed;
         
         transform.eulerAngles = new Vector3(0, 0, 0);
         ApplyInitialDirection();
     }
 
-    public void SetValues(bool facingRight, float speed, Vector2 direction, bool directional)
+    public void SetValues(bool facingRight, float speed, Vector2 direction, bool directional, int damageType)
     {
         isFacingRightDirection = facingRight;
         projectileSpeed = speed;
         isDirectional = directional;
         if (isDirectional) projectileDirection = direction;
+        projectileDamageType = damageType;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -94,7 +92,7 @@ public class EnemyFireProjectile : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(projectileDamage, projectileKnockbackForce * playerDirection);
+                damageable.Damage(projectileDamage, projectileKnockbackForce * playerDirection, isFacingRightDirection, projectileDamageType);
                 damageable.Stun(projectileStunTime);
 
                 GameObject player = GameObject.FindGameObjectWithTag("Player");

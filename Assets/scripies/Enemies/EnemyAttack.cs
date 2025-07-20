@@ -30,6 +30,7 @@ public class EnemyAttack : MonoBehaviour
     private RaycastHit2D hit;
     public float attackRange;
     public Transform attackTransform;
+    public int damageType;
     
     public LayerMask pLayer;
     [HideInInspector] public Transform playerTransform;
@@ -152,7 +153,7 @@ public class EnemyAttack : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, knockbackForce * transform.right);
+                damageable.Damage(damageAmount, knockbackForce * transform.right, ep.isFacingRight, damageType);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }

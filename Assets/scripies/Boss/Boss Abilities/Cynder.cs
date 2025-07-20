@@ -24,6 +24,7 @@ public class Cynder : MonoBehaviour
     [HideInInspector] public bool isInRange;
     [HideInInspector] public bool freezeMovement;
     [HideInInspector] public bool isFalling;
+    [SerializeField] private int damageType;
     
     // Throwing stuff and stomping
     public float throwCooldown;
@@ -128,7 +129,7 @@ public class Cynder : MonoBehaviour
         EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
         if (fireballScript != null)
         {
-            fireballScript.SetValues(ba.isFacingRight, projectileSpeed, projectileDirection, false);
+            fireballScript.SetValues(ba.isFacingRight, projectileSpeed, projectileDirection, false, damageType);
         }
         else
         {
@@ -145,7 +146,7 @@ public class Cynder : MonoBehaviour
         {
             float rng = Random.Range(-2.0f, 2.0f);
             projectileDirection = new Vector2(projectileDirection.x + rng, projectileDirection.y);
-            fireballScript.SetValues(ba.isFacingRight, secondaryProjectileSpeed, projectileDirection, true);
+            fireballScript.SetValues(ba.isFacingRight, secondaryProjectileSpeed, projectileDirection, true, damageType);
             
         }
         else
@@ -169,7 +170,7 @@ public class Cynder : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, knockbackForce * transform.right);
+                damageable.Damage(damageAmount, knockbackForce * transform.right, ba.isFacingRight, damageType);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }

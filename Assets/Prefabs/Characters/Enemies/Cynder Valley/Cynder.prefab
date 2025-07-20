@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8195243039380430539}
   - component: {fileID: 5781912641425779188}
+  - component: {fileID: 8287228556211095260}
+  - component: {fileID: 3381162588042025953}
   - component: {fileID: 3900648796567909267}
   - component: {fileID: 3680011792468434858}
   - component: {fileID: 8376931847354496412}
@@ -101,6 +103,56 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8287228556211095260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156917591073942580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5468a15a8888d7f458683b410b2dd508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moneyLoot: {fileID: 3237700672439869688, guid: f25228cf8dffce34ca1924c8f5226326, type: 3}
+  currencyType: {fileID: 11400000, guid: 3caca639c8826094ea6293f1f4ecd3e2, type: 2}
+  minMoneyAmount: 5
+  maxMoneyAmount: 10
+  itemLoot:
+  - {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
+  - {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
+  aspectLoot:
+  - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
+  possibleItems:
+  - {fileID: 11400000, guid: f766304c6cbec8f4295aafb92993180c, type: 2}
+  - {fileID: 11400000, guid: f766304c6cbec8f4295aafb92993180c, type: 2}
+  possibleAspects:
+  - {fileID: 11400000, guid: 8b4bae5a0d8ea3d4b84f5514335f1c83, type: 2}
+  itemChance:
+  - 100
+  - 50
+  aspectChance:
+  - 75
+  minPopX: 0
+  maxPopX: 0
+  minPopY: 0
+  maxPopY: 0
+--- !u!114 &3381162588042025953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156917591073942580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackTime: 0.25
+  hitDirectionForce: 1
+  inputForce: 1.1
 --- !u!114 &3900648796567909267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,11 +172,13 @@ MonoBehaviour:
   slashCooldown: 1.5
   stunTime: 0.3
   damageAmount: 20
+  knockbackForce: {x: 1, y: 0}
   attackRange: 2.11
   attackTransform: {fileID: 2954646569225375092}
   isInRange: 0
   freezeMovement: 0
   isFalling: 0
+  damageType: 0
   throwCooldown: 1
   projectilePoint: {fileID: 1328446686802652935}
   projectile: {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
@@ -212,6 +266,7 @@ MonoBehaviour:
   tintDuration: 0.5
   tintSpeed: 5
   isTinting: 0
+  movable: 1
 --- !u!114 &1670248596730534493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,7 +285,10 @@ MonoBehaviour:
   isTriggered: 0
   isForced: 1
   indicator: {fileID: 6522456533086263551}
-  dialogue: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
+  dialogue:
+  - {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
+  dialogueNo: 0
+  dialogueNoAmount: 0
   pLayer:
     serializedVersion: 2
     m_Bits: 256

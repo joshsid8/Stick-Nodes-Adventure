@@ -68,7 +68,7 @@ public class DialogueUI : MonoBehaviour
             if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
             animator = isAnimated ? GameObject.Find(npcNameLabel.text).GetComponent<Animator>() : null;
             yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
-            yield return new WaitUntil(() => Input.GetButtonDown("Submit") || Input.GetMouseButton(0));
+            yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
         }
 
         if (dialogueObject.PendingChoice)
