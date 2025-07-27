@@ -13,20 +13,22 @@ public class AudioManager : MonoBehaviour
 
     public GameObject[] gUI;
     
+    [SerializeField] private bool withPlayer = true;
     private PlayerController player;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         musicSource.clip = backgroundMusic[0];
         musicSource.Play();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        if (withPlayer) player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
         QuietOnGUI();
-        InCombat();
+        if (player != null) InCombat();
     }
 
     void InCombat()

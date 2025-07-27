@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     [SerializeField] private bool isDead;
     
     [SerializeField] private bool getStunned;
-    private bool isStunned;
+    [HideInInspector] public bool isStunned;
     public float stunTime;
     private float currentStunTime;
     public float originalStunMultiplier;

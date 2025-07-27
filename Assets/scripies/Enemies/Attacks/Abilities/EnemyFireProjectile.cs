@@ -13,6 +13,7 @@ public class EnemyFireProjectile : MonoBehaviour
     public Vector2 projectileKnockbackForce;
     public bool isDirectional;
     public Vector2 projectileDirection;
+    public float projectileLifeTime = 3f;
     
     private RaycastHit2D hit;
     [SerializeField] private float projectileRange;
@@ -32,7 +33,7 @@ public class EnemyFireProjectile : MonoBehaviour
         animator = GetComponent<Animator>();
         ea = GetComponent<EnemyAttack>();
         collided = false;
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, projectileLifeTime);
         
         transform.eulerAngles = new Vector3(0, 0, 0);
         ApplyInitialDirection();

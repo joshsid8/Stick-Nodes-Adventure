@@ -82,7 +82,7 @@ public class PlayerDefense : MonoBehaviour
                 counterWindow = true;
             }
             
-            if (Input.GetButtonUp("Block") || !pc.canAct || pc.isWallSliding || pc.isDashing)
+            if (Input.GetButtonUp("Block") || !pc.canAct || pc.isWallSliding || pc.isDashing || hp.isStunned)
             {
                 isBlocking = false;
                 pc.canMove = true;

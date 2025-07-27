@@ -6,7 +6,7 @@ SNADV Notes
     Hotfixes:
         
 	Scenes
-            Being able to move between scenes
+        Being able to move between scenes
 	    Data being transferred between scenes
 	    The player and enemies being spawned instead of pre-set
 

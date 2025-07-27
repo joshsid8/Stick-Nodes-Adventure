@@ -22,6 +22,11 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     private float stunTime = 0;
     [SerializeField] private float currentStunTime = 0;
     public float stunMultiplier = 1;
+    
+    //block logic
+    public bool isCountering;
+    public bool isBlocking;
+    public float damageResistance;
 
     //Tint variables
     public Color damageTint = Color.red; // The color to tint when damaged.
@@ -105,9 +110,18 @@ public class EnemyHealth : MonoBehaviour, EDamageables
 
     public void Damage(float damageAmount, Vector2 knockbackForce)
     {
-        enemyHealth -= damageAmount;
-        if (movable) kb.CallKnockback(knockbackForce,0);
-        if (ea.stunnable) ea.currentAttackCooldown = 0.1f;
+        if (isBlocking)
+        {
+            enemyHealth -= damageAmount * damageResistance;
+            if (movable) kb.CallKnockback(knockbackForce * 0.5f, 0);
+        }
+        else if (isCountering) animator.SetTrigger("Counter");
+        else
+        {
+            enemyHealth -= damageAmount;
+            if (movable) kb.CallKnockback(knockbackForce, 0);
+            if (ea.stunnable) ea.currentAttackCooldown = 0.1f;
+        }
         if (enemyHealth <= 0)
         {
             enemyHealth = 0;
@@ -121,10 +135,14 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     public void Stun(float stunDuration)
     {
         stunTime = stunDuration * stunMultiplier;
-        if (stunTime > 0)
-            getStunned = true;
+        if (stunTime > 0) getStunned = true;
     }
-    
+
+    private void Flash()
+    {
+        spriteRenderer.color = damageTint;
+        isTinting = true;
+    }
 
     private void Tint()
     {

@@ -53,9 +53,11 @@ MonoBehaviour:
   projectileSpeed: 10
   projectileDamage: 10
   projectileStunTime: 0.2
+  projectileDamageType: 0
   projectileKnockbackForce: {x: 0.5, y: 0}
   isDirectional: 0
   projectileDirection: {x: 0, y: 0}
+  projectileLifeTime: 3
   projectileRange: 0.65
   target:
     serializedVersion: 2
@@ -180,7 +182,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 49152
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
