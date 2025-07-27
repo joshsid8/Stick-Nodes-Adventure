@@ -10,14 +10,12 @@ public class AspectSO : CollectableSOBase
     public string[] floatStatsName;
     public float[] floatStats;
     
-    private PlayerManager stats;
     public override void Collect(GameObject objectCollected)
     {
-        stats = FindAnyObjectByType<PlayerManager>();
-        InvManager manager = FindAnyObjectByType<InvManager>();
-        if (manager != null)
+        InvManager invManager = FindAnyObjectByType<InvManager>();
+        if (invManager != null)
         {
-            manager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, this);
+            invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, this);
         }
         else
         {

@@ -37,9 +37,7 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         // Find and cache references to all player components
         pc = FindAnyObjectByType<PlayerController>();

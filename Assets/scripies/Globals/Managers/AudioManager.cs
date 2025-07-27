@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance {get; private set;}
+    
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
     
@@ -17,8 +19,15 @@ public class AudioManager : MonoBehaviour
     private PlayerController player;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        
         musicSource.clip = backgroundMusic[0];
         musicSource.Play();
         if (withPlayer) player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();

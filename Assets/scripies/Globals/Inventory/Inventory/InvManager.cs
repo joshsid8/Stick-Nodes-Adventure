@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class InvManager : MonoBehaviour
 {
+    public static InvManager Instance {get; private set;}
+    
     public GameObject inventoryMenu;
     private bool isActivated;
     private PlayerController player;
@@ -16,6 +18,12 @@ public class InvManager : MonoBehaviour
     
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         player = FindAnyObjectByType<PlayerController>();
         playerManager = FindAnyObjectByType<PlayerManager>();
 

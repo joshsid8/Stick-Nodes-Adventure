@@ -6,9 +6,9 @@ SNADV Notes
     Hotfixes:
         
 	Scenes
+	    Data Persistence
+	        Ensure all scripts are adapted to the singletons and persistent scripts
         Being able to move between scenes
-	    Data being transferred between scenes
-	    The player and enemies being spawned instead of pre-set
 
         GUI
             Title of which area you are in (if not mentioned already)

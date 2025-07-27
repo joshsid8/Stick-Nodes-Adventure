@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 
 public class DialogueUI : MonoBehaviour
 {
+    public static DialogueUI Instance {get; private set;}
+    
     [SerializeField] private GameObject dialogueBox;
     [SerializeField] private TMP_Text textLabel;
     [SerializeField] private TMP_Text npcNameLabel;
@@ -24,11 +25,18 @@ public class DialogueUI : MonoBehaviour
     
     private void Start()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        
         typeWriter = GetComponent<TypeWriterFX>();
         handler = GetComponent<DialogueResponseHandler>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         playerBars = GameObject.Find("PlayerBars");
-        invManager = GetComponent<InvManager>();
+        invManager = InvManager.Instance;
         CloseDialogue();
     }
 

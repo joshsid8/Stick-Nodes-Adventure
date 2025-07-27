@@ -14,11 +14,10 @@ public class ItemSO : CollectableSOBase
     
     public override void Collect(GameObject objectCollected)
     {
-        InvManager manager = FindAnyObjectByType<InvManager>();
-        if (manager != null)
+        if (InvManager.Instance != null)
         {
             // Call the InvManager's AddItem with ALL parameters
-            manager.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, null);
+            InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, null);
         }
         else
         {

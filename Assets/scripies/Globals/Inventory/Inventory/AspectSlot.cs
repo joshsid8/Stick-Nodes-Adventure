@@ -33,7 +33,7 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
     {
         if (invManager == null)
         {
-            invManager = FindAnyObjectByType<InvManager>();
+            invManager = InvManager.Instance;
             if (invManager == null) Debug.LogError("AspectSlot: InvManager not found on Awake!", this);
         }
         playerManager = FindAnyObjectByType<PlayerManager>();

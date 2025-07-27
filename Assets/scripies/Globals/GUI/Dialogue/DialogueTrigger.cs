@@ -22,13 +22,10 @@ public class DialogueTrigger : MonoBehaviour
     private Transform playerTransform;
     
     
-    private DialogueUI dialogueUI;
-    
-    private void Start()
+    private void Awake()
     {
-        dialogueUI = FindAnyObjectByType<DialogueUI>();
-        
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        dialogueBox = DialogueUI.Instance.gameObject;
+        GameObject playerObject = PlayerHealth.Instance.gameObject;
         if (playerObject != null)
         {
             playerTransform = playerObject.transform;
@@ -62,7 +59,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void RollThroughDialogue(int dialogueNumber)
     {
-        dialogueUI.ShowDialogue(dialogue[dialogueNumber]);
+        DialogueUI.Instance.ShowDialogue(dialogue[dialogueNumber]);
         if (dialogueBox.gameObject.activeInHierarchy && isTriggered && dialogueNoAmount > 0)
         {
             dialogueNoAmount--;

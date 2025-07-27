@@ -41,7 +41,6 @@ public class BossAttack : MonoBehaviour
     public bool isFacingRight;
     public bool canFacePlayer;
     [HideInInspector] public Transform playerTransform;
-    public GameObject bossBar;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -145,7 +144,7 @@ public class BossAttack : MonoBehaviour
         isTouchingWall = Physics2D.Raycast(wallCheck.position, Vector2.up * transform.localScale.y, wallCheckRay, LayerMask.GetMask("Wall"));
         animator.SetBool("isGrounded", isGrounded);
         animator.SetBool("isOnWall", isTouchingWall);
-        bossBar.gameObject.SetActive(isAttacking);
+        BossHealthUI.Instance.gameObject.SetActive(isAttacking);
         
         if (currentAttackCooldown > 0 && isAttacking)
         {

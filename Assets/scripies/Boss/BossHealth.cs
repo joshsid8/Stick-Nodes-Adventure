@@ -11,7 +11,7 @@ public class BossHealth : MonoBehaviour, EDamageables
     public TMP_Text bossTitle;
     public float bossMaxHealth = 500f;
     public float bossHealth = 500f;
-    public bool isDead = false;
+    public bool isDead;
     public string bossName;
     
     //phases
@@ -32,19 +32,20 @@ public class BossHealth : MonoBehaviour, EDamageables
     private BossAttack ba;
     Animator animator;
     float stunTime;
-    DialogueUI dialogue;
     private Knockback kb;
     public bool movable = true;
     
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        healthBar = BossHealthUI.Instance.healthBar;
+        healthText = BossHealthUI.Instance.healthText;
+        bossTitle = BossHealthUI.Instance.bossTitle;
         ba = GetComponent<BossAttack>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         bossMaxHealth = bossHealth;
-        dialogue = FindAnyObjectByType<DialogueUI>();
         kb = GetComponent<Knockback>();
     }
 
@@ -68,13 +69,13 @@ public class BossHealth : MonoBehaviour, EDamageables
             GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             GetComponent<BossAttack>().isAttacking = false;
             GetComponent<BossAttack>().rangeRadius = 0;
-            ba.bossBar.SetActive(false);
+            BossHealthUI.Instance.gameObject.SetActive(false);
             gameObject.layer = LayerMask.NameToLayer("Dead");
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
             yield return new WaitForSeconds(3);
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().currentCombatTimer = 0;
-            dialogue.ShowDialogue(deathDialogue);
+            DialogueUI.Instance.ShowDialogue(deathDialogue);
         }
     }
 

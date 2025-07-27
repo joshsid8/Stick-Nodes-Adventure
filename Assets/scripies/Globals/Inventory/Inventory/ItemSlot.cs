@@ -39,7 +39,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         if (invManager == null)
         {
-            invManager = FindAnyObjectByType<InvManager>();
+            invManager = InvManager.Instance;
             if (invManager == null) Debug.LogError("ItemSlot: InvManager not found on Awake!", this);
         }
         // It's crucial that equippedAspectSlots are assigned in the Inspector

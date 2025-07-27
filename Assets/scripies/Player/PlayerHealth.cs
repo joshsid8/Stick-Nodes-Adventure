@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour, PDamageable
 {
+    public static PlayerHealth Instance {get; private set;}
+    
     public PlayerStats playerStats;
     public Image healthBar;
     public TMP_Text healthText;
@@ -42,7 +45,17 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     private Color originalColor;
     [SerializeField] private bool isTinting;
     private SpriteRenderer spriteRenderer;
-    
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
