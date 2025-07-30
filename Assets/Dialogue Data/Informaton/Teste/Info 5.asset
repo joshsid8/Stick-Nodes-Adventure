@@ -63,3 +63,7 @@ MonoBehaviour:
   colourIndex: 4
   canBeBold: 0
   bold: 
+  speaker: Informaton (4)
+  alteredDialogue: {fileID: 11400000}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

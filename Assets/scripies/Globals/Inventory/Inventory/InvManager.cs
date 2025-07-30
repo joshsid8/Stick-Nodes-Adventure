@@ -6,7 +6,7 @@ public class InvManager : MonoBehaviour
     public static InvManager Instance {get; private set;}
     
     public GameObject inventoryMenu;
-    private bool isActivated;
+    public bool isActivated;
     private PlayerController player;
     public ItemSlot[] itemSlots;
     public AspectSlot[] aspectSlots;

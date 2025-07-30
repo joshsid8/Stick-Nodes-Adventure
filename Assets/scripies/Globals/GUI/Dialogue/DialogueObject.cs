@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Dialogue/Dialogue Object")]
@@ -48,4 +49,11 @@ public class DialogueObject : ScriptableObject
     public int colourIndex;
     public bool canBeBold;
     public bool[] bold;
+
+    [Header("NPC Control")] 
+    [Tooltip("Who is speaking?")] public string speaker;
+    public DialogueObject alteredDialogue;
+    
+    [Tooltip("Anything else needs to be affected by this dialogue?")] public string externalInstance;
+    public DialogueObject alteredExternalDialogue;
 }

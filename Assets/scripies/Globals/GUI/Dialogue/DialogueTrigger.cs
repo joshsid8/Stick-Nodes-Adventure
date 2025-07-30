@@ -7,15 +7,12 @@ public class DialogueTrigger : MonoBehaviour
     public float chatRadius;
     public Transform chatPoint;
     [SerializeField] private bool isInRange;
-    [SerializeField] private bool isTriggered;
+    public bool isTriggered;
     [SerializeField] private bool isForced;
     
     public GameObject indicator;
-    [SerializeField] DialogueObject[] dialogue;
-    [SerializeField] private int dialogueNo;
-    [SerializeField] private int dialogueNoAmount;
+    public DialogueObject dialogue;
     [SerializeField] private LayerMask pLayer;
-    [SerializeField] private GameObject dialogueBox;
 
     [SerializeField] private bool canTurn;
     [SerializeField] private bool isFacingRight;
@@ -24,7 +21,6 @@ public class DialogueTrigger : MonoBehaviour
     
     private void Awake()
     {
-        dialogueBox = DialogueUI.Instance.gameObject;
         GameObject playerObject = PlayerHealth.Instance.gameObject;
         if (playerObject != null)
         {
@@ -45,7 +41,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 isTriggered = true;
                 isForced = false;
-                RollThroughDialogue(dialogueNo);
+                DialogueUI.Instance.ShowDialogue(dialogue);
             }
         }
         else
@@ -53,19 +49,9 @@ public class DialogueTrigger : MonoBehaviour
             indicator.SetActive(false);
         }
 
-        if (!dialogueBox.gameObject.activeInHierarchy && isTriggered) isTriggered = false;
-        //if (isTriggered) indicator.SetActive(false);
+        if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
     }
 
-    private void RollThroughDialogue(int dialogueNumber)
-    {
-        DialogueUI.Instance.ShowDialogue(dialogue[dialogueNumber]);
-        if (dialogueBox.gameObject.activeInHierarchy && isTriggered && dialogueNoAmount > 0)
-        {
-            dialogueNoAmount--;
-            dialogueNo++;
-        }
-    }
     
     private void OnDrawGizmosSelected()
     {

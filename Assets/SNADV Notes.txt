@@ -6,8 +6,7 @@ SNADV Notes
     Hotfixes:
         
 	Scenes
-	    Data Persistence
-	        Ensure all scripts are adapted to the singletons and persistent scripts
+	    Checkpoints
         Being able to move between scenes
 
         GUI

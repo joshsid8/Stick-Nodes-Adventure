@@ -7,7 +7,7 @@ public class DialogueUI : MonoBehaviour
 {
     public static DialogueUI Instance {get; private set;}
     
-    [SerializeField] private GameObject dialogueBox;
+    public GameObject dialogueBox;
     [SerializeField] private TMP_Text textLabel;
     [SerializeField] private TMP_Text npcNameLabel;
     private TypeWriterFX typeWriter;
@@ -15,9 +15,7 @@ public class DialogueUI : MonoBehaviour
     private GameObject playerBars;
     public bool isAnimated;
     private PlayerController player;
-    [HideInInspector] public Animator animator;
-    InvManager invManager;
-    [SerializeField] GameObject inventory;
+    public Animator animator;
     [SerializeField] int textIndex;
     [SerializeField] int currentColourIndex;
     private bool isBold;
@@ -36,8 +34,7 @@ public class DialogueUI : MonoBehaviour
         handler = GetComponent<DialogueResponseHandler>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         playerBars = GameObject.Find("PlayerBars");
-        invManager = InvManager.Instance;
-        CloseDialogue();
+        CloseDialogue(null);
     }
 
     private void Update()
@@ -55,8 +52,8 @@ public class DialogueUI : MonoBehaviour
         player.jumpForce = 0f;
         isAnimated = dialogueObject.IsAnimated;
         dialogueBox.SetActive(true);
-        invManager.enabled = false;
-        inventory.SetActive(false);
+        InvManager.Instance.isActivated = false;
+        InvManager.Instance.inventoryMenu.SetActive(false);
         textIndex = dialogueObject.colourIndex;
         currentColourIndex = 0;
         currentBoldIndex = 0;
@@ -86,17 +83,18 @@ public class DialogueUI : MonoBehaviour
         else
         {
             ApplyCustomEffect(dialogueObject);
-            CloseDialogue();
+            CloseDialogue(dialogueObject);
         }
     }
 
-    private void CloseDialogue()
+    private void CloseDialogue(DialogueObject dialogueObject)
     {
         if (isAnimated)
         {
             isAnimated = false;
             animator = null;
         }
+
         typeWriter.actionFactor = 0;
         dialogueBox.SetActive(false);
         textLabel.text = String.Empty;
@@ -105,9 +103,18 @@ public class DialogueUI : MonoBehaviour
             player.canAct = true;
             player.jumpForce = player.originalJumpForce;
         }
+
         playerBars.SetActive(true);
-        invManager.enabled = true;
         textLabel.color = Color.black;
+        if (dialogueObject != null)
+        {
+            if (dialogueObject.alteredDialogue != null)
+                GameObject.Find(dialogueObject.speaker).GetComponent<DialogueTrigger>().dialogue = dialogueObject.alteredDialogue;
+            
+            if (dialogueObject.alteredExternalDialogue != null)
+                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().dialogue =
+                    dialogueObject.alteredExternalDialogue;
+        }
     }
 
     private IEnumerator ChoiceDialogue(DialogueObject dialogueObject)
@@ -118,7 +125,7 @@ public class DialogueUI : MonoBehaviour
             yield return typeWriter.Run(dialogueObject.ChoiceQuestion, textLabel, npcNameLabel);
             handler.ShowResponses(dialogueObject);
         }
-        else CloseDialogue();
+        else CloseDialogue(dialogueObject);
     }
     private void ApplyCustomEffect(DialogueObject dialogueObject)
     {
