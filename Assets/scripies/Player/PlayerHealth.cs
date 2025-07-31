@@ -48,8 +48,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     [SerializeField] private bool isTinting;
     private SpriteRenderer spriteRenderer;
 
-    public string currentScene;
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -58,7 +56,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             return;
         }
         Instance = this;
-        StartCoroutine(Spawn(0));
+        StartCoroutine(Spawn(0, true));
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -115,10 +113,11 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         playerController.animator.SetBool("isDead", isDead);
     }
 
-    public IEnumerator Spawn(float timer)
+    public IEnumerator Spawn(float timer, bool realSpawn)
     {
         yield return new WaitForSeconds(timer);
-        transform.position = playerController.currentCheckPoint.transform.position;
+        if (!realSpawn) transform.position = playerController.currentCheckPoint.transform.position;
+        else transform.position = playerController.currentSpawnPoint.transform.position;
     }
 
     IEnumerator Death()
@@ -130,12 +129,11 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             gameObject.layer = LayerMask.NameToLayer("Dead");
             playerController.canAct = false;
             yield return new WaitForSeconds(respawnTime);
-            StartCoroutine(Spawn(0));
+            StartCoroutine(Spawn(0, true));
             playerHealth = playerMaxHealth * 0.25f;
             deathToggle = false;
             isDead = false;
             gameObject.layer = LayerMask.NameToLayer("Player");
-            SceneManager.LoadScene(currentScene);
             playerController.canAct = true;
             playerController.currentCombatTimer = 0;
         }

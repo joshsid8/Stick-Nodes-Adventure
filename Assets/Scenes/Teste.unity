@@ -265,8 +265,8 @@ Transform:
   m_LocalScale: {x: 31.08218, y: 20.526358, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1311922853}
   - {fileID: 688631264}
+  - {fileID: 1311922853}
   - {fileID: 177574531}
   - {fileID: 888920559}
   m_Father: {fileID: 341918499}
@@ -397,7 +397,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc819fd1a0ede064193aeb2045d4e2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorObj: {fileID: 177574534}
+  doorObj:
+  - {fileID: 177574534}
+  - {fileID: 1311922857}
   objective: 2
   enemies: []
   boss: {fileID: 1023605494}
@@ -446,6 +448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780dd4f0b1f5dc44b8e5910317c1091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: 0
   oneTime: 0
 --- !u!61 &20875674
 BoxCollider2D:
@@ -3775,7 +3778,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc819fd1a0ede064193aeb2045d4e2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorObj: {fileID: 548825152}
+  doorObj:
+  - {fileID: 548825152}
   objective: 0
   enemies:
   - {fileID: 1583447939}
@@ -3917,6 +3921,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10278912ab7c89740bc6e1f56bb45438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapName: Cynder Valley
+  mapDescription: A hostile land ruled by the Keeper of Flames.
+  mapTextColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
+  mapBgColor: {r: 0.29411766, g: 0.19607843, b: 0.19607843, a: 1}
   newOst:
   - {fileID: 8300000, guid: fc393531e1e22a84485c076e1c1d9624, type: 3}
   - {fileID: 8300000, guid: 70aea786642af9e4f93925edccda9df4, type: 3}
@@ -3997,6 +4005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780dd4f0b1f5dc44b8e5910317c1091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: 0
   oneTime: 0
 --- !u!61 &617611290
 BoxCollider2D:
@@ -5264,6 +5273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780dd4f0b1f5dc44b8e5910317c1091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: 0
   oneTime: 0
 --- !u!61 &999634350
 BoxCollider2D:
@@ -5653,8 +5663,8 @@ Transform:
   m_GameObject: {fileID: 1129699804}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -34.41, y: 8.2048, z: -0.028428493}
-  m_LocalScale: {x: 1.6991037, y: 25.49591, z: 1}
+  m_LocalPosition: {x: -34.41, y: 11.404799, z: -0.028428493}
+  m_LocalScale: {x: 1.6991037, y: 19.09704, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 580845221}
@@ -6282,6 +6292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1311922853}
+  - component: {fileID: 1311922857}
   - component: {fileID: 1311922856}
   - component: {fileID: 1311922855}
   - component: {fileID: 1311922854}
@@ -6427,6 +6438,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1311922857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311922852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4cbf7639981a084eb85f4e6cb0e573e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectiveComplete: 0
+  finishTime: 1
 --- !u!1 &1363361952
 GameObject:
   m_ObjectHideFlags: 0
@@ -7697,6 +7722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780dd4f0b1f5dc44b8e5910317c1091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: 0
   oneTime: 0
 --- !u!61 &1664832564
 BoxCollider2D:
@@ -7808,8 +7834,8 @@ Transform:
   m_GameObject: {fileID: 1724618918}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.3064, y: -3.72, z: -0.028428493}
-  m_LocalScale: {x: 51.55154, y: 1.705, z: 1}
+  m_LocalPosition: {x: -9.406403, y: -3.72, z: -0.028428493}
+  m_LocalScale: {x: 51.752594, y: 1.705, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 580845221}
@@ -9111,6 +9137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780dd4f0b1f5dc44b8e5910317c1091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: 0
   oneTime: 0
 --- !u!61 &1986988694
 BoxCollider2D:
@@ -9598,6 +9625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780dd4f0b1f5dc44b8e5910317c1091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: 0
   oneTime: 0
 --- !u!61 &2063076649
 BoxCollider2D:
@@ -10078,6 +10106,14 @@ PrefabInstance:
     - target: {fileID: 5558473303081165278, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: m_Name
       value: SceneLoadTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_Size.x
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_Offset.x
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToLoad.Array.size

@@ -1247,7 +1247,7 @@ GameObject:
   - component: {fileID: 1579465752}
   - component: {fileID: 1579465755}
   m_Layer: 0
-  m_Name: Main
+  m_Name: Main Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1355,8 +1355,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoundingShape2D: {fileID: 0}
-  Damping: 1
-  SlowingDistance: 5
+  Damping: 2
+  SlowingDistance: 0
   OversizeWindow:
     Enabled: 1
     MaxWindowSize: 10

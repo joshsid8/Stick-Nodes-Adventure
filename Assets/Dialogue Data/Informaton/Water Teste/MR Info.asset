@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
-  m_Name: info
+  m_Name: MR Info
   m_EditorClassIdentifier: 
   npcName: Informaton
   dialogue:

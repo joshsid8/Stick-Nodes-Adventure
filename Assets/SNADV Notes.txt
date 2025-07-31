@@ -5,8 +5,9 @@ SNADV Notes
     
     Hotfixes:
         
+        Noxu and his temple
+        
         GUI
-            Title of which area you are in (if not mentioned already)
             Ability scrolls and a separate ability arsenal
             Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
             Dialogue

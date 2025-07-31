@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DoorObjective : MonoBehaviour
 {
-    public ObjectiveDoor doorObj;
+    public ObjectiveDoor[] doorObj;
     [SerializeField] Objectives objective;
 
     public GameObject[] enemies;
@@ -49,7 +49,10 @@ public class DoorObjective : MonoBehaviour
             case Objectives.DefeatEnemy:
                 if (enemies == null)
                 {
-                    doorObj.objectiveComplete = true;
+                    for (int i = 0; i < doorObj.Length; i++)
+                    {
+                        doorObj[i].objectiveComplete = true;
+                    }
                 }
                 break;
             case Objectives.FindKeys:
@@ -57,7 +60,13 @@ public class DoorObjective : MonoBehaviour
                 break;
             case Objectives.DefeatBoss:
                 BossHealth bossHealth = boss.GetComponent<BossHealth>();
-                if (bossHealth != null && bossHealth.isDead) doorObj.objectiveComplete = true;
+                if (bossHealth != null && bossHealth.isDead)
+                {
+                    for (int i = 0; i < doorObj.Length; i++)
+                    {
+                        doorObj[i].objectiveComplete = true;
+                    }
+                }
                 break;
             default:
                 print("Just clueless.");

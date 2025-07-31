@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask oneWayPlatformLayer; // Assign the "OneWayPlatform" layer in the Inspector
     public float dropThroughDuration = 0.3f;
     public GameObject currentCheckPoint;
+    public GameObject currentSpawnPoint;
 
     // Related to running and flipping
     private bool isRunning;
@@ -108,7 +109,6 @@ public class PlayerController : MonoBehaviour
         pab = GetComponent<PlayerAbility>();
         ph  = GetComponent<PlayerHealth>();
         kb = GetComponent<Knockback>();
-        currentCheckPoint = GameObject.Find("point");
         currentCombatTimer = 0;
     }
 

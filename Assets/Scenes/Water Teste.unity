@@ -449,6 +449,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10278912ab7c89740bc6e1f56bb45438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapName: Mystic Rivers
+  mapDescription: A waterborne archipelago filled to the brim with many distinctive
+    creatures...
+  mapTextColor: {r: 0.495283, g: 1, b: 0.9861676, a: 1}
+  mapBgColor: {r: 0.008899963, g: 0.33364302, b: 0.3773585, a: 1}
   newOst:
   - {fileID: 8300000, guid: c669484eb0d37a943bee55cb9de126ad, type: 3}
   - {fileID: 8300000, guid: 7a360ec1026e63e48ae4e2e8e4e26085, type: 3}
@@ -3348,6 +3353,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 6ed1bb57e09bf5e4e9b1149c90fa30cf, type: 2}
     - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: dialogueBox
       value: 

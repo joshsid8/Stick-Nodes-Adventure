@@ -10,7 +10,7 @@ public class Teleporter : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            PlayerHealth.Instance.StartCoroutine(PlayerHealth.Instance.Spawn(0));
+            PlayerHealth.Instance.StartCoroutine(PlayerHealth.Instance.Spawn(0, false));
             if (doesDamage) collision.GetComponent<PlayerHealth>().playerHealth -= damage;
         }
         else if (collision.CompareTag("Enemy"))
