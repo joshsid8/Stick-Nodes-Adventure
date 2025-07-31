@@ -6,7 +6,7 @@ SNADV Notes
     Hotfixes:
         
 	Scenes
-	    Checkpoints
+        Enhance respawn logic a little bit
         Being able to move between scenes
 
         GUI

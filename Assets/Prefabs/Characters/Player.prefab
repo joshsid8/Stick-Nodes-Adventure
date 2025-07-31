@@ -348,7 +348,9 @@ MonoBehaviour:
   originalRegenerationMultiplier: 5
   playerController: {fileID: 0}
   isDead: 0
+  respawnTime: 5
   getStunned: 0
+  isStunned: 0
   stunTime: 5
   originalStunMultiplier: 0
   stunMultiplier: 1
@@ -456,6 +458,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65536
   dropThroughDuration: 0.3
+  currentCheckPoint: {fileID: 0}
   isFacingRight: 1
   combatIndicator: {fileID: 0}
 --- !u!61 &3190464570260204841

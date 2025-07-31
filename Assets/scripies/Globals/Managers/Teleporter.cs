@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    public Transform teleportTarget; // The destination point for the teleportation.  Set this in the Inspector
+    public Transform teleportTarget;
 
     public bool doesDamage;
+    public float damage = 20;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            collision.transform.position = teleportTarget.position;
-            if (doesDamage) collision.GetComponent<PlayerHealth>().playerHealth = collision.GetComponent<PlayerHealth>().playerHealth - 20;
+            PlayerHealth.Instance.StartCoroutine(PlayerHealth.Instance.Spawn(0));
+            if (doesDamage) collision.GetComponent<PlayerHealth>().playerHealth -= damage;
         }
         else if (collision.CompareTag("Enemy"))
         {
-            collision.transform.position = teleportTarget.position;
-            if (doesDamage) collision.GetComponent<EnemyHealth>().enemyHealth = collision.GetComponent<EnemyHealth>().enemyHealth - 20;
+            if (doesDamage) collision.GetComponent<EnemyHealth>().enemyHealth -= damage * 9001;
         }
     }
 

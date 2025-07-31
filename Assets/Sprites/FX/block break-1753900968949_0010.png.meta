@@ -1,0 +1,403 @@
+fileFormatVersion: 2
+guid: bf8d916236989954cb1e6483b8c3ef87
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8508820020708366465
+    second: block break-1753900968949_0010_0
+  - first:
+      213: 1239855491393089057
+    second: block break-1753900968949_0010_1
+  - first:
+      213: -5254395416026268238
+    second: block break-1753900968949_0010_2
+  - first:
+      213: 1543205620077413566
+    second: block break-1753900968949_0010_3
+  - first:
+      213: 8430135311408529601
+    second: block break-1753900968949_0010_4
+  - first:
+      213: 4656228301200880137
+    second: block break-1753900968949_0010_5
+  - first:
+      213: -4285122475299735656
+    second: block break-1753900968949_0010_6
+  - first:
+      213: -5755090675562320231
+    second: block break-1753900968949_0010_7
+  - first:
+      213: 8635712591731987617
+    second: block break-1753900968949_0010_8
+  - first:
+      213: 3418485853624432803
+    second: block break-1753900968949_0010_9
+  - first:
+      213: -5267009429841752533
+    second: block break-1753900968949_0010_10
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_0
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 241
+        width: 49
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 188dd082ab6651670800000000000000
+      internalID: 8508820020708366465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_1
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 241
+        width: 86
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12e6d49100ad43110800000000000000
+      internalID: 1239855491393089057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_2
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 241
+        width: 50
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bd30564533a417b0800000000000000
+      internalID: -5254395416026268238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_3
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 236
+        width: 50
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb4c910d5519a6510800000000000000
+      internalID: 1543205620077413566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_4
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 240
+        width: 49
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c08bf4a66bddf470800000000000000
+      internalID: 8430135311408529601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_5
+      rect:
+        serializedVersion: 2
+        x: 1253
+        y: 238
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 902f23e58fe3e9040800000000000000
+      internalID: 4656228301200880137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_6
+      rect:
+        serializedVersion: 2
+        x: 1390
+        y: 241
+        width: 49
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89777b0ffcf2884c0800000000000000
+      internalID: -4285122475299735656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_7
+      rect:
+        serializedVersion: 2
+        x: 1451
+        y: 240
+        width: 49
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99ee1f8b58fc120b0800000000000000
+      internalID: -5755090675562320231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_8
+      rect:
+        serializedVersion: 2
+        x: 1513
+        y: 244
+        width: 45
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a49d8429d638d770800000000000000
+      internalID: 8635712591731987617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_9
+      rect:
+        serializedVersion: 2
+        x: 1570
+        y: 239
+        width: 49
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a87bfe95c6e07f20800000000000000
+      internalID: 3418485853624432803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block break-1753900968949_0010_10
+      rect:
+        serializedVersion: 2
+        x: 1746
+        y: 241
+        width: 49
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2e46a154d2d7e6b0800000000000000
+      internalID: -5267009429841752533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      block break-1753900968949_0010_0: 8508820020708366465
+      block break-1753900968949_0010_1: 1239855491393089057
+      block break-1753900968949_0010_10: -5267009429841752533
+      block break-1753900968949_0010_2: -5254395416026268238
+      block break-1753900968949_0010_3: 1543205620077413566
+      block break-1753900968949_0010_4: 8430135311408529601
+      block break-1753900968949_0010_5: 4656228301200880137
+      block break-1753900968949_0010_6: -4285122475299735656
+      block break-1753900968949_0010_7: -5755090675562320231
+      block break-1753900968949_0010_8: 8635712591731987617
+      block break-1753900968949_0010_9: 3418485853624432803
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

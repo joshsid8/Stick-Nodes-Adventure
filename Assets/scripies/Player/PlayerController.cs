@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem; // For the Input System (though not fully implemented yet)
 
 public class PlayerController : MonoBehaviour
 {
@@ -77,7 +75,8 @@ public class PlayerController : MonoBehaviour
     public float combatTimer;
     public float currentCombatTimer;
     public LayerMask oneWayPlatformLayer; // Assign the "OneWayPlatform" layer in the Inspector
-    public float dropThroughDuration = 0.3f; 
+    public float dropThroughDuration = 0.3f;
+    public GameObject currentCheckPoint;
 
     // Related to running and flipping
     private bool isRunning;
@@ -109,6 +108,7 @@ public class PlayerController : MonoBehaviour
         pab = GetComponent<PlayerAbility>();
         ph  = GetComponent<PlayerHealth>();
         kb = GetComponent<Knockback>();
+        currentCheckPoint = GameObject.Find("point");
         currentCombatTimer = 0;
     }
 

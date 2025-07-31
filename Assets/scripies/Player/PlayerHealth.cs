@@ -1,4 +1,4 @@
-using System;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -23,6 +23,8 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     PlayerDefense playerDefense;
 
     [SerializeField] private bool isDead;
+    private bool deathToggle;
+    public float respawnTime;
     
     [SerializeField] private bool getStunned;
     [HideInInspector] public bool isStunned;
@@ -46,6 +48,8 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     [SerializeField] private bool isTinting;
     private SpriteRenderer spriteRenderer;
 
+    public string currentScene;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -54,6 +58,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             return;
         }
         Instance = this;
+        StartCoroutine(Spawn(0));
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -76,7 +81,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     void Update()
     {
         Animation();
-        Death();
+        StartCoroutine(Death());
         Stunned();
         Tint();
         //StartCoroutine(IFrames());
@@ -110,21 +115,33 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         playerController.animator.SetBool("isDead", isDead);
     }
 
-    void Death()
+    public IEnumerator Spawn(float timer)
     {
-        if (playerHealth <= 0)
-        {
-            isDead = true;
-        }
-        else
-        {
-            isDead = false;
-        }
+        yield return new WaitForSeconds(timer);
+        transform.position = playerController.currentCheckPoint.transform.position;
+    }
 
-        if (isDead)
+    IEnumerator Death()
+    {
+        if (playerHealth <= 0 && !deathToggle)
         {
+            deathToggle = true;
+            isDead = true;
             gameObject.layer = LayerMask.NameToLayer("Dead");
             playerController.canAct = false;
+            yield return new WaitForSeconds(respawnTime);
+            StartCoroutine(Spawn(0));
+            playerHealth = playerMaxHealth * 0.25f;
+            deathToggle = false;
+            isDead = false;
+            gameObject.layer = LayerMask.NameToLayer("Player");
+            SceneManager.LoadScene(currentScene);
+            playerController.canAct = true;
+            playerController.currentCombatTimer = 0;
+        }
+        else if (playerHealth < 0)
+        {
+            isDead = false;
         }
     }
 
