@@ -5,10 +5,6 @@ SNADV Notes
     
     Hotfixes:
         
-	Scenes
-        Enhance respawn logic a little bit
-        Being able to move between scenes
-
         GUI
             Title of which area you are in (if not mentioned already)
             Ability scrolls and a separate ability arsenal
@@ -21,7 +17,6 @@ SNADV Notes
     Optimisations:
         
         Music flexibility
-            Rather than the music being paused and played constantly, it just plays.
             Make it so that the music never stops, but rather silences before moving onto another track
             
         SFX

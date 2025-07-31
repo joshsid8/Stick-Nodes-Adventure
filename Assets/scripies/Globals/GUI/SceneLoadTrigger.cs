@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class SceneLoadTrigger : MonoBehaviour
 {
-    [SerializeField] private string[] scenesToLoad;
-    [SerializeField] private string[] scenesToUnload;
+    [SerializeField] private SceneField[] scenesToLoad;
+    [SerializeField] private SceneField[] scenesToUnload;
     
     private GameObject player;
     void Awake()
@@ -29,13 +29,13 @@ public class SceneLoadTrigger : MonoBehaviour
             for (int j = 0; j < SceneManager.sceneCount; j++)
             {
                 Scene loadedScene = SceneManager.GetSceneAt(j);
-                if (loadedScene.name == scenesToLoad[i])
+                if (loadedScene.name == scenesToLoad[i].SceneName)
                 {
                     isSceneLoaded = true;
                     break;
                 }
             }
-            if (!isSceneLoaded) SceneManager.LoadSceneAsync(scenesToLoad[i], LoadSceneMode.Additive);
+            if (!isSceneLoaded) SceneManager.LoadSceneAsync(scenesToLoad[i].SceneName, LoadSceneMode.Additive);
         }
     }
 

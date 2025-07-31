@@ -798,8 +798,12 @@ MonoBehaviour:
   objectsToHide:
   - {fileID: 286162757}
   - {fileID: 523547195}
-  persistentGameplay: Water Teste
-  levelScene: Teste
+  persistentGameplay:
+    m_SceneAsset: {fileID: 102900000, guid: 1ef7b59d06af4ec499fa9ae6cc5fa1eb, type: 3}
+    m_SceneName: Persistent Objects
+  levelScene:
+    m_SceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
+    m_SceneName: Teste
 --- !u!4 &722140409
 Transform:
   m_ObjectHideFlags: 0
@@ -1395,6 +1399,7 @@ MonoBehaviour:
   musicVolume: 0.5
   gUI: []
   withPlayer: 0
+  toggle: 0
 --- !u!4 &2058421851
 Transform:
   m_ObjectHideFlags: 0

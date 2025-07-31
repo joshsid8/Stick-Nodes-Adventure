@@ -5,7 +5,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance {get; private set;}
     
-    [SerializeField] private AudioSource musicSource;
+    public AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
     
     public AudioClip[] backgroundMusic;
@@ -17,6 +17,8 @@ public class AudioManager : MonoBehaviour
     
     [SerializeField] private bool withPlayer = true;
     private PlayerController player;
+
+    [SerializeField] private bool toggle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -42,14 +44,16 @@ public class AudioManager : MonoBehaviour
 
     void InCombat()
     {
-        if (player.inCombat)
+        if (player.inCombat && !toggle)
         {
+            toggle = true;
             musicSource.Pause();
             musicSource.clip = backgroundMusic[1];
             musicSource.Play();
         }
-        else
+        else if (!player.inCombat)
         {
+            toggle = false;
             musicSource.Pause();
             musicSource.clip = backgroundMusic[0];
             musicSource.Play();
