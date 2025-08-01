@@ -993,6 +993,115 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!1001 &117590085
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -31.80732
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.9734383
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10.849544
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670546194403002887, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5558473303081165278, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_Name
+      value: SceneLoadTrigger (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_Size.x
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_Size.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_Offset.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: m_Offset.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToLoad.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: 'scenesToLoad.Array.data[0]'
+      value: Water Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToLoad.Array.data[0].m_SceneName
+      value: Earth Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToLoad.Array.data[1].m_SceneName
+      value: Earth Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToLoad.Array.data[0].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToLoad.Array.data[1].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[0].m_SceneName
+      value: Water Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[0].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
 --- !u!1 &120814934
 GameObject:
   m_ObjectHideFlags: 0
@@ -10117,7 +10226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToLoad.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: 'scenesToLoad.Array.data[0]'
@@ -10128,9 +10237,17 @@ PrefabInstance:
       value: Water Teste
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToLoad.Array.data[1].m_SceneName
+      value: Earth Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToLoad.Array.data[0].m_SceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToLoad.Array.data[1].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10154,3 +10271,4 @@ SceneRoots:
   - {fileID: 29777567}
   - {fileID: 214149323}
   - {fileID: 9075578306459573741}
+  - {fileID: 117590085}

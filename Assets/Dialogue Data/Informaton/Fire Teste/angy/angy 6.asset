@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
-  m_Name: angy 1
+  m_Name: angy 6
   m_EditorClassIdentifier: 
   npcName: Informaton...
   dialogue:
-  - '#AND?! YOU WANT A MEDAL OR SUM?! I DONT CARE >:('
-  - '#GET *OUUT
-
-
-    (you have been slightly damaged.)'
+  - Thats exactly what the hell i thought. #Never speak to me again
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -40,7 +36,7 @@ MonoBehaviour:
     appliesBooleanChange: 0
     targetBooleanVariableName: 
     newBooleanValue: 0
-  appliesFloatChange: 1
+  appliesFloatChange: 0
   targetFloatVariableName: PlayerHealth
   newFloatValue: 0.01
   appliesBooleanChange: 0
@@ -49,9 +45,12 @@ MonoBehaviour:
   canDropItem: 0
   itemDrop: []
   itemType: []
-  canBeColoured: 1
-  colour:
-  - {r: 1, g: 0, b: 0, a: 1}
+  canBeColoured: 0
+  colour: []
   colourIndex: 0
   canBeBold: 0
-  bold: 00
+  bold: 
+  speaker: Informaton (2)
+  alteredDialogue: {fileID: 11400000, guid: 8a1ecdc7959551d479209fa0e6481c05, type: 2}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

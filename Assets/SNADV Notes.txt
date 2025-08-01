@@ -3,17 +3,11 @@ SNADV Notes
     Ahh man...
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
-    Hotfixes:
-        
-        Noxu and his temple
+    Hotfixes & Priorities:
         
         GUI
-            Ability scrolls and a separate ability arsenal
             Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
-            Dialogue
-                Make another feature that changes the dialogue of an npc after another dialogue has been triggered
-                For instance, once an option has been used, the dialogue for the npc will be something else.
-        
+            Ability scrolls and a separate ability arsenal
         
     Optimisations:
         
@@ -27,17 +21,16 @@ SNADV Notes
     Things to be added:
         
         More Enemy Logic
-            Flying, blocking, etc
+            Flying/Swimming
         
-        Sira, Noxu & TJ Boss Logic
-        
-        Update Cynder's phase 2 animations
+        Sira & TJ Boss Logic
         
         Shop logic
         
         Quest Logic
         
         Mini Bosses
+            a normal enemy-boss hybrid
         
         Obstacles
             Keys

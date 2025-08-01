@@ -10,26 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
-  m_Name: angy 4
+  m_Name: Info 4
   m_EditorClassIdentifier: 
-  npcName: Informaton
+  npcName: Informaton...
   dialogue:
-  - '#LEAVE ME ALONE'
-  - '#LOOK AT YOU'
-  - '#WHERE DID YOUR HAIR GO?!'
-  - '#YOU LOOK DISGUSTING'
-  - '#NO ONE EVER THINKS OF YOU UNLESS THEY HAVE ABSOLUTELY NO CHOICE BUT TO'
-  - '#HOW MANY MIRROS HAVE YOU BROKEN DUE TO THE DISFIGURATION YOU CALL A FACE?!'
-  - '#YOU DONT EVEN HAVE A DAYUM FACE'
-  - '#LEAVE ME ALONE, ITS THE LAST TIME IM TELLING YOU'
-  pendingChoice: 1
-  choiceQuestion: '
-
-    Will you leave bro alone?'
+  - Thats what i thought! Go on somewhere dawg
+  pendingChoice: 0
+  choiceQuestion: 
   isAnimated: 0
   yesResponse:
-    responseText: Yes...
-    dialogueObject: {fileID: 11400000, guid: 6f57947329cf9e849a81ff276a555c38, type: 2}
+    responseText: I beat the Boss!
+    dialogueObject: {fileID: 0}
     appliesFloatChange: 0
     targetFloatVariableName: 
     newFloatValue: 0
@@ -37,8 +28,8 @@ MonoBehaviour:
     targetBooleanVariableName: 
     newBooleanValue: 0
   noResponse:
-    responseText: No!
-    dialogueObject: {fileID: 11400000, guid: 8a1ecdc7959551d479209fa0e6481c05, type: 2}
+    responseText: Dont worry...
+    dialogueObject: {fileID: 0}
     appliesFloatChange: 0
     targetFloatVariableName: 
     newFloatValue: 0
@@ -47,16 +38,19 @@ MonoBehaviour:
     newBooleanValue: 0
   appliesFloatChange: 0
   targetFloatVariableName: PlayerHealth
-  newFloatValue: 0.01
+  newFloatValue: 200
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
   canDropItem: 0
   itemDrop: []
   itemType: []
-  canBeColoured: 1
-  colour:
-  - {r: 1, g: 0, b: 0, a: 1}
+  canBeColoured: 0
+  colour: []
   colourIndex: 0
   canBeBold: 0
-  bold: 00
+  bold: 
+  speaker: Informaton (2)
+  alteredDialogue: {fileID: 11400000, guid: 92c2213285191f340b5ae6a75857dca3, type: 2}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

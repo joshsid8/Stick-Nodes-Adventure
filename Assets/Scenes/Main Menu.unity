@@ -803,7 +803,7 @@ MonoBehaviour:
     m_SceneName: Persistent Objects
   levelScene:
     m_SceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
-    m_SceneName: Teste
+    m_SceneName: Fire Teste
 --- !u!4 &722140409
 Transform:
   m_ObjectHideFlags: 0
