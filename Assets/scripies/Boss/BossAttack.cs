@@ -143,7 +143,6 @@ public class BossAttack : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         isTouchingWall = Physics2D.Raycast(wallCheck.position, Vector2.up * transform.localScale.y, wallCheckRay, LayerMask.GetMask("Wall"));
         animator.SetBool("isGrounded", isGrounded);
-        animator.SetBool("isOnWall", isTouchingWall);
         BossHealthUI.Instance.gameObject.SetActive(isAttacking);
         
         if (currentAttackCooldown > 0 && isAttacking)
