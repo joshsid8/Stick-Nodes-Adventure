@@ -4,7 +4,6 @@ using System.Collections;
 
 public class EnemyFireProjectile : MonoBehaviour
 {
-    public bool collided;
     public GameObject projectile; 
     public float projectileSpeed;
     public float projectileDamage;
@@ -19,20 +18,20 @@ public class EnemyFireProjectile : MonoBehaviour
     [SerializeField] private float projectileRange;
     public LayerMask target;
     
-    private Transform playerTransform;
-    private EnemyAttack ea;
+    private Transform playerTransform; 
     private bool isFacingRightDirection;
     private float playerDirection;
     private Rigidbody2D rb;
     private Animator animator;
+    [SerializeField] private AnimationClip anim;
+    [SerializeField] private AnimationClip collideAnim;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb =  GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        ea = GetComponent<EnemyAttack>();
-        collided = false;
+        if (anim != null) animator.Play(anim.name); 
         Destroy(gameObject, projectileLifeTime);
         
         transform.eulerAngles = new Vector3(0, 0, 0);
@@ -55,7 +54,9 @@ public class EnemyFireProjectile : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Terrain" || collision.gameObject.layer == LayerMask.NameToLayer("PVFX"))
         {
-            Destroy(gameObject);
+            if (collideAnim != null) animator.Play(collideAnim.name);
+            rb.linearVelocity = Vector2.zero;
+            Destroy(gameObject, 0.2f);
         }
     }
 
@@ -86,7 +87,6 @@ public class EnemyFireProjectile : MonoBehaviour
         
     private void Collided()
     {
-        collided = true;
         hit = Physics2D.CircleCast(transform.position, projectileDamage, transform.right, 0f, target);
         if (hit.collider != null)
         {
@@ -101,8 +101,9 @@ public class EnemyFireProjectile : MonoBehaviour
                     player.GetComponent<PlayerController>().combatTimer * 0.5f;
             }
         }
-
-        Destroy(gameObject);
+        if (collideAnim != null) animator.Play(collideAnim.name);
+        rb.linearVelocity = Vector2.zero;
+        Destroy(gameObject, 0.2f);;
     }
 
     private void OnDrawGizmosSelected()

@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd99242f9b97494ca151c899c706a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collided: 0
   projectile: {fileID: 4963594003989781806}
   projectileSpeed: 15
   projectileDamage: 7.5
@@ -61,6 +60,8 @@ MonoBehaviour:
   target:
     serializedVersion: 2
     m_Bits: 256
+  anim: {fileID: 0}
+  collideAnim: {fileID: 0}
 --- !u!212 &3333605061043179520
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -131,7 +132,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 0
+  m_GravityScale: -0.2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

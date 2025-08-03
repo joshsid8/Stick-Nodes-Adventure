@@ -56,7 +56,10 @@ MonoBehaviour:
   beamLifetime: 0.3
   activeHitbox: 0
   beamProc: 1
+  beamDamageType: 0
   beamProcTimer: 0
+  anim: {fileID: 7400000, guid: f94e97e8d06b438479d642a19ff7ee93, type: 2}
+  collideAnim: {fileID: 7400000, guid: efdc82e03212c5a44bd9d7c5e3405911, type: 2}
 --- !u!50 &491297894939144490
 Rigidbody2D:
   serializedVersion: 5
@@ -195,7 +198,7 @@ Animator:
   m_GameObject: {fileID: 8346622259834963805}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eb55813b3c67cb54782df523cc823ba1, type: 2}
+  m_Controller: {fileID: 9100000, guid: c07563e65f0ea304383a19a2f7258546, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

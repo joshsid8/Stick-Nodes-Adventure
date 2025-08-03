@@ -105,7 +105,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pillarKnockbackForce: {x: 1, y: 0}
-  hasErupted: 1
+  isErupting: 1
+  eruptAnim: {fileID: 7400000, guid: 3e80794bfbf0d0a4a85a04f5b1be7fc6, type: 2}
+  finishAnim: {fileID: 7400000, guid: 3e964e419455b9e4c937b5409ee5f1e7, type: 2}
 --- !u!50 &2803216028548801259
 Rigidbody2D:
   serializedVersion: 5
@@ -226,7 +228,7 @@ Animator:
   m_GameObject: {fileID: 4635439681108189195}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 52f74618822bdb043bf373e28111cd96, type: 2}
+  m_Controller: {fileID: 9100000, guid: c07563e65f0ea304383a19a2f7258546, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

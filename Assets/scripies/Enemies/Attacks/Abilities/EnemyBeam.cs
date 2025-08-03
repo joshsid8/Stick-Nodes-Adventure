@@ -13,20 +13,21 @@ public class EnemyBeam : MonoBehaviour
     public float beamProc;
     public int beamDamageType;
     [SerializeField] private float beamProcTimer;
-
     
     private Transform playerTransform;
     private bool isFacingRightDirection;
     private float playerDirection;
     private Rigidbody2D rb;
     private Animator animator;
+    [SerializeField] private AnimationClip anim;
+    [SerializeField] private AnimationClip collideAnim;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb =  GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        animator.SetBool("isShooting", true);
+        if (anim != null) animator.Play(anim.name);
         beamTimer = beamLifetime;
         ApplyInitialDirection();
     }
@@ -86,7 +87,7 @@ public class EnemyBeam : MonoBehaviour
     private void Lifetime()
     {
         beamTimer -= Time.deltaTime;
-        if (beamTimer <= 0) animator.SetBool("isShooting", false);
+        if (beamTimer <= 0 && collideAnim != null) animator.Play(collideAnim.name);
     }
 
     void Boom()

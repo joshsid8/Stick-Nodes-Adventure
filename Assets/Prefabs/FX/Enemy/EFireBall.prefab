@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd99242f9b97494ca151c899c706a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collided: 0
   projectile: {fileID: 4963594003989781806}
   projectileSpeed: 10
   projectileDamage: 10
@@ -62,6 +61,8 @@ MonoBehaviour:
   target:
     serializedVersion: 2
     m_Bits: 256
+  anim: {fileID: 7400000, guid: 8c421c62c8acabc48af1bb47cc10f385, type: 2}
+  collideAnim: {fileID: 7400000, guid: 44040e975d8db9a43bda5bfb4010cd4e, type: 2}
 --- !u!212 &3333605061043179520
 SpriteRenderer:
   m_ObjectHideFlags: 0

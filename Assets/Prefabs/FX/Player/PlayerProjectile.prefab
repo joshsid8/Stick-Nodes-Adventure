@@ -48,13 +48,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99d7c79b6a0cc64ba3fd4e2f25608e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collided: 0
   projectileSpeed: 15
   projectileKnockbackForce: {x: 0.5, y: 0}
   projectileRange: 0.68
   target:
     serializedVersion: 2
     m_Bits: 1536
+  anim: {fileID: 7400000, guid: 8c421c62c8acabc48af1bb47cc10f385, type: 2}
+  collideAnim: {fileID: 0}
 --- !u!212 &3333605061043179520
 SpriteRenderer:
   m_ObjectHideFlags: 0

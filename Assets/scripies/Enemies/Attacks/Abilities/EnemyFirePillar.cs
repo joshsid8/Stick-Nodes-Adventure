@@ -1,32 +1,33 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class EnemyFirePillar : MonoBehaviour
 {
     public float fireDamage;
     public float pillarLifeTime;
+    private float pillarTimer;
+    
     public Vector2 knockbackForce;
     public int pillarDamageType;
-    [SerializeField] private bool hasErupted;
-    private GameObject player;
     bool playerFacingRight;
+
+    private bool isErupting = true;
+    Animator animator;
+    [SerializeField] private AnimationClip eruptAnim;
+    [SerializeField] private AnimationClip finishAnim;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private IEnumerator Start()
+    private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        hasErupted = true;
-        yield return new WaitForSeconds(pillarLifeTime);
-        hasErupted = false;
-        yield return new WaitForSeconds(0.5f);
-        Destroy(gameObject);
+        animator = GetComponent<Animator>();
+        if (eruptAnim != null) animator.Play(eruptAnim.name);
+        pillarTimer = pillarLifeTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        GetComponent<Animator>().SetBool("hasErupted", hasErupted);
-        playerFacingRight = !player.GetComponent<PlayerController>().isFacingRight;
+        playerFacingRight = !PlayerHealth.Instance.playerController.isFacingRight;
+        Lifetime();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,14 +35,29 @@ public class EnemyFirePillar : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             PDamageable damageable = collision.gameObject.GetComponent<PDamageable>();
-            if (damageable != null && hasErupted)
+            if (damageable != null && isErupting)
             {
                 damageable.Damage(fireDamage, knockbackForce * transform.up, playerFacingRight, pillarDamageType);
                 damageable.Stun(0f);
-                player.GetComponent<PlayerController>().currentCombatTimer =+
-                    player.GetComponent<PlayerController>().combatTimer * 0.5f;
+                PlayerHealth.Instance.playerController.currentCombatTimer = +
+                    PlayerHealth.Instance.playerController.combatTimer * 0.5f;
             }
         }
+    }
+    
+    private void Lifetime()
+    {
+        pillarTimer -= Time.deltaTime;
+        if (pillarTimer <= 0 && finishAnim != null)
+        {
+            isErupting = false;
+            animator.Play(finishAnim.name);
+        }
+    }
+    
+    void Boom()
+    {
+        Destroy(gameObject);
     }
 
 }

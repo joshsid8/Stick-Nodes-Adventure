@@ -7,22 +7,22 @@ public class PlayerFirePillar : MonoBehaviour
     private float fireDamage;
     public Vector2 pillarKnockbackForce;
     private float pillarLifeTime;
-    [SerializeField] private bool hasErupted;
+    private float pillarTimer;
+    [SerializeField] private bool isErupting = true;
+    Animator animator;
+    [SerializeField] private AnimationClip eruptAnim;
+    [SerializeField] private AnimationClip finishAnim;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private IEnumerator Start()
+    private void Start()
     {
-        hasErupted = true;
-        yield return new WaitForSeconds(pillarLifeTime);
-        hasErupted = false;
-        yield return new WaitForSeconds(0.5f);
-        Destroy(gameObject);
+        if (eruptAnim != null) animator.Play(eruptAnim.name);
+        pillarTimer = pillarLifeTime;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        GetComponent<Animator>().SetBool("hasErupted", hasErupted);
+        Lifetime();
     }
 
     public void SetValues(float lifeTime, float damage, Vector2 knockbackForce)
@@ -37,7 +37,7 @@ public class PlayerFirePillar : MonoBehaviour
         if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
         {
             EDamageables damageable = collision.gameObject.GetComponent<EDamageables>();
-            if (damageable != null && hasErupted)
+            if (damageable != null && isErupting)
             {
                 damageable.Damage(fireDamage, pillarKnockbackForce);
                 damageable.Stun(0f);
@@ -45,4 +45,14 @@ public class PlayerFirePillar : MonoBehaviour
         }
     }
 
+    private void Lifetime()
+    {
+        pillarTimer -= Time.deltaTime;
+        if (pillarTimer <= 0 && finishAnim != null) animator.Play(finishAnim.name);
+    }
+    
+    void Boom()
+    {
+        Destroy(gameObject);
+    }
 }

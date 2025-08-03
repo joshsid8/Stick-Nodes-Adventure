@@ -5,7 +5,13 @@ SNADV Notes
     
     Hotfixes & Priorities:
         
+        Find an efficient way of stationary objects detecting the floor before activating
+        (rather than having an insanely high gravity scale to drop instantly on a surface)
+        
         Noxu Boss Logic
+            Boulder Throwing
+            Eruptions
+            Beams
         
         GUI
             Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc

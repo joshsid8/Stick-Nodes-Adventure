@@ -47,7 +47,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     private Color originalColor;
     [SerializeField] private bool isTinting;
     private SpriteRenderer spriteRenderer;
-
+    [SerializeField] private bool spawnOnAwake = true;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -56,7 +56,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             return;
         }
         Instance = this;
-        StartCoroutine(Spawn(0, true));
+        if (spawnOnAwake) StartCoroutine(Spawn(0, true));
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

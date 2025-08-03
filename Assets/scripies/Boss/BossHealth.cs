@@ -29,6 +29,9 @@ public class BossHealth : MonoBehaviour, EDamageables
     private SpriteRenderer spriteRenderer;
     
     //other
+    public bool isBlocking;
+    public float dmgRes;
+    public bool isCountering;
     private BossAttack ba;
     Animator animator;
     float stunTime;
@@ -81,8 +84,25 @@ public class BossHealth : MonoBehaviour, EDamageables
 
     public void Damage(float damageAmount, Vector2 knockbackForce)
     {
-        bossHealth -= damageAmount;
-        if (movable) kb.CallKnockback(knockbackForce / 2,0);
+        if (isBlocking)
+        {
+            bossHealth -= damageAmount * dmgRes;
+            if (movable) kb.CallKnockback(knockbackForce / 4, 0);
+            spriteRenderer.color = damageTint / 2;
+            isTinting = true;
+        }
+        else if (isCountering)
+        {
+            animator.SetTrigger("CSuccess");
+            isCountering = false;
+        }
+        else
+        {
+            bossHealth -= damageAmount;
+            if (movable) kb.CallKnockback(knockbackForce / 2, 0);
+            spriteRenderer.color = damageTint;
+            isTinting = true;
+        }
         if (bossHealth <= 0)
         {
             bossHealth = 0;
@@ -90,8 +110,6 @@ public class BossHealth : MonoBehaviour, EDamageables
             StartCoroutine(Defeat());
         }
         else if (bossHealth <= phase2Health) phase2 = true;
-        spriteRenderer.color = damageTint;
-        isTinting = true; 
     }
 
     

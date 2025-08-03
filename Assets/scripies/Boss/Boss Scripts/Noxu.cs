@@ -7,20 +7,13 @@ public class Noxu : MonoBehaviour
     public float strafeSpeed = 10f;
     public bool isStrafing;
     
-    // melees
-    public float slashCooldown;
+    // Melees
+    public float meleeCooldown;
     public float stunTime;
-    public float damageAmount;
     public Vector2 knockbackForce;
     private RaycastHit2D hit;
     [SerializeField] private float attackRange;
     public Transform attackTransform;
-    
-    // Checks
-    [HideInInspector] public bool isInRange;
-    [HideInInspector] public bool freezeMovement;
-    [HideInInspector] public bool isFalling;
-    [SerializeField] private int damageType;
     
     // Throwing stuff and stomping
     public float throwCooldown;
@@ -29,11 +22,13 @@ public class Noxu : MonoBehaviour
     public float projectileSpeed;
     [HideInInspector] public float xVector;
     public GameObject stationaryElement;
-    
-    public float secondaryProjectileSpeed;
     private Vector2 originalProjectileDirection;
     public Vector2 projectileDirection;
     private Vector2 reverseProjectileDirection;
+    
+    // Checks
+    [HideInInspector] public bool freezeMovement;
+    [SerializeField] private int damageType;
     
     // Components
     private Rigidbody2D rb;
@@ -54,17 +49,13 @@ public class Noxu : MonoBehaviour
     private void Update()
     {
         Strafe();
-        isInRange = Physics2D.OverlapCircle(transform.position, attackRange * 1.5f, ba.playerLayer);
         if (freezeMovement) rb.linearVelocity = Vector2.zero;
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-        if (rb.linearVelocity.y < 0) isFalling = true; else isFalling = false;
-        animator.SetBool("isFalling", isFalling);
-        if (GetComponent<BossHealth>().phase2) animator.speed = 1.2f;
+        
         if (ba.isFacingRight)
         {
             projectileDirection = new Vector2(reverseProjectileDirection.x, projectileDirection.y);
         }
-
         if (!ba.isFacingRight)
         {
             projectileDirection = new Vector2(originalProjectileDirection.x, projectileDirection.y);
@@ -80,7 +71,7 @@ public class Noxu : MonoBehaviour
         else if (!isStrafing) rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
     
-    public void ProjectileShoot()
+    private void ProjectileShoot()
     {
         GameObject newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
         EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
@@ -95,43 +86,33 @@ public class Noxu : MonoBehaviour
         ba.ActionCooldown(throwCooldown);
     }
     
-    public void SecondaryProjectileShoot()
+    private IEnumerator Stomp(int amount)
     {
-        GameObject newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
-        EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
-        if (fireballScript != null)
+        for (int i = 0; i < amount; i++)
         {
-            float rng = Random.Range(-2.0f, 2.0f);
-            projectileDirection = new Vector2(projectileDirection.x + rng, projectileDirection.y);
-            fireballScript.SetValues(ba.isFacingRight, secondaryProjectileSpeed, projectileDirection, true, damageType);
+            if (ba.isFacingRight) Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector, -1f, 0f), Quaternion.identity);
+            else Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector, -1f, 0f), Quaternion.identity);
+            xVector += 5f;
+            yield return new WaitForSeconds(0.2f);
         }
-        else
-        {
-            Debug.LogError("where is bro's ability");
-        }
-        ba.ActionCooldown(throwCooldown);
-    }
-    private void Stomp()
-    {
-        if (ba.isFacingRight) Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector, -1f, 0f), Quaternion.identity);
-        else Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector, -1f, 0f), Quaternion.identity);
+        xVector = 5f;
     }
     
-    private void Slash()
+    private void MeleeAttack(float dmg)
     {
         hit = Physics2D.CircleCast(attackTransform.position, attackRange, transform.right, 0f, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
-            ba.ActionCooldown(slashCooldown * 0.5f);
+            ba.ActionCooldown(meleeCooldown * 0.5f);
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, knockbackForce * transform.right, ba.isFacingRight, damageType);
+                damageable.Damage(dmg, knockbackForce * transform.right, ba.isFacingRight, damageType);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }
         }
-        ba.ActionCooldown(slashCooldown * 0.5f);
+        ba.ActionCooldown(meleeCooldown * 0.5f);
         
     }
 
@@ -141,10 +122,9 @@ public class Noxu : MonoBehaviour
         animator.SetInteger("factor", rng);
     }
 
-    private void FreezeMovement()
+    private void FreezeMovementX()
     {
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
     
     private void OnDrawGizmos()

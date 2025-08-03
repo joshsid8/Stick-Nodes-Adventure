@@ -3,7 +3,6 @@ using System.Collections;
 
 public class PlayerFireBall : MonoBehaviour
 {
-    public bool collided;
     public float projectileSpeed;
     private float projectileDamage;
     private float projectileStunTime;
@@ -15,7 +14,9 @@ public class PlayerFireBall : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator animator;
-
+    [SerializeField] private AnimationClip anim;
+    [SerializeField] private AnimationClip collideAnim;
+    
     // New variable to store the direction passed from PlayerFireProjectile
     private bool isFacingRightDirection;
 
@@ -24,9 +25,8 @@ public class PlayerFireBall : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        collided = false;
-        
-        Destroy(gameObject, 5f);
+        if (anim != null) animator.Play(anim.name);
+        Destroy(gameObject, 3f);
 
         // Use the passed-in direction to set rotation and initial velocity
         ApplyInitialDirection();
@@ -62,13 +62,14 @@ public class PlayerFireBall : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Terrain" || collision.gameObject.layer == LayerMask.NameToLayer("EVFX"))
         {
-            Destroy(gameObject);
+            if (collideAnim != null) animator.Play(collideAnim.name);
+            rb.linearVelocity = Vector2.zero;
+            Destroy(gameObject, 0.2f);
         }
     }
 
     private void Collided()
     {
-        collided = true;
         rb.linearVelocity = Vector2.zero;
         hits = Physics2D.CircleCastAll(transform.position, projectileRange, transform.right, 0f, target);
 
@@ -82,8 +83,10 @@ public class PlayerFireBall : MonoBehaviour
                 eDamageable.Damage(projectileDamage, projectileKnockbackForce * playerDirection);
             }
         }
-        // Destroy the fireball after it has performed its collision logic (e.g., dealt damage)
-        Destroy(gameObject);
+        
+        if (collideAnim != null) animator.Play(collideAnim.name);
+        rb.linearVelocity = Vector2.zero;
+        Destroy(gameObject, 0.2f);
     }
 
     private void OnDrawGizmosSelected()

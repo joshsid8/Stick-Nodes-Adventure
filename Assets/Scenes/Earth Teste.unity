@@ -5880,6 +5880,9 @@ MonoBehaviour:
   tintDuration: 0.5
   tintSpeed: 5
   isTinting: 0
+  isBlocking: 0
+  dmgRes: 0.5
+  isCountering: 0
   movable: 1
 --- !u!114 &998816642031721973
 MonoBehaviour:
@@ -5925,9 +5928,9 @@ Transform:
   m_GameObject: {fileID: 9003786030466987805}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.778041, y: -32.98729, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -14.796373, y: -33.042286, z: 0}
+  m_LocalScale: {x: 1.01, y: 1.01, z: 1.01}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5463582560311469444}
   - {fileID: 4110547085652900829}
@@ -6004,7 +6007,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.106616974, y: 0.011478424}
+  m_Offset: {x: -0.014909744, y: -0.07061958}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -6014,7 +6017,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.132988, y: 3.7132874}
+  m_Size: {x: 0.88993454, y: 3.8774834}
   m_EdgeRadius: 0
 --- !u!212 &3378789262125511389
 SpriteRenderer:
@@ -6185,7 +6188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6331963636342478429}
   m_Layer: 10
-  m_Name: SlashPoint
+  m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6200,7 +6203,7 @@ Transform:
   m_GameObject: {fileID: 4185388381468458999}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.086, y: -1.842, z: 0.23256153}
+  m_LocalPosition: {x: -0.004, y: -2.001, z: 0.23256153}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6228,7 +6231,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9003786030466987805}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe42a45225f7a074c906b095267ee0b3, type: 3}
   m_Name: 
@@ -6237,7 +6240,7 @@ MonoBehaviour:
   rangeRadius: 4.4
   isAttacking: 0
   canAttack: 0
-  attackCooldown: 1.5
+  attackCooldown: 2
   currentAttackCooldown: 0
   attackFactor: 0
   activeMovement: FWalk
@@ -6288,7 +6291,7 @@ Transform:
   m_GameObject: {fileID: 4331185868273720752}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.3, y: 0.04, z: 0}
+  m_LocalPosition: {x: 1.3099009, y: -0.1580206, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6493,24 +6496,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strafeSpeed: 10
   isStrafing: 0
-  slashCooldown: 0
-  stunTime: 0
-  damageAmount: 0
-  knockbackForce: {x: 0, y: 0}
-  attackRange: 0
+  meleeCooldown: 1
+  stunTime: 1
+  knockbackForce: {x: 1, y: 0}
+  attackRange: 1.6
   attackTransform: {fileID: 6331963636342478429}
-  isInRange: 0
-  freezeMovement: 0
-  isFalling: 0
-  damageType: 0
-  throwCooldown: 0
+  throwCooldown: 1
   projectilePoint: {fileID: 7832097569773302830}
-  projectile: {fileID: 0}
-  projectileSpeed: 0
+  projectile: {fileID: 4963594003989781806, guid: ab3e2809449216041b9cd79e70c7ef4e, type: 3}
+  projectileSpeed: 20
   xVector: 0
-  stationaryElement: {fileID: 0}
-  secondaryProjectileSpeed: 0
+  stationaryElement: {fileID: 4635439681108189195, guid: dbee23465e1f4f44184f882544fafa0c, type: 3}
   projectileDirection: {x: 0, y: 0}
+  freezeMovement: 0
+  damageType: 0
 --- !u!1001 &9075578306459573741
 PrefabInstance:
   m_ObjectHideFlags: 0
