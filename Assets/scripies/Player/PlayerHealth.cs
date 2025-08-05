@@ -128,6 +128,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             isDead = true;
             gameObject.layer = LayerMask.NameToLayer("Dead");
             playerController.canAct = false;
+            spriteRenderer.color = Color.white;
             yield return new WaitForSeconds(respawnTime);
             StartCoroutine(Spawn(0, true));
             playerHealth = playerMaxHealth * 0.25f;

@@ -18,14 +18,14 @@ public class Noxu : MonoBehaviour
     // Throwing stuff and stomping
     public float throwCooldown;
     public Transform projectilePoint;
-    public GameObject projectile;
     public float projectileSpeed;
-    [HideInInspector] public float xVector;
+    private readonly float[] xVector = new float[2];
+    [SerializeField] private float vectorSpace = 3f;
     public GameObject stationaryElement;
     private Vector2 originalProjectileDirection;
     public Vector2 projectileDirection;
     private Vector2 reverseProjectileDirection;
-    
+
     // Checks
     [HideInInspector] public bool freezeMovement;
     [SerializeField] private int damageType;
@@ -34,6 +34,7 @@ public class Noxu : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private BossAttack ba;
+    private BossHealth bh;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -41,6 +42,7 @@ public class Noxu : MonoBehaviour
         ba = GetComponent<BossAttack>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        bh = GetComponent<BossHealth>();
         originalProjectileDirection = projectileDirection;
         reverseProjectileDirection = -projectileDirection;
     }
@@ -71,9 +73,9 @@ public class Noxu : MonoBehaviour
         else if (!isStrafing) rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
     
-    private void ProjectileShoot()
+    private void ProjectileShoot(GameObject proj)
     {
-        GameObject newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
+        GameObject newProjectile = Instantiate(proj, projectilePoint.position, projectilePoint.rotation);
         EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
         if (fireballScript != null)
         {
@@ -88,19 +90,37 @@ public class Noxu : MonoBehaviour
     
     private IEnumerator Stomp(int amount)
     {
+        xVector[0] = vectorSpace;
         for (int i = 0; i < amount; i++)
         {
-            if (ba.isFacingRight) Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector, -1f, 0f), Quaternion.identity);
-            else Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector, -1f, 0f), Quaternion.identity);
-            xVector += 5f;
+            if (ba.isFacingRight) Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector[0], 0f, 0f), Quaternion.identity);
+            else Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector[0], 0f, 0f), Quaternion.identity);
+            xVector[0] += vectorSpace;
             yield return new WaitForSeconds(0.2f);
         }
-        xVector = 5f;
+        xVector[0] = vectorSpace;
+    }
+    private IEnumerator ReverseStomp(int amount)
+    {
+        xVector[1] = -vectorSpace;
+        for (int i = 0; i < amount; i++)
+        {
+            if (ba.isFacingRight) Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector[1], 0f, 0f), Quaternion.identity);
+            else Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector[1], 0f, 0f), Quaternion.identity);
+            xVector[1] -= vectorSpace;
+            yield return new WaitForSeconds(0.2f);
+        }
+        xVector[1] = vectorSpace;
+    }
+
+    private void ReplenishShield(float shieldHp)
+    {
+        bh.shieldHealth = shieldHp;
     }
     
     private void MeleeAttack(float dmg)
     {
-        hit = Physics2D.CircleCast(attackTransform.position, attackRange, transform.right, 0f, LayerMask.GetMask("Player"));
+        hit = Physics2D.CircleCast(attackTransform.position, attackRange, Vector2.one * transform.right, 0f, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
             ba.ActionCooldown(meleeCooldown * 0.5f);
@@ -112,8 +132,6 @@ public class Noxu : MonoBehaviour
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }
         }
-        ba.ActionCooldown(meleeCooldown * 0.5f);
-        
     }
 
     private void Gamble()

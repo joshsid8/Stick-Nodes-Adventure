@@ -11,13 +11,12 @@ public class EnemyBeam : MonoBehaviour
     private float beamTimer;
     public bool activeHitbox;
     public float beamProc;
-    public int beamDamageType;
     [SerializeField] private float beamProcTimer;
+    public int beamDamageType;
     
     private Transform playerTransform;
     private bool isFacingRightDirection;
     private float playerDirection;
-    private Rigidbody2D rb;
     private Animator animator;
     [SerializeField] private AnimationClip anim;
     [SerializeField] private AnimationClip collideAnim;
@@ -25,7 +24,6 @@ public class EnemyBeam : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb =  GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         if (anim != null) animator.Play(anim.name);
         beamTimer = beamLifetime;

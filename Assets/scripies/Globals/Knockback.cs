@@ -17,37 +17,39 @@ public class Knockback : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private IEnumerator KnockbackAction (Vector2 hitDirection, float inputDirection)
+    private IEnumerator KnockbackAction(Vector2 hitDirection, float inputDirection)
     {
-        IsBeingKnocked = true;
-        
-        Vector2 hitForce;
-        Vector2 knockbackForce;
-        Vector2 combinedForce;
-        
-        hitForce = hitDirection * hitDirectionForce;
-        
-        float currentTime = 0f;
-        while (currentTime < knockbackTime)
+        if (hitDirection != Vector2.zero)
         {
-            currentTime += Time.fixedDeltaTime;
-            knockbackForce = hitForce;
-            if (inputDirection != 0)
+            IsBeingKnocked = true;
+            Vector2 hitForce;
+            Vector2 knockbackForce;
+            Vector2 combinedForce;
+
+            hitForce = hitDirection * hitDirectionForce;
+            
+            float currentTime = 0f;
+            while (currentTime < knockbackTime)
             {
-                combinedForce = knockbackForce + new Vector2(inputDirection * inputForce, 0f);
+                currentTime += Time.fixedDeltaTime;
+                knockbackForce = hitForce;
+                if (inputDirection != 0)
+                {
+                    combinedForce = knockbackForce + new Vector2(inputDirection * inputForce, 0f);
+                }
+                else
+                {
+                    combinedForce = knockbackForce;
+                } 
+                combinedForce.x /= currentTime;
+                if (combinedForce.y == 0) rb.linearVelocity = new Vector2(combinedForce.x, rb.linearVelocity.y);
+                else rb.linearVelocity = combinedForce;
+                yield return new WaitForFixedUpdate();
             }
-            else
-            {
-                combinedForce = knockbackForce;
-            }
-            combinedForce.x /= currentTime;
-            if (combinedForce.y == 0) rb.linearVelocity = new Vector2(combinedForce.x, rb.linearVelocity.y);
-            else rb.linearVelocity = combinedForce;
-            yield return new WaitForFixedUpdate();
+
+            IsBeingKnocked = false;
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
-        
-        IsBeingKnocked = false;
-        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
 
     public void CallKnockback(Vector2 hitDirection, float inputDirection)

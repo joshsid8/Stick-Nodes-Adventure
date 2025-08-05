@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class BossHealth : MonoBehaviour, EDamageables
 {
     //boss health
-    public Image healthBar;
-    public TMP_Text healthText;
-    public TMP_Text bossTitle;
+    private Image healthBar;
+    private TMP_Text healthText;
+    private TMP_Text bossTitle;
     public float bossMaxHealth = 500f;
     public float bossHealth = 500f;
     public bool isDead;
@@ -20,18 +20,21 @@ public class BossHealth : MonoBehaviour, EDamageables
     public DialogueObject phase2Dialogue;
     public DialogueObject deathDialogue;
     
-    //Tint variables
-    public Color damageTint = Color.red; // The color to tint when damaged.
-    public float tintDuration = 0.1f;    // How long the tint lasts.
-    public float tintSpeed = 5f;       // Speed of the color transition.
+    //tint variables
+    public Color damageTint = Color.red;
+    public float tintDuration = 0.1f;
+    public float tintSpeed = 5f;
     private Color originalColor;
     [SerializeField] private bool isTinting = false; 
     private SpriteRenderer spriteRenderer;
     
-    //other
+    //defense
     public bool isBlocking;
+    public float shieldHealth;
     public float dmgRes;
     public bool isCountering;
+    
+    //other
     private BossAttack ba;
     Animator animator;
     float stunTime;
@@ -68,12 +71,13 @@ public class BossHealth : MonoBehaviour, EDamageables
     {
         if (isDead)
         {
+            spriteRenderer.color = Color.white;
             GetComponent<Loot>().DropLoot();
             GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             GetComponent<BossAttack>().isAttacking = false;
             GetComponent<BossAttack>().rangeRadius = 0;
             BossHealthUI.Instance.gameObject.SetActive(false);
-            gameObject.layer = LayerMask.NameToLayer("Dead");
+            gameObject.layer = LayerMask.NameToLayer("EDead");
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
             yield return new WaitForSeconds(3);
@@ -84,11 +88,20 @@ public class BossHealth : MonoBehaviour, EDamageables
 
     public void Damage(float damageAmount, Vector2 knockbackForce)
     {
-        if (isBlocking)
+        if (isBlocking && shieldHealth > 0)
         {
             bossHealth -= damageAmount * dmgRes;
+            shieldHealth -= damageAmount;
             if (movable) kb.CallKnockback(knockbackForce / 4, 0);
             spriteRenderer.color = damageTint / 2;
+            isTinting = true;
+        }
+        else if (isBlocking && shieldHealth <= 0)
+        {
+            animator.SetTrigger("Guard Break");
+            bossHealth -= damageAmount * 1.2f;
+            if (movable) kb.CallKnockback(knockbackForce / 2, 0);
+            spriteRenderer.color = damageTint;
             isTinting = true;
         }
         else if (isCountering)

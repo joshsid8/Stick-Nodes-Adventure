@@ -217,9 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackTime: 0.2
-  hitDirectionForce: 10
-  inputForce: 7.5
+  knockbackTime: 0.25
+  hitDirectionForce: 1
+  inputForce: 1.05
 --- !u!114 &1682819759057836702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +359,7 @@ MonoBehaviour:
   tintDuration: 0.1
   tintSpeed: 5
   isTinting: 0
+  spawnOnAwake: 1
 --- !u!114 &114786552731468920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,6 +460,7 @@ MonoBehaviour:
     m_Bits: 65536
   dropThroughDuration: 0.3
   currentCheckPoint: {fileID: 0}
+  currentSpawnPoint: {fileID: 0}
   isFacingRight: 1
   combatIndicator: {fileID: 0}
 --- !u!61 &3190464570260204841

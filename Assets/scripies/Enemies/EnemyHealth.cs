@@ -91,7 +91,8 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             GetComponent<Loot>().DropLoot();
             GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             GetComponent<EnemyAttack>().enabled = false;
-            gameObject.layer = LayerMask.NameToLayer("Dead");
+            spriteRenderer.color = Color.white;
+            gameObject.layer = LayerMask.NameToLayer("EDead");
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
             

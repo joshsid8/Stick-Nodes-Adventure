@@ -3,15 +3,15 @@ SNADV Notes
     Ahh man...
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
-    Hotfixes & Priorities:
-        
-        Find an efficient way of stationary objects detecting the floor before activating
-        (rather than having an insanely high gravity scale to drop instantly on a surface)
+    Hotfixes & Priorities
         
         Noxu Boss Logic
-            Boulder Throwing
-            Eruptions
+            Initial Boulder Throwing
             Beams
+        
+        When a boss is defeated, make the 'get up' animation work
+        
+        Maybe find a way to fix knockback scripts only fixing to the x axis
         
         GUI
             Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc

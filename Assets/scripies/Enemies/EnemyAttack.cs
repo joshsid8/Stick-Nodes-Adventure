@@ -147,7 +147,7 @@ public class EnemyAttack : MonoBehaviour
 
     private void Attack()
     {
-        hit = Physics2D.CircleCast(attackTransform.position, attackRange, transform.right, 0f, LayerMask.GetMask("Player", "Invincible"));
+        hit = Physics2D.CircleCast(attackTransform.position, attackRange, Vector2.one, 0f, LayerMask.GetMask("Player", "Invincible"));
         if (hit.collider != null)
         {
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();

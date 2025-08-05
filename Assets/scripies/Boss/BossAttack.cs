@@ -100,7 +100,7 @@ public class BossAttack : MonoBehaviour
                         break;
                     case 5:
                         if (defensiveMovement != null) animator.SetTrigger(defensiveMovement); // Movement
-                        ActionCooldown(1.5f);
+                        ActionCooldown(2f);
                         break;
                     default:
                         attackFactor = 0;
@@ -126,7 +126,7 @@ public class BossAttack : MonoBehaviour
                         break;
                     case 5:
                         if (defensiveMovement != null) animator.SetTrigger(activeMovement); // Movement
-                        ActionCooldown(1.5f);
+                        ActionCooldown(2f);
                         break;
                     default:
                         actionFactor = 0;

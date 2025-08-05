@@ -107,7 +107,7 @@ public class PlayerDefense : MonoBehaviour
     public void CounterAttack()
     {
         pa.energy += 5f;
-        hits = Physics2D.CircleCastAll(transform.position, counterRadius, transform.right, 0f, eLayer);
+        hits = Physics2D.CircleCastAll(transform.position, counterRadius, Vector2.one, 0f, eLayer);
         for (int i = 0; i < hits.Length; i++)
         {
             EDamageables eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();

@@ -99,7 +99,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void GroundAttack()
     {
-        hits = Physics2D.CircleCastAll(attackTransform.position, attackRange, transform.right, 0f, enemyLayer);
+        hits = Physics2D.CircleCastAll(attackTransform.position, attackRange, Vector2.one, 0f, enemyLayer);
 
         for (int i = 0; i < hits.Length; i++)
         {
@@ -107,7 +107,7 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(groundDamageAmount, knockbackForce * transform.right);
+                eDamageable.Damage(groundDamageAmount, knockbackForce * Vector2.one);
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
@@ -136,7 +136,7 @@ public class PlayerCombat : MonoBehaviour
             hasAirBoosted = true;
         }
 
-        hits = Physics2D.CircleCastAll(airAttackTransform.position, airAttackRange, transform.right, 0f, enemyLayer);
+        hits = Physics2D.CircleCastAll(airAttackTransform.position, airAttackRange, Vector2.one, 0f, enemyLayer);
 
         for (int i = 0; i < hits.Length; i++)
         {
@@ -144,7 +144,7 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(airDamageAmount, knockbackForce * transform.right);
+                eDamageable.Damage(airDamageAmount, new Vector2(knockbackForce.x, 5f) * transform.right);
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
