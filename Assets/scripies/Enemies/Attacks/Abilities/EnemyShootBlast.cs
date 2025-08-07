@@ -9,13 +9,12 @@ public class EnemyShootBlast : MonoBehaviour
     private EnemyPatrol ep;
     public float projectileSpeed;
     
-    // Beam
+    // Beam and Pillar
     public float abilityLifetime;
     public float abilityProc;
 
     public int damageType;
-    
-    // Stationary Attack
+
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -37,5 +36,11 @@ public class EnemyShootBlast : MonoBehaviour
         
         if (eb != null) eb.SetValues(ep.isFacingRight, abilityLifetime, abilityProc, Vector2.zero, false, damageType);
         else Debug.LogError("where is bro's beam ability");
+    }
+    
+    public void SummonPillar(GameObject pillar)
+    {
+        GameObject newBeam = Instantiate(pillar, abilityPoint.position, abilityPoint.rotation);
+        EnemyFirePillar eb = newBeam.GetComponent<EnemyFirePillar>();
     }
 }

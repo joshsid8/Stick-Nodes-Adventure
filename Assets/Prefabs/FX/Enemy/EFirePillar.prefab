@@ -138,7 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pillarDamage: 10
   pillarLifeTime: 0.5
-  knockbackForce: {x: 0, y: 1}
+  knockbackForce: {x: 0, y: 2.5}
   pillarDamageType: 0
   pillarProc: 1
   pillarProcTimer: 0

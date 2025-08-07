@@ -5,13 +5,11 @@ SNADV Notes
     
     Hotfixes & Priorities
         
-        Noxu Boss Logic
+        Boss Logic
             Initial Boulder Throwing
-            Beams
+            When a boss is defeated, make the 'get up' animation work
         
-        When a boss is defeated, make the 'get up' animation work
-        
-        Maybe find a way to fix knockback scripts only fixing to the x axis
+        Convert all enemy abilities into player abilities
         
         GUI
             Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
@@ -27,6 +25,9 @@ SNADV Notes
         
     
     Things to be added:
+        
+        Combo Logic
+            Be able to FLY in the air when you are using air attacks on an enemy
         
         More Enemy Logic
             Flying/Swimming

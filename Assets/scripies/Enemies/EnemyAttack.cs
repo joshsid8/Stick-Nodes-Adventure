@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 
@@ -7,14 +6,14 @@ public class EnemyAttack : MonoBehaviour
     public float styleFactor;
 
     private bool activeMode; // The enemy attack/coming close to the player
-    public bool defensiveCheck; // When the player runs near
-    public bool passiveCheck; // Certain action performed if the player isnt close or far
+    [Tooltip("When the player runs near")] public bool defensiveCheck; 
+    [Tooltip("Certain actions performed if the player isn't close or far")] public bool passiveCheck; // Certain actions performed if the player isnt close or far
     private bool evasiveMode; // The enemy evading the player
     private bool passiveMode;
 
-    public string[] activeMoves; 
-    public string[] passiveMoves;
-    public string[] evasiveMoves;
+    [Tooltip("The enemy coming close to the player")] public string[] activeMoves; 
+    [Tooltip("Certain actions performed if the player isn't close or far")] public string[] passiveMoves;
+    [Tooltip("The enemy evading/backing up from the player")] public string[] evasiveMoves;
     
     public float defensiveModeRadius;
     public float modDefensiveModeRadius;
@@ -120,7 +119,6 @@ public class EnemyAttack : MonoBehaviour
             else if (defensiveCheck && !passiveCheck) animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
             else animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
         }
-
     }
 
     private void EvasiveLogic()
@@ -147,13 +145,13 @@ public class EnemyAttack : MonoBehaviour
 
     private void Attack()
     {
-        hit = Physics2D.CircleCast(attackTransform.position, attackRange, Vector2.one, 0f, LayerMask.GetMask("Player", "Invincible"));
+        hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player", "Invincible"));
         if (hit.collider != null)
         {
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, knockbackForce * transform.right, ep.isFacingRight, damageType);
+                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.isFacingRight, damageType);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }

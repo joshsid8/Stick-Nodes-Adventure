@@ -56,8 +56,8 @@ MonoBehaviour:
   beamLifetime: 0.3
   activeHitbox: 0
   beamProc: 1
-  beamDamageType: 0
   beamProcTimer: 0
+  beamDamageType: 0
   anim: {fileID: 7400000, guid: f94e97e8d06b438479d642a19ff7ee93, type: 2}
   collideAnim: {fileID: 7400000, guid: efdc82e03212c5a44bd9d7c5e3405911, type: 2}
 --- !u!50 &491297894939144490
@@ -177,7 +177,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 929a86e650ae88b47bd8e9165805bf81, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -185,7 +185,7 @@ SpriteRenderer:
   m_Size: {x: 12.8, y: 7.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &1162604467255716266

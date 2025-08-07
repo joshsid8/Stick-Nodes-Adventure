@@ -5,7 +5,7 @@ using UnityEngine;
 public class Knockback : MonoBehaviour
 {
     //jump yourself
-    public float knockbackTime = 0.25f;
+    public float knockbackTime = 0.1f;
     public float hitDirectionForce = 1f;
     public float inputForce = 1.1f;
     public bool IsBeingKnocked {get; private set;}

@@ -29,6 +29,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
     public float stunTime = 0.2f;
     public Vector2 knockbackForce;
+    public float airKnockbackY;
     private RaycastHit2D[] hits;
     private Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -99,7 +100,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void GroundAttack()
     {
-        hits = Physics2D.CircleCastAll(attackTransform.position, attackRange, Vector2.one, 0f, enemyLayer);
+        hits = Physics2D.CircleCastAll(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, enemyLayer);
 
         for (int i = 0; i < hits.Length; i++)
         {
@@ -107,7 +108,7 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(groundDamageAmount, knockbackForce * Vector2.one);
+                eDamageable.Damage(groundDamageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
@@ -129,14 +130,14 @@ public class PlayerCombat : MonoBehaviour
 
     private void AirAttack()
     {
-        if (pc.GetComponent<Rigidbody2D>().linearVelocity.y < 0 && !hasAirBoosted)
+        if (pc.rb.linearVelocity.y < 0 && !hasAirBoosted)
         {
-            pc.GetComponent<Rigidbody2D>().linearVelocity =
-                new Vector2(GetComponent<Rigidbody2D>().linearVelocity.x, airAttackForce);
+            pc.rb.linearVelocity =
+                new Vector2(pc.rb.linearVelocity.x, airAttackForce);
             hasAirBoosted = true;
         }
 
-        hits = Physics2D.CircleCastAll(airAttackTransform.position, airAttackRange, Vector2.one, 0f, enemyLayer);
+        hits = Physics2D.CircleCastAll(airAttackTransform.position, airAttackRange, new Vector2(transform.right.x, transform.up.y), 0f, enemyLayer);
 
         for (int i = 0; i < hits.Length; i++)
         {
@@ -144,10 +145,11 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(airDamageAmount, new Vector2(knockbackForce.x, 5f) * transform.right);
+                eDamageable.Damage(airDamageAmount, new Vector2(knockbackForce.x * transform.right.x, airKnockbackY * transform.up.y));
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
+                pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airKnockbackY);
             }
         }
 

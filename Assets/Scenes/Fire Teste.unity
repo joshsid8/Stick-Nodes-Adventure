@@ -4175,22 +4175,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cynder
       objectReference: {fileID: 0}
-    - target: {fileID: 156917591073942580, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
-      propertyPath: dialogue
-      value: 
-      objectReference: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
-    - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
-      propertyPath: dialogueBox
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
-      propertyPath: bossBar
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8195243039380430539, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 36.9
@@ -4230,18 +4214,6 @@ PrefabInstance:
     - target: {fileID: 8195243039380430539, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
-      propertyPath: bossTitle
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
-      propertyPath: healthBar
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
-      propertyPath: healthText
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

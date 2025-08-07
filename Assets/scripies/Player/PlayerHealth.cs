@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public TMP_Text healthText;
     public float playerMaxHealth = 100;
     public float playerHealth = 100;
+    public float playerExtraHealth;
     public float rawDamageResistance = 1f;
 
     public float regenerationMultiplier;
@@ -88,6 +89,8 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         healthText.text = playerHealth == playerMaxHealth ? playerHealth.ToString("F0") +  " / " + playerMaxHealth.ToString("F0")
             : playerHealth.ToString("F1") +  " / " + playerMaxHealth.ToString("F0");
         if (playerHealth < 0) playerHealth = 0;
+        if (playerHealth > playerMaxHealth) playerExtraHealth = playerHealth - playerMaxHealth;
+        if (isDead) playerController.canAct = false;
     }
 
     void SetValues()
@@ -127,7 +130,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             deathToggle = true;
             isDead = true;
             gameObject.layer = LayerMask.NameToLayer("Dead");
-            playerController.canAct = false;
             spriteRenderer.color = Color.white;
             yield return new WaitForSeconds(respawnTime);
             StartCoroutine(Spawn(0, true));
@@ -138,10 +140,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             playerController.canAct = true;
             playerController.currentCombatTimer = 0;
         }
-        else if (playerHealth < 0)
-        {
-            isDead = false;
-        }
+        else if (playerHealth < 0) isDead = false;
     }
 
     public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageType)
@@ -151,13 +150,16 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             if (playerDefense.isBlocking && !playerDefense.counterWindow && damageType < 1)
             {
                 // blocking successfully
-                playerHealth -= damageAmount * playerDefense.damageResistance;
+                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * playerDefense.damageResistance;
+                else playerHealth -= damageAmount * playerDefense.damageResistance;
                 kb.CallKnockback(knockbackForce * playerDefense.damageResistance, playerController.inputDirection);
             }
             else if (playerDefense.isBlocking && playerDefense.counterWindow && damageType < 2)
             {
                 // perfect blocking / counter
-                playerHealth -= damageAmount * playerDefense.counterDamageResistance;
+                
+                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * playerDefense.counterDamageResistance;
+                else playerHealth -= damageAmount * playerDefense.counterDamageResistance;
                 playerController.animator.SetTrigger("Counter");
                 playerDefense.counterWindow = false;
                 playerDefense.isBlocking = false;
@@ -166,25 +168,27 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             {
                 // the player not blocking at all
                 playerDefense.isBlocking = false;
-                playerHealth -= damageAmount * rawDamageResistance;
+                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
+                else playerHealth -= damageAmount * rawDamageResistance;
                 playerController.animator.SetTrigger("Damaged");
                 spriteRenderer.color = damageTint;
                 isTinting = true;
                 playerController.currentDashTime = 0f;
-                kb.CallKnockback(knockbackForce, playerController.inputDirection);
+                kb.CallKnockback(knockbackForce * knockbackMultiplier, playerController.inputDirection);
             }
         }
         else
         {
             // the player blocking but getting hit at the back
             playerDefense.isBlocking = false;
-            playerHealth -= damageAmount * rawDamageResistance;
+            if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
+            else playerHealth -= damageAmount * rawDamageResistance;
             playerController.animator.SetTrigger("Damaged");
             //invincibleTrigger = true;
             spriteRenderer.color = damageTint;
             isTinting = true;
             playerController.currentDashTime = 0f;
-            kb.CallKnockback(knockbackForce, playerController.inputDirection);
+            kb.CallKnockback(knockbackForce * knockbackMultiplier, playerController.inputDirection);
         }
          
     }
@@ -192,10 +196,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public void Stun(float stunDuration)
     {
         stunTime = stunDuration * stunMultiplier;
-        if (stunTime > 0 && !playerDefense.isBlocking)
-        {
-            getStunned = true;
-        }
+        if (stunTime > 0 && !playerDefense.isBlocking) getStunned = true;
     }
 
     private void Stunned()
@@ -204,8 +205,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             currentStunTime = stunTime * stunMultiplier;
             getStunned = false;
-            if (stunTime > 0)
-                isStunned = true;
+            if (stunTime > 0) isStunned = true;
         }
         if (isStunned)
         {
@@ -226,13 +226,8 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         if (isTinting)
         {
             spriteRenderer.color = Color.Lerp(spriteRenderer.color, originalColor, tintSpeed * Time.deltaTime);
-            if (spriteRenderer.color == originalColor)
-            {
-                isTinting = false;
-            }
-            
+            if (spriteRenderer.color == originalColor) isTinting = false;
         }
-
     }
     
     /*private IEnumerator IFrames()

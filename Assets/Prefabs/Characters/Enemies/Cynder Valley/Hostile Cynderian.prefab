@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: projectileSpeed
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 2131039031582443626, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: knockbackTime
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 2866762415245452275, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: phase2
       value: 40
@@ -28,9 +32,49 @@ PrefabInstance:
       propertyPath: defensiveScript
       value: 
       objectReference: {fileID: 6030403799953984630}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: activeMoves.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: evasiveMoves.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: passiveMoves.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'activeMoves.Array.data[1]'
+      value: ProactiveMove 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'evasiveMoves.Array.data[2]'
+      value: DefensiveMove 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'evasiveMoves.Array.data[3]'
+      value: PassiveMove 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'passiveMoves.Array.data[1]'
+      value: PassiveMove 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'passiveMoves.Array.data[2]'
+      value: PassiveMove 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_Name
       value: Hostile Cynderian
+      objectReference: {fileID: 0}
+    - target: {fileID: 8172104874274776891, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: jumpForceX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8172104874274776891, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: jumpForceY
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8339654333849830333, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_LocalPosition.x

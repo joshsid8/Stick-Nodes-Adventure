@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackTime: 0.25
+  knockbackTime: 0.1
   hitDirectionForce: 1
   inputForce: 1.1
 --- !u!114 &3900648796567909267
@@ -238,7 +238,6 @@ MonoBehaviour:
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
-  bossBar: {fileID: 0}
 --- !u!114 &8376931847354496412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,9 +250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 684f3ff0ddb86224fb47656ad7b73cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  healthText: {fileID: 0}
-  bossTitle: {fileID: 0}
   bossMaxHealth: 500
   bossHealth: 500
   isDead: 0
@@ -266,6 +262,10 @@ MonoBehaviour:
   tintDuration: 0.5
   tintSpeed: 5
   isTinting: 0
+  isBlocking: 0
+  shieldHealth: 0
+  dmgRes: 0
+  isCountering: 0
   movable: 1
 --- !u!114 &1670248596730534493
 MonoBehaviour:
@@ -285,14 +285,10 @@ MonoBehaviour:
   isTriggered: 0
   isForced: 1
   indicator: {fileID: 6522456533086263551}
-  dialogue:
-  - {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
-  dialogueNo: 0
-  dialogueNoAmount: 0
+  dialogue: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
   pLayer:
     serializedVersion: 2
     m_Bits: 256
-  dialogueBox: {fileID: 0}
   canTurn: 0
   isFacingRight: 1
 --- !u!95 &769820852523672261

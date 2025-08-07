@@ -262,6 +262,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   styleFactor: 2
+  defensiveCheck: 0
+  passiveCheck: 0
   activeMoves:
   - ActiveMove
   passiveMoves:
@@ -273,15 +275,16 @@ MonoBehaviour:
   modDefensiveModeRadius: 6
   passiveModeRadius: 15
   modPassiveModeRadius: 25
-  defensiveScript: {fileID: 0}
   stunTime: 0.5
   damageAmount: 10
   knockbackForce: {x: 1, y: 0}
   attackRange: 1.8
   attackTransform: {fileID: 1463641665037281832}
+  damageType: 0
   pLayer:
     serializedVersion: 2
-    m_Bits: 33024
+    m_Bits: 256
+  playerTransform: {fileID: 0}
   canAttack: 1
   isAttacking: 0
   currentAttackCooldown: 0
@@ -308,7 +311,6 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
-  playerTransform: {fileID: 0}
   touchingWall: 0
   wallCheck: {fileID: 4244894846325867973}
   whatIsWall:
@@ -340,11 +342,16 @@ MonoBehaviour:
   getStunned: 0
   currentStunTime: 0
   stunMultiplier: 1.2
+  isCountering: 0
+  isBlocking: 0
+  damageResistance: 0
   damageTint: {r: 1, g: 0.078431375, b: 0, a: 1}
   tintDuration: 0.1
   tintSpeed: 5
   isTinting: 0
   movable: 1
+  phase2: 0
+  phase2Style: 0
 --- !u!212 &7115054256094536775
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -511,6 +518,7 @@ MonoBehaviour:
   projectileSpeed: 0
   abilityLifetime: 0
   abilityProc: 0
+  damageType: 0
 --- !u!1 &7194455058290597540
 GameObject:
   m_ObjectHideFlags: 0

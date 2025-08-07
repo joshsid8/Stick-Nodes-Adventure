@@ -171,17 +171,11 @@ AnimationClip:
     - time: 0.4
       value: {fileID: 21300000, guid: c6e7645ee8dc89d428bd5205f4a04016, type: 3}
     - time: 0.43333334
-      value: {fileID: 21300000, guid: a3e2932f500d3b24a9939fe9300b5e98, type: 3}
-    - time: 0.46666667
-      value: {fileID: 21300000, guid: a3e2932f500d3b24a9939fe9300b5e98, type: 3}
+      value: {fileID: 21300000, guid: c266a2fa57f655547920eca67444cd9a, type: 3}
     - time: 0.5
-      value: {fileID: 21300000, guid: 89eccce8d2c70024dba0440ff0a134e2, type: 3}
-    - time: 0.53333336
-      value: {fileID: 21300000, guid: 89eccce8d2c70024dba0440ff0a134e2, type: 3}
+      value: {fileID: 21300000, guid: d48ebfa7091fc724fb8772c3f7c2be2d, type: 3}
     - time: 0.56666666
-      value: {fileID: 21300000, guid: 9ed99ae81cd4a9b449ed85c74c2ecc18, type: 3}
-    - time: 0.6
-      value: {fileID: 21300000, guid: 9ed99ae81cd4a9b449ed85c74c2ecc18, type: 3}
+      value: {fileID: 21300000, guid: b48601ff9591b2a439967303c7900efe, type: 3}
     - time: 0.6333333
       value: {fileID: 21300000, guid: 266f003d46faf7648940af768526af8c, type: 3}
     - time: 0.6666667
@@ -247,12 +241,9 @@ AnimationClip:
     - {fileID: 21300000, guid: cac2a7f905564094b8c0a337a0849643, type: 3}
     - {fileID: 21300000, guid: c6e7645ee8dc89d428bd5205f4a04016, type: 3}
     - {fileID: 21300000, guid: c6e7645ee8dc89d428bd5205f4a04016, type: 3}
-    - {fileID: 21300000, guid: a3e2932f500d3b24a9939fe9300b5e98, type: 3}
-    - {fileID: 21300000, guid: a3e2932f500d3b24a9939fe9300b5e98, type: 3}
-    - {fileID: 21300000, guid: 89eccce8d2c70024dba0440ff0a134e2, type: 3}
-    - {fileID: 21300000, guid: 89eccce8d2c70024dba0440ff0a134e2, type: 3}
-    - {fileID: 21300000, guid: 9ed99ae81cd4a9b449ed85c74c2ecc18, type: 3}
-    - {fileID: 21300000, guid: 9ed99ae81cd4a9b449ed85c74c2ecc18, type: 3}
+    - {fileID: 21300000, guid: c266a2fa57f655547920eca67444cd9a, type: 3}
+    - {fileID: 21300000, guid: d48ebfa7091fc724fb8772c3f7c2be2d, type: 3}
+    - {fileID: 21300000, guid: b48601ff9591b2a439967303c7900efe, type: 3}
     - {fileID: 21300000, guid: 266f003d46faf7648940af768526af8c, type: 3}
     - {fileID: 21300000, guid: 266f003d46faf7648940af768526af8c, type: 3}
   m_AnimationClipSettings:
