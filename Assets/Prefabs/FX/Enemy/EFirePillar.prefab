@@ -136,13 +136,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ce2c6741ab0a040bfa57f6a61c154d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pillarDamage: 10
-  pillarLifeTime: 0.5
-  knockbackForce: {x: 0, y: 2.5}
+  pillarDamage: 5
+  pillarLifeTime: 0.75
+  knockbackForce: {x: 0, y: 5}
   pillarDamageType: 0
-  pillarProc: 1
+  pillarProc: 0.25
   pillarProcTimer: 0
-  isErupting: 0
+  isErupting: 1
   eruptAnim: {fileID: 7400000, guid: 3e80794bfbf0d0a4a85a04f5b1be7fc6, type: 2}
   finishAnim: {fileID: 7400000, guid: 3e964e419455b9e4c937b5409ee5f1e7, type: 2}
 --- !u!114 &5449132731890110138

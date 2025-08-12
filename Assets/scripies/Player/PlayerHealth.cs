@@ -23,7 +23,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     [HideInInspector] public PlayerController playerController;
     PlayerDefense playerDefense;
 
-    [SerializeField] private bool isDead;
+    public bool isDead;
     private bool deathToggle;
     public float respawnTime;
     

@@ -1680,13 +1680,25 @@ PrefabInstance:
       propertyPath: healthText
       value: 
       objectReference: {fileID: 3086887463199061304}
+    - target: {fileID: 5951813543701095784, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: blastType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951813543701095784, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: abilityAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5951813543701095784, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: terrainLayers.m_Bits
+      value: 65728
+      objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.2607422
+      value: 1.8760328
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 31.470291
+      value: 29.917604
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3324,7 +3336,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.6475792, y: 31.524166, z: -0.059537888}
+  m_LocalPosition: {x: 3.2628698, y: 29.97148, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4649,7 +4661,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.6475792, y: 31.524166, z: -0.059537888}
+  m_LocalPosition: {x: 3.2628698, y: 29.97148, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

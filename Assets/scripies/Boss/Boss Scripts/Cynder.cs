@@ -39,6 +39,9 @@ public class Cynder : MonoBehaviour
     public Vector2 projectileDirection;
     private Vector2 reverseProjectileDirection;
     
+    private bool unavailable;
+    [SerializeField] private LayerMask terrainLayers;
+    
     // Jumping
     public float jumpCooldown;
     public bool isRandomised;
@@ -80,14 +83,11 @@ public class Cynder : MonoBehaviour
         animator.SetBool("isFalling", isFalling);
         if (GetComponent<BossHealth>().phase2) animator.speed = 1.2f;
         if (ba.isFacingRight)
-        {
             projectileDirection = new Vector2(reverseProjectileDirection.x, projectileDirection.y);
-        }
-
         if (!ba.isFacingRight)
-        {
             projectileDirection = new Vector2(originalProjectileDirection.x, projectileDirection.y);
-        }
+        
+        unavailable = Physics2D.OverlapCircle(projectilePoint.position, 0.5f, terrainLayers);
     }
     
     private void Dash()
@@ -147,20 +147,24 @@ public class Cynder : MonoBehaviour
             float rng = Random.Range(-2.0f, 2.0f);
             projectileDirection = new Vector2(projectileDirection.x + rng, projectileDirection.y);
             fireballScript.SetValues(ba.isFacingRight, secondaryProjectileSpeed, projectileDirection, true, damageType);
-            
         }
-        else
-        {
-            Debug.LogError("where is bro's ability");
-        }
+        else Debug.LogError("where is bro's ability");
         ba.ActionCooldown(throwCooldown);
     }
+
     private void Stomp()
     {
-        if (ba.isFacingRight) Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector, -1f, 0f), Quaternion.identity);
-        else Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector, -1f, 0f), Quaternion.identity);
+        if (!unavailable)
+        {
+            if (ba.isFacingRight)
+                Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector, -1f, 0f),
+                    Quaternion.identity);
+            else
+                Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector, -1f, 0f),
+                    Quaternion.identity);
+        }
     }
-    
+
     private void Slash()
     {
         hit = Physics2D.CircleCast(attackTransform.position, attackRange, Vector2.one, 0f, LayerMask.GetMask("Player"));

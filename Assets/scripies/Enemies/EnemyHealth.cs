@@ -130,7 +130,9 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             StartCoroutine(Death());
         }
         spriteRenderer.color = damageTint;
-        isTinting = true; 
+        isTinting = true;
+
+        if (GetComponent<EnemyPatrol>().enabled) StartCoroutine(GetComponent<EnemyPatrol>().FoundPlayer());
     }
 
     public void Stun(float stunDuration)

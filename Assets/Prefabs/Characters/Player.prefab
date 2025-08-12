@@ -246,17 +246,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1cc92b4b26f73e4b97a52e48eb0dc74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityPoint: {fileID: 0}
+  abilityPoint: {fileID: 3612494413874121855}
   objects:
   - {fileID: 4963594003989781806, guid: 9d2d568d70f8f6c4aacdab26ca0c1a3c, type: 3}
-  - {fileID: 4635439681108189195, guid: 667e82e968785584b9cacd24dca82004, type: 3}
+  - {fileID: 4635439681108189195, guid: 63b0c17d8766d7d4c87326170a247cc1, type: 3}
+  - {fileID: 8069515426526680348, guid: cd60df3d2080e094a8abf5db5abf36c9, type: 3}
   abilityDamage: 10
-  abilityStunTime: 0
-  abilityKnockbackForce: {x: 1, y: 0}
+  abilityStunTime: 0.5
+  abilityKnockbackForce: {x: 0.5, y: 0}
   isDirectional: 0
   abilityDirection: {x: 0, y: 0}
-  abilityProc: 0
-  abilityLifetime: 0
+  abilityProcMultiplier: 1
+  abilityLifetimeMultiplier: 1
+  xVector: 1
   blastType: 0
 --- !u!114 &386975709121032260
 MonoBehaviour:
@@ -385,7 +387,7 @@ MonoBehaviour:
     m_Bits: 1536
   stunTime: 0.2
   knockbackForce: {x: 1, y: 0}
-  airKnockbackY: 0
+  airKnockbackY: 15
 --- !u!114 &261623171632948894
 MonoBehaviour:
   m_ObjectHideFlags: 0

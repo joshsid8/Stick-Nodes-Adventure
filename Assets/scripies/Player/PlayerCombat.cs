@@ -32,6 +32,9 @@ public class PlayerCombat : MonoBehaviour
     public float airKnockbackY;
     private RaycastHit2D[] hits;
     private Animator animator;
+
+    private bool inRange;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -149,12 +152,21 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
-                pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airKnockbackY);
+                DashTowardsEnemy(hits[i].collider.gameObject);
             }
         }
-
         currentAirAttackCooldown = airAttackCooldown;
+    }
 
+    private void DashTowardsEnemy(GameObject target)
+    {
+        inRange = Physics2D.OverlapCircle(airAttackTransform.position, airAttackRange, enemyLayer);
+        while (!inRange)
+        {
+            Vector3 directionToEnemy = target.transform.position - transform.position;
+            pc.rb.linearVelocity = new Vector3(directionToEnemy.x, directionToEnemy.y, 0);
+        }
+        pc.rb.linearVelocity = Vector2.zero;
     }
 
     private void AirAttackCooldown()

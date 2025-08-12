@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    [SerializeField] private bool isWalking;
+    public bool isWalking;
     public float walkSpeed = 5f;
     public float eyeSight = 10f;
-    [SerializeField] private bool hasFoundPlayer = false;
+    [SerializeField] private bool hasFoundPlayer;
     public Transform playerCheck;
     public LayerMask playerLayer;
     
@@ -37,49 +37,29 @@ public class EnemyPatrol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (isWalking)
-        {
-            Patrol();
-        }
-        else
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-        }
+        if (isWalking) Patrol();
+        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
         
         animator.SetBool("isWalking", isWalking);
     }
 
     void Patrol()
     {
-        if (isFacingRight)
-        {
-            rb.linearVelocity = new Vector2(walkSpeed, rb.linearVelocity.y);
-        }
-        else
-        {
-            rb.linearVelocity = new Vector2(-walkSpeed, rb.linearVelocity.y);
-        }
+        if (isFacingRight) rb.linearVelocity = new Vector2(walkSpeed, rb.linearVelocity.y);
+        else rb.linearVelocity = new Vector2(-walkSpeed, rb.linearVelocity.y);
         
         touchingWall = Physics2D.Raycast(wallCheck.position, Vector2.down * transform.localScale.y, wallCheckRay, whatIsWall);
-        if (touchingWall)
-        {
-            Flip();
-        }
+        if (touchingWall) Flip(); 
+        
         isGrounded = Physics2D.Raycast(edgeCheck.position, Vector2.down * transform.localScale.y, edgeCheckRay, groundLayer);
-        if (!isGrounded)
-        {
-            Flip();
-        }
+        if (!isGrounded) Flip();
         
         hasFoundPlayer = Physics2D.Raycast(playerCheck.position, isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x , eyeSight, playerLayer);
-        if (hasFoundPlayer || GetComponent<EnemyHealth>().enemyHealth < GetComponent<EnemyHealth>().enemyMaxHealth)
-        {
+        if (hasFoundPlayer  && isWalking) 
             StartCoroutine(FoundPlayer());
-        }
     }
 
-    IEnumerator FoundPlayer()
+    public IEnumerator FoundPlayer()
     {
         rb.linearVelocity = Vector2.zero;
         isWalking = false;
@@ -88,11 +68,9 @@ public class EnemyPatrol : MonoBehaviour
         player.GetComponent<PlayerController>().currentCombatTimer = player.GetComponent<PlayerController>().combatTimer;
         
         yield return new WaitForSeconds(0.5f);
-        wallCheck = null;
-        edgeCheck = null;
-        playerCheck = null;
         GetComponent<EnemyAttack>().enabled = true;
-        GetComponent<EnemyPatrol>().enabled = false;
+        print($"{name}: i found you, StickFigure! Run it!");
+        enabled = false;
     }
 
     void Flip()
@@ -101,7 +79,7 @@ public class EnemyPatrol : MonoBehaviour
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         if (!GetComponent<EnemyAttack>())
         {

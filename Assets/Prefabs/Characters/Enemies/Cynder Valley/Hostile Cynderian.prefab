@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: projectileSpeed
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 1439657276797700270, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: terrainLayers.m_Bits
+      value: 65728
+      objectReference: {fileID: 0}
     - target: {fileID: 2131039031582443626, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: knockbackTime
       value: 0.1

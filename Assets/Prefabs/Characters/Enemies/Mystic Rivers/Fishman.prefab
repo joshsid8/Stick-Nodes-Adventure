@@ -124,6 +124,9 @@ MonoBehaviour:
   abilityLifetime: 0.3
   abilityProc: 0.5
   damageType: 0
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 65728
 --- !u!4 &4745767652298935351 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1248520969832997338, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}

@@ -31,22 +31,6 @@ public class EnemyPillar : MonoBehaviour
         Lifetime();
         pillarProcTimer -= Time.deltaTime;
     }
-    
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && pillarProcTimer <= 0)
-        {
-            pillarProcTimer = pillarProc;
-            PDamageable damageable = collision.gameObject.GetComponent<PDamageable>();
-            if (damageable != null && isErupting)
-            {
-                damageable.Damage(pillarDamage, knockbackForce * transform.up, playerFacingRight, pillarDamageType);
-                damageable.Stun(0f);
-                PlayerHealth.Instance.playerController.currentCombatTimer = +
-                    PlayerHealth.Instance.playerController.combatTimer * 0.5f;
-            }
-        }
-    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {

@@ -29,6 +29,8 @@ public class Noxu : MonoBehaviour
     // Checks
     [HideInInspector] public bool freezeMovement;
     [SerializeField] private int damageType;
+    private bool unavailable;
+    [SerializeField] private LayerMask terrainLayers;
     
     // Components
     private Rigidbody2D rb;
@@ -54,14 +56,13 @@ public class Noxu : MonoBehaviour
         if (freezeMovement) rb.linearVelocity = Vector2.zero;
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
         
-        if (ba.isFacingRight)
-        {
+        if (ba.isFacingRight) 
             projectileDirection = new Vector2(reverseProjectileDirection.x, projectileDirection.y);
-        }
+        
         if (!ba.isFacingRight)
-        {
             projectileDirection = new Vector2(originalProjectileDirection.x, projectileDirection.y);
-        }
+        
+        unavailable = Physics2D.OverlapCircle(projectilePoint.position, 0.5f, terrainLayers);
     }
     
     private void Strafe()
@@ -96,15 +97,23 @@ public class Noxu : MonoBehaviour
     
     private IEnumerator Stomp(int amount)
     {
-        xVector[0] = vectorSpace;
-        for (int i = 0; i < amount; i++)
+        if (!unavailable)
         {
-            if (ba.isFacingRight) Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector[0], 0f, 0f), Quaternion.identity);
-            else Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector[0], 0f, 0f), Quaternion.identity);
-            xVector[0] += vectorSpace;
-            yield return new WaitForSeconds(0.2f);
+            xVector[0] = vectorSpace;
+            for (int i = 0; i < amount; i++)
+            {
+                if (ba.isFacingRight)
+                    Instantiate(stationaryElement, projectilePoint.position + new Vector3(xVector[0], 0f, 0f),
+                        Quaternion.identity);
+                else
+                    Instantiate(stationaryElement, projectilePoint.position + new Vector3(-xVector[0], 0f, 0f),
+                        Quaternion.identity);
+                xVector[0] += vectorSpace;
+                yield return new WaitForSeconds(0.2f);
+            }
+
+            xVector[0] = vectorSpace;
         }
-        xVector[0] = vectorSpace;
     }
     private IEnumerator ReverseStomp(int amount)
     {

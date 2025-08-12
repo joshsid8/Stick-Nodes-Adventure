@@ -44,6 +44,7 @@ public class EnemyAttack : MonoBehaviour
     private EnemyPatrol ep;
 
     public bool canFacePlayer;
+    [SerializeField] private bool playerIsDead;
     
     // Start is called before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -54,6 +55,7 @@ public class EnemyAttack : MonoBehaviour
         if (GetComponent<EnemyMovement>() != null) GetComponent<EnemyMovement>().enabled = true;
         originalDefensiveModeRadius = defensiveModeRadius;
         originalPassiveModeRadius = passiveModeRadius;
+        playerIsDead = false;
         
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null) playerTransform = playerObject.transform;
@@ -87,7 +89,15 @@ public class EnemyAttack : MonoBehaviour
         else if (stunnable && passiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
         else if (stunnable && evasiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
         else GetComponent<EnemyHealth>().stunMultiplier = 1f;
-        
+
+        if (PlayerHealth.Instance.isDead && !playerIsDead)
+        {
+            playerIsDead = true;
+            ep.enabled = true;
+            ep.isWalking = true;
+            enabled = false;
+            print("Player is dead, restarting");
+        }
     }
     
     private void CheckModes()
@@ -221,6 +231,4 @@ public class EnemyAttack : MonoBehaviour
         ep.isFacingRight = !ep.isFacingRight;
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
-
-
 }

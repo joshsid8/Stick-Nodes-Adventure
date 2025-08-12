@@ -21,9 +21,10 @@ public class PlayerAbility : MonoBehaviour
     public float abilityCooldown;
     public bool isPerformingAbility;
     
-    public MonoBehaviour ability;
+    private PlayerPerformAbility ability;
     private PlayerController pc;
     private PlayerDefense pd;
+    
     
     Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,6 +34,7 @@ public class PlayerAbility : MonoBehaviour
         animator = GetComponent<Animator>();
         pc = GetComponent<PlayerController>();
         pd = GetComponent<PlayerDefense>();
+        ability = GetComponent<PlayerPerformAbility>();
         maxEnergy = energy;
         originalEnergyRefill = energyRefill;
     }

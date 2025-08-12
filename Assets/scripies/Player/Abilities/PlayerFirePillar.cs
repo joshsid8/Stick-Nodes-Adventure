@@ -16,42 +16,28 @@ public class PlayerFirePillar : MonoBehaviour
     [SerializeField] private bool isErupting;
     [SerializeField] private AnimationClip eruptAnim;
     [SerializeField] private AnimationClip finishAnim;
-    [SerializeField] private LayerMask enemyLayer;
     private Animator animator;
+    private Collider2D coll;
     
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        animator = GetComponent<Animator>();
         if (eruptAnim != null) animator.Play(eruptAnim.name);
-        pillarTimer = pillarLifeTime;
+        coll = GetComponent<Collider2D>();
     }
 
     void Update()
     {
         Lifetime();
         pillarProcTimer -= Time.deltaTime;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == enemyLayer && pillarProcTimer <= 0)
-        {
-            pillarProcTimer = pillarProc;
-            EDamageables damageable = collision.gameObject.GetComponent<EDamageables>();
-            if (damageable != null && isErupting)
-            {
-                damageable.Damage(pillarDamage, knockbackForce * transform.up);
-                damageable.Stun(0f);
-                PlayerHealth.Instance.playerController.currentCombatTimer = +
-                    PlayerHealth.Instance.playerController.combatTimer * 0.5f;
-            }
-        }
+        coll.enabled = pillarProcTimer <= 0 ? coll.enabled : !coll.enabled;
     }
     
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == enemyLayer && pillarProcTimer <= 0)
+        if (collision.CompareTag("Boss") && pillarProcTimer <= 0 || collision.CompareTag("Enemy") && pillarProcTimer <= 0)
         {
             pillarProcTimer = pillarProc;
             EDamageables damageable = collision.gameObject.GetComponent<EDamageables>();
@@ -65,22 +51,33 @@ public class PlayerFirePillar : MonoBehaviour
         }
     }
     
-    public void SetValues(float lifetime, float damage, float proc, Vector2 knockback)
+    public void SetValues(float lifetimeMult, float damage, float procMult, Vector2 knockback)
     {
         pillarDamage = damage;
-        pillarLifeTime = lifetime;
-        pillarProc = proc;
+        pillarLifeTime *= lifetimeMult;
+        pillarProc *= procMult;
         knockbackForce = knockback;
     }
     
     private void Lifetime()
     {
-        pillarTimer -= Time.deltaTime;
-        if (pillarTimer <= 0 && finishAnim != null) animator.Play(finishAnim.name);
+        if (isErupting && pillarTimer > 0)
+        {
+            pillarTimer -= Time.deltaTime;
+            if (pillarTimer <= 0 && finishAnim != null)
+            {
+                isErupting = false;
+                animator.Play(finishAnim.name);
+            }
+        }
     }
     
     void Boom()
     {
         Destroy(gameObject);
+    }
+    void ApplyTimer()
+    {
+        pillarTimer = pillarLifeTime;
     }
 }
