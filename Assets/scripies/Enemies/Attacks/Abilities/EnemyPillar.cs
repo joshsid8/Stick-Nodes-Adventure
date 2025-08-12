@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyFirePillar : MonoBehaviour
+public class EnemyPillar : MonoBehaviour
 {
     public float pillarDamage;
     public float pillarLifeTime;

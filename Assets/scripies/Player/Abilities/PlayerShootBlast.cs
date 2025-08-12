@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerFireBall : MonoBehaviour
+public class PlayerShootBlast : MonoBehaviour
 {
     public float projectileSpeed;
     private float projectileDamage;
@@ -17,7 +17,7 @@ public class PlayerFireBall : MonoBehaviour
     [SerializeField] private AnimationClip anim;
     [SerializeField] private AnimationClip collideAnim;
     
-    // New variable to store the direction passed from PlayerFireProjectile
+    // New variable to store the direction passed from PlayerPerformAbility
     private bool isFacingRightDirection;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

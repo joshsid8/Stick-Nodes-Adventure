@@ -34,6 +34,7 @@ public class EnemyBeam : MonoBehaviour
     {
         Lifetime();
         beamProcTimer -= Time.deltaTime;
+        if (isDirectional) transform.eulerAngles = beamDirection;
     }
 
     public void SetValues(bool facingRight, float lifetime, float proc, Vector2 direction, bool directional, int damageType)

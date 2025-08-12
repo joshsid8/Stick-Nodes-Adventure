@@ -41,6 +41,6 @@ public class EnemyShootBlast : MonoBehaviour
     public void SummonPillar(GameObject pillar)
     {
         GameObject newBeam = Instantiate(pillar, abilityPoint.position, abilityPoint.rotation);
-        EnemyFirePillar eb = newBeam.GetComponent<EnemyFirePillar>();
+        EnemyPillar eb = newBeam.GetComponent<EnemyPillar>();
     }
 }

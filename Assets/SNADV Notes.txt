@@ -12,7 +12,7 @@ SNADV Notes
         Convert all enemy abilities into player abilities
         
         GUI
-            Being able to scroll through certain stuff for larger sizes for thing like inventories, stats, etc
+            Being able to scroll through certain stuff for larger sizes for things like inventories, stats, etc
             Ability scrolls and a separate ability arsenal
         
     Optimisations:
