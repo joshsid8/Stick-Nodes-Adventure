@@ -1734,7 +1734,7 @@ MonoBehaviour:
   mapBgColor: {r: 0.2264151, g: 0.06941973, b: 0.06941973, a: 1}
   newOst:
   - {fileID: 8300000, guid: 8743420e5345fa2469cdd1da3c893a19, type: 3}
-  - {fileID: 8300000, guid: 8743420e5345fa2469cdd1da3c893a19, type: 3}
+  - {fileID: 8300000, guid: e42854986eb948b498ef8f381ffbedc1, type: 3}
   - {fileID: 8300000, guid: 709d55a8c27b70744a32225517e0be7d, type: 3}
 --- !u!4 &620088607 stripped
 Transform:
@@ -7628,6 +7628,9 @@ MonoBehaviour:
   projectileDirection: {x: 0, y: 0}
   freezeMovement: 0
   damageType: 0
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &9075578306459573741
 PrefabInstance:
   m_ObjectHideFlags: 0

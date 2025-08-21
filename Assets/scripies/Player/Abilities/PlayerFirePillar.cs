@@ -14,6 +14,9 @@ public class PlayerFirePillar : MonoBehaviour
     [SerializeField] private float pillarProcTimer;
     
     [SerializeField] private bool isErupting;
+    [SerializeField] private RaycastHit2D[] inContact;
+    [SerializeField] private BoxCollider2D pillarCollider;
+
     [SerializeField] private AnimationClip eruptAnim;
     [SerializeField] private AnimationClip finishAnim;
     private Animator animator;
@@ -33,20 +36,25 @@ public class PlayerFirePillar : MonoBehaviour
         Lifetime();
         pillarProcTimer -= Time.deltaTime;
         coll.enabled = pillarProcTimer <= 0 ? coll.enabled : !coll.enabled;
+        Hitbox();
     }
-    
-    private void OnTriggerStay2D(Collider2D collision)
+    private void Hitbox()
     {
-        if (collision.CompareTag("Boss") && pillarProcTimer <= 0 || collision.CompareTag("Enemy") && pillarProcTimer <= 0)
+        inContact = Physics2D.CapsuleCastAll(transform.position, pillarCollider.size, CapsuleDirection2D.Vertical, 0,
+            Vector2.zero, 0, LayerMask.GetMask("Enemy", "Boss"));
+        if (inContact != null && pillarProcTimer <= 0)
         {
             pillarProcTimer = pillarProc;
-            EDamageables damageable = collision.gameObject.GetComponent<EDamageables>();
-            if (damageable != null && isErupting)
+            foreach (RaycastHit2D hit in inContact)
             {
-                damageable.Damage(pillarDamage, knockbackForce * transform.up);
-                damageable.Stun(0f);
-                PlayerHealth.Instance.playerController.currentCombatTimer = +
-                    PlayerHealth.Instance.playerController.combatTimer * 0.5f;
+                EDamageables damageable = hit.collider.gameObject.GetComponent<EDamageables>();
+                if (damageable != null && isErupting)
+                {
+                    damageable.Damage(pillarDamage, knockbackForce * transform.up);
+                    damageable.Stun(0f);
+                    PlayerHealth.Instance.playerController.currentCombatTimer = +
+                        PlayerHealth.Instance.playerController.combatTimer * 0.5f;
+                }
             }
         }
     }

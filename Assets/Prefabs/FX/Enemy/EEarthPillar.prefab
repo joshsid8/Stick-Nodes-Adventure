@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 671900828089835397}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.5999985, z: 0}
+  m_LocalPosition: {x: 0, y: -2.956, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4606846203399503564}
   - component: {fileID: 5960776879607877092}
   - component: {fileID: 5131145203216246484}
-  - component: {fileID: 5619828484938603725}
+  - component: {fileID: 6469848504710289780}
   - component: {fileID: 3697934942339331396}
   - component: {fileID: 8097277618318844069}
   m_Layer: 17
@@ -143,6 +143,8 @@ MonoBehaviour:
   pillarProc: 1
   pillarProcTimer: 0
   isErupting: 1
+  inContact: 0
+  pillarCollider: {fileID: 6469848504710289780}
   eruptAnim: {fileID: 7400000, guid: 50b4995274f513945a4b05d7f2842a80, type: 2}
   finishAnim: {fileID: 7400000, guid: 77673900b6371bc4baf029192a37c2d6, type: 2}
 --- !u!114 &5131145203216246484
@@ -161,14 +163,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65728
   bottomPoint: {fileID: 5528177025534795277}
-  rayDistance: 1
-  raySpeed: 2
+  rayDistance: 0.06
+  raySpeed: 0.1
   scriptToWake: {fileID: 5960776879607877092}
   masks:
     serializedVersion: 2
-    m_Bits: 541440
---- !u!70 &5619828484938603725
-CapsuleCollider2D:
+    m_Bits: 542464
+--- !u!61 &6469848504710289780
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -201,9 +203,18 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.01712346, y: -0.14695358}
+  m_Offset: {x: -0.01712346, y: -0.1469536}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 19.2, y: 10.8}
+    newSize: {x: 19.2, y: 10.8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   m_Size: {x: 4.936773, y: 5.630825}
-  m_Direction: 0
+  m_EdgeRadius: 0
 --- !u!95 &3697934942339331396
 Animator:
   serializedVersion: 7

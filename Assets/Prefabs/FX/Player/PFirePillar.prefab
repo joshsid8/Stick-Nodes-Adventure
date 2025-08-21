@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7171273038570387417}
   - component: {fileID: 5449132731890110138}
   - component: {fileID: -8093631117329600410}
-  - component: {fileID: 8785554561336103725}
+  - component: {fileID: 6687185073483321472}
   - component: {fileID: 4796591909322137970}
   - component: {fileID: 1074734000381140009}
   m_Layer: 17
@@ -145,7 +145,7 @@ MonoBehaviour:
   scriptToWake: {fileID: -8093631117329600410}
   masks:
     serializedVersion: 2
-    m_Bits: 17152
+    m_Bits: 542464
 --- !u!114 &-8093631117329600410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,10 +165,11 @@ MonoBehaviour:
   pillarProc: 0.25
   pillarProcTimer: 0
   isErupting: 1
+  pillarCollider: {fileID: 6687185073483321472}
   eruptAnim: {fileID: 7400000, guid: 3e80794bfbf0d0a4a85a04f5b1be7fc6, type: 2}
   finishAnim: {fileID: 7400000, guid: 3e964e419455b9e4c937b5409ee5f1e7, type: 2}
---- !u!70 &8785554561336103725
-CapsuleCollider2D:
+--- !u!61 &6687185073483321472
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -201,9 +202,18 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.00059843063, y: 0.5140481}
-  m_Size: {x: 1.2021074, y: 4.205859}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0.5140481}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.202107, y: 4.205859}
+  m_EdgeRadius: 0
 --- !u!95 &4796591909322137970
 Animator:
   serializedVersion: 7

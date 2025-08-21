@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyPillar : MonoBehaviour
@@ -12,8 +13,10 @@ public class EnemyPillar : MonoBehaviour
     
     public float pillarProc;
     [SerializeField] private float pillarProcTimer;
-    
     [SerializeField] private bool isErupting;
+    [SerializeField] private bool inContact;
+    [SerializeField] private BoxCollider2D pillarCollider;
+    
     Animator animator;
     [SerializeField] private AnimationClip eruptAnim;
     [SerializeField] private AnimationClip finishAnim;
@@ -29,15 +32,18 @@ public class EnemyPillar : MonoBehaviour
     {
         playerFacingRight = !PlayerHealth.Instance.playerController.isFacingRight;
         Lifetime();
+        Hitbox();
         pillarProcTimer -= Time.deltaTime;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void Hitbox()
     {
-        if (collision.CompareTag("Player") && pillarProcTimer <= 0)
+        inContact = Physics2D.CapsuleCast(transform.position, pillarCollider.size, CapsuleDirection2D.Vertical, 0,
+            Vector2.zero, 0, LayerMask.GetMask("Player"));
+        if (inContact && pillarProcTimer <= 0)
         {
             pillarProcTimer = pillarProc;
-            PDamageable damageable = collision.gameObject.GetComponent<PDamageable>();
+            PDamageable damageable = PlayerHealth.Instance.gameObject.GetComponent<PDamageable>();
             if (damageable != null && isErupting)
             {
                 damageable.Damage(pillarDamage, knockbackForce * transform.up, playerFacingRight, pillarDamageType);
@@ -46,6 +52,12 @@ public class EnemyPillar : MonoBehaviour
                     PlayerHealth.Instance.playerController.combatTimer * 0.5f;
             }
         }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("PVFX"))
+            if (collision.GetComponent<PlayerShootBlast>() != null) collision.GetComponent<PlayerShootBlast>().Collide();
     }
 
     private void Lifetime()
@@ -70,5 +82,4 @@ public class EnemyPillar : MonoBehaviour
     {
         pillarTimer = pillarLifeTime;
     }
-
 }

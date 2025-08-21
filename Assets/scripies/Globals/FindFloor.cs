@@ -32,10 +32,10 @@ public class FindFloor : MonoBehaviour
 
     private void FoundSurface()
     {
-        gameObject.AddComponent<BoxCollider2D>();
-        gameObject.GetComponent<BoxCollider2D>().offset = new Vector2(0, transform.position.y - bottomPoint.position.y - 2f);
-        gameObject.GetComponent<BoxCollider2D>().size = new Vector2(0.5f, 2.5f);
-        gameObject.GetComponent<BoxCollider2D>().excludeLayers = masks;
+        gameObject.AddComponent<CapsuleCollider2D>();
+        gameObject.GetComponent<CapsuleCollider2D>().offset = new Vector2(0, bottomPoint.localPosition.y + 0.25f);
+        gameObject.GetComponent<CapsuleCollider2D>().size = new Vector2(0.15f, 0.5f);
+        gameObject.GetComponent<CapsuleCollider2D>().excludeLayers = masks;
         gameObject.transform.position -= new Vector3(0, rayDistance, 0);
         scriptToWake.enabled = true;
 

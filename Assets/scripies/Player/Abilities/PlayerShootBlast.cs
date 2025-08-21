@@ -58,17 +58,15 @@ public class PlayerShootBlast : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Boss")
         {
-            Collided();
+            HitEntity();
         }
         else if (collision.gameObject.tag == "Terrain" || collision.gameObject.layer == LayerMask.NameToLayer("EVFX"))
         {
-            if (collideAnim != null) animator.Play(collideAnim.name);
-            rb.linearVelocity = Vector2.zero;
-            Destroy(gameObject, 0.2f);
+            Collide();
         }
     }
 
-    private void Collided()
+    private void HitEntity()
     {
         rb.linearVelocity = Vector2.zero;
         hits = Physics2D.CircleCastAll(transform.position, projectileRange, transform.right, 0f, target);
@@ -84,6 +82,11 @@ public class PlayerShootBlast : MonoBehaviour
             }
         }
         
+        Collide();
+    }
+
+    public void Collide()
+    {
         if (collideAnim != null) animator.Play(collideAnim.name);
         rb.linearVelocity = Vector2.zero;
         Destroy(gameObject, 0.2f);
