@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 public class BossAttack : MonoBehaviour
 {
@@ -41,6 +42,13 @@ public class BossAttack : MonoBehaviour
     public bool isFacingRight;
     public bool canFacePlayer;
     [HideInInspector] public Transform playerTransform;
+
+    [SerializeField] private bool playerIsDead;
+    private DialogueTrigger dt;
+    [SerializeField] private int dialogueNo = -1;
+    [SerializeField] private bool inRange;
+    private bool noMercy;
+    private Vector3 originalPosition;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -49,14 +57,10 @@ public class BossAttack : MonoBehaviour
         animator = GetComponent<Animator>();
         currentAttackCooldown = attackCooldown;
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
-        {
-            playerTransform = playerObject.transform;
-        }
-        else
-        {
-            Debug.LogError("bruh");
-        }
+        if (playerObject != null) playerTransform = playerObject.transform;
+        else Debug.LogError("bruh");
+        dt = GetComponent<DialogueTrigger>();
+        originalPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -65,19 +69,22 @@ public class BossAttack : MonoBehaviour
         Checks();
         FacePlayer();
         FactorCheck();
-        if (isAttacking)
-        {
-            AttackSystem();
-        }
+        if (isAttacking) AttackSystem();
+        StartCoroutine(Restart());
+        if (!PlayerHealth.Instance.isDead && playerIsDead) playerIsDead = false;
+        inRange = Physics2D.OverlapCircle(dt.chatPoint.position, dt.chatRadius, LayerMask.GetMask("Player"));
+        if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.enabled && noMercy) isAttacking = true;
     }
 
     private void FactorCheck()
     {
         closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
     }
+    
     private void AttackSystem()
     {
         GetComponent<DialogueTrigger>().enabled = false;
+        PlayerHealth.Instance.playerController.currentCombatTimer = 5;
         canFacePlayer = true;
         if (canAttack)
         {
@@ -161,20 +168,42 @@ public class BossAttack : MonoBehaviour
 
             // Determine direction to player
             directionToPlayer = playerTransform.position.x - transform.position.x;
-            if (directionToPlayer > 0 && !isFacingRight)
-            {
-                Flip();
-            }
-            else if (directionToPlayer < 0 && isFacingRight)
-            {
-                Flip();
-            }
+            if (directionToPlayer > 0 && !isFacingRight) Flip();
+            else if (directionToPlayer < 0 && isFacingRight) Flip();
         }
     }
 
     public void ActionCooldown(float cooldownTime)
     {
         currentAttackCooldown = bh.phase2 ?  cooldownTime * 0.5f : cooldownTime;
+    }
+
+    IEnumerator Restart()
+    {
+        if (PlayerHealth.Instance.isDead && !playerIsDead)
+        {
+            playerIsDead = true;
+            isAttacking = false;
+            noMercy = false;
+            yield return new WaitForSeconds(PlayerHealth.Instance.respawnTime);
+            transform.position = originalPosition;
+            bh.bossHealth = bh.bossMaxHealth;
+            yield return new WaitForSeconds(1f);
+            noMercy = true;
+            if (dialogueNo <= bh.introDialogue.Length - 1)
+            {
+                dt.enabled = true;
+                if (dialogueNo == -1)
+                {
+                    dt.dialogue = bh.introDialogue[dialogueNo + 1];
+                    dialogueNo++;
+                }
+                else if (dialogueNo == bh.introDialogue.Length) dt.dialogue = bh.introDialogue[dialogueNo - 1];
+                else dt.dialogue = bh.introDialogue[dialogueNo];
+                dt.isForced = true;
+                dialogueNo++;
+            }
+        }
     }
 
     void Flip()

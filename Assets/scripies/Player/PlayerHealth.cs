@@ -90,7 +90,12 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             : playerHealth.ToString("F1") +  " / " + playerMaxHealth.ToString("F0");
         if (playerHealth < 0) playerHealth = 0;
         if (playerHealth > playerMaxHealth) playerExtraHealth = playerHealth - playerMaxHealth;
-        if (isDead) playerController.canAct = false;
+        if (isDead) 
+        {
+            playerController.canAct = false; 
+            gameObject.layer = LayerMask.NameToLayer("Dead");
+            spriteRenderer.color = Color.white;
+        }
     }
 
     void SetValues()
@@ -129,8 +134,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             deathToggle = true;
             isDead = true;
-            gameObject.layer = LayerMask.NameToLayer("Dead");
-            spriteRenderer.color = Color.white;
             yield return new WaitForSeconds(respawnTime);
             StartCoroutine(Spawn(0, true));
             playerHealth = playerMaxHealth * 0.25f;
@@ -140,7 +143,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             playerController.canAct = true;
             playerController.currentCombatTimer = 0;
         }
-        else if (playerHealth < 0) isDead = false;
     }
 
     public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageType)
@@ -157,7 +159,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             else if (playerDefense.isBlocking && playerDefense.counterWindow && damageType < 2)
             {
                 // perfect blocking / counter
-                
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * playerDefense.counterDamageResistance;
                 else playerHealth -= damageAmount * playerDefense.counterDamageResistance;
                 playerController.animator.SetTrigger("Counter");

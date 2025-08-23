@@ -6992,7 +6992,9 @@ MonoBehaviour:
   bossName: Noxu, the Keeper of Earth
   phase2: 0
   phase2Health: 0
-  phase2Dialogue: {fileID: 0}
+  introDialogue:
+  - {fileID: 11400000, guid: fc546ccfcc2d4514ba3eb062aa5a92af, type: 2}
+  - {fileID: 11400000, guid: 6cfa5a20770f557408dd62bd9a6c7ea6, type: 2}
   deathDialogue: {fileID: 11400000, guid: 25a0ddcace9378b41b6a5761bf1f6919, type: 2}
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintDuration: 0.5
@@ -7386,6 +7388,9 @@ MonoBehaviour:
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
+  playerIsDead: 0
+  dialogueNo: -1
+  inRange: 0
 --- !u!114 &5778937951420858568
 MonoBehaviour:
   m_ObjectHideFlags: 0

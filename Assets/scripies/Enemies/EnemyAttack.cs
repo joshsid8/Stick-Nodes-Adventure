@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 public class EnemyAttack : MonoBehaviour
@@ -96,8 +97,8 @@ public class EnemyAttack : MonoBehaviour
             ep.enabled = true;
             ep.isWalking = true;
             enabled = false;
-            print("Player is dead, restarting");
         }
+        if (PlayerHealth.Instance.isDead! && playerIsDead) playerIsDead = false;
     }
     
     private void CheckModes()

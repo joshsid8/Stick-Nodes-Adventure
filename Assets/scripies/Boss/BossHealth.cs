@@ -17,7 +17,7 @@ public class BossHealth : MonoBehaviour, EDamageables
     //phases
     public bool phase2;
     public float phase2Health;
-    public DialogueObject phase2Dialogue;
+    public DialogueObject[] introDialogue;
     public DialogueObject deathDialogue;
     
     //tint variables

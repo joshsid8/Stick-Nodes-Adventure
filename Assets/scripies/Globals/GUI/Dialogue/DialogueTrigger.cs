@@ -8,7 +8,7 @@ public class DialogueTrigger : MonoBehaviour
     public Transform chatPoint;
     [SerializeField] private bool isInRange;
     public bool isTriggered;
-    [SerializeField] private bool isForced;
+    public bool isForced;
     
     public GameObject indicator;
     public DialogueObject dialogue;
@@ -18,14 +18,10 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private bool isFacingRight;
     private Transform playerTransform;
     
-    
     private void Awake()
     {
         GameObject playerObject = PlayerHealth.Instance.gameObject;
-        if (playerObject != null)
-        {
-            playerTransform = playerObject.transform;
-        }
+        if (playerObject != null) playerTransform = playerObject.transform;
     }
 
     void Update()
@@ -41,13 +37,10 @@ public class DialogueTrigger : MonoBehaviour
             {
                 isTriggered = true;
                 isForced = false;
-                DialogueUI.Instance.ShowDialogue(dialogue);
+                if (dialogue != null) DialogueUI.Instance.ShowDialogue(dialogue);
             }
         }
-        else
-        {
-            indicator.SetActive(false);
-        }
+        else indicator.SetActive(false);
 
         if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
     }
@@ -62,14 +55,8 @@ public class DialogueTrigger : MonoBehaviour
     {
         float directionToPlayer = playerTransform.position.x - transform.position.x;
 
-        if (directionToPlayer > 0 && !isFacingRight)
-        {
-            Flip();
-        }
-        else if (directionToPlayer < 0 && isFacingRight)
-        {
-            Flip();
-        }
+        if (directionToPlayer > 0 && !isFacingRight) Flip();
+        else if (directionToPlayer < 0 && isFacingRight) Flip();
     }
 
     private void Flip()

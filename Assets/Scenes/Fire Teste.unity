@@ -4175,6 +4175,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cynder
       objectReference: {fileID: 0}
+    - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: dialogueNo
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 8195243039380430539, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 36.9

@@ -7,7 +7,6 @@ public class PlayerFirePillar : MonoBehaviour
     private float pillarTimer;
     
     public Vector2 knockbackForce;
-    public int pillarDamageType;
     bool isFacingRight;
     
     public float pillarProc;

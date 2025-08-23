@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
-  m_Name: Cynder Phase 2
+  m_Name: Noxu Intro 2
   m_EditorClassIdentifier: 
-  npcName: Cynder
+  npcName: Noxu
   dialogue:
-  - '#I''m just getting started!'
+  - You've come back, again!
+  - I see you won't to stop until you beat me.
+  - Such resilience! I'll be quiet from now. Let us get started right away.
+  - Good luck!
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -45,8 +48,16 @@ MonoBehaviour:
   canDropItem: 0
   itemDrop: []
   itemType: []
-  canBeColoured: 0
-  colour: []
-  colourIndex: 0
+  canBeColoured: 1
+  colour:
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0.31132078, g: 0.16160543, b: 0.09545213, a: 1}
+  colourIndex: 2
   canBeBold: 1
-  bold: 01
+  bold: 00000001
+  speaker: 
+  alteredDialogue: {fileID: 0}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

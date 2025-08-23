@@ -61,7 +61,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         PlayerFirePillar pillarScript = newPillar.GetComponent<PlayerFirePillar>();
 
                         if (pillarScript != null)
-                            pillarScript.SetValues(abilityLifetimeMultiplier, abilityDamage * pa.damageMultiplier,
+                            pillarScript.SetValues(abilityLifetimeMultiplier, abilityDamage * pa.damageMultiplier / abilityAmount,
                                 abilityProcMultiplier, abilityKnockbackForce);
                         else Debug.LogError("where is bro's pillar");
                         xVector += 1.5f;

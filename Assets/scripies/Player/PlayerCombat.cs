@@ -62,19 +62,9 @@ public class PlayerCombat : MonoBehaviour
         }
         animator.SetBool("isAttacking", isAttacking);
         animator.SetBool("isAirAttacking", isAirAttacking);
-        if (pc.isGrounded)
-        {
-            hasAirBoosted = false;
-        }
-
-        if (currentAttackCooldown > 0)
-        {
-            canAttack = false;
-        }
-        else if (currentAirAttackCooldown > 0)
-        {
-            canAirAttack = false;
-        }
+        if (pc.isGrounded) hasAirBoosted = false;
+        if (currentAttackCooldown > 0) canAttack = false;
+        else if (currentAirAttackCooldown > 0) canAirAttack = false;
         AttackCooldown();
         AirAttackCooldown();
         
@@ -97,7 +87,6 @@ public class PlayerCombat : MonoBehaviour
         {
             Debug.LogError("WHERES THE DAAYUMM SCRIPTABLE OBJEEECCTTT");
             enabled = false;
-            return;
         }
     }
 
@@ -115,19 +104,17 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
+                StartCoroutine(AreaManager.Instance.StopTime(0.1f));
             }
         }
-
         currentAttackCooldown = attackCooldown;
-
     }
 
     private void AttackCooldown()
     {   
         currentAttackCooldown -= Time.deltaTime * 0.5f;
         {
-            if (currentAttackCooldown <= 0)
-                canAttack = true;
+            if (currentAttackCooldown <= 0) canAttack = true;
         }
     }
 
@@ -135,8 +122,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (pc.rb.linearVelocity.y < 0 && !hasAirBoosted)
         {
-            pc.rb.linearVelocity =
-                new Vector2(pc.rb.linearVelocity.x, airAttackForce);
+            pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airAttackForce);
             hasAirBoosted = true;
         }
 
@@ -152,7 +138,8 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
-                DashTowardsEnemy(hits[i].collider.gameObject);
+                StartCoroutine(AreaManager.Instance.StopTime(0.1f));
+                //DashTowardsEnemy(hits[i].collider.gameObject);
             }
         }
         currentAirAttackCooldown = airAttackCooldown;

@@ -187,6 +187,9 @@ MonoBehaviour:
   stationaryElement: {fileID: 4635439681108189195, guid: dbee23465e1f4f44184f882544fafa0c, type: 3}
   secondaryProjectileSpeed: 4
   projectileDirection: {x: -3, y: -5}
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 65728
   jumpCooldown: 1.5
   isRandomised: 1
   jumpForceY: 30
@@ -238,6 +241,9 @@ MonoBehaviour:
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
+  playerIsDead: 0
+  dialogueNo: -1
+  inRange: 0
 --- !u!114 &8376931847354496412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,7 +262,9 @@ MonoBehaviour:
   bossName: Cynder, The Keeper of Flames
   phase2: 0
   phase2Health: 300
-  phase2Dialogue: {fileID: 11400000, guid: 463aee0e96e79dc4284200d4c60132d5, type: 2}
+  introDialogue:
+  - {fileID: 11400000, guid: 5e9fa701ed7cb5c4bb0087e02cab4e09, type: 2}
+  - {fileID: 11400000, guid: 280a30c3225a86940b8114d7af080f05, type: 2}
   deathDialogue: {fileID: 11400000, guid: 0b22e34c35f938b44ac0a55b5b4d5013, type: 2}
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintDuration: 0.5
