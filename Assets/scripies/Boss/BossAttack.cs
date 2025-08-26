@@ -73,7 +73,7 @@ public class BossAttack : MonoBehaviour
         StartCoroutine(Restart());
         if (!PlayerHealth.Instance.isDead && playerIsDead) playerIsDead = false;
         inRange = Physics2D.OverlapCircle(dt.chatPoint.position, dt.chatRadius, LayerMask.GetMask("Player"));
-        if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.enabled && noMercy) isAttacking = true;
+        if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.enabled && noMercy && !bh.isDead) isAttacking = true;
     }
 
     private void FactorCheck()

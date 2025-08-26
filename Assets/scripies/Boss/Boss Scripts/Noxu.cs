@@ -143,8 +143,7 @@ public class Noxu : MonoBehaviour
             ba.ActionCooldown(meleeCooldown * 0.5f);
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
-            {
-                StartCoroutine(AreaManager.Instance.StopTime(0.15f));
+            { 
                 damageable.Damage(dmg, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ba.isFacingRight, damageType);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;

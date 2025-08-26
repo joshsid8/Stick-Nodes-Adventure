@@ -8,8 +8,6 @@ SNADV Notes
         Ensure collision is nonexistent for pillars in terms of colliding with entities
         
         Boss/Enemy Logic
-            Refix Cynder (or just in general) knockback logic for some reason
-            Refix Enemy Earth Pillars for some reason
             Initial Boulder Throwing
             When a boss is defeated, make the 'get up' animation work
         

@@ -33,16 +33,12 @@ public class Knockback : MonoBehaviour
             {
                 currentTime += Time.fixedDeltaTime;
                 knockbackForce = hitForce;
-                if (inputDirection != 0)
-                {
-                    combinedForce = knockbackForce + new Vector2(inputDirection * inputForce, 0f);
-                }
-                else
-                {
-                    combinedForce = knockbackForce;
-                } 
+                if (inputDirection != 0) combinedForce = knockbackForce + new Vector2(inputDirection * inputForce, 0f);
+                else combinedForce = knockbackForce;
+                
                 combinedForce.x /= currentTime;
                 if (combinedForce.y == 0) rb.linearVelocity = new Vector2(combinedForce.x, rb.linearVelocity.y);
+                else if (combinedForce.x == 0) rb.linearVelocity = new Vector2(rb.linearVelocity.x, combinedForce.y);
                 else rb.linearVelocity = combinedForce;
                 yield return new WaitForFixedUpdate();
             }

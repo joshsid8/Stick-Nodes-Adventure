@@ -167,14 +167,14 @@ public class Cynder : MonoBehaviour
 
     private void Slash()
     {
-        hit = Physics2D.CircleCast(attackTransform.position, attackRange, Vector2.one, 0f, LayerMask.GetMask("Player"));
+        hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
             ba.ActionCooldown(slashCooldown * 0.5f);
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, knockbackForce * Vector2.one, ba.isFacingRight, damageType);
+                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ba.isFacingRight, damageType);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }
