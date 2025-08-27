@@ -9,8 +9,8 @@ public class Checkpoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (!spawnPoint) PlayerHealth.Instance.playerController.currentCheckPoint = gameObject;
-            else PlayerHealth.Instance.playerController.currentSpawnPoint = gameObject;
+            if (!spawnPoint) PlayerHealth.Instance.pc.currentCheckPoint = gameObject;
+            else PlayerHealth.Instance.pc.currentSpawnPoint = gameObject;
             if (oneTime) GetComponent<Collider2D>().enabled = false;
         }
     }

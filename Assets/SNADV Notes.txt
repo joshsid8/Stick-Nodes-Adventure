@@ -5,15 +5,12 @@ SNADV Notes
     
     Hotfixes & Priorities
         
-        Ensure collision is nonexistent for pillars in terms of colliding with entities
-        
-        Boss/Enemy Logic
-            Initial Boulder Throwing
-            When a boss is defeated, make the 'get up' animation work
-        
         GUI
             Being able to scroll through certain stuff for larger sizes for things like inventories, stats, etc
             Ability scrolls and a separate ability arsenal
+        Noxu
+            !Initial Boulder Throwing!
+        
         
     Optimisations:
         

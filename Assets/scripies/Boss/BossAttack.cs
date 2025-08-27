@@ -84,7 +84,7 @@ public class BossAttack : MonoBehaviour
     private void AttackSystem()
     {
         GetComponent<DialogueTrigger>().enabled = false;
-        PlayerHealth.Instance.playerController.currentCombatTimer = 5;
+        PlayerHealth.Instance.pc.currentCombatTimer = 5;
         canFacePlayer = true;
         if (canAttack)
         {

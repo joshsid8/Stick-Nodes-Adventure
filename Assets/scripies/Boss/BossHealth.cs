@@ -12,6 +12,7 @@ public class BossHealth : MonoBehaviour, EDamageables
     public float bossMaxHealth = 500f;
     public float bossHealth = 500f;
     public bool isDead;
+    private bool deathToggle;
     public string bossName;
     
     //phases
@@ -65,6 +66,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         healthText.text = bossHealth == bossMaxHealth ? bossHealth.ToString("F0") +  " / " + bossMaxHealth.ToString("F0")
             : bossHealth.ToString("F1") +  " / " + bossMaxHealth.ToString("F0");
         bossTitle.text = bossName;
+        
     }
     
     private IEnumerator Defeat()
@@ -81,7 +83,9 @@ public class BossHealth : MonoBehaviour, EDamageables
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
             yield return new WaitForSeconds(3);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().currentCombatTimer = 0;
+            isDead = false;
+            PlayerHealth.Instance.pc.currentCombatTimer = 0;
+            animator.SetTrigger("Rise");
             DialogueUI.Instance.ShowDialogue(deathDialogue);
         }
     }
@@ -116,8 +120,9 @@ public class BossHealth : MonoBehaviour, EDamageables
             spriteRenderer.color = damageTint;
             isTinting = true;
         }
-        if (bossHealth <= 0)
+        if (bossHealth <= 0 && !deathToggle)
         {
+            deathToggle = true;
             bossHealth = 0;
             isDead = true;
             StartCoroutine(Defeat());

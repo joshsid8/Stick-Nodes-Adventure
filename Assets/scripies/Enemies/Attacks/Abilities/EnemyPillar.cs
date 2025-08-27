@@ -30,7 +30,7 @@ public class EnemyPillar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerFacingRight = !PlayerHealth.Instance.playerController.isFacingRight;
+        playerFacingRight = !PlayerHealth.Instance.pc.isFacingRight;
         Lifetime();
         Hitbox();
         pillarProcTimer -= Time.deltaTime;
@@ -48,8 +48,8 @@ public class EnemyPillar : MonoBehaviour
             {
                 damageable.Damage(pillarDamage, knockbackForce * transform.up, playerFacingRight, pillarDamageType);
                 damageable.Stun(0f);
-                PlayerHealth.Instance.playerController.currentCombatTimer = +
-                    PlayerHealth.Instance.playerController.combatTimer * 0.5f;
+                PlayerHealth.Instance.pc.currentCombatTimer = +
+                    PlayerHealth.Instance.pc.combatTimer * 0.5f;
             }
         }
     }

@@ -63,8 +63,8 @@ public class PlayerFireBeam : MonoBehaviour
                         damageable.Damage(beamDamage, new Vector2(beamKnockbackForce.x * transform.right.x, beamKnockbackForce.y * transform.up.y));
                         damageable.Stun(beamStunTime);
 
-                        PlayerHealth.Instance.playerController.currentCombatTimer = +
-                            PlayerHealth.Instance.playerController.combatTimer * 0.5f;
+                        PlayerHealth.Instance.pc.currentCombatTimer = +
+                            PlayerHealth.Instance.pc.combatTimer * 0.5f;
                     }
                 }
             }

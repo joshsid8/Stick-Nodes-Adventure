@@ -51,8 +51,8 @@ public class PlayerFirePillar : MonoBehaviour
                 {
                     damageable.Damage(pillarDamage, knockbackForce * transform.up);
                     damageable.Stun(0f);
-                    PlayerHealth.Instance.playerController.currentCombatTimer = +
-                        PlayerHealth.Instance.playerController.combatTimer * 0.5f;
+                    PlayerHealth.Instance.pc.currentCombatTimer = +
+                        PlayerHealth.Instance.pc.combatTimer * 0.5f;
                 }
             }
         }
