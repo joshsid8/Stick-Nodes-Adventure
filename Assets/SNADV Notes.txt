@@ -6,7 +6,6 @@ SNADV Notes
     Hotfixes & Priorities
         
         GUI
-            Being able to scroll through certain stuff for larger sizes for things like inventories, stats, etc
             Ability scrolls and a separate ability arsenal
         Noxu
             !Initial Boulder Throwing!

@@ -6989,6 +6989,7 @@ MonoBehaviour:
   bossMaxHealth: 750
   bossHealth: 750
   isDead: 0
+  deathToggle: 0
   bossName: Noxu, the Keeper of Earth
   phase2: 0
   phase2Health: 0
@@ -7635,7 +7636,7 @@ MonoBehaviour:
   damageType: 0
   terrainLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 65728
 --- !u!1001 &9075578306459573741
 PrefabInstance:
   m_ObjectHideFlags: 0
