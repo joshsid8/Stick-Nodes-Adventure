@@ -69,7 +69,6 @@ public class EnemyPatrol : MonoBehaviour
         
         yield return new WaitForSeconds(0.5f);
         GetComponent<EnemyAttack>().enabled = true;
-        print($"{name}: i found you, StickFigure! Run it!");
         enabled = false;
     }
 

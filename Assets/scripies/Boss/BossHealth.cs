@@ -11,8 +11,8 @@ public class BossHealth : MonoBehaviour, EDamageables
     private TMP_Text bossTitle;
     public float bossMaxHealth = 500f;
     public float bossHealth = 500f;
-    public bool isDead;
-    private bool deathToggle;
+    public bool isDead; 
+    [HideInInspector] public bool deathToggle;
     public string bossName;
     
     //phases
