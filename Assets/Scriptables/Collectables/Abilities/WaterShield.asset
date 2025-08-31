@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
+  m_Name: WaterShield
+  m_EditorClassIdentifier: 
+  abilityName: Water Shield (Projectile)
+  abilityDescription: 'A reusable scroll allowing you to learn a defensive water
+    technique.
+
+    This summons a shield of water, dealing moderate damage and knocking
+    them back'
+  abilitySprite: {fileID: 0}
+  abilityPrefab: {fileID: 4963594003989781806, guid: 3538b2404888e964f8853dfa5e1a7045, type: 3}

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3817273016799230287}
   - component: {fileID: 3088073380334134565}
   m_Layer: 18
-  m_Name: PlayerProjectile
+  m_Name: PFireBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

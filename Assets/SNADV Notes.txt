@@ -5,10 +5,13 @@ SNADV Notes
     
     Hotfixes & Priorities
         
-        GUI
-            Ability scrolls and a separate ability arsenal
+        Ability Arsenal
+            Potentially separate cooldowns and animations
+            Make a visible gui for the abilities
+            Once you use a scroll, something should indicate the change
+            
         Noxu
-            !Initial Boulder Throwing!
+            !!Initial Boulder Throwing!!
         
         
     Optimisations:
@@ -35,11 +38,11 @@ SNADV Notes
         Quest Logic
         
         Mini Bosses
-            a normal enemy-boss hybrid
+            an enemy-boss hybrid
         
         Obstacles
             Keys
-            stray projectiles
+            stray projectiles - the enemy AND players can get hurt by it
             natural disasters (thunderstorms)
     
     

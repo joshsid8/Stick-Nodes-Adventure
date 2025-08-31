@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewItem", menuName = "Collectable/Item")] // Changed filename and menuname for better clarity
+[CreateAssetMenu(fileName = "NewItem", menuName = "Collectable/Item")]
 public class ItemSO : CollectableSOBase
 {
     [SerializeField] private string itemName;
@@ -17,7 +17,7 @@ public class ItemSO : CollectableSOBase
         if (InvManager.Instance != null)
         {
             // Call the InvManager's AddItem with ALL parameters
-            InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, null);
+            InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, null, null);
         }
         else
         {

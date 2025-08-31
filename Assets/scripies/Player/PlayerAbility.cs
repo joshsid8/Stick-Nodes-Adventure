@@ -20,11 +20,12 @@ public class PlayerAbility : MonoBehaviour
     private float currentAbilityCooldown;
     public float abilityCooldown;
     public bool isPerformingAbility;
+
+    [SerializeField] private int blastType;
     
     private PlayerPerformAbility ability;
     private PlayerController pc;
     private PlayerDefense pd;
-    
     
     Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -66,7 +67,10 @@ public class PlayerAbility : MonoBehaviour
         }
     }
     void Fire()
-    {
+    {   
+        if (Input.GetButtonUp("Fire") && isPerformingAbility && Input.GetAxisRaw("Vertical") >= 0) blastType = 0;
+        else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") < 0) blastType = 1;
+        else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") >= 0) blastType = 2;
         if (Input.GetButtonDown("Fire") && canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && !pd.isBlocking && energy > energyCost && pc.canAct)
         {
             canAbility = false;
@@ -85,7 +89,7 @@ public class PlayerAbility : MonoBehaviour
     public void FireAbility()
     {
         energy -= energyCost;
-        ability.Invoke("Execute", 0f);
+        ability.Execute(blastType);
     }
 
     private void Energy()

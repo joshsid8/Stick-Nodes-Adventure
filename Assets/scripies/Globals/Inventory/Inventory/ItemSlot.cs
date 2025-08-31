@@ -28,24 +28,23 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     [SerializeField] private InvManager invManager;
     public Prompt choice;
     
-    public AspectSO aspectStats; 
-    [SerializeField] AspectSlot[] aspectSlot;
+    public AspectSO aspectStats;
     [SerializeField] private bool aspectSlotFull;
     [SerializeField] private AspectSlot[] equippedAspectSlots; // Reference to the equipped AspectSlots in the UI
+    
+    public AbilitySO abilityStats;
+    [SerializeField] private int abilitySlotType;
     
     private bool switchFrom;
 
     private void Awake()
     {
         if (invManager == null) Debug.LogError("ItemSlot: InvManager not found on Awake!", this);
-        // It's crucial that equippedAspectSlots are assigned in the Inspector
         if (equippedAspectSlots == null || equippedAspectSlots.Length == 0)
-        {
             Debug.LogWarning($"ItemSlot {gameObject.name}: No equippedAspectSlots assigned. Aspects cannot be equipped from this slot.");
-        }
     }
     
-    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, float value, AspectSO aspect)
+    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, float value, AspectSO aspect, AbilitySO ability)
     {
         itemName = item;
         maxItemAmount = maxAmount;
@@ -55,6 +54,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         restoreValue = value;
         
         if (itemType == "Aspect") aspectStats = aspect;
+        else if (itemType == "Ability") abilityStats = ability;
         itemAmount += amount;
         usedSlot = true;
         UpdateSlotUI();
@@ -79,10 +79,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
                 if (itemType == "Aspect") amountText.text = "";
             }
         }
-        else if (!usedSlot)
-        {
-            ClearSlotVisuals();
-        }
+        else if (!usedSlot) ClearSlotVisuals();
     }
     
     public void ClearSlot()
@@ -95,6 +92,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemType = string.Empty;
         restoreValue = 0f;
         aspectStats = null;
+        abilityStats = null;
         selectedShader.SetActive(false);
         usedSlot = false;
         if (!switchFrom)
@@ -120,10 +118,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            OnLeftClick();
-        }
+        if (eventData.button == PointerEventData.InputButton.Left) OnLeftClick();
     }
 
     private void OnLeftClick()
@@ -134,10 +129,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (selectedShader != null) selectedShader.SetActive(true);
 
         invManager.SelectSlot();
-        if (useButtonText != null)
-        {
-            useButtonText.text = (itemType == "Aspect") ? "Equip" : "Use";
-        }
+        if (useButtonText != null) 
+            useButtonText.text = itemType == "Aspect" || itemType == "Ability" ? "Equip" : "Use";
+        
         invManager.useButton.onClick.RemoveAllListeners();
         invManager.destroyButton.onClick.RemoveAllListeners();
                     
@@ -158,26 +152,15 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     
     private void ItemTypeAction()
     {
-        if (itemType != null && itemType == "Aspect")
-        {
-            EquipAspect();
-        }
-        else
-        {
-            RestoreItem();
-        }
+        if (itemType != null && itemType == "Aspect") EquipAspect();
+        else if (itemType != null && itemType == "Ability") invManager.EquipAbility(abilityStats, abilitySlotType);
+        else RestoreItem();
     }
 
     private void RestoreItem()
     {
-        if (invManager.playerManager != null)
-        {
-            invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
-        }
-        else
-        {
-            Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
-        }
+        if (invManager.playerManager != null) invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
+        else Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
         
         itemAmount--;
         if (itemAmount <= 0)
@@ -209,11 +192,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
                 }
             }
         }
-        if (!equipped)
-        {
-            Debug.LogWarning("All equipped Aspect slots are full! Cannot equip " + itemName);
-        }
+        if (!equipped) Debug.LogWarning("All equipped Aspect slots are full! Cannot equip " + itemName);
     }
+
     public void ItemSelect()
     {
         OnLeftClick();

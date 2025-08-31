@@ -14,7 +14,7 @@ public class PlayerPerformAbility : MonoBehaviour
     public float abilityProcMultiplier = 1f;
     public float abilityLifetimeMultiplier = 1f;
     [SerializeField] private float xVector;
-    public int blastType;
+
     public int abilityAmount;
 
     [HideInInspector] public bool unavailable;
@@ -32,7 +32,7 @@ public class PlayerPerformAbility : MonoBehaviour
         unavailable = Physics2D.OverlapCircle(abilityPoint.position, 0.5f, terrainLayers);
     }
 
-    public void Execute()
+    public void Execute(int blastType)
     {
         switch (blastType)
         {

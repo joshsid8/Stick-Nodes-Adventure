@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CreditCollectable", menuName = "Collectable/Aspect")]
+[CreateAssetMenu(fileName = "NewAspect", menuName = "Collectable/Aspect")]
 public class AspectSO : CollectableSOBase
 {
     [SerializeField] private string itemName;
@@ -15,7 +15,7 @@ public class AspectSO : CollectableSOBase
         InvManager invManager = FindAnyObjectByType<InvManager>();
         if (invManager != null)
         {
-            invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, this);
+            invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, this, null);
         }
         else
         {
