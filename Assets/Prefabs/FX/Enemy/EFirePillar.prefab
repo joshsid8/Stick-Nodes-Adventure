@@ -163,8 +163,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65728
   bottomPoint: {fileID: 5092368269547013169}
-  rayDistance: 1
-  raySpeed: 2
+  rayDistance: 0.1
+  raySpeed: 1
   scriptToWake: {fileID: 8327657455899280789}
   masks:
     serializedVersion: 2

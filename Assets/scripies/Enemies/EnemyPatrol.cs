@@ -21,7 +21,7 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float edgeCheckRay = 2f;
     
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private Animator animator; 
     public bool isFacingRight = true;
     

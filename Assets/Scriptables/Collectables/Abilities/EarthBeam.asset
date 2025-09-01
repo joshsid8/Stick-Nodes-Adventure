@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
+  m_Name: EarthBeam
+  m_EditorClassIdentifier: 
+  abilityName: Earth Beam
+  abilityDescription: 'A scroll that Noxu has given you to learn a versatile earth
+    technique.
+
+    Shoot a beam of earth, dealing great burst damage and knockback.
+
+'
+  abilitySprite: {fileID: 0}
+  abilityType: 2
+  abilityPrefab: {fileID: 8069515426526680348, guid: cd60df3d2080e094a8abf5db5abf36c9, type: 3}

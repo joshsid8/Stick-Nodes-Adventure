@@ -9,16 +9,15 @@ public class PlayerAbility : MonoBehaviour
     public TMP_Text energyText;
     public float maxEnergy;
     public float energy;
-    public float energyCost;
     public float damageMultiplier;
+    public float abilityCooldownMult = 1f;
     
     public float originalEnergyRefill;
     public float energyRefill;
     public float modEnergyRefill;
     
     public bool canAbility;
-    private float currentAbilityCooldown;
-    public float abilityCooldown;
+    public float currentAbilityCooldown;
     public bool isPerformingAbility;
 
     [SerializeField] private int blastType;
@@ -56,8 +55,6 @@ public class PlayerAbility : MonoBehaviour
             energy = playerStats.MaxEnergy; // Start with full energy
             energyRefill = playerStats.EnergyRefill;
             modEnergyRefill = playerStats.ModEnergyRefill;
-            energyCost = playerStats.AbilityEnergyCost;
-            abilityCooldown = playerStats.AbilityCooldown;
             damageMultiplier = playerStats.DamageMultiplier;
         }
         else
@@ -71,12 +68,11 @@ public class PlayerAbility : MonoBehaviour
         if (Input.GetButtonUp("Fire") && isPerformingAbility && Input.GetAxisRaw("Vertical") >= 0) blastType = 0;
         else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") < 0) blastType = 1;
         else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") >= 0) blastType = 2;
-        if (Input.GetButtonDown("Fire") && canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && !pd.isBlocking && energy > energyCost && pc.canAct)
+        if (Input.GetButtonDown("Fire") && canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && !pd.isBlocking && pc.canAct && energy >= 10 * abilityCooldownMult)
         {
             canAbility = false;
             pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
             if (pc.isGrounded) animator.Play("Fire"); else animator.Play("AirFire");
-            currentAbilityCooldown = abilityCooldown;
         }
 
         if (!canAbility)
@@ -88,7 +84,6 @@ public class PlayerAbility : MonoBehaviour
 
     public void FireAbility()
     {
-        energy -= energyCost;
         ability.Execute(blastType);
     }
 
@@ -99,7 +94,8 @@ public class PlayerAbility : MonoBehaviour
         else if (energy < 0) energy = 0;
         
         energyBar.fillAmount = energy / maxEnergy;
-        energyText.text = energy == maxEnergy ? energy.ToString("F0") + " / " + maxEnergy.ToString("F0") : energy.ToString("F1") + " / " + maxEnergy.ToString("F0");
+        energyText.text = energy == maxEnergy ? energy.ToString("F0") + " / " + maxEnergy.ToString("F0")
+            : energy.ToString("F1") + " / " + maxEnergy.ToString("F0");
 
     }
 }

@@ -60,14 +60,14 @@ public class InvManager : MonoBehaviour
         if (player != null) player.canAct = !isActivated;
     }
 
-    public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType, float restoreValue, AspectSO aspect, AbilitySO ability)
+    public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType, float restoreValue, AspectSO aspect, AbilitySO ability, int abilitype)
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {
             if (itemSlots[i] != null && itemSlots[i].usedSlot && itemSlots[i].itemName == itemName && itemSlots[i].itemAmount < itemSlots[i].maxItemAmount)
             {
                 int amountToAdd = Mathf.Min(itemAmount, itemSlots[i].maxItemAmount - itemSlots[i].itemAmount);
-                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, aspect, ability);
+                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, aspect, ability, abilitype);
                 itemAmount -= amountToAdd;
 
                 if (itemAmount <= 0)
@@ -83,7 +83,7 @@ public class InvManager : MonoBehaviour
             if (itemSlots[i] != null && !itemSlots[i].usedSlot)
             {
                 int amountToAdd = Mathf.Min(itemAmount, maxItemAmount);
-                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, aspect, ability);
+                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, aspect, ability, abilitype);
                 itemAmount -= amountToAdd;
 
                 if (itemAmount <= 0)
@@ -110,7 +110,7 @@ public class InvManager : MonoBehaviour
             if (aspectSlots[i].itemName == itemName)
             {
                 //Debug.Log($"Seems like there is already a {itemName} in your slots");
-                AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, aspect, null);
+                AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, aspect, null, 0);
                 break;
             }
         }
@@ -120,7 +120,7 @@ public class InvManager : MonoBehaviour
     public void UnequipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
     {
         if (aspect != null && playerManager != null) playerManager.RemoveAspectModifiers(aspect);
-        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, aspect, null);
+        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, aspect, null, 0);
     }
 
     public void EquipAbility(AbilitySO ability, int abilityType)

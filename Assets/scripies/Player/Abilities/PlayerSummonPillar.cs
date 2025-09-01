@@ -1,10 +1,12 @@
 using UnityEngine;
 
-public class PlayerFirePillar : MonoBehaviour
+public class PlayerSummonPillar : MonoBehaviour
 {
     public float pillarDamage;
     public float pillarLifeTime;
     private float pillarTimer;
+    public float energyRequired = 15f;
+    public float abilityCooldown = 1f;
     
     public Vector2 knockbackForce;
     bool isFacingRight;
@@ -58,12 +60,12 @@ public class PlayerFirePillar : MonoBehaviour
         }
     }
     
-    public void SetValues(float lifetimeMult, float damage, float procMult, Vector2 knockback)
+    public void SetValues(float lifetimeMult, float damageMult, float procMult, Vector2 knockbackMult)
     {
-        pillarDamage = damage;
+        pillarDamage *= damageMult;
         pillarLifeTime *= lifetimeMult;
         pillarProc *= procMult;
-        knockbackForce = knockback;
+        knockbackForce *= knockbackMult;
     }
     
     private void Lifetime()

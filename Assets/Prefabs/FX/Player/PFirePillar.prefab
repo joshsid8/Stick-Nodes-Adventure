@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5092368269547013169}
-  m_Layer: 17
+  m_Layer: 18
   m_Name: BottomPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 6687185073483321472}
   - component: {fileID: 4796591909322137970}
   - component: {fileID: 1074734000381140009}
-  m_Layer: 17
+  m_Layer: 18
   m_Name: PFirePillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,8 +140,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65728
   bottomPoint: {fileID: 5092368269547013169}
-  rayDistance: 1
-  raySpeed: 2
+  rayDistance: 0.1
+  raySpeed: 1
   scriptToWake: {fileID: -8093631117329600410}
   masks:
     serializedVersion: 2
@@ -160,6 +160,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pillarDamage: 5
   pillarLifeTime: 0.75
+  energyRequired: 20
+  abilityCooldown: 1.2
   knockbackForce: {x: 0, y: 0}
   pillarProc: 0.25
   pillarProcTimer: 0

@@ -121,23 +121,17 @@ MonoBehaviour:
   maxMoneyAmount: 10
   itemLoot:
   - {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
-  - {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
-  aspectLoot:
   - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
   possibleItems:
-  - {fileID: 11400000, guid: f766304c6cbec8f4295aafb92993180c, type: 2}
-  - {fileID: 11400000, guid: f766304c6cbec8f4295aafb92993180c, type: 2}
-  possibleAspects:
-  - {fileID: 11400000, guid: 8b4bae5a0d8ea3d4b84f5514335f1c83, type: 2}
+  - {fileID: 11400000, guid: 619807cf4a3de5745a10a564311b843e, type: 2}
+  - {fileID: 11400000, guid: 7b8c055e63be5cd419517bba08b8b673, type: 2}
   itemChance:
   - 100
   - 50
-  aspectChance:
-  - 75
-  minPopX: 0
-  maxPopX: 0
-  minPopY: 0
-  maxPopY: 0
+  minPopX: -15
+  maxPopX: 5
+  minPopY: 5
+  maxPopY: 15
 --- !u!114 &3381162588042025953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +253,7 @@ MonoBehaviour:
   bossMaxHealth: 500
   bossHealth: 500
   isDead: 0
+  deathToggle: 0
   bossName: Cynder, The Keeper of Flames
   phase2: 0
   phase2Health: 300

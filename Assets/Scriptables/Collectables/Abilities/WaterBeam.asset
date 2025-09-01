@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
+  m_Name: WaterBeam
+  m_EditorClassIdentifier: 
+  abilityName: Jet Stream
+  abilityDescription: 'A scroll allowing you to learn a versatile water technique.
+
+    Shoot
+    a quick stream of water, dealing moderate damage and great knockback.'
+  abilitySprite: {fileID: 0}
+  abilityType: 2
+  abilityPrefab: {fileID: 8069515426526680348, guid: 18bc91bc6cc3a644db4aaf2e3bdac1d7, type: 3}

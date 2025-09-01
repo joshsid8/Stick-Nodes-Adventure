@@ -1,15 +1,18 @@
 using UnityEngine;
 
-public class PlayerFireBeam : MonoBehaviour
+public class PlayerShootBeam : MonoBehaviour
 {
-    public float beamDamage;
-    public float beamStunTime;
-    public Vector2 beamKnockbackForce;
-    public bool isDirectional;
-    public float beamDirection;
-    public float beamLifetime;
+    [SerializeField] private float beamDamage;
+    [SerializeField] private float beamStunTime;
+    [SerializeField] private Vector2 beamKnockbackForce;
+    [SerializeField] private bool isDirectional;
+    [SerializeField] private float beamDirection;
+    [SerializeField] private float beamLifetime;
+    public float energyRequired = 20f;
+    public float abilityCooldown = 1f;
+    
     private float beamTimer;
-    public bool activeHitbox;
+    [SerializeField] private bool activeHitbox;
     public float beamProc;
     [SerializeField] private float beamProcTimer;
     public int beamDamageType;

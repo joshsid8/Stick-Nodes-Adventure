@@ -17,7 +17,7 @@ public class ItemSO : CollectableSOBase
         if (InvManager.Instance != null)
         {
             // Call the InvManager's AddItem with ALL parameters
-            InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, null, null);
+            InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, restoreValue, null, null, 0);
         }
         else
         {

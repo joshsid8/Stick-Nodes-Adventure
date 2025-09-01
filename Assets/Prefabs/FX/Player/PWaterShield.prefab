@@ -49,7 +49,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpeed: 10
+  projectileDamage: 20
+  projectileStunTime: 1
   projectileKnockbackForce: {x: 1.5, y: 0}
+  energyRequired: 20
+  abilityCooldown: 1.2
   projectileRange: 0.6
   target:
     serializedVersion: 2

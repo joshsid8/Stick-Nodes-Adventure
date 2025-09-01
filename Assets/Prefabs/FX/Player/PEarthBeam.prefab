@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6705325376911770587}
   - component: {fileID: 7635652004060379473}
   - component: {fileID: 6583858290450909573}
-  m_Layer: 17
+  m_Layer: 18
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   beamStunTime: 1
   beamKnockbackForce: {x: 2, y: 0}
   isDirectional: 0
-  beamDirection: {x: 0, y: 0}
+  beamDirection: 0
   beamLifetime: 0.3
   activeHitbox: 0
   beamProc: 1
@@ -220,7 +220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9194340350730778715}
-  m_Layer: 17
+  m_Layer: 18
   m_Name: PEarthBeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}

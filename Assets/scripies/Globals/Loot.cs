@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Loot : MonoBehaviour
 {
@@ -8,12 +10,9 @@ public class Loot : MonoBehaviour
     public int maxMoneyAmount;
     
     public GameObject[] itemLoot;
-    public GameObject[] aspectLoot;
     
-    public ItemSO[] possibleItems;
-    public AspectSO[] possibleAspects;
+    public CollectableSOBase[] possibleItems;
     public float[] itemChance;
-    public float[] aspectChance;
     
     private bool dropping = true;
 
@@ -22,7 +21,7 @@ public class Loot : MonoBehaviour
     
     [SerializeField] private float minPopY;
     [SerializeField] private float maxPopY;
-    
+
     public void DropLoot()
     {
         if (dropping)
@@ -36,18 +35,6 @@ public class Loot : MonoBehaviour
                     GameObject item = Instantiate(itemLoot[i], transform.position, transform.rotation);
                     item.GetComponent<Collectable>().collectable = possibleItems[i];
                     item.GetComponent<Rigidbody2D>().linearVelocity =
-                        new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
-                }
-            }
-
-            for (int i = 0; i < possibleAspects.Length; i++)
-            {
-                float aRng = Random.Range(0.00f, 100.00f);
-                if (aRng <= aspectChance[i])
-                {
-                    GameObject aspect = Instantiate(aspectLoot[i], transform.position, transform.rotation);
-                    aspect.GetComponent<Collectable>().collectable = possibleAspects[i];
-                    aspect.GetComponent<Rigidbody2D>().linearVelocity =
                         new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
                 }
             }

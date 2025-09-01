@@ -3,13 +3,16 @@ using System.Collections;
 
 public class PlayerShootBlast : MonoBehaviour
 {
-    public float projectileSpeed;
-    private float projectileDamage;
-    private float projectileStunTime;
-    public Vector2 projectileKnockbackForce;
+    [SerializeField] private float projectileSpeed;
+    [SerializeField] private float projectileDamage;
+    [SerializeField] private float projectileStunTime;
+    [SerializeField] private Vector2 projectileKnockbackForce;
+    public float energyRequired = 20f;
+    public float abilityCooldown = 1f;
+    
     private RaycastHit2D[] hits;
     [SerializeField] private float projectileRange;
-    public LayerMask target;
+    [SerializeField] private LayerMask target;
     private float playerDirection;
 
     private Rigidbody2D rb;
@@ -34,8 +37,9 @@ public class PlayerShootBlast : MonoBehaviour
     public void SetValues(bool facingRight, float damage, float stunTime, Vector2 knockbackForce)
     {
         isFacingRightDirection = facingRight;
-        projectileDamage = damage;
-        projectileStunTime = stunTime;
+        projectileDamage *= damage;
+        projectileStunTime *= stunTime;
+        projectileKnockbackForce *= knockbackForce;
     }
 
     private void ApplyInitialDirection()
@@ -56,14 +60,8 @@ public class PlayerShootBlast : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Boss")
-        {
-            HitEntity();
-        }
-        else if (collision.gameObject.tag == "Terrain" || collision.gameObject.layer == LayerMask.NameToLayer("EVFX"))
-        {
-            Collide();
-        }
+        if (collision.CompareTag("Enemy") || collision.CompareTag("Boss")) HitEntity();
+        if (collision.CompareTag("Terrain") || collision.gameObject.layer == LayerMask.NameToLayer("EVFX")) Collide();
     }
 
     private void HitEntity()
@@ -81,7 +79,6 @@ public class PlayerShootBlast : MonoBehaviour
                 eDamageable.Damage(projectileDamage, projectileKnockbackForce * playerDirection);
             }
         }
-        
         Collide();
     }
 

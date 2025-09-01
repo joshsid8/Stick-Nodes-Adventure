@@ -48,11 +48,11 @@ public class EnemyFireProjectile : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             Collided();
         }
-        else if (collision.gameObject.tag == "Terrain" || collision.gameObject.layer == LayerMask.NameToLayer("PVFX"))
+        else if (collision.CompareTag("Terrain") || collision.gameObject.layer == LayerMask.NameToLayer("PVFX"))
         {
             if (collideAnim != null) animator.Play(collideAnim.name);
             rb.linearVelocity = Vector2.zero;

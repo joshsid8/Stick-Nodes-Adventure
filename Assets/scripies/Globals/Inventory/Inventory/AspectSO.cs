@@ -15,7 +15,7 @@ public class AspectSO : CollectableSOBase
         InvManager invManager = FindAnyObjectByType<InvManager>();
         if (invManager != null)
         {
-            invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, this, null);
+            invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", 0, this, null, 0);
         }
         else
         {

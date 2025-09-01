@@ -79,7 +79,7 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["MaxEnergy"] = basePlayerStats.MaxEnergy;
         currentFloatStats["EnergyRefill"] = basePlayerStats.EnergyRefill;
         currentFloatStats["AbilityEnergyCost"] = basePlayerStats.AbilityEnergyCost;
-        currentFloatStats["AbilityCooldown"] = basePlayerStats.AbilityCooldown;
+        currentFloatStats["AbilityCooldownMultiplier"] = basePlayerStats.AbilityCooldown;
         currentFloatStats["DashSpeed"] = basePlayerStats.DashSpeed;
         currentFloatStats["StartDashTime"] = basePlayerStats.StartDashTime;
         currentFloatStats["DashCooldown"] = basePlayerStats.DashCooldown;
@@ -238,8 +238,7 @@ public class PlayerManager : MonoBehaviour
         {
             pa.maxEnergy = GetCurrentFloat("MaxEnergy");
             pa.energyRefill = GetCurrentFloat("EnergyRefill");
-            pa.abilityCooldown = GetCurrentFloat("AbilityCooldown");
-            pa.energyCost = GetCurrentFloat("AbilityEnergyCost");
+            pa.abilityCooldownMult = GetCurrentFloat("AbilityCooldownMultiplier");
         }
         if (pd != null)
         {

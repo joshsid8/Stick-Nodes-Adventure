@@ -248,18 +248,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityPoint: {fileID: 3612494413874121855}
   objects:
-  - {fileID: 4963594003989781806, guid: 9d2d568d70f8f6c4aacdab26ca0c1a3c, type: 3}
-  - {fileID: 4635439681108189195, guid: 63b0c17d8766d7d4c87326170a247cc1, type: 3}
-  - {fileID: 8069515426526680348, guid: cd60df3d2080e094a8abf5db5abf36c9, type: 3}
-  abilityDamage: 10
-  abilityStunTime: 0.5
-  abilityKnockbackForce: {x: 0.5, y: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  abilityDamageMult: 1
+  abilityStunMult: 1
+  abilityKnockbackMult: {x: 1, y: 1}
   isDirectional: 0
-  abilityDirection: {x: 0, y: 0}
-  abilityProcMultiplier: 1
-  abilityLifetimeMultiplier: 1
+  abilityDirection: 0
+  abilityProcMult: 1
+  abilityLifetimeMult: 1
   xVector: 1
-  blastType: 0
+  abilityAmount: 3
+  unavailable: 0
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 65728
 --- !u!114 &386975709121032260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,15 +281,15 @@ MonoBehaviour:
   energyText: {fileID: 0}
   maxEnergy: 50
   energy: 50
-  energyCost: 10
-  damageMultiplier: 0
+  damageMultiplier: 1
+  abilityCooldownMult: 1
   originalEnergyRefill: 5
   energyRefill: 5
   modEnergyRefill: 2
   canAbility: 1
-  abilityCooldown: 1
+  currentAbilityCooldown: 0
   isPerformingAbility: 0
-  ability: {fileID: 5951813543701095784}
+  blastType: 0
 --- !u!114 &3132542422178999997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,7 +343,7 @@ MonoBehaviour:
   regenerationMultiplier: 5
   modRegenerationMultiplier: 1
   originalRegenerationMultiplier: 5
-  playerController: {fileID: 0}
+  pc: {fileID: 0}
   isDead: 0
   respawnTime: 5
   getStunned: 0

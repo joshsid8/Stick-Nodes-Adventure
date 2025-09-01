@@ -43,8 +43,9 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     public int phase2Style;
     
     //other
-    Animator animator;
-    EnemyAttack ea;
+    private Animator animator;
+    private EnemyAttack ea;
+    private EnemyPatrol ep;
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,6 +56,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         originalColor = spriteRenderer.color; // Store the original color.
         kb = GetComponent<Knockback>();
         ea = GetComponent<EnemyAttack>();
+        ep = GetComponent<EnemyPatrol>();
     }
 
     // Update is called once per frame
@@ -65,6 +67,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         Stunned();
         Tint();
         if (enemyHealth <= phase2 && phase2Style > 0) ea.styleFactor = phase2Style;
+        if (isDead && ep.isGrounded) ep.rb.linearVelocity = new Vector2(0, ep.rb.linearVelocity.y);
     }
     
     private void Stunned()
@@ -89,7 +92,6 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         if (isDead)
         {
             GetComponent<Loot>().DropLoot();
-            GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             GetComponent<EnemyAttack>().enabled = false;
             spriteRenderer.color = Color.white;
             gameObject.layer = LayerMask.NameToLayer("EDead");

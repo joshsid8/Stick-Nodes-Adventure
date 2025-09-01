@@ -44,7 +44,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             Debug.LogWarning($"ItemSlot {gameObject.name}: No equippedAspectSlots assigned. Aspects cannot be equipped from this slot.");
     }
     
-    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, float value, AspectSO aspect, AbilitySO ability)
+    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, float value, AspectSO aspect, AbilitySO ability, int abilityType)
     {
         itemName = item;
         maxItemAmount = maxAmount;
@@ -55,6 +55,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         
         if (itemType == "Aspect") aspectStats = aspect;
         else if (itemType == "Ability") abilityStats = ability;
+        abilitySlotType = abilityType;
         itemAmount += amount;
         usedSlot = true;
         UpdateSlotUI();
@@ -91,6 +92,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemSprite = null;
         itemType = string.Empty;
         restoreValue = 0f;
+        abilitySlotType = 0;
         aspectStats = null;
         abilityStats = null;
         selectedShader.SetActive(false);

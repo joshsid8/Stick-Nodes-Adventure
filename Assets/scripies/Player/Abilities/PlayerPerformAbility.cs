@@ -6,13 +6,13 @@ public class PlayerPerformAbility : MonoBehaviour
     public GameObject[] objects;
     private PlayerController pc;
     private PlayerAbility pa;
-    public float abilityDamage;
-    public float abilityStunTime;
-    public Vector2 abilityKnockbackForce; 
+    public float abilityDamageMult;
+    public float abilityStunMult;
+    public Vector2 abilityKnockbackMult; 
     public bool isDirectional;
     public float abilityDirection;
-    public float abilityProcMultiplier = 1f;
-    public float abilityLifetimeMultiplier = 1f;
+    public float abilityProcMult = 1f;
+    public float abilityLifetimeMult = 1f;
     [SerializeField] private float xVector;
 
     public int abilityAmount;
@@ -37,20 +37,22 @@ public class PlayerPerformAbility : MonoBehaviour
         switch (blastType)
         {
             case 0:
-                if (!unavailable)
+                if (!unavailable && objects[0] != null)
                 {
                     GameObject newProjectile = Instantiate(objects[0], abilityPoint.position, Quaternion.identity);
-                    PlayerShootBlast fireballScript = newProjectile.GetComponent<PlayerShootBlast>();
-                    if (fireballScript != null)
+                    PlayerShootBlast projectileScript = newProjectile.GetComponent<PlayerShootBlast>();
+                    if (projectileScript != null)
                     {
-                        fireballScript.SetValues(pc.isFacingRight, abilityDamage * pa.damageMultiplier, abilityStunTime,
-                            abilityKnockbackForce);
+                        projectileScript.SetValues(pc.isFacingRight, abilityDamageMult * pa.damageMultiplier, abilityStunMult,
+                            abilityKnockbackMult);
+                        pa.energy -= projectileScript.energyRequired;
+                        pa.currentAbilityCooldown = projectileScript.abilityCooldown;
                     }
                     else Debug.LogError("where is bro's projectile");
                 }
                 break;
             case 1:
-                if (!unavailable)
+                if (!unavailable && objects[1] != null)
                 {
                     float preXVector = xVector;
                     for (int i = 0; i < abilityAmount; i++)
@@ -58,30 +60,46 @@ public class PlayerPerformAbility : MonoBehaviour
                         GameObject newPillar = Instantiate(objects[1],
                             abilityPoint.position + new Vector3(xVector * transform.right.x, 0f, 0f),
                             Quaternion.identity);
-                        PlayerFirePillar pillarScript = newPillar.GetComponent<PlayerFirePillar>();
+                        PlayerSummonPillar pillarScript = newPillar.GetComponent<PlayerSummonPillar>();
 
                         if (pillarScript != null)
-                            pillarScript.SetValues(abilityLifetimeMultiplier, abilityDamage * pa.damageMultiplier / abilityAmount,
-                                abilityProcMultiplier, abilityKnockbackForce);
+                        {
+                            pillarScript.SetValues(abilityLifetimeMult,
+                                abilityDamageMult * pa.damageMultiplier / abilityAmount,
+                                abilityProcMult, abilityKnockbackMult);
+                            pa.energy -= pillarScript.energyRequired / abilityAmount;
+                            pa.currentAbilityCooldown = pillarScript.abilityCooldown;
+                        }
                         else Debug.LogError("where is bro's pillar");
                         xVector += 1.5f;
                     }
+
                     xVector = preXVector;
                 }
-
                 break;
             case 2:
-                GameObject newBeam = Instantiate(objects[2], abilityPoint.position + new Vector3(0, 0, 0f), abilityPoint.rotation);
-                PlayerFireBeam beamScript = newBeam.GetComponentInChildren<PlayerFireBeam>();
-        
-                if (beamScript != null) beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMultiplier, abilityProcMultiplier, abilityDirection, isDirectional);
-                else Debug.LogError("where is bro's beam"); 
+                if (objects[2] != null)
+                {
+                    GameObject newBeam = Instantiate(objects[2], abilityPoint.position + new Vector3(0, 0, 0f),
+                        abilityPoint.rotation);
+                    PlayerShootBeam beamScript = newBeam.GetComponentInChildren<PlayerShootBeam>();
+
+                    if (beamScript != null)
+                    {
+                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMult,
+                            abilityProcMult, abilityDirection, isDirectional);
+                        pa.energy -= beamScript.energyRequired;
+                        pa.currentAbilityCooldown = beamScript.abilityCooldown;
+                    }
+                    else Debug.LogError("where is bro's beam");
+                }
                 break;
             default:
                 Debug.LogError($"blast type is nun - '{blastType}'. dw i gotchu");
                 GetComponent<Animator>().SetTrigger("Damaged");
                 blastType = Random.Range(0, 3);
                 break;
+
         }
     }
 }
