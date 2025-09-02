@@ -5,14 +5,16 @@ SNADV Notes
     
     Hotfixes & Priorities
         
-        GUI
-            Being able to scroll through certain stuff for larger sizes for things like inventories, stats, etc
-            Ability scrolls and a separate ability arsenal
         Noxu
-            !Initial Boulder Throwing!
+            !!Initial Boulder Throwing!!
         
         
     Optimisations:
+        
+        Abilities
+            Find a way to allow beam shooting by holding click and up
+            Make a quaternary ability type: shield
+                different types used during blocking can block or deflect certain stuff. after release, it gives a temporary buff
         
         Music flexibility
             Make it so that the music never stops, but rather silences before moving onto another track

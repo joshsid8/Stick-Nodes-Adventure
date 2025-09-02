@@ -47,12 +47,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99d7c79b6a0cc64ba3fd4e2f25608e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 10
+  projectileSpeed: 20
+  projectileMinSpeed: 0
+  projectileHeight: 2
+  airResistance: 7
   projectileDamage: 25
   projectileStunTime: 1.2
   projectileKnockbackForce: {x: 1.5, y: 0}
-  energyRequired: 30
-  abilityCooldown: 0
+  projectileLifetime: 3
+  energyRequired: 15
+  abilityCooldown: 1
+  randomisation: 0
+  randomRes: 0
+  randomAngle: 0
   projectileRange: 0.87
   target:
     serializedVersion: 2
@@ -129,7 +136,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 0.8
+  m_GravityScale: 1.5
   m_Material: {fileID: 6200000, guid: 79f47ff75e3482842be92249d284a231, type: 2}
   m_IncludeLayers:
     serializedVersion: 2

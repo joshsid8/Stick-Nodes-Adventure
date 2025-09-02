@@ -7023,24 +7023,21 @@ MonoBehaviour:
   minMoneyAmount: 5
   maxMoneyAmount: 10
   itemLoot:
-  - {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
-  - {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
-  aspectLoot:
-  - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
+  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
   possibleItems:
-  - {fileID: 11400000, guid: f766304c6cbec8f4295aafb92993180c, type: 2}
-  - {fileID: 11400000, guid: f766304c6cbec8f4295aafb92993180c, type: 2}
-  possibleAspects:
-  - {fileID: 11400000, guid: 8b4bae5a0d8ea3d4b84f5514335f1c83, type: 2}
+  - {fileID: 11400000, guid: 92488ff0344de8e4595b3aa66e4bc8cd, type: 2}
+  - {fileID: 11400000, guid: 8814e11701b4d164081e4c5904f0cb79, type: 2}
+  - {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
   itemChance:
   - 100
-  - 50
-  aspectChance:
-  - 75
-  minPopX: 0
-  maxPopX: 0
+  - 100
+  - 100
+  minPopX: -5
+  maxPopX: 5
   minPopY: 0
-  maxPopY: 0
+  maxPopY: 5
 --- !u!4 &1109572265254602210
 Transform:
   m_ObjectHideFlags: 0

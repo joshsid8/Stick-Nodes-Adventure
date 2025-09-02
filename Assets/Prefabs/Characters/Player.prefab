@@ -279,8 +279,8 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
   energyBar: {fileID: 0}
   energyText: {fileID: 0}
-  maxEnergy: 50
-  energy: 50
+  maxEnergy: 75
+  energy: 75
   damageMultiplier: 1
   abilityCooldownMult: 1
   originalEnergyRefill: 5
@@ -289,7 +289,9 @@ MonoBehaviour:
   canAbility: 1
   currentAbilityCooldown: 0
   isPerformingAbility: 0
+  clickTimer: 0
   blastType: 0
+  animator: {fileID: 0}
 --- !u!114 &3132542422178999997
 MonoBehaviour:
   m_ObjectHideFlags: 0

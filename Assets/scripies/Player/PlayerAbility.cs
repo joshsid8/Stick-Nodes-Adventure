@@ -20,13 +20,15 @@ public class PlayerAbility : MonoBehaviour
     public float currentAbilityCooldown;
     public bool isPerformingAbility;
 
+    public float clickTimer;
+
     [SerializeField] private int blastType;
     
     private PlayerPerformAbility ability;
     private PlayerController pc;
     private PlayerDefense pd;
     
-    Animator animator;
+    [HideInInspector] public Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -45,6 +47,7 @@ public class PlayerAbility : MonoBehaviour
         Fire();
         Energy();
         animator.SetBool("isPerformingAbility", isPerformingAbility);
+        clickTimer += Time.deltaTime;
     }
 
     void SetValues()
@@ -64,27 +67,28 @@ public class PlayerAbility : MonoBehaviour
         }
     }
     void Fire()
-    {   
-        if (Input.GetButtonUp("Fire") && isPerformingAbility && Input.GetAxisRaw("Vertical") >= 0) blastType = 0;
-        else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") < 0) blastType = 1;
-        else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") >= 0) blastType = 2;
-        if (Input.GetButtonDown("Fire") && canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && !pd.isBlocking && pc.canAct && energy >= 10 * abilityCooldownMult)
+    {
+        if (canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && !pd.isBlocking && pc.canAct)
         {
             canAbility = false;
-            pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
-            if (pc.isGrounded) animator.Play("Fire"); else animator.Play("AirFire");
+            if (Input.GetButtonDown("Fire") && Input.GetAxisRaw("Vertical") >= 0)
+            {
+                clickTimer = 0;
+                ability.Execute(0);
+            }
+            else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") < 0)
+            {
+                ability.Execute(1);
+            }
+            //else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") >= 0) ability.Execute(2);
         }
+
 
         if (!canAbility)
         {
             currentAbilityCooldown -= Time.deltaTime;
             if (currentAbilityCooldown <= 0) canAbility = true;
         }
-    }
-
-    public void FireAbility()
-    {
-        ability.Execute(blastType);
     }
 
     private void Energy()

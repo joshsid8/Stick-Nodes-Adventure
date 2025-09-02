@@ -16,6 +16,7 @@ public class PlayerPerformAbility : MonoBehaviour
     [SerializeField] private float xVector;
 
     public int abilityAmount;
+    private int blastType;
 
     [HideInInspector] public bool unavailable;
     [SerializeField] private LayerMask terrainLayers;
@@ -32,7 +33,31 @@ public class PlayerPerformAbility : MonoBehaviour
         unavailable = Physics2D.OverlapCircle(abilityPoint.position, 0.5f, terrainLayers);
     }
 
-    public void Execute(int blastType)
+    public void Execute(int blast)
+    {
+        blastType = blast;
+        switch (blast)
+        {
+            case 0:
+                if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerShootBlast>().energyRequired) 
+                    if (pc.isGrounded) pa.animator.Play("Fire"); else pa.animator.Play("AirFire");
+                break;
+            case 1:
+                if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerSummonPillar>().energyRequired) 
+                    if (pc.isGrounded) pa.animator.Play("Fire"); else pa.animator.Play("AirFire");
+                break;
+            case 2:
+                if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerShootBeam>().energyRequired) 
+                    if (pc.isGrounded) pa.animator.Play("Fire"); else pa.animator.Play("AirFire");
+                break;
+            default: 
+                blastType = Random.Range(0, 3);
+                if (pc.isGrounded) pa.animator.Play("Fire"); else pa.animator.Play("AirFire");
+                break;
+        }
+    }
+
+    private void Blast()
     {
         switch (blastType)
         {
@@ -93,11 +118,6 @@ public class PlayerPerformAbility : MonoBehaviour
                     }
                     else Debug.LogError("where is bro's beam");
                 }
-                break;
-            default:
-                Debug.LogError($"blast type is nun - '{blastType}'. dw i gotchu");
-                GetComponent<Animator>().SetTrigger("Damaged");
-                blastType = Random.Range(0, 3);
                 break;
 
         }

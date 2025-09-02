@@ -48,12 +48,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99d7c79b6a0cc64ba3fd4e2f25608e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 15
+  projectileSpeed: 20
+  projectileMinSpeed: 10
+  projectileHeight: 0
+  airResistance: 5
   projectileDamage: 15
   projectileStunTime: 0.5
   projectileKnockbackForce: {x: 0.5, y: 0}
+  projectileLifetime: 3
   energyRequired: 10
   abilityCooldown: 0.75
+  randomisation: 0
+  randomRes: 0
+  randomAngle: 0
   projectileRange: 0.68
   target:
     serializedVersion: 2
@@ -163,7 +170,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!58 &3088073380334134565
 CircleCollider2D:
   m_ObjectHideFlags: 0

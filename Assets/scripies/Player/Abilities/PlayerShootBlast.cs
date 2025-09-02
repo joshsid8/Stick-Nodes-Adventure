@@ -4,24 +4,37 @@ using System.Collections;
 public class PlayerShootBlast : MonoBehaviour
 {
     [SerializeField] private float projectileSpeed;
+    [SerializeField] private float projectileMinSpeed;
+    [SerializeField] private float projectileHeight;
+    [SerializeField] private float airResistance = 1;
     [SerializeField] private float projectileDamage;
     [SerializeField] private float projectileStunTime;
     [SerializeField] private Vector2 projectileKnockbackForce;
+    [SerializeField] private float projectileLifetime = 3;
     public float energyRequired = 20f;
     public float abilityCooldown = 1f;
+    
+    [SerializeField] private bool randomisation;
+    [SerializeField] private float randomRes = 0.1f;
+    [SerializeField] private float randomAngle = 2f;
     
     private RaycastHit2D[] hits;
     [SerializeField] private float projectileRange;
     [SerializeField] private LayerMask target;
     private float playerDirection;
+    private bool isFacingRightDirection;
 
     private Rigidbody2D rb;
     private Animator animator;
     [SerializeField] private AnimationClip anim;
     [SerializeField] private AnimationClip collideAnim;
-    
-    // New variable to store the direction passed from PlayerPerformAbility
-    private bool isFacingRightDirection;
+    private bool collided;
+
+    private void Update()
+    {
+        if (projectileMinSpeed < projectileSpeed) projectileSpeed -= Time.deltaTime * airResistance;
+        if (!collided && projectileSpeed > 0) rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,10 +42,14 @@ public class PlayerShootBlast : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         if (anim != null) animator.Play(anim.name);
-        Destroy(gameObject, 3f);
-
-        // Use the passed-in direction to set rotation and initial velocity
         ApplyInitialDirection();
+        Destroy(gameObject, projectileLifetime);
+        if (randomisation)
+        {
+            airResistance = Random.Range(airResistance - airResistance * randomRes, airResistance + airResistance * randomRes);
+            projectileHeight = Random.Range(-projectileHeight - randomAngle, projectileHeight + randomAngle);
+        }
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, projectileHeight);
     }
     public void SetValues(bool facingRight, float damage, float stunTime, Vector2 knockbackForce)
     {
@@ -54,8 +71,6 @@ public class PlayerShootBlast : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 0, -90);
             playerDirection = -1f;
         }
-        // Apply initial velocity based on the direction
-        rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
     }
     
     private void OnTriggerEnter2D(Collider2D collision)
@@ -84,8 +99,10 @@ public class PlayerShootBlast : MonoBehaviour
 
     public void Collide()
     {
+        collided = true;
         if (collideAnim != null) animator.Play(collideAnim.name);
-        rb.linearVelocity = Vector2.zero;
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        GetComponent<Collider2D>().isTrigger = false;
         Destroy(gameObject, 0.2f);
     }
 

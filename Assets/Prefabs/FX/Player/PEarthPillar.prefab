@@ -160,7 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pillarDamage: 35
   pillarLifeTime: 0.1
-  energyRequired: 30
+  energyRequired: 20
   abilityCooldown: 1.5
   knockbackForce: {x: 0, y: 25}
   pillarProc: 1

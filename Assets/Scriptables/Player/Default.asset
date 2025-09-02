@@ -15,26 +15,28 @@ MonoBehaviour:
   maxHealth: 100
   regenerationMultiplier: 5
   modRegenerationMultiplier: 1
+  stunMultiplier: 1
+  rawDamageResistance: 1
+  invincibleDuration: 1
   movementSpeed: 10
   jumpForce: 27
   fallMultiplier: 2.5
   lowJumpMultiplier: 5
   maxFallSpeed: 35
-  canDoubleJump: 1
-  wallSlideSpeed: 1
-  wallJumpForce: 25
-  canWallJump: 1
   availableWalls: 3
   dashSpeed: 25
   startDashTime: 0.65
   dashCooldown: 0.5
-  dashAbility: 1
   dashEnergyCost: 5
-  maxEnergy: 50
+  wallSlideSpeed: 1
+  wallJumpForce: 25
+  maxEnergy: 75
   energyRefill: 5
   modEnergyRefill: 2
   abilityEnergyCost: 10
+  damageMultiplier: 1
   abilityCooldown: 1
+  m1Ability: 1
   groundDamageAmount: 20
   groundAttackCooldown: 0.3
   groundAttackEnergy: 5
@@ -42,9 +44,7 @@ MonoBehaviour:
   airAttackForce: 15
   airAttackCooldown: 0.15
   playerAttackStunTime: 0.2
-  canBlock: 1
   blockDamageResistance: 0.5
-  stunMultiplier: 1
   counterAbility: 1
   counterTime: 0.2
   counterDamageResistance: 0.2
