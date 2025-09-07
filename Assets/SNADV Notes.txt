@@ -5,18 +5,13 @@ SNADV Notes
     
     Hotfixes & Priorities
         
-        Movement
-            Find the culprit of why the player is forced to be still unless canAct is turned off (and when they hold left or right)
-        
         Noxu
-            !!Initial Boulder Throwing!!
+            !!!Initial Boulder Throwing!!!
         
         
     Optimisations:
         
         Combo Logic
-            Be able to FLY in the air when you are using air attacks on an enemy (if possible)
-            if above fails, simply do juggling logic (you jump as high as the enemy is knocked back)
             animate a few more melee moves
                 some for long and close range (passive and active)
                 ensure they have equal hitboxes (real combos are an exception)

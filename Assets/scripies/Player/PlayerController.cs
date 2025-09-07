@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     public PlayerStats playerStats;
     public bool canAct = true;
-    [SerializeField] private bool canFlip = true;
+    public bool canFlip = true;
     public bool isFrozen;
     
     // Simply move speed
@@ -119,8 +119,11 @@ public class PlayerController : MonoBehaviour
         CheckMovementDirection();
         UpdateAnimation();
         CheckIfCanJump();
-        if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen) Dash();
-        if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen) Jump();
+        if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
+        {
+            Dash();
+            Jump();
+        }
         VariableJumpHeight();
         WallSlide();
         Other();
@@ -239,7 +242,7 @@ public class PlayerController : MonoBehaviour
     {
         if (rb.linearVelocity.y < 0)
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        else if (rb.linearVelocity.y > 0 && !Input.GetButton("Jump"))
+        else if (rb.linearVelocity.y > 0 && !Input.GetButton("Jump") && !pco.isAirAttacking)
         {
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
             coyoteTimeCounter = 0f;
@@ -258,7 +261,7 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             availableJumpsLeft--;
             jumpBufferCounter = 0f;
-            coyoteTimeCounter = 0f; // Reset coyote time after jumping
+            coyoteTimeCounter = 0f;
         }
         else if (doubleJump && canDoubleJump && !kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
             DoubleJump();
@@ -268,8 +271,8 @@ public class PlayerController : MonoBehaviour
         if (isGrounded && rb.linearVelocity.y < 0.01f)
         {
             availableJumpsLeft = availableJumps;
-            doubleJump = canDoubleJump; //reset the double jump on if the player can
-            isWallJumping = false; // Reset wall jumping flag
+            doubleJump = canDoubleJump;
+            isWallJumping = false;
         }
         
         if (isJumping && isGrounded)
@@ -351,6 +354,7 @@ public class PlayerController : MonoBehaviour
             dashAbility = true;
             pco.enabled = true;
         }
+        
         if (isGrounded)
         {
             isWallJumping = false;

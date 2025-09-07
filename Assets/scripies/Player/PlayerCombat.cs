@@ -25,12 +25,12 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private bool hasAirBoosted;
     public float airAttackCooldown;
     private float currentAirAttackCooldown;
-    public float airDashSpeed;
+    public int airComboAmount = 3;
     
     [SerializeField] private LayerMask enemyLayer;
     public float stunTime = 0.2f;
     public Vector2 knockbackForce;
-    public float airKnockbackY;
+    public Vector2 airKnockbackForce;
     private RaycastHit2D[] hits;
     private Animator animator;
 
@@ -63,11 +63,14 @@ public class PlayerCombat : MonoBehaviour
         }
         animator.SetBool("isAttacking", isAttacking);
         animator.SetBool("isAirAttacking", isAirAttacking);
-        if (pc.isGrounded) hasAirBoosted = false;
+        if (pc.isGrounded)
+        {
+            hasAirBoosted = false;
+            airComboAmount = 3;
+        }
         if (currentAttackCooldown > 0) canAttack = false;
         else if (currentAirAttackCooldown > 0) canAirAttack = false;
         AttackCooldown();
-        AirAttackCooldown();
     }
 
     private void SetValues()
@@ -108,12 +111,7 @@ public class PlayerCombat : MonoBehaviour
         }
         currentAttackCooldown = attackCooldown;
     }
-
-    private void AttackCooldown()
-    {   
-        currentAttackCooldown -= Time.deltaTime * 0.5f; if (currentAttackCooldown <= 0) canAttack = true; 
-    }
-
+    
     private void AirAttack()
     {
         if (pc.rb.linearVelocity.y < 0 && !hasAirBoosted)
@@ -130,33 +128,40 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(airDamageAmount, new Vector2(knockbackForce.x * transform.right.x, airKnockbackY * transform.up.y));
+                eDamageable.Damage(airDamageAmount, Vector2.zero);
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
-                StartCoroutine(DashTowardsEnemy(hits[i].collider.gameObject));
+                if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("Enemy") && airComboAmount > 0)
+                {
+                    StartCoroutine(AirCombo(hits[i].collider.gameObject));
+                    pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airKnockbackForce.y);
+                    eDamageable.Damage(0, new Vector2(airKnockbackForce.x * transform.right.x * 1.5f, -airKnockbackForce.y * transform.up.y));
+                    eDamageable.Stun(stunTime * 0.25f);
+                }
+                else eDamageable.Damage(0, new Vector2(airKnockbackForce.x * transform.right.x, airKnockbackForce.y * transform.up.y));
+                airComboAmount--;
+
             }
         }
         currentAirAttackCooldown = airAttackCooldown;
     }
 
-    private IEnumerator DashTowardsEnemy(GameObject target)
+    private IEnumerator AirCombo(GameObject target)
     {
-        inRange = Physics2D.OverlapCircle(airAttackTransform.position, airAttackRange * 0.75f, enemyLayer);
-        while (!inRange)
+        while (airComboAmount > 0 && !pc.isGrounded)
         {
-            Vector2 directionToEnemy = (target.transform.position - transform.position).normalized;
-            pc.rb.linearVelocity = directionToEnemy * airDashSpeed;
+            target.transform.position = new Vector3(airAttackTransform.transform.position.x + 1f * transform.right.x, airAttackTransform.transform.position.y, 0);
             yield return new WaitForFixedUpdate();
         }
-        print("its done >:(");
-        pc.rb.linearVelocity = Vector2.zero;
     }
-
-    private void AirAttackCooldown()
-    {
+    
+    private void AttackCooldown()
+    {   
+        currentAttackCooldown -= Time.deltaTime * 0.5f; if (currentAttackCooldown <= 0) canAttack = true; 
         currentAirAttackCooldown -= Time.deltaTime * 0.5f; if (currentAirAttackCooldown <= 0) canAirAttack = true;
     }
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
