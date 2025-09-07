@@ -19,9 +19,7 @@ public class PlayerAbility : MonoBehaviour
     public bool canAbility;
     public float currentAbilityCooldown;
     public bool isPerformingAbility;
-
-    public float clickTimer;
-
+    
     [SerializeField] private int blastType;
     
     private PlayerPerformAbility ability;
@@ -47,7 +45,6 @@ public class PlayerAbility : MonoBehaviour
         Fire();
         Energy();
         animator.SetBool("isPerformingAbility", isPerformingAbility);
-        clickTimer += Time.deltaTime;
     }
 
     void SetValues()
@@ -68,27 +65,17 @@ public class PlayerAbility : MonoBehaviour
     }
     void Fire()
     {
-        if (canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && !pd.isBlocking && pc.canAct)
+        if (canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && pc.canAct && !ability.isActivated)
         {
-            canAbility = false;
-            if (Input.GetButtonDown("Fire") && Input.GetAxisRaw("Vertical") >= 0)
-            {
-                clickTimer = 0;
-                ability.Execute(0);
-            }
-            else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") < 0)
-            {
-                ability.Execute(1);
-            }
-            //else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") >= 0) ability.Execute(2);
+            if (Input.GetButtonDown("Fire") && Input.GetAxisRaw("Vertical") == 0) ability.Execute(0);
+            else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") < 0) ability.Execute(1);
+            else if (Input.GetButton("Fire") && Input.GetAxisRaw("Vertical") > 0) ability.Execute(2);
+            else if (Input.GetButton("Fire") && pd.isBlocking) ability.Execute(3);
         }
-
-
-        if (!canAbility)
-        {
-            currentAbilityCooldown -= Time.deltaTime;
-            if (currentAbilityCooldown <= 0) canAbility = true;
-        }
+        
+        currentAbilityCooldown -= Time.deltaTime;
+        if (currentAbilityCooldown <= 0) canAbility = true;
+        else canAbility = false;
     }
 
     private void Energy()

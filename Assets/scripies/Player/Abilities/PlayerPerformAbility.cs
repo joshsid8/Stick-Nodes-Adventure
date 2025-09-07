@@ -17,6 +17,7 @@ public class PlayerPerformAbility : MonoBehaviour
 
     public int abilityAmount;
     private int blastType;
+    [HideInInspector] public bool isActivated;
 
     [HideInInspector] public bool unavailable;
     [SerializeField] private LayerMask terrainLayers;
@@ -31,29 +32,42 @@ public class PlayerPerformAbility : MonoBehaviour
     private void Update()
     {
         unavailable = Physics2D.OverlapCircle(abilityPoint.position, 0.5f, terrainLayers);
+        if (isActivated && pa.currentAbilityCooldown <= 0) isActivated = false;
     }
 
     public void Execute(int blast)
     {
-        blastType = blast;
-        switch (blast)
+        if (!isActivated)
         {
-            case 0:
-                if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerShootBlast>().energyRequired) 
-                    if (pc.isGrounded) pa.animator.Play("Fire"); else pa.animator.Play("AirFire");
-                break;
-            case 1:
-                if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerSummonPillar>().energyRequired) 
-                    if (pc.isGrounded) pa.animator.Play("Fire"); else pa.animator.Play("AirFire");
-                break;
-            case 2:
-                if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerShootBeam>().energyRequired) 
-                    if (pc.isGrounded) pa.animator.Play("Fire"); else pa.animator.Play("AirFire");
-                break;
-            default: 
-                blastType = Random.Range(0, 3);
-                if (pc.isGrounded) pa.animator.Play("Fire"); else pa.animator.Play("AirFire");
-                break;
+            isActivated = true;
+            blastType = blast;
+            switch (blast)
+            {
+                case 0:
+                    if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerShootBlast>().energyRequired)
+                        if (pc.isGrounded) pa.animator.Play("Fire");
+                        else pa.animator.Play("AirFire");
+                    break;
+                case 1:
+                    if (objects[1] != null && pa.energy >= objects[1].GetComponent<PlayerSummonPillar>().energyRequired)
+                        if (pc.isGrounded) pa.animator.Play("Fire");
+                        else pa.animator.Play("AirFire");
+                    break;
+                case 2:
+                    if (objects[2] != null &&
+                        pa.energy >= objects[2].GetComponentInChildren<PlayerShootBeam>().energyRequired)
+                        if (pc.isGrounded) pa.animator.Play("Fire");
+                        else pa.animator.Play("AirFire");
+                    break;
+                case 3:
+                    print("*insert reinforcement here*");
+                    break;
+                default:
+                    blastType = Random.Range(0, 3);
+                    if (pc.isGrounded) pa.animator.Play("Fire");
+                    else pa.animator.Play("AirFire");
+                    break;
+            }
         }
     }
 

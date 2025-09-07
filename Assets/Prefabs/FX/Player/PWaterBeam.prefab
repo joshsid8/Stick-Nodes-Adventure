@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 2827506012107846366}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 9.619813, y: -0.029188395, z: 0}
+  m_LocalScale: {x: 1.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9194340350730778715}
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 19.2, y: 10.8}
+  m_Size: {x: 12.8, y: 7.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -103,14 +103,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea6402121c4cc04b88500056df2f7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beamDamage: 10
+  beamDamage: 15
   beamStunTime: 0.5
-  beamKnockbackForce: {x: 0.5, y: 0}
+  beamKnockbackForce: {x: 1, y: 0}
   isDirectional: 0
   beamDirection: 0
   beamLifetime: 0.3
-  energyRequired: 15
-  abilityCooldown: 1
+  energyRequired: 10
+  abilityCooldown: 0.7
   activeHitbox: 0
   beamProc: 1
   beamProcTimer: 0
@@ -152,17 +152,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.61247396, y: 0.006021023}
+  m_Offset: {x: -0.60504794, y: 0.006021023}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 12.8, y: 7.2}
-    newSize: {x: 19.2, y: 10.8}
+    newSize: {x: 12.8, y: 7.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 11.611941, y: 2.1345086}
+  m_Size: {x: 11.605379, y: 2.1345086}
   m_EdgeRadius: 0
 --- !u!95 &7635652004060379473
 Animator:
@@ -238,7 +238,7 @@ Transform:
   m_GameObject: {fileID: 8069515426526680348}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.77253, y: 1.843168, z: 0}
+  m_LocalPosition: {x: -15.972529, y: 1.843168, z: 0}
   m_LocalScale: {x: 1.0521157, y: 0.7629552, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -25,6 +25,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private bool hasAirBoosted;
     public float airAttackCooldown;
     private float currentAirAttackCooldown;
+    public float airDashSpeed;
     
     [SerializeField] private LayerMask enemyLayer;
     public float stunTime = 0.2f;
@@ -67,7 +68,6 @@ public class PlayerCombat : MonoBehaviour
         else if (currentAirAttackCooldown > 0) canAirAttack = false;
         AttackCooldown();
         AirAttackCooldown();
-        
     }
 
     private void SetValues()
@@ -104,7 +104,6 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
-                StartCoroutine(AreaManager.Instance.StopTime(0.1f));
             }
         }
         currentAttackCooldown = attackCooldown;
@@ -112,10 +111,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void AttackCooldown()
     {   
-        currentAttackCooldown -= Time.deltaTime * 0.5f;
-        {
-            if (currentAttackCooldown <= 0) canAttack = true;
-        }
+        currentAttackCooldown -= Time.deltaTime * 0.5f; if (currentAttackCooldown <= 0) canAttack = true; 
     }
 
     private void AirAttack()
@@ -138,31 +134,28 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Stun(stunTime);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
-                StartCoroutine(AreaManager.Instance.StopTime(0.1f));
-                //DashTowardsEnemy(hits[i].collider.gameObject);
+                StartCoroutine(DashTowardsEnemy(hits[i].collider.gameObject));
             }
         }
         currentAirAttackCooldown = airAttackCooldown;
     }
 
-    private void DashTowardsEnemy(GameObject target)
+    private IEnumerator DashTowardsEnemy(GameObject target)
     {
-        inRange = Physics2D.OverlapCircle(airAttackTransform.position, airAttackRange, enemyLayer);
+        inRange = Physics2D.OverlapCircle(airAttackTransform.position, airAttackRange * 0.75f, enemyLayer);
         while (!inRange)
         {
-            Vector3 directionToEnemy = target.transform.position - transform.position;
-            pc.rb.linearVelocity = new Vector3(directionToEnemy.x, directionToEnemy.y, 0);
+            Vector2 directionToEnemy = (target.transform.position - transform.position).normalized;
+            pc.rb.linearVelocity = directionToEnemy * airDashSpeed;
+            yield return new WaitForFixedUpdate();
         }
+        print("its done >:(");
         pc.rb.linearVelocity = Vector2.zero;
     }
 
     private void AirAttackCooldown()
     {
-        currentAirAttackCooldown -= Time.deltaTime * 0.5f;
-        {
-            if (currentAirAttackCooldown <= 0)
-                canAirAttack = true;
-        }
+        currentAirAttackCooldown -= Time.deltaTime * 0.5f; if (currentAirAttackCooldown <= 0) canAirAttack = true;
     }
     private void OnDrawGizmosSelected()
     {
