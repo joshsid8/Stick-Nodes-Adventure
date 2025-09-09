@@ -4,13 +4,12 @@ using UnityEngine.UI;
 
 public class PlayerAbility : MonoBehaviour
 {
-    public PlayerStats playerStats;
     public Image energyBar;
     public TMP_Text energyText;
     public float maxEnergy;
     public float energy;
-    public float damageMultiplier;
-    public float abilityCooldownMult = 1f;
+    public float abilityDamageMultiplier = 1;
+    public float abilityCooldownMult = 1;
     
     public float originalEnergyRefill;
     public float energyRefill;
@@ -30,7 +29,6 @@ public class PlayerAbility : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SetValues();
         animator = GetComponent<Animator>();
         pc = GetComponent<PlayerController>();
         pd = GetComponent<PlayerDefense>();
@@ -47,22 +45,6 @@ public class PlayerAbility : MonoBehaviour
         animator.SetBool("isPerformingAbility", isPerformingAbility);
     }
 
-    void SetValues()
-    {
-        if (playerStats != null)
-        {
-            maxEnergy = playerStats.MaxEnergy;
-            energy = playerStats.MaxEnergy; // Start with full energy
-            energyRefill = playerStats.EnergyRefill;
-            modEnergyRefill = playerStats.ModEnergyRefill;
-            damageMultiplier = playerStats.DamageMultiplier;
-        }
-        else
-        {
-            Debug.LogError("where is bros scriptable object");
-            enabled = false;
-        }
-    }
     void Fire()
     {
         if (canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && pc.canAct && !ability.isActivated)

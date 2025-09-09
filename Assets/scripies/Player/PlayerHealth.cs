@@ -37,13 +37,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     private Knockback kb;
     public float knockbackMultiplier = 1;
 
-    /*private bool invincibleTrigger;
-    public bool invincible;
-    public float invincibleDuration = 2f;
-    private float invincibleTimer;*/
-    
     public Color damageTint = Color.red;
-    public float tintDuration = 0.1f;
     public float tintSpeed = 5f;
     private Color originalColor;
     [SerializeField] private bool isTinting;
@@ -73,7 +67,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         originalStunMultiplier = 1f;
-        //invincibleTrigger = false;
     }
 
     // Update is called once per frame
@@ -83,7 +76,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         StartCoroutine(Death());
         Stunned();
         Tint();
-        //StartCoroutine(IFrames());
         Regeneration();
         healthBar.fillAmount = playerHealth / playerMaxHealth;
         healthText.text = playerHealth == playerMaxHealth ? playerHealth.ToString("F0") +  " / " + playerMaxHealth.ToString("F0")
@@ -185,7 +177,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
             else playerHealth -= damageAmount * rawDamageResistance;
             pc.animator.SetTrigger("Damaged");
-            //invincibleTrigger = true;
             spriteRenderer.color = damageTint;
             isTinting = true;
             pc.currentDashTime = 0f;
@@ -230,34 +221,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             if (spriteRenderer.color == originalColor) isTinting = false;
         }
     }
-    
-    /*private IEnumerator IFrames()
-    {
-        if (invincibleTrigger)
-        {
-            invincibleTimer = invincibleDuration;
-            invincibleTrigger = false;
-            invincible = true;
-        }
-
-        if (invincible)
-        {
-            gameObject.layer = LayerMask.NameToLayer("Invincible");
-            invincibleTimer -= Time.deltaTime;
-            if (invincibleTimer <= 0)
-            {
-                gameObject.layer = LayerMask.NameToLayer("Player");
-                spriteRenderer.enabled = true;
-                invincible = false;
-            }
-        }
-
-        if (invincible)
-        {
-            spriteRenderer.enabled = !spriteRenderer.enabled;
-        }
-        yield return null;
-    }*/
 
     private void Regeneration()
     {

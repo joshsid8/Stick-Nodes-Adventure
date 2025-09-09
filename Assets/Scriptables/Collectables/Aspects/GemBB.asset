@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a32ff54ed280b44680415a8fecc18fe, type: 3}
+  m_Name: GemBB
+  m_EditorClassIdentifier: 
+  itemName: Bubble Blower
+  itemDescription: 'A bubble blower that fishwomen use to make their bubbles more
+    deadly...
+
+
+    ---
+
+
+    Counter Damage Resistance +0.1
+
+    Ability Dexterity
+    +0.1
+
+    Block Damage Res -0.1'
+  itemSprite: {fileID: 0}
+  floatStatsName:
+  - CounterDamageResistance
+  - AbilityCooldownMultiplier
+  - BlockDamageResistance
+  floatStats:
+  - 0.1
+  - -0.1
+  - -0.1

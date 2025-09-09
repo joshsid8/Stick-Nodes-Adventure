@@ -42,11 +42,11 @@ public class PlayerShootBeam : MonoBehaviour
         if (isDirectional) transform.localEulerAngles = new Vector3(0, 0, 0);
     }
     
-    public void SetValues(bool facingRight, float lifetimeMult, float procMult, float direction, bool directional)
+    public void SetValues(bool facingRight, float lifetimeMult, float knockbackMult, float direction, bool directional)
     {
         isFacingRightDirection = facingRight;
         beamLifetime *= lifetimeMult;
-        beamProc *= procMult;
+        beamKnockbackForce *= knockbackMult;
         isDirectional = directional; 
         beamDirection = direction;
     }

@@ -21,10 +21,6 @@ public class PlayerStats : ScriptableObject
     [Tooltip("The multiplied amount of damage you take without blocking!")]
     [SerializeField] private float rawDamageResistance = 1f;
     public float RawDamageResistance => rawDamageResistance;
-    
-    [Tooltip("Protection after getting hurt!")]
-    public float invincibleDuration = 1f;
-    public float InvincibleDuration => invincibleDuration;
 
     [Header("Agility")]
     [Tooltip("The base movement speed of the player")]
@@ -85,20 +81,32 @@ public class PlayerStats : ScriptableObject
     public float EnergyRefill => energyRefill;
 
     [Tooltip("how much worse bros energy regen gets when fighting")]
-    [SerializeField] private float modEnergyRefill = 2f;
-    public float ModEnergyRefill => modEnergyRefill;
+    [SerializeField] private float combativeEnergyRefill = 2f;
+    public float CombativeEnergyRefill => combativeEnergyRefill;
 
     [Tooltip("the cost of bros ability")]
-    [SerializeField] private float abilityEnergyCost = 10f;
-    public float AbilityEnergyCost => abilityEnergyCost;
+    [SerializeField] private float abilityEnergyCooldownMultiplier = 10f;
+    public float AbilityEnergyCooldownMultiplier => abilityEnergyCooldownMultiplier;
 
     [Tooltip("damage multiplier for bros ability")]
-    [SerializeField] private float damageMultiplier = 1f;
-    public float DamageMultiplier => damageMultiplier;
+    [SerializeField] private float abilityDamageMultiplier = 1f;
+    public float AbilityDamageMultiplier => abilityDamageMultiplier;
     
     [Tooltip("cooldown for bros ability")]
-    [SerializeField] private float abilityCooldown = 1f;
-    public float AbilityCooldown => abilityCooldown;
+    [SerializeField] private float abilityCooldownMultiplier = 1f;
+    public float AbilityCooldownMultiplier => abilityCooldownMultiplier;
+    
+    [Tooltip("stun multiplier for bros ability")]
+    [SerializeField] private float abilityStunMultiplier = 1f;
+    public float AbilityStunMultiplier => abilityStunMultiplier;
+    
+    [Tooltip("knockback multiplier for bros ability")]
+    [SerializeField] private float abilityKnockbackMultiplier = 1f;
+    public float AbilityKnockbackMultiplier => abilityKnockbackMultiplier;
+
+    [Tooltip("lifetime multiplier for bros ability")]
+    [SerializeField] private float abilityLifetimeMultiplier = 1f;
+    public float AbilityLifetimeMultiplier => abilityLifetimeMultiplier;
 
     [Header("Strength")]
     [Tooltip("Can dawg even m1??!")]
@@ -122,7 +130,7 @@ public class PlayerStats : ScriptableObject
     public float AirDamageAmount => airDamageAmount;
 
     [Tooltip("ARE WE TAILS?! NO I DONT THINK SOOOOOOO")]
-    [SerializeField] private float airAttackForce = 15f;
+    [SerializeField] private float airAttackForce = 20f;
     public float AirAttackForce => airAttackForce;
 
     [Tooltip("AUUUUGH NOT AGAIN")]
@@ -133,6 +141,10 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float playerAttackStunTime = 0.2f;
     public float PlayerAttackStunTime => playerAttackStunTime;
 
+    [Tooltip("are you sure?")] 
+    [SerializeField] private float attackKnockbackMultiplier = 1f;
+    public float AttackKnockbackMultiplier => attackKnockbackMultiplier;
+
     [Header("Defense")]
     
     [Tooltip("normal block dmg resistance")]
@@ -140,7 +152,7 @@ public class PlayerStats : ScriptableObject
     public float BlockDamageResistance => blockDamageResistance;
 
     [Tooltip("counter check")]
-    [SerializeField] private bool counterAbility = false;
+    [SerializeField] private bool counterAbility;
     public bool CounterAbility => counterAbility;
 
     [Tooltip("time window for the counter")]

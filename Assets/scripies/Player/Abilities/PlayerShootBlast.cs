@@ -51,12 +51,12 @@ public class PlayerShootBlast : MonoBehaviour
         }
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, projectileHeight);
     }
-    public void SetValues(bool facingRight, float damage, float stunTime, Vector2 knockbackForce)
+    public void SetValues(bool facingRight, float damageMult, float stunTimeMult, float knockbackForceMult)
     {
         isFacingRightDirection = facingRight;
-        projectileDamage *= damage;
-        projectileStunTime *= stunTime;
-        projectileKnockbackForce *= knockbackForce;
+        projectileDamage *= damageMult;
+        projectileStunTime *= stunTimeMult;
+        projectileKnockbackForce *= knockbackForceMult;
     }
 
     private void ApplyInitialDirection()

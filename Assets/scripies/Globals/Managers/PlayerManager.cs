@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerCurrency pm;
     private PlayerDefense pd;
     private PlayerCombat pf;
+    private PlayerPerformAbility pp;
 
     // --- Core Stat Management Dictionaries ---
     // These dictionaries will hold the *current, modified* values of the player's stats.
@@ -39,31 +40,24 @@ public class PlayerManager : MonoBehaviour
         }
         Instance = this;
 
-        // Find and cache references to all player components
         pc = FindAnyObjectByType<PlayerController>();
         ph = FindAnyObjectByType<PlayerHealth>();
         pa = FindAnyObjectByType<PlayerAbility>();
-        pm = FindAnyObjectByType<PlayerCurrency>(); // Ensure this script exists and is on the player
+        pp = FindAnyObjectByType<PlayerPerformAbility>();
+        pm = FindAnyObjectByType<PlayerCurrency>();
         pd = FindAnyObjectByType<PlayerDefense>();
         pf = FindAnyObjectByType<PlayerCombat>();
 
-        // Log warnings if any critical components are missing
         if (pc == null) Debug.LogWarning("PlayerManager: PlayerController not found.");
         if (ph == null) Debug.LogWarning("PlayerManager: PlayerHealth not found.");
         if (pa == null) Debug.LogWarning("PlayerManager: PlayerAbility not found.");
+        if (pp == null) Debug.LogWarning("PlayerManager: PlayerPerformAbility not found.");
         if (pm == null) Debug.LogWarning("PlayerManager: PlayerCurrency not found.");
         if (pd == null) Debug.LogWarning("PlayerManager: PlayerDefense not found.");
         if (pf == null) Debug.LogWarning("PlayerManager: PlayerCombat not found.");
 
-        // Initialize current stats from the base PlayerStats ScriptableObject
-        if (basePlayerStats != null)
-        {
-            InitializeBaseStats();
-        }
-        else
-        {
-            Debug.LogError("PlayerManager: basePlayerStats ScriptableObject is not assigned! Player stats will not be correctly initialized.");
-        }
+        if (basePlayerStats != null) InitializeBaseStats();
+        else Debug.LogError("PlayerManager: basePlayerStats ScriptableObject is not assigned! Player stats will not be correctly initialized.");
     }
 
     private void InitializeBaseStats()
@@ -75,17 +69,24 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["RegenerationMultiplier"] = basePlayerStats.RegenerationMultiplier;
         currentFloatStats["StunMultiplier"] = basePlayerStats.StunMultiplier;
         currentFloatStats["RawDamageResistance"] = basePlayerStats.RawDamageResistance;
-        //currentFloatStats["InvincibleDuration"] = basePlayerStats.InvincibleDuration;
+        
         currentFloatStats["MaxEnergy"] = basePlayerStats.MaxEnergy;
         currentFloatStats["EnergyRefill"] = basePlayerStats.EnergyRefill;
-        currentFloatStats["AbilityEnergyCost"] = basePlayerStats.AbilityEnergyCost;
-        currentFloatStats["AbilityCooldownMultiplier"] = basePlayerStats.AbilityCooldown;
+        currentFloatStats["CombativeEnergyRefill"] = basePlayerStats.CombativeEnergyRefill;
+        currentFloatStats["AbilityEnergyCost"] = basePlayerStats.AbilityEnergyCooldownMultiplier;
+        currentFloatStats["AbilityCooldownMultiplier"] = basePlayerStats.AbilityCooldownMultiplier;
+        currentFloatStats["AbilityStunMultiplier"] = basePlayerStats.AbilityStunMultiplier;
+        currentFloatStats["AbilityKnockbackMultiplier"] = basePlayerStats.AbilityKnockbackMultiplier;
+        currentFloatStats["AbilityLifetimeMultiplier"] = basePlayerStats.AbilityLifetimeMultiplier;
+        currentFloatStats["AbilityDamageMultiplier"] = basePlayerStats.AbilityDamageMultiplier;
+        
         currentFloatStats["DashSpeed"] = basePlayerStats.DashSpeed;
         currentFloatStats["StartDashTime"] = basePlayerStats.StartDashTime;
         currentFloatStats["DashCooldown"] = basePlayerStats.DashCooldown;
         currentFloatStats["DashEnergyCost"] = basePlayerStats.DashEnergyCost;
         currentFloatStats["WallSlideSpeed"] = basePlayerStats.WallSlideSpeed;
         currentFloatStats["WallJumpForce"] = basePlayerStats.WallJumpForce;
+        
         currentFloatStats["GroundDamageAmount"] = basePlayerStats.GroundDamageAmount;
         currentFloatStats["GroundAttackCooldown"] = basePlayerStats.GroundAttackCooldown;
         currentFloatStats["GroundAttackEnergy"] = basePlayerStats.GroundAttackEnergy;
@@ -93,6 +94,8 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["AirAttackForce"] = basePlayerStats.AirAttackForce;
         currentFloatStats["AirAttackCooldown"] = basePlayerStats.AirAttackCooldown;
         currentFloatStats["PlayerAttackStunTime"] = basePlayerStats.PlayerAttackStunTime;
+        currentFloatStats["AttackKnockbackMultiplier"] = basePlayerStats.AttackKnockbackMultiplier;
+        
         currentFloatStats["BlockDamageResistance"] = basePlayerStats.BlockDamageResistance;
         currentFloatStats["CounterTime"] = basePlayerStats.CounterTime;
         currentFloatStats["CounterDamageResistance"] = basePlayerStats.CounterDamageResistance;
@@ -114,20 +117,14 @@ public class PlayerManager : MonoBehaviour
     // --- Public Getters ---
     public float GetCurrentFloat(string variableName)
     {
-        if (currentFloatStats.ContainsKey(variableName))
-        {
-            return currentFloatStats[variableName];
-        }
+        if (currentFloatStats.ContainsKey(variableName)) return currentFloatStats[variableName];
         Debug.LogWarning($"PlayerManager: Attempted to get unknown float variable '{variableName}'. Returning 0.");
         return 0f;
     }
 
     public bool GetCurrentBool(string variableName)
     {
-        if (currentBooleanStats.ContainsKey(variableName))
-        {
-            return currentBooleanStats[variableName];
-        }
+        if (currentBooleanStats.ContainsKey(variableName)) return currentBooleanStats[variableName];
         Debug.LogWarning($"PlayerManager: Attempted to get unknown bool variable '{variableName}'. Returning false.");
         return false;
     }
@@ -212,7 +209,7 @@ public class PlayerManager : MonoBehaviour
     private void ApplyAllStatsToComponents()
     {
         // Apply floats
-        if (pc != null)
+        if (pc != null) //movement
         {
             pc.movementSpeed = GetCurrentFloat("MovementSpeed");
             pc.jumpForce = GetCurrentFloat("JumpForce");
@@ -226,21 +223,23 @@ public class PlayerManager : MonoBehaviour
             pc.dashCooldown = GetCurrentFloat("DashCooldown");
             pc.dashEnergyCost = GetCurrentFloat("DashEnergyCost");
         }
-        if (ph != null)
+        if (ph != null) //vitality
         {
             ph.playerMaxHealth = GetCurrentFloat("MaxHealth");
             ph.regenerationMultiplier = GetCurrentFloat("RegenerationMultiplier");
             ph.stunMultiplier = GetCurrentFloat("StunMultiplier");
             ph.rawDamageResistance = GetCurrentFloat("RawDamageResistance");
-            //ph.invincibleDuration = GetCurrentFloat("InvincibleDuration");
         }
-        if (pa != null)
+        if (pa != null && pp != null) //ability
         {
             pa.maxEnergy = GetCurrentFloat("MaxEnergy");
             pa.energyRefill = GetCurrentFloat("EnergyRefill");
             pa.abilityCooldownMult = GetCurrentFloat("AbilityCooldownMultiplier");
+            pa.abilityDamageMultiplier = GetCurrentFloat("AbilityDamageMultiplier");
+            pp.abilityLifetimeMult = GetCurrentFloat("AbilityLifetimeMultiplier");
+            pp.abilityKnockbackMult =  GetCurrentFloat("AbilityKnockbackMultiplier");
         }
-        if (pd != null)
+        if (pd != null) //defense
         {
             pd.damageResistance = GetCurrentFloat("BlockDamageResistance");
             pd.counterTime = GetCurrentFloat("CounterTime");
@@ -248,7 +247,7 @@ public class PlayerManager : MonoBehaviour
             pd.counterDamage = GetCurrentFloat("CounterDamage");
             pd.counterStun = GetCurrentFloat("CounterStun");
         }
-        if (pf != null)
+        if (pf != null) //combat
         {
             pf.groundDamageAmount = GetCurrentFloat("GroundDamageAmount");
             pf.attackCooldown = GetCurrentFloat("GroundAttackCooldown");
@@ -257,6 +256,7 @@ public class PlayerManager : MonoBehaviour
             pf.airAttackForce = GetCurrentFloat("AirAttackForce");
             pf.airAttackCooldown = GetCurrentFloat("AirAttackCooldown");
             pf.stunTime = GetCurrentFloat("PlayerAttackStunTime");
+            pf.knockbackMult = GetCurrentFloat("AttackKnockbackMultiplier");
         }
     }
 

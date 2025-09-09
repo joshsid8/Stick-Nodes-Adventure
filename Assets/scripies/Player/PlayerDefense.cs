@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PlayerDefense : MonoBehaviour
 {
-    public PlayerStats playerStats;
-    
     public bool counterAbility;
     public bool canCounter;
     public bool counterWindow;
@@ -22,8 +20,6 @@ public class PlayerDefense : MonoBehaviour
     public float damageResistance;
     [HideInInspector] public float originalDamageResistance;
     private float blockStunMultiplier;
-
-    public float blockMovementSpeed;
     
     private PlayerHealth hp;
     private PlayerController pc;
@@ -32,7 +28,6 @@ public class PlayerDefense : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        SetValues();
         pc = GetComponent<PlayerController>();
         hp = GetComponent<PlayerHealth>();
         pa = GetComponent<PlayerAbility>();
@@ -49,23 +44,7 @@ public class PlayerDefense : MonoBehaviour
         Block();
         animator.SetBool("isBlocking", isBlocking);
     }
-    private void SetValues()
-    {
-        if (playerStats != null)
-        {
-            damageResistance = playerStats.BlockDamageResistance;
-            counterAbility = playerStats.CounterAbility;
-            counterTime = playerStats.CounterTime;
-            counterDamageResistance = playerStats.CounterDamageResistance;
-            counterDamage = playerStats.CounterDamage;
-            counterStun = playerStats.CounterStun;
-        }
-        else
-        {
-            Debug.LogError("no scriptable object found");
-            enabled = false;
-        }
-    }
+    
     private void Block()
     {
         if (isBlocking && canBlock && !pc.isDashing && !pc.isWallSliding)

@@ -20,8 +20,6 @@ public class PlayerController : MonoBehaviour
     public float maxFallSpeed;
     public float fallMultiplier;
     public float lowJumpMultiplier;
-    private int availableJumps = 1; 
-    private int availableJumpsLeft;
     private bool isJumping;
     public bool canDoubleJump;
     private bool doubleJump;
@@ -98,7 +96,6 @@ public class PlayerController : MonoBehaviour
         canAct = true;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        availableJumpsLeft = availableJumps;
         defaultGravity = GetComponent<Rigidbody2D>().gravityScale;
         originalMovementSpeed = movementSpeed;
         originalJumpForce = jumpForce;
@@ -255,11 +252,10 @@ public class PlayerController : MonoBehaviour
     
     private void Jump()
     {
-        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && availableJumpsLeft > -1)
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0)
         {
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            availableJumpsLeft--;
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
         }
@@ -270,7 +266,6 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded && rb.linearVelocity.y < 0.01f)
         {
-            availableJumpsLeft = availableJumps;
             doubleJump = canDoubleJump;
             isWallJumping = false;
         }
@@ -288,7 +283,6 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            availableJumpsLeft--;
             doubleJump = false;
         }
     }

@@ -14,13 +14,13 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     //Enemy health
     public float enemyMaxHealth = 100f;
     public float enemyHealth = 100f;
-    public bool isDead = false;
+    public bool isDead;
 
     //Stun logic
-    [SerializeField] private bool getStunned = false;
-    private bool isStunned = false;
-    private float stunTime = 0;
-    [SerializeField] private float currentStunTime = 0;
+    private bool getStunned;
+    public bool isStunned;
+    private float stunTime;
+    [SerializeField] private float currentStunTime;
     public float stunMultiplier = 1;
     
     //block logic
@@ -30,7 +30,6 @@ public class EnemyHealth : MonoBehaviour, EDamageables
 
     //Tint variables
     public Color damageTint = Color.red; // The color to tint when damaged.
-    public float tintDuration = 0.1f;    // How long the tint lasts.
     public float tintSpeed = 5f;       // Speed of the color transition.
     private Color originalColor;
     [SerializeField] private bool isTinting = false;

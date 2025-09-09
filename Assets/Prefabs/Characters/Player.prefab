@@ -253,13 +253,13 @@ MonoBehaviour:
   - {fileID: 0}
   abilityDamageMult: 1
   abilityStunMult: 1
-  abilityKnockbackMult: {x: 1, y: 1}
+  abilityKnockbackMult: 0
   isDirectional: 0
   abilityDirection: 0
-  abilityProcMult: 1
   abilityLifetimeMult: 1
   xVector: 1
   abilityAmount: 3
+  isActivated: 0
   unavailable: 0
   terrainLayers:
     serializedVersion: 2
@@ -276,12 +276,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 128938284da0e7142a8a71fc75f5b51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
   energyBar: {fileID: 0}
   energyText: {fileID: 0}
   maxEnergy: 75
   energy: 75
-  damageMultiplier: 1
+  abilityDamageMultiplier: 1
   abilityCooldownMult: 1
   originalEnergyRefill: 5
   energyRefill: 5
@@ -289,7 +288,6 @@ MonoBehaviour:
   canAbility: 1
   currentAbilityCooldown: 0
   isPerformingAbility: 0
-  clickTimer: 0
   blastType: 0
   animator: {fileID: 0}
 --- !u!114 &3132542422178999997
@@ -304,7 +302,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268816325641db34c88cccb86b03d22a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
   counterAbility: 1
   canCounter: 0
   counterWindow: 0
@@ -322,7 +319,6 @@ MonoBehaviour:
   isBlocking: 0
   damageResistance: 0.5
   originalDamageResistance: 0
-  blockMovementSpeed: 0
 --- !u!114 &2904327954621765790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,7 +351,6 @@ MonoBehaviour:
   stunMultiplier: 1
   knockbackMultiplier: 1
   damageTint: {r: 1, g: 0, b: 0, a: 1}
-  tintDuration: 0.1
   tintSpeed: 5
   isTinting: 0
   spawnOnAwake: 0
@@ -371,8 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99d46a10026c3e47880182c6e847571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
-  m1Ability: 0
+  m1Ability: 1
   groundDamageAmount: 20
   attackTransform: {fileID: 8318362231415707056}
   attackRange: 1.5
@@ -388,12 +382,14 @@ MonoBehaviour:
   canAirAttack: 0
   hasAirBoosted: 0
   airAttackCooldown: 0.15
+  airComboAmount: 3
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1536
   stunTime: 0.2
   knockbackForce: {x: 1, y: 0}
-  airKnockbackY: 15
+  airKnockbackForce: {x: 0, y: 0}
+  knockbackMult: 1
 --- !u!114 &261623171632948894
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,10 +8,9 @@ public class PlayerPerformAbility : MonoBehaviour
     private PlayerAbility pa;
     public float abilityDamageMult;
     public float abilityStunMult;
-    public Vector2 abilityKnockbackMult; 
+    public float abilityKnockbackMult; 
     public bool isDirectional;
     public float abilityDirection;
-    public float abilityProcMult = 1f;
     public float abilityLifetimeMult = 1f;
     [SerializeField] private float xVector;
 
@@ -82,10 +81,10 @@ public class PlayerPerformAbility : MonoBehaviour
                     PlayerShootBlast projectileScript = newProjectile.GetComponent<PlayerShootBlast>();
                     if (projectileScript != null)
                     {
-                        projectileScript.SetValues(pc.isFacingRight, abilityDamageMult * pa.damageMultiplier, abilityStunMult,
+                        projectileScript.SetValues(pc.isFacingRight, abilityDamageMult * pa.abilityDamageMultiplier, abilityStunMult,
                             abilityKnockbackMult);
                         pa.energy -= projectileScript.energyRequired;
-                        pa.currentAbilityCooldown = projectileScript.abilityCooldown;
+                        pa.currentAbilityCooldown = projectileScript.abilityCooldown * pa.abilityCooldownMult;
                     }
                     else Debug.LogError("where is bro's projectile");
                 }
@@ -104,10 +103,9 @@ public class PlayerPerformAbility : MonoBehaviour
                         if (pillarScript != null)
                         {
                             pillarScript.SetValues(abilityLifetimeMult,
-                                abilityDamageMult * pa.damageMultiplier / abilityAmount,
-                                abilityProcMult, abilityKnockbackMult);
+                                abilityDamageMult * pa.abilityDamageMultiplier / abilityAmount, abilityKnockbackMult);
                             pa.energy -= pillarScript.energyRequired / abilityAmount;
-                            pa.currentAbilityCooldown = pillarScript.abilityCooldown;
+                            pa.currentAbilityCooldown = pillarScript.abilityCooldown * pa.abilityCooldownMult;
                         }
                         else Debug.LogError("where is bro's pillar");
                         xVector += 1.5f;
@@ -125,10 +123,9 @@ public class PlayerPerformAbility : MonoBehaviour
 
                     if (beamScript != null)
                     {
-                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMult,
-                            abilityProcMult, abilityDirection, isDirectional);
+                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMult,abilityKnockbackMult ,abilityDirection, isDirectional);
                         pa.energy -= beamScript.energyRequired;
-                        pa.currentAbilityCooldown = beamScript.abilityCooldown;
+                        pa.currentAbilityCooldown = beamScript.abilityCooldown * pa.abilityCooldownMult;
                     }
                     else Debug.LogError("where is bro's beam");
                 }

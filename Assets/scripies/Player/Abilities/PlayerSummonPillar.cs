@@ -60,11 +60,10 @@ public class PlayerSummonPillar : MonoBehaviour
         }
     }
     
-    public void SetValues(float lifetimeMult, float damageMult, float procMult, Vector2 knockbackMult)
+    public void SetValues(float lifetimeMult, float damageMult, float knockbackMult)
     {
         pillarDamage *= damageMult;
         pillarLifeTime *= lifetimeMult;
-        pillarProc *= procMult;
         knockbackForce *= knockbackMult;
     }
     
