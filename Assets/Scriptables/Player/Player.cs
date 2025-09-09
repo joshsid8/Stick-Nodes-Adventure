@@ -84,7 +84,7 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float combativeEnergyRefill = 2f;
     public float CombativeEnergyRefill => combativeEnergyRefill;
 
-    [Tooltip("the cost of bros ability")]
+    [Tooltip("the cost multiplier bros ability")]
     [SerializeField] private float abilityEnergyCooldownMultiplier = 10f;
     public float AbilityEnergyCooldownMultiplier => abilityEnergyCooldownMultiplier;
 
@@ -92,7 +92,7 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float abilityDamageMultiplier = 1f;
     public float AbilityDamageMultiplier => abilityDamageMultiplier;
     
-    [Tooltip("cooldown for bros ability")]
+    [Tooltip("cooldown multiplier for bros ability")]
     [SerializeField] private float abilityCooldownMultiplier = 1f;
     public float AbilityCooldownMultiplier => abilityCooldownMultiplier;
     

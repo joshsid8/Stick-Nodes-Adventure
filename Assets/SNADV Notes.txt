@@ -5,6 +5,13 @@ SNADV Notes
     
     Hotfixes & Priorities
         
+        Stat data
+            Merge certain stats together, for example, 
+                knockbacks for both melee and abilities to help not have many stats at once
+                Energy costs
+                Stuns
+                Knockbacks
+        
         Noxu
             !!!Initial Boulder Throwing!!!
         

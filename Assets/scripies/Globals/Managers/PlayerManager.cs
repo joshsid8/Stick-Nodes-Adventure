@@ -73,7 +73,7 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["MaxEnergy"] = basePlayerStats.MaxEnergy;
         currentFloatStats["EnergyRefill"] = basePlayerStats.EnergyRefill;
         currentFloatStats["CombativeEnergyRefill"] = basePlayerStats.CombativeEnergyRefill;
-        currentFloatStats["AbilityEnergyCost"] = basePlayerStats.AbilityEnergyCooldownMultiplier;
+        currentFloatStats["AbilityEnergyCostMultiplier"] = basePlayerStats.AbilityEnergyCooldownMultiplier;
         currentFloatStats["AbilityCooldownMultiplier"] = basePlayerStats.AbilityCooldownMultiplier;
         currentFloatStats["AbilityStunMultiplier"] = basePlayerStats.AbilityStunMultiplier;
         currentFloatStats["AbilityKnockbackMultiplier"] = basePlayerStats.AbilityKnockbackMultiplier;
@@ -234,6 +234,7 @@ public class PlayerManager : MonoBehaviour
         {
             pa.maxEnergy = GetCurrentFloat("MaxEnergy");
             pa.energyRefill = GetCurrentFloat("EnergyRefill");
+            
             pa.abilityCooldownMult = GetCurrentFloat("AbilityCooldownMultiplier");
             pa.abilityDamageMultiplier = GetCurrentFloat("AbilityDamageMultiplier");
             pp.abilityLifetimeMult = GetCurrentFloat("AbilityLifetimeMultiplier");

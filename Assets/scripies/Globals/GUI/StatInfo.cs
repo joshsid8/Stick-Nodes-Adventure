@@ -35,35 +35,39 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
     {
         switch (stat.StatName)
         {
-            case "MaxHealth": statName.text = "Max Health: " + ph.playerMaxHealth.ToString("F0"); break;
-            case "RegenerationMultiplier": statName.text = "Regeneration: " + ph.regenerationMultiplier.ToString("F1"); break;
-            case "MovementSpeed": statName.text = "Walk SPD: " + pc.movementSpeed.ToString("F0"); break;
-            case "JumpHeight": statName.text = "Jump Force: " + pc.jumpForce.ToString("F0"); break;
+            case "MaxHealth": statName.text = "Max Health: " + ph.playerMaxHealth.ToString("F1"); break;
+            case "RegenerationMultiplier": statName.text = "Health REG: " + ph.regenerationMultiplier.ToString("F1"); break;
+            case "MovementSpeed": statName.text = "Walk SPD: " + pc.movementSpeed.ToString("F1"); break;
+            case "JumpHeight": statName.text = "Jump Force: " + pc.jumpForce.ToString("F1"); break;
             case "StunMultiplier": statName.text = "Firmness: " + ph.stunMultiplier.ToString("F2"); break;
-            case "MaxEnergy": statName.text = "Max Energy: " + pa.maxEnergy.ToString("F0"); break;
             case "RawDamageResistance": statName.text = "Vulnerability: " + ph.rawDamageResistance.ToString("F1"); break;
-            case "EnergyRefill": statName.text = "Energy Regeneration: " + pa.energyRefill.ToString("F1"); break;
             case "DashSpeed": statName.text = "Dash Speed: " + pc.dashSpeed.ToString("F1"); break;
             case "DashCooldown": statName.text = "Dash CD: " + pc.dashCooldown.ToString("F1"); break;
-            case "GroundDamageAmount": statName.text = "Ground Attack DMG: " + pf.groundDamageAmount.ToString("F0"); break;
+            
+            case "MaxEnergy": statName.text = "Max Energy: " + pa.maxEnergy.ToString("F1"); break;
+            case "EnergyRefill": statName.text = "Energy REG: " + pa.energyRefill.ToString("F1"); break;
+            case "CombativeEnergyRefill": statName.text = "Combative Energy REG: " + pa.energyRefill.ToString("F1"); break;
+            
+            
+            case "GroundDamageAmount": statName.text = "Ground Attack DMG: " + pf.groundDamageAmount.ToString("F1"); break;
             case "GroundAttackCooldown": statName.text = "Ground Attack CD: " + pf.attackCooldown.ToString("F1"); break;
-            case "AirDamageAmount": statName.text = "Air Attack DMG: " + pf.airDamageAmount.ToString("F0"); break;
+            case "AirDamageAmount": statName.text = "Air Attack DMG: " + pf.airDamageAmount.ToString("F1"); break;
             case "AirAttackCooldown": statName.text = "Air Attack CD: " + pf.airAttackCooldown.ToString("F1"); break;
+            case "AttackKnockbackMultiplier": statName.text = "Melee Repulsion: " + pf.knockbackMult.ToString("F1"); break;
+            
             case "BlockDamageResistance": statName.text = "Block Resistance: " + pd.damageResistance.ToString("F1"); break;
             case "CounterTime": statName.text = "Counter Window: " + pd.counterTime.ToString("F1"); break;
-            case "CounterDamage": statName.text = "Counter DMG: " + pd.counterDamage.ToString("F0"); break;
+            case "CounterDamage": statName.text = "Counter DMG: " + pd.counterDamage.ToString("F1"); break;
             case "PlayerAttackStun": statName.text = "Shock: " + pf.stunTime.ToString("F2"); break;
-
+            
+            
             default: statName.text = ""; Debug.LogWarning("Clueless."); break;
         }
         shader.SetActive(isClicked);
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            OnLeftClick();
-        }
+        if (eventData.button == PointerEventData.InputButton.Left) OnLeftClick();
     }
 
     private void OnLeftClick()
