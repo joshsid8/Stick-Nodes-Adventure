@@ -8,7 +8,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
 {
     public static PlayerHealth Instance {get; private set;}
     
-    public PlayerStats playerStats;
     public Image healthBar;
     public TMP_Text healthText;
     public float playerMaxHealth = 100;
@@ -17,8 +16,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public float rawDamageResistance = 1f;
 
     public float regenerationMultiplier;
-    public float modRegenerationMultiplier;
-    public float originalRegenerationMultiplier;
     
     [HideInInspector] public PlayerController pc;
     private PlayerDefense pd;
@@ -57,12 +54,10 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SetValues();
         pc = GetComponent<PlayerController>();
         pd = GetComponent<PlayerDefense>();
         pc.animator = GetComponent<Animator>();
         kb = GetComponent<Knockback>();
-        originalRegenerationMultiplier = regenerationMultiplier;
         currentStunTime = stunTime * stunMultiplier;
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
@@ -90,23 +85,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
     }
 
-    void SetValues()
-    {
-        if (playerStats != null)
-        {
-            playerMaxHealth = playerStats.MaxHealth;
-            playerHealth = playerStats.MaxHealth;
-            regenerationMultiplier = playerStats.RegenerationMultiplier;
-            modRegenerationMultiplier = playerStats.ModRegenerationMultiplier;
-            stunMultiplier = playerStats.StunMultiplier;
-            rawDamageResistance = playerStats.RawDamageResistance;
-        }
-        else
-        {
-            Debug.LogError("i cant find any scriptable objects!");
-            enabled = false;
-        }
-    }
     void Animation()
     {
         pc.animator.SetBool("isStunned", isStunned);
@@ -224,7 +202,11 @@ public class PlayerHealth : MonoBehaviour, PDamageable
 
     private void Regeneration()
     {
-        if (playerHealth > 0 && playerHealth < playerMaxHealth) playerHealth += Time.deltaTime *  regenerationMultiplier;
+        if (playerHealth > 0 && playerHealth < playerMaxHealth)
+        {
+            if (pc.inCombat) playerHealth += Time.deltaTime * 3 * regenerationMultiplier;
+            else playerHealth += Time.deltaTime * 1 * regenerationMultiplier;
+        }
         if (playerHealth > playerMaxHealth) playerHealth = playerMaxHealth;
     }
 }

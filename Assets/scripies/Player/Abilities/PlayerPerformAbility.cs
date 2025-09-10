@@ -7,8 +7,8 @@ public class PlayerPerformAbility : MonoBehaviour
     private PlayerController pc;
     private PlayerAbility pa;
     public float abilityDamageMult;
-    public float abilityStunMult;
-    public float abilityKnockbackMult; 
+    public float abilityPotency;
+
     public bool isDirectional;
     public float abilityDirection;
     public float abilityLifetimeMult = 1f;
@@ -81,8 +81,8 @@ public class PlayerPerformAbility : MonoBehaviour
                     PlayerShootBlast projectileScript = newProjectile.GetComponent<PlayerShootBlast>();
                     if (projectileScript != null)
                     {
-                        projectileScript.SetValues(pc.isFacingRight, abilityDamageMult * pa.abilityDamageMultiplier, abilityStunMult,
-                            abilityKnockbackMult);
+                        projectileScript.SetValues(pc.isFacingRight, abilityDamageMult * pa.abilityDamageMult, abilityPotency,
+                            abilityPotency);
                         pa.energy -= projectileScript.energyRequired;
                         pa.currentAbilityCooldown = projectileScript.abilityCooldown * pa.abilityCooldownMult;
                     }
@@ -103,7 +103,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         if (pillarScript != null)
                         {
                             pillarScript.SetValues(abilityLifetimeMult,
-                                abilityDamageMult * pa.abilityDamageMultiplier / abilityAmount, abilityKnockbackMult);
+                                abilityDamageMult * pa.abilityDamageMult / abilityAmount, abilityPotency);
                             pa.energy -= pillarScript.energyRequired / abilityAmount;
                             pa.currentAbilityCooldown = pillarScript.abilityCooldown * pa.abilityCooldownMult;
                         }
@@ -123,7 +123,7 @@ public class PlayerPerformAbility : MonoBehaviour
 
                     if (beamScript != null)
                     {
-                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMult,abilityKnockbackMult ,abilityDirection, isDirectional);
+                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMult,abilityPotency ,abilityDirection, isDirectional);
                         pa.energy -= beamScript.energyRequired;
                         pa.currentAbilityCooldown = beamScript.abilityCooldown * pa.abilityCooldownMult;
                     }

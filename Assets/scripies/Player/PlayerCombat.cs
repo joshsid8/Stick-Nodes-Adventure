@@ -29,11 +29,13 @@ public class PlayerCombat : MonoBehaviour
     public float stunTime = 0.2f;
     public Vector2 knockbackForce;
     public Vector2 airKnockbackForce;
-    public float knockbackMult = 1f;
+    
+    public float attackPotency = 1f;
+    public float attackDamageMult = 1f;
+    public float attackCooldownMult = 1f;
+    
     private RaycastHit2D[] hits;
     private Animator animator;
-
-    private bool inRange;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -80,13 +82,13 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(groundDamageAmount, new Vector2(knockbackForce.x * knockbackMult * transform.right.x, knockbackForce.y * knockbackMult * transform.up.y));
-                eDamageable.Stun(stunTime);
+                eDamageable.Damage(groundDamageAmount * attackDamageMult, new Vector2(knockbackForce.x * attackPotency * transform.right.x, knockbackForce.y * attackPotency * transform.up.y));
+                eDamageable.Stun(stunTime * attackPotency);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
             }
         }
-        currentAttackCooldown = attackCooldown;
+        currentAttackCooldown = attackCooldown * attackCooldownMult;
     }
     
     private void AirAttack()
@@ -105,23 +107,23 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(airDamageAmount, Vector2.zero);
-                eDamageable.Stun(stunTime);
+                eDamageable.Damage(airDamageAmount * attackDamageMult, Vector2.zero);
+                eDamageable.Stun(stunTime * attackPotency);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 pc.currentCombatTimer += pc.combatTimer / 3;
                 if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("Enemy") && airComboAmount > 0)
                 {
                     StartCoroutine(AirCombo(hits[i].collider.gameObject));
                     pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airKnockbackForce.y);
-                    eDamageable.Damage(0, new Vector2(airKnockbackForce.x * knockbackMult * transform.right.x * 1.5f, -airKnockbackForce.y * knockbackMult * transform.up.y));
+                    eDamageable.Damage(0, new Vector2(airKnockbackForce.x * attackPotency * transform.right.x * 1.5f, -airKnockbackForce.y * attackPotency * transform.up.y));
                     eDamageable.Stun(stunTime * 1.25f);
                 }
-                else eDamageable.Damage(0, new Vector2(airKnockbackForce.x * knockbackMult * transform.right.x, airKnockbackForce.y * knockbackMult *transform.up.y));
+                else eDamageable.Damage(0, new Vector2(airKnockbackForce.x * attackPotency * transform.right.x, airKnockbackForce.y * attackPotency * transform.up.y));
                 airComboAmount--;
 
             }
         }
-        currentAirAttackCooldown = airAttackCooldown;
+        currentAirAttackCooldown = airAttackCooldown * attackCooldownMult;
     }
 
     private IEnumerator AirCombo(GameObject target)

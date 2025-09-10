@@ -4,16 +4,12 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Hotfixes & Priorities
-        
-        Stat data
-            Merge certain stats together, for example, 
-                knockbacks for both melee and abilities to help not have many stats at once
-                Energy costs
-                Stuns
-                Knockbacks
-        
+       
+        Stats
+            Update the StatInfo script to ensure all changeable and relevant stats are included
+       
         Noxu
-            !!!Initial Boulder Throwing!!!
+            !!!!Initial Boulder Throwing!!!!
         
         
     Optimisations:

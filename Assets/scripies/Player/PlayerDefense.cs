@@ -18,23 +18,24 @@ public class PlayerDefense : MonoBehaviour
     public bool canBlock;
     public bool isBlocking;
     public float damageResistance;
-    [HideInInspector] public float originalDamageResistance;
     private float blockStunMultiplier;
     
     private PlayerHealth hp;
     private PlayerController pc;
+    private PlayerCombat pf;
     private PlayerAbility pa;
     private Animator animator;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         pc = GetComponent<PlayerController>();
+        pf = GetComponent<PlayerCombat>();
         hp = GetComponent<PlayerHealth>();
         pa = GetComponent<PlayerAbility>();
         animator = GetComponent<Animator>();
         
         canCounter = true;
-        originalDamageResistance = damageResistance;
     }
 
     // Update is called once per frame
@@ -67,20 +68,13 @@ public class PlayerDefense : MonoBehaviour
                 pc.canMove = true;
                 hp.stunMultiplier = hp.originalStunMultiplier;
                 pc.jumpForce = pc.originalJumpForce;
-                pa.energyRefill = pc.inCombat ? pa.modEnergyRefill : pa.originalEnergyRefill;
                 currentCounterTime = 0f;
                 canCounter = true;
             }
         }
         
-        if (counterWindow && !canCounter)
-        {
-            currentCounterTime -= Time.deltaTime;
-        }
-        if (currentCounterTime <= 0)
-        {
-            counterWindow = false;
-        }
+        if (counterWindow && !canCounter) currentCounterTime -= Time.deltaTime;
+        if (currentCounterTime <= 0) counterWindow = false;
     }
 
     public void CounterAttack()
@@ -97,7 +91,7 @@ public class PlayerDefense : MonoBehaviour
             {
                 pa.energy += 10f;
                 eDamageable.Damage(counterDamage, counterKnockbackForce * num);
-                eDamageable.Stun(counterStun);
+                eDamageable.Stun(counterStun * pf.attackPotency);
                 pc.currentCombatTimer += pc.combatTimer / 2;
             }
         }

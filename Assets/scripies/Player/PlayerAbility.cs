@@ -8,12 +8,9 @@ public class PlayerAbility : MonoBehaviour
     public TMP_Text energyText;
     public float maxEnergy;
     public float energy;
-    public float abilityDamageMultiplier = 1;
-    public float abilityCooldownMult = 1;
-    
-    public float originalEnergyRefill;
     public float energyRefill;
-    public float modEnergyRefill;
+    public float abilityDamageMult = 1;
+    public float abilityCooldownMult = 1;
     
     public bool canAbility;
     public float currentAbilityCooldown;
@@ -34,7 +31,6 @@ public class PlayerAbility : MonoBehaviour
         pd = GetComponent<PlayerDefense>();
         ability = GetComponent<PlayerPerformAbility>();
         maxEnergy = energy;
-        originalEnergyRefill = energyRefill;
     }
 
     // Update is called once per frame
@@ -62,7 +58,7 @@ public class PlayerAbility : MonoBehaviour
 
     private void Energy()
     {
-        energy += Time.deltaTime * energyRefill;
+        if (!pc.inCombat) energy += Time.deltaTime * 5 * energyRefill; else energy += Time.deltaTime * 2 * energyRefill;
         if (energy >= maxEnergy) energy = maxEnergy;
         else if (energy < 0) energy = 0;
         

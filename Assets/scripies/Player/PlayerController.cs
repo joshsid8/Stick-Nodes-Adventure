@@ -3,20 +3,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerStats playerStats;
     public bool canAct = true;
     public bool canFlip = true;
     public bool isFrozen;
     
     // Simply move speed
     public bool canMove = true;
-    public float movementSpeed = 12.0f;
-    public float originalMovementSpeed;
+    public float movementSpeed = 10f;
+    public float movementSpeedMult = 1f;
+    
     [SerializeField] private bool isMoving;
     
     // Jumping
     public float originalJumpForce;
     public float jumpForce = 8.0f;
+    public float jumpForceMult = 1f;
     public float maxFallSpeed;
     public float fallMultiplier;
     public float lowJumpMultiplier;
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
     
     // Dashing
     public float dashSpeed;
-    public float startDashTime;
+    public float dashTime;
     public float dashCooldown;
     public bool dashAbility;
     [HideInInspector] public float currentDashTime;
@@ -85,27 +86,23 @@ public class PlayerController : MonoBehaviour
 	private PlayerCombat pco;
     private PlayerDefense pdf;
     private PlayerAbility pab;
-    private PlayerHealth ph;
     private Knockback kb;
     public GameObject combatIndicator;
     
     // Start is called before the first frame update
     private void Start()
     {
-        SetValues();
         canAct = true;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         defaultGravity = GetComponent<Rigidbody2D>().gravityScale;
-        originalMovementSpeed = movementSpeed;
+        pco = GetComponent<PlayerCombat>();
+        pab = GetComponent<PlayerAbility>();
+        kb = GetComponent<Knockback>();
+        
         originalJumpForce = jumpForce;
         availableWallsLeft = availableWalls;
         
-        pco = GetComponent<PlayerCombat>();
-        pdf = GetComponent<PlayerDefense>();
-        pab = GetComponent<PlayerAbility>();
-        ph  = GetComponent<PlayerHealth>();
-        kb = GetComponent<Knockback>();
         currentCombatTimer = 0;
     }
 
@@ -151,23 +148,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    private void SetValues()
-    {
-        if (playerStats != null)
-        {
-            movementSpeed = playerStats.MovementSpeed;
-            dashSpeed = playerStats.DashSpeed;
-            startDashTime = playerStats.StartDashTime;
-            dashCooldown = playerStats.DashCooldown;
-            dashEnergyCost = playerStats.DashEnergyCost;
-        }
-        else
-        {
-            Debug.LogError("There isn't a scriptable object found");
-        }
-
-    }
+    
     private void CheckInput()
     {
         inputDirection = Input.GetAxisRaw("Horizontal");
@@ -184,7 +165,7 @@ public class PlayerController : MonoBehaviour
             canDash = false;
             isDashing = true;
             pab.energy -= dashEnergyCost;
-            currentDashTime = startDashTime;
+            currentDashTime = dashTime;
             if (isWallSliding)
             {
                 isWallSliding = false;
@@ -255,7 +236,7 @@ public class PlayerController : MonoBehaviour
         if (coyoteTimeCounter > 0f && jumpBufferCounter > 0)
         {
             isJumping = true;
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
         }
@@ -282,7 +263,7 @@ public class PlayerController : MonoBehaviour
         if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding)
         {
             isJumping = true;
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
             doubleJump = false;
         }
     }
@@ -294,7 +275,7 @@ public class PlayerController : MonoBehaviour
             if (inputDirection != 0)
             {
                 isMoving = true;
-                rb.linearVelocity = new Vector2(movementSpeed * inputDirection, rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(movementSpeed * movementSpeedMult * inputDirection, rb.linearVelocity.y);
             }
             if (inputDirection == 0 && isMoving)
             {
@@ -396,20 +377,10 @@ public class PlayerController : MonoBehaviour
         if (inCombat)
         {
             combatIndicator.SetActive(true);
-            
-            ph.regenerationMultiplier = ph.modRegenerationMultiplier;
-            pab.energyRefill = pab.modEnergyRefill;
-            
             currentCombatTimer -= Time.deltaTime;
             if (currentCombatTimer <= 0) inCombat = false;
         }
-        if (!inCombat)
-        {
-            combatIndicator.SetActive(false);
-            
-            ph.regenerationMultiplier = ph.originalRegenerationMultiplier;
-            pab.energyRefill = pab.originalEnergyRefill;
-        }
+        if (!inCombat) combatIndicator.SetActive(false);
     }
     private IEnumerator DropThroughPlatform(Collider2D platformCollider)
     {

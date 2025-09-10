@@ -4,16 +4,14 @@ using UnityEngine;
 public class PlayerStats : ScriptableObject
 {
     [Header("Vitality")]
-    [Tooltip("The maximum health of the player.")]
+    [Tooltip("The maximum health of the player!")]
     [SerializeField] private float maxHealth = 100f;
     public float MaxHealth => maxHealth;
 
-    [Tooltip("How quickly does the player regenerate their health?")]
-    [SerializeField] private float regenerationMultiplier = 5f;
+    [Tooltip("The multiplier for regenerating health!")]
+    [SerializeField] private float regenerationMultiplier = 1f;
     public float RegenerationMultiplier => regenerationMultiplier;
-    [Tooltip("For when you are fighting!")]
-    [SerializeField] private float modRegenerationMultiplier = 1f;
-    public float ModRegenerationMultiplier => modRegenerationMultiplier;
+    
     [Tooltip("Stun multiplier when the player gets stunned! (e.g., 0 for no stun)")]
     [SerializeField] private float stunMultiplier = 1f;
     public float StunMultiplier => stunMultiplier;
@@ -23,25 +21,13 @@ public class PlayerStats : ScriptableObject
     public float RawDamageResistance => rawDamageResistance;
 
     [Header("Agility")]
-    [Tooltip("The base movement speed of the player")]
-    [SerializeField] private float movementSpeed = 10.0f;
-    public float MovementSpeed => movementSpeed;
+    [Tooltip("The movement speed multiplayer of the player")]
+    [SerializeField] private float movementSpeedMultiplier = 1f;
+    public float MovementSpeedMultiplier => movementSpeedMultiplier;
     
-    [Tooltip("Height of a normal jump")]
-    [SerializeField] private float jumpForce = 27f;
-    public float JumpForce => jumpForce;
-    
-    [Tooltip("Multiplier for falling speed")]
-    [SerializeField] private float fallMultiplier = 3f;
-    public float FallMultiplier => fallMultiplier;
-    
-    [Tooltip("Multiplier for lower jumps")]
-    [SerializeField] private float lowJumpMultiplier = 5f;
-    public float LowJumpMultiplier => lowJumpMultiplier;
-
-    [Tooltip("The apex speed the player can fall")] 
-    [SerializeField] private float maxFallSpeed = 35f;
-    public float MaxFallSpeed => maxFallSpeed;
+    [Tooltip("Height multiplier of a normal jump")]
+    [SerializeField] private float jumpForceMultiplier = 27f;
+    public float JumpForceMultiplier => jumpForceMultiplier;
     
     [Tooltip("The amount of wall jumps before landing")]
     [SerializeField] private float availableWalls;
@@ -52,8 +38,8 @@ public class PlayerStats : ScriptableObject
     public float DashSpeed => dashSpeed;
 
     [Tooltip("Duration of the dash")]
-    [SerializeField] private float startDashTime = 0.65f;
-    public float StartDashTime => startDashTime;
+    [SerializeField] private float dashTime = 0.65f;
+    public float DashTime => dashTime;
 
     [Tooltip("Cooldown time after a dash")]
     [SerializeField] private float dashCooldown = 0.5f;
@@ -62,14 +48,6 @@ public class PlayerStats : ScriptableObject
     [Tooltip("Energy cost for dashing")]
     [SerializeField] private float dashEnergyCost = 5f;
     public float DashEnergyCost => dashEnergyCost;
-
-    [Tooltip("The speed of sliding on a wall")]
-    [SerializeField] private float wallSlideSpeed = 1f;
-    public float WallSlideSpeed => wallSlideSpeed;
-    
-    [Tooltip("The force of jumpping off a wall")]
-    [SerializeField] private float wallJumpForce = 25f;
-    public float WallJumpForce => wallJumpForce;
     
     [Header("Ability")]
     [Tooltip("maximum energy for bros abilities")]
@@ -77,16 +55,8 @@ public class PlayerStats : ScriptableObject
     public float MaxEnergy => maxEnergy;
 
     [Tooltip("how quickly does bro regenerate bros energy")]
-    [SerializeField] private float energyRefill = 5f;
-    public float EnergyRefill => energyRefill;
-
-    [Tooltip("how much worse bros energy regen gets when fighting")]
-    [SerializeField] private float combativeEnergyRefill = 2f;
-    public float CombativeEnergyRefill => combativeEnergyRefill;
-
-    [Tooltip("the cost multiplier bros ability")]
-    [SerializeField] private float abilityEnergyCooldownMultiplier = 10f;
-    public float AbilityEnergyCooldownMultiplier => abilityEnergyCooldownMultiplier;
+    [SerializeField] private float energyRefillMultiplier = 1f;
+    public float EnergyRefillMultiplier => energyRefillMultiplier;
 
     [Tooltip("damage multiplier for bros ability")]
     [SerializeField] private float abilityDamageMultiplier = 1f;
@@ -96,13 +66,9 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float abilityCooldownMultiplier = 1f;
     public float AbilityCooldownMultiplier => abilityCooldownMultiplier;
     
-    [Tooltip("stun multiplier for bros ability")]
-    [SerializeField] private float abilityStunMultiplier = 1f;
-    public float AbilityStunMultiplier => abilityStunMultiplier;
-    
-    [Tooltip("knockback multiplier for bros ability")]
-    [SerializeField] private float abilityKnockbackMultiplier = 1f;
-    public float AbilityKnockbackMultiplier => abilityKnockbackMultiplier;
+    [Tooltip("knockback and stun multiplier for bros ability")]
+    [SerializeField] private float abilityPotency = 1f;
+    public float AbilityPotency => abilityPotency;
 
     [Tooltip("lifetime multiplier for bros ability")]
     [SerializeField] private float abilityLifetimeMultiplier = 1f;
@@ -112,41 +78,24 @@ public class PlayerStats : ScriptableObject
     [Tooltip("Can dawg even m1??!")]
     [SerializeField] private bool m1Ability = true;
     public bool M1Ability => m1Ability;
-    
-    [Tooltip("damageeeeeeee")]
-    [SerializeField] private float groundDamageAmount = 20f;
-    public float GroundDamageAmount => groundDamageAmount;
-
-    [Tooltip("why do we have to waaiiittt")]
-    [SerializeField] private float groundAttackCooldown = 0.3f;
-    public float GroundAttackCooldown => groundAttackCooldown;
-
-    [Tooltip("YES ENERGY LETS GOOO")]
-    [SerializeField] private float groundAttackEnergy = 5f;
-    public float GroundAttackEnergy => groundAttackEnergy;
-
-    [Tooltip("we are so cool when in the air, huh")]
-    [SerializeField] private float airDamageAmount = 20f;
-    public float AirDamageAmount => airDamageAmount;
 
     [Tooltip("ARE WE TAILS?! NO I DONT THINK SOOOOOOO")]
     [SerializeField] private float airAttackForce = 20f;
     public float AirAttackForce => airAttackForce;
-
-    [Tooltip("AUUUUGH NOT AGAIN")]
-    [SerializeField] private float airAttackCooldown = 0.15f;
-    public float AirAttackCooldown => airAttackCooldown;
-
-    [Tooltip("we gotta get at least 10 thousand")]
-    [SerializeField] private float playerAttackStunTime = 0.2f;
-    public float PlayerAttackStunTime => playerAttackStunTime;
+    
+    [Tooltip("for da damage!!!")]
+    [SerializeField] private float attackDamageMultiplier = 1f;
+    public float AttackDamageMultiplier => attackDamageMultiplier;
 
     [Tooltip("are you sure?")] 
-    [SerializeField] private float attackKnockbackMultiplier = 1f;
-    public float AttackKnockbackMultiplier => attackKnockbackMultiplier;
+    [SerializeField] private float attackPotency = 1f;
+    public float AttackPotency => attackPotency;
+    
+    [Tooltip("pretty sure")]
+    [SerializeField] private float attackCooldownMultiplier = 1f;
+    public float AttackCooldownMultiplier => attackCooldownMultiplier;
 
     [Header("Defense")]
-    
     [Tooltip("normal block dmg resistance")]
     [SerializeField] private float blockDamageResistance = 0.5f;
     public float BlockDamageResistance => blockDamageResistance;
@@ -166,8 +115,5 @@ public class PlayerStats : ScriptableObject
     [Tooltip("damage dealt by the counter")]
     [SerializeField] private float counterDamage = 10;
     public float CounterDamage => counterDamage;
-
-    [Tooltip("stun duration applied by the counter")]
-    [SerializeField] private float counterStun = 1f;
-    public float CounterStun => counterStun;
+    
 }
