@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: Stat 11
   m_EditorClassIdentifier: 
-  statName: GroundAttackCooldown
+  statName: AttackCooldownMultiplier
   statDescription: How long it takes before you can attack on the ground again. The
     smaller the number, the faster the attack speed.

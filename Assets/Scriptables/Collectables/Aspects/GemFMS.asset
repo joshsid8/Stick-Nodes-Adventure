@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a32ff54ed280b44680415a8fecc18fe, type: 3}
   m_Name: GemFMS
   m_EditorClassIdentifier: 
-  itemName: Fish Fin
+  itemName: Fish Scales
   itemDescription: 'Scales directly from a fishman!
 
 
@@ -25,7 +25,7 @@ MonoBehaviour:
     Speed -0.2'
   itemSprite: {fileID: 0}
   floatStatsName:
-  - StartDashTime
+  - DashTime
   - DashSpeed
   floatStats:
   - 0.2

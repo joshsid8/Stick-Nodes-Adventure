@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: Stat 10
   m_EditorClassIdentifier: 
-  statName: GroundDamageAmount
-  statDescription: The amount of damage your attacks on the ground deals. It is seperate
-    to air attacks for a reason.
+  statName: AttackDamageMultiplier
+  statDescription: The multiplier of the damage of your melee attacks.

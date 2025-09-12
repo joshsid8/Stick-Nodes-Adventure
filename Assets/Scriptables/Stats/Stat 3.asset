@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: Stat 3
   m_EditorClassIdentifier: 
-  statName: JumpHeight
+  statName: JumpForceMultiplier
   statDescription: How high you can jump. This also affects your minimum jump height.

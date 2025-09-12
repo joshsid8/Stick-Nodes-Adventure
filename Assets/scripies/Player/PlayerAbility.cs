@@ -9,7 +9,6 @@ public class PlayerAbility : MonoBehaviour
     public float maxEnergy;
     public float energy;
     public float energyRefill;
-    public float abilityDamageMult = 1;
     public float abilityCooldownMult = 1;
     
     public bool canAbility;
@@ -51,7 +50,7 @@ public class PlayerAbility : MonoBehaviour
             else if (Input.GetButton("Fire") && pd.isBlocking) ability.Execute(3);
         }
         
-        currentAbilityCooldown -= Time.deltaTime;
+        if (currentAbilityCooldown > 0) currentAbilityCooldown -= Time.deltaTime;
         if (currentAbilityCooldown <= 0) canAbility = true;
         else canAbility = false;
     }

@@ -5,9 +5,6 @@ SNADV Notes
     
     Hotfixes & Priorities
        
-        Stats
-            Update the StatInfo script to ensure all changeable and relevant stats are included
-       
         Noxu
             !!!!Initial Boulder Throwing!!!!
         

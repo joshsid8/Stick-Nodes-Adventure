@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: Stat 17
   m_EditorClassIdentifier: 
-  statName: PlayerAttackStun
-  statDescription: How long you can stun enemies for. The larger the number, the
-    longer the (stunnable) enemies get stunned.
+  statName: CounterDamageResistance
+  statDescription: How much damage you resist when countering.

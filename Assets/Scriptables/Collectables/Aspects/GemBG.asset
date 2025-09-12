@@ -27,12 +27,10 @@ MonoBehaviour:
     Protection -0.2'
   itemSprite: {fileID: 0}
   floatStatsName:
-  - GroundDamageAmount
-  - AirDamageAmount
-  - PlayerAttackStunTime
+  - AttackDamageMultiplier
+  - AttackPotency
   - RawDamageResistance
   floatStats:
-  - 0.2
   - 0.2
   - 0.15
   - -0.2

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: Stat 2
   m_EditorClassIdentifier: 
-  statName: MovementSpeed
+  statName: MovementSpeedMultiplier
   statDescription: How fast you run. Your base move speed. Velocity. Stuff like that.

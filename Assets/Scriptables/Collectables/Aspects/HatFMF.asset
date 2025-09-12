@@ -25,7 +25,7 @@ MonoBehaviour:
     Speed -0.2'
   itemSprite: {fileID: 0}
   floatStatsName:
-  - StartDashTime
+  - DashTime
   - DashSpeed
   floatStats:
   - 0.2

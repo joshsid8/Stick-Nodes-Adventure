@@ -29,10 +29,9 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public float stunTime;
     private float currentStunTime;
     public float originalStunMultiplier;
-    public float stunMultiplier = 1;
+    public float shockMultiplier = 1;
     
     private Knockback kb;
-    public float knockbackMultiplier = 1;
 
     public Color damageTint = Color.red;
     public float tintSpeed = 5f;
@@ -58,7 +57,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         pd = GetComponent<PlayerDefense>();
         pc.animator = GetComponent<Animator>();
         kb = GetComponent<Knockback>();
-        currentStunTime = stunTime * stunMultiplier;
+        currentStunTime = stunTime * shockMultiplier;
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         originalStunMultiplier = 1f;
@@ -124,7 +123,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 // blocking successfully
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.damageResistance;
                 else playerHealth -= damageAmount * pd.damageResistance;
-                kb.CallKnockback(knockbackForce * pd.damageResistance, pc.inputDirection);
+                kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
             }
             else if (pd.isBlocking && pd.counterWindow && damageType < 2)
             {
@@ -145,7 +144,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 spriteRenderer.color = damageTint;
                 isTinting = true;
                 pc.currentDashTime = 0f;
-                kb.CallKnockback(knockbackForce * knockbackMultiplier, pc.inputDirection);
+                kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
             }
         }
         else
@@ -158,14 +157,14 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             spriteRenderer.color = damageTint;
             isTinting = true;
             pc.currentDashTime = 0f;
-            kb.CallKnockback(knockbackForce * knockbackMultiplier, pc.inputDirection);
+            kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
         }
          
     }
     
     public void Stun(float stunDuration)
     {
-        stunTime = stunDuration * stunMultiplier;
+        stunTime = stunDuration * shockMultiplier;
         if (stunTime > 0 && !pd.isBlocking) getStunned = true;
     }
 
@@ -173,7 +172,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     {
         if (getStunned)
         {
-            currentStunTime = stunTime * stunMultiplier;
+            currentStunTime = stunTime * shockMultiplier;
             getStunned = false;
             if (stunTime > 0) isStunned = true;
         }
@@ -185,7 +184,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             {
                 pc.canAct = true;
                 GetComponent<PlayerCombat>().canAttack = true;
-                stunMultiplier = originalStunMultiplier;
+                shockMultiplier = originalStunMultiplier;
                 isStunned = false;
                 pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
             }

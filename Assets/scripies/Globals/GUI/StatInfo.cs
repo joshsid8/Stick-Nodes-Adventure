@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -37,44 +38,60 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
     {
         switch (stat.StatName)
         {
-            case "MaxHealth": statName.text = "Max Health: " + ph.playerMaxHealth.ToString("F1"); break;
-            case "RegenerationMultiplier": statName.text = "Health REG: " + ph.regenerationMultiplier.ToString("F1"); break;
-            case "MovementSpeed": statName.text = "Walk SPD: " + pc.movementSpeed.ToString("F1"); break;
-            case "JumpHeight": statName.text = "Jump Force: " + pc.jumpForce.ToString("F1"); break;
-            case "StunMultiplier": statName.text = "Firmness: " + ph.stunMultiplier.ToString("F2"); break;
-            case "RawDamageResistance": statName.text = "Vulnerability: " + ph.rawDamageResistance.ToString("F1"); break;
+            case "MaxHealth": DisplayFloat("Max HP", ph.playerMaxHealth); break;
+            case "RegenerationMultiplier": DisplayPercent("Health REG", ph.regenerationMultiplier); break;
+            case "MovementSpeedMultiplier": DisplayFloat("Walk SPD", pc.movementSpeedMult); break;
+            case "JumpForceMultiplier": DisplayFloat("Jump Height", pc.jumpForceMult); break;
+            case "ShockMultiplier": DisplayFloat("Firmness", ph.shockMultiplier); break;
+            case "RawDamageResistance": DisplayPercent("Toughness", ph.rawDamageResistance); break;
             
-            case "DashSpeed": statName.text = "Dash Speed: " + pc.dashSpeed.ToString("F1"); break;
-            case "DashCooldown": statName.text = "Dash CD: " + pc.dashCooldown.ToString("F1"); break;
-            case "DashTime": statName.text = "Dash CD: " + pc.dashTime.ToString("F1"); break;
-            case "DashEnergyCost": statName.text = "Dash Energy Cost: " + pc.dashEnergyCost.ToString("F1"); break;
+            case "DashSpeed": DisplayFloat("Dash SPD", pc.dashSpeed); break;
+            case "DashCooldown": DisplayFloat("Dash CD", pc.dashCooldown); break;
+            case "DashTime": DisplayFloat("Dash Duration", pc.dashTime); break;
             
-            case "MaxEnergy": statName.text = "Max Energy: " + pa.maxEnergy.ToString("F1"); break;
-            case "EnergyRefill": statName.text = "Energy REG: " + pa.energyRefill.ToString("F1"); break;
-            case "AbilityCooldownMultiplier": statName.text = "Ability Efficiency: " + pa.abilityCooldownMult.ToString("F1"); break;
-            case "AbilityDamageMultiplier": statName.text = "Ability Strength: " + pa.abilityDamageMult.ToString("F1"); break;
-            case "AbilityPotency": statName.text = "Ability Potency: " + pp.abilityPotency.ToString("F1"); break;
-            case "AbilityLifetimeMultiplier": statName.text = "Ability Longevity: " + pp.abilityLifetimeMult.ToString("F1"); break;
+            case "MaxEnergy": DisplayFloat("Max Energy", pa.maxEnergy); break;
+            case "EnergyRefill": DisplayPercent("Energy REG", pa.energyRefill); break;
+            case "AbilityCooldownMultiplier": DisplayPercent("Ability Efficiency", pa.abilityCooldownMult); break;
+            case "AbilityDamageMultiplier": DisplayPercent("Ability Strength", pp.abilityDamageMult); break;
+            case "AbilityPotency": DisplayPercent("Ability Potency", pp.abilityPotency); break;
+            case "AbilityLifetimeMultiplier": DisplayPercent("Ability Longevity", pp.abilityLifetimeMult); break;
             
-            case "GroundDamageAmount": statName.text = "Ground Attack DMG: " + pf.groundDamageAmount.ToString("F1"); break;
-            case "GroundAttackCooldown": statName.text = "Ground Attack CD: " + pf.attackCooldown.ToString("F1"); break;
-            case "AirDamageAmount": statName.text = "Air Attack DMG: " + pf.airDamageAmount.ToString("F1"); break;
-            case "AirAttackCooldown": statName.text = "Air Attack CD: " + pf.airAttackCooldown.ToString("F1"); break;
-            case "AttackKnockbackMultiplier": statName.text = "Melee Repulsion: " + pf.attackPotency.ToString("F1"); break;
+            case "AttackDamageMultiplier": DisplayPercent("ATK Strength", pf.attackDamageMult); break;
+            case "AttackCooldownMultiplier": DisplayPercent("Ground ATK Efficiency", pf.attackCooldownMult); break;
+            case "AttackPotency": DisplayPercent("Attack Potency", pf.attackPotency); break;
             
-            case "BlockDamageResistance": statName.text = "Block Resistance: " + pd.damageResistance.ToString("F1"); break;
-            case "CounterTime": statName.text = "Counter Window: " + pd.counterTime.ToString("F1"); break;
-            case "CounterDamage": statName.text = "Counter DMG: " + pd.counterDamage.ToString("F1"); break;
-            case "PlayerAttackStun": statName.text = "Melee Shock: " + pf.stunTime.ToString("F2"); break;
+            case "BlockDamageResistance": DisplayPercent("Block Resistance", pd.damageResistance); break;
+            case "CounterTime": DisplayFloat("Counter Window", pd.counterTime); break;
+            case "CounterDamage": DisplayFloat("Counter DMG", pd.counterDamage); break;
+            case "CounterDamageResistance": DisplayPercent("Counter Resistance", pd.counterDamageResistance); break;
             
             default: statName.text = ""; Debug.LogWarning("Clueless."); break;
         }
         shader.SetActive(isClicked);
     }
 
-    public void DisplayInfo()
+    private void DisplayFloat(string title, float value)
     {
-        
+        statName.text = title + ": " + value.ToString("F1");
+        // well that was eashy
+    }
+
+    private void DisplayPercent(string title, float value)
+    { 
+        var percent = value * 100 - 100;
+        if (title != "BlockDamageResistance" && title != "RawDamageResistance" && title == "CounterDamageResistance")
+        {
+            if (value != 1) statName.text = title + ": " + percent.ToString("F0") + "%";
+            else statName.text = $"{title}: 0%";
+        }
+        else
+        {
+            if (value != 1) statName.text = title + ": " + (-percent).ToString("F0") + "%";
+            else statName.text = $"{title}: 0%";
+        }
+
+        // man im so smat >:D
+
     }
     
     public void OnPointerClick(PointerEventData eventData)

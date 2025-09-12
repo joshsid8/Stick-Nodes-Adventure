@@ -13,8 +13,8 @@ public class PlayerStats : ScriptableObject
     public float RegenerationMultiplier => regenerationMultiplier;
     
     [Tooltip("Stun multiplier when the player gets stunned! (e.g., 0 for no stun)")]
-    [SerializeField] private float stunMultiplier = 1f;
-    public float StunMultiplier => stunMultiplier;
+    [SerializeField] private float shockMultiplier = 1f;
+    public float ShockMultiplier => shockMultiplier;
 
     [Tooltip("The multiplied amount of damage you take without blocking!")]
     [SerializeField] private float rawDamageResistance = 1f;
@@ -26,7 +26,7 @@ public class PlayerStats : ScriptableObject
     public float MovementSpeedMultiplier => movementSpeedMultiplier;
     
     [Tooltip("Height multiplier of a normal jump")]
-    [SerializeField] private float jumpForceMultiplier = 27f;
+    [SerializeField] private float jumpForceMultiplier = 1f;
     public float JumpForceMultiplier => jumpForceMultiplier;
     
     [Tooltip("The amount of wall jumps before landing")]

@@ -53,7 +53,7 @@ public class PlayerDefense : MonoBehaviour
             pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
             if (pc.canMove) pc.canMove = false;
             pc.jumpForce = 0f;
-            hp.stunMultiplier = 0f;
+            hp.shockMultiplier = 0f;
             pa.energyRefill = 0f;
             if (counterAbility && canCounter && isBlocking)
             {
@@ -66,7 +66,7 @@ public class PlayerDefense : MonoBehaviour
             {
                 isBlocking = false;
                 pc.canMove = true;
-                hp.stunMultiplier = hp.originalStunMultiplier;
+                hp.shockMultiplier = hp.originalStunMultiplier;
                 pc.jumpForce = pc.originalJumpForce;
                 currentCounterTime = 0f;
                 canCounter = true;
@@ -90,7 +90,7 @@ public class PlayerDefense : MonoBehaviour
             if (eDamageable != null)
             {
                 pa.energy += 10f;
-                eDamageable.Damage(counterDamage, counterKnockbackForce * num);
+                eDamageable.Damage(counterDamage, counterKnockbackForce * num * pf.attackPotency);
                 eDamageable.Stun(counterStun * pf.attackPotency);
                 pc.currentCombatTimer += pc.combatTimer / 2;
             }

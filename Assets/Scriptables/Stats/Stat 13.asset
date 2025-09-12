@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: Stat 13
   m_EditorClassIdentifier: 
-  statName: AirAttackCooldown
-  statDescription: How long it takes before you can attack in the air again. The
-    smaller the number, the faster the attack speed.
+  statName: DashTime
+  statDescription: How long your dashes are.

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Stat 15
   m_EditorClassIdentifier: 
   statName: CounterTime
-  statDescription: How long your counter windo lasts for. The larger the number,
+  statDescription: How long your counter window lasts for. The larger the number,
     the easier it is to counter attack.

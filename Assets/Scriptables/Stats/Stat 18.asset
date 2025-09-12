@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: Stat 18
   m_EditorClassIdentifier: 
-  statName: AttackKnockbackMultiplier
-  statDescription: How much more or less knockback you inflict on your melee attacks
+  statName: AbilityCooldownMultiplier
+  statDescription: How quickly you can perform abilities.

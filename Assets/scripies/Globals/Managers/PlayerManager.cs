@@ -64,7 +64,7 @@ public class PlayerManager : MonoBehaviour
     {
         currentFloatStats["MaxHealth"] = basePlayerStats.MaxHealth;
         currentFloatStats["RegenerationMultiplier"] = basePlayerStats.RegenerationMultiplier;
-        currentFloatStats["StunMultiplier"] = basePlayerStats.StunMultiplier;
+        currentFloatStats["ShockMultiplier"] = basePlayerStats.ShockMultiplier;
         currentFloatStats["RawDamageResistance"] = basePlayerStats.RawDamageResistance;
         
         currentFloatStats["MovementSpeedMultiplier"] = basePlayerStats.MovementSpeedMultiplier;
@@ -200,7 +200,7 @@ public class PlayerManager : MonoBehaviour
         {
             ph.playerMaxHealth = GetCurrentFloat("MaxHealth");
             ph.regenerationMultiplier = GetCurrentFloat("RegenerationMultiplier");
-            ph.stunMultiplier = GetCurrentFloat("StunMultiplier");
+            ph.shockMultiplier = GetCurrentFloat("ShockMultiplier");
             ph.rawDamageResistance = GetCurrentFloat("RawDamageResistance");
         }
         if (pc != null) //movement
@@ -217,7 +217,7 @@ public class PlayerManager : MonoBehaviour
             pa.maxEnergy = GetCurrentFloat("MaxEnergy");
             pa.energyRefill = GetCurrentFloat("EnergyRefill");
             pa.abilityCooldownMult = GetCurrentFloat("AbilityCooldownMultiplier");
-            pa.abilityDamageMult = GetCurrentFloat("AbilityDamageMultiplier");
+            pp.abilityDamageMult = GetCurrentFloat("AbilityDamageMultiplier");
             pp.abilityLifetimeMult = GetCurrentFloat("AbilityLifetimeMultiplier");
             pp.abilityPotency =  GetCurrentFloat("AbilityPotency");
         }
@@ -227,7 +227,6 @@ public class PlayerManager : MonoBehaviour
             pd.counterTime = GetCurrentFloat("CounterTime");
             pd.counterDamageResistance = GetCurrentFloat("CounterDamageResistance");
             pd.counterDamage = GetCurrentFloat("CounterDamage");
-            pd.counterStun = GetCurrentFloat("CounterStun");
         }
         if (pf != null) //combat
         {
@@ -252,8 +251,8 @@ public class PlayerManager : MonoBehaviour
             case "PlayerRegen":
                 if (ph != null) ph.regenerationMultiplier = value;
                 break;
-            case "StunMultiplier":
-                if (ph != null) ph.stunMultiplier = value;
+            case "ShockMultiplier":
+                if (ph != null) ph.shockMultiplier = value;
                 break;
             case "PlayerMaxEnergy":
                 if (pa != null) pa.maxEnergy = value;

@@ -81,7 +81,7 @@ public class PlayerPerformAbility : MonoBehaviour
                     PlayerShootBlast projectileScript = newProjectile.GetComponent<PlayerShootBlast>();
                     if (projectileScript != null)
                     {
-                        projectileScript.SetValues(pc.isFacingRight, abilityDamageMult * pa.abilityDamageMult, abilityPotency,
+                        projectileScript.SetValues(pc.isFacingRight, abilityDamageMult, abilityPotency,
                             abilityPotency);
                         pa.energy -= projectileScript.energyRequired;
                         pa.currentAbilityCooldown = projectileScript.abilityCooldown * pa.abilityCooldownMult;
@@ -103,7 +103,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         if (pillarScript != null)
                         {
                             pillarScript.SetValues(abilityLifetimeMult,
-                                abilityDamageMult * pa.abilityDamageMult / abilityAmount, abilityPotency);
+                                abilityDamageMult / abilityAmount, abilityPotency);
                             pa.energy -= pillarScript.energyRequired / abilityAmount;
                             pa.currentAbilityCooldown = pillarScript.abilityCooldown * pa.abilityCooldownMult;
                         }
