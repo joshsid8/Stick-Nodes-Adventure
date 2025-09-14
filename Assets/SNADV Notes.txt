@@ -5,22 +5,16 @@ SNADV Notes
     
     Hotfixes & Priorities
        
-        Noxu
-            !!!!Initial Boulder Throwing!!!!
-        
-        
-    Optimisations:
-        
-        Combo Logic
-            animate a few more melee moves
-                some for long and close range (passive and active)
-                ensure they have equal hitboxes (real combos are an exception)
-        
         Abilities
             Remove the logic of directional beams entirely
                 Make them 'holdable' instead
             Make a quaternary ability type: shield
                 different types used during blocking can block or deflect certain stuff. after release, it gives a temporary buff
+        Noxu
+            !!!!Initial Boulder Throwing!!!!
+        
+    Optimisations:
+        
         
         Music flexibility
             Make it so that the music never stops, but rather silences before moving onto another track

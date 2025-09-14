@@ -252,8 +252,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   abilityDamageMult: 1
-  abilityStunMult: 1
-  abilityKnockbackMult: 0
+  abilityPotency: 0
   isDirectional: 0
   abilityDirection: 0
   abilityLifetimeMult: 1
@@ -280,11 +279,8 @@ MonoBehaviour:
   energyText: {fileID: 0}
   maxEnergy: 75
   energy: 75
-  abilityDamageMultiplier: 1
-  abilityCooldownMult: 1
-  originalEnergyRefill: 5
   energyRefill: 5
-  modEnergyRefill: 2
+  abilityCooldownMult: 1
   canAbility: 1
   currentAbilityCooldown: 0
   isPerformingAbility: 0
@@ -318,7 +314,6 @@ MonoBehaviour:
   canBlock: 1
   isBlocking: 0
   damageResistance: 0.5
-  originalDamageResistance: 0
 --- !u!114 &2904327954621765790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,7 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bab46a9a9c2bf14b9c9bd94e0bce670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: f1a41034b7c01e0458a51d7da1abe627, type: 2}
   healthBar: {fileID: 0}
   healthText: {fileID: 0}
   playerMaxHealth: 100
@@ -339,8 +333,6 @@ MonoBehaviour:
   playerExtraHealth: 0
   rawDamageResistance: 1
   regenerationMultiplier: 5
-  modRegenerationMultiplier: 1
-  originalRegenerationMultiplier: 5
   pc: {fileID: 0}
   isDead: 0
   respawnTime: 5
@@ -348,8 +340,7 @@ MonoBehaviour:
   isStunned: 0
   stunTime: 5
   originalStunMultiplier: 0
-  stunMultiplier: 1
-  knockbackMultiplier: 1
+  shockMultiplier: 1
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintSpeed: 5
   isTinting: 0
@@ -374,14 +365,13 @@ MonoBehaviour:
   canAttack: 0
   attackEnergy: 5
   attackCooldown: 0.2
+  airAttackCooldown: 0.15
   airDamageAmount: 20
   airAttackTransform: {fileID: 8094868948852248977}
   airAttackRange: 1.53
   airAttackForce: 15
   isAirAttacking: 0
-  canAirAttack: 0
   hasAirBoosted: 0
-  airAttackCooldown: 0.15
   airComboAmount: 3
   enemyLayer:
     serializedVersion: 2
@@ -389,7 +379,9 @@ MonoBehaviour:
   stunTime: 0.2
   knockbackForce: {x: 1, y: 0}
   airKnockbackForce: {x: 0, y: 0}
-  knockbackMult: 1
+  attackPotency: 1
+  attackDamageMult: 1
+  attackCooldownMult: 1
 --- !u!114 &261623171632948894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,19 +394,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b6be3f3ee4d1d14d8fe92aecfe1d05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
   canAct: 1
   canFlip: 1
   isFrozen: 0
   canMove: 1
   movementSpeed: 10
-  originalMovementSpeed: 10
+  movementSpeedMult: 1
   isMoving: 0
   originalJumpForce: 27
   jumpForce: 27
+  jumpForceMult: 1
   maxFallSpeed: 35
   fallMultiplier: 3
   lowJumpMultiplier: 5
+  isJumping: 0
   canDoubleJump: 0
   coyoteTime: 0.1
   jumpBufferTime: 0.15
@@ -437,7 +430,7 @@ MonoBehaviour:
     m_Bits: 65664
   isGrounded: 0
   dashSpeed: 25
-  startDashTime: 0.65
+  dashTime: 0
   dashCooldown: 0.5
   dashAbility: 1
   currentDashTime: 0

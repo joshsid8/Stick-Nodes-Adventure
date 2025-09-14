@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    private PlayerController pc;
     public bool m1Ability;
     public float groundDamageAmount = 20f;
     [SerializeField] private Transform attackTransform;
@@ -14,15 +13,14 @@ public class PlayerCombat : MonoBehaviour
     public float attackEnergy;
     
     public float attackCooldown;
+    public float airAttackCooldown;
     public float airDamageAmount = 20f;
     [SerializeField] private Transform airAttackTransform;
     [SerializeField] private float airAttackRange = 1f;
     public float airAttackForce;
     [HideInInspector] public bool isAirAttacking;
-    [SerializeField] private bool canAirAttack;
+    private bool isAirComboing;
     [SerializeField] private bool hasAirBoosted;
-    public float airAttackCooldown;
-    private float currentAirAttackCooldown;
     public int airComboAmount = 3;
     
     [SerializeField] private LayerMask enemyLayer;
@@ -36,40 +34,32 @@ public class PlayerCombat : MonoBehaviour
     
     private RaycastHit2D[] hits;
     private Animator animator;
+    private PlayerController pc;
+    private PlayerAbility pa;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         pc = GetComponent<PlayerController>();
+        pa = GetComponent<PlayerAbility>();
         animator = GetComponent<Animator>();
         canAttack = true;
-        canAirAttack = true;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && pc.isGrounded && canAttack && currentAttackCooldown
-            <= 0 && !isAirAttacking && !pc.isDashing && !pc.isWallSliding && m1Ability)
-        { 
-            animator.Play("Attack");
-        }
-        else if (Input.GetMouseButtonDown(0) && !pc.isGrounded && canAirAttack && currentAttackCooldown
-                 <= 0 && !isAttacking && !pc.isDashing && !pc.isWallSliding && m1Ability)
-        {
-            if (!hasAirBoosted) animator.Play("AirAttack");
-            else animator.Play("AltAirAttack");
-        }
         animator.SetBool("isAttacking", isAttacking);
         animator.SetBool("isAirAttacking", isAirAttacking);
+        animator.SetBool("isAirComboing", isAirComboing);
+        animator.SetInteger("airComboAmount", airComboAmount);
         if (pc.isGrounded)
         {
             hasAirBoosted = false;
             airComboAmount = 3;
         }
         if (currentAttackCooldown > 0) canAttack = false;
-        else if (currentAirAttackCooldown > 0) canAirAttack = false;
-        AttackCooldown();
+        Attack();
     }
 
     private void GroundAttack()
@@ -123,7 +113,7 @@ public class PlayerCombat : MonoBehaviour
 
             }
         }
-        currentAirAttackCooldown = airAttackCooldown * attackCooldownMult;
+        currentAttackCooldown = airAttackCooldown * attackCooldownMult;
     }
 
     private IEnumerator AirCombo(GameObject target)
@@ -131,14 +121,21 @@ public class PlayerCombat : MonoBehaviour
         while (airComboAmount > 0 && !pc.isGrounded && target.GetComponent<EnemyHealth>().movable)
         {
             target.transform.position = new Vector3(airAttackTransform.transform.position.x + 1f * transform.right.x, airAttackTransform.transform.position.y, 0);
+            isAirComboing = true;
             yield return new WaitForFixedUpdate();
         }
+        isAirComboing = false;
     }
     
-    private void AttackCooldown()
+    private void Attack()
     {   
+        if (Input.GetMouseButtonDown(0) && currentAttackCooldown
+            <= 0 && !pc.isDashing && !pc.isWallSliding && m1Ability && !pa.isPerformingAbility)
+        { 
+            if (canAttack) animator.SetTrigger("Attack");
+        }
+        
         currentAttackCooldown -= Time.deltaTime * 0.5f; if (currentAttackCooldown <= 0) canAttack = true; 
-        currentAirAttackCooldown -= Time.deltaTime * 0.5f; if (currentAirAttackCooldown <= 0) canAirAttack = true;
     }
     
     private void OnDrawGizmosSelected()

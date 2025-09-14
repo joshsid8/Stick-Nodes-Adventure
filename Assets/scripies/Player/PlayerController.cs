@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour
     public float maxFallSpeed;
     public float fallMultiplier;
     public float lowJumpMultiplier;
-    private bool isJumping;
+    [SerializeField] private bool isJumping;
+    private bool hasJumped;
     public bool canDoubleJump;
     private bool doubleJump;
      
@@ -249,11 +250,11 @@ public class PlayerController : MonoBehaviour
         {
             doubleJump = canDoubleJump;
             isWallJumping = false;
+            isJumping = false;
         }
         
         if (isJumping && isGrounded)
         {
-            isJumping = false;
             isWallJumping = false;
         }
     }
@@ -298,7 +299,6 @@ public class PlayerController : MonoBehaviour
     {
         if (rb.linearVelocity.y > 0)
         {
-            isJumping = true;
             rb.gravityScale = defaultGravity;
         }
         else if (rb.linearVelocity.y < 0)
