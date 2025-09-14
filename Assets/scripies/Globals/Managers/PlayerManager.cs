@@ -223,7 +223,7 @@ public class PlayerManager : MonoBehaviour
         }
         if (pd != null) //defense
         {
-            pd.damageResistance = GetCurrentFloat("BlockDamageResistance");
+            pd.blockDamageResistance = GetCurrentFloat("BlockDamageResistance");
             pd.counterTime = GetCurrentFloat("CounterTime");
             pd.counterDamageResistance = GetCurrentFloat("CounterDamageResistance");
             pd.counterDamage = GetCurrentFloat("CounterDamage");
@@ -270,7 +270,7 @@ public class PlayerManager : MonoBehaviour
                 if (pc != null) pc.jumpForce = value;
                 break;
             case "DamageResistance":
-                if (pd != null) pd.damageResistance = value;
+                if (pd != null) pd.blockDamageResistance = value;
                 break;
             case "CounterWindow":
                 if (pd != null) pd.counterTime = value;

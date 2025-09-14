@@ -60,7 +60,7 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
             case "AttackCooldownMultiplier": DisplayPercent("Ground ATK Efficiency", pf.attackCooldownMult); break;
             case "AttackPotency": DisplayPercent("Attack Potency", pf.attackPotency); break;
             
-            case "BlockDamageResistance": DisplayPercent("Block Resistance", pd.damageResistance); break;
+            case "BlockDamageResistance": DisplayPercent("Block Resistance", pd.blockDamageResistance); break;
             case "CounterTime": DisplayFloat("Counter Window", pd.counterTime); break;
             case "CounterDamage": DisplayFloat("Counter DMG", pd.counterDamage); break;
             case "CounterDamageResistance": DisplayPercent("Counter Resistance", pd.counterDamageResistance); break;

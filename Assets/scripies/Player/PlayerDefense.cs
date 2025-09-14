@@ -17,13 +17,14 @@ public class PlayerDefense : MonoBehaviour
     
     public bool canBlock;
     public bool isBlocking;
-    public float damageResistance;
+    public float blockDamageResistance;
     private float blockStunMultiplier;
     
     private PlayerHealth hp;
     private PlayerController pc;
     private PlayerCombat pf;
     private PlayerAbility pa;
+    
     private Animator animator;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -66,7 +67,7 @@ public class PlayerDefense : MonoBehaviour
             {
                 isBlocking = false;
                 pc.canMove = true;
-                hp.shockMultiplier = hp.originalStunMultiplier;
+                hp.shockMultiplier = hp.originalShockMultiplier;
                 pc.jumpForce = pc.originalJumpForce;
                 currentCounterTime = 0f;
                 canCounter = true;

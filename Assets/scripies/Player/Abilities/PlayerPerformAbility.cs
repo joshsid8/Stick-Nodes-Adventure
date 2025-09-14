@@ -17,6 +17,7 @@ public class PlayerPerformAbility : MonoBehaviour
     public int abilityAmount;
     private int blastType;
     [HideInInspector] public bool isActivated;
+    [HideInInspector] public bool isReinforcing;
 
     [HideInInspector] public bool unavailable;
     [SerializeField] private LayerMask terrainLayers;
@@ -32,6 +33,8 @@ public class PlayerPerformAbility : MonoBehaviour
     {
         unavailable = Physics2D.OverlapCircle(abilityPoint.position, 0.5f, terrainLayers);
         if (isActivated && pa.currentAbilityCooldown <= 0) isActivated = false;
+        pa.animator.SetBool("isReinforcing", isReinforcing);
+        Reinforce();
     }
 
     public void Execute(int blast)
@@ -59,12 +62,9 @@ public class PlayerPerformAbility : MonoBehaviour
                         else pa.animator.Play("AirFire");
                     break;
                 case 3:
-                    print("*insert reinforcement here*");
-                    break;
-                default:
-                    blastType = Random.Range(0, 3);
-                    if (pc.isGrounded) pa.animator.Play("Fire");
-                    else pa.animator.Play("AirFire");
+                    if (objects[3] !=null &&
+                        pa.energy >= objects[3].GetComponent<PlayerSummonPillar>().energyRequired)
+                        isReinforcing = true;
                     break;
             }
         }
@@ -130,7 +130,26 @@ public class PlayerPerformAbility : MonoBehaviour
                     else Debug.LogError("where is bro's beam");
                 }
                 break;
+        }
+    }
 
+    private void Reinforce()
+    {
+        if (isReinforcing)
+        {
+            pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
+            if (pc.canMove) pc.canMove = false;
+            pc.jumpForce = 0f;
+            PlayerHealth.Instance.shockMultiplier = 0f;
+            pa.energyRefill = 0f;
+
+            if (Input.GetButtonUp("Fire") || !pc.canAct || pc.isWallSliding || pc.isDashing || PlayerHealth.Instance.isDead)
+            {
+                isReinforcing = false;
+                pc.canMove = true;
+                PlayerHealth.Instance.shockMultiplier = PlayerHealth.Instance.originalShockMultiplier;
+                pc.jumpForce = pc.originalJumpForce;
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     [HideInInspector] public bool isStunned;
     public float stunTime;
     private float currentStunTime;
-    public float originalStunMultiplier;
+    public float originalShockMultiplier;
     public float shockMultiplier = 1;
     
     private Knockback kb;
@@ -60,7 +60,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         currentStunTime = stunTime * shockMultiplier;
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
-        originalStunMultiplier = 1f;
+        originalShockMultiplier = shockMultiplier;
     }
 
     // Update is called once per frame
@@ -121,9 +121,9 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             if (pd.isBlocking && !pd.counterWindow && damageType < 1)
             {
                 // blocking successfully
-                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.damageResistance;
-                else playerHealth -= damageAmount * pd.damageResistance;
-                kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
+                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.blockDamageResistance;
+                else playerHealth -= damageAmount * pd.blockDamageResistance;
+                kb.CallKnockback(knockbackForce * pd.blockDamageResistance * shockMultiplier, pc.inputDirection);
             }
             else if (pd.isBlocking && pd.counterWindow && damageType < 2)
             {
@@ -146,6 +146,13 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 pc.currentDashTime = 0f;
                 kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
             }
+        }
+        else if (GetComponent<PlayerPerformAbility>().isReinforcing)
+        {
+            // reinforcing
+            if (playerExtraHealth > 0) playerExtraHealth -= damageAmount; // * reinforcementDamageResistance;
+            else playerHealth -= damageAmount; // * reinforcementDamageResistance;
+            kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
         }
         else
         {
@@ -184,7 +191,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             {
                 pc.canAct = true;
                 GetComponent<PlayerCombat>().canAttack = true;
-                shockMultiplier = originalStunMultiplier;
+                shockMultiplier = originalShockMultiplier;
                 isStunned = false;
                 pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
             }
