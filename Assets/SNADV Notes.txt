@@ -4,15 +4,22 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Hotfixes & Priorities
-  
-        Abilities            
-            Remove the logic of directional beams entirely
-                Make them 'holdable' instead
+        
+        Quest Logic
+            Defeat enemy quest
+            Delivery quest
+            Destination quest
+
+        Animations
+            Make separate animations for abilities
+                Pillar stomp, and arm raise
+                Beam shooting
+            Some others i cant fully recall yet, but they need to be done
+        
         Noxu
-            !!!!Initial Boulder Throwing!!!!
+            !!!!!Initial Boulder Throwing!!!!!
         
     Optimisations:
-        
         
         Music flexibility
             Make it so that the music never stops, but rather silences before moving onto another track
@@ -31,7 +38,6 @@ SNADV Notes
         
         Shop logic
         
-        Quest Logic
         
         Mini Bosses
             a normal enemy-boss hybrid

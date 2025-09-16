@@ -55,7 +55,6 @@ public class PlayerDefense : MonoBehaviour
             if (pc.canMove) pc.canMove = false;
             pc.jumpForce = 0f;
             hp.shockMultiplier = 0f;
-            pa.energyRefill = 0f;
             if (counterAbility && canCounter && isBlocking)
             {
                 currentCounterTime = counterTime;

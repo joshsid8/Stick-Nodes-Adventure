@@ -8,8 +8,6 @@ public class PlayerPerformAbility : MonoBehaviour
     private PlayerAbility pa;
     public float abilityDamageMult;
     public float abilityPotency;
-
-    public bool isDirectional;
     public float abilityDirection;
     public float abilityLifetimeMult = 1f;
     [SerializeField] private float xVector;
@@ -47,19 +45,27 @@ public class PlayerPerformAbility : MonoBehaviour
             {
                 case 0:
                     if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerShootBlast>().energyRequired)
+                    {
+                        pa.isPerformingAbility = true;
                         if (pc.isGrounded) pa.animator.Play("Fire");
                         else pa.animator.Play("AirFire");
+                    }
                     break;
                 case 1:
                     if (objects[1] != null && pa.energy >= objects[1].GetComponent<PlayerSummonPillar>().energyRequired)
+                    {
+                        pa.isPerformingAbility = true;
                         if (pc.isGrounded) pa.animator.Play("Fire");
                         else pa.animator.Play("AirFire");
+                    }
                     break;
                 case 2:
-                    if (objects[2] != null &&
-                        pa.energy >= objects[2].GetComponentInChildren<PlayerShootBeam>().energyRequired)
+                    if (objects[2] != null && pa.energy >= objects[2].GetComponentInChildren<PlayerShootBeam>().energyRequired)
+                    {
+                        pa.isPerformingAbility = true;
                         if (pc.isGrounded) pa.animator.Play("Fire");
                         else pa.animator.Play("AirFire");
+                    }
                     break;
                 /*case 3:
                     if (objects[3] !=null &&
@@ -87,6 +93,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         pa.currentAbilityCooldown = projectileScript.abilityCooldown * pa.abilityCooldownMult;
                     }
                     else Debug.LogError("where is bro's projectile");
+                    pa.isPerformingAbility = false;
                 }
                 break;
             case 1:
@@ -110,7 +117,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         else Debug.LogError("where is bro's pillar");
                         xVector += 1.5f;
                     }
-
+                    pa.isPerformingAbility = false;
                     xVector = preXVector;
                 }
                 break;
@@ -123,9 +130,13 @@ public class PlayerPerformAbility : MonoBehaviour
 
                     if (beamScript != null)
                     {
-                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMult,abilityPotency ,abilityDirection, isDirectional);
-                        pa.energy -= beamScript.energyRequired;
-                        pa.currentAbilityCooldown = beamScript.abilityCooldown * pa.abilityCooldownMult;
+                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMult,abilityPotency ,abilityDirection);
+                        if (!beamScript.isHoldable)
+                        {
+                            pa.currentAbilityCooldown = beamScript.abilityCooldown * pa.abilityCooldownMult;
+                            pa.energy -= beamScript.energyRequired;
+                            pa.isPerformingAbility = false;
+                        }
                     }
                     else Debug.LogError("where is bro's beam");
                 }

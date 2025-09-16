@@ -103,18 +103,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea6402121c4cc04b88500056df2f7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beamDamage: 15
+  beamDamage: 1.8
   beamStunTime: 0.5
-  beamKnockbackForce: {x: 1, y: 0}
-  isDirectional: 0
+  beamKnockbackForce: {x: 0.7, y: 0}
   beamDirection: 0
-  beamLifetime: 0.3
+  beamLifetime: 0.8
   energyRequired: 10
-  abilityCooldown: 0.7
+  abilityCooldown: 1.5
+  isHoldable: 1
   activeHitbox: 0
-  beamProc: 1
+  beamProc: 0.07
   beamProcTimer: 0
-  beamDamageType: 0
+  energyProc: 0
+  procTimes: 0
   anim: {fileID: 7400000, guid: f94e97e8d06b438479d642a19ff7ee93, type: 2}
   collideAnim: {fileID: 7400000, guid: efdc82e03212c5a44bd9d7c5e3405911, type: 2}
   parentObject: {fileID: 8069515426526680348}

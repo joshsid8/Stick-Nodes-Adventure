@@ -5,17 +5,18 @@ public class PlayerShootBeam : MonoBehaviour
     [SerializeField] private float beamDamage;
     [SerializeField] private float beamStunTime;
     [SerializeField] private Vector2 beamKnockbackForce;
-    [SerializeField] private bool isDirectional;
     [SerializeField] private float beamDirection;
     [SerializeField] private float beamLifetime;
     public float energyRequired = 20f;
     public float abilityCooldown = 1f;
     
     private float beamTimer;
+    public bool isHoldable;
     [SerializeField] private bool activeHitbox;
     public float beamProc;
     [SerializeField] private float beamProcTimer;
-    public int beamDamageType;
+    [SerializeField] private float energyProc;
+    [SerializeField] private float procTimes;
     private bool isFacingRightDirection;
     
     private Transform playerTransform;
@@ -24,30 +25,41 @@ public class PlayerShootBeam : MonoBehaviour
     [SerializeField] private AnimationClip collideAnim;
     
     [SerializeField] private GameObject parentObject;
+    private PlayerAbility pa;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         if (anim != null) animator.Play(anim.name);
-        beamTimer = beamLifetime;
-        if (isDirectional) parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? beamDirection : -beamDirection + 180f);
+        beamTimer = beamLifetime; 
+        parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? beamDirection : -beamDirection + 180f);
+        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
+        procTimes = beamLifetime / beamProc;
+        procTimes = energyRequired / procTimes;
     }
 
     private void Update()
     {
         Lifetime();
         beamProcTimer -= Time.deltaTime;
+        energyProc -= Time.deltaTime;
+        pa.currentAbilityCooldown = abilityCooldown * pa.abilityCooldownMult;
         if (isFacingRightDirection) transform.eulerAngles = Vector3.zero;
         else transform.eulerAngles = new Vector3(0, 180, 0);
-        if (isDirectional) transform.localEulerAngles = new Vector3(0, 0, 0);
+        transform.localEulerAngles = new Vector3(0, 0, 0);
+        
+        if (isHoldable && energyProc <= 0 && activeHitbox)
+        {
+            energyProc = beamProc;
+            pa.energy -= procTimes;
+        } 
     }
     
-    public void SetValues(bool facingRight, float lifetimeMult, float knockbackMult, float direction, bool directional)
+    public void SetValues(bool facingRight, float lifetimeMult, float knockbackMult, float direction)
     {
         isFacingRightDirection = facingRight;
         beamLifetime *= lifetimeMult;
         beamKnockbackForce *= knockbackMult;
-        isDirectional = directional; 
         beamDirection = direction;
     }
     
@@ -76,11 +88,23 @@ public class PlayerShootBeam : MonoBehaviour
     
     private void Lifetime()
     {
-        beamTimer -= Time.deltaTime;
-        if (beamTimer <= 0 && collideAnim != null) animator.Play(collideAnim.name);
+        if (pa.isHolding && isHoldable || !isHoldable)
+        {
+            beamTimer -= Time.deltaTime;
+            if (beamTimer <= 0 && collideAnim != null)
+            {
+                pa.isPerformingAbility = false;
+                animator.Play(collideAnim.name);
+            }
+        }
+        else if (collideAnim != null)
+        {
+            pa.isPerformingAbility = false;
+            animator.Play(collideAnim.name);
+        }
     }
 
-    void Boom()
+    private void Boom()
     {
         Destroy(parentObject);
     }

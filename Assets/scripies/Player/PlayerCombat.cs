@@ -19,7 +19,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float airAttackRange = 1f;
     public float airAttackForce;
     [HideInInspector] public bool isAirAttacking;
-    private bool isAirComboing;
+    public bool isAirComboing;
     [SerializeField] private bool hasAirBoosted;
     public int airComboAmount = 3;
     
@@ -83,7 +83,7 @@ public class PlayerCombat : MonoBehaviour
     
     private void AirAttack()
     {
-        if (pc.rb.linearVelocity.y < 0 && !hasAirBoosted)
+        if (pc.rb.linearVelocity.y < 0 && !hasAirBoosted && !pc.isGrounded)
         {
             pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airAttackForce);
             hasAirBoosted = true;

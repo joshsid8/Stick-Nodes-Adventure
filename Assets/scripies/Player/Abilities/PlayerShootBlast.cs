@@ -92,6 +92,8 @@ public class PlayerShootBlast : MonoBehaviour
             {
                 eDamageable.Stun(projectileStunTime);
                 eDamageable.Damage(projectileDamage, projectileKnockbackForce * playerDirection);
+                PlayerHealth.Instance.pc.currentCombatTimer = +
+                    PlayerHealth.Instance.pc.combatTimer * 0.5f;
             }
         }
         Collide();
