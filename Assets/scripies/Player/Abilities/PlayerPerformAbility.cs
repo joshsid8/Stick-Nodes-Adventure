@@ -17,7 +17,7 @@ public class PlayerPerformAbility : MonoBehaviour
     public int abilityAmount;
     private int blastType;
     [HideInInspector] public bool isActivated;
-    [HideInInspector] public bool isReinforcing;
+    //[HideInInspector] public bool isReinforcing;
 
     [HideInInspector] public bool unavailable;
     [SerializeField] private LayerMask terrainLayers;
@@ -33,8 +33,8 @@ public class PlayerPerformAbility : MonoBehaviour
     {
         unavailable = Physics2D.OverlapCircle(abilityPoint.position, 0.5f, terrainLayers);
         if (isActivated && pa.currentAbilityCooldown <= 0) isActivated = false;
-        pa.animator.SetBool("isReinforcing", isReinforcing);
-        Reinforce();
+        //pa.animator.SetBool("isReinforcing", isReinforcing);
+        //Reinforce();
     }
 
     public void Execute(int blast)
@@ -61,11 +61,11 @@ public class PlayerPerformAbility : MonoBehaviour
                         if (pc.isGrounded) pa.animator.Play("Fire");
                         else pa.animator.Play("AirFire");
                     break;
-                case 3:
+                /*case 3:
                     if (objects[3] !=null &&
                         pa.energy >= objects[3].GetComponent<PlayerSummonPillar>().energyRequired)
                         isReinforcing = true;
-                    break;
+                    break;*/
             }
         }
     }
@@ -133,7 +133,7 @@ public class PlayerPerformAbility : MonoBehaviour
         }
     }
 
-    private void Reinforce()
+    /*private void Reinforce()
     {
         if (isReinforcing)
         {
@@ -151,5 +151,5 @@ public class PlayerPerformAbility : MonoBehaviour
                 pc.jumpForce = pc.originalJumpForce;
             }
         }
-    }
+    }*/
 }

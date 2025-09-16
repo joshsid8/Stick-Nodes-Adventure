@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerReinforce : MonoBehaviour
 {
+	// This is a potentially scrapped concept. It may be readded.
+	
     public float reinforceDamageResistance;
 
     public float maxReinforceTime;

@@ -147,13 +147,13 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
             }
         }
-        else if (GetComponent<PlayerPerformAbility>().isReinforcing)
+        /*else if (GetComponent<PlayerPerformAbility>().isReinforcing)
         {
             // reinforcing
             if (playerExtraHealth > 0) playerExtraHealth -= damageAmount; // * reinforcementDamageResistance;
             else playerHealth -= damageAmount; // * reinforcementDamageResistance;
             kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
-        }
+        }*/
         else
         {
             // the player blocking but getting hit at the back

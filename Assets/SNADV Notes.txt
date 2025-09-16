@@ -4,15 +4,8 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Hotfixes & Priorities
-       
-        Abilities
-            Make a quaternary ability type: reinforce
-                different types used during blocking can block or deflect certain stuff. after release, it gives a temporary buff
-                    Fire: Imbued strikes - stronger melee attacks
-                    Water: Restoration - faster energy and health regen speed
-                    Wind: Feather weight - more efficient mobility (speed and jump height)
-                    Earth: Shield - unbreakable shield (until the time is up)
-                    
+  
+        Abilities            
             Remove the logic of directional beams entirely
                 Make them 'holdable' instead
         Noxu
