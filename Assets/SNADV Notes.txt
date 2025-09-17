@@ -9,7 +9,12 @@ SNADV Notes
             Defeat enemy quest
             Delivery quest
             Destination quest
-
+                    
+    Optimisations:
+        
+        Boss Logic
+            Rework the move system via the use of arrays "atk[1]" instead of separate variables "atk1"          
+        
         Animations
             Make separate animations for abilities
                 Pillar stomp, and arm raise
@@ -18,9 +23,7 @@ SNADV Notes
         
         Noxu
             !!!!!Initial Boulder Throwing!!!!!
-        
-    Optimisations:
-        
+            
         Music flexibility
             Make it so that the music never stops, but rather silences before moving onto another track
             

@@ -21,14 +21,19 @@ public class Prompt : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Disable();
+        neutral = true;
+        gameObject.SetActive(false);
     }
 
     private void Update()
     {
         if (yes) no = false;
         if (no) yes = false;
-        if (neutral) yes = false; no = false;
+        if (neutral)
+        {
+            yes = false; 
+            no = false;
+        }
     }
 
     public void Choices()

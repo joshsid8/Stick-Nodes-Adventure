@@ -65,7 +65,6 @@ public class PlayerAbility : MonoBehaviour
     {
         if (!isPerformingAbility)
         {
-            print("workin");
             if (pc.inCombat) energy += Time.deltaTime * 2 * energyRefill;
             else energy += Time.deltaTime * 5 * energyRefill;
         }
