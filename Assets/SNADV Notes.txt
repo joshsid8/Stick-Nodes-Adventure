@@ -13,7 +13,7 @@ SNADV Notes
     Optimisations:
         
         Boss Logic
-            Rework the move system via the use of arrays "atk[1]" instead of separate variables "atk1"          
+            During Idle anims, let certain bosses walk forward or backward when triggered.         
         
         Animations
             Make separate animations for abilities

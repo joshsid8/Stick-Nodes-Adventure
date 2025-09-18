@@ -3,21 +3,27 @@ using UnityEngine;
 public class BossAttack : MonoBehaviour
 {
     // Smartness (get it? haha...)
-    public float actionFactor;
     private bool closeRange;
     public float rangeRadius;
     
     // boss attack system
     public bool isAttacking;
     [SerializeField] private bool canAttack;
+    
+    private bool moveDuringCooldown;
+    private int moveFactor;
+    
     public float attackCooldown;
     public float currentAttackCooldown;
     
-    public float attackFactor;
+    public int attackFactor;
     private Animator animator;
     
     public string activeMovement;
     public string defensiveMovement;
+    
+    public string[] defensiveAtk = new string[5];
+    public string[] activeAtk = new string[5];
     
     public string atk1;
     public string atk2;
@@ -69,7 +75,7 @@ public class BossAttack : MonoBehaviour
         Checks();
         FacePlayer();
         FactorCheck();
-        if (isAttacking) AttackSystem();
+        if (isAttacking) AttackSystem2();
         StartCoroutine(Restart());
         if (!PlayerHealth.Instance.isDead && playerIsDead) playerIsDead = false;
         inRange = Physics2D.OverlapCircle(dt.chatPoint.position, dt.chatRadius, LayerMask.GetMask("Player"));
@@ -137,10 +143,31 @@ public class BossAttack : MonoBehaviour
                         ActionCooldown(2f);
                         break;
                     default:
-                        actionFactor = 0;
+                        attackFactor = 0;
                         ActionCooldown(2f);
                         break;
                 }
+            }
+            ActionCooldown(2f);
+        }
+    }
+    
+    private void AttackSystem2()
+    {
+        GetComponent<DialogueTrigger>().enabled = false;
+        PlayerHealth.Instance.pc.currentCombatTimer = 69;
+        canFacePlayer = true;
+        if (canAttack)
+        {
+            if (closeRange)
+            {
+                attackFactor = Random.Range(0, defensiveAtk.Length);
+                if (defensiveAtk[attackFactor] != null) animator.SetTrigger(defensiveAtk[attackFactor]);
+            }
+            else if (!closeRange)
+            {
+                attackFactor = Random.Range(0, activeAtk.Length);
+                if (activeAtk[attackFactor] != null) animator.SetTrigger(activeAtk[attackFactor]);
             }
             ActionCooldown(2f);
         }
@@ -159,6 +186,12 @@ public class BossAttack : MonoBehaviour
             currentAttackCooldown -= Time.deltaTime;
         }
         else if (currentAttackCooldown <= 0 && isAttacking && isGrounded) canAttack = true;
+    }
+    
+    private void Movement()
+    {
+        var rng = Random.Range(0, 2);
+        if (rng == 0) animator.SetInteger("moveFactor", Random.Range(0, 4));
     }
     
     void FacePlayer()
