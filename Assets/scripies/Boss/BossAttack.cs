@@ -19,19 +19,9 @@ public class BossAttack : MonoBehaviour
     public int attackFactor;
     private Animator animator;
     
-    public string activeMovement;
-    public string defensiveMovement;
-    
     public string[] defensiveAtk = new string[5];
     public string[] activeAtk = new string[5];
-    
-    public string atk1;
-    public string atk2;
-    public string atk3;
-    public string atk4;
-    public string atk5;
-    public string atk6;
-    
+
     // Checks
     public LayerMask playerLayer;
     [SerializeField] private float groundCheckRadius;
@@ -87,71 +77,7 @@ public class BossAttack : MonoBehaviour
     {
         closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
     }
-    
-    private void AttackSystem()
-    {
-        GetComponent<DialogueTrigger>().enabled = false;
-        PlayerHealth.Instance.pc.currentCombatTimer = 5;
-        canFacePlayer = true;
-        if (canAttack)
-        {
-            attackFactor = Random.Range(1, 6);
-            if (closeRange)
-            {
-                switch (attackFactor)
-                {
-                    case 1:
-                        if (atk1 != null) animator.SetTrigger(atk1); // Active 1
-                        break;
-                    case 2:
-                        if (atk2 != null) animator.SetTrigger(atk2); // Active 2
-                        break;
-                    case 3:
-                        if (atk5 != null) animator.SetTrigger(atk5); // Proactive 1
-                        break;
-                    case 4:
-                        if (atk6 != null) animator.SetTrigger(atk6); // Proactive 2
-                        break;
-                    case 5:
-                        if (defensiveMovement != null) animator.SetTrigger(defensiveMovement); // Movement
-                        ActionCooldown(2f);
-                        break;
-                    default:
-                        attackFactor = 0;
-                        ActionCooldown(2f);
-                        break;
-                }
-            }
-            else if (!closeRange)
-            {
-                switch (attackFactor)
-                {
-                    case 1:
-                        if (atk3 != null) animator.SetTrigger(atk3); // Passive 1
-                        break;
-                    case 2:
-                        if (atk4 != null) animator.SetTrigger(atk4); // Passive 2
-                        break;
-                    case 3:
-                        if (atk5 != null) animator.SetTrigger(atk5); // Proactive
-                        break;
-                    case 4:
-                        if (atk6 != null) animator.SetTrigger(atk6); // Proactive 2
-                        break;
-                    case 5:
-                        if (defensiveMovement != null) animator.SetTrigger(activeMovement); // Movement
-                        ActionCooldown(2f);
-                        break;
-                    default:
-                        attackFactor = 0;
-                        ActionCooldown(2f);
-                        break;
-                }
-            }
-            ActionCooldown(2f);
-        }
-    }
-    
+
     private void AttackSystem2()
     {
         GetComponent<DialogueTrigger>().enabled = false;
@@ -162,12 +88,12 @@ public class BossAttack : MonoBehaviour
             if (closeRange)
             {
                 attackFactor = Random.Range(0, defensiveAtk.Length);
-                if (defensiveAtk[attackFactor] != null) animator.SetTrigger(defensiveAtk[attackFactor]);
+                if (defensiveAtk[attackFactor] != null && isAttacking) animator.SetTrigger(defensiveAtk[attackFactor]);
             }
             else if (!closeRange)
             {
                 attackFactor = Random.Range(0, activeAtk.Length);
-                if (activeAtk[attackFactor] != null) animator.SetTrigger(activeAtk[attackFactor]);
+                if (activeAtk[attackFactor] != null && isAttacking) animator.SetTrigger(activeAtk[attackFactor]);
             }
             ActionCooldown(2f);
         }

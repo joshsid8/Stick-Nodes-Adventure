@@ -7355,7 +7355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe42a45225f7a074c906b095267ee0b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionFactor: 0
   rangeRadius: 3.91
   isAttacking: 0
   canAttack: 0
@@ -7364,6 +7363,15 @@ MonoBehaviour:
   attackFactor: 0
   activeMovement: Boulder
   defensiveMovement: Bat
+  defensiveAtk:
+  - Bat
+  - Counter
+  - Shield
+  - Decimate
+  activeAtk:
+  - Decimate
+  - Boulder
+  - Shield
   atk1: Counter
   atk2: Bat
   atk3: Boulder

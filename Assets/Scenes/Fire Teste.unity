@@ -10273,7 +10273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe42a45225f7a074c906b095267ee0b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionFactor: 0
   rangeRadius: 4.4
   isAttacking: 0
   canAttack: 0
@@ -10282,6 +10281,20 @@ MonoBehaviour:
   attackFactor: 0
   activeMovement: FDash
   defensiveMovement: BDash
+  defensiveAtk:
+  - Jump
+  - Shuriken
+  - Teleport
+  - NAttack
+  - BDash
+  - FDash
+  activeAtk:
+  - Jump
+  - Shuriken
+  - Teleport
+  - Fire
+  - FDash
+  - BDash
   atk1: NAttack
   atk2: FDash
   atk3: Shuriken
