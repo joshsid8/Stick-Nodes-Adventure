@@ -4,11 +4,15 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Hotfixes & Priorities
+    
+        Dialogue
+            Migrate all singular dialogue variables into the new array variables
         
-        Quest Logic
+        Incorporate Quest Logic
             Defeat enemy quest
             Delivery quest
-            Destination quest
+            NPC based quest
+            
                     
     Optimisations:
         

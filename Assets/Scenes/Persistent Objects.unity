@@ -7690,7 +7690,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Rewards: NOTHING! YOUVE SCARED AWAY EVERYONE!!!'
+  m_text: 'Rewards: NOTHING! YOUVE SCARED EVERYONE AWAYY!!!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8643,6 +8643,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf946da1cdb277b47a6863f472ee2ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questTitle: 
+  questDescription: 
+  titleObject: {fileID: 0}
+  descriptionObject: {fileID: 0}
+  infoTitle: {fileID: 0}
+  infoDescription: {fileID: 0}
 --- !u!224 &1696165587 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4136601248015948193, guid: 4b4a20370bb6d1e4fbf0f96468c3d738, type: 3}

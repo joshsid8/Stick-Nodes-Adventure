@@ -137,12 +137,14 @@ public class DialogueUI : MonoBehaviour
 
         if (dialogueObject.appliesFloatChange)
         {
-            PlayerManager.Instance.SetGlobalFloat(dialogueObject.targetFloatVariableName, dialogueObject.newFloatValue);
+            for (int i = 0; i < dialogueObject.targetFloatVariables.Length; i++)
+                PlayerManager.Instance.SetGlobalFloat(dialogueObject.targetFloatVariables[i], dialogueObject.newFloatValues[i]);
         }
 
         if (dialogueObject.appliesBooleanChange)
         {
-            PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBooleanVariableName, dialogueObject.newBooleanValue);
+            for (int i = 0; i < dialogueObject.targetFloatVariables.Length; i++)
+                PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i], dialogueObject.newBoolValues[i]);
         }
 
         if (dialogueObject.canDropItem)

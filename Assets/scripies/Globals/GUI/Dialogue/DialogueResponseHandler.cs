@@ -42,28 +42,9 @@ public class DialogueResponseHandler : MonoBehaviour
 
     private void OnPickedResponse(DialogueResponse response)
     {
-        ApplyCustomEffect(response);
         responseButtonsParent.gameObject.SetActive(false);
         responseBox.gameObject.SetActive(false);
         
         dialogueUI.ShowDialogue(response.DialogueObject);
-    }
-    private void ApplyCustomEffect(DialogueResponse response)
-    {
-        if (PlayerManager.Instance == null)
-        {
-            Debug.LogError("WHERE IS THE PLAYER MANAGERERERERWHGWH");
-            return;
-        }
-
-        if (response.appliesFloatChange)
-        {
-            PlayerManager.Instance.SetGlobalFloat(response.targetFloatVariableName, response.newFloatValue);
-        }
-
-        if (response.appliesBooleanChange)
-        {
-            PlayerManager.Instance.SetGlobalBool(response.targetBooleanVariableName, response.newBooleanValue);
-        }
     }
 }

@@ -23,27 +23,20 @@ MonoBehaviour:
   yesResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   noResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   appliesFloatChange: 1
   targetFloatVariableName: CombatTimer
   newFloatValue: 3600
+  targetFloatVariables: []
+  newFloatValues: []
   appliesBooleanChange: 1
   targetBooleanVariableName: BossAttack
   newBooleanValue: 1
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
   canDropItem: 0
   itemDrop: []
   itemType: []
