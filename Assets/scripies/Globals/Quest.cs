@@ -5,11 +5,13 @@ public class Quest : MonoBehaviour
     public string questTitle;
     [TextArea(5, 10)] public string questDescription;
     public QuestType questType;
+    
+    public bool questCompleted;
 
     public GameObject[] enemiesToDefeat;
     public int[] noOfEnemiesToDefeat;
 
-    public GameObject[] objectToFind;
+    public GameObject[] objectsToFind;
 
     public string[] objectsToGive;
 

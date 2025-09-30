@@ -10,8 +10,15 @@ SNADV Notes
         
         Incorporate Quest Logic
             Defeat enemy quest
+                For each enemy thats required to be defeated, place a mark and another script on them to update the quest
+                If is defeated, turn the variable true / increment the variable
             Delivery quest
+                For each item to take from or find, place a quest recorder to show where they are if it hasnt been taken
+                if found, update the variable
+                
             NPC based quest
+                Add a quest recorder to the specified NPC. if the player hasnt spoken to them, there will be a marker to show where they are
+                if interacted with, update the variable
             
                     
     Optimisations:
