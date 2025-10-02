@@ -8,8 +8,9 @@ SNADV Notes
         Dialogue
             Migrate all singular dialogue variables into the new array variables
         
-        Incorporate Quest Logic
+        Quest Logic
             Defeat enemy quest
+                Give each enemy an ID to identify and refer to certain enemies for quests
                 For each enemy thats required to be defeated, place a mark and another script on them to update the quest
                 If is defeated, turn the variable true / increment the variable
             Delivery quest
@@ -33,7 +34,7 @@ SNADV Notes
             Some others i cant fully recall yet, but they need to be done
         
         Noxu
-            !!!!!Initial Boulder Throwing!!!!!
+            !!!!!!Initial Boulder Throwing!!!!!!
             
         Music flexibility
             Make it so that the music never stops, but rather silences before moving onto another track
@@ -44,7 +45,6 @@ SNADV Notes
     
     Things to be added:
         
-        
         More Enemy Logic
             Flying/Swimming
         
@@ -52,8 +52,7 @@ SNADV Notes
         
         Shop logic
         
-        
-        Mini Bosses
+            Mini Bosses
             a normal enemy-boss hybrid
         
         Obstacles
