@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
+  m_Name: Izuno Quest
+  m_EditorClassIdentifier: 
+  npcName: Izuno
+  dialogue:
+  - Yo, i have a task for you..
+  - Go ahead and defeat those cynderian ahead of us. There is also a fishman some
+    river area...
+  - Yeah, just kill em off for me. ill reward you for it.
+  pendingChoice: 0
+  choiceQuestion: 
+  isAnimated: 0
+  yesResponse:
+    responseText: Yes, I'm Ready!
+    dialogueObject: {fileID: 11400000, guid: c93905e77c5f1994abbe22dcb94f162c, type: 2}
+  noResponse:
+    responseText: No, i'm not ready
+    dialogueObject: {fileID: 11400000, guid: 598f319cd7a6e8d479fd235469b7304c, type: 2}
+  appliesFloatChange: 0
+  targetFloatVariableName: 
+  newFloatValue: 0
+  targetFloatVariables: []
+  newFloatValues: []
+  appliesBooleanChange: 0
+  targetBooleanVariableName: 
+  newBooleanValue: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 1
+  questToOffer: {fileID: 11400000, guid: e640935d858ad994db98737ac6d06ff2, type: 2}
+  canDropItem: 0
+  itemDrop: []
+  itemType: []
+  canBeColoured: 0
+  colour: []
+  colourIndex: 0
+  canBeBold: 0
+  bold: 
+  speaker: Izuno
+  alteredDialogue: {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

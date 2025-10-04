@@ -182,7 +182,7 @@ PrefabInstance:
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: dialogue
       value: 
-      objectReference: {fileID: 11400000, guid: a5fe877f9e4656f4f80bb92de2d3a2d7, type: 2}
+      objectReference: {fileID: 11400000, guid: 516c1cf6f9f147643a27a447b568c531, type: 2}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: chatPoint
       value: 
@@ -10279,8 +10279,6 @@ MonoBehaviour:
   attackCooldown: 1.5
   currentAttackCooldown: 0
   attackFactor: 0
-  activeMovement: FDash
-  defensiveMovement: BDash
   defensiveAtk:
   - Jump
   - Shuriken
@@ -10295,12 +10293,6 @@ MonoBehaviour:
   - Fire
   - FDash
   - BDash
-  atk1: NAttack
-  atk2: FDash
-  atk3: Shuriken
-  atk4: Fire
-  atk5: Jump
-  atk6: Teleport
   playerLayer:
     serializedVersion: 2
     m_Bits: 49408

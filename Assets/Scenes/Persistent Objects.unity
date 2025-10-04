@@ -8614,12 +8614,12 @@ MonoBehaviour:
   infoTitle: {fileID: 448323178}
   infoDescription: {fileID: 684693671}
   questCompleted: 0
-  enemiesToDefeat:
-  - {fileID: 3938795057032240365, guid: e20865639346b7740a0545167afb8c2c, type: 3}
-  noOfEnemiesToDefeat: 01000000
-  objectsToFind: []
-  objectsToGive: []
-  objectsToTake: []
+  isTracking: 0
+  eTd: 
+  noOfE: 
+  oTi: []
+  nTi: 
+  questRewards: []
 --- !u!1 &1640621739
 GameObject:
   m_ObjectHideFlags: 0
@@ -8670,6 +8670,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf946da1cdb277b47a6863f472ee2ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questSlots:
+  - {fileID: 1619468272}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!224 &1696165587 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4136601248015948193, guid: 4b4a20370bb6d1e4fbf0f96468c3d738, type: 3}

@@ -12,7 +12,7 @@ public class CollectableTrigger : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Player")
+        if (collision.collider.CompareTag("Player"))
         {
             collectable.Collect(collision.gameObject);
             Destroy(gameObject);

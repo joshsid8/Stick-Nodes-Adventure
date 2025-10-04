@@ -147,6 +147,8 @@ public class DialogueUI : MonoBehaviour
                 PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i], dialogueObject.newBoolValues[i]);
         }
 
+        if (dialogueObject.willGiveQuest) QuestLogManager.Instance.AssignQuest(dialogueObject.questToOffer);
+        
         if (dialogueObject.canDropItem)
         {
             for (int i = 0; i < dialogueObject.itemDrop.Length; i++)

@@ -46,7 +46,7 @@ public class DialogueObject : ScriptableObject
     [Space(10)] [Header("Questing")] [Tooltip("Will this NPC assign a quest for the player?")]
     public bool willGiveQuest;
 
-    
+    public QuestSO questToOffer;
 
     [Space(10)] [Header("Item Drops")] [Tooltip("How many of x items the speaker should give")]
     public bool canDropItem;

@@ -13,6 +13,7 @@ SNADV Notes
                 Give each enemy an ID to identify and refer to certain enemies for quests
                 For each enemy thats required to be defeated, place a mark and another script on them to update the quest
                 If is defeated, turn the variable true / increment the variable
+            
             Delivery quest
                 For each item to take from or find, place a quest recorder to show where they are if it hasnt been taken
                 if found, update the variable

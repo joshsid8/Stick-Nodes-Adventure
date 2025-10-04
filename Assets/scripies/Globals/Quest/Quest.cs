@@ -9,7 +9,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     public string questTitle;
     [TextArea(5, 10)] public string questDescription;
     public QuestType questType;
-
+    
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text taskText;
     
@@ -17,18 +17,18 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TMP_Text infoDescription;
     
     public bool questCompleted;
+    public bool isTracking;
 
-    [Tooltip("Enter IDs of enemies that are required for the quest. \n" +
-             "The first two numbers are the enemy, and the last number is their buffs or debuffs. \n" +
-             "010 is a hostile cynderian with no buffs or debuffs. \n" +
-             "026 would probably be an enhanced fishman with extra strength.")] 
-    [SerializeField] private int[] enemiesToDefeat;
+ 
+    [Tooltip("enemies to defeat")] [SerializeField] private int[] eTd;
     
-    [Tooltip("number of amount for each enemy. so you can say 3 of x and 2 of y")] 
-    [SerializeField] private int[] noOfEnemiesToDefeat;
+    [Tooltip("Number of enemies currently defeated")] [SerializeField] private int[] noOfE;
 
-    [Tooltip("The objects to find, give to, or take from an npc")]
-    public string[] objectsToInteract;
+    [Tooltip("objects to take, give, or find")] public string[] oTi;
+
+    [Tooltip("the npc you may have to speak to")] public string nTi;
+    
+    public CollectableSOBase[] questRewards;
     
     private void Start()
     { 
@@ -46,28 +46,37 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         switch (questType)
         {
             case QuestType.DefeatEnemy:
-                //objectiveText.text = $"Defeat {quest.noOfEnemiesToDefeat}/{quest.enemiesToDefeat.Length} enemies";
+                //objectiveText.text = $"Defeat {quest.noOfE}/{quest.eTd.Length} enemies";
                 break;
             case QuestType.HaveInInventory:
                 //objectiveText.text = $"Obtain {quest.objectsToFind.Length}";
                 break;
         }
     }
-    public void LogQuest(QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat,string[] objects ,CollectableSOBase[] rewards)
+    public void LogQuest(QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, string[] objects, string npc, CollectableSOBase[] rewards)
     {
+        questType = type;
+        questTitle = title;
+        questDescription = description;
+        nTi = npc;
+        for (var i = 0; i < eTd.Length; i++) eTd[i] = enemyIDs[i];
+        for (var i = 0; i < noOfE.Length; i++) noOfE[i] = eToDefeat[i];
+        for (var i = 0; i < oTi.Length; i++) oTi[i] = objects[i];
+        for (var i = 0; i < questRewards.Length; i++) questRewards[i] = rewards[i];
+        
         switch (questType)
         {
             case QuestType.DefeatEnemy:
-                
+                print($"youve to defeat {enemyIDs}!");
                 break;
             case QuestType.HaveInInventory:
-                
+                print($"ensure you have {objects} in your inventory!");
                 break;
             case QuestType.GiveTo:
-                
+                print($"give {objects} to {npc}!");
                 break;
             case QuestType.TakeFrom:
-                
+                print($"steal {objects} to from {npc}!");
                 break;
             
         }
