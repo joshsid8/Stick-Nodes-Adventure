@@ -2,7 +2,7 @@ using UnityEngine;
 public class QuestRecorder : MonoBehaviour
 {
     public Quest.QuestType questType;
-    public MonoBehaviour enemyHealth;
+    public EnemyHealth enemyHealth;
     public bool taskCompleted;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,7 +17,7 @@ public class QuestRecorder : MonoBehaviour
         switch (questType)
         {
             case Quest.QuestType.DefeatEnemy:
-                if (enemyHealth == GetComponent<EnemyHealth>() && enemyHealth.GetComponent<EnemyHealth>().isDead)
+                if (enemyHealth.isDead)
                     taskCompleted = true;
                 break;
             case Quest.QuestType.HaveInInventory:

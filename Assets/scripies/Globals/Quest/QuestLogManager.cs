@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 public class QuestLogManager : MonoBehaviour
 {
     public static QuestLogManager Instance {get; private set;}
 
+    public QuestSO aah;
+    
     public Quest[] questSlots;
     private void Awake()
     {
@@ -14,6 +17,15 @@ public class QuestLogManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            AssignQuest(aah);
+            print($"its done: used {aah} to assign the quest");
+        }
+    }
+
     public void AssignQuest(QuestSO quest)
     {
         AddQuest(quest.questType, quest.questName, quest.questDescription, quest.enemiesToDefeat,
@@ -22,14 +34,13 @@ public class QuestLogManager : MonoBehaviour
 
     private void AddQuest(Quest.QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, string[] objects, string npc,CollectableSOBase[] reward)
     {
-        for (int i = 0; i < questSlots.Length; i++)
+        for (var i = 0; i < questSlots.Length; i++)
         {
-            if (questSlots[i] == null)
+            if (questSlots[i] != null)
             {
                 questSlots[i].LogQuest(type, title, description, enemyIDs ,eToDefeat, objects, npc, reward);
                 return;
             }
-            
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     [TextArea(5, 10)] public string questDescription;
     public QuestType questType;
     
-    [SerializeField] private TMP_Text titleText;
+    [SerializeField] private TMP_Text[] titleTexts;
     [SerializeField] private TMP_Text taskText;
     
     [SerializeField] private TMP_Text infoTitle;
@@ -32,7 +33,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     
     private void Start()
     { 
-        titleText.text = questTitle;
+        foreach (var text in titleTexts) text.text = questTitle;
     }
 
     public enum QuestType
@@ -63,14 +64,23 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         for (var i = 0; i < noOfE.Length; i++) noOfE[i] = eToDefeat[i];
         for (var i = 0; i < oTi.Length; i++) oTi[i] = objects[i];
         for (var i = 0; i < questRewards.Length; i++) questRewards[i] = rewards[i];
+        foreach (var text in titleTexts) text.text = questTitle;
         
         switch (questType)
         {
             case QuestType.DefeatEnemy:
-                print($"youve to defeat {enemyIDs}!");
+                foreach (var id in eTd)
+                {
+                    var enemy = FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None);
+                    foreach (var eh in enemy)
+                    {
+                        int identifier = eh.enemyID;
+                        if (identifier == id) print("happyx3"); else print($"augh: id is {id}, while identifier is {identifier}");
+                    }
+                }
                 break;
             case QuestType.HaveInInventory:
-                print($"ensure you have {objects} in your inventory!");
+                print($"ensure you have {objects[0]} in your inventory!");
                 break;
             case QuestType.GiveTo:
                 print($"give {objects} to {npc}!");

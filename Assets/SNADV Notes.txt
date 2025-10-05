@@ -10,7 +10,7 @@ SNADV Notes
         
         Quest Logic
             Defeat enemy quest
-                Give each enemy an ID to identify and refer to certain enemies for quests
+                Make the quest script detect all current enemies and pick one that matches the id. then we can mark it
                 For each enemy thats required to be defeated, place a mark and another script on them to update the quest
                 If is defeated, turn the variable true / increment the variable
             

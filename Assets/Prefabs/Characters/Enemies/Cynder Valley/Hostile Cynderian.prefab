@@ -29,6 +29,10 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2866762415245452275, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: enemyID
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2866762415245452275, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: phase2Style
       value: 3
       objectReference: {fileID: 0}
@@ -179,15 +183,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       insertIndex: 4
       addedObject: {fileID: 6030403799953984630}
-    - targetCorrespondingSourceObject: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -6824147239922016082}
-    - targetCorrespondingSourceObject: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -6842149216363334761}
-    - targetCorrespondingSourceObject: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -2731359351764924585}
   m_SourcePrefab: {fileID: 100100000, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
 --- !u!1 &3938795057032240365 stripped
 GameObject:
@@ -206,51 +201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093e99145c95fd742ac2046ab5e20daa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-6824147239922016082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3938795057032240365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 779b5a12f02d9a443a5b04ec82c3b478, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questType: 0
-  enemyHealth: {fileID: 0}
-  taskCompleted: 0
---- !u!114 &-6842149216363334761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3938795057032240365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 779b5a12f02d9a443a5b04ec82c3b478, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questType: 0
-  enemyHealth: {fileID: 0}
-  taskCompleted: 0
---- !u!114 &-2731359351764924585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3938795057032240365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 779b5a12f02d9a443a5b04ec82c3b478, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questType: 0
-  enemyHealth: {fileID: 0}
-  taskCompleted: 0
 --- !u!4 &5150651064747966361 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1248520969832997338, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}

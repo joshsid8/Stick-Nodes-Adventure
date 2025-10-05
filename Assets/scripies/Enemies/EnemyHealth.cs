@@ -1,14 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyMovement))]
-[RequireComponent(typeof(EnemyShootBlast))]
-[RequireComponent(typeof(EnemyAttack))]
-[RequireComponent(typeof(EnemyPatrol))]
-[RequireComponent(typeof(BoxCollider2D))]
-[RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Animator))]
-
 public class EnemyHealth : MonoBehaviour, EDamageables
 {
     //Enemy health
@@ -45,6 +37,9 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     private Animator animator;
     private EnemyAttack ea;
     private EnemyPatrol ep;
+    
+    [Tooltip("This is for whenever you want to target a certain enemy externally. The ID format is currently 000.")] 
+    public int enemyID;
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()

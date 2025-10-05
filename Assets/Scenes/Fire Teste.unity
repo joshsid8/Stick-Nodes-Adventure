@@ -5072,7 +5072,8 @@ PrefabInstance:
       propertyPath: phase2Style
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -6842149216363334761, guid: e20865639346b7740a0545167afb8c2c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
