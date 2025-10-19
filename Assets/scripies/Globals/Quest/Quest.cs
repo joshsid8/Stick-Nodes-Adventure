@@ -16,6 +16,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     
     [SerializeField] private TMP_Text infoTitle;
     [SerializeField] private TMP_Text infoDescription;
+    [SerializeField] private TMP_Text objectiveText;
     
     public bool questCompleted;
     public bool isTracking;
@@ -47,10 +48,10 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         switch (questType)
         {
             case QuestType.DefeatEnemy:
-                //objectiveText.text = $"Defeat {quest.noOfE}/{quest.eTd.Length} enemies";
+                objectiveText.text = $"Defeat {noOfE[0]}/{eTd.Length} enemies"; // change enemies into the names of the certain ones to defeat.
                 break;
             case QuestType.HaveInInventory:
-                //objectiveText.text = $"Obtain {quest.objectsToFind.Length}";
+                objectiveText.text = $"Obtain {oTi.Length}";
                 break;
         }
     }

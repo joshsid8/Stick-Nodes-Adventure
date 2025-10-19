@@ -25,27 +25,22 @@ MonoBehaviour:
   yesResponse:
     responseText: Health
     dialogueObject: {fileID: 11400000, guid: 9df1ee9161eb67c449447fc2b3507fa1, type: 2}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   noResponse:
     responseText: Strength
     dialogueObject: {fileID: 11400000, guid: f8478dc44aebccc4d9aa3b0ce05d528c, type: 2}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
+  nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
   appliesFloatChange: 0
   targetFloatVariableName: 
   newFloatValue: 0
+  targetFloatVariables: []
+  newFloatValues: []
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []
@@ -54,3 +49,7 @@ MonoBehaviour:
   colourIndex: 0
   canBeBold: 0
   bold: 
+  speaker: 
+  alteredDialogue: {fileID: 0}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

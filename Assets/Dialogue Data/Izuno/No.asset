@@ -22,27 +22,22 @@ MonoBehaviour:
   yesResponse:
     responseText: Yes, Please
     dialogueObject: {fileID: 11400000, guid: 2982a649257fe544fbb070808a92334c, type: 2}
-    appliesFloatChange: 1
-    targetFloatVariableName: PlayerMaxHealth
-    newFloatValue: 150
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   noResponse:
     responseText: No, thanks.
     dialogueObject: {fileID: 11400000, guid: 61c0502185c97a549a89c594d9567548, type: 2}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
+  nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
   appliesFloatChange: 0
   targetFloatVariableName: 
   newFloatValue: 0
+  targetFloatVariables: []
+  newFloatValues: []
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

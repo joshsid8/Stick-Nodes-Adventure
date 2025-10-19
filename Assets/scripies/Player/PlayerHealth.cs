@@ -138,6 +138,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             {
                 // the player not blocking at all
                 pd.isBlocking = false;
+                GetComponent<PlayerAbility>().isPerformingAbility = false;
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
                 else playerHealth -= damageAmount * rawDamageResistance;
                 pc.animator.SetTrigger("Damaged");
@@ -158,6 +159,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             // the player blocking but getting hit at the back
             pd.isBlocking = false;
+            GetComponent<PlayerAbility>().isPerformingAbility = false;
             if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
             else playerHealth -= damageAmount * rawDamageResistance;
             pc.animator.SetTrigger("Damaged");
@@ -166,7 +168,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             pc.currentDashTime = 0f;
             kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
         }
-         
     }
     
     public void Stun(float stunDuration)

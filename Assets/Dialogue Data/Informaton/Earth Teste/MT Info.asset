@@ -24,27 +24,22 @@ MonoBehaviour:
   yesResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   noResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
+  nameColour: {r: 0.26415092, g: 0.15574937, b: 0.15574937, a: 1}
   appliesFloatChange: 0
   targetFloatVariableName: 
   newFloatValue: 0
+  targetFloatVariables: []
+  newFloatValues: []
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

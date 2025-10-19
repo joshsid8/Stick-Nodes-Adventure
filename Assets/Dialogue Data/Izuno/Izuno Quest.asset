@@ -27,6 +27,7 @@ MonoBehaviour:
   noResponse:
     responseText: No, i'm not ready
     dialogueObject: {fileID: 11400000, guid: 598f319cd7a6e8d479fd235469b7304c, type: 2}
+  nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
   appliesFloatChange: 0
   targetFloatVariableName: 
   newFloatValue: 0

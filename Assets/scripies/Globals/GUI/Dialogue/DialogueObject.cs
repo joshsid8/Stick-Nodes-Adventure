@@ -17,6 +17,7 @@ public class DialogueObject : ScriptableObject
 
     public string[] Dialogue => dialogue;
     public string NPCName => npcName;
+    public Color nameColour = Color.black;
     public bool PendingChoice => pendingChoice;
     public string ChoiceQuestion => choiceQuestion;
     

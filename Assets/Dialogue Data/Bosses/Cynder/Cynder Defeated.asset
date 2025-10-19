@@ -23,27 +23,25 @@ MonoBehaviour:
   yesResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   noResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
+  nameColour: {r: 0.3773585, g: 0.076539695, b: 0.076539695, a: 1}
   appliesFloatChange: 1
-  targetFloatVariableName: CombatTimer
+  targetFloatVariableName: 
   newFloatValue: 0
+  targetFloatVariables:
+  - CombatTimer
+  newFloatValues:
+  - 0
   appliesBooleanChange: 0
-  targetBooleanVariableName: BossAttack
+  targetBooleanVariableName: 
   newBooleanValue: 0
+  targetBoolVariables:
+  - BossAttack
+  newBoolValues: 00
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []
@@ -55,3 +53,7 @@ MonoBehaviour:
   colourIndex: 2
   canBeBold: 1
   bold: 000001
+  speaker: 
+  alteredDialogue: {fileID: 0}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

@@ -37,12 +37,8 @@ public class DialogueUI : MonoBehaviour
         CloseDialogue(null);
     }
 
-    private void Update()
-    {
-        textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;
-    }
-
-
+    private void Update() {textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;}
+    
     public void ShowDialogue(DialogueObject dialogueObject)
     {
         playerBars.SetActive(false);
@@ -65,13 +61,14 @@ public class DialogueUI : MonoBehaviour
         foreach (string dialogue in dialogueObject.Dialogue)
         {
             npcNameLabel.text = dialogueObject.NPCName;
+            npcNameLabel.color = dialogueObject.nameColour;
             if (dialogueObject.canBeColoured && currentColourIndex <= textIndex) textLabel.color = dialogueObject.colour[currentColourIndex];
             else if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
             if (dialogueObject.canBeColoured) currentColourIndex++;
             if (dialogueObject.canBeBold) isBold = dialogueObject.bold[currentBoldIndex];
             else isBold = false;
             if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
-            animator = isAnimated ? GameObject.Find(npcNameLabel.text).GetComponent<Animator>() : null;
+            animator = isAnimated ? GameObject.Find(dialogueObject.speaker).GetComponent<Animator>() : null;
             yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
             yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
         }
@@ -106,6 +103,7 @@ public class DialogueUI : MonoBehaviour
 
         playerBars.SetActive(true);
         textLabel.color = Color.black;
+        npcNameLabel.color = Color.black;
         if (dialogueObject != null)
         {
             if (dialogueObject.alteredDialogue != null)

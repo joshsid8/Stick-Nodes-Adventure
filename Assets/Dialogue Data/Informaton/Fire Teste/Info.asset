@@ -18,34 +18,29 @@ MonoBehaviour:
 
     it will be difficult since
     they cannot be stunned in any way.'
-  - '#Good luck.'
+  - Good luck.
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   noResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
+  nameColour: {r: 0, g: 0, b: 0, a: 1}
   appliesFloatChange: 0
   targetFloatVariableName: PlayerHealth
   newFloatValue: 200
+  targetFloatVariables: []
+  newFloatValues: []
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []
@@ -54,3 +49,7 @@ MonoBehaviour:
   colourIndex: 0
   canBeBold: 0
   bold: 
+  speaker: 
+  alteredDialogue: {fileID: 0}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

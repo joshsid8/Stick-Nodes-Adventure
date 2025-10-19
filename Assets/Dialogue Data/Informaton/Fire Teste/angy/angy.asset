@@ -20,27 +20,22 @@ MonoBehaviour:
   yesResponse:
     responseText: I beat the Boss!
     dialogueObject: {fileID: 11400000, guid: 6b376d4e4e1d06345a4f81578ce78f68, type: 2}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   noResponse:
     responseText: Dont worry...
     dialogueObject: {fileID: 11400000, guid: fa39d40147a02b94a862cf1b2bb78d4a, type: 2}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
+  nameColour: {r: 0.49056602, g: 0, b: 0, a: 1}
   appliesFloatChange: 0
   targetFloatVariableName: PlayerHealth
   newFloatValue: 200
+  targetFloatVariables: []
+  newFloatValues: []
   appliesBooleanChange: 0
   targetBooleanVariableName: 
   newBooleanValue: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []
