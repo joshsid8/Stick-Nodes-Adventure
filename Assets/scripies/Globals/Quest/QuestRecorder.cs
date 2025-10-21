@@ -3,6 +3,7 @@ public class QuestRecorder : MonoBehaviour
 {
     public Quest.QuestType questType;
     public EnemyHealth enemyHealth;
+    private Quest derivedQuest;
     public bool taskCompleted;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,7 +19,9 @@ public class QuestRecorder : MonoBehaviour
         {
             case Quest.QuestType.DefeatEnemy:
                 if (enemyHealth.isDead)
-                    taskCompleted = true;
+                {
+                    //derivedQuest.eTd++
+                }
                 break;
             case Quest.QuestType.HaveInInventory:
                 

@@ -8608,7 +8608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questTitle: Discuss the worlds biggest fears
   questDescription: A JOB!!!
-  questType: 0
+  questType: 1
   titleTexts:
   - {fileID: 878289780}
   taskText: {fileID: 1531818914}
@@ -8617,13 +8617,13 @@ MonoBehaviour:
   objectiveText: {fileID: 1531818914}
   questCompleted: 0
   isTracking: 0
-  eTd: 0000000000000000
-  noOfE: 0000000000000000
+  eTd: 
+  noOfE: 
+  targetEnemies: []
   oTi: []
   nTi: 
-  questRewards:
-  - {fileID: 0}
-  - {fileID: 0}
+  rewardObj: {fileID: 6263347217070975695, guid: 51d572b8eeca0394ab90c170c98dea25, type: 3}
+  questRewards: []
 --- !u!1 &1640621739
 GameObject:
   m_ObjectHideFlags: 0

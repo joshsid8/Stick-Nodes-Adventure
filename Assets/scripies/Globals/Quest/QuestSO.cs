@@ -22,5 +22,4 @@ public class QuestSO : ScriptableObject
     public string npcToInteract;
     
     public CollectableSOBase[] rewards = new CollectableSOBase[1];
-    
 }

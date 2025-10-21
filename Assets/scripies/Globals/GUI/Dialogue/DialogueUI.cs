@@ -73,10 +73,7 @@ public class DialogueUI : MonoBehaviour
             yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
         }
 
-        if (dialogueObject.PendingChoice)
-        {
-            StartCoroutine(ChoiceDialogue(dialogueObject));
-        }
+        if (dialogueObject.PendingChoice) StartCoroutine(ChoiceDialogue(dialogueObject));
         else
         {
             ApplyCustomEffect(dialogueObject);

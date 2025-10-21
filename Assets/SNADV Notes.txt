@@ -6,11 +6,10 @@ SNADV Notes
     Hotfixes & Priorities
 
         Quest Logic
-            Defeat enemy quest
-                Make the quest script detect all current enemies and pick one that matches the id. then we can mark it
-                For each enemy thats required to be defeated, place a mark and another script on them to update the quest
-                If is defeated, turn the variable true / increment the variable
             
+            Rewards
+                Ensure its only a trigger to ensure it doesnt spam the world with broken items
+                
             Delivery quest
                 For each item to take from or find, place a quest recorder to show where they are if it hasnt been taken
                 if found, update the variable
