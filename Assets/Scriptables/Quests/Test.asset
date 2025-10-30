@@ -16,8 +16,8 @@ MonoBehaviour:
   questName: Defeat a few enemies for Izuno
   questDescription: Izuno would like you to defeat a few enemies for him to show
     that you're good enough in combat.
-  enemiesToDefeat: 0a00000014000000
-  noOfEnemiesToDefeat: 0200000001000000
+  enemiesToDefeat: 0a000000
+  noOfEnemiesToDefeat: 02000000
   objectsToInteract: []
   npcToInteract: 
   rewards:

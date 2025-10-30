@@ -21,8 +21,7 @@ public class InvManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(gameObject); return;
         }
         Instance = this;
         player = FindAnyObjectByType<PlayerController>();
@@ -46,10 +45,10 @@ public class InvManager : MonoBehaviour
     void Update()
     {
         if (Input.GetButtonDown("Inventory")) ToggleInventory();
-        else if (Input.GetButtonDown("Cancel"))
+        else if (Input.GetButtonDown("Cancel") && isActivated)
         {
-            isActivated = false;
-            inventoryMenu.SetActive(isActivated);
+            isActivated = true;
+            ToggleInventory();
         }
     }
 
@@ -72,8 +71,7 @@ public class InvManager : MonoBehaviour
 
                 if (itemAmount <= 0)
                 {
-                    itemSlots[i].ItemSelect();
-                    return;
+                    itemSlots[i].ItemSelect(); return;
                 }
             }
         }

@@ -50,7 +50,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         infoTitle.text = questTitle;
         infoDescription.text = questDescription;
     }
-    public void QuestTrack()
+    private void QuestTrack()
     {
         switch (questType)
         {
@@ -68,13 +68,13 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 targetEnemies = alive.ToArray();
                 var total = eTd != null && eTd.Length > 0 ? eTd[0] : 0; // or track total elsewhere
                 var remaining = targetEnemies.Length;
-                noOfE[0] = remaining;
                 objectiveText.text = $"Defeat {remaining}/{total} enemies";
-                if (remaining == 0)
+                if (remaining == 0 || noOfE == null)
                 {
                     targetEnemies = Array.Empty<GameObject>();
                     questCompleted = true;
                 }
+                else noOfE[0] = remaining;
                 break;
             case QuestType.HaveInInventory:
                 objectiveText.text = $"Obtain {oTi.Length}";
@@ -85,9 +85,9 @@ public class Quest : MonoBehaviour, IPointerClickHandler
             for (var i = 0; i < questRewards.Length; i++)
             {
                 var reward = Instantiate(rewardObj, PlayerHealth.Instance.gameObject.transform.position, Quaternion.identity);
-                reward.GetComponent<Collectable>().collectable = questRewards[i];
-                ClearUI();
+                reward.GetComponent<Collectable>().collectable = questRewards[i]; 
             }
+            ClearUI();
         }
     }
     public void LogQuest(QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, string[] objects, string npc, CollectableSOBase[] rewards)
@@ -126,7 +126,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void ClearUI()
     {
-        questTitle = "";
+        foreach (var text in titleTexts) text.text = "";
         questDescription = "";
         isTracking = false;
         targetEnemies = Array.Empty<GameObject>();
