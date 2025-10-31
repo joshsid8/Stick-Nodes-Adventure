@@ -19,9 +19,14 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     public bool questCompleted;
     public bool isTracking;
 
-    [Tooltip("enemies to defeat")] public int[] eTd;
-    [Tooltip("Number of enemies currently defeated")] [SerializeField] private int[] noOfE;
+    [Tooltip("enemies to defeat")] public int[] eTd = Array.Empty<int>(); 
+    [Tooltip("Number of enemies currently defeated")] [SerializeField] private int[] noOfE = Array.Empty<int>();
     [SerializeField] private GameObject[] targetEnemies;
+    private Dictionary<int, int> requiredById;   // enemyID -> total required
+    private Dictionary<int, int> remainingById;  // enemyID -> still needed
+    private Dictionary<GameObject, int> enemyToId; 
+
+    
 
     [Tooltip("objects to take, give, or find")] public string[] oTi;
 
@@ -29,20 +34,22 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     public GameObject rewardObj;
     public CollectableSOBase[] questRewards;
-    
+    public enum QuestType
+    { 
+        DefeatEnemy, HaveInInventory, GiveTo, TakeFrom, NullQuest
+    }
     private void Start()
     { 
         foreach (var text in titleTexts) text.text = questTitle;
     }
-
-    public enum QuestType
-    { 
-        DefeatEnemy, HaveInInventory, GiveTo, TakeFrom
-    }
-
     private void Update()
     {
         QuestTrack();
+        if (questType == QuestType.NullQuest) 
+        {
+            foreach (var text in titleTexts) text.text = "";
+            questDescription = "";
+        }
     }
 
     void UpdateUI()
@@ -62,22 +69,37 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                     if (go == null) continue;
                     var eh = go.GetComponent<EnemyHealth>();
                     if (eh == null) continue;
-                    if (eh.isDead) Debug.Log($"the {go.name} is dead!");
-                    else alive.Add(go);
+                    if (!enemyToId.TryGetValue(go, out var id))
+                    {
+                        id = eh.enemyID;
+                        enemyToId[go] = id;
+                    }
+                    if (eh.isDead)
+                    {
+                        if (remainingById.TryGetValue(id, out var rem) && rem > 0) remainingById[id] = rem - 1;
+                        enemyToId.Remove(go);
+                        continue;
+                    }
+                    alive.Add(go);
                 }
                 targetEnemies = alive.ToArray();
-                var total = eTd != null && eTd.Length > 0 ? eTd[0] : 0; // or track total elsewhere
-                var remaining = targetEnemies.Length;
-                objectiveText.text = $"Defeat {remaining}/{total} enemies";
-                if (remaining == 0 || noOfE == null)
+                var totalRequired = 0;
+                var totalRemaining = 0;
+                foreach (var kv in requiredById) totalRequired += kv.Value;
+                foreach (var kv in remainingById) totalRemaining += kv.Value;
+                var totalDefeated = totalRequired - totalRemaining;
+                objectiveText.text = $"Defeat {totalDefeated}/{totalRequired} enemies";
+                if (totalRemaining <= 0 && questType == QuestType.DefeatEnemy)
                 {
-                    targetEnemies = Array.Empty<GameObject>();
                     questCompleted = true;
+                    targetEnemies = Array.Empty<GameObject>();
+                    print("quest completed!");
                 }
-                else noOfE[0] = remaining;
                 break;
             case QuestType.HaveInInventory:
-                objectiveText.text = $"Obtain {oTi.Length}";
+                //objectiveText.text = $"Obtain {oTi.Length}";
+                break;
+            case QuestType.NullQuest:
                 break;
         }
         if (questCompleted)
@@ -96,7 +118,6 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         questTitle = title;
         questDescription = description;
         nTi = npc;
-        
         eTd = enemyIDs != null ? (int[])enemyIDs.Clone() : Array.Empty<int>();
         noOfE = eToDefeat != null ? (int[])eToDefeat.Clone() : Array.Empty<int>();
         oTi = objects != null ? (string[])objects.Clone() : Array.Empty<string>();
@@ -109,17 +130,46 @@ public class Quest : MonoBehaviour, IPointerClickHandler
             case QuestType.DefeatEnemy:
                 var enemies = FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None);
                 var targets = new List<GameObject>(enemies.Length);
-                foreach (var eh in enemies) if (Array.IndexOf(eTd, eh.enemyID) >= 0) targets.Add(eh.gameObject);
+                foreach (var eh in enemies)
+                {
+                    if (eh == null) continue;
+                    if (Array.IndexOf(eTd, eh.enemyID) >= 0) targets.Add(eh.gameObject);
+                }
                 targetEnemies = targets.ToArray();
+
+                requiredById = new Dictionary<int, int>();
+                remainingById = new Dictionary<int, int>();
+
+                var len = Math.Min(eTd.Length, noOfE.Length);
+                for (var i = 0; i < len; i++)
+                {
+                    var id = eTd[i];
+                    var toDefeat = noOfE[i];
+                    if (requiredById.TryGetValue(id, out var curReq)) requiredById[id] = curReq + toDefeat;
+                    else requiredById[id] = toDefeat;
+                    remainingById[id] = requiredById[id];
+                }
+
+                enemyToId = new Dictionary<GameObject, int>(targetEnemies.Length);
+                for (var i = 0; i < targetEnemies.Length; i++)
+                {
+                    var go = targetEnemies[i];
+                    if (go == null) continue;
+                    var eh = go.GetComponent<EnemyHealth>();
+                    if (eh == null) continue;
+                    enemyToId[go] = eh.enemyID;
+                }
                 break;
             case QuestType.HaveInInventory:
-                print($"ensure you have {objects[0]} in your inventory!");
+                //print($"ensure you have {objects[0]} in your inventory!");
                 break;
             case QuestType.GiveTo:
                 print($"give {objects} to {npc}!");
                 break;
             case QuestType.TakeFrom:
                 print($"steal {objects} to from {npc}!");
+                break;
+            case QuestType.NullQuest:
                 break;
         }
     }
@@ -136,6 +186,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         noOfE = Array.Empty<int>();
         questRewards = Array.Empty<CollectableSOBase>();
         questCompleted = false;
+        questType = QuestType.NullQuest;
     }
     public void OnPointerClick(PointerEventData eventData)
     {
