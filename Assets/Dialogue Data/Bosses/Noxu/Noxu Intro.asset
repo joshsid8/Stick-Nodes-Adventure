@@ -37,13 +37,9 @@ MonoBehaviour:
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.2735849, g: 0.1509879, b: 0.1509879, a: 1}
   appliesFloatChange: 0
-  targetFloatVariableName: 
-  newFloatValue: 0
   targetFloatVariables: []
   newFloatValues: []
   appliesBooleanChange: 1
-  targetBooleanVariableName: 
-  newBooleanValue: 0
   targetBoolVariables:
   - BossAttack
   newBoolValues: 01

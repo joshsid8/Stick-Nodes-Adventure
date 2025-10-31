@@ -201,6 +201,7 @@ public class PlayerController : MonoBehaviour
             jumpBufferCounter = 0f;
             isWallSliding = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
+            if (pab.isPerformingAbility) pab.isPerformingAbility = false;
             if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen) WallJump();
         }
         else isWallSliding = false;

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf0ff2653857c174c8ca13d5b5593a7e, type: 3}
   m_Name: 100Bucks
   m_EditorClassIdentifier: 
-  maxItem: 150
+  maxItem: 100
   minItem: 100

@@ -91,10 +91,11 @@ public class PlayerPerformAbility : MonoBehaviour
                             abilityPotency);
                         pa.energy -= projectileScript.energyRequired;
                         pa.currentAbilityCooldown = projectileScript.abilityCooldown * pa.abilityCooldownMult;
+                        pa.isPerformingAbility = false;
                     }
                     else Debug.LogError("where is bro's projectile");
-                    pa.isPerformingAbility = false;
                 }
+                else pa.isPerformingAbility = false;
                 break;
             case 1:
                 if (!unavailable && objects[1] != null)
@@ -120,6 +121,7 @@ public class PlayerPerformAbility : MonoBehaviour
                     pa.isPerformingAbility = false;
                     xVector = preXVector;
                 }
+                else pa.isPerformingAbility = false;
                 break;
             case 2:
                 if (objects[2] != null)
@@ -140,6 +142,7 @@ public class PlayerPerformAbility : MonoBehaviour
                     }
                     else Debug.LogError("where is bro's beam");
                 }
+                else pa.isPerformingAbility = false;
                 break;
         }
     }

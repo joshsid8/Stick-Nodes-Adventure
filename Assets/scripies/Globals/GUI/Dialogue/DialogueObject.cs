@@ -28,19 +28,14 @@ public class DialogueObject : ScriptableObject
     [Header("Custom Global Variable Change (once the Dialogue closes)")] 
     [Tooltip("Check if this response should change a global float variable.")]
     public bool appliesFloatChange;
-    [Tooltip("The exact name of the float variable in GameManager to change (e.g., 'PlayerHealth')")]
-    public string targetFloatVariableName;
-    public float newFloatValue;
-
+    
+    [Tooltip("The exact names of the float variables in GameManager to change (e.g., 'PlayerHealth')")]
     public string[] targetFloatVariables;
     public float[] newFloatValues;
     
     [Space(10)] [Tooltip("Check if this response should change a global boolean variable.")]
     public bool appliesBooleanChange;
-    [Tooltip("The exact name of the boolean variable in GameManager to change  (mostly from the Shenanigans script) ")]
-    public string targetBooleanVariableName;
-    public bool newBooleanValue;
-
+    [Tooltip("The exact names of the boolean variables in GameManager to change  (mostly from the Shenanigans script) ")]
     public string[] targetBoolVariables;
     public bool[] newBoolValues;
 

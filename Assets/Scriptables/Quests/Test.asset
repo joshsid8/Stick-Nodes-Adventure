@@ -21,5 +21,5 @@ MonoBehaviour:
   objectsToInteract: []
   npcToInteract: 
   rewards:
-  - {fileID: 11400000, guid: 41c0bbe2c1b15624cb310fcb1d26d9f5, type: 2}
-  - {fileID: 11400000, guid: 41c0bbe2c1b15624cb310fcb1d26d9f5, type: 2}
+  - {fileID: 11400000, guid: 3393927386ba418418c964459183e26f, type: 2}
+  - {fileID: 11400000, guid: 3393927386ba418418c964459183e26f, type: 2}

@@ -93,7 +93,6 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 {
                     questCompleted = true;
                     targetEnemies = Array.Empty<GameObject>();
-                    print("quest completed!");
                 }
                 break;
             case QuestType.HaveInInventory:

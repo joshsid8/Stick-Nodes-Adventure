@@ -7358,11 +7358,9 @@ MonoBehaviour:
   rangeRadius: 3.91
   isAttacking: 0
   canAttack: 0
-  attackCooldown: 5
+  attackCooldown: 5.6
   currentAttackCooldown: 0
   attackFactor: 0
-  activeMovement: Boulder
-  defensiveMovement: Bat
   defensiveAtk:
   - Bat
   - Counter
@@ -7372,12 +7370,6 @@ MonoBehaviour:
   - Decimate
   - Boulder
   - Shield
-  atk1: Counter
-  atk2: Bat
-  atk3: Boulder
-  atk4: Decimate
-  atk5: Shield
-  atk6: Decimate
   playerLayer:
     serializedVersion: 2
     m_Bits: 49408

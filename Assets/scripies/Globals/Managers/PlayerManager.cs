@@ -195,7 +195,6 @@ public class PlayerManager : MonoBehaviour
     // This method is called after any stat change to push values to actual MonoBehaviour components.
     private void ApplyAllStatsToComponents()
     {
-        // Apply floats
         if (ph != null) //health
         {
             ph.playerMaxHealth = GetCurrentFloat("MaxHealth");

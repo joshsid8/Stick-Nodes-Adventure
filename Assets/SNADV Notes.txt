@@ -15,18 +15,32 @@ SNADV Notes
             NPC based quest
                 Add a quest recorder to the specified NPC. if the player hasnt spoken to them, there will be a marker to show where they are
                 if interacted with, update the variable
+        
+
             
                     
     Optimisations:
-        
+    
         Boss Logic
-            During Idle anims, let certain bosses walk forward or backward when triggered.         
+            During Idle anims, let certain bosses walk forward or backward when triggered.  
+                   
+        Key/Objective Logic
+            Scan an area for:
+                How many specific enemies are required to be defeated
+                The player having something specific in their inventory (hashsets!)
+                What bosses or specific enemies you have killed already
+                What quests you have done
+            Once true, let the key spawn wherever the specific game object is set
+            
         
         Animations
-            Make separate animations for abilities
+            Make better/seperate animations for the player's QoL
                 Pillar stomp, and arm raise
                 Beam shooting
-            Some others i cant fully recall yet, but they need to be done
+                Turning around
+                First step before walking
+                Wall jumping
+                Better dashing
         
         Noxu
             !!!!!!Initial Boulder Throwing!!!!!!
@@ -51,8 +65,7 @@ SNADV Notes
             a normal enemy-boss hybrid
         
         Obstacles
-            Keys
-            stray projectiles
+            stray projectiles/neutral elements that can hurt both the player and enemies
             natural disasters (thunderstorms)
     
     
