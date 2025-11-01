@@ -17,18 +17,17 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TMP_Text objectiveText;
     
     public bool questCompleted;
-    public bool isTracking;
 
     [Tooltip("enemies to defeat")] public int[] eTd = Array.Empty<int>(); 
     [Tooltip("Number of enemies currently defeated")] [SerializeField] private int[] noOfE = Array.Empty<int>();
     [SerializeField] private GameObject[] targetEnemies;
-    private Dictionary<int, int> requiredById;   // enemyID -> total required
-    private Dictionary<int, int> remainingById;  // enemyID -> still needed
-    private Dictionary<GameObject, int> enemyToId; 
-
+    private Dictionary<int, int> requiredById;  
+    private Dictionary<int, int> remainingById; 
+    private Dictionary<GameObject, int> enemyToId;
+    private InvIndex invIndex;
     
-
-    [Tooltip("objects to take, give, or find")] public string[] oTi;
+    [Tooltip("objects to take, give, or find")] public CollectableSOBase[] oTi;
+    public int[] noOfO;
 
     [Tooltip("the npc you may have to speak to")] public string nTi;
 
@@ -96,7 +95,17 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 }
                 break;
             case QuestType.HaveInInventory:
-                //objectiveText.text = $"Obtain {oTi.Length}";
+                var needs = Array.Empty<(CollectableSOBase id, int count)>();
+                for (var i = 0; i < oTi.Length; i++)
+                {
+                    needs = new (CollectableSOBase id, int count)[] {(oTi[i], noOfO[i])  };
+                    print(needs[0]);
+                }
+                invIndex = new InvIndex();
+                var canCompleteQuest = invIndex.MeetsAllCounts(needs);
+                
+                print($"Lets find out if the player has the required stuff in their inventory! the answer is: {canCompleteQuest}!");
+                if (canCompleteQuest) questCompleted = true;
                 break;
             case QuestType.NullQuest:
                 break;
@@ -111,7 +120,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
             ClearUI();
         }
     }
-    public void LogQuest(QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, string[] objects, string npc, CollectableSOBase[] rewards)
+    public void LogQuest(QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, CollectableSOBase[] objects, int[] noOfObj, string npc, CollectableSOBase[] rewards)
     {
         questType = type;
         questTitle = title;
@@ -119,7 +128,8 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         nTi = npc;
         eTd = enemyIDs != null ? (int[])enemyIDs.Clone() : Array.Empty<int>();
         noOfE = eToDefeat != null ? (int[])eToDefeat.Clone() : Array.Empty<int>();
-        oTi = objects != null ? (string[])objects.Clone() : Array.Empty<string>();
+        oTi = objects != null ? (CollectableSOBase[])objects.Clone() : Array.Empty<CollectableSOBase>();
+        noOfO = noOfObj != null ? (int[])noOfObj.Clone() : Array.Empty<int>();
         questRewards = rewards != null ? (CollectableSOBase[])rewards.Clone() : Array.Empty<CollectableSOBase>();
 
         foreach (var text in titleTexts) text.text = questTitle;
@@ -169,6 +179,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 print($"steal {objects} to from {npc}!");
                 break;
             case QuestType.NullQuest:
+                // this aint nothin dawg
                 break;
         }
     }
@@ -177,9 +188,8 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     {
         foreach (var text in titleTexts) text.text = "";
         questDescription = "";
-        isTracking = false;
         targetEnemies = Array.Empty<GameObject>();
-        oTi = Array.Empty<string>();
+        oTi = Array.Empty<CollectableSOBase>();
         nTi = "";
         eTd = Array.Empty<int>();
         noOfE = Array.Empty<int>();

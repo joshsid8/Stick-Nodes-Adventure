@@ -22,7 +22,7 @@ public class QuestLogManager : MonoBehaviour
     public void AssignQuest(QuestSO quest)
     {
         AddQuest(quest.questType, quest.questName, quest.questDescription, quest.enemiesToDefeat,
-            quest.noOfEnemiesToDefeat, quest.objectsToInteract, quest.npcToInteract,quest.rewards);
+            quest.noOfEnemiesToDefeat, quest.objectsToInteract, quest.numberOfObjects,quest.npcToInteract,quest.rewards);
     }
     
     void Update()
@@ -42,13 +42,13 @@ public class QuestLogManager : MonoBehaviour
         if (player != null) player.canAct = !isActivated;
     }
 
-    private void AddQuest(Quest.QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, string[] objects, string npc,CollectableSOBase[] reward)
+    private void AddQuest(Quest.QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, CollectableSOBase[] objects, int[] noOfO,string npc,CollectableSOBase[] reward)
     {
         for (var i = 0; i < questSlots.Length; i++)
         {
             if (questSlots[i] != null && questSlots[i].questDescription == String.Empty)
             {
-                questSlots[i].LogQuest(type, title, description, enemyIDs ,eToDefeat, objects, npc, reward); return;
+                questSlots[i].LogQuest(type, title, description, enemyIDs ,eToDefeat, objects, noOfO,npc, reward); return;
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +27,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public bool usedSlot;
     
     [SerializeField] private InvManager invManager;
+    private InvIndex index;
     public Prompt choice;
     
     public AspectSO aspectStats;
@@ -34,6 +36,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     
     public AbilitySO abilityStats;
     [SerializeField] private int abilitySlotType;
+
+    private CollectableSOBase itemScriptableObject;
     
     private bool switchFrom;
 
@@ -43,8 +47,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (equippedAspectSlots == null || equippedAspectSlots.Length == 0)
             Debug.LogWarning($"ItemSlot {gameObject.name}: No equippedAspectSlots assigned. Aspects cannot be equipped from this slot.");
     }
-    
-    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, float value, AspectSO aspect, AbilitySO ability, int abilityType)
+
+    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, float value, ItemSO itemSo, AspectSO aspect, AbilitySO ability, int abilityType)
     {
         itemName = item;
         maxItemAmount = maxAmount;
@@ -52,11 +56,15 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemDescription = itemDesc;
         itemType = type;
         restoreValue = value;
-        
-        if (itemType == "Aspect") aspectStats = aspect;
-        else if (itemType == "Ability") abilityStats = ability;
         abilitySlotType = abilityType;
         itemAmount += amount;
+        if (itemType == "Aspect") aspectStats = aspect;
+        else if (itemType == "Ability") abilityStats = ability;
+        if (itemSo != null) itemScriptableObject = itemSo;
+        else if (aspect != null) itemScriptableObject = aspect;
+        else if (ability != null) itemScriptableObject = ability;
+        index = new InvIndex();
+        index.AddItem(itemScriptableObject, itemAmount);
         usedSlot = true;
         UpdateSlotUI();
     }
@@ -96,6 +104,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         aspectStats = null;
         abilityStats = null;
         selectedShader.SetActive(false);
+        itemScriptableObject = null;
         usedSlot = false;
         if (!switchFrom)
         {
@@ -167,6 +176,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemAmount--;
         if (itemAmount <= 0)
         {
+            index.RemoveItem(itemScriptableObject, itemAmount);
             ClearSlot();
             invManager.DeselectAllSlots();
         }
@@ -209,6 +219,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (choice.yes)
         {
             choice.yes = false;
+            index.RemoveItem(itemScriptableObject, itemAmount);
             ClearSlot();
             choice.Disable();
             UpdateSlotUI();

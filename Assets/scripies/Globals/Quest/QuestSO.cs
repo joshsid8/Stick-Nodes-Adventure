@@ -11,13 +11,14 @@ public class QuestSO : ScriptableObject
              "The first two numbers are the enemy, and the last number is their buffs or debuffs. \n" +
              "010 is a hostile cynderian with no buffs or debuffs. \n" +
              "026 would probably be an enhanced fishman with extra strength.")]
-    public int[] enemiesToDefeat = new int[1];
+    public int[] enemiesToDefeat;
     
     [Tooltip("number of amount for each enemy. so you can say 3 of x and 2 of y")] 
-    public int[] noOfEnemiesToDefeat = new int[1];
+    public int[] noOfEnemiesToDefeat;
 
     [Tooltip("The objects to find, give to, or take from an npc")] 
-    public string[] objectsToInteract = new string[1];
+    public CollectableSOBase[] objectsToInteract;
+    public int[] numberOfObjects;
     
     public string npcToInteract;
     

@@ -197,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questTitle: 
   questDescription: 
-  questType: 1
+  questType: 4
   titleTexts:
   - {fileID: 0}
   - {fileID: 6522412237980651570}
@@ -206,11 +206,11 @@ MonoBehaviour:
   infoDescription: {fileID: 0}
   objectiveText: {fileID: 0}
   questCompleted: 0
-  isTracking: 0
   eTd: 
   noOfE: 
   targetEnemies: []
   oTi: []
+  noOfO: 
   nTi: 
   rewardObj: {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
   questRewards: []
