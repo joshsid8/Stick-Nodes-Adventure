@@ -36,6 +36,12 @@ MonoBehaviour:
   newBoolValues: 
   willGiveQuest: 1
   questToOffer: {fileID: 11400000, guid: 08eab099a7c0289439727471c3bf8b03, type: 2}
+  isQuestInteraction: 0
+  questActionType: 4
+  questItems: []
+  questItemAmounts: 
+  itemCheckFailureDialogue: {fileID: 0}
+  completeSpeakQuestOnClose: 0
   canDropItem: 0
   itemDrop: []
   itemType: []
@@ -45,6 +51,6 @@ MonoBehaviour:
   canBeBold: 0
   bold: 
   speaker: Izuno
-  alteredDialogue: {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
+  alteredDialogue: {fileID: 11400000, guid: 4e7d05becd58b1c46b25efa4008a6088, type: 2}
   externalInstance: 
   alteredExternalDialogue: {fileID: 0}

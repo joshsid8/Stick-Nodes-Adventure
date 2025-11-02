@@ -182,7 +182,7 @@ PrefabInstance:
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: dialogue
       value: 
-      objectReference: {fileID: 11400000, guid: 657afb249bfe09344917153690b19101, type: 2}
+      objectReference: {fileID: 11400000, guid: 516c1cf6f9f147643a27a447b568c531, type: 2}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: chatPoint
       value: 
@@ -10124,6 +10124,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
+      propertyPath: dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bc21a44d25d1d3459fa8753ea4a1945, type: 2}
     - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: chatRadius
       value: 2.05

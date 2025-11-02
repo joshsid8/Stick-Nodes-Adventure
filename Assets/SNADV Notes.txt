@@ -6,26 +6,28 @@ SNADV Notes
     Hotfixes & Priorities
 
         Quest Logic
-        
-            Delivery quest
-                Fix the Dictionary not actually being updated once the inventory does.
-            
-            NPC based quest
-                Add a quest recorder to the specified NPC. if the player hasnt spoken to them, there will be a marker to show where they are
-                if interacted with, update the variable
+            Ensure tracking is updated even when the menu isnt shown
+
    
     Optimisations:
     
+        InvIndex
+            Probably make this apply for counting how many types of enemies you killed - including bosses
+        
         Boss Logic
             During Idle anims, let certain bosses walk forward or backward when triggered.  
                    
         Key/Objective Logic
             Scan an area for:
                 How many specific enemies are required to be defeated
-                The player having something specific in their inventory (hashsets!)
+                The player having something specific in their inventory
                 What bosses or specific enemies you have killed already
                 What quests you have done
             Once true, let the key spawn wherever the specific game object is set
+            
+            If Enemies are able to drop keys:
+                Use the index in the loot script to check whether they have the key already
+                 if they do, it can be dropped on kill.
             
         
         Animations

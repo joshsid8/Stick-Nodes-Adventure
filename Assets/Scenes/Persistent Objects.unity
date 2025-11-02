@@ -467,6 +467,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 57496387}
   m_CullTransparentMesh: 1
+--- !u!1 &102836077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 102836079}
+  - component: {fileID: 102836078}
+  m_Layer: 0
+  m_Name: Shenanigans
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &102836078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102836077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 943ed80b9287f074ea009d01fabefadb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &102836079
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102836077}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &132227056 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2498204215888178016, guid: 51d572b8eeca0394ab90c170c98dea25, type: 3}
@@ -11542,11 +11586,11 @@ PrefabInstance:
       objectReference: {fileID: 8069515426526680348, guid: 9ce94a960d8e0a94e9afe0d2b7122925, type: 3}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 26.41
+      value: -22.3
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 27.34
+      value: 6.9
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13165,7 +13209,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.796837, y: 27.393875, z: -0.059537888}
+  m_LocalPosition: {x: -20.913162, y: 6.9538746, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14490,7 +14534,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.796837, y: 27.393875, z: -0.059537888}
+  m_LocalPosition: {x: -20.913162, y: 6.9538746, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -28701,6 +28745,7 @@ SceneRoots:
   - {fileID: 2483548411704509802}
   - {fileID: 248988122477904817}
   - {fileID: 1066240040}
+  - {fileID: 102836079}
   - {fileID: 8697760185591586673}
   - {fileID: 3503821468582975515}
   - {fileID: 282623049}

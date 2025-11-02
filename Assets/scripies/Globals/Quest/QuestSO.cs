@@ -20,7 +20,7 @@ public class QuestSO : ScriptableObject
     public CollectableSOBase[] objectsToInteract;
     public int[] numberOfObjects;
     
-    public string npcToInteract;
+    public DialogueObject npcToInteract;
     
     public CollectableSOBase[] rewards = new CollectableSOBase[1];
 }
