@@ -41,9 +41,16 @@ public class DialogueObject : ScriptableObject
 
     [Space(10)] [Header("Questing")] [Tooltip("Will this NPC assign a quest for the player?")]
     public bool willGiveQuest;
-
     public QuestSO questToOffer;
-
+    
+    public bool isQuestInteraction;
+    public Quest.QuestType questActionType = Quest.QuestType.NullQuest;
+    public CollectableSOBase[] questItems;
+    public int[] questItemAmounts;
+    public DialogueObject itemCheckFailureDialogue;
+    public bool completeSpeakQuestOnClose;
+    public DialogueObject derrivedDialogue;
+    
     [Space(10)] [Header("Item Drops")] [Tooltip("How many of x items the speaker should give")]
     public bool canDropItem;
     public GameObject[] itemDrop;

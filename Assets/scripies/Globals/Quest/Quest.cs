@@ -29,13 +29,13 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     [Tooltip("objects to take, give, or find")] public CollectableSOBase[] oTi;
     public int[] noOfO;
 
-    [Tooltip("the npc you may have to speak to")] public string nTi;
+    [Tooltip("the npc you may have to speak to")] public DialogueObject nTi;
 
     public GameObject rewardObj;
     public CollectableSOBase[] questRewards;
     public enum QuestType
     { 
-        DefeatEnemy, HaveInInventory, GiveTo, TakeFrom, NullQuest
+        DefeatEnemy, HaveInInventory, GiveTo, SpeakTo, NullQuest
     }
     private void Start()
     { 
@@ -87,25 +87,29 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 foreach (var kv in requiredById) totalRequired += kv.Value;
                 foreach (var kv in remainingById) totalRemaining += kv.Value;
                 var totalDefeated = totalRequired - totalRemaining;
-                objectiveText.text = $"Defeat {totalDefeated}/{totalRequired} enemies";
+                //objectiveText.text = $"Defeat {totalDefeated}/{totalRequired} enemies";
                 if (totalRemaining <= 0 && questType == QuestType.DefeatEnemy)
                 {
                     questCompleted = true;
                     targetEnemies = Array.Empty<GameObject>();
                 }
                 break;
+            
             case QuestType.HaveInInventory:
                 var needs = Array.Empty<(CollectableSOBase id, int count)>();
-                for (var i = 0; i < oTi.Length; i++)
-                {
-                    needs = new (CollectableSOBase id, int count)[] {(oTi[i], noOfO[i])  };
-                    print(needs[0]);
-                }
-                invIndex = new InvIndex();
-                var canCompleteQuest = invIndex.MeetsAllCounts(needs);
+                for (var i = 0; i < oTi.Length; i++) needs = new (CollectableSOBase id, int count)[] {(oTi[i], noOfO[i])};
                 
-                print($"Lets find out if the player has the required stuff in their inventory! the answer is: {canCompleteQuest}!");
+                if (InvManager.Instance == null || InvManager.Instance.Index == null)
+                {Debug.LogWarning("Quest: InvManager/InvIndex doesnt exist. KILL YOURSELF!!!"); return;}
+                
+                var canCompleteQuest = InvManager.Instance.Index.MeetsAllCounts(needs);
                 if (canCompleteQuest) questCompleted = true;
+                break;
+            
+            case QuestType.GiveTo:
+                
+                break;
+            case QuestType.SpeakTo:
                 break;
             case QuestType.NullQuest:
                 break;
@@ -120,7 +124,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
             ClearUI();
         }
     }
-    public void LogQuest(QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, CollectableSOBase[] objects, int[] noOfObj, string npc, CollectableSOBase[] rewards)
+    public void LogQuest(QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, CollectableSOBase[] objects, int[] noOfObj, DialogueObject npc, CollectableSOBase[] rewards)
     {
         questType = type;
         questTitle = title;
@@ -172,12 +176,6 @@ public class Quest : MonoBehaviour, IPointerClickHandler
             case QuestType.HaveInInventory:
                 //print($"ensure you have {objects[0]} in your inventory!");
                 break;
-            case QuestType.GiveTo:
-                print($"give {objects} to {npc}!");
-                break;
-            case QuestType.TakeFrom:
-                print($"steal {objects} to from {npc}!");
-                break;
             case QuestType.NullQuest:
                 // this aint nothin dawg
                 break;
@@ -190,7 +188,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         questDescription = "";
         targetEnemies = Array.Empty<GameObject>();
         oTi = Array.Empty<CollectableSOBase>();
-        nTi = "";
+        nTi = null;
         eTd = Array.Empty<int>();
         noOfE = Array.Empty<int>();
         questRewards = Array.Empty<CollectableSOBase>();

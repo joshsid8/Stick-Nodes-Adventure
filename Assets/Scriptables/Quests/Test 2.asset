@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cc0b790e2ec1454099197d4e9e88c61, type: 3}
+  m_Name: Test 2
+  m_EditorClassIdentifier: 
+  questType: 3
+  questName: Say hi to Imo for Izuno
+  questDescription: Izuno hadnt noticed imo arrived in cinder valley till you told
+    him. send his greetings for him
+  enemiesToDefeat: 
+  noOfEnemiesToDefeat: 
+  objectsToInteract: []
+  numberOfObjects: 
+  npcToInteract: {fileID: 11400000, guid: ac8ea9b7cbf891046b04b0fb5b623b2c, type: 2}
+  rewards:
+  - {fileID: 11400000, guid: c723739f5db29fc4886fd77884d9cde1, type: 2}

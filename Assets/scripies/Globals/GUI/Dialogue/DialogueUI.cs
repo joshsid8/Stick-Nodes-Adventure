@@ -53,6 +53,8 @@ public class DialogueUI : MonoBehaviour
         textIndex = dialogueObject.colourIndex;
         currentColourIndex = 0;
         currentBoldIndex = 0;
+        QuestHandling(dialogueObject);
+        
         StartCoroutine(StepThroughDialogue(dialogueObject));
     }
 
@@ -81,6 +83,41 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
+    private void QuestHandling(DialogueObject dialogueObject)
+    {
+        if (dialogueObject.isQuestInteraction && dialogueObject.questActionType == Quest.QuestType.GiveTo)
+        {
+            if (InvManager.Instance == null || InvManager.Instance.Index == null) Debug.LogError("Quest Check: InvManager or its Index is not ready!");
+            else
+            {
+                var needs = new (CollectableSOBase id, int count)[dialogueObject.questItems.Length];
+                for (var i = 0; i < dialogueObject.questItems.Length; i++)
+                    needs[i] = (dialogueObject.questItems[i], dialogueObject.questItemAmounts[i]);
+                
+                var hasItems = InvManager.Instance.Index.MeetsAllCounts(needs);
+                if (!hasItems)
+                {
+                    if (dialogueObject.itemCheckFailureDialogue != null) 
+                        StartCoroutine(StepThroughDialogue(dialogueObject.itemCheckFailureDialogue));
+                    else
+                    {
+                        Debug.LogWarning("Player failed item check, but no failure dialogue is set.");
+                        CloseDialogue(null);
+                    }
+                }
+                else 
+                {
+                    var slots = QuestLogManager.Instance.questSlots;
+                    foreach (var slot in slots)
+                    {
+                        if (slot != null && slot.questType == Quest.QuestType.GiveTo && slot.nTi == dialogueObject.derrivedDialogue)
+                            slot.questCompleted = true;
+                    }
+                }
+            }
+        }
+    }
+    
     private void CloseDialogue(DialogueObject dialogueObject)
     {
         if (isAnimated)
@@ -101,6 +138,15 @@ public class DialogueUI : MonoBehaviour
         playerBars.SetActive(true);
         textLabel.color = Color.black;
         npcNameLabel.color = Color.black;
+
+        if (dialogueObject != null && dialogueObject.isQuestInteraction && dialogueObject.questActionType == Quest.QuestType.SpeakTo &&
+            dialogueObject.completeSpeakQuestOnClose)
+        {
+            var slots = QuestLogManager.Instance.questSlots;
+            for (var i = 0; i < slots.Length; i++)
+                if (slots[i] != null && slots[i].questType == Quest.QuestType.SpeakTo && slots[i].nTi == dialogueObject) slots[i].questCompleted = true;
+        }
+        
         if (dialogueObject != null)
         {
             if (dialogueObject.alteredDialogue != null)

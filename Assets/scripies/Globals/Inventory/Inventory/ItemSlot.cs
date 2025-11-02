@@ -27,7 +27,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public bool usedSlot;
     
     [SerializeField] private InvManager invManager;
-    private InvIndex index;
     public Prompt choice;
     
     public AspectSO aspectStats;
@@ -63,8 +62,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (itemSo != null) itemScriptableObject = itemSo;
         else if (aspect != null) itemScriptableObject = aspect;
         else if (ability != null) itemScriptableObject = ability;
-        index = new InvIndex();
-        index.AddItem(itemScriptableObject, itemAmount);
+        if (invManager.Index != null && itemScriptableObject != null) invManager.Index.AddItem(itemScriptableObject, amount);
         usedSlot = true;
         UpdateSlotUI();
     }
@@ -172,11 +170,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         if (invManager.playerManager != null) invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
         else Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
+        if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject, 1);
         
         itemAmount--;
         if (itemAmount <= 0)
         {
-            index.RemoveItem(itemScriptableObject, itemAmount);
             ClearSlot();
             invManager.DeselectAllSlots();
         }
@@ -195,6 +193,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
                 {
                     string iName = itemName;
                     Sprite iSprite = itemSprite; string iDescription = itemDescription; AspectSO aStats = aspectStats;
+                    if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject, 1);
                     ClearSlot();
                     invManager.EquipAspect(iName, iSprite, iDescription, aStats);
                     
@@ -219,7 +218,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (choice.yes)
         {
             choice.yes = false;
-            index.RemoveItem(itemScriptableObject, itemAmount);
+            if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject, itemAmount);
             ClearSlot();
             choice.Disable();
             UpdateSlotUI();

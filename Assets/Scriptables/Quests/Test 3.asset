@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cc0b790e2ec1454099197d4e9e88c61, type: 3}
+  m_Name: Test 3
+  m_EditorClassIdentifier: 
+  questType: 2
+  questName: Deliver the Gem of Life to Izuno
+  questDescription: Imo found a gem that isnt useful for him. He wants you to give
+    it to Izuno, as he may find a use for it.
+  enemiesToDefeat: 
+  noOfEnemiesToDefeat: 
+  objectsToInteract:
+  - {fileID: 11400000, guid: 324dc0839a888484da1b58cbf1ccaadd, type: 2}
+  numberOfObjects: 01000000
+  npcToInteract: {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
+  rewards:
+  - {fileID: 11400000, guid: 3393927386ba418418c964459183e26f, type: 2}
+  - {fileID: 11400000, guid: 3393927386ba418418c964459183e26f, type: 2}
+  - {fileID: 11400000, guid: 3393927386ba418418c964459183e26f, type: 2}

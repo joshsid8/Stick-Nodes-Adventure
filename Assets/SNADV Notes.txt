@@ -6,13 +6,8 @@ SNADV Notes
     Hotfixes & Priorities
 
         Quest Logic
-        
-            Delivery quest
-                Fix the Dictionary not actually being updated once the inventory does.
-            
-            NPC based quest
-                Add a quest recorder to the specified NPC. if the player hasnt spoken to them, there will be a marker to show where they are
-                if interacted with, update the variable
+            Ensure tracking is updated even when the menu isnt shown
+
    
     Optimisations:
     

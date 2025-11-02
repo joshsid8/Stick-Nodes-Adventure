@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
+  m_Name: Izuno Quest 3
+  m_EditorClassIdentifier: 
+  npcName: Izuno
+  dialogue:
+  - Yo, you need something?
+  - Oh, you have something for me instead?
+  - A gem of Life, from Imo? Thanks man. I have the hat too tho if you want it
+  - Speak to me again if you want the hat version.
+  pendingChoice: 0
+  choiceQuestion: 
+  isAnimated: 0
+  yesResponse:
+    responseText: Yes, I'm Ready!
+    dialogueObject: {fileID: 11400000, guid: c93905e77c5f1994abbe22dcb94f162c, type: 2}
+  noResponse:
+    responseText: No, i'm not ready
+    dialogueObject: {fileID: 11400000, guid: 598f319cd7a6e8d479fd235469b7304c, type: 2}
+  nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
+  appliesFloatChange: 0
+  targetFloatVariables: []
+  newFloatValues: []
+  appliesBooleanChange: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
+  isQuestInteraction: 1
+  questActionType: 2
+  questItems: []
+  questItemAmounts: 
+  itemCheckFailureDialogue: {fileID: 11400000, guid: 6744f2fa5266bfa4ea200d474a3d5e49, type: 2}
+  completeSpeakQuestOnClose: 0
+  derrivedDialogue: {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
+  canDropItem: 0
+  itemDrop: []
+  itemType: []
+  canBeColoured: 0
+  colour: []
+  colourIndex: 0
+  canBeBold: 0
+  bold: 
+  speaker: Izuno
+  alteredDialogue: {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

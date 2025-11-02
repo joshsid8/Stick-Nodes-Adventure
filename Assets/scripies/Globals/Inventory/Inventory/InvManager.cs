@@ -28,7 +28,7 @@ public class InvManager : MonoBehaviour
         Instance = this;
         player = FindAnyObjectByType<PlayerController>();
         playerManager = FindAnyObjectByType<PlayerManager>();
-        
+        Index = new InvIndex();
         if (player == null) Debug.LogWarning("InvManager: PlayerController not found.");
         if (playerManager == null) Debug.LogWarning("InvManager: PlayerManager not found.");
 
@@ -39,8 +39,8 @@ public class InvManager : MonoBehaviour
 
     private void InitializeAllSlots()
     {
-        foreach (ItemSlot slot in itemSlots) if (slot != null) slot.ClearSlot(); 
-        foreach (AspectSlot slot in aspectSlots) if (slot != null) slot.ClearSlot();
+        foreach (var slot in itemSlots) if (slot != null) slot.ClearSlot(); 
+        foreach (var slot in aspectSlots) if (slot != null) slot.ClearSlot();
     }
 
     // Update is called once per frame

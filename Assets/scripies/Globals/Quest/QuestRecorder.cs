@@ -29,10 +29,6 @@ public class QuestRecorder : MonoBehaviour
             case Quest.QuestType.GiveTo:
                 
                 break;
-            case Quest.QuestType.TakeFrom:
-                
-                break;
-            
         }
     }
 }
