@@ -11,7 +11,6 @@ public class BossAttack : MonoBehaviour
     [SerializeField] private bool canAttack;
     
     private bool moveDuringCooldown;
-    private int moveFactor;
     
     public float attackCooldown;
     public float currentAttackCooldown;
@@ -77,7 +76,7 @@ public class BossAttack : MonoBehaviour
     {
         closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
     }
-
+    
     private void AttackSystem2()
     {
         GetComponent<DialogueTrigger>().enabled = false;
@@ -116,8 +115,13 @@ public class BossAttack : MonoBehaviour
     
     private void Movement()
     {
-        var rng = Random.Range(0, 2);
-        if (rng == 0) animator.SetInteger("moveFactor", Random.Range(0, 4));
+        var rng = Random.Range(0, 101);
+        if (rng <= 70 && isAttacking)
+        {
+            var mf = Random.Range(0, 2);
+            animator.SetInteger("moveFactor", mf == 0 ? 0 : 1);
+            animator.SetTrigger("Strafe");
+        }
     }
     
     void FacePlayer()

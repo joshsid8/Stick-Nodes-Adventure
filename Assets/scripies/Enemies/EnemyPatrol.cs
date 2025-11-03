@@ -1,12 +1,18 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    public bool isWalking;
+    public bool isPatrolling;
     public float walkSpeed = 5f;
     public float eyeSight = 10f;
+    
+    private bool isWalking = true;
+    [SerializeField] private float[] walkTime = {2, 4f};
+    private float currentWalkTime;
+    [SerializeField] private float randomPause;
+    [SerializeField] private float[] randomPauseChance = {20f, 100f};
+    
     [SerializeField] private bool hasFoundPlayer;
     public Transform playerCheck;
     public LayerMask playerLayer;
@@ -31,40 +37,50 @@ public class EnemyPatrol : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         isFacingRight = true;
-        isWalking = true;
+        isPatrolling = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isWalking) Patrol();
+        if (isPatrolling) Patrol();
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-        
+        animator.SetBool("isPatrolling", isPatrolling);
         animator.SetBool("isWalking", isWalking);
+        
+        currentWalkTime -= Time.deltaTime;
+        if (currentWalkTime <= 0) isWalking = true; 
     }
 
     void Patrol()
     {
-        if (isFacingRight) rb.linearVelocity = new Vector2(walkSpeed, rb.linearVelocity.y);
-        else rb.linearVelocity = new Vector2(-walkSpeed, rb.linearVelocity.y);
+        if (isWalking) rb.linearVelocity = new Vector2(isFacingRight ? walkSpeed : -walkSpeed, rb.linearVelocity.y);
+        
+        randomPause -= Time.deltaTime;
+        if (randomPause <= 0)
+        {
+            var chance = Random.Range(randomPauseChance[0], randomPauseChance[1]);
+            var rng = Random.Range(0, 100);
+            if (rng >= chance) StartCoroutine(Pause());
+            randomPause = 2;
+        }
         
         touchingWall = Physics2D.Raycast(wallCheck.position, Vector2.down * transform.localScale.y, wallCheckRay, whatIsWall);
-        if (touchingWall) Flip(); 
+        if (touchingWall) Flip();
         
         isGrounded = Physics2D.Raycast(edgeCheck.position, Vector2.down * transform.localScale.y, edgeCheckRay, groundLayer);
-        if (!isGrounded) Flip();
+        if (!isGrounded && rb.linearVelocity.y == 0) Flip();
         
         hasFoundPlayer = Physics2D.Raycast(playerCheck.position, isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x , eyeSight, playerLayer);
-        if (hasFoundPlayer  && isWalking) 
-            StartCoroutine(FoundPlayer());
+        if (hasFoundPlayer && isPatrolling) StartCoroutine(FoundPlayer());
     }
 
     public IEnumerator FoundPlayer()
     {
         rb.linearVelocity = Vector2.zero;
+        isPatrolling = false;
         isWalking = false;
-        
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        var player = PlayerHealth.Instance.gameObject;
         player.GetComponent<PlayerController>().currentCombatTimer = player.GetComponent<PlayerController>().combatTimer;
         
         yield return new WaitForSeconds(0.5f);
@@ -72,13 +88,24 @@ public class EnemyPatrol : MonoBehaviour
         enabled = false;
     }
 
-    void Flip()
+    private IEnumerator Pause()
+    {
+        isWalking = false;
+        rb.linearVelocity = Vector2.zero;
+        currentWalkTime = Random.Range(walkTime[0], walkTime[1]);
+        yield return new WaitForSeconds(currentWalkTime / 2);
+        var rng = Random.Range(0, 101);
+        var chance = Random.Range(0, 101);
+        if (rng >= chance) Flip();
+        randomPause = 3;
+    }
+    private void Flip()
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         if (!GetComponent<EnemyAttack>())
         {

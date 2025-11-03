@@ -9,6 +9,7 @@ public class QuestLogManager : MonoBehaviour
     public GameObject questMenu;
     public bool isActivated;
     private PlayerController player;
+    private RectTransform rt;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -17,6 +18,7 @@ public class QuestLogManager : MonoBehaviour
         }
         Instance = this;
         player = FindAnyObjectByType<PlayerController>();
+        rt = GetComponent<RectTransform>();
     }
     
     public void AssignQuest(QuestSO quest)
@@ -38,7 +40,7 @@ public class QuestLogManager : MonoBehaviour
     private void ToggleQuestLog()
     {
         isActivated = !isActivated;
-        if (questMenu != null) questMenu.SetActive(isActivated);
+        if (questMenu != null) rt.anchoredPosition = new Vector2(0, isActivated ? 0 : 1000);
         if (player != null) player.canAct = !isActivated;
     }
 

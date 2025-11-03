@@ -40,6 +40,7 @@ MonoBehaviour:
   questItemAmounts: 
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 0
+  derrivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

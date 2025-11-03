@@ -190,23 +190,11 @@ MonoBehaviour:
   itemLoot:
   - {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
   - {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
-  aspectLoot:
-  - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
-  - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
-  - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
   possibleItems:
   - {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
   - {fileID: 11400000, guid: f766304c6cbec8f4295aafb92993180c, type: 2}
-  possibleAspects:
-  - {fileID: 11400000, guid: 8b4bae5a0d8ea3d4b84f5514335f1c83, type: 2}
-  - {fileID: 11400000, guid: 324dc0839a888484da1b58cbf1ccaadd, type: 2}
-  - {fileID: 11400000, guid: cb8962a33a8c630488f8c1305482dbc0, type: 2}
   itemChance:
   - 60
-  - 20
-  aspectChance:
-  - 10
-  - 10
   - 20
   minPopX: -5
   maxPopX: 5
@@ -291,6 +279,9 @@ MonoBehaviour:
   stunnable: 1
   rb: {fileID: 0}
   canFacePlayer: 1
+  playerIsDead: 0
+  canSpare: 1
+  spareTimer: 10
 --- !u!114 &8455541738676426996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,9 +294,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f875d0b81282e409d3ece9b1f5e51c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWalking: 1
+  isPatrolling: 0
   walkSpeed: 3
   eyeSight: 8.7
+  walkTime:
+  - 2
+  - 4
+  randomPause: 0
+  randomPauseChance:
+  - 20
+  - 100
   hasFoundPlayer: 0
   playerCheck: {fileID: 5984153268703838876}
   playerLayer:
@@ -323,6 +321,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   edgeCheckRay: 0.45
+  rb: {fileID: 0}
   isFacingRight: 1
 --- !u!114 &2866762415245452275
 MonoBehaviour:
@@ -339,19 +338,19 @@ MonoBehaviour:
   enemyMaxHealth: 100
   enemyHealth: 100
   isDead: 0
-  getStunned: 0
+  isStunned: 0
   currentStunTime: 0
   stunMultiplier: 1.2
   isCountering: 0
   isBlocking: 0
   damageResistance: 0
   damageTint: {r: 1, g: 0.078431375, b: 0, a: 1}
-  tintDuration: 0.1
   tintSpeed: 5
   isTinting: 0
   movable: 1
   phase2: 0
   phase2Style: 0
+  enemyID: 0
 --- !u!212 &7115054256094536775
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -519,6 +518,9 @@ MonoBehaviour:
   abilityLifetime: 0
   abilityProc: 0
   damageType: 0
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &7194455058290597540
 GameObject:
   m_ObjectHideFlags: 0

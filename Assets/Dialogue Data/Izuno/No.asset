@@ -27,17 +27,20 @@ MonoBehaviour:
     dialogueObject: {fileID: 11400000, guid: 61c0502185c97a549a89c594d9567548, type: 2}
   nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
   appliesFloatChange: 0
-  targetFloatVariableName: 
-  newFloatValue: 0
   targetFloatVariables: []
   newFloatValues: []
   appliesBooleanChange: 0
-  targetBooleanVariableName: 
-  newBooleanValue: 0
   targetBoolVariables: []
   newBoolValues: 
   willGiveQuest: 0
   questToOffer: {fileID: 0}
+  isQuestInteraction: 0
+  questActionType: 4
+  questItems: []
+  questItemAmounts: 
+  itemCheckFailureDialogue: {fileID: 0}
+  completeSpeakQuestOnClose: 0
+  derrivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

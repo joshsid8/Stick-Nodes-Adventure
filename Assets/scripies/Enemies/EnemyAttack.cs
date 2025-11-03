@@ -43,9 +43,13 @@ public class EnemyAttack : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb;
     private Animator animator;
     private EnemyPatrol ep;
+    private EnemyMovement em;
 
     public bool canFacePlayer;
     [SerializeField] private bool playerIsDead;
+    [SerializeField] private bool canSpare = true;
+    [SerializeField] private float spareTimer = 10;
+    private float currentSpareTimer;
     
     // Start is called before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -53,12 +57,13 @@ public class EnemyAttack : MonoBehaviour
         ep = GetComponent<EnemyPatrol>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        if (GetComponent<EnemyMovement>() != null) GetComponent<EnemyMovement>().enabled = true;
+        em = GetComponent<EnemyMovement>();
+        if (em != null) em.enabled = true;
         originalDefensiveModeRadius = defensiveModeRadius;
         originalPassiveModeRadius = passiveModeRadius;
         playerIsDead = false;
-        
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        currentSpareTimer = spareTimer;
+        GameObject playerObject = PlayerHealth.Instance.gameObject;
         if (playerObject != null) playerTransform = playerObject.transform;
         else Debug.LogError("bruh");
     }
@@ -85,6 +90,8 @@ public class EnemyAttack : MonoBehaviour
             passiveModeRadius = originalDefensiveModeRadius;
             defensiveModeRadius = originalDefensiveModeRadius;
         }
+
+        //isMoving = rb.linearVelocity.x > 0 && !ep.isPatrolling ? isMoving : !isMoving;
         
         if (!stunnable) GetComponent<EnemyHealth>().stunMultiplier = 0f;
         else if (stunnable && passiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
@@ -95,7 +102,7 @@ public class EnemyAttack : MonoBehaviour
         {
             playerIsDead = true;
             ep.enabled = true;
-            ep.isWalking = true;
+            ep.isPatrolling = true;
             enabled = false;
         }
         if (PlayerHealth.Instance.isDead! && playerIsDead) playerIsDead = false;
@@ -114,18 +121,33 @@ public class EnemyAttack : MonoBehaviour
              rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
              if (!activeMode) rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
          }
+
+         if (canSpare)
+         {
+             if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime; else currentSpareTimer = spareTimer;
+             if (currentSpareTimer <= 0)
+             {
+                 ep.enabled = true;
+                 ep.isPatrolling = true;
+                 enabled = false;
+             }
+         }
      }
 
     private void ActiveLogic()
     {
-        if (canAttack && !isAttacking) 
+        if (canAttack && !isAttacking)
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             if (!defensiveCheck) animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
+        }
     }
 
     private void PassiveLogic()
     {
         if (canAttack && !isAttacking)
         {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             if (!passiveCheck && !defensiveCheck) animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
             else if (defensiveCheck && !passiveCheck) animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
             else animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
@@ -136,6 +158,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking)
         {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             if (defensiveCheck) animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
             else if (passiveCheck) animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
             else animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
@@ -165,6 +188,20 @@ public class EnemyAttack : MonoBehaviour
                 damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.isFacingRight, damageType);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
+            }
+        }
+    }
+
+    private void MoveDuringFight()
+    {
+        if (enabled && !em.isDashing && !isAttacking && !ep.isPatrolling)
+        {
+            var rng = Random.Range(0, 101);
+            var rng2 = Random.Range(0, 101);
+            if (rng <= 69)
+            {
+                rb.linearVelocity = new Vector2(rng2 <= 50 ? em.dashSpeed / 2 : -em.dashSpeed / 2, rb.linearVelocity.y);
+                animator.Play("Strafe");
             }
         }
     }

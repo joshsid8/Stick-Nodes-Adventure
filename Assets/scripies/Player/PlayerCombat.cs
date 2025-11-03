@@ -130,11 +130,8 @@ public class PlayerCombat : MonoBehaviour
     private void Attack()
     {   
         if (Input.GetMouseButtonDown(0) && currentAttackCooldown
-            <= 0 && !pc.isDashing && !pc.isWallSliding && m1Ability && !pa.isPerformingAbility)
-        { 
+            <= 0 && !pc.isDashing && !pc.isWallSliding && m1Ability && !pa.isPerformingAbility && !GetComponent<PlayerDefense>().isBlocking)
             if (canAttack) animator.SetTrigger("Attack");
-        }
-        
         currentAttackCooldown -= Time.deltaTime * 0.5f; if (currentAttackCooldown <= 0) canAttack = true; 
     }
     

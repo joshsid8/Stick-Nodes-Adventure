@@ -185,7 +185,7 @@ public class DialogueUI : MonoBehaviour
         if (dialogueObject.appliesBooleanChange)
         {
             for (int i = 0; i < dialogueObject.targetBoolVariables.Length; i++)
-                PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i], dialogueObject.newBoolValues[i]); print("ye");
+                PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i], dialogueObject.newBoolValues[i]);
         }
 
         if (dialogueObject.willGiveQuest) QuestLogManager.Instance.AssignQuest(dialogueObject.questToOffer);

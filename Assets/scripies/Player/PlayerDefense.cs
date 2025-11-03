@@ -49,7 +49,7 @@ public class PlayerDefense : MonoBehaviour
     
     private void Block()
     {
-        if (isBlocking && canBlock && !pc.isDashing && !pc.isWallSliding)
+        if (isBlocking && canBlock && !pc.isDashing && !pc.isWallSliding && !pa.isPerformingAbility && !pf.isAirAttacking && !pf.isAttacking)
         {
             pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
             if (pc.canMove) pc.canMove = false;
@@ -81,7 +81,7 @@ public class PlayerDefense : MonoBehaviour
     {
         pa.energy += 5f;
         hits = Physics2D.CircleCastAll(transform.position, counterRadius, Vector2.one, 0f, eLayer);
-        for (int i = 0; i < hits.Length; i++)
+        for (var i = 0; i < hits.Length; i++)
         {
             EDamageables eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
             Vector2 distance = hits[i].collider.gameObject.transform.position - transform.position;

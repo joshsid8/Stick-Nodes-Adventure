@@ -4,32 +4,27 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Hotfixes & Priorities
-
-        Quest Logic
-            Ensure tracking is updated even when the menu isnt shown
-
-   
-    Optimisations:
     
-        InvIndex
-            Probably make this apply for counting how many types of enemies you killed - including bosses
-        
-        Boss Logic
-            During Idle anims, let certain bosses walk forward or backward when triggered.  
-                   
         Key/Objective Logic
             Scan an area for:
                 How many specific enemies are required to be defeated
                 The player having something specific in their inventory
                 What bosses or specific enemies you have killed already
                 What quests you have done
-            Once true, let the key spawn wherever the specific game object is set
-            
-            If Enemies are able to drop keys:
-                Use the index in the loot script to check whether they have the key already
-                 if they do, it can be dropped on kill.
-            
+            Once true, let the key spawn wherever the specific game object is set 
+                If Enemies are able to drop keys:
+                    Use the index in the loot script to check whether they have the key already
+                    if they do, it can be dropped on kill.
+                   
+    Optimisations:
         
+        Enemy Logic
+            Add Follow-up attacks
+                if for example, a cynderian foes his punch kick combo, follow up with a dash. dashing close enough can follow up with a normal kick
+            Flying/Swimming
+                for some enemies that can fly/swim, drastically reduce their gravity, and make them move around in the air
+                switch up their moveset and let them choose between swimming/flying if they can do both
+            
         Animations
             Make better/seperate animations for the player's QoL
                 Pillar stomp, and arm raise
@@ -51,11 +46,6 @@ SNADV Notes
     
     Things to be added:
         
-        More Enemy Logic
-            Flying/Swimming
-        
-        Sira & TJ Boss Logic
-        
         Shop logic
         
             Mini Bosses
@@ -64,6 +54,8 @@ SNADV Notes
         Obstacles
             stray projectiles/neutral elements that can hurt both the player and enemies
             natural disasters (thunderstorms)
+            
+        Sira & TJ Boss Logic
     
     
     When you are done: Find the one piece.

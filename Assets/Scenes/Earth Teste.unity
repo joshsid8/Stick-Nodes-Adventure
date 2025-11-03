@@ -7369,7 +7369,6 @@ MonoBehaviour:
   activeAtk:
   - Decimate
   - Boulder
-  - Shield
   playerLayer:
     serializedVersion: 2
     m_Bits: 49408
