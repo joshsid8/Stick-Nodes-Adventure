@@ -22,7 +22,6 @@ public sealed class InvIndex
 
     public void RemoveItem(CollectableSOBase id, int amount = 1)
     {
-        Debug.Log($"{id.name} has been removed");
         if (id == null) throw new ArgumentException("id is null/empty");
         if (amount <= 0) return;
         if (!counts.TryGetValue(id, out var current)) return;

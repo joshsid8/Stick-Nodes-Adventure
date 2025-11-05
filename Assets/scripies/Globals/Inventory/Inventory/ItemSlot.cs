@@ -36,7 +36,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public AbilitySO abilityStats;
     [SerializeField] private int abilitySlotType;
 
-    private CollectableSOBase itemScriptableObject;
+    [HideInInspector] public CollectableSOBase itemScriptableObject;
     
     private bool switchFrom;
 
@@ -47,21 +47,31 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             Debug.LogWarning($"ItemSlot {gameObject.name}: No equippedAspectSlots assigned. Aspects cannot be equipped from this slot.");
     }
 
-    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, float value, ItemSO itemSo, AspectSO aspect, AbilitySO ability, int abilityType)
+    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, ItemSO itemSo, AspectSO aspect, AbilitySO ability, int abilityType)
     {
         itemName = item;
         maxItemAmount = maxAmount;
         itemSprite = sprite;
         itemDescription = itemDesc;
+        if (itemSo != null)
+        {
+            itemScriptableObject = itemSo;
+            restoreValue = itemSo.restoreValue;
+        }
+        else if (aspect != null)
+        {
+            itemScriptableObject = aspect;
+            aspectStats = aspect;
+        }
+        else if (ability != null)
+        {
+            itemScriptableObject = ability;
+            abilityStats = ability;
+        }
         itemType = type;
-        restoreValue = value;
         abilitySlotType = abilityType;
         itemAmount += amount;
-        if (itemType == "Aspect") aspectStats = aspect;
-        else if (itemType == "Ability") abilityStats = ability;
-        if (itemSo != null) itemScriptableObject = itemSo;
-        else if (aspect != null) itemScriptableObject = aspect;
-        else if (ability != null) itemScriptableObject = ability;
+
         if (invManager.Index != null && itemScriptableObject != null) invManager.Index.AddItem(itemScriptableObject, amount);
         usedSlot = true;
         UpdateSlotUI();
@@ -82,7 +92,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             if (amountText != null)
             {
                 amountText.enabled = true;
-                amountText.text = (itemAmount == 1 && itemType != "Aspect") ? "" : itemAmount.ToString();
+                amountText.text = itemAmount == 1 && itemType != "Aspect" ? "" : itemAmount.ToString();
                 if (itemType == "Aspect") amountText.text = "";
             }
         }
@@ -140,6 +150,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         invManager.SelectSlot();
         if (useButtonText != null) 
             useButtonText.text = itemType == "Aspect" || itemType == "Ability" ? "Equip" : "Use";
+        useButtonText.gameObject.SetActive(itemType == "Key" ? false : true);
         
         invManager.useButton.onClick.RemoveAllListeners();
         invManager.destroyButton.onClick.RemoveAllListeners();
@@ -163,14 +174,14 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         if (itemType != null && itemType == "Aspect") EquipAspect();
         else if (itemType != null && itemType == "Ability") invManager.EquipAbility(abilityStats, abilitySlotType);
-        else RestoreItem();
+        else if (itemType != "Key") UseItem();
     }
 
-    private void RestoreItem()
+    public void UseItem()
     {
-        if (invManager.playerManager != null) invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
+        if (invManager.playerManager != null && itemType != "Key") invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
         else Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
-        if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject, 1);
+        if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject);
         
         itemAmount--;
         if (itemAmount <= 0)
@@ -184,16 +195,16 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     private void EquipAspect()
     {
-        bool equipped = false;
+        var equipped = false;
         if (equippedAspectSlots != null)
         {
-            for (int i = 0; i < equippedAspectSlots.Length; i++)
+            foreach (var slot in equippedAspectSlots)
             {
-                if (equippedAspectSlots[i] != null && !equippedAspectSlots[i].usedSlot)
+                if (slot != null && !slot.usedSlot)
                 {
                     string iName = itemName;
                     Sprite iSprite = itemSprite; string iDescription = itemDescription; AspectSO aStats = aspectStats;
-                    if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject, 1);
+                    if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject);
                     ClearSlot();
                     invManager.EquipAspect(iName, iSprite, iDescription, aStats);
                     

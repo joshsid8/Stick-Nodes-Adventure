@@ -5,26 +5,15 @@ SNADV Notes
     
     Hotfixes & Priorities
     
-        Key/Objective Logic
-            Scan an area for:
-                How many specific enemies are required to be defeated
-                The player having something specific in their inventory
-                What bosses or specific enemies you have killed already
-                What quests you have done
-            Once true, let the key spawn wherever the specific game object is set 
-                If Enemies are able to drop keys:
-                    Use the index in the loot script to check whether they have the key already
-                    if they do, it can be dropped on kill.
+    Enemy Logic
+        Add Follow-up attacks
+            if for example, a cynderian foes his punch kick combo, follow up with a dash. Dashing close enough can follow up with a normal kick
+        Flying/Swimming
+            For some enemies that can fly/swim, drastically reduce their gravity, and make them move around in the air
+            Switch up their moveset and let them choose between swimming/flying if they can do both
                    
     Optimisations:
         
-        Enemy Logic
-            Add Follow-up attacks
-                if for example, a cynderian foes his punch kick combo, follow up with a dash. dashing close enough can follow up with a normal kick
-            Flying/Swimming
-                for some enemies that can fly/swim, drastically reduce their gravity, and make them move around in the air
-                switch up their moveset and let them choose between swimming/flying if they can do both
-            
         Animations
             Make better/seperate animations for the player's QoL
                 Pillar stomp, and arm raise
@@ -35,7 +24,8 @@ SNADV Notes
                 Better dashing
         
         Noxu
-            !!!!!!!Initial Boulder Throwing!!!!!!!
+            !!!!!!!!Initial Boulder Throwing!!!!!!!!
+                Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
             
         Music flexibility
             Make it so that the music never stops, but rather silences before moving onto another track

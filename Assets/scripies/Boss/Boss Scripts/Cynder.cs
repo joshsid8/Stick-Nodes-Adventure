@@ -92,10 +92,8 @@ public class Cynder : MonoBehaviour
     
     private void Dash()
     {
-        if (isDashing)
-        {
+        if (isDashing) 
             rb.linearVelocity = ba.isFacingRight ? new Vector2(dashSpeed, rb.linearVelocity.y) : new Vector2(-dashSpeed, rb.linearVelocity.y);
-        }
         else if (!isDashing) rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
 
@@ -128,13 +126,10 @@ public class Cynder : MonoBehaviour
         GameObject newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
         EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
         if (fireballScript != null)
-        {
             fireballScript.SetValues(ba.isFacingRight, projectileSpeed, projectileDirection, false, damageType);
-        }
-        else
-        {
+        else 
             Debug.LogError("where is bro's ability");
-        }
+        
         ba.ActionCooldown(throwCooldown);
     }
     
@@ -208,7 +203,7 @@ public class Cynder : MonoBehaviour
         if (ba.directionToPlayer >= 8f || ba.directionToPlayer <= -8f)
         {
             int rng = Random.Range(0, 101);
-            if (rng <= 33)
+            if (rng <= 40)
             {
                 animator.SetTrigger("Homing");
                 ba.ActionCooldown(3f);
@@ -220,15 +215,15 @@ public class Cynder : MonoBehaviour
     private void Teleport()
     {
         animator.SetTrigger("DAttack");
-        transform.position = new Vector3(ba.playerTransform.position.x + 2f, teleportPoint.position.y, transform.position.z);
-        if (!GetComponent<BossHealth>().phase2) rb.linearVelocity = new Vector2(rb.linearVelocity.x, -dropSpeed);
-        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, -dropSpeed * 1.4f);
+        var rng = Random.Range(0, 101);
+        var x = rng <= 50 ? 3 : -3;
+        transform.position = new Vector3(ba.playerTransform.position.x + x, teleportPoint.position.y, transform.position.z);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, !GetComponent<BossHealth>().phase2 ? -dropSpeed : -dropSpeed * 1.4f);
     }
 
     private void FreezeMovement()
     {
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
     
     private void OnDrawGizmos()

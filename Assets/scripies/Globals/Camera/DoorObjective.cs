@@ -10,6 +10,8 @@ public class DoorObjective : MonoBehaviour
 
     public GameObject[] enemies;
     public GameObject boss;
+    public CollectableSOBase[] keys;
+    private bool playerDetected;
     private enum Objectives
     {
         DefeatEnemy,
@@ -28,13 +30,11 @@ public class DoorObjective : MonoBehaviour
                 }
                 break;
             case Objectives.FindKeys:
-                print("ion know");
+                if (collision.gameObject.CompareTag("Player")) playerDetected = true;
                 break;
             case Objectives.DefeatBoss: 
-                if (objective == Objectives.DefeatBoss)
-                {
+                if (objective == Objectives.DefeatBoss) 
                     if (collision.gameObject.CompareTag("Boss")) boss = collision.gameObject;
-                }
                 break;
             default:
                 print("Clueless.");
@@ -47,26 +47,24 @@ public class DoorObjective : MonoBehaviour
         switch (objective)
         {
             case Objectives.DefeatEnemy:
-                if (enemies == null)
-                {
-                    for (int i = 0; i < doorObj.Length; i++)
-                    {
-                        doorObj[i].objectiveComplete = true;
-                    }
-                }
+                if (enemies == null) foreach (var door in doorObj) door.objectiveComplete = true;
                 break;
             case Objectives.FindKeys:
-                print("ion know");
+                if (playerDetected)
+                {
+                    foreach (var key in keys) 
+                        if (!InvManager.Instance.Index.HasAtLeast(key, 1)) return;
+                    foreach (var door in doorObj) door.objectiveComplete = true;
+                    foreach (var key in keys)
+                    {
+                        foreach (var item in InvManager.Instance.itemSlots)
+                            if (item != null && item.itemScriptableObject == key) {item.UseItem(); return;}
+                    }
+                }
                 break;
             case Objectives.DefeatBoss:
                 BossHealth bossHealth = boss.GetComponent<BossHealth>();
-                if (bossHealth != null && bossHealth.isDead)
-                {
-                    for (int i = 0; i < doorObj.Length; i++)
-                    {
-                        doorObj[i].objectiveComplete = true;
-                    }
-                }
+                if (bossHealth != null && bossHealth.isDead) foreach (var door in doorObj) door.objectiveComplete = true;
                 break;
             default:
                 print("Just clueless.");

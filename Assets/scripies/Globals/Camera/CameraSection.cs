@@ -12,16 +12,10 @@ public class CameraSection : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            cameraObject.SetActive(true);
-        }
+        if (collision.CompareTag("Player")) cameraObject.SetActive(true);
     }
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            cameraObject.SetActive(false);
-        }
+        if (collision.CompareTag("Player")) cameraObject.SetActive(false);
     }
 }
