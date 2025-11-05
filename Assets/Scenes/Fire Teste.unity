@@ -466,7 +466,15 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
     - target: {fileID: 6295141710437693120, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: finishTime
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248849954308778656, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.044965565
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248849954308778656, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019721987122131995, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_Name

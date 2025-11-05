@@ -30,7 +30,7 @@ public class DoorObjective : MonoBehaviour
                 }
                 break;
             case Objectives.FindKeys:
-                if (collision.gameObject.CompareTag("Player")) playerDetected = true;
+                if (collision.gameObject.CompareTag("Player")) playerDetected = true; else playerDetected = false;
                 break;
             case Objectives.DefeatBoss: 
                 if (objective == Objectives.DefeatBoss) 
@@ -41,6 +41,7 @@ public class DoorObjective : MonoBehaviour
                 break;
         }
     }
+    
 
     private void Update()
     {
@@ -78,5 +79,6 @@ public class DoorObjective : MonoBehaviour
         {
             enemies = null;
         }
+        else if (collision.gameObject.CompareTag("Player")) playerDetected = false;
     }
 }

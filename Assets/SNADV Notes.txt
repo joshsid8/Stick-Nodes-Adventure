@@ -5,12 +5,14 @@ SNADV Notes
     
     Hotfixes & Priorities
     
-    Enemy Logic
-        Add Follow-up attacks
-            if for example, a cynderian foes his punch kick combo, follow up with a dash. Dashing close enough can follow up with a normal kick
-        Flying/Swimming
-            For some enemies that can fly/swim, drastically reduce their gravity, and make them move around in the air
-            Switch up their moveset and let them choose between swimming/flying if they can do both
+    Game data and states
+        Make data slots and be able to save game states
+        Save the state of a scene for events that happened in certain areas to be permanent
+            Boss kills
+            Temporary enemy kills
+            Speaking to NPCs
+            One-time events
+
                    
     Optimisations:
         
@@ -22,7 +24,22 @@ SNADV Notes
                 First step before walking
                 Wall jumping
                 Better dashing
+            Make 3 more moves for the fish folk
+                Fishwoman
+                    Flying bubble attack
+                    Flying dash attack
+                    Feinted dash counter
+                Fishman
+                    Flying dash combo
+                    Flying burst attack (with possible projectiles)
+                    Flying beam attack
         
+        
+        Enemy Logic
+            Flying/Swimming
+                For some enemies that can fly/swim, drastically reduce their gravity, and make them move around in the air
+                Switch up their moveset and let them choose between swimming/flying if they can do both
+                
         Noxu
             !!!!!!!!Initial Boulder Throwing!!!!!!!!
                 Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
@@ -38,7 +55,7 @@ SNADV Notes
         
         Shop logic
         
-            Mini Bosses
+        Mini Bosses
             a normal enemy-boss hybrid
         
         Obstacles
@@ -49,4 +66,4 @@ SNADV Notes
     
     
     When you are done: Find the one piece.
-    (This should mean the base has been completed, and i can start designing levels!)
+    (This should mean the base has been completed, and I can start designing levels!)

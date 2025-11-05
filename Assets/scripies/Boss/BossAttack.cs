@@ -176,7 +176,7 @@ public class BossAttack : MonoBehaviour
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);

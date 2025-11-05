@@ -173,8 +173,7 @@ public class EnemyAttack : MonoBehaviour
     void CooldownTimer()
     {
         currentAttackCooldown -= Time.deltaTime;
-        if (currentAttackCooldown <= 0) canAttack = true;
-        else canAttack = false;
+        canAttack = currentAttackCooldown <= 0 ? canAttack = true : canAttack = false;
     }
 
     private void Attack()
@@ -190,6 +189,11 @@ public class EnemyAttack : MonoBehaviour
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }
         }
+    }
+
+    private void FollowupAttack(string attack)
+    {
+        animator.SetTrigger(attack);
     }
 
     private void MoveDuringFight()

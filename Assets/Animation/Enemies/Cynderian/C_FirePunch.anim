@@ -1293,9 +1293,9 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.9285715
-    functionName: ActivateCooldown
-    data: 
+    functionName: FollowupAttack
+    data: EvasiveMove
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0.15
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
