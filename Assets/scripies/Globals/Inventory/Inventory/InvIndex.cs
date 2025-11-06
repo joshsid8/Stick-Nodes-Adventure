@@ -35,4 +35,21 @@ public sealed class InvIndex
     public bool HasAtLeast(CollectableSOBase id, int count) => GetCount(id) >= count;
 
     public bool MeetsAllCounts(IEnumerable<(CollectableSOBase id, int count)> reqs) => reqs != null && reqs.All(r => HasAtLeast(r.id, r.count));
+
+    public void Save(ref PlayerSaveIndex data)
+    {
+        data.items = counts;
+    }
+
+    public void Load(PlayerSaveIndex data)
+    {
+        //counts.Clear();
+        //foreach (var kv in data.items) counts[kv.Key] = kv.Value;
+    }
+}
+
+[System.Serializable]
+public struct PlayerSaveIndex
+{
+    public Dictionary<CollectableSOBase, int> items;
 }

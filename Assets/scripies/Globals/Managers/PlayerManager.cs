@@ -286,7 +286,6 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-    
     public void SetGlobalBool(string variableName, bool value)
     {
         switch (variableName)
@@ -339,4 +338,93 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
+
+    public void Save(ref PlayerSaveStats data)
+    {
+        data.playerMaxHealth = ph.playerMaxHealth;
+        data.playerHealth = ph.playerHealth;
+        data.regenerationMult = ph.regenerationMultiplier;
+        data.shockMultiplier = ph.shockMultiplier;
+        data.rawDamageResistance = ph.rawDamageResistance;
+
+        data.movementSpeedMult = pc.movementSpeedMult;
+        data.jumpForceMult = pc.jumpForceMult;
+        data.dashSpeed = pc.dashSpeed;
+        data.dashTime = pc.dashTime;
+        data.dashCooldown = pc.dashCooldown;
+        data.dashEnergyCost = pc.dashEnergyCost;
+
+        data.playerMaxEnergy = pa.maxEnergy;
+        data.playerEnergy = pa.energy;
+        data.playerEnergyRefill = pa.energyRefill;
+        data.abilityCooldownMult = pa.abilityCooldownMult;
+        data.abilityDamageMult = pp.abilityDamageMult;
+        data.abilityLifetimeMult = pp.abilityLifetimeMult;
+        data.abilityPotency = pp.abilityPotency;
+
+        data.blockDamageResistance = pd.blockDamageResistance;
+        data.combatTime = pc.currentCombatTimer;
+        data.counterDamage = pd.counterDamage;
+        data.counterDamageResistance = pd.counterDamageResistance;
+    }
+
+    public void Load(PlayerSaveStats data)
+    {
+        pd.counterDamageResistance = data.counterDamageResistance;
+        pd.counterDamage = data.counterDamage;
+        pc.currentCombatTimer = data.combatTime;
+        pd.blockDamageResistance = data.blockDamageResistance;
+
+        pp.abilityPotency = data.abilityPotency;
+        pp.abilityLifetimeMult = data.abilityLifetimeMult;
+        pp.abilityDamageMult = data.abilityDamageMult;
+        pa.abilityCooldownMult = data.abilityCooldownMult;
+        pa.energyRefill = data.playerEnergyRefill;
+        pa.energy = data.playerEnergy;
+        pa.maxEnergy = data.playerMaxEnergy;
+
+        pc.dashEnergyCost = data.dashEnergyCost;
+        pc.dashCooldown = data.dashCooldown;
+        pc.dashTime = data.dashTime;
+        pc.dashSpeed = data.dashSpeed;
+        pc.jumpForceMult = data.jumpForceMult;
+        pc.movementSpeedMult = data.movementSpeedMult;
+
+        ph.rawDamageResistance = data.rawDamageResistance;
+        ph.shockMultiplier = data.shockMultiplier;
+        ph.regenerationMultiplier = data.regenerationMult;
+        ph.playerHealth = data.playerHealth;
+        ph.playerMaxHealth = data.playerMaxHealth;
+    }
+    
+}
+[System.Serializable]
+public struct PlayerSaveStats
+{
+    public float playerMaxHealth;
+    public float playerHealth;
+    public float regenerationMult;
+    public float shockMultiplier;
+    public float rawDamageResistance;
+    
+    public float movementSpeedMult;
+    public float jumpForceMult;
+    public float dashSpeed;
+    public float dashTime;
+    public float dashCooldown;
+    public float dashEnergyCost;
+    
+    public float playerMaxEnergy;
+    public float playerEnergy;
+    public float playerEnergyRefill;
+    public float abilityCooldownMult;
+    public float abilityDamageMult;
+    public float abilityLifetimeMult;
+    public float abilityPotency;
+    
+    public float blockDamageResistance;
+    public float combatTime;
+    public float counterDamage;
+    public float counterDamageResistance;
+    
 }

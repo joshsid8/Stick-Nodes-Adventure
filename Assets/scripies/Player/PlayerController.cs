@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Variables
     public bool canAct = true;
     public bool canFlip = true;
     public bool isFrozen;
@@ -89,7 +90,8 @@ public class PlayerController : MonoBehaviour
     private PlayerAbility pab;
     private Knockback kb;
     public GameObject combatIndicator;
-    
+    #endregion
+    #region Main Methods
     // Start is called before the first frame update
     private void Start()
     {
@@ -407,4 +409,29 @@ public class PlayerController : MonoBehaviour
         Vector3 rayDirection = Vector2.up * transform.localScale.y * wallCheckRay;
         Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection);
     }
+    #endregion
+    
+    public void Save(ref PlayerSaveCurrentData data)
+    {
+        data.position = transform.position;
+        data.health = PlayerHealth.Instance.playerHealth;
+        data.energy = pab.energy;
+        data.money = GetComponent<PlayerCurrency>().nodeBucks;
+    }
+    public void Load(PlayerSaveCurrentData data)
+    {
+        transform.position = data.position;
+        PlayerHealth.Instance.playerHealth = data.health;
+        pab.energy = data.energy;
+        GetComponent<PlayerCurrency>().nodeBucks = data.money;
+    }
+}
+
+[System.Serializable]
+public struct PlayerSaveCurrentData
+{
+    public Vector3 position;
+    public float health;
+    public float energy;
+    public float money;
 }

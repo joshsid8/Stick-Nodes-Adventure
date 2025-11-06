@@ -18,7 +18,6 @@ public class InvManager : MonoBehaviour
     public Button destroyButton;
 
     public PlayerManager playerManager;
-    
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -30,7 +29,6 @@ public class InvManager : MonoBehaviour
         if (playerManager == null) Debug.LogWarning("InvManager: PlayerManager not found.");
 
         if (inventoryMenu != null) inventoryMenu.SetActive(false); 
-
         InitializeAllSlots();
     }
 
@@ -49,6 +47,8 @@ public class InvManager : MonoBehaviour
             isActivated = true;
             ToggleInventory();
         }
+        if (Input.GetKeyDown("i")) SaveSystem.Save();
+        if (Input.GetKeyDown("o")) SaveSystem.Load();
     }
 
     private void ToggleInventory()
@@ -140,4 +140,27 @@ public class InvManager : MonoBehaviour
         useButton.gameObject.SetActive(false);
         destroyButton.gameObject.SetActive(false);
     }
+
+    public void Save(ref PlayerSaveInventory data)
+    {
+        data.itemSlots = itemSlots;
+        data.aspectSlots = aspectSlots;
+        data.abilitySlot = abilitySlot;
+    }
+    
+    public void Load(PlayerSaveInventory data)
+    {
+        itemSlots = data.itemSlots;
+        aspectSlots = data.aspectSlots;
+        abilitySlot = data.abilitySlot;
+    }
+    
+}
+
+[System.Serializable]
+public struct PlayerSaveInventory
+{
+    public ItemSlot[] itemSlots;
+    public AspectSlot[] aspectSlots;
+    public AbilitySlot abilitySlot;
 }

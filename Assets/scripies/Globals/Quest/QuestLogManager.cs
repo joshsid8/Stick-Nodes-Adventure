@@ -50,8 +50,23 @@ public class QuestLogManager : MonoBehaviour
         {
             if (questSlots[i] != null && questSlots[i].questDescription == String.Empty)
             {
-                questSlots[i].LogQuest(type, title, description, enemyIDs ,eToDefeat, objects, noOfO,npc, reward); return;
+                questSlots[i].LogQuest(type, title, description, enemyIDs , eToDefeat, objects, noOfO,npc, reward); return;
             }
         }
     }
+
+    public void Save(ref PlayerSaveQuests data)
+    {
+        data.quests = questSlots;
+    }
+    public void Load(PlayerSaveQuests data)
+    {
+        questSlots = data.quests;
+    }
+    
+}
+[System.Serializable]
+public struct PlayerSaveQuests
+{
+    public Quest[] quests;
 }

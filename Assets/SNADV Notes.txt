@@ -7,6 +7,8 @@ SNADV Notes
     
     Game data and states
         Make data slots and be able to save game states
+            Inventory index's counts variable needs fixing because it is a stupid readonly var >:(
+            I dont think the quests are being added either...
         Save the state of a scene for events that happened in certain areas to be permanent
             Boss kills
             Temporary enemy kills
