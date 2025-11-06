@@ -5,8 +5,15 @@ using UnityEngine;
 
 public class SaveSystem
 {
-    private static SaveData saveData = new SaveData();
-
+    private static SaveData saveData = new SaveData
+    {
+        playerCurrentData = new PlayerSaveCurrentData(),
+        playerStats = new PlayerSaveStats(),
+        playerInventory = new PlayerSaveInventory(),
+        playerIndex = PlayerSaveIndex.CreateNew(),
+        playerQuests = new PlayerSaveQuests()
+    };
+    
     [System.Serializable]
     public struct SaveData
     {
@@ -50,10 +57,7 @@ public class SaveSystem
             File.WriteAllText(SaveFileName(), json);
             Debug.Log($"[SaveSystem] Saved to: {SaveFileName()}");
         }
-        catch (IOException ex)
-        {
-            Debug.LogError($"[SaveSystem] Failed to save: {ex.Message}");
-        }
+        catch (IOException ex) {Debug.LogError($"[SaveSystem] Failed to save: {ex.Message}");}
 
     }
 
@@ -75,11 +79,7 @@ public class SaveSystem
             HandleLoadData();
             Debug.Log($"[SaveSystem] Loaded from: {path}");
         }
-        catch (IOException ex)
-        {
-            Debug.LogError($"[SaveSystem] Failed to load: {ex.Message}");
-        }
-
+        catch (IOException ex) { Debug.LogError($"[SaveSystem] Failed to load: {ex.Message}"); }
     } 
     
 }

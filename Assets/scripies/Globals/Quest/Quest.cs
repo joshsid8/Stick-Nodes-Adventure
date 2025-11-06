@@ -182,7 +182,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    private void ClearUI()
+    public void ClearUI()
     {
         foreach (var text in titleTexts) text.text = "";
         questDescription = "";
@@ -194,6 +194,8 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         questRewards = Array.Empty<CollectableSOBase>();
         questCompleted = false;
         questType = QuestType.NullQuest;
+        infoDescription.text = "";
+        infoTitle.text = "";
     }
     public void OnPointerClick(PointerEventData eventData)
     {

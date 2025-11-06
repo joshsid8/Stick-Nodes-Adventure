@@ -38,18 +38,44 @@ public sealed class InvIndex
 
     public void Save(ref PlayerSaveIndex data)
     {
-        data.items = counts;
+        data.items.Clear();
+        foreach (var item in counts)
+        {
+            if (item.Key != null) 
+                data.items.Add(new PlayerSaveIndex.SerializableItem { itemID = item.Key.name, count = item.Value });
+        }
     }
 
     public void Load(PlayerSaveIndex data)
     {
-        //counts.Clear();
-        //foreach (var kv in data.items) counts[kv.Key] = kv.Value;
+        counts.Clear();
+        if (data.items == null) return;
+        foreach (var item in data.items)
+        {
+            var so = ItemDatabase.Instance.GetItemByName(item.itemID);
+            if (so != null) AddItem(so, item.count);
+            else Debug.LogWarning($"[InvIndex.Load] Failed to find item with ID: {item.itemID}");
+        }
     }
 }
 
-[System.Serializable]
+[Serializable]
 public struct PlayerSaveIndex
 {
-    public Dictionary<CollectableSOBase, int> items;
+    [Serializable]
+    public struct SerializableItem
+    {
+        public string itemID;
+        public int count;
+    }
+
+    public List<SerializableItem> items;
+
+    public static PlayerSaveIndex CreateNew()
+    {
+        return new PlayerSaveIndex
+        {
+            items = new List<SerializableItem>()
+        };
+    }
 }

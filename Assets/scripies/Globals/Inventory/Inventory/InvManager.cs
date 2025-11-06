@@ -47,8 +47,8 @@ public class InvManager : MonoBehaviour
             isActivated = true;
             ToggleInventory();
         }
-        if (Input.GetKeyDown("i")) SaveSystem.Save();
-        if (Input.GetKeyDown("o")) SaveSystem.Load();
+        if (Input.GetKeyDown("o")) SaveSystem.Save();
+        if (Input.GetKeyDown("p")) SaveSystem.Load();
     }
 
     private void ToggleInventory()
