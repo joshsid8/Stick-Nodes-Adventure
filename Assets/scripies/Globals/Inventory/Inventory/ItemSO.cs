@@ -3,13 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewItem", menuName = "Collectable/Item")]
 public class ItemSO : CollectableSOBase
 {
-    [SerializeField] private string itemName;
-    [SerializeField] private int itemAmount = 1;
-    [SerializeField] private int maxItemAmount = 99;
-    [SerializeField] [TextArea] private string itemDescription;
-    [SerializeField] private Sprite itemSprite;
+    public string itemName;
+    public int itemAmount = 1;
+    public int maxItemAmount = 99;
+    [TextArea] public string itemDescription;
+    public Sprite itemSprite;
     
-    [SerializeField] private string itemType;
+    public string itemType;
     public float restoreValue;
     
     public override void Collect(GameObject objectCollected)

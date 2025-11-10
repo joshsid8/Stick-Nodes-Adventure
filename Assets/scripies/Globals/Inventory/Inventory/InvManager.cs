@@ -14,6 +14,7 @@ public class InvManager : MonoBehaviour
     public AbilitySlot abilitySlot;
     public InvIndex Index;
 
+
     public Button useButton;
     public Button destroyButton;
 
@@ -143,16 +144,32 @@ public class InvManager : MonoBehaviour
 
     public void Save(ref PlayerSaveInventory data)
     {
-        data.itemSlots = itemSlots;
-        data.aspectSlots = aspectSlots;
-        data.abilitySlot = abilitySlot;
+        data.storedItems = new CollectableSOBase[itemSlots.Length];
+        for (var i = 0; i < itemSlots.Length; i++) data.storedItems[i] = itemSlots[i].itemScriptableObject;
     }
     
     public void Load(PlayerSaveInventory data)
     {
-        itemSlots = data.itemSlots;
-        aspectSlots = data.aspectSlots;
-        abilitySlot = data.abilitySlot;
+        foreach (var slot in itemSlots) if (slot != null) slot.ClearSlot();
+        
+        for (var i = 0; i < itemSlots.Length; i++)
+        {
+            var item = data.storedItems[i] as ItemSO;
+            var aspect = data.storedItems[i] as AspectSO;
+            var ability = data.storedItems[i] as AbilitySO;
+            
+            if (data.storedItems[i] is ItemSO) 
+                AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, 
+                    item.itemType, item, null, null, 0);
+            
+            else if (data.storedItems[i] is AspectSO)
+                AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 1, "Aspect", null,
+                    aspect, null, 0);
+            
+            else if (data.storedItems[i] is AbilitySO)
+                AddItem(ability.abilityName, 1, ability.abilitySprite, ability.abilityDescription, 1, 
+                    "Ability", null, null, ability, ability.abilityType);
+        }
     }
     
 }
@@ -160,7 +177,5 @@ public class InvManager : MonoBehaviour
 [System.Serializable]
 public struct PlayerSaveInventory
 {
-    public ItemSlot[] itemSlots;
-    public AspectSlot[] aspectSlots;
-    public AbilitySlot abilitySlot;
+    public CollectableSOBase[] storedItems;
 }

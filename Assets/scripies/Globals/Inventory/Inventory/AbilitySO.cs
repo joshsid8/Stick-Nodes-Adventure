@@ -3,10 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewAbility", menuName = "Collectable/Ability")]
 public class AbilitySO : CollectableSOBase
 {
-    [SerializeField] private string abilityName;
-    [SerializeField] [TextArea] private string abilityDescription;
-    [SerializeField] private Sprite abilitySprite;
-    [SerializeField] private int abilityType;
+    public string abilityName;
+    [TextArea] public string abilityDescription;
+    public Sprite abilitySprite;
+    public int abilityType;
     
     
     public GameObject abilityPrefab;

@@ -12,7 +12,6 @@ SNADV Notes
             Speaking to NPCs
             One-time events
 
-                   
     Optimisations:
         
         Animations

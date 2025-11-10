@@ -151,7 +151,7 @@ public class QuestLogManager : MonoBehaviour
         
         var serializableList = new List<PlayerSaveQuests.SerializableIntArray>(jaggedArray.Length);
         
-        for (int i = 0; i < jaggedArray.Length; i++)
+        for (var i = 0; i < jaggedArray.Length; i++)
             serializableList.Add(new PlayerSaveQuests.SerializableIntArray { array = jaggedArray[i] ?? Array.Empty<int>() });
         return serializableList;
     }
@@ -161,7 +161,7 @@ public class QuestLogManager : MonoBehaviour
         if (serializableList == null) return Array.Empty<int[]>();
         
         var jaggedArray = new int[serializableList.Count][];
-        for (int i = 0; i < serializableList.Count; i++) jaggedArray[i] = serializableList[i].array ?? Array.Empty<int>();
+        for (var i = 0; i < serializableList.Count; i++) jaggedArray[i] = serializableList[i].array ?? Array.Empty<int>();
         return jaggedArray;
     }
 
@@ -171,7 +171,7 @@ public class QuestLogManager : MonoBehaviour
         
         var serializableList = new List<PlayerSaveQuests.SerializableStringArray>(collectableArray.Length);
         
-        for (int i = 0; i < collectableArray.Length; i++)
+        for (var i = 0; i < collectableArray.Length; i++)
         {
             var innerArray = collectableArray[i];
             if (innerArray == null) serializableList.Add(new PlayerSaveQuests.SerializableStringArray { array = Array.Empty<string>() });
@@ -179,7 +179,7 @@ public class QuestLogManager : MonoBehaviour
             {
                 // Convert CollectableSOBase references to their names (IDs)
                 var stringArray = new string[innerArray.Length];
-                for(int j = 0; j < innerArray.Length; j++) stringArray[j] = innerArray[j] != null ? innerArray[j].name : string.Empty;
+                for(var j = 0; j < innerArray.Length; j++) stringArray[j] = innerArray[j] != null ? innerArray[j].name : string.Empty;
                 serializableList.Add(new PlayerSaveQuests.SerializableStringArray { array = stringArray });
             }
         }
@@ -198,14 +198,14 @@ public class QuestLogManager : MonoBehaviour
         
         var collectableArray = new CollectableSOBase[stringList.Count][];
         
-        for (int i = 0; i < stringList.Count; i++)
+        for (var i = 0; i < stringList.Count; i++)
         {
             var stringArray = stringList[i].array;
             if (stringArray == null) collectableArray[i] = Array.Empty<CollectableSOBase>();
             else
             {
                 var soArray = new CollectableSOBase[stringArray.Length];
-                for(int j = 0; j < stringArray.Length; j++) soArray[j] = ItemDatabase.Instance.GetItemByName(stringArray[j]);
+                for(var j = 0; j < stringArray.Length; j++) soArray[j] = ItemDatabase.Instance.GetItemByName(stringArray[j]);
                 collectableArray[i] = soArray;
             }
         }
