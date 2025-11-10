@@ -26,7 +26,7 @@ public class SaveSystem
 
     public static string SaveFileName()
     {
-        string saveFile = Application.persistentDataPath + "/save" + ".sna";
+        var saveFile = Application.persistentDataPath + "/save" + ".sna";
         return saveFile;
     }
     public static void HandleSaveData()
@@ -75,7 +75,6 @@ public class SaveSystem
             string saveDataString = File.ReadAllText(path);
             saveData = JsonUtility.FromJson<SaveData>(saveDataString);
 
-            // Apply loaded data to the game
             HandleLoadData();
             Debug.Log($"[SaveSystem] Loaded from: {path}");
         }

@@ -5,11 +5,10 @@ using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject objectToSpawn;
-    public GameObject[] spawnPoints;
+    [SerializeField] private EnemySpawn[] eSpawn;
     
+    public GameObject[] spawnPoints;
     public float spawnTime;
-    public float spawnAmount;
     public bool spawnOnStart = true;
     public bool canSpawn = true;
     
@@ -18,14 +17,14 @@ public class Spawner : MonoBehaviour
     {
         if (canSpawn)
         {
-            if (spawnOnStart)
-                Instantiate(objectToSpawn, spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position,
-                    Quaternion.identity);
-            for (int i = 0; i < spawnAmount; i++)
+            foreach (var spawn in eSpawn)
             {
-                yield return new WaitForSeconds(spawnTime);
-                Instantiate(objectToSpawn, spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position,
-                    Quaternion.identity);
+                for (var i = 0; i < spawn.spawnAmount; i++)
+                {
+                    if (spawnOnStart)
+                        Instantiate(spawn.objectToSpawn, spawnPoints[0].transform.position, Quaternion.identity);
+                    yield return new WaitForSeconds(spawnTime);
+                }
             }
         }
     }
@@ -34,11 +33,14 @@ public class Spawner : MonoBehaviour
     {
         if (canSpawn)
         {
-            for (int i = 0; i < spawnAmount; i++)
+            foreach (var spawn in eSpawn)
             {
-                yield return new WaitForSeconds(spawnTime);
-                Instantiate(objectToSpawn, spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position,
-                    Quaternion.identity);
+                for (var i = 0; i < spawn.spawnAmount; i++)
+                {
+                    yield return new WaitForSeconds(spawnTime);
+                    Instantiate(spawn.objectToSpawn, spawnPoints[Random.Range(0,
+                        spawnPoints.Length)].transform.position, Quaternion.identity);
+                }
             }
         }
     }
@@ -50,10 +52,26 @@ public class Spawner : MonoBehaviour
     
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Dead"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("EDead") || collision.CompareTag("Enemy") && isActiveAndEnabled)
         {
             canSpawn = true;
             StartCoroutine(Spawn());
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        foreach (var spawn in spawnPoints)
+        {
+            Gizmos.DrawWireSphere(spawn.transform.position, 1f);
+        }
+    }
+
+    [Serializable]
+    public class EnemySpawn
+    {
+        public GameObject objectToSpawn;
+        public float spawnAmount;
     }
 }
