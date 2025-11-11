@@ -4,24 +4,18 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Hotfixes & Priorities
-
-        Quest Logic
-            Ensure tracking is updated even when the menu isnt shown
-
-   
-    Optimisations:
     
-        Boss Logic
-            During Idle anims, let certain bosses walk forward or backward when triggered.  
-                   
-        Key/Objective Logic
-            Scan an area for:
-                How many specific enemies are required to be defeated
-                The player having something specific in their inventory (hashsets!)
-                What bosses or specific enemies you have killed already
-                What quests you have done
-            Once true, let the key spawn wherever the specific game object is set
-            
+    Game data and states
+        Save the state of a scene for events that happened in certain areas to be permanent
+            It's almost done. It just needs to actually work:
+                It seems that every time i save, checking whether there already has been a scene loaded fails to work
+                Collectables arent detected within scenes
+                Once i save a new scene, the first list gets overwritten and a new empty element gets added
+                I get an Index out of bounds error, the assignment of the enemy variables are responsible
+            I then must add these to the save system so once i load in, all the scene data can get loaded along with everything else
+                 
+
+    Optimisations:
         
         Animations
             Make better/seperate animations for the player's QoL
@@ -31,9 +25,25 @@ SNADV Notes
                 First step before walking
                 Wall jumping
                 Better dashing
+            Make 3 more moves for the fish folk
+                Fishwoman
+                    Flying bubble attack
+                    Flying dash attack
+                    Feinted dash counter
+                Fishman
+                    Flying dash combo
+                    Flying burst attack (with possible projectiles)
+                    Flying beam attack
         
+        
+        Enemy Logic
+            Flying/Swimming
+                For some enemies that can fly/swim, drastically reduce their gravity, and make them move around in the air
+                Switch up their moveset and let them choose between swimming/flying if they can do both
+                
         Noxu
-            !!!!!!!Initial Boulder Throwing!!!!!!!
+            !!!!!!!!Initial Boulder Throwing!!!!!!!!
+                Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
             
         Music flexibility
             Make it so that the music never stops, but rather silences before moving onto another track
@@ -44,20 +54,17 @@ SNADV Notes
     
     Things to be added:
         
-        More Enemy Logic
-            Flying/Swimming
-        
-        Sira & TJ Boss Logic
-        
         Shop logic
         
-            Mini Bosses
+        Mini Bosses
             a normal enemy-boss hybrid
         
         Obstacles
             stray projectiles/neutral elements that can hurt both the player and enemies
             natural disasters (thunderstorms)
+            
+        Sira & TJ Boss Logic
     
     
     When you are done: Find the one piece.
-    (This should mean the base has been completed, and i can start designing levels!)
+    (This should mean the base has been completed, and I can start designing levels!)
