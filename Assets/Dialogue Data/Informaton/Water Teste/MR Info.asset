@@ -14,37 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Informaton
   dialogue:
-  - This is the alleged 'Mystic Rivers'...
-  - The enemies are a lot more evasive and can move very well in the water.
-  - It is best to avoid fighting in the water unless you have no choice.
-  - Good luck!
+  - '*A sign with text written poorly in english*'
+  - ...Mystic River
+  - No human... Welcome
+  - Go! Go..!
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
   noResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-    appliesFloatChange: 0
-    targetFloatVariableName: 
-    newFloatValue: 0
-    appliesBooleanChange: 0
-    targetBooleanVariableName: 
-    newBooleanValue: 0
+  nameColour: {r: 0, g: 0, b: 0, a: 1}
   appliesFloatChange: 0
-  targetFloatVariableName: 
-  newFloatValue: 0
+  targetFloatVariables: []
+  newFloatValues: []
   appliesBooleanChange: 0
-  targetBooleanVariableName: 
-  newBooleanValue: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
+  isQuestInteraction: 0
+  questActionType: 4
+  questItems: []
+  questItemAmounts: 
+  itemCheckFailureDialogue: {fileID: 0}
+  completeSpeakQuestOnClose: 0
+  derrivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []
@@ -53,3 +51,7 @@ MonoBehaviour:
   colourIndex: 0
   canBeBold: 1
   bold: 01000000
+  speaker: 
+  alteredDialogue: {fileID: 0}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

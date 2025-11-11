@@ -562,14 +562,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapName: Mystic Rivers
-  mapDescription: A waterborne archipelago filled to the brim with many distinctive
-    creatures...
+  mapDescription: A waterborne archipelago filled to the brim with many hostile creatures...
   mapTextColor: {r: 0.495283, g: 1, b: 0.9861676, a: 1}
   mapBgColor: {r: 0.008899963, g: 0.33364302, b: 0.3773585, a: 1}
   newOst:
   - {fileID: 8300000, guid: c669484eb0d37a943bee55cb9de126ad, type: 3}
   - {fileID: 8300000, guid: 7a360ec1026e63e48ae4e2e8e4e26085, type: 3}
   - {fileID: 8300000, guid: 709d55a8c27b70744a32225517e0be7d, type: 3}
+  sceneName:
+    m_SceneAsset: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
+    m_SceneName: Water Teste
+  enemySceneData: []
+  bossSceneData:
+    activeBoss: 
+    isDead: 0
+    willBeNpc: 0
+  npcSceneData: []
+  collectableSceneData: []
+  doorSceneData: []
 --- !u!1 &335244881
 GameObject:
   m_ObjectHideFlags: 0
@@ -3726,6 +3736,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1098030996305112970, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1098030996305112970, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: m_Color.g
+      value: 0.896694
+      objectReference: {fileID: 0}
+    - target: {fileID: 1098030996305112970, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5330188
+      objectReference: {fileID: 0}
+    - target: {fileID: 2444195873672219692, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: m_text
+      value: ~-~
+      objectReference: {fileID: 0}
     - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: dialogue
       value: 
@@ -3781,6 +3807,18 @@ PrefabInstance:
     - target: {fileID: 4489992326436160310, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8011993351611780943, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8011993351611780943, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: m_Color.g
+      value: 0.896694
+      objectReference: {fileID: 0}
+    - target: {fileID: 8011993351611780943, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5330188
       objectReference: {fileID: 0}
     - target: {fileID: 8784020718104718834, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: m_SortingOrder

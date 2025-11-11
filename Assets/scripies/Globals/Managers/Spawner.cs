@@ -69,7 +69,7 @@ public class Spawner : MonoBehaviour
     }
 
     [Serializable]
-    public class EnemySpawn
+    private class EnemySpawn
     {
         public GameObject objectToSpawn;
         public float spawnAmount;

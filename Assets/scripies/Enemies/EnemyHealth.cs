@@ -40,6 +40,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     
     [Tooltip("This is for whenever you want to target a certain enemy externally. The ID format is currently 000.")] 
     public int enemyID;
+    public bool isOneTime;
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()

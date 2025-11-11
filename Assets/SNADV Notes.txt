@@ -7,10 +7,13 @@ SNADV Notes
     
     Game data and states
         Save the state of a scene for events that happened in certain areas to be permanent
-            Boss kills
-            Temporary enemy kills
-            Speaking to NPCs
-            One-time events
+            It's almost done. It just needs to actually work:
+                It seems that every time i save, checking whether there already has been a scene loaded fails to work
+                Collectables arent detected within scenes
+                Once i save a new scene, the first list gets overwritten and a new empty element gets added
+                I get an Index out of bounds error, the assignment of the enemy variables are responsible
+            I then must add these to the save system so once i load in, all the scene data can get loaded along with everything else
+                 
 
     Optimisations:
         

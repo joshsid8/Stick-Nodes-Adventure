@@ -41,21 +41,25 @@ public class DoorObjective : MonoBehaviour
                 break;
         }
     }
-    
+
+    public void CompleteObjective()
+    {
+        foreach (var door in doorObj) door.objectiveComplete = true;
+    }
 
     private void Update()
     {
         switch (objective)
         {
             case Objectives.DefeatEnemy:
-                if (enemies == null) foreach (var door in doorObj) door.objectiveComplete = true;
+                if (enemies == null) CompleteObjective();
                 break;
             case Objectives.FindKeys:
                 if (playerDetected)
                 {
                     foreach (var key in keys) 
                         if (!InvManager.Instance.Index.HasAtLeast(key, 1)) return;
-                    foreach (var door in doorObj) door.objectiveComplete = true;
+                    CompleteObjective();
                     foreach (var key in keys)
                     {
                         foreach (var item in InvManager.Instance.itemSlots)
@@ -65,7 +69,7 @@ public class DoorObjective : MonoBehaviour
                 break;
             case Objectives.DefeatBoss:
                 BossHealth bossHealth = boss.GetComponent<BossHealth>();
-                if (bossHealth != null && bossHealth.isDead) foreach (var door in doorObj) door.objectiveComplete = true;
+                if (bossHealth != null && bossHealth.isDead) CompleteObjective();
                 break;
             default:
                 print("Just clueless.");

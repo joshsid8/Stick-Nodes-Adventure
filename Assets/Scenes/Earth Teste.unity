@@ -1106,7 +1106,9 @@ PrefabInstance:
       propertyPath: 'dialogue.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: b1c22cc172bc51d4cbf9fde76941f4ce, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6515920182420657771, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+    - {fileID: 3862350855981196277, guid: f283c487c77e003499e04c5e0d747125, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
@@ -1736,6 +1738,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8743420e5345fa2469cdd1da3c893a19, type: 3}
   - {fileID: 8300000, guid: e42854986eb948b498ef8f381ffbedc1, type: 3}
   - {fileID: 8300000, guid: 709d55a8c27b70744a32225517e0be7d, type: 3}
+  sceneName:
+    m_SceneAsset: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
+    m_SceneName: Earth Teste
+  enemySceneData: []
+  bossSceneData:
+    activeBoss: 
+    isDead: 0
+    willBeNpc: 0
+  npcSceneData: []
+  collectableSceneData: []
+  doorSceneData:
+  - activeDoors: {fileID: 811889214}
+    isOpen: 1
 --- !u!4 &620088607 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4970039674660754698, guid: ed2b161a279a9864aac83985aef7abd0, type: 3}
@@ -7387,6 +7402,7 @@ MonoBehaviour:
   isInRange: 0
   isTriggered: 0
   isForced: 1
+  willTravel: 0
   indicator: {fileID: 2619634486965126102}
   dialogue: {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
   pLayer:

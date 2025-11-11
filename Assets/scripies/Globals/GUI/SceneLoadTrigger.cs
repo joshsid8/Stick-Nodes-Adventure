@@ -35,7 +35,7 @@ public class SceneLoadTrigger : MonoBehaviour
                     break;
                 }
             }
-            if (!isSceneLoaded) SceneManager.LoadSceneAsync(scenesToLoad[i].SceneName, LoadSceneMode.Additive);
+            if (!isSceneLoaded) {SceneManager.LoadSceneAsync(scenesToLoad[i].SceneName, LoadSceneMode.Additive);}
         }
     }
 

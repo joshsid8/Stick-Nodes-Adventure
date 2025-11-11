@@ -9,6 +9,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private bool isInRange;
     public bool isTriggered;
     public bool isForced;
+    public bool willTravel;
     
     public GameObject indicator;
     public DialogueObject dialogue;

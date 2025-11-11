@@ -443,6 +443,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: isFacingRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: pLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
@@ -454,7 +458,11 @@ PrefabInstance:
       propertyPath: 'dialogue.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: b38a32240b36ccd45b609875a5f781ac, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3862350855981196277, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+    - {fileID: 6515920182420657771, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+    - {fileID: 3525188997114740657, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+    - {fileID: 2479902616594427839, guid: f283c487c77e003499e04c5e0d747125, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
