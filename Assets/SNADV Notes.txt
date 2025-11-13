@@ -13,7 +13,7 @@ SNADV Notes
                 Once i save a new scene, the first list gets overwritten and a new empty element gets added
                 I get an Index out of bounds error, the assignment of the enemy variables are responsible
             I then must add these to the save system so once i load in, all the scene data can get loaded along with everything else
-                 
+                
 
     Optimisations:
         

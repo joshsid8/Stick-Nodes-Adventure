@@ -70,7 +70,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                     if (eh == null) continue;
                     if (!enemyToId.TryGetValue(go, out var id))
                     {
-                        id = eh.enemyID;
+                        id = eh.gameObject.GetComponent<Identifier>().id;
                         enemyToId[go] = id;
                     }
                     if (eh.isDead)
@@ -146,7 +146,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 foreach (var eh in enemies)
                 {
                     if (eh == null) continue;
-                    if (Array.IndexOf(eTd, eh.enemyID) >= 0) targets.Add(eh.gameObject);
+                    if (Array.IndexOf(eTd, eh.gameObject.GetComponent<Identifier>().id) >= 0) targets.Add(eh.gameObject);
                 }
                 targetEnemies = targets.ToArray();
 
@@ -170,7 +170,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                     if (go == null) continue;
                     var eh = go.GetComponent<EnemyHealth>();
                     if (eh == null) continue;
-                    enemyToId[go] = eh.enemyID;
+                    enemyToId[go] = eh.gameObject.GetComponent<Identifier>().id;
                 }
                 break;
             case QuestType.HaveInInventory:

@@ -221,6 +221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 13393103}
+  - component: {fileID: 13393109}
   - component: {fileID: 13393106}
   - component: {fileID: 13393105}
   - component: {fileID: 13393107}
@@ -384,6 +385,20 @@ MonoBehaviour:
   enemies: []
   boss: {fileID: 156917590611659419}
   keys: []
+--- !u!114 &13393109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13393102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 2
+  typeOfObject: 2
 --- !u!1001 &13528097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -431,6 +446,14 @@ PrefabInstance:
     - target: {fileID: 24725997426064982, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449413243954514990, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: id
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4524482998962597035, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: doorID
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4524482998962597035, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: objective
@@ -9606,6 +9629,14 @@ PrefabInstance:
     - target: {fileID: 24725997426064982, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449413243954514990, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4524482998962597035, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: doorID
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4524482998962597035, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: 'enemies.Array.data[0]'

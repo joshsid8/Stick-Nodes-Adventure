@@ -180,7 +180,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public void UseItem()
     {
         if (invManager.playerManager != null && itemType != "Key") invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
-        else Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
+        else if (invManager.playerManager == null) Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
         if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject);
         
         itemAmount--;

@@ -111,7 +111,7 @@ public class MapInfo : MonoBehaviour
                 for (var i = 0; i < enemySceneData.Count; i++)
                 {
                     scene.enemies.Add(new SceneDataManager.EnemySceneData());
-                    scene.enemies[i].activeEnemies = enemySceneData[i].activeEnemies;
+                    scene.enemies[i].activeEnemies = enemySceneData[i].activeEnemies.GetComponent<Identifier>().id;
                     scene.enemies[i].isOneTime = enemySceneData[i].isOneTime;
                 }
                 
@@ -124,14 +124,14 @@ public class MapInfo : MonoBehaviour
                 for (var i = 0; i < npcSceneData.Count; i++)
                 {
                     scene.npcs.Add(new SceneDataManager.NpcSceneData());
-                    scene.npcs[i].activeNpcs = npcSceneData[i].activeNpcs;
+                    //scene.npcs[i].activeNpcs = npcSceneData[i].activeNpcs;
                     scene.npcs[i].willTravel = npcSceneData[i].willTravel;
                 }
                 
                 for (var i = 0; i < doorSceneData.Count; i++)
                 {
                     scene.doors.Add(new SceneDataManager.DoorSceneData());
-                    scene.doors[i].activeDoors = doorSceneData[i].activeDoors;
+                    scene.doors[i].activeDoors = doorSceneData[i].activeDoors.GetComponent<Identifier>().id;
                     scene.doors[i].isOpen = doorSceneData[i].isOpen;
                 }
                 
@@ -154,8 +154,8 @@ public class MapInfo : MonoBehaviour
             {
                 for (var i = 0; i < scene.enemies.Count; i++)
                 {
-                    enemySceneData[i].activeEnemies = scene.enemies[i].activeEnemies;
-                    if (scene.enemies[i].isOneTime) Destroy(enemySceneData[i].activeEnemies.gameObject);
+                    if (scene.enemies[i].isOneTime && scene.enemies[i].activeEnemies == enemySceneData[i].activeEnemies.GetComponent<Identifier>().id)
+                        Destroy(enemySceneData[i].activeEnemies.gameObject);
                 }
 
                 for (var i = 0; i < scene.collectables.Count; i++)
@@ -163,14 +163,15 @@ public class MapInfo : MonoBehaviour
 
                 for (var i = 0; i < scene.npcs.Count; i++)
                 {
-                    npcSceneData[i].activeNpcs = scene.npcs[i].activeNpcs;
-                    npcSceneData[i].willTravel = scene.npcs[i].willTravel;
+                    //npcSceneData[i].willTravel = scene.npcs[i].willTravel;
                 }
 
                 for (var i = 0; i < scene.doors.Count; i++)
                 {
-                    doorSceneData[i].activeDoors = scene.doors[i].activeDoors;
-                    if (scene.doors[i].isOpen) doorSceneData[i].activeDoors.gameObject.GetComponent<DoorObjective>().CompleteObjective();
+                    var correctDoor = FindObjectsByType<DoorObjective>(FindObjectsSortMode.None);
+                    foreach (var d in correctDoor) 
+                        if (scene.doors[i].isOpen && doorSceneData[i].activeDoors.GetComponent<Identifier>().id == scene.doors[i].activeDoors) 
+                            d.CompleteObjective();
                 }
 
                 bossSceneData.activeBoss = scene.activeBoss;

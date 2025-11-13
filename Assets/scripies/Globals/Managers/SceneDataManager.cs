@@ -37,14 +37,14 @@ public class SceneDataManager : MonoBehaviour
     [Serializable]
     public class EnemySceneData
     {
-        public GameObject activeEnemies;
+        public int activeEnemies;
         public bool isOneTime;
     }
     
     [Serializable]
     public class NpcSceneData
     {
-        public GameObject activeNpcs;
+        public int activeNpcs;
         public bool willTravel;
     }
 
@@ -57,15 +57,36 @@ public class SceneDataManager : MonoBehaviour
     [Serializable]
     public class DoorSceneData
     {
-        public GameObject activeDoors;
+        public int activeDoors;
         public bool isOpen = true;
     }
 
     #endregion
 
-    public void Save(ref SceneList data)
+    public void Save(ref SceneData data)
     {
-        
+        for (var i = 0; i < data.sceneData.Count; i++)
+        {
+            data.sceneData[i].sceneName = sceneData[i].sceneName;
+            
+        }
     }
 }
 
+[Serializable]
+public class SceneData
+{
+    public List<SceneList> sceneData = new List<SceneList>();
+    public class SceneList
+    {
+        public string sceneName;
+        public List<EnemySceneData> enemies = new List<EnemySceneData>();
+        public List<CollectableSceneData> collectables = new List<CollectableSceneData>();
+        public List<NpcSceneData> npcs = new List<NpcSceneData>();
+        public List<DoorSceneData> doors = new List<DoorSceneData>();
+        
+        public string activeBoss;
+        public bool isDead;
+        public bool willBeNpc;
+    }
+}
