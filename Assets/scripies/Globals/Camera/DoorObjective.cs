@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class DoorObjective : MonoBehaviour
 {
+    public bool isOpen;
+    
     public ObjectiveDoor[] doorObj;
     [SerializeField] Objectives objective;
 
@@ -45,6 +47,7 @@ public class DoorObjective : MonoBehaviour
     public void CompleteObjective()
     {
         foreach (var door in doorObj) door.objectiveComplete = true;
+        isOpen = true;
     }
 
     private void Update()

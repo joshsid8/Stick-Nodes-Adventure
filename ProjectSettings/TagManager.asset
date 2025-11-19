@@ -10,6 +10,7 @@ TagManager:
   - Dead
   - NPC
   - Boss
+  - Item
   layers:
   - Default
   - TransparentFX

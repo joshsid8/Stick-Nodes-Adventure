@@ -18,7 +18,7 @@ public class SceneDataManager : MonoBehaviour
         public List<DoorSceneData> doors = new List<DoorSceneData>();
         
         public string activeBoss;
-        public bool isDead;
+        public bool isBossDead;
         public bool willBeNpc;
     }
     
@@ -52,6 +52,7 @@ public class SceneDataManager : MonoBehaviour
     public class CollectableSceneData
     {
         public GameObject activeCollectables;
+        public Vector3 position;
     }
 
     [Serializable]

@@ -7,12 +7,11 @@ SNADV Notes
     
     Game data and states
         Save the state of a scene for events that happened in certain areas to be permanent           
-            I have a plan
-                Now that i have made auto generated spawn ids i can handle enemy data much easier
-                    instead of what i did before, it can maek it so that it searches for the spawn id and applies the data to the correct enemy.
-                Now that i have learnt that you can find all gameobjects within a scene, i can handle literally eveything else easier
-                    instead of uniquely finding each game object via triggers, i collect all gameobjects within the scene and check whether they have the right id and are the correct type of game object
-                hahaa this will go so well, but will lowk be kinda tedious...
+            The plan is getting better, a few issues now regarding
+                persistent data: seems to just be almost entirely broken
+                    this is probably cuz it uses for loops incorrectly, adding constant null fields to stuff like collectable and npc
+                once this gets fixed (basically refining the logic of persistent scene data), it should all be done right???
+                    
 
     Optimisations:
         
