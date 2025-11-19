@@ -21,6 +21,7 @@ public class MapInfo : MonoBehaviour
     
     [SerializeField] private SceneField sceneName;
     public List<EnemySceneData> enemySceneData = new List<EnemySceneData>();
+    public List<int> enemyIds = new List<int>();
     public BossSceneData bossSceneData;
     public List<NpcSceneData> npcSceneData = new List<NpcSceneData>();
     public List<CollectableSceneData> collectableSceneData = new List<CollectableSceneData>();
@@ -43,7 +44,7 @@ public class MapInfo : MonoBehaviour
                     dData.isOpen = door.objectiveComplete;
             }
         }
-        if (!string.IsNullOrEmpty(bossSceneData.activeBoss)) bossSceneData.isDead = GameObject.Find(bossSceneData.activeBoss).gameObject.GetComponent<BossHealth>().isDead;
+        if (!string.IsNullOrEmpty(bossSceneData.activeBoss) && bossSceneData.activeBoss == GameObject.Find(bossSceneData.activeBoss).name && bossSceneData.isDead) Destroy(GameObject.Find(bossSceneData.activeBoss).gameObject);
         //try {print($"we have found {GameObject.Find(bossSceneData.activeBoss).gameObject.name}!");} catch {print("clueless");}
     }
 
@@ -104,41 +105,41 @@ public class MapInfo : MonoBehaviour
         manager.sceneData.Add(new SceneDataManager.SceneList());
         foreach (var scene in manager.sceneData)
         {
-            if (scene.sceneName != sceneName.SceneName)
+            if (scene.sceneName == null || scene.sceneName == sceneName.SceneName)
             {
                 scene.sceneName = sceneName.SceneName;
-                
+
                 for (var i = 0; i < enemySceneData.Count; i++)
                 {
                     scene.enemies.Add(new SceneDataManager.EnemySceneData());
                     scene.enemies[i].activeEnemies = enemySceneData[i].activeEnemies.GetComponent<Identifier>().id;
                     scene.enemies[i].isOneTime = enemySceneData[i].isOneTime;
                 }
-                
+
                 for (var i = 0; i < collectableSceneData.Count; i++)
                 {
                     scene.collectables.Add(new SceneDataManager.CollectableSceneData());
                     scene.collectables[i].activeCollectables = collectableSceneData[i].activeCollectables;
                 }
-                
+
                 for (var i = 0; i < npcSceneData.Count; i++)
                 {
                     scene.npcs.Add(new SceneDataManager.NpcSceneData());
                     //scene.npcs[i].activeNpcs = npcSceneData[i].activeNpcs;
                     scene.npcs[i].willTravel = npcSceneData[i].willTravel;
                 }
-                
+
                 for (var i = 0; i < doorSceneData.Count; i++)
                 {
                     scene.doors.Add(new SceneDataManager.DoorSceneData());
                     scene.doors[i].activeDoors = doorSceneData[i].activeDoors.GetComponent<Identifier>().id;
                     scene.doors[i].isOpen = doorSceneData[i].isOpen;
                 }
-                
+
                 scene.activeBoss = bossSceneData.activeBoss;
                 scene.isDead = bossSceneData.isDead;
                 scene.willBeNpc = bossSceneData.willBeNpc;
-                
+
                 return;
             }
         }
@@ -182,7 +183,7 @@ public class MapInfo : MonoBehaviour
     }
 }
     
-    #region Scene data classes
+#region Scene data classes
     [Serializable]
     public class EnemySceneData
     {
@@ -223,7 +224,7 @@ public class MapInfo : MonoBehaviour
         public GameObject activeDoors;
         public bool isOpen = true;
     }
-    #endregion
+#endregion
     
 
 

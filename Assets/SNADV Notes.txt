@@ -6,14 +6,13 @@ SNADV Notes
     Hotfixes & Priorities
     
     Game data and states
-        Save the state of a scene for events that happened in certain areas to be permanent
-            It's almost done. It just needs to actually work:
-                It seems that every time i save, checking whether there already has been a scene loaded fails to work
-                Collectables arent detected within scenes
-                Once i save a new scene, the first list gets overwritten and a new empty element gets added
-                I get an Index out of bounds error, the assignment of the enemy variables are responsible
-            I then must add these to the save system so once i load in, all the scene data can get loaded along with everything else
-                
+        Save the state of a scene for events that happened in certain areas to be permanent           
+            I have a plan
+                Now that i have made auto generated spawn ids i can handle enemy data much easier
+                    instead of what i did before, it can maek it so that it searches for the spawn id and applies the data to the correct enemy.
+                Now that i have learnt that you can find all gameobjects within a scene, i can handle literally eveything else easier
+                    instead of uniquely finding each game object via triggers, i collect all gameobjects within the scene and check whether they have the right id and are the correct type of game object
+                hahaa this will go so well, but will lowk be kinda tedious...
 
     Optimisations:
         
@@ -45,26 +44,32 @@ SNADV Notes
             !!!!!!!!Initial Boulder Throwing!!!!!!!!
                 Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
             
-        Music flexibility
+        Audio flexibility
             Make it so that the music never stops, but rather silences before moving onto another track
             
-        SFX
-            vine boom XD
+            SFX
+                vine boom XD
         
     
     Things to be added:
         
         Shop logic
+            Make nodebucks useful
         
         Mini Bosses
             a normal enemy-boss hybrid
         
         Obstacles
             stray projectiles/neutral elements that can hurt both the player and enemies
-            natural disasters (thunderstorms)
+            natural elements/disasters
+                Thunderstorms
+                Wind
+                Earthquakes
             
         Sira & TJ Boss Logic
+            I will do Sira last, as it is the most unique boss out of all of them
+            TJ is basically will be split into 2 bosses
     
     
-    When you are done: Find the one piece.
-    (This should mean the base has been completed, and I can start designing levels!)
+When you are done: Find the one piece.
+    (This should mean the base has been completed, and I can start on the designs!)

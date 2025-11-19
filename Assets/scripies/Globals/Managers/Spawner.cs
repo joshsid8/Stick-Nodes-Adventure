@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private EnemySpawn[] eSpawn;
+    [SerializeField] private SceneField scene;
     
     public GameObject[] spawnPoints;
     public float spawnTime;
@@ -22,7 +24,15 @@ public class Spawner : MonoBehaviour
                 for (var i = 0; i < spawn.spawnAmount; i++)
                 {
                     if (spawnOnStart)
-                        Instantiate(spawn.objectToSpawn, spawnPoints[0].transform.position, Quaternion.identity);
+                    {
+                        var instance = Instantiate(spawn.objectToSpawn, spawnPoints[0].transform.position, Quaternion.identity);
+                        var targetScene = SceneManager.GetSceneByName(scene.SceneName);
+                        if (targetScene.IsValid() && targetScene.isLoaded)
+                        {
+                            SceneManager.MoveGameObjectToScene(instance, targetScene);
+                            instance.GetComponent<Identifier>().AutomateID(targetScene);
+                        }
+                    }
                     yield return new WaitForSeconds(spawnTime);
                 }
             }
@@ -38,8 +48,9 @@ public class Spawner : MonoBehaviour
                 for (var i = 0; i < spawn.spawnAmount; i++)
                 {
                     yield return new WaitForSeconds(spawnTime);
-                    Instantiate(spawn.objectToSpawn, spawnPoints[Random.Range(0,
-                        spawnPoints.Length)].transform.position, Quaternion.identity);
+                    var instance = Instantiate(spawn.objectToSpawn, spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity);
+                    var targetScene = SceneManager.GetSceneByName(scene.SceneName);
+                    if (targetScene.IsValid() && targetScene.isLoaded) SceneManager.MoveGameObjectToScene(instance, targetScene);
                 }
             }
         }
