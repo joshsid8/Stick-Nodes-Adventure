@@ -1741,7 +1741,9 @@ MonoBehaviour:
   sceneName:
     m_SceneAsset: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
     m_SceneName: Earth Teste
+  sceneObjects: []
   enemySceneData: []
+  enemyIds: 
   bossSceneData:
     activeBoss: 
     isDead: 0
@@ -2433,6 +2435,7 @@ GameObject:
   - component: {fileID: 811889215}
   - component: {fileID: 811889219}
   - component: {fileID: 811889218}
+  - component: {fileID: 811889220}
   - component: {fileID: 811889217}
   - component: {fileID: 811889216}
   m_Layer: 12
@@ -2473,6 +2476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc819fd1a0ede064193aeb2045d4e2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOpen: 0
   doorObj:
   - {fileID: 132701378}
   - {fileID: 2048072639}
@@ -2594,6 +2598,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &811889220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811889214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
+  spawnId: 0
+  typeOfObject: 2
+  mapInfo: {fileID: 0}
 --- !u!1 &812593401
 GameObject:
   m_ObjectHideFlags: 0

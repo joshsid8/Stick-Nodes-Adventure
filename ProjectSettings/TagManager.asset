@@ -11,6 +11,7 @@ TagManager:
   - NPC
   - Boss
   - Item
+  - Door
   layers:
   - Default
   - TransparentFX

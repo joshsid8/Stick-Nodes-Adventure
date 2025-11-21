@@ -10,34 +10,34 @@ public class Identifier : MonoBehaviour
     public ObjectType typeOfObject;
     public enum ObjectType{Entity, Item, Door, Npc}
     
-    [SerializeField] private MapInfo mapInfo;
+    [SerializeField] private MapManager mapManager;
 
     public void AutomateID(Scene targetScene)
     {
-        if (mapInfo == null)
+        if (mapManager == null)
         {
             var maps = targetScene.GetRootGameObjects();
             foreach (var m in maps)
                 if (m.name == "Map")
                 {
-                    mapInfo = m.GetComponent<MapInfo>(); 
+                    mapManager = m.GetComponent<MapManager>(); 
                     break;
                 }
         }
         var idn = 1;
-        foreach (var eID in mapInfo.enemyIds) if (idn != eID) break; else idn++;
+        foreach (var eID in mapManager.enemyIds) if (idn != eID) break; else idn++;
 
-        for (var i = 0; i < mapInfo.enemyIds.Count; i++)
+        for (var i = 0; i < mapManager.enemyIds.Count; i++)
         {
-            if (mapInfo.enemyIds[i] == 0)
+            if (mapManager.enemyIds[i] == 0)
             {
-                mapInfo.enemyIds[i] = idn;
+                mapManager.enemyIds[i] = idn;
                 spawnId = idn;
                 return;
             }
         }
 
-        mapInfo.enemyIds.Add(idn);
+        mapManager.enemyIds.Add(idn);
         spawnId = idn;
     }
 }

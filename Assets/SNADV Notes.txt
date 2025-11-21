@@ -3,15 +3,17 @@ SNADV Notes
     Ahh man...
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
-    Hotfixes & Priorities
-    
-    Game data and states
-        Save the state of a scene for events that happened in certain areas to be permanent           
-            The plan is getting better, a few issues now regarding
-                persistent data: seems to just be almost entirely broken
-                    this is probably cuz it uses for loops incorrectly, adding constant null fields to stuff like collectable and npc
-                once this gets fixed (basically refining the logic of persistent scene data), it should all be done right???
-                    
+    Hotfixes & Priorities:
+        
+        Game data and states
+            Save the state of a scene for events that happened in certain areas to be permanent           
+                Its basically done! 
+                    The collectables still seem to be broken. 
+                        I dont think it gets spawned right, but the colour and type i think gets saved correctly?
+                        Regardless. i need to make it so that loot items or anythign spawned gets sent to its respective scene, instead of persistent objects
+                            Collectables arent being detected by the map info FOR NO REASON!!!
+                    Once that done, save these to a file and its finished!
+
 
     Optimisations:
         
@@ -48,8 +50,8 @@ SNADV Notes
             
             SFX
                 vine boom XD
-        
-    
+
+
     Things to be added:
         
         Shop logic

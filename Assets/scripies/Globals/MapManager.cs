@@ -1,11 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;
 
-public class MapInfo : MonoBehaviour
+public class MapManager : MonoBehaviour
 {
     
     #region Map Info and Ost
@@ -32,34 +31,31 @@ public class MapInfo : MonoBehaviour
     
     #endregion
 
-    IEnumerator Start()
+    void Start()
     {
-        yield return new WaitForSeconds(0.1f);
-        var scene = SceneManager.GetSceneByName(sceneName.SceneName);
-        sceneObjects = scene.GetRootGameObjects();
-        
-        SaveSceneData();
+        if (SceneDataManager.Instance.sceneData != null) LoadSceneData();
     }
 
     private void Update()
     {
+        var scene = SceneManager.GetSceneByName(sceneName.SceneName);
+        sceneObjects = scene.GetRootGameObjects();
+        SaveSceneData();
+        MakeDataPersistent();
+        
         if (doorSceneData.Count > 0 || doorSceneData != null)
         {
             foreach (var dData in doorSceneData)
-            {
-                foreach (var door in dData.activeDoors.gameObject.GetComponent<DoorObjective>().doorObj)
+                foreach (var door in dData.activeDoors.gameObject.GetComponent<DoorObjective>().doorObj) 
                     dData.isOpen = door.objectiveComplete;
-            }
-
-            if (!string.IsNullOrEmpty(bossSceneData.activeBoss))
+            
+            if (!string.IsNullOrEmpty(bossSceneData.activeBoss) && GameObject.Find(bossSceneData.activeBoss) != null)
             {
                 var boss = GameObject.Find(bossSceneData.activeBoss);
-                if (boss.gameObject.GetComponent<BossHealth>().bossHealth <= 0) bossSceneData.isDead = true;
+                if (boss.gameObject.GetComponent<BossHealth>().bossHealth <= 0) bossSceneData.isDead = true; //else print($"Clueless: {boss.name} is alive with {boss.gameObject.GetComponent<BossHealth>().bossHealth} health");
             }
             
         }
-        
-        //try {print($"we have found {GameObject.Find(bossSceneData.activeBoss).gameObject.name}!");} catch {print("clueless");}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -75,17 +71,34 @@ public class MapInfo : MonoBehaviour
             GameObject.Find("Main Camera").GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
         }
         
-        if (collision.CompareTag("Player")) LoadSceneData();
+        //if (collision.CompareTag("Player")) LoadSceneData();
         
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Item"))
+        {
+            print($"moving {collision.gameObject.name} to {mapName}!");
+            SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(mapName));
+        }
+        else print($"Clueless: {collision.gameObject.name} is not an item i guess...");
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") || collision.CompareTag("Dead")) SaveSceneData();
+        //if (collision.CompareTag("Player") || collision.CompareTag("Dead")) MakeDataPersistent();
+    }
+    
+    private void ClearSceneData()
+    {
+        enemySceneData.Clear();
+        npcSceneData.Clear();
+        collectableSceneData.Clear();
     }
 
     private void SaveSceneData()
     {
+        ClearSceneData();
         foreach (var obj in sceneObjects)
         {
             if (obj != null)
@@ -123,61 +136,67 @@ public class MapInfo : MonoBehaviour
                         {
                             if (cData == null) break;
                             cData.activeCollectables = obj.gameObject;
+                            cData.itemColour = obj.GetComponent<SpriteRenderer>().color;
                             cData.position = obj.transform.position;
                         }
                         break;
-                    //default: print($"Clueless: {obj.name} is {obj.tag}"); break;
                 }
+        }
+    }
+    
+    private void MakeDataPersistent()
+    {
+        var manager = SceneDataManager.Instance;
+        var list = manager.sceneData.Find(x => x.sceneName == sceneName.SceneName);
+
+        if (list == null)
+        {
+            list = new SceneDataManager.SceneList();
+            manager.sceneData.Add(list);
+        }
+
+        list.sceneName = sceneName.SceneName;
+        list.enemies.Clear();
+        list.collectables.Clear();
+        list.npcs.Clear();
+        list.doors.Clear();
+
+        for (var i = 0; i < enemySceneData.Count; i++)
+        {
+            list.enemies.Add(new SceneDataManager.EnemySceneData());
+            list.enemies[i].activeEnemyID = enemySceneData[i].activeEnemies.GetComponent<Identifier>().spawnId;
+            list.enemies[i].isOneTime = enemySceneData[i].isOneTime;
+        }
+
+        for (var i = 0; i < collectableSceneData.Count; i++)
+        {
+            list.collectables.Add(new SceneDataManager.CollectableSceneData());
+            if (collectableSceneData[i].activeCollectables != null) list.collectables[i].activeCollectable = collectableSceneData[i].activeCollectables.gameObject.GetComponent<Collectable>().collectable;
+            list.collectables[i].colour = collectableSceneData[i].itemColour;
+            list.collectables[i].position = collectableSceneData[i].position;
+        }
+
+        for (var i = 0; i < npcSceneData.Count; i++)
+        {
+            list.npcs.Add(new SceneDataManager.NpcSceneData());
+            list.npcs[i].activeNpc = npcSceneData[i].activeNpcs.GetComponent<Identifier>().id;
+            list.npcs[i].willTravel = npcSceneData[i].willTravel;
         }
         
-        var manager = SceneDataManager.Instance;
-        manager.sceneData.Add(new SceneDataManager.SceneList());
-        foreach (var list in manager.sceneData)
+        if (bossSceneData.activeBoss != null)
         {
-            if (list.sceneName == null || list.sceneName == sceneName.SceneName)
-            {
-                list.sceneName = sceneName.SceneName;
-
-                for (var i = 0; i < enemySceneData.Count; i++)
-                {
-                    list.enemies.Add(new SceneDataManager.EnemySceneData());
-                    //list.enemies[i].activeEnemies = enemySceneData[i].activeEnemies.GetComponent<Identifier>().spawnId;
-                    list.enemies[i].isOneTime = enemySceneData[i].isOneTime;
-                }
-
-                for (var i = 0; i < collectableSceneData.Count; i++)
-                {
-                    list.collectables.Add(new SceneDataManager.CollectableSceneData());
-                    list.collectables[i].activeCollectables = collectableSceneData[i].activeCollectables;
-                    list.collectables[i].position = collectableSceneData[i].position;
-                }
-
-                for (var i = 0; i < npcSceneData.Count; i++)
-                {
-                    list.npcs.Add(new SceneDataManager.NpcSceneData());
-                    list.npcs[i].activeNpcs = npcSceneData[i].activeNpcs.GetComponent<Identifier>().id;
-                    list.npcs[i].willTravel = npcSceneData[i].willTravel;
-                }
-             
-                for (var i = 0; i < doorSceneData.Count; i++)
-                {
-                    if (list.doors == null) break;
-                    list.doors.Add(new SceneDataManager.DoorSceneData());
-                    //list.doors[i].activeDoors = doorSceneData[i].activeDoors.gameObject.GetComponent<Identifier>().id;
-                    list.doors[i].isOpen = doorSceneData[i].isOpen;
-                }
-                
-                if (bossSceneData.activeBoss != null)
-                {
-                    list.activeBoss = bossSceneData.activeBoss;
-                    list.isBossDead = bossSceneData.isDead;
-                    list.willBeNpc = bossSceneData.willBeNpc;
-                }
-                
-                return;
-            }
+            list.activeBoss = bossSceneData.activeBoss;
+            if (bossSceneData.isDead) list.isBossDead = true;
+            list.willBeNpc = bossSceneData.willBeNpc;
         }
-        manager.sceneData.RemoveAt(manager.sceneData.Count);
+        
+        for (var i = 0; i < doorSceneData.Count; i++)
+        {
+            if (list.doors == null) break;
+            list.doors.Add(new SceneDataManager.DoorSceneData());
+            list.doors[i].activeDoor = doorSceneData[i].activeDoors.gameObject.GetComponent<Identifier>().id;
+            list.doors[i].isOpen = doorSceneData[i].isOpen;
+        }
     }
 
     private void LoadSceneData()
@@ -185,32 +204,44 @@ public class MapInfo : MonoBehaviour
         var manager = SceneDataManager.Instance;
 
         foreach (var list in manager.sceneData)
+        {
             if (list.sceneName == sceneName.SceneName)
             {
                 for (var i = 0; i < list.enemies.Count; i++)
                 {
-                    if (list.enemies[i].isOneTime && list.enemies[i].activeEnemies == enemySceneData[i].activeEnemies.gameObject.GetComponent<Identifier>().spawnId)
+                    if (list.enemies[i].isOneTime && list.enemies[i].activeEnemyID ==
+                        enemySceneData[i].activeEnemies.gameObject.GetComponent<Identifier>().spawnId)
+                    {
+                        print($"{enemySceneData[i].activeEnemies.name} has been killed prior!");
                         Destroy(enemySceneData[i].activeEnemies.gameObject);
+                    }
                 }
 
                 for (var i = 0; i < list.collectables.Count; i++)
                 {
-                    Instantiate(list.collectables[i].activeCollectables, list.collectables[i].position, Quaternion.identity);
+                    print($"{list.collectables[i].activeCollectable} has been dropped at {list.collectables[i].position}!");
+                    var item = Instantiate(list.ItemToStore, list.collectables[i].position, Quaternion.identity);
+                    item.GetComponent<SpriteRenderer>().color = list.collectables[i].colour;
+                    item.GetComponent<Collectable>().collectable = list.collectables[i].activeCollectable;
                 }
-                
+
                 for (var i = 0; i < list.doors.Count; i++)
                 {
-                    var correctDoor = FindObjectsByType<DoorObjective>(FindObjectsSortMode.None);
-                    foreach (var d in correctDoor) 
-                        if (list.doors[i].isOpen && doorSceneData[i].activeDoors.gameObject.GetComponent<Identifier>().id
-                            == list.doors[i].activeDoors) d.CompleteObjective();
+                    if (list.doors[i].isOpen && doorSceneData[i].activeDoors.gameObject.GetComponent<Identifier>().id
+                        == list.doors[i].activeDoor)
+                    {
+                        doorSceneData[i].activeDoors.gameObject.GetComponentInChildren<ObjectiveDoor>().finishTime = 0;
+                        doorSceneData[i].activeDoors.gameObject.GetComponentInChildren<ObjectiveDoor>().objectiveComplete = true;
+                        doorSceneData[i].activeDoors.gameObject.GetComponent<DoorObjective>().CompleteObjective();
+                    }
                 }
 
                 bossSceneData.activeBoss = list.activeBoss;
-                if (list.isBossDead) Destroy(GameObject.Find(bossSceneData.activeBoss).gameObject);
+                if (list.isBossDead && GameObject.Find(bossSceneData.activeBoss) != null) Destroy(GameObject.Find(bossSceneData.activeBoss).gameObject);
                 bossSceneData.willBeNpc = list.willBeNpc;
                 return;
             }
+        }
         if (!string.IsNullOrEmpty(bossSceneData.activeBoss) && bossSceneData.activeBoss == GameObject.Find(bossSceneData.activeBoss).name && bossSceneData.isDead) 
             Destroy(GameObject.Find(bossSceneData.activeBoss).gameObject);
     }
@@ -251,6 +282,7 @@ public class MapInfo : MonoBehaviour
     public class CollectableSceneData
     {
         public GameObject activeCollectables;
+        public Color itemColour = Color.white;
         public Vector3 position;
     }
 

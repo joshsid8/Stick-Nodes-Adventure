@@ -7,7 +7,7 @@ public class SceneDataManager : MonoBehaviour
     public static SceneDataManager Instance { get; private set; }
 
     public List<SceneList> sceneData = new List<SceneList>();
-
+    
     [Serializable]
     public class SceneList
     {
@@ -16,6 +16,8 @@ public class SceneDataManager : MonoBehaviour
         public List<CollectableSceneData> collectables = new List<CollectableSceneData>();
         public List<NpcSceneData> npcs = new List<NpcSceneData>();
         public List<DoorSceneData> doors = new List<DoorSceneData>();
+
+        public GameObject ItemToStore => GameObject.Find("persistentItem");
         
         public string activeBoss;
         public bool isBossDead;
@@ -37,28 +39,29 @@ public class SceneDataManager : MonoBehaviour
     [Serializable]
     public class EnemySceneData
     {
-        public int activeEnemies;
+        public int activeEnemyID;
         public bool isOneTime;
     }
     
     [Serializable]
     public class NpcSceneData
     {
-        public int activeNpcs;
+        public int activeNpc;
         public bool willTravel;
     }
 
     [Serializable]
     public class CollectableSceneData
     {
-        public GameObject activeCollectables;
+        public CollectableSOBase activeCollectable;
+        public Color colour = Color.white;
         public Vector3 position;
     }
 
     [Serializable]
     public class DoorSceneData
     {
-        public int activeDoors;
+        public int activeDoor;
         public bool isOpen = true;
     }
 

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class Loot : MonoBehaviour
@@ -16,6 +17,7 @@ public class Loot : MonoBehaviour
     
     private bool dropping = true;
 
+
     [SerializeField] private float minPopX;
     [SerializeField] private float maxPopX;
     
@@ -27,25 +29,23 @@ public class Loot : MonoBehaviour
         if (dropping)
         {
             dropping = false;
-            for (int i = 0; i < possibleItems.Length; i++)
+            for (var i = 0; i < possibleItems.Length; i++)
             {
-                float iRng = Random.Range(0.00f, 100.00f);
+                var iRng = Random.Range(0.00f, 100.00f);
                 if (iRng <= itemChance[i])
                 {
-                    GameObject item = Instantiate(itemLoot[i], transform.position, transform.rotation);
+                    var item = Instantiate(itemLoot[i], transform.position, transform.rotation);
                     item.GetComponent<Collectable>().collectable = possibleItems[i];
-                    item.GetComponent<Rigidbody2D>().linearVelocity =
-                        new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
+                    item.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
                 }
             }
 
-            int rng = Random.Range(minMoneyAmount, maxMoneyAmount);
-            for (int i = 0; i < rng; i++)
+            var rng = Random.Range(minMoneyAmount, maxMoneyAmount);
+            for (var i = 0; i < rng; i++)
             {
-                GameObject money = Instantiate(moneyLoot, transform.position, transform.rotation);
+                var money = Instantiate(moneyLoot, transform.position, transform.rotation);
                 money.GetComponent<Collectable>().collectable = currencyType;
-                money.GetComponent<Rigidbody2D>().linearVelocity =
-                    new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
+                money.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
             }
         }
     }

@@ -14,7 +14,7 @@ public class Collectable : MonoBehaviour
     {
         collectable.Collect(objectCollected);
     }
-
+    
     private void Update()
     {
         onGround = Physics2D.Raycast(transform.position, Vector2.down * transform.localScale.y, edgeCheckRay, LayerMask.GetMask("Ground", "Platform"));

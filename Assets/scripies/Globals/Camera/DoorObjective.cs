@@ -20,9 +20,10 @@ public class DoorObjective : MonoBehaviour
         FindKeys,
         DefeatBoss
     }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-        switch (objective)
+        if (!isOpen) switch (objective)
         {
             case Objectives.DefeatEnemy:
                 if (collision.gameObject.CompareTag("Enemy"))
@@ -46,12 +47,14 @@ public class DoorObjective : MonoBehaviour
 
     public void CompleteObjective()
     {
-        foreach (var door in doorObj) door.objectiveComplete = true;
         isOpen = true;
     }
 
     private void Update()
     {
+        
+        if (isOpen) foreach (var door in doorObj) door.objectiveComplete = true;
+        
         switch (objective)
         {
             case Objectives.DefeatEnemy:
@@ -60,8 +63,8 @@ public class DoorObjective : MonoBehaviour
             case Objectives.FindKeys:
                 if (playerDetected)
                 {
-                    foreach (var key in keys) 
-                        if (!InvManager.Instance.Index.HasAtLeast(key, 1)) return;
+                    foreach (var key in keys) if (!InvManager.Instance.Index.HasAtLeast(key, 1)) 
+                        return;
                     CompleteObjective();
                     foreach (var key in keys)
                     {
@@ -71,8 +74,11 @@ public class DoorObjective : MonoBehaviour
                 }
                 break;
             case Objectives.DefeatBoss:
-                BossHealth bossHealth = boss.GetComponent<BossHealth>();
-                if (bossHealth != null && bossHealth.isDead) CompleteObjective();
+                if (boss != null)
+                {
+                    BossHealth bossHealth = boss.GetComponent<BossHealth>();
+                    if (bossHealth != null && bossHealth.isDead) CompleteObjective();
+                }
                 break;
             default:
                 print("Just clueless.");
