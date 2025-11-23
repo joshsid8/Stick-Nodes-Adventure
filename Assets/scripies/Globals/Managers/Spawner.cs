@@ -8,6 +8,8 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private EnemySpawn[] eSpawn;
     [SerializeField] private SceneField scene;
+
+    public bool spawnAbility = true;
     
     public GameObject[] spawnPoints;
     public float spawnTime;
@@ -17,7 +19,7 @@ public class Spawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private IEnumerator Start()
     {
-        if (canSpawn)
+        if (canSpawn && spawnAbility)
         {
             foreach (var spawn in eSpawn)
             {
@@ -41,7 +43,7 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator Spawn()
     {
-        if (canSpawn)
+        if (canSpawn && spawnAbility)
         {
             foreach (var spawn in eSpawn)
             {

@@ -7,16 +7,18 @@ public class SaveSystem
 {
     private static SaveData saveData = new SaveData
     {
+        sceneData = new SceneData(true),
         playerCurrentData = new PlayerSaveCurrentData(),
         playerStats = new PlayerSaveStats(),
         playerInventory = new PlayerSaveInventory(),
         playerIndex = PlayerSaveIndex.CreateNew(),
         playerQuests = new PlayerSaveQuests()
     };
-    
+
     [System.Serializable]
     public struct SaveData
     {
+        public SceneData sceneData;
         public PlayerSaveCurrentData playerCurrentData;
         public PlayerSaveStats playerStats;
         public PlayerSaveInventory playerInventory;
@@ -29,17 +31,20 @@ public class SaveSystem
         var saveFile = Application.persistentDataPath + "/save" + ".sna";
         return saveFile;
     }
+
     public static void HandleSaveData()
     {
+        SceneDataManager.Instance.Save(ref saveData.sceneData);
         PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);
         PlayerManager.Instance.Save(ref saveData.playerStats);
         InvManager.Instance.Save(ref saveData.playerInventory);
         InvManager.Instance.Index.Save(ref saveData.playerIndex);
         QuestLogManager.Instance.Save(ref saveData.playerQuests);
     }
-    
+
     public static void HandleLoadData()
     {
+        SceneDataManager.Instance.Load(saveData.sceneData);
         PlayerHealth.Instance.pc.Load(saveData.playerCurrentData);
         PlayerManager.Instance.Load(saveData.playerStats);
         InvManager.Instance.Load(saveData.playerInventory);
@@ -57,7 +62,10 @@ public class SaveSystem
             File.WriteAllText(SaveFileName(), json);
             Debug.Log($"[SaveSystem] Saved to: {SaveFileName()}");
         }
-        catch (IOException ex) {Debug.LogError($"[SaveSystem] Failed to save: {ex.Message}");}
+        catch (IOException ex)
+        {
+            Debug.LogError($"[SaveSystem] Failed to save: {ex.Message}");
+        }
 
     }
 
@@ -72,13 +80,17 @@ public class SaveSystem
 
         try
         {
-            string saveDataString = File.ReadAllText(path);
+            var saveDataString = File.ReadAllText(path);
             saveData = JsonUtility.FromJson<SaveData>(saveDataString);
 
             HandleLoadData();
             Debug.Log($"[SaveSystem] Loaded from: {path}");
         }
-        catch (IOException ex) { Debug.LogError($"[SaveSystem] Failed to load: {ex.Message}"); }
-    } 
-    
+        catch (IOException ex)
+        {
+            Debug.LogError($"[SaveSystem] Failed to load: {ex.Message}");
+        }
+
+    }
+
 }

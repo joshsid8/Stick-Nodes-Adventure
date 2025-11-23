@@ -448,6 +448,7 @@ MonoBehaviour:
   scene:
     m_SceneAsset: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
     m_SceneName: Water Teste
+  spawnAbility: 1
   spawnPoints:
   - {fileID: 1013854085}
   spawnTime: 20
@@ -570,13 +571,14 @@ MonoBehaviour:
   mapBgColor: {r: 0.008899963, g: 0.33364302, b: 0.3773585, a: 1}
   newOst:
   - {fileID: 8300000, guid: c669484eb0d37a943bee55cb9de126ad, type: 3}
-  - {fileID: 8300000, guid: 7a360ec1026e63e48ae4e2e8e4e26085, type: 3}
   - {fileID: 8300000, guid: 709d55a8c27b70744a32225517e0be7d, type: 3}
+  - {fileID: 8300000, guid: 7a360ec1026e63e48ae4e2e8e4e26085, type: 3}
   sceneName:
     m_SceneAsset: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
     m_SceneName: Water Teste
+  sceneObjects: []
   enemySceneData: []
-  enemyIDs: 
+  enemyIds: 
   bossSceneData:
     activeBoss: 
     isDead: 0
@@ -1929,6 +1931,7 @@ MonoBehaviour:
   scene:
     m_SceneAsset: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
     m_SceneName: Water Teste
+  spawnAbility: 1
   spawnPoints:
   - {fileID: 1942535142}
   - {fileID: 1041742246}

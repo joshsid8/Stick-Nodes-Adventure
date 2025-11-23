@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class SceneDataManager : MonoBehaviour
@@ -7,7 +8,7 @@ public class SceneDataManager : MonoBehaviour
     public static SceneDataManager Instance { get; private set; }
 
     public List<SceneList> sceneData = new List<SceneList>();
-    
+
     [Serializable]
     public class SceneList
     {
@@ -56,6 +57,7 @@ public class SceneDataManager : MonoBehaviour
         public CollectableSOBase activeCollectable;
         public Color colour = Color.white;
         public Vector3 position;
+        public string collectableName;
     }
 
     [Serializable]
@@ -69,28 +71,28 @@ public class SceneDataManager : MonoBehaviour
 
     public void Save(ref SceneData data)
     {
-        for (var i = 0; i < data.sceneData.Count; i++)
-        {
-            data.sceneData[i].sceneName = sceneData[i].sceneName;
-            
-        }
+        data.realSceneData.Clear();
+        data.realSceneData ??= new List<SceneList>();
+        data.realSceneData.AddRange(sceneData);
+    }
+
+    public void Load(SceneData data)
+    {
+        sceneData.Clear();
+        sceneData = data.realSceneData;
+
+        SceneManager.LoadSceneAsync("Persistent Objects", LoadSceneMode.Single);
+        foreach (var scene in sceneData) SceneManager.LoadSceneAsync(scene.sceneName, LoadSceneMode.Additive);
     }
 }
 
 [Serializable]
-public class SceneData
+public struct SceneData
 {
-    public List<SceneList> sceneData = new List<SceneList>();
-    public class SceneList
+    public List<SceneDataManager.SceneList> realSceneData;
+
+    public SceneData(bool initialize)
     {
-        public string sceneName;
-        public List<EnemySceneData> enemies = new List<EnemySceneData>();
-        public List<CollectableSceneData> collectables = new List<CollectableSceneData>();
-        public List<NpcSceneData> npcs = new List<NpcSceneData>();
-        public List<DoorSceneData> doors = new List<DoorSceneData>();
-        
-        public string activeBoss;
-        public bool isDead;
-        public bool willBeNpc;
+        realSceneData = new List<SceneDataManager.SceneList>();
     }
 }

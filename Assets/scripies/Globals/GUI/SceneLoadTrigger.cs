@@ -7,7 +7,6 @@ public class SceneLoadTrigger : MonoBehaviour
     [SerializeField] private SceneField[] scenesToUnload;
     
     private GameObject player;
-    public GameObject[] sceneObjs;
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");

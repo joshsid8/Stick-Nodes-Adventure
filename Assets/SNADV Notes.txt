@@ -8,11 +8,13 @@ SNADV Notes
         Game data and states
             Save the state of a scene for events that happened in certain areas to be permanent           
                 Its basically done! 
-                    The collectables still seem to be broken. 
-                        I dont think it gets spawned right, but the colour and type i think gets saved correctly?
-                        Regardless. i need to make it so that loot items or anythign spawned gets sent to its respective scene, instead of persistent objects
-                            Collectables arent being detected by the map info FOR NO REASON!!!
+                    I think enemies need some polishing
+                        The id and spawn ids i dont think are being matched correctly.
+                        There should also be a bool for checking if the enemy doesnt respawn after dying
+                            That way stuff like minibosses or enhanced enemies can be shown only once.
                     Once that done, save these to a file and its finished!
+                        Saving to a file is done, but reloading needs fixing
+                            It loads all the data BEFORE the scene unloads. i need to find a way to reverse the order
 
 
     Optimisations:

@@ -29,14 +29,17 @@ public class Loot : MonoBehaviour
         if (dropping)
         {
             dropping = false;
+            var targetScene = gameObject.scene;
+            
             for (var i = 0; i < possibleItems.Length; i++)
             {
-                var iRng = Random.Range(0.00f, 100.00f);
+                var iRng = Random.Range(0.00f, 101.00f);
                 if (iRng <= itemChance[i])
                 {
                     var item = Instantiate(itemLoot[i], transform.position, transform.rotation);
                     item.GetComponent<Collectable>().collectable = possibleItems[i];
                     item.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
+                    SceneManager.MoveGameObjectToScene(item, targetScene);
                 }
             }
 
@@ -46,6 +49,7 @@ public class Loot : MonoBehaviour
                 var money = Instantiate(moneyLoot, transform.position, transform.rotation);
                 money.GetComponent<Collectable>().collectable = currencyType;
                 money.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
+                SceneManager.MoveGameObjectToScene(money, targetScene);
             }
         }
     }
