@@ -405,7 +405,7 @@ MonoBehaviour:
   id: 2
   spawnId: 0
   typeOfObject: 2
-  mapInfo: {fileID: 0}
+  mapManager: {fileID: 0}
 --- !u!1001 &13528097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5489,7 +5489,7 @@ MonoBehaviour:
   id: 6
   spawnId: 0
   typeOfObject: 0
-  mapInfo: {fileID: 580845223}
+  mapManager: {fileID: 0}
 --- !u!1 &1174752089
 GameObject:
   m_ObjectHideFlags: 0
@@ -6817,6 +6817,7 @@ MonoBehaviour:
   scene:
     m_SceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
     m_SceneName: Fire Teste
+  spawnAbility: 1
   spawnPoints:
   - {fileID: 680430036}
   - {fileID: 1600199101}
@@ -9939,11 +9940,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -27.4
+      value: -17.19
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.56
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.z

@@ -45,11 +45,17 @@ public class DoorObjective : MonoBehaviour
         }
     }
 
-    public void CompleteObjective()
+    public void InstantOpen()
     {
-        isOpen = true;
+        foreach (var door in doorObj)
+        {
+            if (door != null)
+            {
+                door.finishTime = 0;
+                door.objectiveComplete = true;
+            }
+        }
     }
-
     private void Update()
     {
         
@@ -58,14 +64,14 @@ public class DoorObjective : MonoBehaviour
         switch (objective)
         {
             case Objectives.DefeatEnemy:
-                if (enemies == null) CompleteObjective();
+                if (enemies == null) isOpen = true;
                 break;
             case Objectives.FindKeys:
                 if (playerDetected)
                 {
                     foreach (var key in keys) if (!InvManager.Instance.Index.HasAtLeast(key, 1)) 
                         return;
-                    CompleteObjective();
+                    isOpen = true;
                     foreach (var key in keys)
                     {
                         foreach (var item in InvManager.Instance.itemSlots)
@@ -77,7 +83,7 @@ public class DoorObjective : MonoBehaviour
                 if (boss != null)
                 {
                     BossHealth bossHealth = boss.GetComponent<BossHealth>();
-                    if (bossHealth != null && bossHealth.isDead) CompleteObjective();
+                    if (bossHealth != null && bossHealth.isDead) isOpen = true;
                 }
                 break;
             default:

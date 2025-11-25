@@ -93,7 +93,7 @@ public class MapManager : MonoBehaviour
                         var newEnemy = new EnemySceneData
                         {
                             activeEnemies = obj.gameObject,
-                            isOneTime = obj.gameObject.GetComponent<EnemyHealth>().isOneTime
+                            //isOneTime = obj.gameObject.GetComponent<EnemyHealth>().isOneTime
                         };
                         enemySceneData.Add(newEnemy);
                         if (!enemyIds.Contains(obj.gameObject.GetComponent<Identifier>().spawnId)) enemyIds.Add(obj.gameObject.GetComponent<Identifier>().spawnId);
@@ -143,7 +143,7 @@ public class MapManager : MonoBehaviour
         {
             list.enemies.Add(new SceneDataManager.EnemySceneData());
             list.enemies[i].activeEnemyID = enemySceneData[i].activeEnemies.GetComponent<Identifier>().spawnId;
-            list.enemies[i].isOneTime = enemySceneData[i].isOneTime;
+            //list.enemies[i].isOneTime = enemySceneData[i].isOneTime;
         }
 
         for (var i = 0; i < collectableSceneData.Count; i++)
@@ -178,7 +178,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    private void LoadSceneData()
+    public void LoadSceneData()
     {
         var manager = SceneDataManager.Instance;
 
@@ -188,12 +188,12 @@ public class MapManager : MonoBehaviour
             {
                 for (var i = 0; i < list.enemies.Count; i++)
                 {
-                    if (list.enemies[i].isOneTime && list.enemies[i].activeEnemyID ==
+                    /*if (list.enemies[i].isOneTime && list.enemies[i].activeEnemyID ==
                         enemySceneData[i].activeEnemies.gameObject.GetComponent<Identifier>().spawnId)
                     {
                         print($"{enemySceneData[i].activeEnemies.name} has been killed prior!");
                         Destroy(enemySceneData[i].activeEnemies.gameObject);
-                    }
+                    }*/
                 }
 
                 for (var i = 0; i < list.collectables.Count; i++)
@@ -206,14 +206,10 @@ public class MapManager : MonoBehaviour
 
                 for (var i = 0; i < list.doors.Count; i++)
                 {
-                    if (list.doors[i].isOpen && doorSceneData[i].activeDoors.gameObject.GetComponent<Identifier>().id == list.doors[i].activeDoor)
-                    {
-                        doorSceneData[i].activeDoors.gameObject.GetComponentInChildren<ObjectiveDoor>().finishTime = 0;
-                        doorSceneData[i].activeDoors.gameObject.GetComponentInChildren<ObjectiveDoor>().objectiveComplete = true;
-                        doorSceneData[i].activeDoors.gameObject.GetComponent<DoorObjective>().CompleteObjective();
-                    }
+                    if (list.doors[i].isOpen && doorSceneData[i].activeDoors.gameObject.GetComponent<Identifier>().id == list.doors[i].activeDoor) 
+                        doorSceneData[i].activeDoors.gameObject.GetComponent<DoorObjective>().InstantOpen();
                 }
-
+                
                 bossSceneData.activeBoss = list.activeBoss;
                 if (list.isBossDead && GameObject.Find(bossSceneData.activeBoss) != null) 
                     Destroy(GameObject.Find(bossSceneData.activeBoss).gameObject);
@@ -233,10 +229,10 @@ public class MapManager : MonoBehaviour
     {
         [Tooltip("Ensure these are spawners unless they are one-time enemies")] 
         public GameObject activeEnemies; 
-        [Tooltip("Will this enemy spawn again once the scene loads?")] 
-        public bool isOneTime;
-        [Tooltip("Has this enemy died before the player left the scene?")]
-        public bool isDead;
+        //[Tooltip("Will this enemy spawn again once the scene loads?")] 
+        //public bool isOneTime;
+        //[Tooltip("Has this enemy died before the player left the scene?")]
+        //public bool isDead;
     }
 
     [Serializable]

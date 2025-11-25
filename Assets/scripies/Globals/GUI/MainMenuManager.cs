@@ -30,6 +30,7 @@ public class MainMenuManager : MonoBehaviour
         
         scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
         scenesToLoad.Add(SceneManager.LoadSceneAsync(levelScene, LoadSceneMode.Additive));
+        SaveSystem.Load();
         StartCoroutine(ProgressLoading());
     }
 

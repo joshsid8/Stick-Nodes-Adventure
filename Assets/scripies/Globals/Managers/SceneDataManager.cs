@@ -80,9 +80,20 @@ public class SceneDataManager : MonoBehaviour
     {
         sceneData.Clear();
         sceneData = data.realSceneData;
-
-        SceneManager.LoadSceneAsync("Persistent Objects", LoadSceneMode.Single);
-        foreach (var scene in sceneData) SceneManager.LoadSceneAsync(scene.sceneName, LoadSceneMode.Additive);
+        foreach (var list in sceneData)
+        {
+            var scene = SceneManager.GetSceneByName(list.sceneName);
+            var sceneObjects = scene.GetRootGameObjects();
+            foreach (var obj in sceneObjects)
+            {
+                if (obj.name == "Map")
+                {
+                    obj.GetComponent<MapManager>().LoadSceneData();
+                    return;
+                }
+            }
+            
+        }
     }
 }
 
