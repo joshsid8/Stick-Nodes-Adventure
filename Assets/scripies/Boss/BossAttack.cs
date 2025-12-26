@@ -33,6 +33,8 @@ public class BossAttack : MonoBehaviour
     [HideInInspector] public bool isTouchingWall;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckRay;
+    public bool stunnable;
+    public float stunnableTimer;
 
     public bool isFacingRight;
     public bool canFacePlayer;
@@ -51,9 +53,7 @@ public class BossAttack : MonoBehaviour
         bh = GetComponent<BossHealth>();
         animator = GetComponent<Animator>();
         currentAttackCooldown = attackCooldown;
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null) playerTransform = playerObject.transform;
-        else Debug.LogError("bruh");
+        playerTransform = PlayerHealth.Instance.gameObject.transform;
         dt = GetComponent<DialogueTrigger>();
         originalPosition = transform.position;
     }
@@ -66,10 +66,6 @@ public class BossAttack : MonoBehaviour
         FactorCheck();
         if (isAttacking) AttackSystem2();
         StartCoroutine(Restart());
-        if (!PlayerHealth.Instance.isDead && playerIsDead) playerIsDead = false;
-        inRange = Physics2D.OverlapCircle(dt.chatPoint.position, dt.chatRadius, LayerMask.GetMask("Player"));
-        if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.enabled && noMercy)
-            if (!bh.isDead && !bh.deathToggle) isAttacking = true; 
     }
 
     private void FactorCheck()
@@ -84,6 +80,7 @@ public class BossAttack : MonoBehaviour
         canFacePlayer = true;
         if (canAttack)
         {
+            stunnableTimer = 0;
             if (closeRange)
             {
                 attackFactor = Random.Range(0, defensiveAtk.Length);
@@ -103,6 +100,8 @@ public class BossAttack : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         isTouchingWall = Physics2D.Raycast(wallCheck.position, Vector2.up * transform.localScale.y, wallCheckRay, LayerMask.GetMask("Wall"));
         animator.SetBool("isGrounded", isGrounded);
+        animator.SetBool("isAttacking", isAttacking);
+        
         BossHealthUI.Instance.gameObject.SetActive(isAttacking);
         
         if (currentAttackCooldown > 0 && isAttacking)
@@ -111,6 +110,15 @@ public class BossAttack : MonoBehaviour
             currentAttackCooldown -= Time.deltaTime;
         }
         else if (currentAttackCooldown <= 0 && isAttacking && isGrounded) canAttack = true;
+        
+        if (!PlayerHealth.Instance.isDead && playerIsDead) playerIsDead = false;
+        inRange = Physics2D.OverlapCircle(dt.chatPoint.position, dt.chatRadius, LayerMask.GetMask("Player"));
+        
+        if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.enabled && noMercy) 
+            if (!bh.isDead && !bh.deathToggle) isAttacking = true; 
+        
+        if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
+        stunnable = stunnableTimer > 0;
     }
     
     private void Movement()
@@ -140,6 +148,12 @@ public class BossAttack : MonoBehaviour
     public void ActionCooldown(float cooldownTime)
     {
         currentAttackCooldown = bh.phase2 ?  cooldownTime * 0.5f : cooldownTime;
+        //GuardDown();
+    }
+
+    private void GuardDown(float stunnableTime = 0.4f)
+    {
+        stunnableTimer += stunnableTime;
     }
 
     IEnumerator Restart()

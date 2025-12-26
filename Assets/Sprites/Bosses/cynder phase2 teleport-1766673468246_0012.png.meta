@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: 9bc3b3b79eb58734cbb2f1b45b9b025f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1035274672432069558
+    second: cynder phase2 teleport-1766673468246_0012_0
+  - first:
+      213: 8993434923560628973
+    second: cynder phase2 teleport-1766673468246_0012_1
+  - first:
+      213: -2037502966403813551
+    second: cynder phase2 teleport-1766673468246_0012_2
+  - first:
+      213: 2966283695014999843
+    second: cynder phase2 teleport-1766673468246_0012_3
+  - first:
+      213: -838376482008955373
+    second: cynder phase2 teleport-1766673468246_0012_4
+  - first:
+      213: 2592791855297962002
+    second: cynder phase2 teleport-1766673468246_0012_5
+  - first:
+      213: -2681264842992304675
+    second: cynder phase2 teleport-1766673468246_0012_6
+  - first:
+      213: 7954200533932735409
+    second: cynder phase2 teleport-1766673468246_0012_7
+  - first:
+      213: -1960179642986253747
+    second: cynder phase2 teleport-1766673468246_0012_8
+  - first:
+      213: 226369052436883175
+    second: cynder phase2 teleport-1766673468246_0012_9
+  - first:
+      213: 4668794342065747454
+    second: cynder phase2 teleport-1766673468246_0012_10
+  - first:
+      213: 1310910463158824417
+    second: cynder phase2 teleport-1766673468246_0012_11
+  - first:
+      213: -1719708545803623469
+    second: cynder phase2 teleport-1766673468246_0012_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 0
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_0
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 602
+        width: 58
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a444ab8ab27f1a1f0800000000000000
+      internalID: -1035274672432069558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_1
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 574
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de27c69e9691fcc70800000000000000
+      internalID: 8993434923560628973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_2
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 515
+        width: 36
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15f22b2e8d559b3e0800000000000000
+      internalID: -2037502966403813551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_3
+      rect:
+        serializedVersion: 2
+        x: 629
+        y: 529
+        width: 40
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 327f668fd4b5a2920800000000000000
+      internalID: 2966283695014999843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_4
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 480
+        width: 26
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31680d1180d7d54f0800000000000000
+      internalID: -838376482008955373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_5
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 463
+        width: 42
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 210af8784727bf320800000000000000
+      internalID: 2592791855297962002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_6
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 484
+        width: 41
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddd33bcc4db3acad0800000000000000
+      internalID: -2681264842992304675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_7
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 432
+        width: 16
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bb78411e3ff26e60800000000000000
+      internalID: 7954200533932735409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_8
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 447
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d423adb000b0cc4e0800000000000000
+      internalID: -1960179642986253747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_9
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 424
+        width: 13
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e664ae2479342300800000000000000
+      internalID: 226369052436883175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_10
+      rect:
+        serializedVersion: 2
+        x: 729
+        y: 372
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef5be20c7b3eac040800000000000000
+      internalID: 4668794342065747454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_11
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 355
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1edace8ee1a413210800000000000000
+      internalID: 1310910463158824417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cynder phase2 teleport-1766673468246_0012_12
+      rect:
+        serializedVersion: 2
+        x: 782
+        y: 344
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d3eb22603e5228e0800000000000000
+      internalID: -1719708545803623469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      cynder phase2 teleport-1766673468246_0012_0: -1035274672432069558
+      cynder phase2 teleport-1766673468246_0012_1: 8993434923560628973
+      cynder phase2 teleport-1766673468246_0012_10: 4668794342065747454
+      cynder phase2 teleport-1766673468246_0012_11: 1310910463158824417
+      cynder phase2 teleport-1766673468246_0012_12: -1719708545803623469
+      cynder phase2 teleport-1766673468246_0012_2: -2037502966403813551
+      cynder phase2 teleport-1766673468246_0012_3: 2966283695014999843
+      cynder phase2 teleport-1766673468246_0012_4: -838376482008955373
+      cynder phase2 teleport-1766673468246_0012_5: 2592791855297962002
+      cynder phase2 teleport-1766673468246_0012_6: -2681264842992304675
+      cynder phase2 teleport-1766673468246_0012_7: 7954200533932735409
+      cynder phase2 teleport-1766673468246_0012_8: -1960179642986253747
+      cynder phase2 teleport-1766673468246_0012_9: 226369052436883175
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

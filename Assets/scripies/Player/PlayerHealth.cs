@@ -72,8 +72,8 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         Tint();
         Regeneration();
         healthBar.fillAmount = playerHealth / playerMaxHealth;
-        healthText.text = playerHealth == playerMaxHealth ? playerHealth.ToString("F0") +  " / " + playerMaxHealth.ToString("F0")
-            : playerHealth.ToString("F1") +  " / " + playerMaxHealth.ToString("F0");
+        //healthText.text = playerHealth == playerMaxHealth ? playerHealth.ToString("F0") +  " / " + playerMaxHealth.ToString("F0")
+        //    : playerHealth.ToString("F1") +  " / " + playerMaxHealth.ToString("F0");
         if (playerHealth < 0) playerHealth = 0;
         if (playerHealth > playerMaxHealth) playerExtraHealth = playerHealth - playerMaxHealth;
         if (isDead) 

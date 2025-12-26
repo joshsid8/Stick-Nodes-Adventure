@@ -837,6 +837,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: GuardDown
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.4375
     functionName: ActionCooldown
     data: 
@@ -849,5 +856,12 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 35
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.625
+    functionName: GuardDown
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0.6
     intParameter: 0
     messageOptions: 0

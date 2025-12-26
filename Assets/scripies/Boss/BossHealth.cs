@@ -39,6 +39,7 @@ public class BossHealth : MonoBehaviour, EDamageables
     private BossAttack ba;
     Animator animator;
     float stunTime;
+    public bool isStunned;
     private Knockback kb;
     public bool movable = true;
     
@@ -63,10 +64,11 @@ public class BossHealth : MonoBehaviour, EDamageables
         animator.SetBool("phase2", phase2);
         Tint();
         healthBar.fillAmount = bossHealth / bossMaxHealth;
-        healthText.text = bossHealth == bossMaxHealth ? bossHealth.ToString("F0") +  " / " + bossMaxHealth.ToString("F0")
-            : bossHealth.ToString("F1") +  " / " + bossMaxHealth.ToString("F0");
+        //healthText.text = bossHealth == bossMaxHealth ? bossHealth.ToString("F0") +  " / " + bossMaxHealth.ToString("F0")
+        //    : bossHealth.ToString("F1") +  " / " + bossMaxHealth.ToString("F0");
         bossTitle.text = bossName;
-        
+        stunTime -= Time.deltaTime;
+        isStunned = stunTime > 0;
     }
     
     private IEnumerator Defeat()
@@ -102,7 +104,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         }
         else if (isBlocking && shieldHealth <= 0)
         {
-            animator.SetTrigger("Guard Break");
+            animator.SetTrigger("Damaged");
             bossHealth -= damageAmount * 1.2f;
             if (movable) kb.CallKnockback(knockbackForce / 2, 0);
             spriteRenderer.color = damageTint;
@@ -117,6 +119,12 @@ public class BossHealth : MonoBehaviour, EDamageables
         {
             bossHealth -= damageAmount;
             if (movable) kb.CallKnockback(knockbackForce / 2, 0);
+            if (ba.stunnable && movable)
+            {
+                var rng = Random.Range(0, 3);
+                animator.SetInteger("dmgrng", rng);
+                animator.SetTrigger("Damaged");
+            }
             spriteRenderer.color = damageTint;
             isTinting = true;
         }
@@ -136,17 +144,12 @@ public class BossHealth : MonoBehaviour, EDamageables
         if (isTinting && !isDead)
         {
             spriteRenderer.color = Color.Lerp(spriteRenderer.color, originalColor, tintSpeed * Time.deltaTime);
-            if (spriteRenderer.color == originalColor)
-            {
-                isTinting = false;
-            }
+            if (spriteRenderer.color == originalColor) isTinting = false;
         }
     }
     public void Stun(float stunDuration)
     {
-        // bosses cant get stunned so dis useless fr
-        stunTime = stunDuration;
-        stunTime = 0;
-        if (stunTime >= 69) Debug.Log("jump yourself");
+        stunTime = ba.stunnable ? stunDuration : 0;
+        if (stunTime >= 69) print("jump yourself");
     }
 }

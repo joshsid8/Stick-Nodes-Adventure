@@ -369,6 +369,13 @@ AnimationClip:
     floatParameter: 50
     intParameter: 0
     messageOptions: 0
+  - time: 3.0666666
+    functionName: GuardDown
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0.6
+    intParameter: 0
+    messageOptions: 0
   - time: 3.2
     functionName: ProjectileShoot
     data: 

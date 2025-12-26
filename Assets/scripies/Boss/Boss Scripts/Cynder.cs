@@ -59,6 +59,7 @@ public class Cynder : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private BossAttack ba;
+    private BossHealth bh;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -66,6 +67,8 @@ public class Cynder : MonoBehaviour
         ba = GetComponent<BossAttack>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        bh = GetComponent<BossHealth>();
+        
         originalProjectileDirection = projectileDirection;
         reverseProjectileDirection = -projectileDirection;
     }
@@ -75,36 +78,52 @@ public class Cynder : MonoBehaviour
     {
         Dash();
         FlyDash();
+
         isInRange = Physics2D.OverlapCircle(transform.position, attackRange * 1.5f, ba.playerLayer);
-        if (freezeMovement) rb.linearVelocity = Vector2.zero;
-        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-        dashDirection = (ba.playerTransform.position - transform.position).normalized;
-        if (rb.linearVelocity.y < 0) isFalling = true; else isFalling = false;
+        rb.linearVelocity = freezeMovement ? Vector2.zero : new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+        //dashDirection = (ba.playerTransform.position - transform.position).normalized;
+        
+        isFalling = rb.linearVelocity.y < 0;
+        
         animator.SetBool("isFalling", isFalling);
-        if (GetComponent<BossHealth>().phase2) animator.speed = 1.2f;
-        if (ba.isFacingRight)
-            projectileDirection = new Vector2(reverseProjectileDirection.x, projectileDirection.y);
-        if (!ba.isFacingRight)
-            projectileDirection = new Vector2(originalProjectileDirection.x, projectileDirection.y);
+        
+        animator.speed = bh.phase2 ? 1.15f : 1;
+        
+        if (ba.isFacingRight) projectileDirection = new Vector2(reverseProjectileDirection.x, projectileDirection.y);
+        else projectileDirection = new Vector2(originalProjectileDirection.x, projectileDirection.y);
         
         unavailable = Physics2D.OverlapCircle(projectilePoint.position, 0.5f, terrainLayers);
+
     }
     
     private void Dash()
     {
-        if (isDashing) 
-            rb.linearVelocity = ba.isFacingRight ? new Vector2(dashSpeed, rb.linearVelocity.y) : new Vector2(-dashSpeed, rb.linearVelocity.y);
+        if (isDashing) rb.linearVelocity = ba.isFacingRight ? new Vector2(dashSpeed, rb.linearVelocity.y) :
+            new Vector2(-dashSpeed, rb.linearVelocity.y);
         else if (!isDashing) rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
 
+    private void FindPlayerPosition()
+    {
+        var rng = Random.Range(0, 101);
+        var prediction = rng <= 70;
+        if (!prediction) dashDirection = (ba.playerTransform.position - transform.position).normalized;
+        else
+        {
+            var x = PlayerHealth.Instance.pc.rb.linearVelocity.x;
+            var y = PlayerHealth.Instance.pc.rb.linearVelocity.y;
+            var predictedDistanceX = x > 0 ? x * 0.2f : x * 0.2f * -1;
+            var predictedDistanceY = y > 0 ? y * 0.2f : y * 0.2f * -1;
+            dashDirection = new Vector2(ba.playerTransform.position.x + predictedDistanceX - transform.position.x,
+                ba.playerTransform.position.y + predictedDistanceY - transform.position.y).normalized;
+        }
+    }
+    
     private void FlyDash()
     {
         if (isFlyDashing)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-            player.GetComponent<PlayerController>().isFrozen = true;
-            rb.linearVelocity = dashDirection * dashSpeed;
+            rb.linearVelocity = bh.phase2 ? dashDirection * dashSpeed * 1.2f : dashDirection * dashSpeed;
             if (isInRange)
             {
                 isFlyDashing = false;
@@ -112,19 +131,13 @@ public class Cynder : MonoBehaviour
                 ba.ActionCooldown(dashCooldown);
             }
         }
-
-        if (!isFlyDashing)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.GetComponent<PlayerController>().isFrozen = false;
-        }
+        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
     
     public void ProjectileShoot()
     {
-        GameObject newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
-        EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
+        var newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
+        var fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
         if (fireballScript != null)
             fireballScript.SetValues(ba.isFacingRight, projectileSpeed, projectileDirection, false, damageType);
         else 
@@ -135,11 +148,11 @@ public class Cynder : MonoBehaviour
     
     public void SecondaryProjectileShoot()
     {
-        GameObject newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
-        EnemyFireProjectile fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
+        var newProjectile = Instantiate(projectile, projectilePoint.position, projectilePoint.rotation);
+        var fireballScript = newProjectile.GetComponent<EnemyFireProjectile>();
         if (fireballScript != null)
         {
-            float rng = Random.Range(-2.0f, 2.0f);
+            var rng = Random.Range(-2.0f, 2.0f);
             projectileDirection = new Vector2(projectileDirection.x + rng, projectileDirection.y);
             fireballScript.SetValues(ba.isFacingRight, secondaryProjectileSpeed, projectileDirection, true, damageType);
         }
@@ -202,7 +215,7 @@ public class Cynder : MonoBehaviour
     {
         if (ba.directionToPlayer >= 8f || ba.directionToPlayer <= -8f)
         {
-            int rng = Random.Range(0, 101);
+            var rng = Random.Range(0, 101);
             if (rng <= 40)
             {
                 animator.SetTrigger("Homing");
@@ -218,7 +231,12 @@ public class Cynder : MonoBehaviour
         var rng = Random.Range(0, 101);
         var x = rng <= 50 ? 3 : -3;
         transform.position = new Vector3(ba.playerTransform.position.x + x, teleportPoint.position.y, transform.position.z);
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, !GetComponent<BossHealth>().phase2 ? -dropSpeed : -dropSpeed * 1.4f);
+        
+        var rng2 = Random.Range(0, 101);
+        var px = PlayerHealth.Instance.pc.rb.linearVelocity.x;
+        var predictedDistanceX = px > 0 ? px * 0.2f : px * 0.2f * -1;
+        if (rng2 <= 50 || px == 0) rb.linearVelocity = new Vector2(rb.linearVelocity.x + predictedDistanceX, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
+        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
     }
 
     private void FreezeMovement()
