@@ -21,7 +21,6 @@ public class EnemyMovement : MonoBehaviour
     
     // Checks
     [SerializeField] private bool isHomingPlayer;
-    [SerializeField] private bool inWater;
     [SerializeField] private bool inRange;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -37,7 +36,6 @@ public class EnemyMovement : MonoBehaviour
     {
         Dash();
         FlyDash();
-        animator.SetBool("inWater", inWater);
         if (isHomingPlayer) dashDirection = (ea.playerTransform.position - transform.position).normalized;
         inRange = Physics2D.OverlapCircle(ea.attackTransform.position, ea.attackRange * 1.5f, LayerMask.GetMask("Player", "Invincible"));
     }

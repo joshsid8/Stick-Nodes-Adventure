@@ -6,7 +6,7 @@ public class EnemyBeam : MonoBehaviour
     public float beamStunTime;
     public Vector2 beamKnockbackForce;
     public bool isDirectional;
-    public Vector2 beamDirection;
+    public float beamDirection;
     public float beamLifetime;
     private float beamTimer;
     public bool activeHitbox;
@@ -17,6 +17,7 @@ public class EnemyBeam : MonoBehaviour
     private Transform playerTransform;
     private bool isFacingRightDirection;
     private float playerDirection;
+    [SerializeField] private GameObject parentObject;
     private Animator animator;
     [SerializeField] private AnimationClip anim;
     [SerializeField] private AnimationClip collideAnim;
@@ -34,10 +35,10 @@ public class EnemyBeam : MonoBehaviour
     {
         Lifetime();
         beamProcTimer -= Time.deltaTime;
-        if (isDirectional) transform.eulerAngles = beamDirection;
+        if (isDirectional) transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? beamDirection : -beamDirection + 180f);
     }
 
-    public void SetValues(bool facingRight, float lifetime, float proc, Vector2 direction, bool directional, int damageType)
+    public void SetValues(bool facingRight, float lifetime, float proc, float direction, bool directional, int damageType)
     {
         isFacingRightDirection = facingRight;
         beamLifetime = lifetime;
@@ -80,7 +81,6 @@ public class EnemyBeam : MonoBehaviour
         {
             playerDirection = -1f;
         }
-        else transform.eulerAngles = beamDirection;
     }
 
     private void Lifetime()

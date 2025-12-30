@@ -78,7 +78,7 @@ public class BossAttack : MonoBehaviour
         GetComponent<DialogueTrigger>().enabled = false;
         PlayerHealth.Instance.pc.currentCombatTimer = 69;
         canFacePlayer = true;
-        if (canAttack)
+        if (canAttack && !bh.isStunned)
         {
             stunnableTimer = 0;
             if (closeRange)

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class EnemyShootBlast : MonoBehaviour
@@ -41,15 +39,15 @@ public class EnemyShootBlast : MonoBehaviour
             else Debug.LogError("where is bro's projectile ability");
         }
     }
-    public void ShootBeam(GameObject beam)
+    public void ShootBeam(GameObject beam, float direction)
     {
         if (!unavailable)
         {
             GameObject newBeam = Instantiate(beam, abilityPoint.position, abilityPoint.rotation);
             EnemyBeam eb = newBeam.GetComponent<EnemyBeam>();
 
-            if (eb != null)
-                eb.SetValues(ep.isFacingRight, abilityLifetime, abilityProc, Vector2.zero, false, damageType);
+            if (eb != null) eb.SetValues(ep.isFacingRight, abilityLifetime, abilityProc, 
+                direction, false, damageType);
             else Debug.LogError("where is bro's beam ability");
         }
     }

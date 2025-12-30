@@ -8,8 +8,16 @@ SNADV Notes
         Scene data doors SOMEHOW is broken again
         Done some cynder and player anims, now need to do fishfolk anims
         Besides, gonna do enemy logic enhancements
+            Fly logic is starting to function by a small amount
+            I need to learn how to either make MoveTo faster or switch up the way its done using maybe MAFFS or sum
+            Enemies cant shoot beems anymore only cuz it needs to replicate the same logic the player has, and isnt atm
     
     Optimisations:
+        
+        Enemy Logic
+            It loops one animation. meaning its likely that it plays it on update
+            Make beams direction have the same logic as the players
+                by adding a parent object to the beam object
         
         Animations
             Make better/seperate animations for the player's QoL
@@ -25,6 +33,7 @@ SNADV Notes
                     Flying bubble attack
                     Flying dash attack
                     Feinted dash counter
+                    Decieving attack
                 Fishman
                     Flying dash combo
                     Flying burst attack (with possible projectiles)

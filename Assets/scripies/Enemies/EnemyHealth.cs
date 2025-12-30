@@ -37,6 +37,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     private Animator animator;
     private EnemyAttack ea;
     private EnemyPatrol ep;
+    public bool isLight;
     
     public bool isOneTime;
 
@@ -69,16 +70,9 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         {
             currentStunTime = stunTime;
             getStunned = false;
-            isStunned = true;
         }
-        if (isStunned)
-        {
-            currentStunTime -= Time.deltaTime;
-            if (currentStunTime <= 0)
-            {
-                isStunned = false;
-            }
-        }
+        if (currentStunTime > 0) currentStunTime -= Time.deltaTime;
+        isStunned = currentStunTime > 0;
     }
     private IEnumerator Death()
     {

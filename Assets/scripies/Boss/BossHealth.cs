@@ -104,7 +104,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         }
         else if (isBlocking && shieldHealth <= 0)
         {
-            animator.SetTrigger("Damaged");
+            animator.Play("Damaged");
             bossHealth -= damageAmount * 1.2f;
             if (movable) kb.CallKnockback(knockbackForce / 2, 0);
             spriteRenderer.color = damageTint;
@@ -112,7 +112,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         }
         else if (isCountering)
         {
-            animator.SetTrigger("CSuccess");
+            animator.Play("CSuccess");
             isCountering = false;
         }
         else

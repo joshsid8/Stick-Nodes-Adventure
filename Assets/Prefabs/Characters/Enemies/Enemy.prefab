@@ -136,15 +136,16 @@ GameObject:
   - component: {fileID: -3014423799198804129}
   - component: {fileID: 8698436349063629657}
   - component: {fileID: 2131039031582443626}
+  - component: {fileID: 3423222025303236042}
   - component: {fileID: 8172104874274776891}
   - component: {fileID: 5774492939275019919}
   - component: {fileID: 8455541738676426996}
   - component: {fileID: 2866762415245452275}
+  - component: {fileID: 1439657276797700270}
   - component: {fileID: 7115054256094536775}
   - component: {fileID: 1116650468285775789}
   - component: {fileID: 8254986764908062184}
   - component: {fileID: 5667144582252735850}
-  - component: {fileID: 1439657276797700270}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
@@ -185,7 +186,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  spawnId: 0
   typeOfObject: 0
+  mapManager: {fileID: 0}
 --- !u!114 &8698436349063629657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +233,24 @@ MonoBehaviour:
   knockbackTime: 0.25
   hitDirectionForce: 1
   inputForce: 1.1
+--- !u!114 &3423222025303236042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953562033605771950}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f60b14bc4e0744bb51879087144448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isChasing: 1
+  playerRadius: 1
+  playerTransform: {fileID: 0}
+  flightOffset:
+  - 0
+  - 0
 --- !u!114 &8172104874274776891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +271,6 @@ MonoBehaviour:
   jumpForceX: 2
   isRandomised: 0
   isHomingPlayer: 0
-  inWater: 0
   inRange: 0
 --- !u!114 &5774492939275019919
 MonoBehaviour:
@@ -265,15 +285,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   styleFactor: 2
+  canFly: 0
+  isFlying: 0
+  movesBeforeFlying: 5
   defensiveCheck: 0
   passiveCheck: 0
   activeMoves:
-  - ActiveMove
+  - Active
   passiveMoves:
-  - PassiveMove
+  - Passive
   evasiveMoves:
-  - EvasiveMove
-  - DefensiveMove
+  - Evasive
+  - Defensive
+  flyingActiveMoves: []
+  flyingPassiveMoves: []
+  flyingEvasiveMoves: []
+  spareAnimation: 
   defensiveModeRadius: 4
   modDefensiveModeRadius: 6
   passiveModeRadius: 15
@@ -365,8 +392,28 @@ MonoBehaviour:
   movable: 1
   phase2: 0
   phase2Style: 0
-  enemyID: 0
+  isLight: 0
   isOneTime: 0
+--- !u!114 &1439657276797700270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953562033605771950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityPoint: {fileID: 0}
+  projectileSpeed: 0
+  abilityLifetime: 0
+  abilityProc: 0
+  damageType: 0
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!212 &7115054256094536775
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -517,26 +564,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.64767873, y: 3.9254827}
   m_EdgeRadius: 0
---- !u!114 &1439657276797700270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6953562033605771950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityPoint: {fileID: 0}
-  projectileSpeed: 0
-  abilityLifetime: 0
-  abilityProc: 0
-  damageType: 0
-  terrainLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &7194455058290597540
 GameObject:
   m_ObjectHideFlags: 0

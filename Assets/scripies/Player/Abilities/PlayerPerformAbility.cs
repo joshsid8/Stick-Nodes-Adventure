@@ -47,24 +47,21 @@ public class PlayerPerformAbility : MonoBehaviour
                     if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerShootBlast>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
-                        if (pc.isGrounded) pa.animator.Play("Fire");
-                        else pa.animator.Play("AirFire");
+                        pa.animator.Play(pc.isGrounded ? "Fire" : "AirFire");
                     }
                     break;
                 case 1:
                     if (objects[1] != null && pa.energy >= objects[1].GetComponent<PlayerSummonPillar>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
-                        if (pc.isGrounded) pa.animator.Play("Fire");
-                        else pa.animator.Play("AirFire");
+                        pa.animator.Play(pc.isGrounded ? "Pillar" : "AirFire");
                     }
                     break;
                 case 2:
                     if (objects[2] != null && pa.energy >= objects[2].GetComponentInChildren<PlayerShootBeam>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
-                        if (pc.isGrounded) pa.animator.Play("Fire");
-                        else pa.animator.Play("AirFire");
+                        pa.animator.Play(pc.isGrounded ? "Beam" : "AirFire");
                     }
                     break;
                 /*case 3:

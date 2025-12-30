@@ -1,10 +1,13 @@
 using UnityEngine;
-using UnityEngine.Rendering;
-
 
 public class EnemyAttack : MonoBehaviour
 {
     public float styleFactor;
+
+    public bool canFly;
+    public bool isFlying;
+    public int movesBeforeFlying = 5;
+    private string flyTrigger = "FlyJump";
 
     private bool activeMode; // The enemy attack/coming close to the player
     [Tooltip("When the player runs near")] public bool defensiveCheck; 
@@ -15,6 +18,12 @@ public class EnemyAttack : MonoBehaviour
     [Tooltip("The enemy coming close to the player")] public string[] activeMoves; 
     [Tooltip("Certain actions performed if the player isn't close or far")] public string[] passiveMoves;
     [Tooltip("The enemy evading/backing up from the player")] public string[] evasiveMoves;
+
+    public string[] flyingActiveMoves;
+    public string[] flyingPassiveMoves;
+    public string[] flyingEvasiveMoves;
+    
+    public string spareAnimation;
     
     public float defensiveModeRadius;
     public float modDefensiveModeRadius;
@@ -44,6 +53,7 @@ public class EnemyAttack : MonoBehaviour
     private Animator animator;
     private EnemyPatrol ep;
     private EnemyMovement em;
+    private EnemyHealth eh;
 
     public bool canFacePlayer;
     [SerializeField] private bool playerIsDead;
@@ -58,6 +68,7 @@ public class EnemyAttack : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         em = GetComponent<EnemyMovement>();
+        eh = GetComponent<EnemyHealth>();
         if (em != null) em.enabled = true;
         originalDefensiveModeRadius = defensiveModeRadius;
         originalPassiveModeRadius = passiveModeRadius;
@@ -74,7 +85,7 @@ public class EnemyAttack : MonoBehaviour
         CheckModes();
         StyleFactor();
         CooldownTimer();
-        
+        Fly();
         if (passiveMode)
         {
             defensiveModeRadius = modDefensiveModeRadius;
@@ -106,13 +117,14 @@ public class EnemyAttack : MonoBehaviour
             enabled = false;
         }
         if (PlayerHealth.Instance.isDead! && playerIsDead) playerIsDead = false;
+        rb.gravityScale = isFlying ? 0 : 8;
     }
     
     private void CheckModes()
      {
          defensiveCheck = Physics2D.OverlapCircle(transform.position, defensiveModeRadius, pLayer);
          passiveCheck = Physics2D.OverlapCircle(transform.position, passiveModeRadius, pLayer);
-
+         
          if (defensiveCheck) passiveCheck = false;
          else if (passiveCheck) defensiveCheck = false;
          
@@ -136,32 +148,39 @@ public class EnemyAttack : MonoBehaviour
 
     private void ActiveLogic()
     {
-        if (canAttack && !isAttacking)
+        if (canAttack && !isAttacking && !eh.isStunned)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            if (!defensiveCheck) animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
+            if (!defensiveCheck) animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)]
+                : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
         }
     }
 
     private void PassiveLogic()
     {
-        if (canAttack && !isAttacking)
+        if (canAttack && !isAttacking && !eh.isStunned)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            if (!passiveCheck && !defensiveCheck) animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
-            else if (defensiveCheck && !passiveCheck) animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
-            else animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
+            if (!passiveCheck && !defensiveCheck) animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)] 
+                : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
+            else if (defensiveCheck && !passiveCheck) animator.Play(!isFlying ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
+                : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
+            else animator.Play(!isFlying ? passiveMoves[Random.Range(0, passiveMoves.Length)] 
+                : flyingPassiveMoves[Random.Range(0, flyingPassiveMoves.Length)]);
         }
     }
 
     private void EvasiveLogic()
     {
-        if (canAttack && !isAttacking)
+        if (canAttack && !isAttacking && !eh.isStunned)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            if (defensiveCheck) animator.SetTrigger(evasiveMoves[Random.Range(0, evasiveMoves.Length)]);
-            else if (passiveCheck) animator.SetTrigger(passiveMoves[Random.Range(0, passiveMoves.Length)]);
-            else animator.SetTrigger(activeMoves[Random.Range(0, activeMoves.Length)]);
+            if (defensiveCheck) animator.Play(!isFlying ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
+                : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
+            else if (passiveCheck) animator.Play(!isFlying ? passiveMoves[Random.Range(0, passiveMoves.Length)] 
+                : flyingPassiveMoves[Random.Range(0, flyingPassiveMoves.Length)]);
+            else animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)] 
+                : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
         }
     }
 
@@ -193,16 +212,34 @@ public class EnemyAttack : MonoBehaviour
 
     private void FollowupAttack(string attack)
     {
-        animator.SetTrigger(attack);
+        animator.Play(attack);
+    }
+    
+    
+    private void FlyTrigger()
+    {
+        movesBeforeFlying++;
+        if (movesBeforeFlying >= 5 && canFly)
+        {
+            animator.Play(flyTrigger);
+            movesBeforeFlying = 0;
+            isFlying = true;
+        }
     }
 
+    private void Fly()
+    {
+        // sum bout flying cuh
+        animator.SetBool("isFlying", isFlying);
+    }
+    
     private void MoveDuringFight()
     {
         if (enabled && !em.isDashing && !isAttacking && !ep.isPatrolling)
         {
             var rng = Random.Range(0, 101);
             var rng2 = Random.Range(0, 101);
-            if (rng <= 69)
+            if (rng <= 70)
             {
                 rb.linearVelocity = new Vector2(rng2 <= 50 ? em.dashSpeed / 2 : -em.dashSpeed / 2, rb.linearVelocity.y);
                 animator.Play("Strafe");
