@@ -11,9 +11,8 @@ public class EnemyFly : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float[] flightOffset = new float[3];
     [SerializeField] private Vector2 flyDirection;
-    [SerializeField] private float moveSpeed = 10f;
+    public float moveSpeed = 10f;
     [SerializeField] private float smoothing = 0.15f;
-    private bool isEasing;
     // Components
     private EnemyAttack ea;
     private Rigidbody2D rb;
@@ -45,12 +44,11 @@ public class EnemyFly : MonoBehaviour
         flyDirection = new Vector2(playerTransform.position.x + flightOffset[0], playerTransform.position.y + flightOffset[1]);
         var targetPosition = flyDirection + new Vector2(flightOffset[2], flightOffset[2]);
         var smoothedPosition = Vector2.Lerp(rb.position, targetPosition, smoothing);
-        rb.linearVelocity = (smoothedPosition - rb.position) * moveSpeed;
+        if (isChasing) rb.linearVelocity = (smoothedPosition - rb.position) * moveSpeed;
     }
 
     private IEnumerator EaseOut()
     {
-        isEasing = true;
         var previousMoveSpeed = moveSpeed;
         if (rb.linearVelocity.x == 0) moveSpeed = 0; 
         else moveSpeed = Math.Abs(rb.linearVelocity.x * 2);
@@ -61,10 +59,10 @@ public class EnemyFly : MonoBehaviour
         }
 
         moveSpeed = previousMoveSpeed;
-        isEasing = false;
-
     }
-
+        
+    private void ToggleChase() => isChasing = !isChasing;
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;

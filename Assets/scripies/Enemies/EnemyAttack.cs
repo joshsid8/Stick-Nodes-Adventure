@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyAttack : MonoBehaviour
 {
@@ -6,7 +8,8 @@ public class EnemyAttack : MonoBehaviour
 
     public bool canFly;
     public bool isFlying;
-    public int movesBeforeFlying = 5;
+    public int movesBeforeFlyingCount;
+    public int[] movesBeforeFlying = new int[2];
     private string flyTrigger = "FlyJump";
 
     private bool activeMode; // The enemy attack/coming close to the player
@@ -53,6 +56,7 @@ public class EnemyAttack : MonoBehaviour
     private Animator animator;
     private EnemyPatrol ep;
     private EnemyMovement em;
+    private EnemyFly ef;
     private EnemyHealth eh;
 
     public bool canFacePlayer;
@@ -68,15 +72,14 @@ public class EnemyAttack : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         em = GetComponent<EnemyMovement>();
+        ef = GetComponent<EnemyFly>();
         eh = GetComponent<EnemyHealth>();
-        if (em != null) em.enabled = true;
+        em.enabled = true;
         originalDefensiveModeRadius = defensiveModeRadius;
         originalPassiveModeRadius = passiveModeRadius;
         playerIsDead = false;
         currentSpareTimer = spareTimer;
-        GameObject playerObject = PlayerHealth.Instance.gameObject;
-        if (playerObject != null) playerTransform = playerObject.transform;
-        else Debug.LogError("bruh");
+        playerTransform = PlayerHealth.Instance.gameObject.transform;
     }
     
     private void Update()
@@ -85,7 +88,6 @@ public class EnemyAttack : MonoBehaviour
         CheckModes();
         StyleFactor();
         CooldownTimer();
-        Fly();
         if (passiveMode)
         {
             defensiveModeRadius = modDefensiveModeRadius;
@@ -114,9 +116,13 @@ public class EnemyAttack : MonoBehaviour
             playerIsDead = true;
             ep.enabled = true;
             ep.isPatrolling = true;
+            isFlying = false;
             enabled = false;
         }
         if (PlayerHealth.Instance.isDead! && playerIsDead) playerIsDead = false;
+        
+        animator.SetBool("isFlying", isFlying);
+        ef.enabled = isFlying;
         rb.gravityScale = isFlying ? 0 : 8;
     }
     
@@ -141,6 +147,7 @@ public class EnemyAttack : MonoBehaviour
              {
                  ep.enabled = true;
                  ep.isPatrolling = true;
+                 isFlying = false;
                  enabled = false;
              }
          }
@@ -187,6 +194,7 @@ public class EnemyAttack : MonoBehaviour
     private void ActivateCooldown(float atkCD)
     {
         currentAttackCooldown = atkCD;
+        if (isFlying) ef.moveSpeed = Math.Abs(rb.linearVelocity.x) / 2;
     }
 
     void CooldownTimer()
@@ -215,23 +223,22 @@ public class EnemyAttack : MonoBehaviour
         animator.Play(attack);
     }
     
-    
     private void FlyTrigger()
     {
-        movesBeforeFlying++;
-        if (movesBeforeFlying >= 5 && canFly)
+        movesBeforeFlyingCount++;
+        if (movesBeforeFlyingCount == movesBeforeFlying[0] && !isFlying && canFly)
         {
             animator.Play(flyTrigger);
-            movesBeforeFlying = 0;
             isFlying = true;
         }
-    }
 
-    private void Fly()
-    {
-        // sum bout flying cuh
-        animator.SetBool("isFlying", isFlying);
+        if (movesBeforeFlyingCount == movesBeforeFlying[1] && canFly)
+        {
+            isFlying = false;
+            movesBeforeFlyingCount = 0;
+        }
     }
+    
     
     private void MoveDuringFight()
     {

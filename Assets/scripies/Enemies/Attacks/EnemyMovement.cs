@@ -22,6 +22,7 @@ public class EnemyMovement : MonoBehaviour
     // Checks
     [SerializeField] private bool isHomingPlayer;
     [SerializeField] private bool inRange;
+    [SerializeField] private bool isFrozen;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,6 +39,7 @@ public class EnemyMovement : MonoBehaviour
         FlyDash();
         if (isHomingPlayer) dashDirection = (ea.playerTransform.position - transform.position).normalized;
         inRange = Physics2D.OverlapCircle(ea.attackTransform.position, ea.attackRange * 1.5f, LayerMask.GetMask("Player", "Invincible"));
+        if (isFrozen) Freeze();
     }
     private void Dash()
     {
@@ -81,5 +83,9 @@ public class EnemyMovement : MonoBehaviour
     private void FreezeY()
     {
         ea.rb.linearVelocity = new Vector2(ea.rb.linearVelocity.x, 0);
+    }
+    private void Freeze()
+    {
+        ea.rb.linearVelocity = Vector2.zero;
     }
 }

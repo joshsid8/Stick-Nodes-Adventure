@@ -80,6 +80,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         {
             GetComponent<Loot>().DropLoot();
             GetComponent<EnemyAttack>().enabled = false;
+            GetComponent<EnemyFly>().enabled = false;
             spriteRenderer.color = Color.white;
             gameObject.layer = LayerMask.NameToLayer("EDead");
             gameObject.tag = "Dead";

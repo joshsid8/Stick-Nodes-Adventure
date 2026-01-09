@@ -276,6 +276,7 @@ MonoBehaviour:
   isRandomised: 0
   isHomingPlayer: 0
   inRange: 0
+  isFrozen: 0
 --- !u!114 &5774492939275019919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,7 +292,8 @@ MonoBehaviour:
   styleFactor: 2
   canFly: 0
   isFlying: 0
-  movesBeforeFlying: 5
+  movesBeforeFlyingCount: 0
+  movesBeforeFlying: 050000000a000000
   defensiveCheck: 0
   passiveCheck: 0
   activeMoves:
@@ -414,6 +416,7 @@ MonoBehaviour:
   projectileSpeed: 0
   abilityLifetime: 0
   abilityProc: 0
+  abilityDirection: 0
   damageType: 0
   terrainLayers:
     serializedVersion: 2

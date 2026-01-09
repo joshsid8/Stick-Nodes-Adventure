@@ -21,7 +21,6 @@ public class EnemyBeam : MonoBehaviour
     private Animator animator;
     [SerializeField] private AnimationClip anim;
     [SerializeField] private AnimationClip collideAnim;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,13 +28,13 @@ public class EnemyBeam : MonoBehaviour
         if (anim != null) animator.Play(anim.name);
         beamTimer = beamLifetime;
         ApplyInitialDirection();
+        parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? beamDirection : -beamDirection + 180f);
     }
 
     private void Update()
     {
         Lifetime();
         beamProcTimer -= Time.deltaTime;
-        if (isDirectional) transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? beamDirection : -beamDirection + 180f);
     }
 
     public void SetValues(bool facingRight, float lifetime, float proc, float direction, bool directional, int damageType)
@@ -44,7 +43,7 @@ public class EnemyBeam : MonoBehaviour
         beamLifetime = lifetime;
         beamProc = proc;
         isDirectional = directional;
-        if (isDirectional) beamDirection = direction;
+        beamDirection = direction;
         beamDamageType = damageType;
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -91,6 +90,6 @@ public class EnemyBeam : MonoBehaviour
 
     void Boom()
     {
-        Destroy(gameObject);
+        Destroy(parentObject);
     }
 }

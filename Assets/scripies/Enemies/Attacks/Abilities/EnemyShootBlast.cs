@@ -11,7 +11,7 @@ public class EnemyShootBlast : MonoBehaviour
     // Beam and Pillar
     public float abilityLifetime;
     public float abilityProc;
-
+    public float abilityDirection;
     public int damageType;
 
     private bool unavailable;
@@ -32,22 +32,22 @@ public class EnemyShootBlast : MonoBehaviour
     {
         if (!unavailable)
         {
-            GameObject newProjectile = Instantiate(projectile, abilityPoint.position, abilityPoint.rotation);
-            EnemyFireProjectile efp = newProjectile.GetComponent<EnemyFireProjectile>();
+            var newProjectile = Instantiate(projectile, abilityPoint.position, abilityPoint.rotation);
+            var efp = newProjectile.GetComponent<EnemyFireProjectile>();
 
             if (efp != null) efp.SetValues(ep.isFacingRight, projectileSpeed, Vector2.zero, false, damageType);
             else Debug.LogError("where is bro's projectile ability");
         }
     }
-    public void ShootBeam(GameObject beam, float direction)
+    public void ShootBeam(GameObject beam)
     {
         if (!unavailable)
         {
-            GameObject newBeam = Instantiate(beam, abilityPoint.position, abilityPoint.rotation);
-            EnemyBeam eb = newBeam.GetComponent<EnemyBeam>();
+            var newBeam = Instantiate(beam, abilityPoint.position, abilityPoint.rotation);
+            var eb = newBeam.GetComponentInChildren<EnemyBeam>();
 
             if (eb != null) eb.SetValues(ep.isFacingRight, abilityLifetime, abilityProc, 
-                direction, false, damageType);
+                abilityDirection, false, damageType);
             else Debug.LogError("where is bro's beam ability");
         }
     }
@@ -56,8 +56,8 @@ public class EnemyShootBlast : MonoBehaviour
     {
         if (!unavailable)
         {
-            GameObject newBeam = Instantiate(pillar, abilityPoint.position, abilityPoint.rotation);
-            EnemyPillar eb = newBeam.GetComponent<EnemyPillar>();
+            var newBeam = Instantiate(pillar, abilityPoint.position, abilityPoint.rotation);
+            var eb = newBeam.GetComponent<EnemyPillar>();
         }
     }
 }

@@ -18,11 +18,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 64b99967b541b87498e9300b560b3ad8, type: 2}
     - target: {fileID: 1248520969832997338, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.6
+      value: 1.03
       objectReference: {fileID: 0}
     - target: {fileID: 1248520969832997338, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.723
+      value: 0.26
       objectReference: {fileID: 0}
     - target: {fileID: 1463641665037281832, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_LocalRotation.x
@@ -47,6 +47,14 @@ PrefabInstance:
     - target: {fileID: 5667144582252735850, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
       value: 52992
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: canFly
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: movesBeforeFlying
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: 'activeMoves.Array.data[0]'
@@ -207,6 +215,7 @@ MonoBehaviour:
   projectileSpeed: 0
   abilityLifetime: 0.3
   abilityProc: 0.5
+  abilityDirection: 0
   damageType: 0
   terrainLayers:
     serializedVersion: 2
