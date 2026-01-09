@@ -185,9 +185,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       insertIndex: 3
       addedObject: {fileID: 1482558004223461539}
-    - targetCorrespondingSourceObject: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -1743884906023076765}
   m_SourcePrefab: {fileID: 100100000, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
 --- !u!1 &3463261996892548931 stripped
 GameObject:
@@ -214,21 +211,6 @@ MonoBehaviour:
   terrainLayers:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &-1743884906023076765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3463261996892548931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4f60b14bc4e0744bb51879087144448, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isChasing: 1
-  playerRadius: 0
-  playerTransform: {fileID: 0}
 --- !u!4 &4745767652298935351 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1248520969832997338, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}

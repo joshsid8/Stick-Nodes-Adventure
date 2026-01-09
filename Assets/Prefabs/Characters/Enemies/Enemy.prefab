@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: -3014423799198804129}
   - component: {fileID: 8698436349063629657}
   - component: {fileID: 2131039031582443626}
-  - component: {fileID: 3423222025303236042}
+  - component: {fileID: 9002268324909943343}
   - component: {fileID: 8172104874274776891}
   - component: {fileID: 5774492939275019919}
   - component: {fileID: 8455541738676426996}
@@ -233,7 +233,7 @@ MonoBehaviour:
   knockbackTime: 0.25
   hitDirectionForce: 1
   inputForce: 1.1
---- !u!114 &3423222025303236042
+--- !u!114 &9002268324909943343
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,6 +251,10 @@ MonoBehaviour:
   flightOffset:
   - 0
   - 0
+  - 0
+  flyDirection: {x: 0, y: 0}
+  moveSpeed: 10
+  smoothing: 0.1
 --- !u!114 &8172104874274776891
 MonoBehaviour:
   m_ObjectHideFlags: 0

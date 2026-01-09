@@ -3988,11 +3988,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 102.145935
+      value: 108.21
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 52.823822
+      value: 62.34
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4040,7 +4040,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9155329823263617063, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: moveSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9155329823263617063, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
+      propertyPath: smoothing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9155329823263617063, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
+      propertyPath: flightOffset.Array.size
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
