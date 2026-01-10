@@ -11,15 +11,8 @@ SNADV Notes
     
     Optimisations:
         
-        Enemy Logic
-            It loops one animation. meaning its likely that it plays it on update
-            Make beams direction have the same logic as the players
-                by adding a parent object to the beam object
-        
         Animations
             Make better/seperate animations for the player's QoL
-                Pillar stomp, and arm raise
-                Beam shooting
                 Turning around
                 First step before walking
                 Wall jumping
@@ -31,11 +24,7 @@ SNADV Notes
                     Flying dash attack
                     Feinted dash counter
                     Decieving attack
-                Fishman
-                    Flying dash combo
-                    Flying burst attack (with possible projectiles)
-                    Flying beam attack
-            
+                           
             Remake the player animation controller
                 At the moment, it is too tangled
                 Using layers can help make the controller more efficient and look good

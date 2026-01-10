@@ -199,7 +199,7 @@ public class EnemyAttack : MonoBehaviour
 
     void CooldownTimer()
     {
-        currentAttackCooldown -= Time.deltaTime;
+        if (currentAttackCooldown > 0) currentAttackCooldown -= Time.deltaTime;
         canAttack = currentAttackCooldown <= 0 ? canAttack = true : canAttack = false;
     }
 
@@ -242,7 +242,7 @@ public class EnemyAttack : MonoBehaviour
     
     private void MoveDuringFight()
     {
-        if (enabled && !em.isDashing && !isAttacking && !ep.isPatrolling)
+        if (enabled && !em.isDashing && !isAttacking && !ep.isPatrolling && !isFlying)
         {
             var rng = Random.Range(0, 101);
             var rng2 = Random.Range(0, 101);

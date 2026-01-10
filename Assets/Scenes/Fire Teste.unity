@@ -10116,6 +10116,8 @@ MonoBehaviour:
   isTouchingWall: 0
   wallCheck: {fileID: 4082605585649825789}
   wallCheckRay: 3.141592
+  stunnable: 0
+  stunnableTimer: 0
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
@@ -10642,6 +10644,7 @@ MonoBehaviour:
   shieldHealth: 0
   dmgRes: 0
   isCountering: 0
+  isStunned: 0
   movable: 1
 --- !u!1001 &9075578306459573741
 PrefabInstance:
