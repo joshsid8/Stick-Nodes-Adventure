@@ -83,16 +83,25 @@ public class PlayerDefense : MonoBehaviour
         hits = Physics2D.CircleCastAll(transform.position, counterRadius, Vector2.one, 0f, eLayer);
         for (var i = 0; i < hits.Length; i++)
         {
-            EDamageables eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
-            Vector2 distance = hits[i].collider.gameObject.transform.position - transform.position;
-            int num;
-            if (distance.x >= 0) num = 1; else num = -1;
-            if (eDamageable != null)
+            if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                pa.energy += 10f;
-                eDamageable.Damage(counterDamage, counterKnockbackForce * num * pf.attackPotency);
-                eDamageable.Stun(counterStun * pf.attackPotency);
-                pc.currentCombatTimer += pc.combatTimer / 2;
+                var eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
+                Vector2 distance = hits[i].collider.gameObject.transform.position - transform.position;
+                int num;
+                if (distance.x >= 0) num = 1;
+                else num = -1;
+                if (eDamageable != null)
+                {
+                    pa.energy += 10f;
+                    eDamageable.Damage(counterDamage, counterKnockbackForce * num * pf.attackPotency);
+                    eDamageable.Stun(counterStun * pf.attackPotency);
+                    pc.currentCombatTimer += pc.combatTimer / 2;
+                }
+            }
+            else if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("EVFX") || hits[i].collider.gameObject.layer == LayerMask.NameToLayer("FX"))
+            {
+                var projectile = hits[i].collider.gameObject.GetComponent<Projectile>();
+                projectile.Deflect(1);
             }
         }
     }

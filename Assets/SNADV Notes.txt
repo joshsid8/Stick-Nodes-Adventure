@@ -5,12 +5,22 @@ SNADV Notes
     
     Hotfixes & Priorities:
     
+        Beam logic FEELS LIKE not detecting enemies, otherwise its alright i presume
+            some debug logs have been added. find a way to fix this!
         Scene data doors SOMEHOW is broken again
-        Done some cynder and player anims, now need to do fishfolk anims
-        Besides, gonna do enemy logic enhancements
+        Besides, gonna do enemy logic enhancements       
     
     Optimisations:
         
+        Ability Logic                        
+            FindFloor has been patched a little
+            It successfully finds the floors for most platforms
+                For small ones i think, it does not sent the element to the top, keeping it at the bottom
+            Now i should apply this to enemies 
+                                               
+            Make it so that ability prefabs also arent all seperate, make them variants instead
+                This is going alright for now, almost done                      
+                            
         Animations
             Make better/seperate animations for the player's QoL
                 Turning around

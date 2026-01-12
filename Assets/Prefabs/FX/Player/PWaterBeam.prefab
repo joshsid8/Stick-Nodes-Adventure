@@ -115,7 +115,7 @@ MonoBehaviour:
   beamProc: 0.07
   beamProcTimer: 0
   energyProc: 0
-  procTimes: 0
+  procTimes: 10
   anim: {fileID: 7400000, guid: f94e97e8d06b438479d642a19ff7ee93, type: 2}
   collideAnim: {fileID: 7400000, guid: efdc82e03212c5a44bd9d7c5e3405911, type: 2}
   parentObject: {fileID: 8069515426526680348}

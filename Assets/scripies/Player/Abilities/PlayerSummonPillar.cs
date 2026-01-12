@@ -15,7 +15,7 @@ public class PlayerSummonPillar : MonoBehaviour
     [SerializeField] private float pillarProcTimer;
     
     [SerializeField] private bool isErupting;
-    [SerializeField] private RaycastHit2D[] inContact;
+    private RaycastHit2D[] inContact;
     [SerializeField] private BoxCollider2D pillarCollider;
 
     [SerializeField] private AnimationClip eruptAnim;
@@ -80,12 +80,8 @@ public class PlayerSummonPillar : MonoBehaviour
         }
     }
     
-    void Boom()
-    {
-        Destroy(gameObject);
-    }
-    void ApplyTimer()
-    {
-        pillarTimer = pillarLifeTime;
-    }
+    void Boom() => Destroy(GetComponent<FindFloor>().bottomPoint.transform.gameObject);
+    
+    void ApplyTimer() => pillarTimer = pillarLifeTime;
+    
 }

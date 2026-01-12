@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerPerformAbility : MonoBehaviour
@@ -12,7 +13,7 @@ public class PlayerPerformAbility : MonoBehaviour
     public float abilityLifetimeMult = 1f;
     [SerializeField] private float xVector;
 
-    public int abilityAmount;
+    public int[] abilityAmount = {1, 1, 1};
     private int blastType;
     [HideInInspector] public bool isActivated;
     //[HideInInspector] public bool isReinforcing;
@@ -44,21 +45,22 @@ public class PlayerPerformAbility : MonoBehaviour
             switch (blast)
             {
                 case 0:
-                    if (objects[0] != null && pa.energy >= objects[0].GetComponent<PlayerShootBlast>().energyRequired)
+                    if (objects[0] != null && pa.energy >= objects[0].GetComponent<Projectile>().energyRequired * abilityAmount[0])
                     {
                         pa.isPerformingAbility = true;
+                        abilityAmount[0] = objects[0].GetComponent<Projectile>().projectileAmount;
                         pa.animator.Play(pc.isGrounded ? "Fire" : "AirFire");
                     }
                     break;
                 case 1:
-                    if (objects[1] != null && pa.energy >= objects[1].GetComponent<PlayerSummonPillar>().energyRequired)
+                    if (objects[1] != null && pa.energy >= objects[1].GetComponentInChildren<Pillar>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
                         pa.animator.Play(pc.isGrounded ? "Pillar" : "AirFire");
                     }
                     break;
                 case 2:
-                    if (objects[2] != null && pa.energy >= objects[2].GetComponentInChildren<PlayerShootBeam>().energyRequired)
+                    if (objects[2] != null && pa.energy >= objects[2].GetComponentInChildren<Beam>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
                         pa.animator.Play(pc.isGrounded ? "Beam" : "AirFire");
@@ -73,24 +75,29 @@ public class PlayerPerformAbility : MonoBehaviour
         }
     }
 
-    private void Blast()
+    private IEnumerator Blast()
     {
         switch (blastType)
         {
             case 0:
                 if (!unavailable && objects[0] != null)
                 {
-                    GameObject newProjectile = Instantiate(objects[0], abilityPoint.position, Quaternion.identity);
-                    PlayerShootBlast projectileScript = newProjectile.GetComponent<PlayerShootBlast>();
-                    if (projectileScript != null)
+                    for (var i = 0; i < abilityAmount[0]; i++)
                     {
-                        projectileScript.SetValues(pc.isFacingRight, abilityDamageMult, abilityPotency,
-                            abilityPotency);
-                        pa.energy -= projectileScript.energyRequired;
-                        pa.currentAbilityCooldown = projectileScript.abilityCooldown * pa.abilityCooldownMult;
-                        pa.isPerformingAbility = false;
+                        var newProjectile = Instantiate(objects[0], abilityPoint.position, Quaternion.identity);
+                        var projectileScript = newProjectile.GetComponent<Projectile>();
+                        if (projectileScript != null)
+                        {
+                            projectileScript.SetValues(1, GetComponent<PlayerController>().isFacingRight, 0,false
+                                ,abilityDirection);
+                            pa.energy -= projectileScript.energyRequired;
+                            pa.currentAbilityCooldown = projectileScript.abilityCooldown * pa.abilityCooldownMult;
+                            pa.isPerformingAbility = false;
+                        }
+                        else Debug.LogError("where is bro's projectile");
+
+                        yield return new WaitForSeconds(0.1f);
                     }
-                    else Debug.LogError("where is bro's projectile");
                 }
                 else pa.isPerformingAbility = false;
                 break;
@@ -98,22 +105,23 @@ public class PlayerPerformAbility : MonoBehaviour
                 if (!unavailable && objects[1] != null)
                 {
                     float preXVector = xVector;
-                    for (int i = 0; i < abilityAmount; i++)
+                    for (int i = 0; i < abilityAmount[1]; i++)
                     {
-                        GameObject newPillar = Instantiate(objects[1],
+                        var newPillar = Instantiate(objects[1],
                             abilityPoint.position + new Vector3(xVector * transform.right.x, 0f, 0f),
                             Quaternion.identity);
-                        PlayerSummonPillar pillarScript = newPillar.GetComponent<PlayerSummonPillar>();
+                        var pillarScript = newPillar.GetComponentInChildren<Pillar>();
 
                         if (pillarScript != null)
                         {
                             pillarScript.SetValues(abilityLifetimeMult,
-                                abilityDamageMult / abilityAmount, abilityPotency);
-                            pa.energy -= pillarScript.energyRequired / abilityAmount;
+                                abilityDamageMult / abilityAmount[1], abilityPotency);
+                            pa.energy -= pillarScript.energyRequired / abilityAmount[1];
                             pa.currentAbilityCooldown = pillarScript.abilityCooldown * pa.abilityCooldownMult;
                         }
                         else Debug.LogError("where is bro's pillar");
                         xVector += 1.5f;
+                        yield return new WaitForSeconds(0.1f);
                     }
                     pa.isPerformingAbility = false;
                     xVector = preXVector;
@@ -123,13 +131,13 @@ public class PlayerPerformAbility : MonoBehaviour
             case 2:
                 if (objects[2] != null)
                 {
-                    GameObject newBeam = Instantiate(objects[2], abilityPoint.position + new Vector3(0, 0, 0f),
+                    var newBeam = Instantiate(objects[2], abilityPoint.position + new Vector3(0, 0, 0f),
                         abilityPoint.rotation);
-                    PlayerShootBeam beamScript = newBeam.GetComponentInChildren<PlayerShootBeam>();
+                    var beamScript = newBeam.GetComponentInChildren<Beam>();
 
                     if (beamScript != null)
                     {
-                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityLifetimeMult,abilityPotency ,abilityDirection);
+                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityDirection,abilityDamageMult ,abilityLifetimeMult, abilityPotency);
                         if (!beamScript.isHoldable)
                         {
                             pa.currentAbilityCooldown = beamScript.abilityCooldown * pa.abilityCooldownMult;

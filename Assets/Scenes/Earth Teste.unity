@@ -669,7 +669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 78685931}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7019,6 +7019,7 @@ MonoBehaviour:
   shieldHealth: 0
   dmgRes: 0.5
   isCountering: 0
+  isStunned: 0
   movable: 1
 --- !u!114 &998816642031721973
 MonoBehaviour:
@@ -7082,7 +7083,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4110547085652900829}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: DetectionArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7099,7 +7100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5463582560311469444}
   - component: {fileID: 6556998655310718844}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7231,7 +7232,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4616315525882854983}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7320,7 +7321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6331963636342478429}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7396,6 +7397,8 @@ MonoBehaviour:
   isTouchingWall: 0
   wallCheck: {fileID: 78685931}
   wallCheckRay: 1.91
+  stunnable: 0
+  stunnableTimer: 0
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
@@ -7585,7 +7588,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7832097569773302830}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Projectile point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7611,7 +7614,7 @@ GameObject:
   - component: {fileID: 8390302845202577900}
   - component: {fileID: 7468428648491577699}
   - component: {fileID: 2830585405788781009}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Noxu
   m_TagString: Boss
   m_Icon: {fileID: 0}

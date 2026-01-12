@@ -590,7 +590,7 @@ AnimationClip:
     messageOptions: 0
   - time: 1.1111112
     functionName: FollowupAttack
-    data: EvasiveMove
+    data: BackDash
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

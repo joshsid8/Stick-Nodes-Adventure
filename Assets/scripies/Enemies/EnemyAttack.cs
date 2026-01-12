@@ -121,7 +121,7 @@ public class EnemyAttack : MonoBehaviour
         }
         if (PlayerHealth.Instance.isDead! && playerIsDead) playerIsDead = false;
         
-        animator.SetBool("isFlying", isFlying);
+        if (canFly) animator.SetBool("isFlying", isFlying);
         ef.enabled = isFlying;
         rb.gravityScale = isFlying ? 0 : 8;
     }

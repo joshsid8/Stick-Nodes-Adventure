@@ -4,10 +4,10 @@ using UnityEngine;
 public class FindFloor : MonoBehaviour
 {
     // Detect Floor and sheeeee
-    private RaycastHit2D hit;
+    private RaycastHit2D[] hit;
     private bool foundSurface;
     [SerializeField] private LayerMask surfaceLayers;
-    [SerializeField] private Transform bottomPoint;
+    public Transform bottomPoint;
     [SerializeField] private float rayDistance;
     [SerializeField] private float raySpeed;
     [SerializeField] private MonoBehaviour scriptToWake;
@@ -17,8 +17,9 @@ public class FindFloor : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        hit = Physics2D.Raycast(bottomPoint.position, Vector2.down, rayDistance, surfaceLayers);
-        foundSurface = hit.collider != null;
+        hit = Physics2D.RaycastAll(bottomPoint.position, Vector2.down, rayDistance, surfaceLayers);
+        foreach (var h in hit) print($"Found {h.collider.gameObject.name} with y position {h.collider.gameObject.transform.position.y}");
+        foundSurface = hit != null;
         if (!foundSurface)
         {
             rayDistance += raySpeed;
@@ -26,19 +27,16 @@ public class FindFloor : MonoBehaviour
         else if (foundSurface && !toggle)
         {
             toggle = true;
-            FoundSurface();
+            FoundSurface(hit[0].collider.gameObject);
         }
     }
 
-    private void FoundSurface()
+    private void FoundSurface(GameObject surface)
     {
-        gameObject.AddComponent<CapsuleCollider2D>();
-        gameObject.GetComponent<CapsuleCollider2D>().offset = new Vector2(0, bottomPoint.localPosition.y + 0.25f);
-        gameObject.GetComponent<CapsuleCollider2D>().size = new Vector2(0.15f, 0.5f);
-        gameObject.GetComponent<CapsuleCollider2D>().excludeLayers = masks;
-        gameObject.transform.position -= new Vector3(0, rayDistance, 0);
+        var fahhh = bottomPoint.transform.position = new Vector3(gameObject.transform.position.x, surface.transform.position.y + surface.transform.lossyScale.y / 2, surface.transform.position.z);
+        print($"position: {fahhh}. this is because {surface.name}'s y position is {surface.transform.position.y}, adding {surface.transform.lossyScale.y} to it.");
         scriptToWake.enabled = true;
-
+        
         enabled = false;
     }
 

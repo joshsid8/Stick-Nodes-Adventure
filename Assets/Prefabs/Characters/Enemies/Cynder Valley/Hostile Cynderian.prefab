@@ -46,35 +46,55 @@ PrefabInstance:
       objectReference: {fileID: 6030403799953984630}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: activeMoves.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: evasiveMoves.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: passiveMoves.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'activeMoves.Array.data[0]'
+      value: ForwardDash
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: 'activeMoves.Array.data[1]'
-      value: ProactiveMove 1
+      value: FirePunch
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'activeMoves.Array.data[2]'
+      value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'evasiveMoves.Array.data[0]'
+      value: Kick
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'evasiveMoves.Array.data[1]'
+      value: BackDash
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: 'evasiveMoves.Array.data[2]'
-      value: DefensiveMove 2
+      value: Pillar
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: 'evasiveMoves.Array.data[3]'
-      value: PassiveMove 2
+      value: FireP
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: 'passiveMoves.Array.data[0]'
+      value: Fire
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: 'passiveMoves.Array.data[1]'
-      value: PassiveMove 2
+      value: FirePunch
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: 'passiveMoves.Array.data[2]'
-      value: DefensiveMove 2
+      value: Pillar
       objectReference: {fileID: 0}
     - target: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_Name

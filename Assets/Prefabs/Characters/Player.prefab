@@ -256,7 +256,8 @@ MonoBehaviour:
   abilityDirection: 0
   abilityLifetimeMult: 1
   xVector: 1
-  abilityAmount: 3
+  elementType: 0
+  abilityAmount: 050000000300000001000000
   isActivated: 0
   unavailable: 0
   terrainLayers:
