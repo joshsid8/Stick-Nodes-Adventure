@@ -379,7 +379,7 @@ AnimationClip:
   - time: 3.2
     functionName: ProjectileShoot
     data: 
-    objectReferenceParameter: {fileID: 3357865513782961777, guid: 75d041744ef27354d93d419b0c82c61b, type: 3}
+    objectReferenceParameter: {fileID: 1196550910580000029, guid: f0a8db11793dab94dba11873795ee258, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

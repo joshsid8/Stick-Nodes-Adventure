@@ -3,14 +3,18 @@ SNADV Notes
     Ahh man...
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
-    Hotfixes & Priorities:
+    Priorities:
     
         Beam logic FEELS LIKE not detecting enemies, otherwise its alright i presume
             some debug logs have been added. find a way to fix this!
         Scene data doors SOMEHOW is broken again
-        Besides, gonna do enemy logic enhancements       
+        Besides, gonna do enemy logic enhancements
+        
+        Noxu
+            Basically broken, abilities outdated atm
+            Make him use the more universal abilities, assigning them as boss abilities temporarily                              
     
-    Optimisations:
+    Optimisations & Hotfixes:
         
         Ability Logic                        
             FindFloor has been patched a little
@@ -19,7 +23,10 @@ SNADV Notes
             Now i should apply this to enemies 
                                                
             Make it so that ability prefabs also arent all seperate, make them variants instead
-                This is going alright for now, almost done                      
+                This is going alright for now, almost done   
+            
+            Change the switching between abilities logic
+                Like Cuphead, make it so that they can press a button to switch between abilities instead holding up or down like hollow knight             
                             
         Animations
             Make better/seperate animations for the player's QoL
@@ -40,6 +47,11 @@ SNADV Notes
                 Using layers can help make the controller more efficient and look good
                     
         Enemy Logic
+        
+            Overall fighting logic seems a bit bad, especially for cynderians
+                I think it is a bit too slow and wayy too easy when you get used to it
+                Potentially speed up the attacks, but make more prominent telegraphs similar to silksonk
+            
             Flying/Swimming
                 For some enemies that can fly/swim, drastically reduce their gravity, and make them move around in the air
                 Switch up their moveset and let them choose between swimming/flying if they can do both
@@ -51,10 +63,16 @@ SNADV Notes
         Boss Logic
             Instead of having no stun (except noxu and his shield), let all bosses be staggered so you can get some combos in when their guard is down. 
             This makes it so you can take turns more efficiently to attack the boss instead of them just standing there while you hit them.
+            Stagger Logic
+                Either for each attack they land, they have a chance of getting staggered by the players attacks (Elden Ring?)
+                Or for every player attack gets landed, the boss gets staggered for a whole (Hollow Knight)
        
         Noxu
             !!!!!!!!Initial Boulder Throwing!!!!!!!!
                 Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
+                
+        Cynder
+            Add more slashing animations
             
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more
@@ -66,7 +84,11 @@ SNADV Notes
             It's so bad
             i want it to be a lot more efficient, than just an ease of movement left or right cuh
             thats if thats even possible
-                  
+        
+        Deflect Logic
+            When a move is parried of mirrored, instead of generating a new object, it should just be reflected with different properties
+                Such as if a player parried a fire ball from cynder, the same fire ball should be deflected, but with player's properties'
+        
         Audio flexibility
             Make it so that the music never stops, but rather silences before moving onto another track
             

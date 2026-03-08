@@ -542,7 +542,7 @@ AnimationClip:
   - time: 0.8333333
     functionName: ShootBeam
     data: 
-    objectReferenceParameter: {fileID: 8069515426526680348, guid: 3574b48b2601d9242991c253062f6f2b, type: 3}
+    objectReferenceParameter: {fileID: 41285518240766547, guid: 071d1bbe02101464a8875bfb56fa118a, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
