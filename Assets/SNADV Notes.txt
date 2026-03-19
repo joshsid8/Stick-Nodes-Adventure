@@ -5,8 +5,6 @@ SNADV Notes
     
     Priorities:
     
-        Beam logic FEELS LIKE not detecting enemies, otherwise its alright i presume
-            some debug logs have been added. find a way to fix this!
         Scene data doors SOMEHOW is broken again
         Besides, gonna do enemy logic enhancements
         
@@ -26,7 +24,11 @@ SNADV Notes
                 This is going alright for now, almost done   
             
             Change the switching between abilities logic
-                Like Cuphead, make it so that they can press a button to switch between abilities instead holding up or down like hollow knight             
+                Like Cuphead, make it so that they can press a button to switch between abilities instead holding up or down like hollow knight    
+            
+            Make ability objects have superclasses/a group
+                E.g, there can be a fire bomb, it needs both a projectile and pillar preset for it to work
+                    Find a way to incorporate this         
                             
         Animations
             Make better/seperate animations for the player's QoL

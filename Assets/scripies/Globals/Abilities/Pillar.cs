@@ -138,4 +138,10 @@ public class Pillar : MonoBehaviour
     
     void ApplyTimer() => pillarTimer = pillarLifeTime;
     
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, pillarCollider.size);
+    }
+    
 }

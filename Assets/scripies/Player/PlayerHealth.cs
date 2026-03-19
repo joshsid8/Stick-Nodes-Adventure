@@ -141,11 +141,14 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 GetComponent<PlayerAbility>().isPerformingAbility = false;
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
                 else playerHealth -= damageAmount * rawDamageResistance;
-                pc.animator.SetTrigger("Damaged");
                 spriteRenderer.color = damageTint;
                 isTinting = true;
-                pc.currentDashTime = 0f;
-                kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
+                if (knockbackForce != Vector2.zero)
+                {
+                    pc.animator.SetTrigger("Damaged");
+                    kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
+                    pc.currentDashTime = 0f;
+                }
             }
         }
         /*else if (GetComponent<PlayerPerformAbility>().isReinforcing)
@@ -162,11 +165,14 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             GetComponent<PlayerAbility>().isPerformingAbility = false;
             if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
             else playerHealth -= damageAmount * rawDamageResistance;
-            pc.animator.SetTrigger("Damaged");
             spriteRenderer.color = damageTint;
             isTinting = true;
-            pc.currentDashTime = 0f;
-            kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
+            if (knockbackForce != Vector2.zero)
+            {
+                pc.animator.SetTrigger("Damaged");
+                kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
+                pc.currentDashTime = 0f;
+            }
         }
     }
     

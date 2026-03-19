@@ -137,7 +137,7 @@ public class PlayerPerformAbility : MonoBehaviour
 
                     if (beamScript != null)
                     {
-                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityDirection,abilityDamageMult ,abilityLifetimeMult, abilityPotency);
+                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityDirection, 1, abilityDamageMult,abilityLifetimeMult, abilityPotency);
                         if (!beamScript.isHoldable)
                         {
                             pa.currentAbilityCooldown = beamScript.abilityCooldown * pa.abilityCooldownMult;

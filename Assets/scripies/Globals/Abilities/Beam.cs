@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Beam : MonoBehaviour
 {
     // jump yourself
+    [Tooltip("This is for the whatever casts the beam. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral")]
     public int typeFactor;
     
     [SerializeField] private float beamDamage;
@@ -70,7 +72,7 @@ public class Beam : MonoBehaviour
         HitBox();
     }
     
-    public void SetValues(bool facingRight, float direction, float damageMult = 1, float lifetimeMult = 1, float potency = 1)
+    public void SetValues(bool facingRight, float direction, int type = 0,float damageMult = 0, float lifetimeMult = 1, float potency = 1)
     {
         isFacingRightDirection = facingRight;
         beamDirection = direction;
@@ -92,7 +94,7 @@ public class Beam : MonoBehaviour
                     foreach (var hit in inContact)
                     {
                         var damageable = hit.collider.gameObject.GetComponent<EDamageables>();
-                        if (damageable != null && activeHitbox)
+                        if (damageable != null)
                         {
                             damageable.Damage(beamDamage, new Vector2(beamKnockbackForce.x * transform.right.x, beamKnockbackForce.y * transform.up.y));
                             damageable.Stun(beamStunTime);
@@ -104,7 +106,7 @@ public class Beam : MonoBehaviour
                     foreach (var hit in inContact)
                     {
                         var damageable = hit.collider.gameObject.GetComponent<PDamageable>();
-                        if (damageable != null && activeHitbox)
+                        if (damageable != null)
                         {
                             damageable.Damage(beamDamage, beamKnockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
                             damageable.Stun(beamStunTime);
@@ -115,11 +117,12 @@ public class Beam : MonoBehaviour
                 default:
                     foreach (var hit in inContact)
                     {
+                        print("trying to hit "+ hit.collider.gameObject.name + " with the layer of " + LayerMask.LayerToName(hit.collider.gameObject.layer));
                         var entity = hit.collider;
                         if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
                         {
                             var damageable = hit.collider.gameObject.GetComponent<EDamageables>();
-                            if (damageable != null && activeHitbox)
+                            if (damageable != null)
                             {
                                 damageable.Damage(beamDamage, new Vector2(beamKnockbackForce.x * transform.right.x, beamKnockbackForce.y * transform.up.y));
                                 damageable.Stun(beamStunTime);
@@ -149,21 +152,19 @@ public class Beam : MonoBehaviour
         if (pa.isHolding && isHoldable || !isHoldable)
         {
             beamTimer -= Time.deltaTime;
-            if (beamTimer <= 0 && collideAnim != null)
+            if (beamTimer <= 0)
             {
                 pa.isPerformingAbility = false;
                 animator.Play(collideAnim.name);
             }
         }
-        else if (collideAnim != null)
-        {
-            pa.isPerformingAbility = false;
-            animator.Play(collideAnim.name);
-        }
     }
 
-    private void Boom()
+    private void Boom() => Destroy(parentObject);
+
+    private void OnDrawGizmos()
     {
-        Destroy(parentObject);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, beamCollider.size);
     }
 }

@@ -101,7 +101,7 @@ public class PlayerDefense : MonoBehaviour
             else if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("EVFX") || hits[i].collider.gameObject.layer == LayerMask.NameToLayer("FX"))
             {
                 var projectile = hits[i].collider.gameObject.GetComponent<Projectile>();
-                projectile.Deflect(1);
+                if (projectile != null) projectile.Deflect(1);
             }
         }
     }
