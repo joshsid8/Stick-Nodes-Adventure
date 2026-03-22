@@ -12,6 +12,11 @@ public class Identifier : MonoBehaviour
     
     [SerializeField] private MapManager mapManager;
 
+    public void AutomateID() //an overload, something to learn more about
+    {
+        AutomateID(gameObject.scene);
+    }
+
     public void AutomateID(Scene targetScene)
     {
         if (mapManager == null)

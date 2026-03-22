@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CollectableTrigger : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class CollectableTrigger : MonoBehaviour
     private void Awake()
     {
         collectable = GetComponent<Collectable>();
+        GetComponent<Identifier>().AutomateID();
     }
 
     public void OnCollisionEnter2D(Collision2D collision)

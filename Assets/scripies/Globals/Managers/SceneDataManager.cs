@@ -57,7 +57,7 @@ public class SceneDataManager : MonoBehaviour
         public CollectableSOBase activeCollectable;
         public Color colour = Color.white;
         public Vector3 position;
-        public string collectableName;
+        public bool exists;
     }
 
     [Serializable]
@@ -88,11 +88,10 @@ public class SceneDataManager : MonoBehaviour
             {
                 if (obj.name == "Map")
                 {
-                    obj.GetComponent<MapManager>().LoadSceneData();
+                    //obj.GetComponent<MapManager>().LoadSceneData();
                     return;
                 }
             }
-            
         }
     }
 }

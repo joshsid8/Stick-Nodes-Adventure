@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public class Spawner : MonoBehaviour
+public class EntitySpawner : MonoBehaviour
 {
     [SerializeField] private EnemySpawn[] eSpawn;
     [SerializeField] private SceneField scene;

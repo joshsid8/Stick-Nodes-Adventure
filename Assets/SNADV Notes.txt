@@ -4,9 +4,16 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-    
-        Scene data doors SOMEHOW is broken again
-        Besides, gonna do enemy logic enhancements
+        
+        Scene Data
+            Ive made a spawner script for items
+                Make it so that it despawns any items inside if the oneTime variable is true
+                this should be set from either the map manager or the scene data manager
+            
+        Beam hitboxes are broken breh
+            Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        
+        
+        Enemy logic enhancements
         
         Noxu
             Basically broken, abilities outdated atm

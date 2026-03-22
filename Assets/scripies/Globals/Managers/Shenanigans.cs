@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class Shenanigans : MonoBehaviour
 {
-    // This script is meant to manage literally every small even that occurs in this game, similar to the player manager.
+    // This script is meant to manage literally every small function that occurs in this game, similar to the player manager.
     // If it cant be managed anywhere else without it being inconvenient, add it here!
      
     public static Shenanigans Instance {get; private set;}

@@ -6,7 +6,8 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     public CollectableSOBase collectable;
-    
+
+    [SerializeField] private bool isInitial;
     [SerializeField] private bool onGround;
     [SerializeField] private float edgeCheckRay = 2f;
     
