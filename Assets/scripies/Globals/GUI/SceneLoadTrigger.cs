@@ -23,32 +23,54 @@ public class SceneLoadTrigger : MonoBehaviour
 
     private void LoadScenes()
     {
-        for (var i = 0; i < scenesToLoad.Length; i++)
+        foreach (var scene in scenesToLoad)
         {
             var isSceneLoaded = false;
             for (var j = 0; j < SceneManager.sceneCount; j++)
             {
                 var loadedScene = SceneManager.GetSceneAt(j);
-                if (loadedScene.name == scenesToLoad[i].SceneName)
+                if (loadedScene.name == scene.SceneName)
                 {
                     isSceneLoaded = true;
                     break;
                 }
-            }
 
-            if (!isSceneLoaded) SceneManager.LoadSceneAsync(scenesToLoad[i].SceneName, LoadSceneMode.Additive);
-            
+                /*var sceneObjects = loadedScene.GetRootGameObjects();
+                foreach (var obj in sceneObjects)
+                {
+                    if (obj.name == "Map")
+                    {
+                        obj.GetComponent<MapManager>().LoadSceneData();
+                        print($"Loaded {scene.SceneName}");
+                        break;
+                    }
+                    print($"This aint a map, its {obj.name} >:(");
+                }*/
+            }
+            if (!isSceneLoaded) SceneManager.LoadSceneAsync(scene.SceneName, LoadSceneMode.Additive);
         }
     }
 
     private void UnloadScenes()
     {
-        for (var i = 0; i < scenesToUnload.Length; i++)
+        foreach (var scene in scenesToUnload)
         {
             for (var j = 0; j < SceneManager.sceneCount; j++)
             {
-                Scene loadedScene = SceneManager.GetSceneAt(j);
-                if (loadedScene.name == scenesToUnload[i]) SceneManager.UnloadSceneAsync(scenesToUnload[i]);
+                var loadedScene = SceneManager.GetSceneAt(j);
+                if (loadedScene.name == scene.SceneName)
+                {
+                    var sceneObjects = loadedScene.GetRootGameObjects();
+                    foreach (var obj in sceneObjects)
+                    {
+                        if (obj.name == "Map")
+                        {
+                            obj.GetComponent<MapManager>().MakeDataPersistent();
+                            break;
+                        }
+                    }
+                    SceneManager.UnloadSceneAsync(scene);
+                }
             }
         }
     }

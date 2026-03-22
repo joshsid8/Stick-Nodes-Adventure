@@ -4,9 +4,18 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-    
-        Scene data doors SOMEHOW is broken again
-        Besides, gonna do enemy logic enhancements
+        
+        Scene Data
+            Loading data is nearly fixed
+                Collectables arent assigned correctly
+                    They should only be instantiated if there isnt already one
+                    If there is, either replace the old one or destroy it
+                    As of now, one extra collectable is being instantiated and its data isnt being assigned
+            
+        Beam hitboxes are broken breh
+            Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        
+        
+        Enemy logic enhancements
         
         Noxu
             Basically broken, abilities outdated atm

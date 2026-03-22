@@ -88,7 +88,7 @@ public class SceneDataManager : MonoBehaviour
             {
                 if (obj.name == "Map")
                 {
-                    obj.GetComponent<MapManager>().LoadSceneData();
+                    //obj.GetComponent<MapManager>().LoadSceneData();
                     return;
                 }
             }

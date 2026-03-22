@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
@@ -21,6 +22,7 @@ public class MapManager : MonoBehaviour
     
     [SerializeField] private SceneField sceneName; 
     [SerializeField] private GameObject[] sceneObjects;
+    [SerializeField] private GameObject[] doorObjects;
     
     public List<EnemySceneData> enemySceneData = new List<EnemySceneData>();
     public List<int> enemyIds = new List<int>();
@@ -31,29 +33,30 @@ public class MapManager : MonoBehaviour
     
     #endregion
 
-    void Start()
+    IEnumerator Start()
     {
-        if (SceneDataManager.Instance.sceneData != null) LoadSceneData();
+        SaveSceneData();
+        yield return new WaitForSeconds(0.05f);
+        if (SceneDataManager.Instance.sceneData.Count > 0) LoadSceneData();
     }
 
     private void Update()
     {
-        var scene = SceneManager.GetSceneByName(sceneName.SceneName);
-        sceneObjects = scene.GetRootGameObjects();
-        SaveSceneData();
-        MakeDataPersistent();
+        if (Input.GetKeyDown(KeyCode.F1)) SaveSceneData();
+        if (Input.GetKeyDown(KeyCode.F2)) MakeDataPersistent();
+        if (Input.GetKeyDown(KeyCode.F3)) LoadSceneData();
         
-        if (doorSceneData.Count > 0 || doorSceneData != null)
+        if (doorSceneData.Count > 0 && doorSceneData != null)
         {
-            foreach (var dData in doorSceneData)
-                foreach (var door in dData.activeDoors.gameObject.GetComponent<DoorObjective>().doorObj) 
-                    dData.isOpen = door.objectiveComplete;
-            
-            if (!string.IsNullOrEmpty(bossSceneData.activeBoss) && GameObject.Find(bossSceneData.activeBoss) != null)
-            {
-                var boss = GameObject.Find(bossSceneData.activeBoss);
-                if (boss.gameObject.GetComponent<BossHealth>().bossHealth <= 0) bossSceneData.isDead = true; //else print($"Clueless: {boss.name} is alive with {boss.gameObject.GetComponent<BossHealth>().bossHealth} health");
-            }
+            foreach (var dData in doorSceneData) foreach (var door in dData.activeDoors.gameObject.GetComponent<DoorObjective>().doorObj) 
+                dData.isOpen = door.objectiveComplete;
+        }
+
+        if (!string.IsNullOrEmpty(bossSceneData.activeBoss) && GameObject.Find(bossSceneData.activeBoss) != null)
+        {
+            var boss = GameObject.Find(bossSceneData.activeBoss);
+            if (boss.gameObject.GetComponent<BossHealth>().bossHealth <= 0) bossSceneData.isDead = true; 
+            //else print($"Clueless: {boss.name} is alive with {boss.gameObject.GetComponent<BossHealth>().bossHealth} health");
         }
     }
 
@@ -74,16 +77,40 @@ public class MapManager : MonoBehaviour
         
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player")) MakeDataPersistent();
+    }
+
+
+    private void CollateObjects()
+    {
+        var scene = SceneManager.GetSceneByName(sceneName.SceneName);
+        sceneObjects = scene.GetRootGameObjects();
+        var sectionObject = new List<GameObject>();
+        foreach (var obj in sceneObjects)
+        {
+            if (obj.name == "Sections")
+            {
+                foreach (var section in obj.GetComponentsInChildren<DoorObjective>())
+                    sectionObject.Add(section.gameObject);
+            }
+        }
+        doorObjects = sectionObject.ToArray();
+    }
+
     private void ClearSceneData()
     {
         enemySceneData.Clear();
         npcSceneData.Clear();
         collectableSceneData.Clear();
+        doorSceneData.Clear();
     }
-
-    private void SaveSceneData()
+    
+    public void SaveSceneData()
     {
         ClearSceneData();
+        CollateObjects();
         foreach (var obj in sceneObjects)
         {
             if (obj != null)
@@ -96,7 +123,8 @@ public class MapManager : MonoBehaviour
                             //isOneTime = obj.gameObject.GetComponent<EnemyHealth>().isOneTime
                         };
                         enemySceneData.Add(newEnemy);
-                        if (!enemyIds.Contains(obj.gameObject.GetComponent<Identifier>().spawnId)) enemyIds.Add(obj.gameObject.GetComponent<Identifier>().spawnId);
+                        if (!enemyIds.Contains(obj.gameObject.GetComponent<Identifier>().spawnId)) 
+                            enemyIds.Add(obj.gameObject.GetComponent<Identifier>().spawnId);
                         break;
                     case "Boss":
                         bossSceneData.activeBoss = obj.name;
@@ -120,9 +148,14 @@ public class MapManager : MonoBehaviour
                         break;
                 }
         }
+        foreach (var door in doorObjects)
+        {
+            var newDoor = new DoorSceneData { activeDoors = door };
+            doorSceneData.Add(newDoor);
+        }
     }
     
-    private void MakeDataPersistent()
+    public void MakeDataPersistent()
     {
         var manager = SceneDataManager.Instance;
         var list = manager.sceneData.Find(x => x.sceneName == sceneName.SceneName);
@@ -178,7 +211,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void LoadSceneData()
+    private void LoadSceneData()
     {
         var manager = SceneDataManager.Instance;
 
