@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -7,7 +8,8 @@ public class Collectable : MonoBehaviour
 {
     public CollectableSOBase collectable;
 
-    [SerializeField] private bool isInitial;
+    public bool isStray = true;
+    private bool gracePeriod;
     [SerializeField] private bool onGround;
     [SerializeField] private float edgeCheckRay = 2f;
     [SerializeField] private float playerFinderHitbox = 2f;
@@ -17,26 +19,32 @@ public class Collectable : MonoBehaviour
     public void Collect(GameObject objectCollected) => collectable.Collect(objectCollected);
 
 
-    private void Start() => rb = GetComponent<Rigidbody2D>();
+    private IEnumerator Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        yield return new WaitForSeconds(1f);
+        gracePeriod = true;
+    }
 
     private void Update()
     {
         name = collectable.itemName;
         onGround = Physics2D.Raycast(transform.position, Vector2.down * transform.localScale.y, edgeCheckRay, LayerMask.GetMask("Ground", "Platform"));
-        if (rb.linearVelocity == Vector2.zero && onGround)
+        if (onGround && gracePeriod)
         {
             rb.gravityScale = 0;
             GetComponent<Collider2D>().isTrigger = true;
         }
         Vector2 flyDirection = (PlayerHealth.Instance.gameObject.transform.position - transform.position).normalized;
         hit = Physics2D.CircleCast(transform.position, playerFinderHitbox, Vector2.zero, 0f, LayerMask.GetMask("Player"));
-        if (hit.collider != null && GetComponent<Collider2D>().isTrigger)
+        if (hit.collider != null && GetComponent<Collider2D>().isTrigger && isStray)
         {
             flySpeed += Time.fixedDeltaTime * 20;
             rb.linearVelocity = flyDirection * flySpeed;
         }
         else if (flySpeed > 0) flySpeed -= Time.fixedDeltaTime * 20;
         
+        if (onGround && hit.collider == null || !isStray && onGround) rb.linearVelocity = Vector2.zero;
     }
 
     private void OnDrawGizmosSelected()

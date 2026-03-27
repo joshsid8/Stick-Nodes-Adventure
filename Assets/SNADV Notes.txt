@@ -5,12 +5,12 @@ SNADV Notes
     
     Priorities:
         
-        Scene Data
-            Item spawner works
-            Last thing to do is a check whenever the items have been collected
-            Once it has been, it shouldnt be instantiated on scene reload
-                Kinda unsure how to do this, but variables have been added. make it work!
-            
+        Scene Data - Collectables dont save properly again
+            There should be a 'snapshot' of before and after the player has interacted within a scene to determine which
+            non-stray collectable has been picked up yet, but instantiate whatever stray collectables are inside
+            At the moment, it saves the data but doesnt load it as apparently the object its trying to instantiate is null
+                Find a way to fix this
+
         Beam hitboxes are broken breh
             Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        
         
@@ -22,8 +22,8 @@ SNADV Notes
     
     Optimisations & Hotfixes:
         
-        Ability Logic                        
-            FindFloor has been patched a little
+        Ability Logic - FindFloor has been patched a little
+            
             It successfully finds the floors for most platforms
                 For small ones i think, it does not sent the element to the top, keeping it at the bottom
             Now i should apply this to enemies 
@@ -32,7 +32,8 @@ SNADV Notes
                 This is going alright for now, almost done   
             
             Change the switching between abilities logic
-                Like Cuphead, make it so that they can press a button to switch between abilities instead holding up or down like hollow knight    
+                Like Cuphead, make it so that they can press a button to switch between
+                abilities instead holding up or down like hollow knight    
             
             Make ability objects have superclasses/a group
                 E.g, there can be a fire bomb, it needs both a projectile and pillar preset for it to work

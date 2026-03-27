@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8596268458041364805}
   - component: {fileID: 6135879922111017953}
-  - component: {fileID: 5528623093452585138}
   - component: {fileID: 3647892778947931464}
+  - component: {fileID: 5528623093452585138}
   - component: {fileID: 6782227859726589844}
   - component: {fileID: 3587633842423100324}
   - component: {fileID: 2158844802716763069}
+  - component: {fileID: 4403891972653555725}
   m_Layer: 19
   m_Name: Aspect
   m_TagString: Item
@@ -96,22 +97,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &5528623093452585138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3490253027308570714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Identifier
-  id: 0
-  spawnId: 0
-  typeOfObject: 1
-  mapManager: {fileID: 0}
 --- !u!58 &3647892778947931464
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -148,6 +133,22 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &5528623093452585138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3490253027308570714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Identifier
+  id: 0
+  spawnId: 0
+  typeOfObject: 1
+  mapManager: {fileID: 0}
 --- !u!50 &6782227859726589844
 Rigidbody2D:
   serializedVersion: 5
@@ -200,8 +201,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectable: {fileID: 11400000, guid: cb8962a33a8c630488f8c1305482dbc0, type: 2}
-  isInitial: 0
+  isStray: 1
   onGround: 0
   edgeCheckRay: 1
   playerFinderHitbox: 5
   flySpeed: 10
+--- !u!114 &4403891972653555725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3490253027308570714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Identifier
+  id: 0
+  spawnId: 0
+  typeOfObject: 0
+  mapManager: {fileID: 0}

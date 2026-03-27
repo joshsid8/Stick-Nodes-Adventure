@@ -7,33 +7,47 @@ using Random = UnityEngine.Random;
 
 public class ItemSpawner : MonoBehaviour
 {
+    public bool isOneTime;
     [SerializeField] private ItemSpawn[] itemSpawner;
     [SerializeField] private string scene;
     [SerializeField] private GameObject[] spawnPoints;
     public List<GameObject> spawnedObjects = new List<GameObject>();
+    
     [SerializeField] private bool spawnOnTrigger;
     public TriggerTag triggerTag;
     public enum TriggerTag {Player, Enemy, Boss, Npc}
     [SerializeField] private float spawnInterval;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start() => StartCoroutine(Spawn());
+    private void Start()  {
+        GetComponent<Identifier>().AutomateID();
+        StartCoroutine(Spawn());
+    }
 
     private IEnumerator Spawn()
     {
         scene = gameObject.scene.name;
-        yield return new WaitForSeconds(spawnInterval);
-        foreach (var spawn in itemSpawner)
+        if (!isOneTime)
         {
-            var instance = Instantiate(spawn.objectToSpawn,
-                spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity);
-            if (spawn.collectable != null) instance.GetComponent<Collectable>().collectable = spawn.collectable;
-            var targetScene = SceneManager.GetSceneByName(scene);
-            if (targetScene.IsValid() && targetScene.isLoaded)
+            yield return new WaitForSeconds(spawnInterval);
+            foreach (var spawn in itemSpawner)
             {
-                SceneManager.MoveGameObjectToScene(instance, targetScene);
-                instance.GetComponent<Identifier>().AutomateID(targetScene);
-                spawnedObjects.Add(instance);
+                var instance = Instantiate(spawn.objectToSpawn,
+                    spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity);
+                
+                if (spawn.collectable != null)
+                {
+                    instance.GetComponent<Collectable>().collectable = spawn.collectable;
+                    instance.GetComponent<Collectable>().isStray = false;
+                }
+                
+                var targetScene = SceneManager.GetSceneByName(scene);
+                if (targetScene.IsValid() && targetScene.isLoaded)
+                {
+                    SceneManager.MoveGameObjectToScene(instance, targetScene);
+                    instance.GetComponent<Identifier>().AutomateID(targetScene);
+                    spawnedObjects.Add(instance);
+                }
             }
         }
     }
@@ -60,6 +74,5 @@ public class ItemSpawner : MonoBehaviour
     {
         public GameObject objectToSpawn;
         public CollectableSOBase collectable;
-        public bool oneTime;
     }
 }

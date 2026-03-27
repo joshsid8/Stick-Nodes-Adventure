@@ -8,7 +8,7 @@ public class Identifier : MonoBehaviour
     public int id;
     public int spawnId;
     public ObjectType typeOfObject;
-    public enum ObjectType{Entity, Item, Door, Npc}
+    public enum ObjectType{Entity, Item, Door, Npc, Spawner}
     
     public MapManager mapManager; 
     

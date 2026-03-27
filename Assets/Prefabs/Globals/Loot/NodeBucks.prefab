@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6731606844740222472}
   - component: {fileID: 2638656789567833493}
   - component: {fileID: 3816473529718610588}
+  - component: {fileID: -6052060961848938624}
   - component: {fileID: 4495788041319736467}
   - component: {fileID: 7352367289808877247}
   - component: {fileID: 7548842454195305152}
@@ -38,6 +39,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2638656789567833493
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -56,6 +58,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,9 +81,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 8782da715bf2bd644bc258ba4619dda8, type: 3}
   m_Color: {r: 0.25882354, g: 1, b: 0.7137255, a: 1}
   m_FlipX: 0
@@ -89,7 +95,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &3816473529718610588
 CircleCollider2D:
@@ -127,6 +132,22 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &-6052060961848938624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3237700672439869688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Identifier
+  id: 0
+  spawnId: 0
+  typeOfObject: 1
+  mapManager: {fileID: 0}
 --- !u!114 &4495788041319736467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,8 +173,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectable: {fileID: 11400000, guid: 41c0bbe2c1b15624cb310fcb1d26d9f5, type: 2}
+  isStray: 1
   onGround: 0
   edgeCheckRay: 1
+  playerFinderHitbox: 5
+  flySpeed: 10
 --- !u!50 &7548842454195305152
 Rigidbody2D:
   serializedVersion: 5

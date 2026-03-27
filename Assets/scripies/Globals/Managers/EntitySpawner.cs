@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class EntitySpawner : MonoBehaviour
 {
+    public bool isOneTime;
     [SerializeField] private EnemySpawn[] eSpawn;
     [SerializeField] private string scene;
 
@@ -20,7 +21,8 @@ public class EntitySpawner : MonoBehaviour
     private IEnumerator Start()
     {
         scene = gameObject.scene.name;
-        if (canSpawn && spawnAbility)
+        GetComponent<Identifier>().AutomateID();
+        if (canSpawn && spawnAbility && !isOneTime)
         {
             foreach (var spawn in eSpawn)
             {

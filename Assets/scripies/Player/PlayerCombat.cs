@@ -23,6 +23,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private bool hasAirBoosted;
     public int airComboAmount = 3;
     
+    [SerializeField] private int[] maxComboInterval = new int[2];
+    [SerializeField] private int[] comboInterval = new int[2];
+    
     [SerializeField] private LayerMask enemyLayer;
     public float stunTime = 0.2f;
     public Vector2 knockbackForce;
@@ -53,6 +56,8 @@ public class PlayerCombat : MonoBehaviour
         animator.SetBool("isAirAttacking", isAirAttacking);
         animator.SetBool("isAirComboing", isAirComboing);
         animator.SetInteger("airComboAmount", airComboAmount);
+        animator.SetInteger("groundComboInterval", comboInterval[0]);
+        animator.SetInteger("airComboInterval", comboInterval[1]);
         if (pc.isGrounded)
         {
             hasAirBoosted = false;
@@ -60,6 +65,9 @@ public class PlayerCombat : MonoBehaviour
         }
         if (currentAttackCooldown > 0) canAttack = false;
         Attack();
+
+        if (comboInterval[0] > maxComboInterval[0]) comboInterval[0] = 0;
+        if (comboInterval[1] > maxComboInterval[1]) comboInterval[1] = 0;
     }
 
     private void GroundAttack()
@@ -78,17 +86,15 @@ public class PlayerCombat : MonoBehaviour
                 pc.currentCombatTimer += pc.combatTimer / 3;
             }
         }
+        comboInterval[0]++;
         currentAttackCooldown = attackCooldown * attackCooldownMult;
     }
     
     private void AirAttack()
     {
-        if (pc.rb.linearVelocity.y < 0 && !hasAirBoosted && !pc.isGrounded)
-        {
+        if (pc.rb.linearVelocity.y < 0 && !hasAirBoosted && !pc.isGrounded) 
             pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airAttackForce);
-            hasAirBoosted = true;
-        }
-
+        
         hits = Physics2D.CircleCastAll(airAttackTransform.position, airAttackRange, new Vector2(transform.right.x, transform.up.y), 0f, enemyLayer);
 
         for (int i = 0; i < hits.Length; i++)
@@ -108,11 +114,16 @@ public class PlayerCombat : MonoBehaviour
                     eDamageable.Damage(0, new Vector2(airKnockbackForce.x * attackPotency * transform.right.x * 1.5f, -airKnockbackForce.y * attackPotency * transform.up.y));
                     eDamageable.Stun(stunTime * 1.25f);
                 }
-                else eDamageable.Damage(0, new Vector2(airKnockbackForce.x * attackPotency * transform.right.x, airKnockbackForce.y * attackPotency * transform.up.y));
+                else
+                {
+                    eDamageable.Damage(0, new Vector2(airKnockbackForce.x * attackPotency * transform.right.x,
+                            airKnockbackForce.y * attackPotency * transform.up.y));
+                }
                 airComboAmount--;
-
             }
         }
+        hasAirBoosted = true;
+        comboInterval[1]++;
         currentAttackCooldown = airAttackCooldown * attackCooldownMult;
     }
 

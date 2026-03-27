@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6217457163881888616}
+  - component: {fileID: 2153638448317964997}
   - component: {fileID: 9223160534816086470}
   - component: {fileID: 5190355191559164575}
   m_Layer: 0
@@ -35,6 +36,22 @@ Transform:
   - {fileID: 3614062384417027667}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2153638448317964997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109414120128023590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Identifier
+  id: 0
+  spawnId: 0
+  typeOfObject: 4
+  mapManager: {fileID: 0}
 --- !u!114 &9223160534816086470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,12 +64,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2554de99f6022941b2145f44af37298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOneTime: 0
   eSpawn:
   - objectToSpawn: {fileID: 3938795057032240365, guid: e20865639346b7740a0545167afb8c2c, type: 3}
     spawnAmount: 1
-  scene:
-    m_SceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
-    m_SceneName: Fire Teste
+  scene: 
   spawnAbility: 1
   spawnPoints:
   - {fileID: 934838064383561076}

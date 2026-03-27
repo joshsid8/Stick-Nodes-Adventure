@@ -17,6 +17,7 @@ public class SceneDataManager : MonoBehaviour
         public List<CollectableSceneData> collectables = new List<CollectableSceneData>();
         public List<NpcSceneData> npcs = new List<NpcSceneData>();
         public List<DoorSceneData> doors = new List<DoorSceneData>();
+        public List<SpawnerSceneData> spawners = new List<SpawnerSceneData>();
 
         public GameObject ItemToStore => GameObject.Find("persistentItem");
         
@@ -57,6 +58,7 @@ public class SceneDataManager : MonoBehaviour
         public CollectableSOBase activeCollectable;
         public Color colour = Color.white;
         public Vector3 position;
+        public bool isStray;
     }
 
     [Serializable]
@@ -64,6 +66,13 @@ public class SceneDataManager : MonoBehaviour
     {
         public int activeDoor;
         public bool isOpen = true;
+    }
+
+    [Serializable]
+    public class SpawnerSceneData
+    {
+        public int activeSpawner;
+        public bool isOneTime;
     }
 
     #endregion

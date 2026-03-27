@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
@@ -21,9 +20,10 @@ public class MapManager : MonoBehaviour
 
     #region Scene Data
     
-    [SerializeField] private SceneField sceneName; 
+    [SerializeField] private string sceneName; 
     [SerializeField] private GameObject[] sceneObjects;
     [SerializeField] private GameObject[] doorObjects;
+    [SerializeField] private GameObject[] spawnerObjects;
     
     public List<EnemySceneData> enemySceneData = new List<EnemySceneData>();
     public List<int> enemyIds = new List<int>();
@@ -31,11 +31,12 @@ public class MapManager : MonoBehaviour
     public List<NpcSceneData> npcSceneData = new List<NpcSceneData>();
     public List<CollectableSceneData> collectableSceneData = new List<CollectableSceneData>();
     public List<DoorSceneData> doorSceneData = new List<DoorSceneData>();
-    
+    public List<SpawnerSceneData> spawnerSceneData = new List<SpawnerSceneData>();
     #endregion
 
-    IEnumerator Start()
+    private IEnumerator Start()
     {
+        sceneName = gameObject.scene.name;
         SaveSceneData();
         yield return new WaitForSeconds(0.05f);
         if (SceneDataManager.Instance.sceneData.Count > 0) LoadSceneData();
@@ -86,8 +87,9 @@ public class MapManager : MonoBehaviour
 
     private void CollateObjects()
     {
-        var scene = SceneManager.GetSceneByName(sceneName.SceneName);
+        var scene = SceneManager.GetSceneByName(sceneName);
         sceneObjects = scene.GetRootGameObjects();
+        
         var sectionObject = new List<GameObject>();
         foreach (var obj in sceneObjects)
         {
@@ -98,6 +100,24 @@ public class MapManager : MonoBehaviour
             }
         }
         doorObjects = sectionObject.ToArray();
+        
+        var spawnerObject = new List<GameObject>();
+        foreach (var obj in sceneObjects)
+        {
+            if (obj.name == "Spawners")
+            {
+                foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>())
+                {
+                    spawnerObject.Add(spawner.gameObject);
+                }
+                
+                foreach (var spawner in obj.GetComponentsInChildren<ItemSpawner>())
+                {
+                    spawnerObject.Add(spawner.gameObject);
+                }
+            }
+        }
+        spawnerObjects = spawnerObject.ToArray();
     }
 
     private void ClearSceneData()
@@ -106,6 +126,7 @@ public class MapManager : MonoBehaviour
         npcSceneData.Clear();
         collectableSceneData.Clear();
         doorSceneData.Clear();
+        spawnerSceneData.Clear();
     }
     
     public void SaveSceneData()
@@ -124,7 +145,7 @@ public class MapManager : MonoBehaviour
                             //isOneTime = obj.gameObject.GetComponent<EnemyHealth>().isOneTime
                         };
                         enemySceneData.Add(newEnemy);
-                        if (!enemyIds.Contains(obj.gameObject.GetComponent<Identifier>().spawnId)) 
+                        if (!enemyIds.Contains(obj.gameObject.GetComponent<Identifier>().spawnId))
                             enemyIds.Add(obj.gameObject.GetComponent<Identifier>().spawnId);
                         break;
                     case "Boss":
@@ -154,12 +175,17 @@ public class MapManager : MonoBehaviour
             var newDoor = new DoorSceneData { activeDoors = door };
             doorSceneData.Add(newDoor);
         }
+        foreach (var spawner in spawnerObjects)
+        {
+            var newSpawner = new SpawnerSceneData { activeSpawner = spawner };
+            spawnerSceneData.Add(newSpawner);
+        }
     }
     
     public void MakeDataPersistent()
     {
         var manager = SceneDataManager.Instance;
-        var list = manager.sceneData.Find(x => x.sceneName == sceneName.SceneName);
+        var list = manager.sceneData.Find(x => x.sceneName == sceneName);
 
         if (list == null)
         {
@@ -167,7 +193,7 @@ public class MapManager : MonoBehaviour
             manager.sceneData.Add(list);
         }
 
-        list.sceneName = sceneName.SceneName;
+        list.sceneName = sceneName;
         list.enemies.Clear();
         list.collectables.Clear();
         list.npcs.Clear();
@@ -209,6 +235,14 @@ public class MapManager : MonoBehaviour
             list.doors[i].activeDoor = doorSceneData[i].activeDoors.gameObject.GetComponent<Identifier>().id;
             list.doors[i].isOpen = doorSceneData[i].isOpen;
         }
+
+        for (var i = 0; i < spawnerSceneData.Count; i++)
+        {
+            if (list.spawners == null) break;
+            list.spawners.Add(new SceneDataManager.SpawnerSceneData());
+            list.spawners[i].activeSpawner = spawnerSceneData[i].activeSpawner.gameObject.GetComponent<Identifier>().id;
+            list.spawners[i].isOneTime = spawnerSceneData[i].isOneTime;
+        }
     }
 
     private void LoadSceneData()
@@ -217,7 +251,7 @@ public class MapManager : MonoBehaviour
 
         foreach (var list in manager.sceneData)
         {
-            if (list.sceneName == sceneName.SceneName)
+            if (list.sceneName == sceneName)
             {
                 for (var i = 0; i < list.enemies.Count; i++)
                 {
@@ -231,10 +265,13 @@ public class MapManager : MonoBehaviour
 
                 for (var i = 0; i < list.collectables.Count; i++)
                 {
-                    /*var item = Instantiate(list.ItemToStore, list.collectables[i].position, Quaternion.identity);
-                    item.GetComponent<SpriteRenderer>().color = list.collectables[i].colour;
-                    item.GetComponent<Collectable>().collectable = list.collectables[i].activeCollectable;
-                    SceneManager.MoveGameObjectToScene(item, SceneManager.GetSceneByName(sceneName.SceneName));*/
+                    if (list.collectables[i].isStray)
+                    {
+                        var item = Instantiate(list.ItemToStore, list.collectables[i].position, Quaternion.identity);
+                        item.GetComponent<SpriteRenderer>().color = list.collectables[i].colour;
+                        item.GetComponent<Collectable>().collectable = list.collectables[i].activeCollectable;
+                        SceneManager.MoveGameObjectToScene(item, SceneManager.GetSceneByName(sceneName));
+                    }
                 }
 
                 for (var i = 0; i < list.doors.Count; i++)
@@ -242,7 +279,13 @@ public class MapManager : MonoBehaviour
                     if (list.doors[i].isOpen && doorSceneData[i].activeDoors.gameObject.GetComponent<Identifier>().id == list.doors[i].activeDoor) 
                         doorSceneData[i].activeDoors.gameObject.GetComponent<DoorObjective>().InstantOpen();
                 }
-                
+
+                for (var i = 0; i < list.spawners.Count; i++)
+                {
+                    if (list.spawners[i].isOneTime && GetComponent<ItemSpawner>() != null)
+                        spawnerSceneData[i].activeSpawner.GetComponent<ItemSpawner>().Despawn();
+                }
+
                 bossSceneData.activeBoss = list.activeBoss;
                 if (list.isBossDead && GameObject.Find(bossSceneData.activeBoss) != null) 
                     Destroy(GameObject.Find(bossSceneData.activeBoss).gameObject);
@@ -293,6 +336,7 @@ public class MapManager : MonoBehaviour
         public GameObject activeCollectables;
         public Color itemColour = Color.white;
         public Vector3 position;
+        public bool isStray;
     }
 
     [Serializable]
@@ -300,6 +344,13 @@ public class MapManager : MonoBehaviour
     {
         public GameObject activeDoors;
         public bool isOpen = true;
+    }
+
+    [Serializable]
+    public class SpawnerSceneData
+    {
+        public GameObject activeSpawner;
+        public bool isOneTime;
     }
 #endregion
     

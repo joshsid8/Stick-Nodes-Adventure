@@ -11516,16 +11516,12 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: groundDamageAmount
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: airKnockbackForce.x
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: airKnockbackForce.y
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 261623171632948894, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: canFlip
