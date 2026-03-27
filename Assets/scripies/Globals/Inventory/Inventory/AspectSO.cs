@@ -3,10 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewAspect", menuName = "Collectable/Aspect")]
 public class AspectSO : CollectableSOBase
 {
-    public string itemName;
-    [TextArea] public string itemDescription;
-    public Sprite itemSprite;
-
     public string[] floatStatsName;
     public float[] floatStats;
     

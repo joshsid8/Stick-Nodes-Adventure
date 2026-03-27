@@ -6,9 +6,10 @@ SNADV Notes
     Priorities:
         
         Scene Data
-            Ive made a spawner script for items
-                Make it so that it despawns any items inside if the oneTime variable is true
-                this should be set from either the map manager or the scene data manager
+            Item spawner works
+            Last thing to do is a check whenever the items have been collected
+            Once it has been, it shouldnt be instantiated on scene reload
+                Kinda unsure how to do this, but variables have been added. make it work!
             
         Beam hitboxes are broken breh
             Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        

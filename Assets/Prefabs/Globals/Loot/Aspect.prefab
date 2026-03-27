@@ -203,3 +203,5 @@ MonoBehaviour:
   isInitial: 0
   onGround: 0
   edgeCheckRay: 1
+  playerFinderHitbox: 5
+  flySpeed: 10

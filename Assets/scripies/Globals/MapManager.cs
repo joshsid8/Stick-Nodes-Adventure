@@ -186,7 +186,6 @@ public class MapManager : MonoBehaviour
             if (collectableSceneData[i].activeCollectables != null) list.collectables[i].activeCollectable = collectableSceneData[i].activeCollectables.gameObject.GetComponent<Collectable>().collectable;
             list.collectables[i].colour = collectableSceneData[i].itemColour;
             list.collectables[i].position = collectableSceneData[i].position;
-            list.collectables[i].exists = collectableSceneData[i].exists;
         }
 
         for (var i = 0; i < npcSceneData.Count; i++)
@@ -232,7 +231,6 @@ public class MapManager : MonoBehaviour
 
                 for (var i = 0; i < list.collectables.Count; i++)
                 {
-                    if (list.collectables[i].exists && list.collectables[i].activeCollectable.GetComponent<Identifier>().spawnId == i) print("fahhh");
                     /*var item = Instantiate(list.ItemToStore, list.collectables[i].position, Quaternion.identity);
                     item.GetComponent<SpriteRenderer>().color = list.collectables[i].colour;
                     item.GetComponent<Collectable>().collectable = list.collectables[i].activeCollectable;
@@ -295,7 +293,6 @@ public class MapManager : MonoBehaviour
         public GameObject activeCollectables;
         public Color itemColour = Color.white;
         public Vector3 position;
-        public bool exists;
     }
 
     [Serializable]

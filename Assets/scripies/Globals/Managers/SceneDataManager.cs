@@ -57,7 +57,6 @@ public class SceneDataManager : MonoBehaviour
         public CollectableSOBase activeCollectable;
         public Color colour = Color.white;
         public Vector3 position;
-        public bool exists;
     }
 
     [Serializable]

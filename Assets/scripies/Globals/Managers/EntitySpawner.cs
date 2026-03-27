@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class EntitySpawner : MonoBehaviour
 {
     [SerializeField] private EnemySpawn[] eSpawn;
-    [SerializeField] private SceneField scene;
+    [SerializeField] private string scene;
 
     public bool spawnAbility = true;
     
@@ -19,6 +19,7 @@ public class EntitySpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private IEnumerator Start()
     {
+        scene = gameObject.scene.name;
         if (canSpawn && spawnAbility)
         {
             foreach (var spawn in eSpawn)
@@ -28,7 +29,7 @@ public class EntitySpawner : MonoBehaviour
                     if (spawnOnStart)
                     {
                         var instance = Instantiate(spawn.objectToSpawn, spawnPoints[0].transform.position, Quaternion.identity);
-                        var targetScene = SceneManager.GetSceneByName(scene.SceneName);
+                        var targetScene = SceneManager.GetSceneByName(scene);
                         if (targetScene.IsValid() && targetScene.isLoaded)
                         {
                             SceneManager.MoveGameObjectToScene(instance, targetScene);
@@ -51,7 +52,7 @@ public class EntitySpawner : MonoBehaviour
                 {
                     yield return new WaitForSeconds(spawnTime);
                     var instance = Instantiate(spawn.objectToSpawn, spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity);
-                    var targetScene = SceneManager.GetSceneByName(scene.SceneName);
+                    var targetScene = SceneManager.GetSceneByName(scene);
                     if (targetScene.IsValid() && targetScene.isLoaded) SceneManager.MoveGameObjectToScene(instance, targetScene);
                 }
             }

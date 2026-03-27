@@ -167,7 +167,7 @@ public class InvManager : MonoBehaviour
                     aspect, null, 0);
             
             else if (data.storedItems[i] is AbilitySO)
-                AddItem(ability.abilityName, 1, ability.abilitySprite, ability.abilityDescription, 1, 
+                AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, 
                     "Ability", null, null, ability, ability.abilityType);
         }
     }

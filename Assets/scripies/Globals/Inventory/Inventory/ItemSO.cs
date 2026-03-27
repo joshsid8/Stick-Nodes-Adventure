@@ -3,11 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewItem", menuName = "Collectable/Item")]
 public class ItemSO : CollectableSOBase
 {
-    public string itemName;
     public int itemAmount = 1;
     public int maxItemAmount = 99;
-    [TextArea] public string itemDescription;
-    public Sprite itemSprite;
     
     public string itemType;
     public float restoreValue;

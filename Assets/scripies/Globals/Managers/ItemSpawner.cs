@@ -1,72 +1,65 @@
 using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class ItemSpawner : MonoBehaviour
 {
-    [SerializeField] private ItemSpawn[] iSpawn;
-    [SerializeField] private SceneField scene;
-
-    public bool spawnAbility = true;
-    
-    public GameObject[] spawnPoints;
-    public float spawnTime;
-    public bool spawnOnStart = true;
-    public bool canSpawn = true;
+    [SerializeField] private ItemSpawn[] itemSpawner;
+    [SerializeField] private string scene;
+    [SerializeField] private GameObject[] spawnPoints;
+    public List<GameObject> spawnedObjects = new List<GameObject>();
+    [SerializeField] private bool spawnOnTrigger;
+    public TriggerTag triggerTag;
+    public enum TriggerTag {Player, Enemy, Boss, Npc}
+    [SerializeField] private float spawnInterval;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start() => Spawn();
+    private void Start() => StartCoroutine(Spawn());
 
-    private void Spawn()
+    private IEnumerator Spawn()
     {
-        if (canSpawn && spawnAbility)
+        scene = gameObject.scene.name;
+        yield return new WaitForSeconds(spawnInterval);
+        foreach (var spawn in itemSpawner)
         {
-            foreach (var spawn in iSpawn)
+            var instance = Instantiate(spawn.objectToSpawn,
+                spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity);
+            if (spawn.collectable != null) instance.GetComponent<Collectable>().collectable = spawn.collectable;
+            var targetScene = SceneManager.GetSceneByName(scene);
+            if (targetScene.IsValid() && targetScene.isLoaded)
             {
-                var instance = Instantiate(spawn.objectToSpawn,
-                    spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity);
-                var targetScene = SceneManager.GetSceneByName(scene.SceneName);
-                if (targetScene.IsValid() && targetScene.isLoaded)
-                {
-                    SceneManager.MoveGameObjectToScene(instance, targetScene);
-                    instance.GetComponent<Identifier>().AutomateID(targetScene);
-                }
+                SceneManager.MoveGameObjectToScene(instance, targetScene);
+                instance.GetComponent<Identifier>().AutomateID(targetScene);
+                spawnedObjects.Add(instance);
             }
         }
     }
 
-    public void Despawn()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        foreach (var spawn in iSpawn) Destroy(spawn.objectToSpawn);
+        if (collision.CompareTag(triggerTag.ToString()) && spawnOnTrigger) 
+            StartCoroutine(Spawn());
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    public void Despawn()
     {
-        if (collision.CompareTag("Enemy")) canSpawn = false;
-    }
-    
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("EDead") || collision.CompareTag("Enemy") && isActiveAndEnabled)
-        {
-            canSpawn = true;
-            Spawn();
-        }
+        foreach (var obj in spawnedObjects) Destroy(obj);
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        foreach (var spawn in spawnPoints)
-            Gizmos.DrawWireSphere(spawn.transform.position, 1f);
+        foreach (var spawn in spawnPoints) Gizmos.DrawWireSphere(spawn.transform.position, 1f);
     }
 
     [Serializable]
     private class ItemSpawn
     {
         public GameObject objectToSpawn;
+        public CollectableSOBase collectable;
         public bool oneTime;
     }
 }

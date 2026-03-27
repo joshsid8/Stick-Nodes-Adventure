@@ -10,13 +10,11 @@ public class Identifier : MonoBehaviour
     public ObjectType typeOfObject;
     public enum ObjectType{Entity, Item, Door, Npc}
     
-    [SerializeField] private MapManager mapManager;
-
-    public void AutomateID() //an overload, something to learn more about
-    {
-        AutomateID(gameObject.scene);
-    }
-
+    public MapManager mapManager; 
+    
+    //an overload, something to learn more about
+    public void AutomateID() => AutomateID(gameObject.scene);
+    
     public void AutomateID(Scene targetScene)
     {
         if (mapManager == null)
