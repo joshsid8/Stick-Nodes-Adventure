@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee92db0584e219440b70c4c4c9890d1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectable: {fileID: 11400000, guid: cb8962a33a8c630488f8c1305482dbc0, type: 2}
+  collectable: {fileID: 0}
   isStray: 1
   onGround: 0
   edgeCheckRay: 1

@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf0ff2653857c174c8ca13d5b5593a7e, type: 3}
   m_Name: 20ishBucks
   m_EditorClassIdentifier: 
+  itemName: Twentee
+  itemDescription: 
+  itemSprite: {fileID: 0}
   maxItem: 25
   minItem: 15

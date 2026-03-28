@@ -12,12 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
   m_Name: EarthPillar
   m_EditorClassIdentifier: 
-  abilityName: Earthly Rise
-  abilityDescription: 'A scroll that Noxu has given you to learn a defensive earth
-    technique.
-
-    Summon a large pillar from the ground, dealing great damage and
-    upward knockback.'
-  abilitySprite: {fileID: 0}
+  itemName: Earth Pillar
+  itemDescription: 
+  itemSprite: {fileID: 0}
   abilityType: 1
-  abilityPrefab: {fileID: 4635439681108189195, guid: ed7e5eaa6e68c174091766f8026c3db5, type: 3}
+  abilityPrefab: {fileID: 8784087263159481748, guid: ab78610f2332ffc45af38f2dc1564c42, type: 3}

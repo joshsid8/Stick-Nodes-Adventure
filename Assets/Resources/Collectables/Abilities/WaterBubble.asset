@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
   m_Name: WaterBubble
   m_EditorClassIdentifier: 
-  abilityName: Bubble Barrage
-  abilityDescription: 'A scroll allowing you to learn a versatile water technique.
-
-    Shoot
-    many (WIP) bubbles at once. deals moderate sustain damage.'
-  abilitySprite: {fileID: 0}
-  abilityPrefab: {fileID: 4963594003989781806, guid: 3ee5391421d34124a91a82183c17f041, type: 3}
+  itemName: Water Bubble
+  itemDescription: 
+  itemSprite: {fileID: 0}
+  abilityType: 0
+  abilityPrefab: {fileID: 441318648615199893, guid: 80ca0112028acea41bad102556122d29, type: 3}

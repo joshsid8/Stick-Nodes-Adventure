@@ -12,13 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
   m_Name: EarthBeam
   m_EditorClassIdentifier: 
-  abilityName: Earth Beam
-  abilityDescription: 'A scroll that Noxu has given you to learn a versatile earth
-    technique.
-
-    Shoot a beam of earth, dealing great burst damage and knockback.
-
-'
-  abilitySprite: {fileID: 0}
+  itemName: Earth Beam
+  itemDescription: 
+  itemSprite: {fileID: 0}
   abilityType: 2
-  abilityPrefab: {fileID: 8069515426526680348, guid: cd60df3d2080e094a8abf5db5abf36c9, type: 3}
+  abilityPrefab: {fileID: 41285518240766547, guid: 071d1bbe02101464a8875bfb56fa118a, type: 3}

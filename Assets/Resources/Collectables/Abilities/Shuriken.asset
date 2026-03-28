@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
   m_Name: Shuriken
   m_EditorClassIdentifier: 
-  abilityName: Shuriken
-  abilityDescription: 'A bottomless bag of Shurikens taken from Cynder.
-
-    Throw
-    a shuriken at quick speeds, dealing lesser damage.'
-  abilitySprite: {fileID: 0}
-  abilityPrefab: {fileID: 4963594003989781806, guid: 23359c87cb771364cbac11d14fdc5ae3, type: 3}
+  itemName: Shuriken Throw
+  itemDescription: 
+  itemSprite: {fileID: 0}
+  abilityType: 0
+  abilityPrefab: {fileID: 5179120200687164443, guid: 20811f14f99480c4c9cb21db31c3e97c, type: 3}

@@ -5,11 +5,11 @@ SNADV Notes
     
     Priorities:
         
-        Scene Data - Collectables dont save properly again
+        Scene Data - Collectables dont load correctly yet
             There should be a 'snapshot' of before and after the player has interacted within a scene to determine which
-            non-stray collectable has been picked up yet, but instantiate whatever stray collectables are inside
-            At the moment, it saves the data but doesnt load it as apparently the object its trying to instantiate is null
-                Find a way to fix this
+            Saving and persistence works, and spawning stray objects work, but non-stray objects still also get instantiated
+            regardless if it got collected prematurely or not
+                either make item spawner record what items get collected or something else idk
 
         Beam hitboxes are broken breh
             Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        

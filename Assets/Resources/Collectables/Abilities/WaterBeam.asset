@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
   m_Name: WaterBeam
   m_EditorClassIdentifier: 
-  abilityName: Jet Stream
-  abilityDescription: 'A scroll allowing you to learn a versatile water technique.
-
-    Shoot
-    a quick stream of water, dealing moderate damage and great knockback.'
-  abilitySprite: {fileID: 0}
+  itemName: Water Beam
+  itemDescription: 
+  itemSprite: {fileID: 0}
   abilityType: 2
-  abilityPrefab: {fileID: 8069515426526680348, guid: 18bc91bc6cc3a644db4aaf2e3bdac1d7, type: 3}
+  abilityPrefab: {fileID: 527549009820817163, guid: 653bd4e95aafbd344852914b7449c136, type: 3}

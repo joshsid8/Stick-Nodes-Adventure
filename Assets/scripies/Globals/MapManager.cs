@@ -164,7 +164,8 @@ public class MapManager : MonoBehaviour
                         {
                             activeCollectables = obj.gameObject,
                             itemColour = obj.GetComponent<SpriteRenderer>().color,
-                            position = obj.transform.position
+                            position = obj.transform.position,
+                            isStray = obj.GetComponent<Collectable>().isStray
                         };
                         collectableSceneData.Add(newCollectable);
                         break;
@@ -212,6 +213,7 @@ public class MapManager : MonoBehaviour
             if (collectableSceneData[i].activeCollectables != null) list.collectables[i].activeCollectable = collectableSceneData[i].activeCollectables.gameObject.GetComponent<Collectable>().collectable;
             list.collectables[i].colour = collectableSceneData[i].itemColour;
             list.collectables[i].position = collectableSceneData[i].position;
+            list.collectables[i].isStray = collectableSceneData[i].isStray;
         }
 
         for (var i = 0; i < npcSceneData.Count; i++)

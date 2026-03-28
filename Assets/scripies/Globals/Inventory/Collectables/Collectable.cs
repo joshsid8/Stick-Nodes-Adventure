@@ -28,7 +28,7 @@ public class Collectable : MonoBehaviour
 
     private void Update()
     {
-        name = collectable.itemName;
+        if (collectable != null) name = collectable.itemName; // else print($"aint no collectable for {name}");
         onGround = Physics2D.Raycast(transform.position, Vector2.down * transform.localScale.y, edgeCheckRay, LayerMask.GetMask("Ground", "Platform"));
         if (onGround && gracePeriod)
         {

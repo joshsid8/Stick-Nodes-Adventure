@@ -12,13 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
   m_Name: EarthRock
   m_EditorClassIdentifier: 
-  abilityName: Earth Rock
-  abilityDescription: 'A scroll that Noxu has given you to learn a versatile earth
-    technique.
-
-    Shoot a heavy boulder, dealing great damage and knockback.
-
-'
-  abilitySprite: {fileID: 0}
+  itemName: Earth Rock
+  itemDescription: 
+  itemSprite: {fileID: 0}
   abilityType: 0
-  abilityPrefab: {fileID: 3357865513782961777, guid: 968e0794630d4e740bd30590bec0a79c, type: 3}
+  abilityPrefab: {fileID: 1196550910580000029, guid: f0a8db11793dab94dba11873795ee258, type: 3}
