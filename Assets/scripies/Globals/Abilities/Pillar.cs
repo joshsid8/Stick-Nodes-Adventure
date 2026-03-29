@@ -113,8 +113,9 @@ public class Pillar : MonoBehaviour
         }
     }
     
-    public void SetValues(float lifetimeMult = 1, float damageMult = 1, float knockbackMult = 1, float stunTimeMult = 1)
+    public void SetValues(int type = 0 ,float lifetimeMult = 1, float damageMult = 1, float knockbackMult = 1, float stunTimeMult = 1)
     {
+        typeFactor = type;
         pillarDamage *= damageMult;
         pillarLifeTime *= lifetimeMult;
         knockbackForce *= knockbackMult;

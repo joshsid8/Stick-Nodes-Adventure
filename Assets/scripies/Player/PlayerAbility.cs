@@ -16,7 +16,8 @@ public class PlayerAbility : MonoBehaviour
     public float currentAbilityCooldown;
     public bool isPerformingAbility;
     public bool isHolding;
-    
+    [SerializeField] private int maxBlastIndex;
+    [SerializeField] private int blastIndex;
     [SerializeField] private int blastType;
     
     public PlayerPerformAbility ability;
@@ -37,6 +38,13 @@ public class PlayerAbility : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        if (Input.GetButtonDown("FireSwap"))
+        {
+            blastIndex++;
+            if (blastIndex > maxBlastIndex) blastIndex = 0;
+        }
+        
         Fire();
         Energy();
         animator.SetBool("isPerformingAbility", isPerformingAbility);
@@ -46,12 +54,7 @@ public class PlayerAbility : MonoBehaviour
     void Fire()
     {
         if (canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && pc.canAct && !ability.isActivated)
-        {
-            if (Input.GetButtonDown("Fire") && Input.GetAxisRaw("Vertical") == 0) ability.Execute(0);
-            else if (Input.GetButtonDown("Fire") && Input.GetAxisRaw("Vertical") < 0) ability.Execute(1);
-            else if (Input.GetButtonDown("Fire") && Input.GetAxisRaw("Vertical") > 0) ability.Execute(2);
-            //else if (Input.GetButton("Fire") && pd.isBlocking) ability.Execute(3);
-        }
+            if (Input.GetButtonDown("Fire")) ability.Execute(blastIndex);
         
         if (!pc.isDashing && !pc.isWallSliding && pc.canAct)
             isHolding = Input.GetButton("Fire") ? isHolding = true : isHolding = false;

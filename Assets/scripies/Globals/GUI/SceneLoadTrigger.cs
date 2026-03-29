@@ -65,6 +65,7 @@ public class SceneLoadTrigger : MonoBehaviour
                     {
                         if (obj.name == "Map")
                         {
+                            obj.GetComponent<MapManager>().SaveSceneData();
                             obj.GetComponent<MapManager>().MakeDataPersistent();
                             break;
                         }

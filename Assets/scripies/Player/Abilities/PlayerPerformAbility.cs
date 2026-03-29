@@ -56,21 +56,16 @@ public class PlayerPerformAbility : MonoBehaviour
                     if (objects[1] != null && pa.energy >= objects[1].GetComponentInChildren<Pillar>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
-                        pa.animator.Play(pc.isGrounded ? "Pillar" : "AirFire");
+                        pa.animator.Play("Pillar");
                     }
                     break;
                 case 2:
                     if (objects[2] != null && pa.energy >= objects[2].GetComponentInChildren<Beam>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
-                        pa.animator.Play(pc.isGrounded ? "Beam" : "AirFire");
+                        pa.animator.Play("Beam");
                     }
                     break;
-                /*case 3:
-                    if (objects[3] !=null &&
-                        pa.energy >= objects[3].GetComponent<PlayerSummonPillar>().energyRequired)
-                        isReinforcing = true;
-                    break;*/
             }
         }
     }
@@ -114,7 +109,7 @@ public class PlayerPerformAbility : MonoBehaviour
 
                         if (pillarScript != null)
                         {
-                            pillarScript.SetValues(abilityLifetimeMult,
+                            pillarScript.SetValues(1, abilityLifetimeMult,
                                 abilityDamageMult / abilityAmount[1], abilityPotency);
                             pa.energy -= pillarScript.energyRequired / abilityAmount[1];
                             pa.currentAbilityCooldown = pillarScript.abilityCooldown * pa.abilityCooldownMult;

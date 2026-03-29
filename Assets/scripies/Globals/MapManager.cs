@@ -178,7 +178,11 @@ public class MapManager : MonoBehaviour
         }
         foreach (var spawner in spawnerObjects)
         {
-            var newSpawner = new SpawnerSceneData { activeSpawner = spawner };
+            var newSpawner = new SpawnerSceneData
+            {
+                activeSpawner = spawner,
+                isOneTime = spawner.GetComponent<ItemSpawner>() != null ? spawner.GetComponent<ItemSpawner>().isOneTime : spawner.GetComponent<EntitySpawner>().isOneTime
+            };
             spawnerSceneData.Add(newSpawner);
         }
     }
@@ -199,6 +203,7 @@ public class MapManager : MonoBehaviour
         list.collectables.Clear();
         list.npcs.Clear();
         list.doors.Clear();
+        list.spawners.Clear();
 
         for (var i = 0; i < enemySceneData.Count; i++)
         {
@@ -284,7 +289,7 @@ public class MapManager : MonoBehaviour
 
                 for (var i = 0; i < list.spawners.Count; i++)
                 {
-                    if (list.spawners[i].isOneTime && GetComponent<ItemSpawner>() != null)
+                    if (list.spawners[i].isOneTime)
                         spawnerSceneData[i].activeSpawner.GetComponent<ItemSpawner>().Despawn();
                 }
 

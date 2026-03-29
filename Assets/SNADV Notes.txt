@@ -4,12 +4,6 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        
-        Scene Data - Collectables dont load correctly yet
-            There should be a 'snapshot' of before and after the player has interacted within a scene to determine which
-            Saving and persistence works, and spawning stray objects work, but non-stray objects still also get instantiated
-            regardless if it got collected prematurely or not
-                either make item spawner record what items get collected or something else idk
 
         Beam hitboxes are broken breh
             Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        

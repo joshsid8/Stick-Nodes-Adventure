@@ -283,6 +283,8 @@ MonoBehaviour:
   currentAbilityCooldown: 0
   isPerformingAbility: 0
   isHolding: 0
+  maxBlastIndex: 2
+  blastIndex: 0
   blastType: 0
   ability: {fileID: 0}
   animator: {fileID: 0}

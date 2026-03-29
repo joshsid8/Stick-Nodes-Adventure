@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class ItemSpawner : MonoBehaviour
 {
     public bool isOneTime;
+    [SerializeField] private bool disableOnCollect;
     [SerializeField] private ItemSpawn[] itemSpawner;
     [SerializeField] private string scene;
     [SerializeField] private GameObject[] spawnPoints;
@@ -22,6 +24,14 @@ public class ItemSpawner : MonoBehaviour
     private void Start()  {
         GetComponent<Identifier>().AutomateID();
         StartCoroutine(Spawn());
+    }
+
+    private void Update()
+    {
+        foreach (var obj in spawnedObjects)
+        {
+            if (obj.IsDestroyed() && disableOnCollect) isOneTime = true;
+        }
     }
 
     private IEnumerator Spawn()

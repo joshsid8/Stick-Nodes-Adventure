@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,8 +11,8 @@ public class Identifier : MonoBehaviour
     public ObjectType typeOfObject;
     public enum ObjectType{Entity, Item, Door, Npc, Spawner}
     
-    public MapManager mapManager; 
-    
+    public MapManager mapManager;
+
     //an overload, something to learn more about
     public void AutomateID() => AutomateID(gameObject.scene);
     

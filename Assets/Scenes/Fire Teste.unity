@@ -5000,6 +5000,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1684563622}
     m_Modifications:
+    - target: {fileID: -3083847909042514016, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: id
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 109414120128023590, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: m_Name
       value: ItemSpawner
@@ -9726,9 +9730,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1684563622}
     m_Modifications:
+    - target: {fileID: -3083847909042514016, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: id
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 109414120128023590, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: m_Name
       value: SuperKey
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: isOneTime
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: itemSpawner.Array.data[0].collectable
@@ -10429,6 +10441,10 @@ PrefabInstance:
     - target: {fileID: 109414120128023590, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: m_Name
       value: Cynderian
+      objectReference: {fileID: 0}
+    - target: {fileID: 2153638448317964997, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
+      propertyPath: id
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6217457163881888616, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: m_LocalPosition.x

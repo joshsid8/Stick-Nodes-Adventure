@@ -11556,6 +11556,10 @@ PrefabInstance:
       value: 7500
       objectReference: {fileID: 0}
     - target: {fileID: 386975709121032260, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: blastIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 386975709121032260, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: energyText
       value: 
       objectReference: {fileID: 5307621243025885138}

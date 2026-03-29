@@ -4,7 +4,7 @@ using UnityEngine;
 public class Beam : MonoBehaviour
 {
     // jump yourself
-    [Tooltip("This is for the whatever casts the beam. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral")]
+    [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
     public int typeFactor;
     
     [SerializeField] private float beamDamage;
@@ -15,12 +15,12 @@ public class Beam : MonoBehaviour
     public float energyRequired = 20f;
     public float abilityCooldown = 1f;
     private int damageType;
-    private float beamTimer;
+    [SerializeField] private float beamTimer;
     public bool isHoldable;
     
     [SerializeField] private bool activeHitbox;
     public float beamProc;
-    [SerializeField] private float beamProcTimer;
+    private float beamProcTimer;
     [SerializeField] private float energyProc;
     [SerializeField] private float procTimes;
     private bool isFacingRightDirection;
@@ -76,6 +76,7 @@ public class Beam : MonoBehaviour
     {
         isFacingRightDirection = facingRight;
         beamDirection = direction;
+        typeFactor = type;
         beamLifetime *= lifetimeMult;
         beamKnockbackForce *= potency;
         beamStunTime *= potency;
@@ -84,7 +85,7 @@ public class Beam : MonoBehaviour
     
     private void HitBox()
     {
-        inContact = Physics2D.CapsuleCastAll(transform.position, beamCollider.size, CapsuleDirection2D.Vertical, 0,
+        inContact = Physics2D.CapsuleCastAll(transform.position, beamCollider.size, CapsuleDirection2D.Horizontal, 0,
             Vector2.zero, 0, LayerMask.GetMask("Enemy", "Player"));
         if (inContact != null && beamProcTimer <= 0)
         {
@@ -146,18 +147,17 @@ public class Beam : MonoBehaviour
             beamProcTimer = beamProc;
         }
     }
-    
+
     private void Lifetime()
     {
-        if (pa.isHolding && isHoldable || !isHoldable)
+
+        beamTimer -= Time.deltaTime;
+        if (beamTimer <= 0)
         {
-            beamTimer -= Time.deltaTime;
-            if (beamTimer <= 0)
-            {
-                pa.isPerformingAbility = false;
-                animator.Play(collideAnim.name);
-            }
+            pa.isPerformingAbility = false;
+            animator.Play(collideAnim.name);
         }
+
     }
 
     private void Boom() => Destroy(parentObject);
