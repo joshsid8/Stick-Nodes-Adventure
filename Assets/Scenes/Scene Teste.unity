@@ -157,11 +157,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 25b86c86108058141b317ba059b1cd8f, type: 3}
   - {fileID: 8300000, guid: 43403296c6de0aa4996eed30c6d583b6, type: 3}
   - {fileID: 8300000, guid: 43403296c6de0aa4996eed30c6d583b6, type: 3}
-  sceneName:
-    m_SceneAsset: {fileID: 102900000, guid: ba61b6b5fab11524eb4f7631c3b8ed7d, type: 3}
-    m_SceneName: Scene Teste
+  sceneName: 
   sceneObjects: []
   doorObjects: []
+  spawnerObjects: []
   enemySceneData: []
   enemyIds: 
   bossSceneData:
@@ -171,6 +170,7 @@ MonoBehaviour:
   npcSceneData: []
   collectableSceneData: []
   doorSceneData: []
+  spawnerSceneData: []
 --- !u!61 &944811996
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -325,7 +325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1162324169
 Transform:
   m_ObjectHideFlags: 0
@@ -494,7 +494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.6407166
+      value: -10.640717
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.y
@@ -556,11 +556,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9186445672802973375, guid: 9c51c0f4f10752c428f5b0b6803d5dc4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.38121
+      value: -19.29143
       objectReference: {fileID: 0}
     - target: {fileID: 9186445672802973375, guid: 9c51c0f4f10752c428f5b0b6803d5dc4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.8794742
+      value: -0.13309073
       objectReference: {fileID: 0}
     - target: {fileID: 9186445672802973375, guid: 9c51c0f4f10752c428f5b0b6803d5dc4, type: 3}
       propertyPath: m_LocalPosition.z

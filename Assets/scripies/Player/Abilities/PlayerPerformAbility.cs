@@ -111,14 +111,17 @@ public class PlayerPerformAbility : MonoBehaviour
                         {
                             pillarScript.SetValues(1, abilityLifetimeMult,
                                 abilityDamageMult / abilityAmount[1], abilityPotency);
-                            pa.energy -= pillarScript.energyRequired / abilityAmount[1];
-                            pa.currentAbilityCooldown = pillarScript.abilityCooldown * pa.abilityCooldownMult;
+                            if (!pillarScript.isHoldable)
+                            {
+                                pa.currentAbilityCooldown = pillarScript.abilityCooldown * pa.abilityCooldownMult;
+                                pa.energy -= pillarScript.energyRequired;
+                                pa.isPerformingAbility = false;
+                            }
                         }
                         else Debug.LogError("where is bro's pillar");
                         xVector += 1.5f;
                         yield return new WaitForSeconds(0.1f);
                     }
-                    pa.isPerformingAbility = false;
                     xVector = preXVector;
                 }
                 else pa.isPerformingAbility = false;

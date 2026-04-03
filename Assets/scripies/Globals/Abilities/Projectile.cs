@@ -16,6 +16,7 @@ public class Projectile : MonoBehaviour
     public float abilityCooldown = 1f;
     public int projectileAmount = 1;
     public int elementType;
+    public bool isHoldable;
     
     [SerializeField] private bool randomisation;
     [SerializeField] private float randomRes = 0.1f;

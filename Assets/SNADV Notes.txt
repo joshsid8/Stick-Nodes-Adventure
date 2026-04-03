@@ -4,10 +4,15 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-
-        Beam hitboxes are broken breh
-            Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        
         
+        Ability Logic
+            Let projectiles have a 'holdable' flag
+                 so things like flamethrowers and barrages can be stopped
+                 Add lifetime for howl ong it can be used for
+            
+            Beam hitboxes are broken breh
+                Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        
+            
         Enemy logic enhancements
         
         Noxu
@@ -23,11 +28,7 @@ SNADV Notes
             Now i should apply this to enemies 
                                                
             Make it so that ability prefabs also arent all seperate, make them variants instead
-                This is going alright for now, almost done   
-            
-            Change the switching between abilities logic
-                Like Cuphead, make it so that they can press a button to switch between
-                abilities instead holding up or down like hollow knight    
+                This is going alright for now, almost done    
             
             Make ability objects have superclasses/a group
                 E.g, there can be a fire bomb, it needs both a projectile and pillar preset for it to work

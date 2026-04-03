@@ -33,6 +33,7 @@ public class Beam : MonoBehaviour
     private RaycastHit2D[] inContact;
     [SerializeField] private BoxCollider2D beamCollider;
     [SerializeField] private GameObject parentObject;
+    private Collider2D coll;
     private PlayerAbility pa;
 
     private void Start()
@@ -44,6 +45,7 @@ public class Beam : MonoBehaviour
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
         procTimes = beamLifetime / beamProc;
         procTimes = energyRequired / procTimes;
+        coll = GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -51,7 +53,9 @@ public class Beam : MonoBehaviour
         Lifetime();
         beamProcTimer -= Time.deltaTime;
         energyProc -= Time.deltaTime;
-        pa.currentAbilityCooldown = abilityCooldown * pa.abilityCooldownMult;
+        coll.enabled = beamProcTimer <= 0 ? coll.enabled : !coll.enabled;
+
+        if (pa != null && typeFactor == 1) pa.currentAbilityCooldown = abilityCooldown * pa.abilityCooldownMult;
         if (isFacingRightDirection) transform.eulerAngles = Vector3.zero;
         else transform.eulerAngles = new Vector3(0, 180, 0);
         transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -59,7 +63,7 @@ public class Beam : MonoBehaviour
         if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
         {
             energyProc = beamProc;
-            pa.energy -= procTimes;
+            if (pa != null && typeFactor == 1) pa.energy -= procTimes;
         } 
         else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = beamProc;
         
@@ -118,7 +122,6 @@ public class Beam : MonoBehaviour
                 default:
                     foreach (var hit in inContact)
                     {
-                        print("trying to hit "+ hit.collider.gameObject.name + " with the layer of " + LayerMask.LayerToName(hit.collider.gameObject.layer));
                         var entity = hit.collider;
                         if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
                         {
@@ -150,14 +153,13 @@ public class Beam : MonoBehaviour
 
     private void Lifetime()
     {
-
         beamTimer -= Time.deltaTime;
+        if (!pa.isHolding && isHoldable && typeFactor == 1) beamTimer = 0;
         if (beamTimer <= 0)
         {
-            pa.isPerformingAbility = false;
+            if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
             animator.Play(collideAnim.name);
         }
-
     }
 
     private void Boom() => Destroy(parentObject);

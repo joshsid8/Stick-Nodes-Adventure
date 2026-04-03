@@ -12,10 +12,13 @@ public class Pillar : MonoBehaviour
     public float abilityCooldown = 1f;
     
     public Vector2 knockbackForce;
-    
+    [SerializeField] private float procTimes;
+    public bool isHoldable;
+    [SerializeField] private float energyProc;
     public float pillarProc;
-    [SerializeField] private float pillarProcTimer;
     
+    [SerializeField] private float pillarProcTimer;
+    [SerializeField] private bool activeHitbox;
     [SerializeField] private bool isErupting;
     private RaycastHit2D[] inContact;
     [SerializeField] private BoxCollider2D pillarCollider;
@@ -24,13 +27,16 @@ public class Pillar : MonoBehaviour
     [SerializeField] private AnimationClip finishAnim;
     private Animator animator;
     private Collider2D coll;
-    
+    private PlayerAbility pa;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         animator = GetComponent<Animator>();
         if (eruptAnim != null) animator.Play(eruptAnim.name);
+        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
+        procTimes = pillarLifeTime / pillarProc;
+        procTimes = energyRequired / procTimes;
         coll = GetComponent<Collider2D>();
     }
 
@@ -38,6 +44,7 @@ public class Pillar : MonoBehaviour
     {
         Lifetime();
         pillarProcTimer -= Time.deltaTime;
+        energyProc -= Time.deltaTime;
         coll.enabled = pillarProcTimer <= 0 ? coll.enabled : !coll.enabled;
         gameObject.layer = typeFactor switch
         {
@@ -45,6 +52,14 @@ public class Pillar : MonoBehaviour
             2 => LayerMask.NameToLayer("EVFX"),
             _ => LayerMask.NameToLayer("FX")
         };
+        
+        if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
+        {
+            energyProc = pillarProc;
+            if (pa != null && typeFactor == 1) pa.energy -= procTimes;
+        } 
+        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = pillarProc;
+
         
         Hitbox();
     }
@@ -127,9 +142,11 @@ public class Pillar : MonoBehaviour
         if (isErupting && pillarTimer > 0)
         {
             pillarTimer -= Time.deltaTime;
+            if (!pa.isHolding && isHoldable && typeFactor == 1) pillarTimer = 0;
             if (pillarTimer <= 0 && finishAnim != null)
             {
                 isErupting = false;
+                if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
                 animator.Play(finishAnim.name);
             }
         }
