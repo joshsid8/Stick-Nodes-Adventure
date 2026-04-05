@@ -6,6 +6,14 @@ SNADV Notes
     Priorities:
         
         Ability Logic
+        
+            Complete Ability Scriptable Objects
+                This should be able to set specific abilities specific properties specifically
+                    a fire bomb can have a fire ball be set a larger size, for example
+                    to do this, set certain booleans from within ability scripts to whatever the SO has
+                        willSummonOnCrash - summons another ability (preferably pillar or projectile)
+                        holdable - the player can stall the ability
+                                    
             Let projectiles have a 'holdable' flag
                  so things like flamethrowers and barrages can be stopped
                  Add lifetime for howl ong it can be used for
