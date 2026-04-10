@@ -1,41 +1,23 @@
 using UnityEngine;
 
-public class Pillar : MonoBehaviour
+public class Pillar : AbilityBase
 {
-    public int typeFactor;
-    
-    public float pillarDamage;
-    public float pillarStunTime;
-    public float pillarLifeTime;
-    private float pillarTimer;
-    public float energyRequired = 15f;
-    public float abilityCooldown = 1f;
-    
-    public Vector2 knockbackForce;
+    [SerializeField] private float pillarTimer;
     [SerializeField] private float procTimes;
-    public bool isHoldable;
     [SerializeField] private float energyProc;
-    public float pillarProc;
     
-    [SerializeField] private float pillarProcTimer;
     [SerializeField] private bool activeHitbox;
     [SerializeField] private bool isErupting;
     private RaycastHit2D[] inContact;
     [SerializeField] private BoxCollider2D pillarCollider;
-
-    [SerializeField] private AnimationClip eruptAnim;
-    [SerializeField] private AnimationClip finishAnim;
-    private Animator animator;
-    private Collider2D coll;
-    private PlayerAbility pa;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         animator = GetComponent<Animator>();
-        if (eruptAnim != null) animator.Play(eruptAnim.name);
+        if (anim != null) animator.Play(anim.name);
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
-        procTimes = pillarLifeTime / pillarProc;
+        procTimes = lifeTime / proc;
         procTimes = energyRequired / procTimes;
         coll = GetComponent<Collider2D>();
     }
@@ -43,9 +25,9 @@ public class Pillar : MonoBehaviour
     void Update()
     {
         Lifetime();
-        pillarProcTimer -= Time.deltaTime;
+        procTimer -= Time.deltaTime;
         energyProc -= Time.deltaTime;
-        coll.enabled = pillarProcTimer <= 0 ? coll.enabled : !coll.enabled;
+        coll.enabled = procTimer <= 0 ? coll.enabled : !coll.enabled;
         gameObject.layer = typeFactor switch
         {
             1 => LayerMask.NameToLayer("PVFX"),
@@ -55,10 +37,10 @@ public class Pillar : MonoBehaviour
         
         if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
         {
-            energyProc = pillarProc;
+            energyProc = proc;
             if (pa != null && typeFactor == 1) pa.energy -= procTimes;
         } 
-        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = pillarProc;
+        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
 
         
         Hitbox();
@@ -67,7 +49,7 @@ public class Pillar : MonoBehaviour
     {
         inContact = Physics2D.CapsuleCastAll(transform.position, pillarCollider.size, CapsuleDirection2D.Vertical, 0,
             Vector2.zero, 0, LayerMask.GetMask("Enemy", "Player"));
-        if (inContact != null && pillarProcTimer <= 0)
+        if (inContact != null && procTimer <= 0)
         {
             switch (typeFactor)
             {
@@ -77,8 +59,8 @@ public class Pillar : MonoBehaviour
                         var damageable = hit.collider.gameObject.GetComponent<EDamageables>();
                         if (damageable != null && isErupting)
                         {
-                            damageable.Damage(pillarDamage, knockbackForce * transform.up);
-                            damageable.Stun(pillarStunTime);
+                            damageable.Damage(damage, knockbackForce * transform.up);
+                            damageable.Stun(stunTime);
                             PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
                         }
                     }
@@ -89,8 +71,8 @@ public class Pillar : MonoBehaviour
                         var damageable = hit.collider.gameObject.GetComponent<PDamageable>();
                         if (damageable != null && isErupting)
                         {
-                            damageable.Damage(pillarDamage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
-                            damageable.Stun(pillarStunTime);
+                            damageable.Damage(damage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
+                            damageable.Stun(stunTime);
                             PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
                         }
                     }
@@ -104,8 +86,8 @@ public class Pillar : MonoBehaviour
                             var eDmg = hit.collider.gameObject.GetComponent<EDamageables>();
                             if (eDmg != null)
                             {
-                                eDmg.Stun(pillarStunTime);
-                                eDmg.Damage(pillarDamage, knockbackForce);
+                                eDmg.Stun(stunTime);
+                                eDmg.Damage(damage, knockbackForce);
                                 PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
                             }
                         }
@@ -114,8 +96,8 @@ public class Pillar : MonoBehaviour
                             var pDmg = hit.collider.gameObject.GetComponent<PDamageable>();
                             if (pDmg != null)
                             {
-                                pDmg.Damage(pillarDamage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
-                                pDmg.Stun(pillarStunTime);
+                                pDmg.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
+                                pDmg.Stun(stunTime);
 
                                 PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
                             }
@@ -124,17 +106,17 @@ public class Pillar : MonoBehaviour
                     }
                     break;
             }
-            pillarProcTimer = pillarProc;
+            procTimer = proc;
         }
     }
     
     public void SetValues(int type = 0 ,float lifetimeMult = 1, float damageMult = 1, float knockbackMult = 1, float stunTimeMult = 1)
     {
         typeFactor = type;
-        pillarDamage *= damageMult;
-        pillarLifeTime *= lifetimeMult;
+        damage *= damageMult;
+        lifeTime *= lifetimeMult;
         knockbackForce *= knockbackMult;
-        pillarStunTime *= stunTimeMult;
+        stunTime *= stunTimeMult;
     }
     
     private void Lifetime()
@@ -143,18 +125,18 @@ public class Pillar : MonoBehaviour
         {
             pillarTimer -= Time.deltaTime;
             if (!pa.isHolding && isHoldable && typeFactor == 1) pillarTimer = 0;
-            if (pillarTimer <= 0 && finishAnim != null)
+            if (pillarTimer <= 0 && endAnim != null)
             {
                 isErupting = false;
                 if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
-                animator.Play(finishAnim.name);
+                animator.Play(endAnim.name);
             }
         }
     }
     
     void Boom() => Destroy(GetComponent<FindFloor>().bottomPoint.transform.gameObject);
     
-    void ApplyTimer() => pillarTimer = pillarLifeTime;
+    void ApplyTimer() => pillarTimer = lifeTime;
     
     private void OnDrawGizmos()
     {

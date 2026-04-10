@@ -1,49 +1,25 @@
-using System;
 using UnityEngine;
 
-public class Beam : MonoBehaviour
+public class Beam : AbilityBase
 {
-    // jump yourself
-    [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
-    public int typeFactor;
-    
-    [SerializeField] private float beamDamage;
-    [SerializeField] private float beamStunTime;
-    [SerializeField] private Vector2 beamKnockbackForce;
     [SerializeField] private float beamDirection;
-    [SerializeField] private float beamLifetime;
-    public float energyRequired = 20f;
     public float abilityCooldown = 1f;
-    private int damageType;
-    [SerializeField] private float beamTimer;
-    public bool isHoldable;
-    
     [SerializeField] private bool activeHitbox;
-    public float beamProc;
-    private float beamProcTimer;
     [SerializeField] private float energyProc;
     [SerializeField] private float procTimes;
     private bool isFacingRightDirection;
     
-    private Transform playerTransform;
-    private Animator animator;
-    [SerializeField] private AnimationClip anim;
-    [SerializeField] private AnimationClip collideAnim;
-    
     private RaycastHit2D[] inContact;
     [SerializeField] private BoxCollider2D beamCollider;
-    [SerializeField] private GameObject parentObject;
-    private Collider2D coll;
-    private PlayerAbility pa;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         if (anim != null) animator.Play(anim.name);
-        beamTimer = beamLifetime; 
+        lifeTimer = lifeTime; 
         parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? beamDirection : -beamDirection + 180f);
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
-        procTimes = beamLifetime / beamProc;
+        procTimes = lifeTime / proc;
         procTimes = energyRequired / procTimes;
         coll = GetComponent<Collider2D>();
     }
@@ -51,9 +27,9 @@ public class Beam : MonoBehaviour
     private void Update()
     {
         Lifetime();
-        beamProcTimer -= Time.deltaTime;
+        procTimer -= Time.deltaTime;
         energyProc -= Time.deltaTime;
-        coll.enabled = beamProcTimer <= 0 ? coll.enabled : !coll.enabled;
+        coll.enabled = procTimer <= 0 ? coll.enabled : !coll.enabled;
 
         if (pa != null && typeFactor == 1) pa.currentAbilityCooldown = abilityCooldown * pa.abilityCooldownMult;
         if (isFacingRightDirection) transform.eulerAngles = Vector3.zero;
@@ -62,10 +38,10 @@ public class Beam : MonoBehaviour
         
         if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
         {
-            energyProc = beamProc;
+            energyProc = proc;
             if (pa != null && typeFactor == 1) pa.energy -= procTimes;
         } 
-        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = beamProc;
+        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
         
         gameObject.layer = typeFactor switch
         {
@@ -81,17 +57,17 @@ public class Beam : MonoBehaviour
         isFacingRightDirection = facingRight;
         beamDirection = direction;
         typeFactor = type;
-        beamLifetime *= lifetimeMult;
-        beamKnockbackForce *= potency;
-        beamStunTime *= potency;
-        beamDamage *= damageMult;
+        lifeTime *= lifetimeMult;
+        knockbackForce *= potency;
+        stunTime *= potency;
+        damage *= damageMult;
     }
     
     private void HitBox()
     {
         inContact = Physics2D.CapsuleCastAll(transform.position, beamCollider.size, CapsuleDirection2D.Horizontal, 0,
             Vector2.zero, 0, LayerMask.GetMask("Enemy", "Player"));
-        if (inContact != null && beamProcTimer <= 0)
+        if (inContact != null && procTimer <= 0)
         {
             switch (typeFactor)
             {
@@ -101,8 +77,8 @@ public class Beam : MonoBehaviour
                         var damageable = hit.collider.gameObject.GetComponent<EDamageables>();
                         if (damageable != null)
                         {
-                            damageable.Damage(beamDamage, new Vector2(beamKnockbackForce.x * transform.right.x, beamKnockbackForce.y * transform.up.y));
-                            damageable.Stun(beamStunTime);
+                            damageable.Damage(damage, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+                            damageable.Stun(stunTime);
                             PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
                         }
                     }
@@ -113,8 +89,8 @@ public class Beam : MonoBehaviour
                         var damageable = hit.collider.gameObject.GetComponent<PDamageable>();
                         if (damageable != null)
                         {
-                            damageable.Damage(beamDamage, beamKnockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
-                            damageable.Stun(beamStunTime);
+                            damageable.Damage(damage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
+                            damageable.Stun(stunTime);
                             PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
                         }
                     }
@@ -128,8 +104,8 @@ public class Beam : MonoBehaviour
                             var damageable = hit.collider.gameObject.GetComponent<EDamageables>();
                             if (damageable != null)
                             {
-                                damageable.Damage(beamDamage, new Vector2(beamKnockbackForce.x * transform.right.x, beamKnockbackForce.y * transform.up.y));
-                                damageable.Stun(beamStunTime);
+                                damageable.Damage(damage, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+                                damageable.Stun(stunTime);
                                 PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
                             }
                         }
@@ -138,8 +114,8 @@ public class Beam : MonoBehaviour
                             var pDmg = hit.collider.gameObject.GetComponent<PDamageable>();
                             if (pDmg != null)
                             {
-                                pDmg.Damage(beamDamage, beamKnockbackForce, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
-                                pDmg.Stun(beamStunTime);
+                                pDmg.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
+                                pDmg.Stun(stunTime);
                                 PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
                             }
                         }
@@ -147,18 +123,18 @@ public class Beam : MonoBehaviour
                     }
                     break;
             }
-            beamProcTimer = beamProc;
+            procTimer = proc;
         }
     }
 
     private void Lifetime()
     {
-        beamTimer -= Time.deltaTime;
-        if (!pa.isHolding && isHoldable && typeFactor == 1) beamTimer = 0;
-        if (beamTimer <= 0)
+        lifeTimer -= Time.deltaTime;
+        if (!pa.isHolding && isHoldable && typeFactor == 1) lifeTimer = 0;
+        if (lifeTimer <= 0)
         {
             if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
-            animator.Play(collideAnim.name);
+            animator.Play(endAnim.name);
         }
     }
 

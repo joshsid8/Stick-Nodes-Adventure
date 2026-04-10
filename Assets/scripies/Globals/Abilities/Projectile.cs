@@ -1,30 +1,20 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : AbilityBase
 {
-    public int typeFactor;
-    
     public float projectileSpeed = 20;
     [SerializeField] private float projectileMinSpeed = 10;
     [SerializeField] private float projectileHeight = 1;
     [SerializeField] private float airResistance = 1;
-    public float projectileDamage = 15;
-    public float projectileStunTime = 0.5f;
-    public Vector2 projectileKnockbackForce;
-    public float projectileLifeTime = 3f;
-    public float energyRequired = 20f;
     public float abilityCooldown = 1f;
     public int projectileAmount = 1;
-    public int elementType;
-    public bool isHoldable;
-    
+
     [SerializeField] private bool randomisation;
     [SerializeField] private float randomRes = 0.1f;
     [SerializeField] private float randomAngle = 2f;
     [SerializeField] private bool upwardOnly = true;
     [SerializeField] private float projectileRange;
     public float projectileDirection;
-    public bool isDirectional;
     
     private RaycastHit2D[] hits = new RaycastHit2D[2];
     [SerializeField] private LayerMask[] target;
@@ -32,9 +22,7 @@ public class Projectile : MonoBehaviour
     private bool isFacingRightDirection;
     private float objectDirection;
     private Rigidbody2D rb;
-    private Animator animator;
-    [SerializeField] private AnimationClip anim;
-    [SerializeField] private AnimationClip collideAnim;
+
     private bool collided;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,7 +37,7 @@ public class Projectile : MonoBehaviour
             projectileHeight = Random.Range(upwardOnly ? 0 : -projectileHeight - randomAngle, projectileHeight + randomAngle);
         }
         ApplyInitialDirection();
-        Destroy(gameObject, projectileLifeTime);
+        Destroy(gameObject, lifeTime);
     }
     
     private void Update()
@@ -125,8 +113,8 @@ public class Projectile : MonoBehaviour
                         var eDamageable = hit.collider.gameObject.GetComponent<EDamageables>();
                         if (eDamageable != null)
                         {
-                            eDamageable.Stun(projectileStunTime);
-                            eDamageable.Damage(projectileDamage, projectileKnockbackForce * objectDirection);
+                            eDamageable.Stun(stunTime);
+                            eDamageable.Damage(damage, knockbackForce * objectDirection);
                             PlayerHealth.Instance.pc.currentCombatTimer = +PlayerHealth.Instance.pc.combatTimer * 0.5f;
                             //Add a global combat trigger method
                         }
@@ -137,9 +125,9 @@ public class Projectile : MonoBehaviour
                         var pDamageable = hit.collider.gameObject.GetComponent<PDamageable>();
                         if (pDamageable != null)
                         {
-                            pDamageable.Damage(projectileDamage, projectileKnockbackForce * objectDirection,
+                            pDamageable.Damage(damage, knockbackForce * objectDirection,
                                 isFacingRightDirection, elementType);
-                            pDamageable.Stun(projectileStunTime);
+                            pDamageable.Stun(stunTime);
 
                             PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
                         }
@@ -152,8 +140,8 @@ public class Projectile : MonoBehaviour
                             var eDmg = hit.collider.gameObject.GetComponent<EDamageables>();
                             if (eDmg != null)
                             {
-                                eDmg.Stun(projectileStunTime);
-                                eDmg.Damage(projectileDamage, projectileKnockbackForce * objectDirection);
+                                eDmg.Stun(stunTime);
+                                eDmg.Damage(damage, knockbackForce * objectDirection);
                                 PlayerHealth.Instance.pc.currentCombatTimer =
                                     +PlayerHealth.Instance.pc.combatTimer * 0.5f;
                             }
@@ -163,9 +151,9 @@ public class Projectile : MonoBehaviour
                             var pDmg = hit.collider.gameObject.GetComponent<PDamageable>();
                             if (pDmg != null)
                             {
-                                pDmg.Damage(projectileDamage, projectileKnockbackForce * objectDirection,
+                                pDmg.Damage(damage, knockbackForce * objectDirection,
                                     isFacingRightDirection, elementType);
-                                pDmg.Stun(projectileStunTime);
+                                pDmg.Stun(stunTime);
 
                                 PlayerHealth.Instance.pc.currentCombatTimer +=
                                     PlayerHealth.Instance.pc.combatTimer * 0.5f;
@@ -182,7 +170,7 @@ public class Projectile : MonoBehaviour
     private void Crash()
     {
         collided = true;
-        if (collideAnim != null) animator.Play(collideAnim.name);
+        if (endAnim != null) animator.Play(endAnim.name);
         rb.linearVelocity = Vector2.zero;
         Destroy(gameObject, 0.2f);
     }

@@ -113,7 +113,7 @@ public class PlayerPerformAbility : MonoBehaviour
                                 abilityDamageMult / abilityAmount[1], abilityPotency);
                             if (!pillarScript.isHoldable)
                             {
-                                pa.currentAbilityCooldown = pillarScript.abilityCooldown * pa.abilityCooldownMult;
+                                pa.currentAbilityCooldown = pillarScript.cooldown * pa.abilityCooldownMult;
                                 pa.energy -= pillarScript.energyRequired;
                                 pa.isPerformingAbility = false;
                             }
