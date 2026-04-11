@@ -9,7 +9,7 @@ public class AbilitySlot : MonoBehaviour
     {
         abilityType = type;
         abilityPrefab = ability.abilityPrefab;
-        PlayerHealth.Instance.gameObject.GetComponent<PlayerPerformAbility>().objects[abilityType] = abilityPrefab;
+        PlayerHealth.Instance.gameObject.GetComponent<PlayerPerformAbility>().objects[abilityType].abilityPrefab = abilityPrefab;
     }
     
 }

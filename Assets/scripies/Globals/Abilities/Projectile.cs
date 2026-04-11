@@ -6,15 +6,12 @@ public class Projectile : AbilityBase
     [SerializeField] private float projectileMinSpeed = 10;
     [SerializeField] private float projectileHeight = 1;
     [SerializeField] private float airResistance = 1;
-    public float abilityCooldown = 1f;
-    public int projectileAmount = 1;
 
     [SerializeField] private bool randomisation;
     [SerializeField] private float randomRes = 0.1f;
     [SerializeField] private float randomAngle = 2f;
     [SerializeField] private bool upwardOnly = true;
     [SerializeField] private float projectileRange;
-    public float projectileDirection;
     
     private RaycastHit2D[] hits = new RaycastHit2D[2];
     [SerializeField] private LayerMask[] target;
@@ -53,13 +50,10 @@ public class Projectile : AbilityBase
         if (!collided && projectileSpeed > 0) rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
     }
 
-    public void SetValues(int factor, bool facingRight, float direction = 0, bool directional = false, float speedMult = 1)
+    public void SetValues(int factor, bool facingRight)
     {
         typeFactor = factor;
         isFacingRightDirection = facingRight;
-        if (speedMult > 0) projectileSpeed *= speedMult;
-        isDirectional = directional;
-        if (isDirectional) projectileDirection = direction;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -92,8 +86,8 @@ public class Projectile : AbilityBase
         }
         else
         {
-            transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, projectileDirection);
-            var angle = projectileDirection * Mathf.Deg2Rad;
+            transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, direction);
+            var angle = direction * Mathf.Deg2Rad;
             rb.linearVelocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * projectileSpeed;
         }
     }

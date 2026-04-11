@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Beam : AbilityBase
 {
-    [SerializeField] private float beamDirection;
-    public float abilityCooldown = 1f;
     [SerializeField] private bool activeHitbox;
     [SerializeField] private float energyProc;
     [SerializeField] private float procTimes;
@@ -17,7 +15,7 @@ public class Beam : AbilityBase
         animator = GetComponent<Animator>();
         if (anim != null) animator.Play(anim.name);
         lifeTimer = lifeTime; 
-        parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? beamDirection : -beamDirection + 180f);
+        parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? direction : -direction + 180f);
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
         procTimes = lifeTime / proc;
         procTimes = energyRequired / procTimes;
@@ -31,7 +29,7 @@ public class Beam : AbilityBase
         energyProc -= Time.deltaTime;
         coll.enabled = procTimer <= 0 ? coll.enabled : !coll.enabled;
 
-        if (pa != null && typeFactor == 1) pa.currentAbilityCooldown = abilityCooldown * pa.abilityCooldownMult;
+        if (pa != null && typeFactor == 1) pa.currentAbilityCooldown = cooldown * pa.abilityCooldownMult;
         if (isFacingRightDirection) transform.eulerAngles = Vector3.zero;
         else transform.eulerAngles = new Vector3(0, 180, 0);
         transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -52,10 +50,10 @@ public class Beam : AbilityBase
         HitBox();
     }
     
-    public void SetValues(bool facingRight, float direction, int type = 0,float damageMult = 0, float lifetimeMult = 1, float potency = 1)
+    public void SetValues(bool facingRight, float adirection, int type = 0,float damageMult = 0, float lifetimeMult = 1, float potency = 1)
     {
         isFacingRightDirection = facingRight;
-        beamDirection = direction;
+        this.direction = adirection;
         typeFactor = type;
         lifeTime *= lifetimeMult;
         knockbackForce *= potency;

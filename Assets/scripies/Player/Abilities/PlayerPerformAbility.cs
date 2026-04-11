@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerPerformAbility : MonoBehaviour
 {
     public Transform abilityPoint;
-    public GameObject[] objects;
+    public AbilityObjSOBase[] objects;
     private PlayerController pc;
     private PlayerAbility pa;
     public float abilityDamageMult;
@@ -14,6 +14,7 @@ public class PlayerPerformAbility : MonoBehaviour
     [SerializeField] private float xVector;
 
     public int[] abilityAmount = {1, 1, 1};
+    public float[] spawnInterval = {0.1f, 0.1f, 0.1f};
     private int blastType;
     [HideInInspector] public bool isActivated;
     //[HideInInspector] public bool isReinforcing;
@@ -45,22 +46,22 @@ public class PlayerPerformAbility : MonoBehaviour
             switch (blast)
             {
                 case 0:
-                    if (objects[0] != null && pa.energy >= objects[0].GetComponent<Projectile>().energyRequired * abilityAmount[0])
+                    if (objects[0] != null && pa.energy >= objects[0].abilityPrefab.GetComponent<Projectile>().energyRequired * abilityAmount[0])
                     {
                         pa.isPerformingAbility = true;
-                        abilityAmount[0] = objects[0].GetComponent<Projectile>().projectileAmount;
+                        abilityAmount[0] = objects[0].amount;
                         pa.animator.Play(pc.isGrounded ? "Fire" : "AirFire");
                     }
                     break;
                 case 1:
-                    if (objects[1] != null && pa.energy >= objects[1].GetComponentInChildren<Pillar>().energyRequired)
+                    if (objects[1] != null && pa.energy >= objects[1].abilityPrefab.GetComponentInChildren<Pillar>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
                         pa.animator.Play("Pillar");
                     }
                     break;
                 case 2:
-                    if (objects[2] != null && pa.energy >= objects[2].GetComponentInChildren<Beam>().energyRequired)
+                    if (objects[2] != null && pa.energy >= objects[2].abilityPrefab.GetComponentInChildren<Beam>().energyRequired)
                     {
                         pa.isPerformingAbility = true;
                         pa.animator.Play("Beam");
@@ -79,14 +80,14 @@ public class PlayerPerformAbility : MonoBehaviour
                 {
                     for (var i = 0; i < abilityAmount[0]; i++)
                     {
-                        var newProjectile = Instantiate(objects[0], abilityPoint.position, Quaternion.identity);
+                        var newProjectile = Instantiate(objects[0].abilityPrefab, abilityPoint.position, Quaternion.identity);
                         var projectileScript = newProjectile.GetComponent<Projectile>();
                         if (projectileScript != null)
                         {
-                            projectileScript.SetValues(1, GetComponent<PlayerController>().isFacingRight, 0,false
-                                ,abilityDirection);
+                            projectileScript.SetValues(1, GetComponent<PlayerController>().isFacingRight);
+                            objects[0].SetProperties(projectileScript);
                             pa.energy -= projectileScript.energyRequired;
-                            pa.currentAbilityCooldown = projectileScript.abilityCooldown * pa.abilityCooldownMult;
+                            pa.currentAbilityCooldown = projectileScript.cooldown * pa.abilityCooldownMult;
                             pa.isPerformingAbility = false;
                         }
                         else Debug.LogError("where is bro's projectile");
@@ -99,10 +100,10 @@ public class PlayerPerformAbility : MonoBehaviour
             case 1:
                 if (!unavailable && objects[1] != null)
                 {
-                    float preXVector = xVector;
+                    var preXVector = xVector;
                     for (int i = 0; i < abilityAmount[1]; i++)
                     {
-                        var newPillar = Instantiate(objects[1],
+                        var newPillar = Instantiate(objects[1].abilityPrefab,
                             abilityPoint.position + new Vector3(xVector * transform.right.x, 0f, 0f),
                             Quaternion.identity);
                         var pillarScript = newPillar.GetComponentInChildren<Pillar>();
@@ -129,7 +130,7 @@ public class PlayerPerformAbility : MonoBehaviour
             case 2:
                 if (objects[2] != null)
                 {
-                    var newBeam = Instantiate(objects[2], abilityPoint.position + new Vector3(0, 0, 0f),
+                    var newBeam = Instantiate(objects[2].abilityPrefab, abilityPoint.position + new Vector3(0, 0, 0f),
                         abilityPoint.rotation);
                     var beamScript = newBeam.GetComponentInChildren<Beam>();
 
@@ -138,7 +139,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityDirection, 1, abilityDamageMult,abilityLifetimeMult, abilityPotency);
                         if (!beamScript.isHoldable)
                         {
-                            pa.currentAbilityCooldown = beamScript.abilityCooldown * pa.abilityCooldownMult;
+                            pa.currentAbilityCooldown = beamScript.cooldown * pa.abilityCooldownMult;
                             pa.energy -= beamScript.energyRequired;
                             pa.isPerformingAbility = false;
                         }

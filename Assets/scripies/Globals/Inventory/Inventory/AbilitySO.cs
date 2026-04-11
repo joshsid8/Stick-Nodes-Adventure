@@ -5,9 +5,8 @@ using UnityEngine.Serialization;
 public class AbilitySO : CollectableSOBase
 {
     public int abilityType;
-    
-    
     public GameObject abilityPrefab;
+    
     public override void Collect(GameObject objectCollected)
     {
         if (InvManager.Instance != null)

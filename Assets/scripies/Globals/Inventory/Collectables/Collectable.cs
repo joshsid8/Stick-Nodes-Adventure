@@ -18,7 +18,6 @@ public class Collectable : MonoBehaviour
     private RaycastHit2D hit;
     public void Collect(GameObject objectCollected) => collectable.Collect(objectCollected);
 
-
     private IEnumerator Start()
     {
         rb = GetComponent<Rigidbody2D>();

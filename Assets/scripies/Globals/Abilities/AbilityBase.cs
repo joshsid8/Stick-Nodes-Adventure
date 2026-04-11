@@ -15,6 +15,9 @@ public abstract class AbilityBase : MonoBehaviour
     [FormerlySerializedAs("projectileKnockbackForce")]
     public Vector2 knockbackForce;
     
+    [FormerlySerializedAs("beamDirection")]
+    [FormerlySerializedAs("projectileDirection")]
+    public float direction;
     public bool isDirectional;
     
     [FormerlySerializedAs("beamStunTime")]
