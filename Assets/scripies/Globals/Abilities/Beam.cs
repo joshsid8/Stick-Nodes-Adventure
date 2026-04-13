@@ -50,15 +50,10 @@ public class Beam : AbilityBase
         HitBox();
     }
     
-    public void SetValues(bool facingRight, float adirection, int type = 0,float damageMult = 0, float lifetimeMult = 1, float potency = 1)
+    public override void SetValues(int factor, bool facingRight)
     {
+        typeFactor = factor;
         isFacingRightDirection = facingRight;
-        this.direction = adirection;
-        typeFactor = type;
-        lifeTime *= lifetimeMult;
-        knockbackForce *= potency;
-        stunTime *= potency;
-        damage *= damageMult;
     }
     
     private void HitBox()

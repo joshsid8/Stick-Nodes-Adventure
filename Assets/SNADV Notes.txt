@@ -4,18 +4,20 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        
+       
         Ability Logic
-        
-            Complete Ability Scriptable Objects
-                Currently, it holds the properties of the ability and has a method to assign them onto instantiated objects
-                This is not tested fully yet, and only projectiles are affected.
-                    Test this and re add presets for each ability
-                
+            Assign New Ability Logic to enemies
+                Right now, only cynderians are using the new projectile logic
+                The only problem yet is the direction never gets swapped
+                    This shouldnt be a hard fix
+                Remove the old logic from everything else too
+                    e.g the 3 old methods enemyshootblast uses
+                    Im happy that now i dont have to specify what tpye of ability it is for the caster haha
                                     
             Let projectiles have a 'holdable' flag
                  so things like flamethrowers and barrages can be stopped
-                 Add lifetime for howl ong it can be used for
+                 Thanks to the new logic, lifetime is universal
+                 just implement this in projectiles and for the caster
             
             Beam hitboxes are broken breh
                 Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic        

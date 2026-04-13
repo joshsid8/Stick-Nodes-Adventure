@@ -110,14 +110,7 @@ public class Pillar : AbilityBase
         }
     }
     
-    public void SetValues(int type = 0 ,float lifetimeMult = 1, float damageMult = 1, float knockbackMult = 1, float stunTimeMult = 1)
-    {
-        typeFactor = type;
-        damage *= damageMult;
-        lifeTime *= lifetimeMult;
-        knockbackForce *= knockbackMult;
-        stunTime *= stunTimeMult;
-    }
+    public override void SetValues(int factor, bool facingRight) => typeFactor = factor;
     
     private void Lifetime()
     {

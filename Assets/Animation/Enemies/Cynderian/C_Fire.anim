@@ -264,9 +264,9 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.6666667
-    functionName: ProjectileThrow
+    functionName: PerformAbility
     data: 
-    objectReferenceParameter: {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
+    objectReferenceParameter: {fileID: 11400000, guid: 27de6398fc421b6459c99cb7e3019e89, type: 2}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

@@ -27,6 +27,9 @@ public class Projectile : AbilityBase
     {
         rb =  GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
+        playerTransform = PlayerHealth.Instance.gameObject.transform;
+        
         if (anim != null) animator.Play(anim.name); 
         if (randomisation)
         {
@@ -50,7 +53,7 @@ public class Projectile : AbilityBase
         if (!collided && projectileSpeed > 0) rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
     }
 
-    public void SetValues(int factor, bool facingRight)
+    public override void SetValues(int factor, bool facingRight)
     {
         typeFactor = factor;
         isFacingRightDirection = facingRight;
@@ -166,6 +169,15 @@ public class Projectile : AbilityBase
         collided = true;
         if (endAnim != null) animator.Play(endAnim.name);
         rb.linearVelocity = Vector2.zero;
+        if (abilityOnCollide) 
+        {
+            foreach (var ability in subAbilities)
+            {
+                var ab = Instantiate(ability.abilityPrefab, transform.position, transform.rotation);
+                ability.SetProperties(ab.GetComponent<AbilityBase>());
+                ab.GetComponent<AbilityBase>().SetValues(typeFactor, isFacingRightDirection);
+            }
+        }
         Destroy(gameObject, 0.2f);
     }
 

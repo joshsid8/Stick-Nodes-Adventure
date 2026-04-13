@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerPerformAbility : MonoBehaviour
 {
     public Transform abilityPoint;
-    public AbilityObjSOBase[] objects;
+    public AbilityObjSO[] objects;
     private PlayerController pc;
     private PlayerAbility pa;
     public float abilityDamageMult;
@@ -92,7 +92,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         }
                         else Debug.LogError("where is bro's projectile");
 
-                        yield return new WaitForSeconds(0.1f);
+                        yield return new WaitForSeconds(objects[0].spawnInterval);
                     }
                 }
                 else pa.isPerformingAbility = false;
@@ -110,8 +110,7 @@ public class PlayerPerformAbility : MonoBehaviour
 
                         if (pillarScript != null)
                         {
-                            pillarScript.SetValues(1, abilityLifetimeMult,
-                                abilityDamageMult / abilityAmount[1], abilityPotency);
+                            pillarScript.SetValues(1, GetComponent<PlayerController>().isFacingRight);
                             if (!pillarScript.isHoldable)
                             {
                                 pa.currentAbilityCooldown = pillarScript.cooldown * pa.abilityCooldownMult;
@@ -121,7 +120,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         }
                         else Debug.LogError("where is bro's pillar");
                         xVector += 1.5f;
-                        yield return new WaitForSeconds(0.1f);
+                        yield return new WaitForSeconds(objects[0].spawnInterval);
                     }
                     xVector = preXVector;
                 }
@@ -136,7 +135,7 @@ public class PlayerPerformAbility : MonoBehaviour
 
                     if (beamScript != null)
                     {
-                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityDirection, 1, abilityDamageMult,abilityLifetimeMult, abilityPotency);
+                        beamScript.SetValues(1, GetComponent<PlayerController>().isFacingRight);
                         if (!beamScript.isHoldable)
                         {
                             pa.currentAbilityCooldown = beamScript.cooldown * pa.abilityCooldownMult;
