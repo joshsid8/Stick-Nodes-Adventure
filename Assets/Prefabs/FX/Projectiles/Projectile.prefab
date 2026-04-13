@@ -38,6 +38,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3333605061043179520
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -56,6 +57,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,9 +80,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 10dfbb59757f33544b410b620c1a1986, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -89,7 +94,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &3695484897592374479
 MonoBehaviour:
@@ -104,32 +108,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeFactor: 0
+  elementType: 0
+  damage: 15
+  knockbackForce: {x: 0, y: 0}
+  direction: 0
+  isDirectional: 1
+  stunTime: 0.5
+  energyRequired: 10
+  cooldown: 0.5
+  proc: 0
+  procTimer: 0
+  lifeTime: 3
+  lifeTimer: 0
+  isHoldable: 0
+  abilityOnCollide: 0
+  subAbilities: []
+  playerTransform: {fileID: 0}
+  animator: {fileID: 0}
+  parentObject: {fileID: 0}
+  coll: {fileID: 0}
+  pa: {fileID: 0}
+  anim: {fileID: 0}
+  endAnim: {fileID: 0}
   projectileSpeed: 20
   projectileMinSpeed: 10
   projectileHeight: 1
   airResistance: 1
-  projectileDamage: 15
-  projectileStunTime: 0.5
-  projectileKnockbackForce: {x: 0, y: 0}
-  projectileLifeTime: 3
-  energyRequired: 10
-  abilityCooldown: 0.5
-  projectileAmount: 1
-  projectileDamageType: 0
   randomisation: 1
   randomRes: 5
   randomAngle: 3
   upwardOnly: 1
   projectileRange: 0.68
-  projectileDirection: 0
-  isDirectional: 0
   target:
   - serializedVersion: 2
     m_Bits: 512
   - serializedVersion: 2
     m_Bits: 256
-  anim: {fileID: 0}
-  collideAnim: {fileID: 0}
+  rotationOffset: 0
 --- !u!95 &1554104199335386888
 Animator:
   serializedVersion: 7

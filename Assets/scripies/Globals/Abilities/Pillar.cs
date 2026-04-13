@@ -15,11 +15,13 @@ public class Pillar : AbilityBase
     private void Start()
     {
         animator = GetComponent<Animator>();
-        if (anim != null) animator.Play(anim.name);
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
+        coll = GetComponent<Collider2D>();
+        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
+        if (anim != null) animator.Play(anim.name);
+        playerTransform = PlayerHealth.Instance.gameObject.transform;
         procTimes = lifeTime / proc;
         procTimes = energyRequired / procTimes;
-        coll = GetComponent<Collider2D>();
     }
 
     void Update()
@@ -110,14 +112,7 @@ public class Pillar : AbilityBase
         }
     }
     
-    public void SetValues(int type = 0 ,float lifetimeMult = 1, float damageMult = 1, float knockbackMult = 1, float stunTimeMult = 1)
-    {
-        typeFactor = type;
-        damage *= damageMult;
-        lifeTime *= lifetimeMult;
-        knockbackForce *= knockbackMult;
-        stunTime *= stunTimeMult;
-    }
+    public override void SetValues(int factor, bool facingRight) => typeFactor = factor;
     
     private void Lifetime()
     {

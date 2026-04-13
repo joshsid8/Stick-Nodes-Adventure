@@ -53,6 +53,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: aa2b221c0ce594f4885ddfa5d06d42bb, type: 3}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: damage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: stunTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: randomRes
       value: 0
       objectReference: {fileID: 0}
@@ -67,6 +75,10 @@ PrefabInstance:
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: projectileSpeed
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: knockbackForce.x
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: projectileDamage

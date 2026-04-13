@@ -18,8 +18,9 @@ public class Projectile : AbilityBase
     
     private bool isFacingRightDirection;
     private float objectDirection;
+    [SerializeField] private float rotationOffset = 90;
+    
     private Rigidbody2D rb;
-
     private bool collided;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,13 +28,15 @@ public class Projectile : AbilityBase
     {
         rb =  GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
+        playerTransform = PlayerHealth.Instance.gameObject.transform;
+        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
         if (anim != null) animator.Play(anim.name); 
         if (randomisation)
         {
             airResistance = Random.Range(upwardOnly ? airResistance : airResistance - airResistance * randomRes, airResistance + airResistance * randomRes);
             projectileHeight = Random.Range(upwardOnly ? 0 : -projectileHeight - randomAngle, projectileHeight + randomAngle);
         }
-        ApplyInitialDirection();
         Destroy(gameObject, lifeTime);
     }
     
@@ -45,12 +48,22 @@ public class Projectile : AbilityBase
             2 => LayerMask.NameToLayer("EVFX"),
             _ => LayerMask.NameToLayer("FX")
         };
-        
         if (projectileMinSpeed < projectileSpeed) projectileSpeed -= Time.deltaTime * airResistance;
         if (!collided && projectileSpeed > 0) rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
+        
+        if (isDirectional)
+        {
+            // This makes the object point to where its moving - something to learn (MAFFS)
+            var velocity = rb.linearVelocity;
+            if (velocity.sqrMagnitude > 0.001f)
+            {
+                var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
+            }
+        }
     }
 
-    public void SetValues(int factor, bool facingRight)
+    public override void SetValues(int factor, bool facingRight)
     {
         typeFactor = factor;
         isFacingRightDirection = facingRight;
@@ -166,6 +179,16 @@ public class Projectile : AbilityBase
         collided = true;
         if (endAnim != null) animator.Play(endAnim.name);
         rb.linearVelocity = Vector2.zero;
+        isDirectional = false;
+        if (abilityOnCollide) 
+        {
+            foreach (var ability in subAbilities)
+            {
+                var ab = Instantiate(ability.abilityPrefab, transform.position, transform.rotation);
+                ability.SetProperties(ab.GetComponent<AbilityBase>());
+                ab.GetComponent<AbilityBase>().SetValues(typeFactor, isFacingRightDirection);
+            }
+        }
         Destroy(gameObject, 0.2f);
     }
 

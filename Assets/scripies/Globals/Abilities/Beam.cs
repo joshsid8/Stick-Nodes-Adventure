@@ -17,9 +17,10 @@ public class Beam : AbilityBase
         lifeTimer = lifeTime; 
         parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? direction : -direction + 180f);
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
+        coll = GetComponent<Collider2D>();
+        playerTransform = PlayerHealth.Instance.gameObject.transform;
         procTimes = lifeTime / proc;
         procTimes = energyRequired / procTimes;
-        coll = GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -50,15 +51,10 @@ public class Beam : AbilityBase
         HitBox();
     }
     
-    public void SetValues(bool facingRight, float adirection, int type = 0,float damageMult = 0, float lifetimeMult = 1, float potency = 1)
+    public override void SetValues(int factor, bool facingRight)
     {
+        typeFactor = factor;
         isFacingRightDirection = facingRight;
-        this.direction = adirection;
-        typeFactor = type;
-        lifeTime *= lifetimeMult;
-        knockbackForce *= potency;
-        stunTime *= potency;
-        damage *= damageMult;
     }
     
     private void HitBox()

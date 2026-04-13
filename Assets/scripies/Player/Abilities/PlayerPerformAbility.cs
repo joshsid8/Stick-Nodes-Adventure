@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerPerformAbility : MonoBehaviour
 {
     public Transform abilityPoint;
-    public AbilityObjSOBase[] objects;
+    public AbilityObjSO[] objects;
     private PlayerController pc;
     private PlayerAbility pa;
     public float abilityDamageMult;
@@ -78,30 +78,55 @@ public class PlayerPerformAbility : MonoBehaviour
             case 0:
                 if (!unavailable && objects[0] != null)
                 {
-                    for (var i = 0; i < abilityAmount[0]; i++)
+                    if (objects[0].abilityPrefab.GetComponent<Projectile>().isHoldable)
                     {
-                        var newProjectile = Instantiate(objects[0].abilityPrefab, abilityPoint.position, Quaternion.identity);
-                        var projectileScript = newProjectile.GetComponent<Projectile>();
-                        if (projectileScript != null)
+                        var currentAmount = objects[0].amount;
+                        while (pa.energy >= objects[0].abilityPrefab.GetComponent<Projectile>().energyRequired /
+                               abilityAmount[0] && currentAmount > 0 && pa.isHolding)
                         {
-                            projectileScript.SetValues(1, GetComponent<PlayerController>().isFacingRight);
-                            objects[0].SetProperties(projectileScript);
-                            pa.energy -= projectileScript.energyRequired;
-                            pa.currentAbilityCooldown = projectileScript.cooldown * pa.abilityCooldownMult;
-                            pa.isPerformingAbility = false;
-                        }
-                        else Debug.LogError("where is bro's projectile");
+                            var newProjectile = Instantiate(objects[0].abilityPrefab, abilityPoint.position,
+                                Quaternion.identity);
+                            var projectileScript = newProjectile.GetComponent<Projectile>();
+                            if (projectileScript != null)
+                            {
+                                projectileScript.SetValues(1, GetComponent<PlayerController>().isFacingRight);
+                                objects[0].SetProperties(projectileScript);
+                                pa.energy -= projectileScript.energyRequired;
+                                pa.currentAbilityCooldown = projectileScript.cooldown * pa.abilityCooldownMult;
+                                currentAmount--;
+                            }
+                            else Debug.LogError("where is bro's projectile");
 
-                        yield return new WaitForSeconds(0.1f);
+                            yield return new WaitForSeconds(objects[0].spawnInterval);
+                        }
+                    }
+                    else
+                    {
+                        for (var i = 0; i < objects[0].amount; i++)
+                        {
+                            var newProjectile = Instantiate(objects[0].abilityPrefab, abilityPoint.position, 
+                                Quaternion.identity);
+                            var projectileScript = newProjectile.GetComponent<Projectile>();
+                            if (projectileScript != null)
+                            {
+                                projectileScript.SetValues(1, GetComponent<PlayerController>().isFacingRight);
+                                objects[0].SetProperties(projectileScript);
+                                pa.energy -= projectileScript.energyRequired;
+                                pa.currentAbilityCooldown = projectileScript.cooldown * pa.abilityCooldownMult;
+                            }
+                            else Debug.LogError("where is bro's projectile");
+
+                            yield return new WaitForSeconds(objects[0].spawnInterval);
+                        }
                     }
                 }
-                else pa.isPerformingAbility = false;
+                pa.isPerformingAbility = false;
                 break;
             case 1:
                 if (!unavailable && objects[1] != null)
                 {
                     var preXVector = xVector;
-                    for (int i = 0; i < abilityAmount[1]; i++)
+                    for (var i = 0; i < abilityAmount[1]; i++)
                     {
                         var newPillar = Instantiate(objects[1].abilityPrefab,
                             abilityPoint.position + new Vector3(xVector * transform.right.x, 0f, 0f),
@@ -110,8 +135,7 @@ public class PlayerPerformAbility : MonoBehaviour
 
                         if (pillarScript != null)
                         {
-                            pillarScript.SetValues(1, abilityLifetimeMult,
-                                abilityDamageMult / abilityAmount[1], abilityPotency);
+                            pillarScript.SetValues(1, GetComponent<PlayerController>().isFacingRight);
                             if (!pillarScript.isHoldable)
                             {
                                 pa.currentAbilityCooldown = pillarScript.cooldown * pa.abilityCooldownMult;
@@ -121,7 +145,7 @@ public class PlayerPerformAbility : MonoBehaviour
                         }
                         else Debug.LogError("where is bro's pillar");
                         xVector += 1.5f;
-                        yield return new WaitForSeconds(0.1f);
+                        yield return new WaitForSeconds(objects[0].spawnInterval);
                     }
                     xVector = preXVector;
                 }
@@ -136,7 +160,7 @@ public class PlayerPerformAbility : MonoBehaviour
 
                     if (beamScript != null)
                     {
-                        beamScript.SetValues(GetComponent<PlayerController>().isFacingRight, abilityDirection, 1, abilityDamageMult,abilityLifetimeMult, abilityPotency);
+                        beamScript.SetValues(1, GetComponent<PlayerController>().isFacingRight);
                         if (!beamScript.isHoldable)
                         {
                             pa.currentAbilityCooldown = beamScript.cooldown * pa.abilityCooldownMult;

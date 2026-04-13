@@ -47,7 +47,9 @@ public abstract class AbilityBase : MonoBehaviour
     [FormerlySerializedAs("pillarTimer")]
     public float lifeTimer;
     public bool isHoldable;
-    
+    public bool abilityOnCollide;
+    public AbilityObjSO[] subAbilities;
+
     public Transform playerTransform;
     public Animator animator;
     
@@ -61,4 +63,6 @@ public abstract class AbilityBase : MonoBehaviour
     [FormerlySerializedAs("collideAnim")]
     [FormerlySerializedAs("finishAnim")]
     public AnimationClip endAnim;
+
+    public abstract void SetValues(int factor, bool facingRight);
 }

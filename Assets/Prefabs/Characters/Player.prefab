@@ -251,11 +251,15 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   abilityDamageMult: 1
-  abilityPotency: 0
+  abilityPotency: 1
   abilityDirection: 0
   abilityLifetimeMult: 1
   xVector: 1
   abilityAmount: 050000000300000001000000
+  spawnInterval:
+  - 0.1
+  - 0.1
+  - 0.1
   isActivated: 0
   unavailable: 0
   terrainLayers:

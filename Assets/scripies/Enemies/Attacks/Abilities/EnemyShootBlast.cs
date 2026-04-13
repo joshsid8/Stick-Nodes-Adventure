@@ -19,16 +19,24 @@ public class EnemyShootBlast : MonoBehaviour
     [SerializeField] private LayerMask terrainLayers;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
-    {
-        ep = GetComponent<EnemyPatrol>();
-    }
+    private void Start() => ep = GetComponent<EnemyPatrol>();
 
-    private void Update()
+    private void Update() => unavailable = Physics2D.OverlapCircle(abilityPoint.position, 0.5f, terrainLayers);
+ 
+    public void PerformAbility(AbilityObjSO ability)
     {
-        unavailable = Physics2D.OverlapCircle(abilityPoint.position, 0.5f, terrainLayers);
+        if (!unavailable)
+        {
+            var newAbility = Instantiate(ability.abilityPrefab, abilityPoint.position, abilityPoint.rotation);
+            var script = newAbility.GetComponent<AbilityBase>();
+            if (script != null)
+            {
+                ability.SetProperties(script);
+                script.SetValues(2, ep.isFacingRight);
+            }
+        }
     }
-
+    
     public void ProjectileThrow(GameObject projectile)
     {
         if (!unavailable)
@@ -58,7 +66,7 @@ public class EnemyShootBlast : MonoBehaviour
             var newBeam = Instantiate(beam, abilityPoint.position, abilityPoint.rotation);
             var eb = newBeam.GetComponentInChildren<Beam>();
 
-            if (eb != null) eb.SetValues(ep.isFacingRight, abilityDirection, 2, damageMult, lifetimeMult, potency);
+            if (eb != null) eb.SetValues(2, ep.isFacingRight);
             else Debug.LogError("where is bro's beam ability");
         }
     }

@@ -52,6 +52,18 @@ PrefabInstance:
       propertyPath: anim
       value: 
       objectReference: {fileID: 7400000, guid: 8c421c62c8acabc48af1bb47cc10f385, type: 2}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: direction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: isDirectional
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: rotationOffset
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 4963594003989781806, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: m_Name
       value: Fire Ball
