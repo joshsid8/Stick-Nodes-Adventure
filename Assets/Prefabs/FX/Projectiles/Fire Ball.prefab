@@ -57,12 +57,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: upwardOnly
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: airResistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: isDirectional
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: randomisation
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: rotationOffset
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: projectileHeight
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4963594003989781806, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: m_Name

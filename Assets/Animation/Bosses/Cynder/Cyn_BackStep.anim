@@ -69,7 +69,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: dashSpeed
+    attribute: strafeSpeed
     path: 
     classID: 114
     script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
@@ -117,7 +117,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: isDashing
+    attribute: isStrafing
     path: 
     classID: 114
     script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
@@ -159,7 +159,7 @@ AnimationClip:
     genericBindings:
     - serializedVersion: 2
       path: 0
-      attribute: 3391423821
+      attribute: 2305501779
       script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
       typeID: 114
       customType: 0
@@ -168,7 +168,7 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1756643129
+      attribute: 1468244052
       script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
       typeID: 114
       customType: 0
@@ -268,7 +268,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: dashSpeed
+    attribute: strafeSpeed
     path: 
     classID: 114
     script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
@@ -316,7 +316,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: isDashing
+    attribute: isStrafing
     path: 
     classID: 114
     script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}

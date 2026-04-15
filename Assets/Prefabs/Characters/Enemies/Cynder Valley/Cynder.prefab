@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3900648796567909267}
   - component: {fileID: 3680011792468434858}
   - component: {fileID: 8376931847354496412}
+  - component: {fileID: 2692567826067092761}
   - component: {fileID: 1670248596730534493}
   - component: {fileID: 769820852523672261}
   - component: {fileID: 1836224336866044490}
@@ -50,6 +51,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5781912641425779188
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -68,6 +70,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -89,9 +93,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 5fed4ca48932e834692927fbea94c040, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -101,7 +107,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &8287228556211095260
 MonoBehaviour:
@@ -146,7 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackTime: 0.1
   hitDirectionForce: 1
-  inputForce: 1.1
 --- !u!114 &3900648796567909267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,39 +163,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashCooldown: 1
-  dashSpeed: 20
-  isDashing: 0
+  strafeSpeed: 20
+  isStrafing: 0
+  strafeCooldown: 0
   isFlyDashing: 0
-  slashCooldown: 1.5
+  dashDirection: {x: 0, y: 0}
+  meleeCooldown: 0
   stunTime: 0.3
   damageAmount: 20
   knockbackForce: {x: 1, y: 0}
   attackRange: 2.11
   attackTransform: {fileID: 2954646569225375092}
-  isInRange: 0
-  freezeMovement: 0
-  isFalling: 0
-  damageType: 0
-  throwCooldown: 1
-  projectilePoint: {fileID: 1328446686802652935}
-  projectile: {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
-  projectileSpeed: 20
-  xVector: 0
-  stationaryElement: {fileID: 4635439681108189195, guid: dbee23465e1f4f44184f882544fafa0c, type: 3}
-  secondaryProjectileSpeed: 4
-  projectileDirection: {x: -3, y: -5}
-  terrainLayers:
-    serializedVersion: 2
-    m_Bits: 65728
   jumpCooldown: 1.5
   isRandomised: 1
   jumpForceY: 30
   jumpForceX: 8
-  backflipForceY: 30
-  backflipForceX: 8
   teleportPoint: {fileID: 6587593078048045180}
   dropSpeed: 20
+  isInRange: 0
+  freezeMovement: 0
+  isFalling: 0
+  damageType: 0
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 65728
+  backflipForceY: 30
+  backflipForceX: 8
 --- !u!114 &3680011792468434858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,21 +201,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe42a45225f7a074c906b095267ee0b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionFactor: 0
   rangeRadius: 4.4
   isAttacking: 0
   canAttack: 0
   attackCooldown: 1.5
   currentAttackCooldown: 0
   attackFactor: 0
-  activeMovement: FDash
-  defensiveMovement: BDash
-  atk1: NAttack
-  atk2: FDash
-  atk3: Shuriken
-  atk4: Fire
-  atk5: Jump
-  atk6: Teleport
+  defensiveAtk:
+  - 
+  - 
+  - 
+  - 
+  - 
+  activeAtk:
+  - 
+  - 
+  - 
+  - 
+  - 
   playerLayer:
     serializedVersion: 2
     m_Bits: 49408
@@ -232,6 +232,8 @@ MonoBehaviour:
   isTouchingWall: 0
   wallCheck: {fileID: 4082605586263118162}
   wallCheckRay: 3.141592
+  stunnable: 0
+  stunnableTimer: 0
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
@@ -269,7 +271,25 @@ MonoBehaviour:
   shieldHealth: 0
   dmgRes: 0
   isCountering: 0
+  isStunned: 0
   movable: 1
+--- !u!114 &2692567826067092761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156917591073942580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyShootBlast
+  abilityPoint: {fileID: 1328446686802652935}
+  abilityDirection: 0
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 65728
 --- !u!114 &1670248596730534493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,6 +307,7 @@ MonoBehaviour:
   isInRange: 0
   isTriggered: 0
   isForced: 1
+  willTravel: 0
   indicator: {fileID: 6522456533086263551}
   dialogue: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
   pLayer:
@@ -516,6 +537,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!212 &2603511104288160853
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -534,6 +556,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -555,9 +579,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 0.5707547, b: 0.5707547, a: 1}
   m_FlipX: 0
@@ -567,7 +593,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6603545464657641184
 GameObject:

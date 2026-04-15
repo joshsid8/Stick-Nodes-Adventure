@@ -17,10 +17,10 @@ public class AbilityObjSO : ScriptableObject
      public float cooldown;
      public float lifeTime;
      public float proc;
-     
-     [Space]
-     [Header("Caster Properties")]
-     public int amount = 1;
+
+     [Space] [Header("Caster Properties")] public int amount = 1;
+     public float initSeparation = 5f;
+     public float separation = 1.5f;
      public float spawnInterval = 0.1f;
      public float speedMult = 1;
      public float cooldownMult = 1;

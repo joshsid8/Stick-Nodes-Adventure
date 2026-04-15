@@ -327,17 +327,6 @@ AnimationClip:
     classID: 212
     script: {fileID: 0}
     flags: 2
-  - serializedVersion: 2
-    curve:
-    - time: 0
-      value: {fileID: 4963594003989781806, guid: 903a4c99cd26a284691486a5e9ce9f10, type: 3}
-    - time: 1.35
-      value: {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
-    attribute: projectile
-    path: 
-    classID: 114
-    script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
-    flags: 2
   m_SampleRate: 20
   m_WrapMode: 0
   m_Bounds:
@@ -408,15 +397,6 @@ AnimationClip:
       isPPtrCurve: 1
       isIntCurve: 0
       isSerializeReferenceCurve: 0
-    - serializedVersion: 2
-      path: 0
-      attribute: 1023099501
-      script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
-      typeID: 114
-      customType: 0
-      isPPtrCurve: 1
-      isIntCurve: 0
-      isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: 21300000, guid: 868f3a1bfdef2c54aa7f36f93375e92b, type: 3}
     - {fileID: 21300000, guid: 5471c31644a94b74b80359da60fa4f86, type: 3}
@@ -443,14 +423,12 @@ AnimationClip:
     - {fileID: 21300000, guid: 7d03ceb805bd6ad498a570132f29f17c, type: 3}
     - {fileID: 21300000, guid: 05c19f2d5190f3b4889ebaa1225a0436, type: 3}
     - {fileID: 21300000, guid: 5db0a43b5df49694f94d49cd69933f1f, type: 3}
-    - {fileID: 4963594003989781806, guid: 903a4c99cd26a284691486a5e9ce9f10, type: 3}
-    - {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.4
+    m_StopTime: 1.35
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -730,23 +708,9 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.1
-    functionName: SecondaryProjectileShoot
+    functionName: PerformAbility
     data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.1
-    functionName: SecondaryProjectileShoot
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.1
-    functionName: SecondaryProjectileShoot
-    data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11400000, guid: a5c66102e32418743b031821f4c56614, type: 2}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

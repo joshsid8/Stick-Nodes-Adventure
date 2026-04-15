@@ -23,7 +23,9 @@ MonoBehaviour:
   cooldown: 0
   lifeTime: 0
   proc: 0
-  amount: 1
+  amount: 3
+  initSeparation: 1.5
+  separation: 1.5
   spawnInterval: 0.1
   speedMult: 1
   cooldownMult: 1

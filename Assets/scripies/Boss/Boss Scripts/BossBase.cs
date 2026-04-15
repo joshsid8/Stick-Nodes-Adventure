@@ -1,0 +1,146 @@
+using UnityEngine;
+using UnityEngine.Serialization;
+
+public abstract class BossBase : MonoBehaviour
+{
+    // Strafing/Dashing
+    [FormerlySerializedAs("dashSpeed")]
+    public float strafeSpeed = 10f;
+    public bool isStrafing;
+    public float strafeCooldown;
+    
+    public bool isFlyDashing;
+    public Vector2 dashDirection;
+    
+    // Melee
+    public float meleeCooldown;
+    public float stunTime;
+    public float damageAmount;
+    public Vector2 knockbackForce;
+    protected RaycastHit2D hit;
+    public float attackRange;
+    public Transform attackTransform;
+    
+    // Jumping
+    public float jumpCooldown;
+    public bool isRandomised;
+    public float jumpForceY;
+    public float jumpForceX;
+    
+    // Teleporting and Dropping
+    public Transform teleportPoint;
+    public float dropSpeed;
+    
+    // Checks
+    [HideInInspector] public bool isInRange;
+    [HideInInspector] public bool freezeMovement;
+    [HideInInspector] public bool isFalling;
+    public int damageType;
+    public LayerMask terrainLayers;
+    
+    // Components
+    protected Rigidbody2D rb;
+    protected Animator animator;
+    protected BossAttack ba;
+    protected BossHealth bh;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    protected void Start()
+    {
+        ba = GetComponent<BossAttack>();
+        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        bh = GetComponent<BossHealth>();
+    }
+    
+    protected void FindPlayerPosition()
+    {
+        var rng = Random.Range(0, 101);
+        var prediction = rng <= 70;
+        if (!prediction) dashDirection = (ba.playerTransform.position - transform.position).normalized;
+        else
+        {
+            var x = PlayerHealth.Instance.pc.rb.linearVelocity.x;
+            var y = PlayerHealth.Instance.pc.rb.linearVelocity.y;
+            var predictedDistanceX = x > 0 ? x * 0.2f : x * 0.2f * -1;
+            var predictedDistanceY = y > 0 ? y * 0.2f : y * 0.2f * -1;
+            dashDirection = new Vector2(ba.playerTransform.position.x + predictedDistanceX - transform.position.x,
+                ba.playerTransform.position.y + predictedDistanceY - transform.position.y).normalized;
+        }
+    }
+    
+    protected void Teleport()
+    {
+        animator.SetTrigger("DAttack");
+        var rng = Random.Range(0, 101);
+        var x = rng <= 50 ? 3 : -3;
+        transform.position = new Vector3(ba.playerTransform.position.x + x, teleportPoint.position.y, transform.position.z);
+        
+        var rng2 = Random.Range(0, 101);
+        var px = PlayerHealth.Instance.pc.rb.linearVelocity.x;
+        var predictedDistanceX = px > 0 ? px * 0.2f : px * 0.2f * -1;
+        if (rng2 <= 50 || px == 0) rb.linearVelocity = new Vector2(rb.linearVelocity.x + predictedDistanceX, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
+        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
+    }
+    
+    protected void Strafe()
+    {
+        if (isStrafing) rb.linearVelocity = ba.isFacingRight ? new Vector2(strafeSpeed, rb.linearVelocity.y) :
+            new Vector2(-strafeSpeed, rb.linearVelocity.y);
+        else if (!isStrafing) rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+    }
+    
+    protected void FlyDash()
+    {
+        if (isFlyDashing)
+        {
+            rb.linearVelocity = bh.phase2 ? dashDirection * strafeSpeed * 1.2f : dashDirection * strafeSpeed;
+            if (isInRange)
+            {
+                isFlyDashing = false;
+                animator.SetTrigger("HAttack");
+                ba.ActionCooldown(strafeCooldown);
+            }
+        }
+        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+    }
+    
+    protected void Jump()
+    {
+        if (ba.isGrounded)
+        {
+            if (isRandomised)
+            {
+                jumpForceX = Random.Range(-16, 16);
+                jumpForceY = Random.Range(20, 31);
+            }
+
+            rb.linearVelocity = new Vector2(jumpForceX, jumpForceY);
+            ba.ActionCooldown(jumpCooldown);
+        }
+    }
+    
+    protected void MeleeAttack()
+    {
+        hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
+        if (hit.collider != null)
+        {
+            ba.ActionCooldown(meleeCooldown * 0.5f);
+            PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
+            if (damageable != null)
+            {
+                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ba.isFacingRight, damageType);
+                damageable.Stun(stunTime);
+                FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
+            }
+        }
+        ba.ActionCooldown(meleeCooldown * 0.5f);
+        
+    }
+    
+    public abstract void Gamble();
+    
+    public void FreezeMovement() => rb.linearVelocity = Vector2.zero;
+    public void FreezeMovementX() => rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+    public void FreezeMovementY() => rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+}

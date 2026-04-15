@@ -53,8 +53,17 @@ public class PlayerAbility : MonoBehaviour
 
     void Fire()
     {
+        // Made it so that all 3 slots can be any type of ability
         if (canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && pc.canAct && !ability.isActivated)
-            if (Input.GetButtonDown("Fire")) ability.Execute(blastIndex);
+            if (Input.GetButtonDown("Fire"))
+            {
+                if (ability.objects[blastIndex].abilityPrefab.GetComponent<Projectile>() != null)
+                    ability.Execute(0, blastIndex);
+                else if (ability.objects[blastIndex].abilityPrefab.GetComponentInChildren<Pillar>() != null)
+                    ability.Execute(1, blastIndex);
+                else if (ability.objects[blastIndex].abilityPrefab.GetComponentInChildren<Beam>() != null)
+                    ability.Execute(2, blastIndex);
+            }
         
         if (!pc.isDashing && !pc.isWallSliding && pc.canAct)
             isHolding = Input.GetButton("Fire") ? isHolding = true : isHolding = false;

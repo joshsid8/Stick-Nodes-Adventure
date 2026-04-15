@@ -416,16 +416,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityPoint: {fileID: 0}
-  projectileSpeed: 0
-  damageMult: 0
-  lifetimeMult: 0
-  potency: 0
+  abilityPoint: {fileID: 1248520969832997338}
   abilityDirection: 0
-  damageType: 0
   terrainLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 65728
 --- !u!212 &7115054256094536775
 SpriteRenderer:
   serializedVersion: 2

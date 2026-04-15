@@ -37,9 +37,10 @@ public class Projectile : AbilityBase
             airResistance = Random.Range(upwardOnly ? airResistance : airResistance - airResistance * randomRes, airResistance + airResistance * randomRes);
             projectileHeight = Random.Range(upwardOnly ? 0 : -projectileHeight - randomAngle, projectileHeight + randomAngle);
         }
+        ApplyInitialDirection();
         Destroy(gameObject, lifeTime);
     }
-    
+
     private void Update()
     {
         gameObject.layer = typeFactor switch
@@ -49,17 +50,15 @@ public class Projectile : AbilityBase
             _ => LayerMask.NameToLayer("FX")
         };
         if (projectileMinSpeed < projectileSpeed) projectileSpeed -= Time.deltaTime * airResistance;
-        if (!collided && projectileSpeed > 0) rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
+        if (!collided && projectileSpeed > 0)
+            rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
         
-        if (isDirectional)
+        // This makes the object point to where its moving - something to learn (MAFFS)
+        var velocity = rb.linearVelocity;
+        if (velocity.sqrMagnitude > 0.001f)
         {
-            // This makes the object point to where its moving - something to learn (MAFFS)
-            var velocity = rb.linearVelocity;
-            if (velocity.sqrMagnitude > 0.001f)
-            {
-                var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
-            }
+            var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
         }
     }
 
