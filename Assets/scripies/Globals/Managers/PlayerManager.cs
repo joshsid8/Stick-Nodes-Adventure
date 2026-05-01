@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerCurrency pm;
     private PlayerDefense pd;
     private PlayerCombat pf;
-    private PlayerPerformAbility pp;
+    private PerformAbility pp;
 
     // --- Core Stat Management Dictionaries ---
     // These dictionaries will hold the *current, modified* values of the player's stats.
@@ -43,7 +43,7 @@ public class PlayerManager : MonoBehaviour
         pc = FindAnyObjectByType<PlayerController>();
         ph = FindAnyObjectByType<PlayerHealth>();
         pa = FindAnyObjectByType<PlayerAbility>();
-        pp = FindAnyObjectByType<PlayerPerformAbility>();
+        pp = FindAnyObjectByType<PerformAbility>();
         pm = FindAnyObjectByType<PlayerCurrency>();
         pd = FindAnyObjectByType<PlayerDefense>();
         pf = FindAnyObjectByType<PlayerCombat>();
@@ -51,7 +51,7 @@ public class PlayerManager : MonoBehaviour
         if (pc == null) Debug.LogWarning("PlayerManager: PlayerController not found.");
         if (ph == null) Debug.LogWarning("PlayerManager: PlayerHealth not found.");
         if (pa == null) Debug.LogWarning("PlayerManager: PlayerAbility not found.");
-        if (pp == null) Debug.LogWarning("PlayerManager: PlayerPerformAbility not found.");
+        if (pp == null) Debug.LogWarning("PlayerManager: PerformAbility not found.");
         if (pm == null) Debug.LogWarning("PlayerManager: PlayerCurrency not found.");
         if (pd == null) Debug.LogWarning("PlayerManager: PlayerDefense not found.");
         if (pf == null) Debug.LogWarning("PlayerManager: PlayerCombat not found.");

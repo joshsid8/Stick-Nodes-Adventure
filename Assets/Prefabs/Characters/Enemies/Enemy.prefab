@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 5774492939275019919}
   - component: {fileID: 8455541738676426996}
   - component: {fileID: 2866762415245452275}
-  - component: {fileID: 1439657276797700270}
+  - component: {fileID: 1920835200029510645}
   - component: {fileID: 7115054256094536775}
   - component: {fileID: 1116650468285775789}
   - component: {fileID: 8254986764908062184}
@@ -404,7 +404,7 @@ MonoBehaviour:
   phase2Style: 0
   isLight: 0
   isOneTime: 0
---- !u!114 &1439657276797700270
+--- !u!114 &1920835200029510645
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -413,14 +413,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 6953562033605771950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
+  m_Script: {fileID: 11500000, guid: a2f1f55caf69b924ba9ad4cc4749329b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::PerformAbility
+  casterType: 1
   abilityPoint: {fileID: 1248520969832997338}
-  abilityDirection: 0
   terrainLayers:
     serializedVersion: 2
     m_Bits: 65728
+  objects: []
+  abilityDamageMult: 1
+  abilityPotency: 1
+  abilityLifetimeMult: 1
+  abilityAmountMult: 010000000100000001000000
+  abilityDirection: 0
+  isActivated: 0
+  unavailable: 0
 --- !u!212 &7115054256094536775
 SpriteRenderer:
   serializedVersion: 2

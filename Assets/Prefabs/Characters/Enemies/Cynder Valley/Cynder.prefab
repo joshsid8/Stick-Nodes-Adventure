@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3900648796567909267}
   - component: {fileID: 3680011792468434858}
   - component: {fileID: 8376931847354496412}
-  - component: {fileID: 2692567826067092761}
+  - component: {fileID: 5109050645649171322}
   - component: {fileID: 1670248596730534493}
   - component: {fileID: 769820852523672261}
   - component: {fileID: 1836224336866044490}
@@ -273,7 +273,7 @@ MonoBehaviour:
   isCountering: 0
   isStunned: 0
   movable: 1
---- !u!114 &2692567826067092761
+--- !u!114 &5109050645649171322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,14 +282,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 156917591073942580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
+  m_Script: {fileID: 11500000, guid: a2f1f55caf69b924ba9ad4cc4749329b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyShootBlast
+  m_EditorClassIdentifier: Assembly-CSharp::PerformAbility
+  casterType: 1
   abilityPoint: {fileID: 1328446686802652935}
-  abilityDirection: 0
   terrainLayers:
     serializedVersion: 2
     m_Bits: 65728
+  objects: []
+  abilityDamageMult: 1
+  abilityPotency: 1
+  abilityLifetimeMult: 1
+  abilityAmountMult: 010000000100000001000000
+  abilityDirection: 0
+  isActivated: 0
+  unavailable: 0
 --- !u!114 &1670248596730534493
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -890,16 +890,9 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.5
-    functionName: ReverseStomp
+    functionName: Perform
     data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 3
-    messageOptions: 0
-  - time: 1.5
-    functionName: Stomp
-    data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11400000, guid: f016c3a4f94351145921537322d4f7c5, type: 2}
     floatParameter: 0
     intParameter: 3
     messageOptions: 0

@@ -20,7 +20,7 @@ public class PlayerAbility : MonoBehaviour
     [SerializeField] private int blastIndex;
     [SerializeField] private int blastType;
     
-    public PlayerPerformAbility ability;
+    public PerformAbility ability;
     private PlayerController pc;
     private PlayerDefense pd;
     
@@ -31,7 +31,7 @@ public class PlayerAbility : MonoBehaviour
         animator = GetComponent<Animator>();
         pc = GetComponent<PlayerController>();
         pd = GetComponent<PlayerDefense>();
-        ability = GetComponent<PlayerPerformAbility>();
+        ability = GetComponent<PerformAbility>();
         maxEnergy = energy;
     }
 

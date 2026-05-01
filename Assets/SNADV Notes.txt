@@ -6,17 +6,18 @@ SNADV Notes
     Priorities:
        
         Ability Logic
-            Fix enemy ability position logic
-                Despite the fact that the enemy version to perform abilities is the same as the players, it is very broken for some reason >:(
-                            
-            Beam hitboxes are broken breh
+        
+            Generally, everything is cleaner, but dirtier at the same time
+                PlayerPerformAbility and EnemyShootBlast has been merged into PerformAbility
+                The offsets of abiltiies are crazy, but its likely some small error i can fix
+                Ability direction hasnt been tested yet
+                          
+            Beam hitboxes are STILL broken breh
                 Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic
                 idk how to fix this D:
             
-            FindFloor has been patched a little
-                It successfully finds the floors for most platforms
-                    For small ones i think, it does not sent the element to the top, keeping it at the bottom
-                Now i should apply this to enemies  
+            Optimise FindFloor
+                I dont know how i can, but i can definitely improve it
     
     Optimisations & Hotfixes:
                  

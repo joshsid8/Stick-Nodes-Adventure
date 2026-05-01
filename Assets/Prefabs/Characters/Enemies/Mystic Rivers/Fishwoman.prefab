@@ -141,38 +141,5 @@ PrefabInstance:
     - {fileID: 1439657276797700270, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1482558004223461539}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
---- !u!1 &3463261996892548931 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6953562033605771950, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
-  m_PrefabInstance: {fileID: 5805133030961245677}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1482558004223461539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3463261996892548931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityPoint: {fileID: 4745767652298935351}
-  projectileSpeed: 10
-  abilityLifetime: 0.3
-  abilityProc: 0.5
-  damageType: 0
-  terrainLayers:
-    serializedVersion: 2
-    m_Bits: 65728
---- !u!4 &4745767652298935351 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1248520969832997338, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
-  m_PrefabInstance: {fileID: 5805133030961245677}
-  m_PrefabAsset: {fileID: 0}

@@ -10221,39 +10221,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812b12a85c84adb4a86f7a1d3a32c6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashCooldown: 1
-  dashSpeed: 20
-  isDashing: 0
+  strafeSpeed: 20
+  isStrafing: 0
+  strafeCooldown: 0
   isFlyDashing: 0
-  slashCooldown: 1.5
+  dashDirection: {x: 0, y: 0}
+  meleeCooldown: 0
   stunTime: 0.3
   damageAmount: 20
   knockbackForce: {x: 1, y: 0}
   attackRange: 2.11
   attackTransform: {fileID: 2954646568731585499}
-  isInRange: 0
-  freezeMovement: 0
-  isFalling: 0
-  damageType: 0
-  throwCooldown: 1
-  projectilePoint: {fileID: 1328446686174464424}
-  projectile: {fileID: 4963594003989781806, guid: f87c722064cdd4c499d9892b5d7d3930, type: 3}
-  projectileSpeed: 20
-  xVector: 0
-  stationaryElement: {fileID: 4635439681108189195, guid: dbee23465e1f4f44184f882544fafa0c, type: 3}
-  secondaryProjectileSpeed: 4
-  projectileDirection: {x: -3, y: -5}
-  terrainLayers:
-    serializedVersion: 2
-    m_Bits: 65728
   jumpCooldown: 1.5
   isRandomised: 1
   jumpForceY: 30
   jumpForceX: 8
-  backflipForceY: 30
-  backflipForceX: 8
   teleportPoint: {fileID: 6587593077420187347}
   dropSpeed: 20
+  isInRange: 0
+  freezeMovement: 0
+  isFalling: 0
+  damageType: 0
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 65728
+  backflipForceY: 30
+  backflipForceX: 8
 --- !u!4 &4082605585649825789
 Transform:
   m_ObjectHideFlags: 0

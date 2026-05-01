@@ -182,7 +182,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.6
-    functionName: PerformAbility
+    functionName: Perform
     data: 
     objectReferenceParameter: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
     floatParameter: 0

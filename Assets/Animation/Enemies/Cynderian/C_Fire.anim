@@ -264,7 +264,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.6666667
-    functionName: PerformAbility
+    functionName: Perform
     data: 
     objectReferenceParameter: {fileID: 11400000, guid: 27de6398fc421b6459c99cb7e3019e89, type: 2}
     floatParameter: 0

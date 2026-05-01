@@ -18,7 +18,7 @@ public class FindFloor : MonoBehaviour
     private void FixedUpdate()
     {
         hit = Physics2D.RaycastAll(bottomPoint.position, Vector2.down, rayDistance, surfaceLayers);
-        foreach (var h in hit) print($"Found {h.collider.gameObject.name} with y position {h.collider.gameObject.transform.position.y}");
+        //foreach (var h in hit) print($"Found {h.collider.gameObject.name} with y position {h.collider.gameObject.transform.position.y}");
         foundSurface = hit != null;
         if (!foundSurface)
         {
@@ -34,7 +34,7 @@ public class FindFloor : MonoBehaviour
     private void FoundSurface(GameObject surface)
     {
         var fahhh = bottomPoint.transform.position = new Vector3(gameObject.transform.position.x, surface.transform.position.y + surface.transform.lossyScale.y / 2, surface.transform.position.z);
-        print($"position: {fahhh}. this is because {surface.name}'s y position is {surface.transform.position.y}, adding {surface.transform.lossyScale.y} to it.");
+        //print($"position: {fahhh}. this is because {surface.name}'s y position is {surface.transform.position.y}, adding {surface.transform.lossyScale.y} to it.");
         scriptToWake.enabled = true;
         
         enabled = false;

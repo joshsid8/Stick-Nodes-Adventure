@@ -540,7 +540,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.8333333
-    functionName: ShootBeam
+    functionName: Perform
     data: 
     objectReferenceParameter: {fileID: 41285518240766547, guid: 071d1bbe02101464a8875bfb56fa118a, type: 3}
     floatParameter: 0
