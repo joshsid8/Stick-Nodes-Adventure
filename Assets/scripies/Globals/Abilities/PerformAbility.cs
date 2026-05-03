@@ -92,7 +92,6 @@ public class PerformAbility : MonoBehaviour
     }
     
     public void Perform(AbilityObjSO ability) => StartCoroutine(SpawnRoutine(ability, casterType == CasterType.Player ? currentBlastType : -1));
-    
 
     public void Blast()
     {

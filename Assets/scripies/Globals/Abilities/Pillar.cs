@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Pillar : AbilityBase
@@ -8,7 +9,7 @@ public class Pillar : AbilityBase
     
     [SerializeField] private bool activeHitbox;
     [SerializeField] private bool isErupting;
-    private RaycastHit2D[] inContact;
+    [SerializeField] private List<GameObject> inContact = new List<GameObject>();
     [SerializeField] private BoxCollider2D pillarCollider;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,7 +30,6 @@ public class Pillar : AbilityBase
         Lifetime();
         procTimer -= Time.deltaTime;
         energyProc -= Time.deltaTime;
-        coll.enabled = procTimer <= 0 ? coll.enabled : !coll.enabled;
         gameObject.layer = typeFactor switch
         {
             1 => LayerMask.NameToLayer("PVFX"),
@@ -44,13 +44,27 @@ public class Pillar : AbilityBase
         } 
         else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
 
-        
         Hitbox();
     }
+    
+    
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
+            if (!inContact.Contains(collision.gameObject) && GetHealth(collision.gameObject) > 0) 
+                inContact.Add(collision.gameObject);
+        
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Dead") || collision.gameObject.layer == LayerMask.NameToLayer("EDead")) 
+            inContact.Remove(collision.gameObject);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
+            inContact.Remove(collision.gameObject);
+    }
+    
     private void Hitbox()
     {
-        inContact = Physics2D.CapsuleCastAll(transform.position, pillarCollider.size, CapsuleDirection2D.Vertical, 0,
-            Vector2.zero, 0, LayerMask.GetMask("Enemy", "Player"));
         if (inContact != null && procTimer <= 0)
         {
             switch (typeFactor)
@@ -58,7 +72,7 @@ public class Pillar : AbilityBase
                 case 1:
                     foreach (var hit in inContact)
                     {
-                        var damageable = hit.collider.gameObject.GetComponent<EDamageables>();
+                        var damageable = hit.gameObject.GetComponent<EDamageables>();
                         if (damageable != null && isErupting)
                         {
                             damageable.Damage(damage, knockbackForce * transform.up);
@@ -70,7 +84,7 @@ public class Pillar : AbilityBase
                 case 2:
                     foreach (var hit in inContact)
                     {
-                        var damageable = hit.collider.gameObject.GetComponent<PDamageable>();
+                        var damageable = hit.gameObject.GetComponent<PDamageable>();
                         if (damageable != null && isErupting)
                         {
                             damageable.Damage(damage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
@@ -82,10 +96,10 @@ public class Pillar : AbilityBase
                 default:
                     foreach (var hit in inContact)
                     {
-                        var entity = hit.collider;
+                        var entity = hit;
                         if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
                         {
-                            var eDmg = hit.collider.gameObject.GetComponent<EDamageables>();
+                            var eDmg = hit.gameObject.GetComponent<EDamageables>();
                             if (eDmg != null)
                             {
                                 eDmg.Stun(stunTime);
@@ -95,7 +109,7 @@ public class Pillar : AbilityBase
                         }
                         else if (entity.CompareTag("Player"))
                         {
-                            var pDmg = hit.collider.gameObject.GetComponent<PDamageable>();
+                            var pDmg = hit.gameObject.GetComponent<PDamageable>();
                             if (pDmg != null)
                             {
                                 pDmg.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
@@ -129,14 +143,21 @@ public class Pillar : AbilityBase
         }
     }
     
-    void Boom() => Destroy(GetComponent<FindFloor>().bottomPoint.transform.gameObject);
-    
-    void ApplyTimer() => pillarTimer = lifeTime;
-    
-    private void OnDrawGizmos()
+    private static float GetHealth(GameObject entity)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, pillarCollider.size);
+        switch (entity.tag)
+        {
+            case "Player":
+                return PlayerHealth.Instance.playerHealth;
+            case "Enemy":
+                return entity.GetComponent<EnemyHealth>().enemyHealth;
+            case "Boss":
+                return entity.GetComponent<BossHealth>().bossHealth;
+            default:
+                return 0;
+        }
     }
     
+    void Boom() => Destroy(GetComponent<FindFloor>().bottomPoint.transform.gameObject);
+    void ApplyTimer() => pillarTimer = lifeTime;
 }

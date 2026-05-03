@@ -4,14 +4,14 @@ using UnityEngine.SceneManagement;
 
 public class Identifier : MonoBehaviour
 {
-    //These will be variables of what this object is, just for efficient queries and filters
+    //These will be variables of what this object is, just for efficient queries and filters 
     [Tooltip("This is for whenever you want to target a certain object externally. The ID format is currently 000 for enemies..")]
     public int id;
     public int spawnId;
     public ObjectType typeOfObject;
     public enum ObjectType{Entity, Item, Door, Npc, Spawner}
     
-    public MapManager mapManager;
+    [HideInInspector] public MapManager mapManager;
 
     //an overload, something to learn more about
     public void AutomateID() => AutomateID(gameObject.scene);
