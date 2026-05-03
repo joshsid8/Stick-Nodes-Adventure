@@ -8,14 +8,9 @@ public class AbilityObjSO : ScriptableObject
      [Header("Ability Object Properties")]
      [Tooltip("If this is false, all the properties below will be ignored and the game object will use its default values.")]
      public bool setProperties;
-     public float damage;
-     public Vector2 knockbackForce;
-     public float stunTime;
      public float direction;
      public bool isDirectional;
      public float energyRequired;
-     public float cooldown;
-     public float lifeTime;
      public float proc;
 
      [Space] [Header("Caster Properties")] public int amount = 1;
@@ -36,14 +31,14 @@ public class AbilityObjSO : ScriptableObject
      {
           if (setProperties)
           {
-               ab.damage = damage * damageMult;
-               ab.knockbackForce = knockbackForce * potency;
-               ab.stunTime = stunTime * potency;
+               ab.damage *= damageMult;
+               ab.knockbackForce *= potency;
+               ab.stunTime *= potency;
                ab.direction = direction;
                ab.isDirectional = isDirectional;
                ab.energyRequired = energyRequired;
-               ab.cooldown = cooldown * cooldownMult;
-               ab.lifeTime = lifeTime * lifetimeMult;
+               ab.cooldown *= cooldownMult;
+               ab.lifeTime *= lifetimeMult;
                ab.proc = proc;
                if (speedMult != 1) ab.gameObject.GetComponent<Projectile>().projectileSpeed *= speedMult;
                ab.isHoldable = isHoldable;

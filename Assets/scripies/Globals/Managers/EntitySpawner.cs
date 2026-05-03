@@ -8,7 +8,7 @@ public class EntitySpawner : MonoBehaviour
 {
     public bool isOneTime;
     [SerializeField] private EnemySpawn[] eSpawn;
-    [SerializeField] private string scene;
+    private string scene;
 
     public bool spawnAbility = true;
     

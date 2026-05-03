@@ -184,7 +184,7 @@ AnimationClip:
   - time: 0.6
     functionName: Perform
     data: 
-    objectReferenceParameter: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
+    objectReferenceParameter: {fileID: 11400000, guid: 83a94977f9aa9e14e9a4e33d3a59dc6e, type: 2}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

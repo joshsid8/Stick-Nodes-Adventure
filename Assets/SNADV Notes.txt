@@ -7,18 +7,12 @@ SNADV Notes
        
         Ability Logic
         
-            Generally, everything is cleaner, but dirtier at the same time
-                PlayerPerformAbility and EnemyShootBlast has been merged into PerformAbility
-                The offsets of abiltiies are crazy, but its likely some small error i can fix
-                Ability direction hasnt been tested yet
-                          
-            Beam hitboxes are STILL broken breh
-                Somehow the pillar hitboxes are fine, but the beams arent, howbeit they use the same logic
-                idk how to fix this D:
-            
-            Optimise FindFloor
-                I dont know how i can, but i can definitely improve it
-    
+            Hitbox logic
+                What i want to do now is make hitboxes/knockback more accurate
+                    I think i have to use MATHS!!!
+                I think pillars and beams arent blockable by the player
+                    an isFacingRight error that shouldnt be hard to fix
+
     Optimisations & Hotfixes:
                  
         Animations

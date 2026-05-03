@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -92,7 +93,6 @@ public class PerformAbility : MonoBehaviour
     }
     
     public void Perform(AbilityObjSO ability) => StartCoroutine(SpawnRoutine(ability, casterType == CasterType.Player ? currentBlastType : -1));
-    
 
     public void Blast()
     {
@@ -114,8 +114,7 @@ public class PerformAbility : MonoBehaviour
 
             if (!unavailable)
             {
-                if (i == 0 && blastType != 0) xOffset = ability.initSeparation;
-
+                if (i == 0 && blastType == 1) xOffset = ability.initSeparation;
                 var spawnPos = abilityPoint.position + transform.right * xOffset;
                 var spawnRot = blastType == 2 ? abilityPoint.rotation : Quaternion.identity;
 

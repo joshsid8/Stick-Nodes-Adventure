@@ -4,46 +4,30 @@ using UnityEngine;
 public class FindFloor : MonoBehaviour
 {
     // Detect Floor and sheeeee
-    private RaycastHit2D[] hit;
-    private bool foundSurface;
     [SerializeField] private LayerMask surfaceLayers;
     public Transform bottomPoint;
-    [SerializeField] private float rayDistance;
-    [SerializeField] private float raySpeed;
+    [SerializeField] private float rayDistance = 50f;
     [SerializeField] private MonoBehaviour scriptToWake;
-    private bool toggle;
-    [SerializeField] private LayerMask masks;
     
-    // Update is called once per frame
-    private void FixedUpdate()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Start()
     {
-        hit = Physics2D.RaycastAll(bottomPoint.position, Vector2.down, rayDistance, surfaceLayers);
-        //foreach (var h in hit) print($"Found {h.collider.gameObject.name} with y position {h.collider.gameObject.transform.position.y}");
-        foundSurface = hit != null;
-        if (!foundSurface)
-        {
-            rayDistance += raySpeed;
-        }
-        else if (foundSurface && !toggle)
-        {
-            toggle = true;
-            FoundSurface(hit[0].collider.gameObject);
-        }
+        var hit = Physics2D.Raycast(bottomPoint.position, Vector2.down, rayDistance, surfaceLayers);
+
+        if (hit.collider != null) FoundSurface(hit.point);
+        else enabled = false;
     }
 
-    private void FoundSurface(GameObject surface)
+    private void FoundSurface(Vector2 hitPoint)
     {
-        var fahhh = bottomPoint.transform.position = new Vector3(gameObject.transform.position.x, surface.transform.position.y + surface.transform.lossyScale.y / 2, surface.transform.position.z);
-        //print($"position: {fahhh}. this is because {surface.name}'s y position is {surface.transform.position.y}, adding {surface.transform.lossyScale.y} to it.");
-        scriptToWake.enabled = true;
-        
+        bottomPoint.transform.position = new Vector3(transform.position.x, hitPoint.y, transform.position.z);
+        if (scriptToWake != null) scriptToWake.enabled = true;
         enabled = false;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Vector3 rayDirection = Vector2.up * rayDistance;
-        Gizmos.DrawLine(bottomPoint.position, bottomPoint.position - rayDirection);
+        Gizmos.DrawLine(bottomPoint.position, bottomPoint.position + Vector3.down * rayDistance);
     }
 }

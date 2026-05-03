@@ -11,7 +11,7 @@ public class ItemSpawner : MonoBehaviour
     public bool isOneTime;
     [SerializeField] private bool disableOnCollect;
     [SerializeField] private ItemSpawn[] itemSpawner;
-    [SerializeField] private string scene;
+    private string scene;
     [SerializeField] private GameObject[] spawnPoints;
     public List<GameObject> spawnedObjects = new List<GameObject>();
     
