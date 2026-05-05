@@ -60,7 +60,13 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         animator.SetBool("isDead", isDead);
         Stunned();
         Tint();
-        if (enemyHealth <= phase2 && phase2Style > 0) ea.styleFactor = phase2Style;
+        if (enemyHealth <= phase2 && phase2Style > 0)
+        {
+            if (ea.styleFactor != phase2Style)
+            {
+                ea.ApplyStyle(phase2Style);
+            }
+        }
         if (isDead && ep.isGrounded) ep.rb.linearVelocity = new Vector2(0, ep.rb.linearVelocity.y);
     }
     
@@ -79,8 +85,17 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         if (isDead)
         {
             GetComponent<Loot>().DropLoot();
-            GetComponent<EnemyAttack>().enabled = false;
-            GetComponent<EnemyFly>().enabled = false;
+            
+            if (TryGetComponent<EnemyController>(out var ec))
+            {
+                ec.ChangeState(EnemyController.EnemyState.Dead);
+            }
+            else
+            {
+                GetComponent<EnemyAttack>().enabled = false;
+                GetComponent<EnemyFly>().enabled = false;
+            }
+            
             GetComponent<Rigidbody2D>().gravityScale = 8;
             spriteRenderer.color = Color.white;
             gameObject.layer = LayerMask.NameToLayer("EDead");

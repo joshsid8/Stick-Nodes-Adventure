@@ -84,8 +84,15 @@ public class EnemyPatrol : MonoBehaviour
         player.GetComponent<PlayerController>().currentCombatTimer = player.GetComponent<PlayerController>().combatTimer;
         
         yield return new WaitForSeconds(0.5f);
-        GetComponent<EnemyAttack>().enabled = true;
-        enabled = false;
+        if (TryGetComponent<EnemyController>(out var ec))
+        {
+            ec.ChangeState(EnemyController.EnemyState.Attacking);
+        }
+        else
+        {
+            GetComponent<EnemyAttack>().enabled = true;
+            enabled = false;
+        }
     }
 
     private IEnumerator Pause()

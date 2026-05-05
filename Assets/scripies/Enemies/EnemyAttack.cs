@@ -86,8 +86,8 @@ public class EnemyAttack : MonoBehaviour
     {
         FacePlayer();
         CheckModes();
-        StyleFactor();
         CooldownTimer();
+        
         if (passiveMode)
         {
             defensiveModeRadius = modDefensiveModeRadius;
@@ -104,26 +104,20 @@ public class EnemyAttack : MonoBehaviour
             defensiveModeRadius = originalDefensiveModeRadius;
         }
 
-        //isMoving = rb.linearVelocity.x > 0 && !ep.isPatrolling ? isMoving : !isMoving;
-        
         if (!stunnable) GetComponent<EnemyHealth>().stunMultiplier = 0f;
         else if (stunnable && passiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
         else if (stunnable && evasiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
         else GetComponent<EnemyHealth>().stunMultiplier = 1f;
 
-        if (PlayerHealth.Instance.isDead && !playerIsDead)
-        {
-            playerIsDead = true;
-            ep.enabled = true;
-            ep.isPatrolling = true;
-            isFlying = false;
-            enabled = false;
-        }
-        if (PlayerHealth.Instance.isDead! && playerIsDead) playerIsDead = false;
-        
         if (canFly) animator.SetBool("isFlying", isFlying);
         ef.enabled = isFlying;
         rb.gravityScale = isFlying ? 0 : 8;
+        
+        // Trigger logic based on modes, but not necessarily every frame if we want to optimize further.
+        // For now, keeping it here but decoupled from direct script toggling.
+        if (activeMode) ActiveLogic();
+        else if (passiveMode) PassiveLogic();
+        else if (evasiveMode) EvasiveLogic();
     }
     
     private void CheckModes()
@@ -145,10 +139,17 @@ public class EnemyAttack : MonoBehaviour
              if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime; else currentSpareTimer = spareTimer;
              if (currentSpareTimer <= 0)
              {
-                 ep.enabled = true;
-                 ep.isPatrolling = true;
-                 isFlying = false;
-                 enabled = false;
+                 if (TryGetComponent<EnemyController>(out var ec))
+                 {
+                     ec.ChangeState(EnemyController.EnemyState.Patrolling);
+                 }
+                 else
+                 {
+                     ep.enabled = true;
+                     ep.isPatrolling = true;
+                     isFlying = false;
+                     enabled = false;
+                 }
              }
          }
      }
@@ -218,10 +219,7 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-    private void FollowupAttack(string attack)
-    {
-        animator.Play(attack);
-    }
+    private void FollowupAttack(string attack) => animator.Play(attack);
     
     private void FlyTrigger()
     {
@@ -254,8 +252,9 @@ public class EnemyAttack : MonoBehaviour
         }
     }
     
-    private void StyleFactor()
+    public void ApplyStyle(float factor)
     {
+        styleFactor = factor;
         switch (styleFactor)
         {
             case 1:
@@ -278,14 +277,8 @@ public class EnemyAttack : MonoBehaviour
                 activeMode = false;
                 passiveMode = false;
                 evasiveMode = false;
-                Debug.Log("Clueless.");
                 break;
         }
-
-        if (activeMode) ActiveLogic();
-        else if (passiveMode) PassiveLogic();
-        else if (evasiveMode) EvasiveLogic();
-        else Debug.Log("So Clueless.");
     }
     
     void FacePlayer()

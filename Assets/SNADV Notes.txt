@@ -10,8 +10,23 @@ SNADV Notes
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
                     I think i have to use MATHS!!!
-                I think pillars and beams arent blockable by the player
-                    an isFacingRight error that shouldnt be hard to fix
+                        lemme learn this at uni first XD
+                    
+        Enemy Logic
+                
+            I vibecoded and now enemy is kinda unfixed
+                Refine the code junie did so everything actually works as normal                
+                        
+            Different playstyle when low health
+                Sparing
+                Deceiving
+                Asking to fight
+                
+            Add jumping logic
+                If multiple enemies are fighting the player, let them have a choice to
+                    Take turns fighting the player one on one
+                    Fight the player at the same time
+                        Maybe even add extra moves that the enemies do            
 
     Optimisations & Hotfixes:
                  
@@ -35,23 +50,7 @@ SNADV Notes
             Remake the player animation controller
                 At the moment, it is too tangled
                 Using layers can help make the controller more efficient and look good
-                    
-        Enemy Logic
-        
-            Overall fighting logic seems a bit bad, especially for cynderians
-                I think it is a bit too slow and wayy too easy when you get used to it
-                Potentially speed up the attacks, but make more prominent telegraphs similar to silksonk
-                        
-            Different playstyle when low health
-                Sparing
-                Deceiving
-                
-            Add jumping logic
-                If multiple enemies are fighting the player, let them have a choice to
-                    Take turns fighting the player one on one
-                    Fight the player at the same time
-                        Maybe even add extra moves that the enemies do
-       
+
         Noxu
             !!!!!!!!Initial Boulder Throwing!!!!!!!!
                 Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
@@ -66,6 +65,7 @@ SNADV Notes
             It's so bad
             i want it to be a lot more efficient, than just an ease of movement left or right cuh
             thats if thats even possible
+            MAFFS will be used to make it better
         
         Deflect Logic
             When a move is parried of mirrored, instead of generating a new object, it should just be reflected with different properties

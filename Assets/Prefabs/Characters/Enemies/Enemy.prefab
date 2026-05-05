@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: -3014423799198804129}
   - component: {fileID: 8698436349063629657}
   - component: {fileID: 2131039031582443626}
+  - component: {fileID: -2052741742867292352}
   - component: {fileID: 9002268324909943343}
   - component: {fileID: 8172104874274776891}
   - component: {fileID: 5774492939275019919}
@@ -232,6 +233,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackTime: 0.25
   hitDirectionForce: 1
+--- !u!114 &-2052741742867292352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953562033605771950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b121ae2d8c218d4d85f17b2619e2334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  enemyState: 0
+  patrol: {fileID: 0}
+  attack: {fileID: 0}
+  health: {fileID: 0}
 --- !u!114 &9002268324909943343
 MonoBehaviour:
   m_ObjectHideFlags: 0
