@@ -15,7 +15,10 @@ SNADV Notes
         Enemy Logic
                 
             I vibecoded and now enemy is kinda unfixed
-                Refine the code junie did so everything actually works as normal                
+                I want to switch the multiple booleans (activemode, passivemode) into 1 enum
+                to make use of switches instead of multiple if statements
+                    The internal performanc may increase due to this
+                              
                         
             Different playstyle when low health
                 Sparing

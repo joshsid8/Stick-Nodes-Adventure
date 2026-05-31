@@ -75,29 +75,23 @@ public class EnemyController : MonoBehaviour
 
     void HandlePatrolState()
     {
-        // Patrol script handles its own transitions to Attacking via ChangeState
+        if (!patrol.enabled)
+        {
+            patrol.enabled = true;
+            if (!attack.enabled) attack.enabled = true;
+        }
     }
 
     void HandleAttackState()
     {
         if (attack.playerTransform == null) return;
-
-        float dist = Vector2.Distance(transform.position, attack.playerTransform.position);
-        
-        // Example logic: if player is too far, go back to patrolling
-        if (dist > 20f) 
-        {
-            ChangeState(EnemyState.Patrolling);
-        }
-        // If player is at mid range, maybe Zone?
-        else if (dist > attack.passiveModeRadius && dist < 15f)
-        {
-            // ChangeState(EnemyState.Zoning); 
-        }
+        var dist = Vector2.Distance(transform.position, attack.playerTransform.position);
+        if (dist >= attack.passiveModeRadius * 1.5f) ChangeState(EnemyState.Patrolling);
     }
 
     void HandleZoningState()
     {
-        // Logic for keeping distance
+        var dist = Vector2.Distance(transform.position, attack.playerTransform.position);
+        
     }
 }

@@ -16,7 +16,7 @@ public class EnemyAttack : MonoBehaviour
     [Tooltip("When the player runs near")] public bool defensiveCheck; 
     [Tooltip("Certain actions performed if the player isn't close or far")] public bool passiveCheck; // Certain actions performed if the player isnt close or far
     private bool evasiveMode; // The enemy evading the player
-    private bool passiveMode;
+    private bool passiveMode; // The enemy wants to stay in their optimal spot
 
     [Tooltip("The enemy coming close to the player")] public string[] activeMoves; 
     [Tooltip("Certain actions performed if the player isn't close or far")] public string[] passiveMoves;
