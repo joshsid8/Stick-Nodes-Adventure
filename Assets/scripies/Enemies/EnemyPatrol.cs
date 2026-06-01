@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    public bool isPatrolling;
+    public bool isPatrolling = true;
     public float walkSpeed = 5f;
     public float eyeSight = 10f;
     
+    [SerializeField] private bool canWalk = true;
     private bool isWalking = true;
     [SerializeField] private float[] walkTime = {2, 4f};
     private float currentWalkTime;
     [SerializeField] private float randomPause;
-    [SerializeField] private float[] randomPauseChance = {20f, 100f};
+    [SerializeField] private float[] randomPauseChance = {20f, 101f};
     
     [SerializeField] private bool hasFoundPlayer;
     public Transform playerCheck;
@@ -37,14 +38,14 @@ public class EnemyPatrol : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         isFacingRight = true;
-        isPatrolling = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isPatrolling) Patrol();
-        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+        //if (isPatrolling) Patrol();
+        //else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+        Patrol();
         animator.SetBool("isPatrolling", isPatrolling);
         animator.SetBool("isWalking", isWalking);
         
@@ -54,10 +55,10 @@ public class EnemyPatrol : MonoBehaviour
 
     void Patrol()
     {
-        if (isWalking) rb.linearVelocity = new Vector2(isFacingRight ? walkSpeed : -walkSpeed, rb.linearVelocity.y);
+        if (isWalking && canWalk) rb.linearVelocity = new Vector2(isFacingRight ? walkSpeed : -walkSpeed, rb.linearVelocity.y);
         
         randomPause -= Time.deltaTime;
-        if (randomPause <= 0)
+        if (randomPause <= 0 && canWalk)
         {
             var chance = Random.Range(randomPauseChance[0], randomPauseChance[1]);
             var rng = Random.Range(0, 100);
@@ -84,8 +85,7 @@ public class EnemyPatrol : MonoBehaviour
         player.GetComponent<PlayerController>().currentCombatTimer = player.GetComponent<PlayerController>().combatTimer;
         
         yield return new WaitForSeconds(0.5f);
-        if (TryGetComponent<EnemyController>(out var ec)) 
-            ec.ChangeState(EnemyController.EnemyState.Attacking);
+        if (TryGetComponent<EnemyController>(out var ec)) ec.ChangeState(EnemyController.EnemyState.Attacking);
         else
         {
             GetComponent<EnemyAttack>().enabled = true;
@@ -96,8 +96,8 @@ public class EnemyPatrol : MonoBehaviour
     private IEnumerator Pause()
     {
         isWalking = false;
-        rb.linearVelocity = Vector2.zero;
-        currentWalkTime = Random.Range(walkTime[0], walkTime[1]);
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        if (canWalk) currentWalkTime = Random.Range(walkTime[0], walkTime[1]);
         yield return new WaitForSeconds(currentWalkTime / 2);
         var rng = Random.Range(0, 101);
         var chance = Random.Range(0, 101);

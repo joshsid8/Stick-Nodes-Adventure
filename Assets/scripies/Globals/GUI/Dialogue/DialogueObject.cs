@@ -58,7 +58,7 @@ public class DialogueObject : ScriptableObject
 
     [Header("Colouring & Font Changes")] [Tooltip("The colour of each text")]
     public bool canBeColoured;
-    public Color[] colour;
+    public Color[] colour = {Color.black};
     public int colourIndex;
     public bool canBeBold;
     public bool[] bold;

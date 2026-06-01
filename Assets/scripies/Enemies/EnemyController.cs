@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -8,7 +9,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyPatrol patrol;
     [SerializeField] private EnemyAttack attack;
     [SerializeField] private EnemyHealth health;
-
+    
+    [SerializeField] private float altTimer;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,20 +19,12 @@ public class EnemyController : MonoBehaviour
         attack = GetComponent<EnemyAttack>();
         health = GetComponent<EnemyHealth>();
         
-        // Initial state
-        if (patrol != null && patrol.isPatrolling)
-            ChangeState(EnemyState.Patrolling);
-        else
-            ChangeState(EnemyState.Idle);
-
-        // Set initial style
-        if (attack != null) attack.ApplyStyle(attack.styleFactor);
+        if (patrol != null && patrol.isPatrolling) ChangeState(EnemyState.Patrolling);
+        else ChangeState(EnemyState.Idle);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        // 1. Global Checks (Interrupts)
         if (health.isDead && enemyState != EnemyState.Dead)
         {
             ChangeState(EnemyState.Dead);
@@ -42,25 +37,31 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        // 2. State Machine Logic
         switch (enemyState)
         {
+            case EnemyState.Idle:
+                InactiveState();
+                break;
             case EnemyState.Patrolling:
-                HandlePatrolState();
+                InactiveState(2);
                 break;
             case EnemyState.Attacking:
-                HandleAttackState();
+                AttackState();
                 break;
             case EnemyState.Zoning:
-                HandleZoningState();
+                ZoningState();
                 break;
             case EnemyState.Stunned:
-                if (!health.isStunned) ChangeState(EnemyState.Attacking); // Resume attacking after stun
+                if (!health.isStunned) ChangeState(EnemyState.Attacking); 
                 break;
-            case EnemyState.Idle:
-                // Check if we should start patrolling or if player is near
+            case EnemyState.Dead:
+                health.isDead = true;
+                break;
+            default:
+                InactiveState();
                 break;
         }
+        altTimer -= Time.deltaTime;
     }
 
     public void ChangeState(EnemyState newState)
@@ -68,30 +69,45 @@ public class EnemyController : MonoBehaviour
         if (enemyState == newState) return;
         enemyState = newState;
 
-        // Enable/Disable scripts based on state
-        if (patrol != null) patrol.enabled = (newState == EnemyState.Patrolling);
-        if (attack != null) attack.enabled = (newState == EnemyState.Attacking || newState == EnemyState.Zoning);
+        if (patrol != null) patrol.enabled = newState == EnemyState.Patrolling;
+        if (attack != null) attack.enabled = newState == EnemyState.Attacking || newState == EnemyState.Zoning;
     }
 
-    void HandlePatrolState()
+    private void InactiveState(int factor = 1)
     {
-        if (!patrol.enabled)
-        {
-            patrol.enabled = true;
-            if (!attack.enabled) attack.enabled = true;
-        }
+        if (!patrol.enabled) patrol.enabled = true;
+        patrol.isPatrolling = factor != 1;
     }
 
-    void HandleAttackState()
+    private void AttackState()
     {
         if (attack.playerTransform == null) return;
         var dist = Vector2.Distance(transform.position, attack.playerTransform.position);
-        if (dist >= attack.passiveModeRadius * 1.5f) ChangeState(EnemyState.Patrolling);
+        if (dist >= attack.passiveModeRadius * 10f) ChangeState(EnemyState.Patrolling);
+        
+        if (altTimer <= 0)
+        {
+            var rng = Random.Range(0, 101);
+            if (rng <= 50)
+            {
+                ChangeState(EnemyState.Zoning);
+                altTimer = 1f;
+            }
+            else altTimer = 1.5f;
+        }
     }
 
-    void HandleZoningState()
+    private void ZoningState()
     {
-        var dist = Vector2.Distance(transform.position, attack.playerTransform.position);
-        
+        if (altTimer <= 0)
+        {
+            var rng = Random.Range(0, 101);
+            if (rng <= 50)
+            {
+                ChangeState(EnemyState.Attacking);
+                altTimer = 2f;
+            }
+            else altTimer = 0.5f;
+        }
     }
 }

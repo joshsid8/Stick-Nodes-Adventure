@@ -4,19 +4,17 @@ using Random = UnityEngine.Random;
 
 public class EnemyAttack : MonoBehaviour
 {
-    public float styleFactor;
+    public enum StyleMode {Active, Passive, Evasive}
+    public StyleMode styleMode;
 
     public bool canFly;
     public bool isFlying;
     public int movesBeforeFlyingCount;
     public int[] movesBeforeFlying = new int[2];
     private string flyTrigger = "FlyJump";
-
-    private bool activeMode; // The enemy attack/coming close to the player
+    
     [Tooltip("When the player runs near")] public bool defensiveCheck; 
     [Tooltip("Certain actions performed if the player isn't close or far")] public bool passiveCheck; // Certain actions performed if the player isnt close or far
-    private bool evasiveMode; // The enemy evading the player
-    private bool passiveMode; // The enemy wants to stay in their optimal spot
 
     [Tooltip("The enemy coming close to the player")] public string[] activeMoves; 
     [Tooltip("Certain actions performed if the player isn't close or far")] public string[] passiveMoves;
@@ -35,6 +33,10 @@ public class EnemyAttack : MonoBehaviour
     public float passiveModeRadius;
     public float modPassiveModeRadius;
     private float originalPassiveModeRadius;
+
+    private bool zoneAlternate;
+    [SerializeField] private float zoneTime;
+    [SerializeField] private float currentZoneTime;
     
     public float stunTime;
     public float damageAmount;
@@ -58,9 +60,9 @@ public class EnemyAttack : MonoBehaviour
     private EnemyMovement em;
     private EnemyFly ef;
     private EnemyHealth eh;
+    private EnemyController ec;
 
     public bool canFacePlayer;
-    [SerializeField] private bool playerIsDead;
     [SerializeField] private bool canSpare = true;
     [SerializeField] private float spareTimer = 10;
     private float currentSpareTimer;
@@ -74,10 +76,10 @@ public class EnemyAttack : MonoBehaviour
         em = GetComponent<EnemyMovement>();
         ef = GetComponent<EnemyFly>();
         eh = GetComponent<EnemyHealth>();
+        ec = GetComponent<EnemyController>();
         em.enabled = true;
         originalDefensiveModeRadius = defensiveModeRadius;
         originalPassiveModeRadius = passiveModeRadius;
-        playerIsDead = false;
         currentSpareTimer = spareTimer;
         playerTransform = PlayerHealth.Instance.gameObject.transform;
     }
@@ -88,77 +90,68 @@ public class EnemyAttack : MonoBehaviour
         CheckModes();
         CooldownTimer();
         
-        if (passiveMode)
+        switch (styleMode)
         {
-            defensiveModeRadius = modDefensiveModeRadius;
-            passiveModeRadius = originalPassiveModeRadius;
+            case StyleMode.Active:
+                passiveModeRadius = originalDefensiveModeRadius;
+                defensiveModeRadius = originalDefensiveModeRadius;
+                ActiveLogic();
+                break;
+            case StyleMode.Passive:
+                defensiveModeRadius = modDefensiveModeRadius;
+                passiveModeRadius = originalPassiveModeRadius;
+                PassiveLogic();
+                break;
+            case StyleMode.Evasive:
+                passiveModeRadius = modPassiveModeRadius;
+                defensiveModeRadius = 8f;
+                EvasiveLogic();
+                break;
+            default:
+                passiveModeRadius = originalDefensiveModeRadius;
+                defensiveModeRadius = originalDefensiveModeRadius;
+                break;
         }
-        else if (evasiveMode)
-        {
-            passiveModeRadius = modPassiveModeRadius;
-            defensiveModeRadius = 8f;
-        }
-        else
-        {
-            passiveModeRadius = originalDefensiveModeRadius;
-            defensiveModeRadius = originalDefensiveModeRadius;
-        }
-
+        
+        if (ec.enemyState == EnemyController.EnemyState.Zoning) Zone();
+        animator.SetBool("isZoning", zoneAlternate);
+        
         if (!stunnable) GetComponent<EnemyHealth>().stunMultiplier = 0f;
-        else if (stunnable && passiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
-        else if (stunnable && evasiveMode) GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
+        else if (stunnable && styleMode == StyleMode.Passive) GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
+        else if (stunnable && styleMode == StyleMode.Evasive) GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
         else GetComponent<EnemyHealth>().stunMultiplier = 1f;
 
         if (canFly) animator.SetBool("isFlying", isFlying);
         ef.enabled = isFlying;
         rb.gravityScale = isFlying ? 0 : 8;
-        
-        // Trigger logic based on modes, but not necessarily every frame if we want to optimize further.
-        // For now, keeping it here but decoupled from direct script toggling.
-        if (activeMode) ActiveLogic();
-        else if (passiveMode) PassiveLogic();
-        else if (evasiveMode) EvasiveLogic();
     }
-    
-    private void CheckModes()
-     {
-         defensiveCheck = Physics2D.OverlapCircle(transform.position, defensiveModeRadius, pLayer);
-         passiveCheck = Physics2D.OverlapCircle(transform.position, passiveModeRadius, pLayer);
-         
-         if (defensiveCheck) passiveCheck = false;
-         else if (passiveCheck) defensiveCheck = false;
-         
-         if (defensiveCheck && activeMode)
-         {
-             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-             if (!activeMode) rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-         }
 
-         if (canSpare)
-         {
-             if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime; else currentSpareTimer = spareTimer;
-             if (currentSpareTimer <= 0)
-             {
-                 if (TryGetComponent<EnemyController>(out var ec))
-                 {
-                     ec.ChangeState(EnemyController.EnemyState.Patrolling);
-                 }
-                 else
-                 {
-                     ep.enabled = true;
-                     ep.isPatrolling = true;
-                     isFlying = false;
-                     enabled = false;
-                 }
-             }
-         }
-     }
+    private void CheckModes()
+    {
+        defensiveCheck = Physics2D.OverlapCircle(transform.position, defensiveModeRadius, pLayer);
+        passiveCheck = Physics2D.OverlapCircle(transform.position, passiveModeRadius, pLayer);
+
+        if (defensiveCheck) passiveCheck = false;
+        else if (passiveCheck) defensiveCheck = false;
+
+        if (defensiveCheck && styleMode == StyleMode.Active)
+        {
+            if (styleMode != StyleMode.Active)
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+        }
+
+        if (canSpare)
+        {
+            if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime;
+            else currentSpareTimer = spareTimer;
+            if (currentSpareTimer <= 0) ec.ChangeState(EnemyController.EnemyState.Patrolling);
+        }
+    }
 
     private void ActiveLogic()
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             if (!defensiveCheck) animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)]
                 : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
         }
@@ -168,7 +161,6 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             if (!passiveCheck && !defensiveCheck) animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)] 
                 : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
             else if (defensiveCheck && !passiveCheck) animator.Play(!isFlying ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
@@ -182,7 +174,6 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             if (defensiveCheck) animator.Play(!isFlying ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
                 : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
             else if (passiveCheck) animator.Play(!isFlying ? passiveMoves[Random.Range(0, passiveMoves.Length)] 
@@ -198,7 +189,7 @@ public class EnemyAttack : MonoBehaviour
         if (isFlying) ef.moveSpeed = Math.Abs(rb.linearVelocity.x) / 2;
     }
 
-    void CooldownTimer()
+    private void CooldownTimer()
     {
         if (currentAttackCooldown > 0) currentAttackCooldown -= Time.deltaTime;
         canAttack = currentAttackCooldown <= 0 ? canAttack = true : canAttack = false;
@@ -236,11 +227,40 @@ public class EnemyAttack : MonoBehaviour
             movesBeforeFlyingCount = 0;
         }
     }
-    
+
+    private void Zone()
+    {
+        var playerDist = Vector2.Distance(playerTransform.position, transform.position);
+        if (currentZoneTime > 0) currentZoneTime -= Time.deltaTime;
+        else
+        {
+            currentZoneTime = zoneTime;
+            zoneAlternate = !zoneAlternate;
+        }
+        
+        if (ec.enemyState == EnemyController.EnemyState.Zoning && currentZoneTime > 0 && zoneAlternate)
+        {
+            switch (styleMode)
+            {
+                case StyleMode.Active:
+                    if (!defensiveCheck) rb.linearVelocity = new Vector2(playerDist > 0 ? em.dashSpeed : -em.dashSpeed, rb.linearVelocity.y);
+                    break;
+                case StyleMode.Passive:
+                    if (!passiveCheck) rb.linearVelocity = new Vector2(playerDist > 0 ? em.dashSpeed : -em.dashSpeed, rb.linearVelocity.y);
+                    break;
+                case StyleMode.Evasive:
+                    if (defensiveCheck || passiveCheck) rb.linearVelocity = new Vector2(playerDist > 0 ? em.dashSpeed : -em.dashSpeed, rb.linearVelocity.y);
+                    break;
+                default:
+                    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                    break;
+            }
+        }
+    }
     
     private void MoveDuringFight()
     {
-        if (enabled && !em.isDashing && !isAttacking && !ep.isPatrolling && !isFlying)
+        /*if (enabled && !em.isDashing && !isAttacking && !ep.isPatrolling && !isFlying)
         {
             var rng = Random.Range(0, 101);
             var rng2 = Random.Range(0, 101);
@@ -249,39 +269,27 @@ public class EnemyAttack : MonoBehaviour
                 rb.linearVelocity = new Vector2(rng2 <= 50 ? em.dashSpeed / 2 : -em.dashSpeed / 2, rb.linearVelocity.y);
                 animator.Play("Strafe");
             }
-        }
+        }*/
     }
     
     public void ApplyStyle(float factor)
     {
-        styleFactor = factor;
-        switch (styleFactor)
+        switch (factor)
         {
             case 1:
-                activeMode = true;
-                passiveMode = false;
-                evasiveMode = false;
+                styleMode = StyleMode.Active;
                 break;
             case 2:
-                passiveMode = true;
-                activeMode = false;
-                evasiveMode = false;
+                styleMode = StyleMode.Passive;
                 break;
             case 3:
-                evasiveMode = true;
-                activeMode = false;
-                passiveMode = false;
+                styleMode = StyleMode.Evasive;
                 GetComponent<EnemyHealth>().stunMultiplier = 0.5f;
-                break;
-            default:
-                activeMode = false;
-                passiveMode = false;
-                evasiveMode = false;
                 break;
         }
     }
     
-    void FacePlayer()
+    private void FacePlayer()
     {
         if (canFacePlayer)
         {
@@ -295,7 +303,7 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, passiveModeRadius);
@@ -305,7 +313,7 @@ public class EnemyAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackTransform.position, attackRange);
     }
     
-    void Flip()
+    private void Flip()
     {
         ep.isFacingRight = !ep.isFacingRight;
         transform.Rotate(0.0f, 180.0f, 0.0f);

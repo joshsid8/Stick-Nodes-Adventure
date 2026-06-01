@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
+  m_Name: AI Info
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueObject
+  npcName: Informaton
+  dialogue:
+  - This be the Alatus Islands!
+  - did u know that alatus means winged in latin?! crazy innit
+  - This area has a multitude of minorly sized islands fit for any venture you desire.
+  - Nonetheless, watch out. For there are certain civilians who do not enjoy unwanted
+    company from below..
+  - anyways, haff fun!!1
+  pendingChoice: 0
+  choiceQuestion: 
+  isAnimated: 0
+  yesResponse:
+    responseText: 
+    dialogueObject: {fileID: 0}
+  noResponse:
+    responseText: 
+    dialogueObject: {fileID: 0}
+  nameColour: {r: 0.03737985, g: 0.343835, b: 0.3773585, a: 1}
+  appliesFloatChange: 0
+  targetFloatVariables: []
+  newFloatValues: []
+  appliesBooleanChange: 0
+  targetBoolVariables: []
+  newBoolValues: 
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
+  isQuestInteraction: 0
+  questActionType: 4
+  questItems: []
+  questItemAmounts: 
+  itemCheckFailureDialogue: {fileID: 0}
+  completeSpeakQuestOnClose: 0
+  derrivedDialogue: {fileID: 0}
+  canDropItem: 0
+  itemDrop: []
+  itemType: []
+  canBeColoured: 1
+  colour:
+  - {r: 0.029503396, g: 0.43062612, b: 0.4811321, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  colourIndex: 1
+  canBeBold: 1
+  bold: 0100000000
+  speaker: 
+  alteredDialogue: {fileID: 0}
+  externalInstance: 
+  alteredExternalDialogue: {fileID: 0}

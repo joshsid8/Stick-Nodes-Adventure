@@ -1740,7 +1740,7 @@ MonoBehaviour:
   mapTextColor: {r: 0.6792453, g: 0.42402905, b: 0.28515485, a: 1}
   mapBgColor: {r: 0.2264151, g: 0.06941973, b: 0.06941973, a: 1}
   newOst:
-  - {fileID: 8300000, guid: 8743420e5345fa2469cdd1da3c893a19, type: 3}
+  - {fileID: 8300000, guid: c702acffab3d7cd43a0069cacbbf30db, type: 3}
   - {fileID: 8300000, guid: e42854986eb948b498ef8f381ffbedc1, type: 3}
   - {fileID: 8300000, guid: 709d55a8c27b70744a32225517e0be7d, type: 3}
   sceneName: 
