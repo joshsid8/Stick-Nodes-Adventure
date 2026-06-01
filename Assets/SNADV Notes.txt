@@ -13,23 +13,11 @@ SNADV Notes
                         lemme learn this at uni first XD
                     
         Enemy Logic
-                
-            I vibecoded and now enemy is kinda unfixed
-                I want to switch the multiple booleans (activemode, passivemode) into 1 enum
-                to make use of switches instead of multiple if statements
-                    The internal performanc may increase due to this
-                              
-                        
-            Different playstyle when low health
-                Sparing
-                Deceiving
-                Asking to fight
-                
-            Add jumping logic
-                If multiple enemies are fighting the player, let them have a choice to
-                    Take turns fighting the player one on one
-                    Fight the player at the same time
-                        Maybe even add extra moves that the enemies do            
+            Zoning is horrifiyingly discombobulated
+                Find out what solo and mute does in the animatoin controller
+                    It may help with using one animation loop for both walking and zoning
+                When zoning, the enemy shouldnt be able to use moves
+                    Ensure this happens too                                
 
     Optimisations & Hotfixes:
                  
@@ -82,6 +70,18 @@ SNADV Notes
                 I can make/edit my own sfx
 
     Things to be added:
+        
+        Enemy Logic
+            Different playstyle when low health
+                Sparing
+                Deceiving
+                Asking to fight
+                
+            Add jumping logic
+                If multiple enemies are fighting the player, let them have a choice to
+                    Take turns fighting the player one on one
+                    Fight the player at the same time
+                        Maybe even add extra moves that the enemies do    
         
         Fused Animations
             anims that fuse the 2 entities together for a joint animation

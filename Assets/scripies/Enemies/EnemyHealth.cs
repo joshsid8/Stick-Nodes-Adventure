@@ -62,10 +62,11 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         Tint();
         if (enemyHealth <= phase2 && phase2Style > 0)
         {
-            if (ea.styleFactor != phase2Style)
+            if (!ea.styleMode.Equals(phase2Style))
             {
                 ea.ApplyStyle(phase2Style);
             }
+            else print($"Clueful: styleMode is {ea.styleMode} and phase2Style is {phase2Style}");
         }
         if (isDead && ep.isGrounded) ep.rb.linearVelocity = new Vector2(0, ep.rb.linearVelocity.y);
     }

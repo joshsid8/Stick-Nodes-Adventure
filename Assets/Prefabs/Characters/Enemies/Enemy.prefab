@@ -348,7 +348,6 @@ MonoBehaviour:
   stunnable: 1
   rb: {fileID: 0}
   canFacePlayer: 1
-  playerIsDead: 0
   canSpare: 1
   spareTimer: 10
 --- !u!114 &8455541738676426996
@@ -363,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f875d0b81282e409d3ece9b1f5e51c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPatrolling: 0
+  isPatrolling: 1
   walkSpeed: 3
   eyeSight: 8.7
   walkTime:
