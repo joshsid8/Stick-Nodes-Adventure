@@ -5,19 +5,20 @@ SNADV Notes
     
     Priorities:
        
+        Enemy Logic
+            Zoning/Attacking is unstable
+                While zoning basically works now, there are a few weird issues with it
+                    The enemy can sometimes push themselves back out of nowhere - i think usually in their attacking phase
+                    The animations soetimes gets merged and stutters between anims
+                    Zoning can also just cancel attacks, unsure how to fix this tbh
+                Also add zoning flags to the rest of the enemies
+                                   
         Ability Logic
-        
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
                     I think i have to use MATHS!!!
                         lemme learn this at uni first XD
                     
-        Enemy Logic
-            Zoning is horrifiyingly discombobulated
-                Find out what solo and mute does in the animatoin controller
-                    It may help with using one animation loop for both walking and zoning
-                When zoning, the enemy shouldnt be able to use moves
-                    Ensure this happens too                                
 
     Optimisations & Hotfixes:
                  
@@ -43,7 +44,7 @@ SNADV Notes
                 Using layers can help make the controller more efficient and look good
 
         Noxu
-            !!!!!!!!Initial Boulder Throwing!!!!!!!!
+            !!!!!!!!!Initial Boulder Throwing!!!!!!!!!
                 Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
             
         Damage Logic

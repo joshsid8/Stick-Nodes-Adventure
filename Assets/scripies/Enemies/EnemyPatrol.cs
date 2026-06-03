@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyPatrol : MonoBehaviour
 {
@@ -32,12 +34,17 @@ public class EnemyPatrol : MonoBehaviour
     private Animator animator; 
     public bool isFacingRight = true;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         isFacingRight = true;
+    }
+
+    private void OnDisable()
+    {
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isPatrolling", false);
     }
 
     // Update is called once per frame
@@ -52,7 +59,7 @@ public class EnemyPatrol : MonoBehaviour
         currentWalkTime -= Time.deltaTime;
         if (currentWalkTime <= 0) isWalking = true; 
     }
-
+    
     void Patrol()
     {
         if (isWalking && canWalk) rb.linearVelocity = new Vector2(isFacingRight ? walkSpeed : -walkSpeed, rb.linearVelocity.y);

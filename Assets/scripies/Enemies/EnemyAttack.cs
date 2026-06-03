@@ -33,10 +33,6 @@ public class EnemyAttack : MonoBehaviour
     public float passiveModeRadius;
     public float modPassiveModeRadius;
     private float originalPassiveModeRadius;
-
-    private bool zoneAlternate;
-    [SerializeField] private float zoneTime;
-    [SerializeField] private float currentZoneTime;
     
     public float stunTime;
     public float damageAmount;
@@ -84,6 +80,8 @@ public class EnemyAttack : MonoBehaviour
         playerTransform = PlayerHealth.Instance.gameObject.transform;
     }
     
+    private void OnDisable() => isAttacking = false;
+    
     private void Update()
     {
         FacePlayer();
@@ -112,16 +110,15 @@ public class EnemyAttack : MonoBehaviour
                 defensiveModeRadius = originalDefensiveModeRadius;
                 break;
         }
-        
-        if (ec.enemyState == EnemyController.EnemyState.Zoning) Zone();
-        animator.SetBool("isZoning", zoneAlternate);
-        
+
+
         if (!stunnable) GetComponent<EnemyHealth>().stunMultiplier = 0f;
         else if (stunnable && styleMode == StyleMode.Passive) GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
         else if (stunnable && styleMode == StyleMode.Evasive) GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
         else GetComponent<EnemyHealth>().stunMultiplier = 1f;
 
         if (canFly) animator.SetBool("isFlying", isFlying);
+        
         ef.enabled = isFlying;
         rb.gravityScale = isFlying ? 0 : 8;
     }
@@ -130,16 +127,16 @@ public class EnemyAttack : MonoBehaviour
     {
         defensiveCheck = Physics2D.OverlapCircle(transform.position, defensiveModeRadius, pLayer);
         passiveCheck = Physics2D.OverlapCircle(transform.position, passiveModeRadius, pLayer);
-
+        
         if (defensiveCheck) passiveCheck = false;
         else if (passiveCheck) defensiveCheck = false;
-
+        
         if (defensiveCheck && styleMode == StyleMode.Active)
         {
             if (styleMode != StyleMode.Active)
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
         }
-
+        
         if (canSpare)
         {
             if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime;
@@ -228,35 +225,7 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-    private void Zone()
-    {
-        var playerDist = Vector2.Distance(playerTransform.position, transform.position);
-        if (currentZoneTime > 0) currentZoneTime -= Time.deltaTime;
-        else
-        {
-            currentZoneTime = zoneTime;
-            zoneAlternate = !zoneAlternate;
-        }
-        
-        if (ec.enemyState == EnemyController.EnemyState.Zoning && currentZoneTime > 0 && zoneAlternate)
-        {
-            switch (styleMode)
-            {
-                case StyleMode.Active:
-                    if (!defensiveCheck) rb.linearVelocity = new Vector2(playerDist > 0 ? em.dashSpeed : -em.dashSpeed, rb.linearVelocity.y);
-                    break;
-                case StyleMode.Passive:
-                    if (!passiveCheck) rb.linearVelocity = new Vector2(playerDist > 0 ? em.dashSpeed : -em.dashSpeed, rb.linearVelocity.y);
-                    break;
-                case StyleMode.Evasive:
-                    if (defensiveCheck || passiveCheck) rb.linearVelocity = new Vector2(playerDist > 0 ? em.dashSpeed : -em.dashSpeed, rb.linearVelocity.y);
-                    break;
-                default:
-                    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                    break;
-            }
-        }
-    }
+    
     
     private void MoveDuringFight()
     {

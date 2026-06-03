@@ -6,9 +6,10 @@ public class EnemyController : MonoBehaviour
     public enum EnemyState { Idle, Patrolling, Zoning, Attacking, Stunned, Dead }
     public EnemyState enemyState;
 
-    [SerializeField] private EnemyPatrol patrol;
-    [SerializeField] private EnemyAttack attack;
-    [SerializeField] private EnemyHealth health;
+    private EnemyPatrol patrol;
+    private EnemyAttack attack;
+    private EnemyHealth health;
+    private EnemyZone zone;
     
     [SerializeField] private float altTimer;
     
@@ -18,6 +19,7 @@ public class EnemyController : MonoBehaviour
         patrol = GetComponent<EnemyPatrol>();
         attack = GetComponent<EnemyAttack>();
         health = GetComponent<EnemyHealth>();
+        zone = GetComponent<EnemyZone>();
         
         if (patrol != null && patrol.isPatrolling) ChangeState(EnemyState.Patrolling);
         else ChangeState(EnemyState.Idle);
@@ -52,7 +54,11 @@ public class EnemyController : MonoBehaviour
                 ZoningState();
                 break;
             case EnemyState.Stunned:
-                if (!health.isStunned) ChangeState(EnemyState.Attacking); 
+                if (!health.isStunned)
+                {
+                    var rng = Random.Range(0, 101);
+                    ChangeState(rng <= 50 ? EnemyState.Attacking: EnemyState.Zoning);
+                }
                 break;
             case EnemyState.Dead:
                 health.isDead = true;
@@ -70,7 +76,8 @@ public class EnemyController : MonoBehaviour
         enemyState = newState;
 
         if (patrol != null) patrol.enabled = newState == EnemyState.Patrolling;
-        if (attack != null) attack.enabled = newState == EnemyState.Attacking || newState == EnemyState.Zoning;
+        if (attack != null) attack.enabled = newState == EnemyState.Attacking;
+        if (zone != null) zone.enabled = newState == EnemyState.Zoning;
     }
 
     private void InactiveState(int factor = 1)
@@ -83,7 +90,7 @@ public class EnemyController : MonoBehaviour
     {
         if (attack.playerTransform == null) return;
         var dist = Vector2.Distance(transform.position, attack.playerTransform.position);
-        if (dist >= attack.passiveModeRadius * 10f) ChangeState(EnemyState.Patrolling);
+        if (dist >= attack.passiveModeRadius * 5f && attack.styleMode != EnemyAttack.StyleMode.Active) ChangeState(EnemyState.Patrolling);
         
         if (altTimer <= 0)
         {

@@ -45,6 +45,8 @@ public class EnemyFly : MonoBehaviour
         }*/
     }
 
+    private void OnDisable() => GetComponent<Animator>().SetBool("isFlying", false);
+
     private void Update()
     {
         timer[0] -= Time.deltaTime;
