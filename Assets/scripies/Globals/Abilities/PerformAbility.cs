@@ -150,7 +150,7 @@ public class PerformAbility : MonoBehaviour
     {
         if (casterType == CasterType.Player) return pc.isFacingRight;
         if (ba != null) return ba.isFacingRight;
-        if (ep != null) return ep.isFacingRight;
+        if (ep != null) return ep.ec.isFacingRight;
         return true;
     }
 }

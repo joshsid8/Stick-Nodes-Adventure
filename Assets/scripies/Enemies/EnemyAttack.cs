@@ -57,14 +57,14 @@ public class EnemyAttack : MonoBehaviour
     private EnemyFly ef;
     private EnemyHealth eh;
     private EnemyController ec;
+    private EnemyZone ez;
 
     public bool canFacePlayer;
     [SerializeField] private bool canSpare = true;
     [SerializeField] private float spareTimer = 10;
     private float currentSpareTimer;
     
-    // Start is called before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    private void Awake()
     {
         ep = GetComponent<EnemyPatrol>();
         animator = GetComponent<Animator>();
@@ -73,44 +73,49 @@ public class EnemyAttack : MonoBehaviour
         ef = GetComponent<EnemyFly>();
         eh = GetComponent<EnemyHealth>();
         ec = GetComponent<EnemyController>();
-        em.enabled = true;
+        ez = GetComponent<EnemyZone>();
+    }
+    
+    void Start()
+    {
         originalDefensiveModeRadius = defensiveModeRadius;
         originalPassiveModeRadius = passiveModeRadius;
         currentSpareTimer = spareTimer;
         playerTransform = PlayerHealth.Instance.gameObject.transform;
+        em.enabled = true;
     }
     
     private void OnDisable() => isAttacking = false;
     
     private void Update()
     {
-        FacePlayer();
         CheckModes();
-        CooldownTimer();
-        
-        switch (styleMode)
-        {
-            case StyleMode.Active:
-                passiveModeRadius = originalDefensiveModeRadius;
-                defensiveModeRadius = originalDefensiveModeRadius;
-                ActiveLogic();
-                break;
-            case StyleMode.Passive:
-                defensiveModeRadius = modDefensiveModeRadius;
-                passiveModeRadius = originalPassiveModeRadius;
-                PassiveLogic();
-                break;
-            case StyleMode.Evasive:
-                passiveModeRadius = modPassiveModeRadius;
-                defensiveModeRadius = 8f;
-                EvasiveLogic();
-                break;
-            default:
-                passiveModeRadius = originalDefensiveModeRadius;
-                defensiveModeRadius = originalDefensiveModeRadius;
-                break;
-        }
 
+        if (ec.enemyState == EnemyController.EnemyState.Attacking)
+        {
+            switch (styleMode)
+            {
+                case StyleMode.Active:
+                    passiveModeRadius = originalDefensiveModeRadius;
+                    defensiveModeRadius = originalDefensiveModeRadius;
+                    ActiveLogic();
+                    break;
+                case StyleMode.Passive:
+                    defensiveModeRadius = modDefensiveModeRadius;
+                    passiveModeRadius = originalPassiveModeRadius;
+                    PassiveLogic();
+                    break;
+                case StyleMode.Evasive:
+                    passiveModeRadius = modPassiveModeRadius;
+                    defensiveModeRadius = 8f;
+                    EvasiveLogic();
+                    break;
+                default:
+                    passiveModeRadius = originalDefensiveModeRadius;
+                    defensiveModeRadius = originalDefensiveModeRadius;
+                    break;
+            }
+        }
 
         if (!stunnable) GetComponent<EnemyHealth>().stunMultiplier = 0f;
         else if (stunnable && styleMode == StyleMode.Passive) GetComponent<EnemyHealth>().stunMultiplier = 1.2f;
@@ -118,9 +123,11 @@ public class EnemyAttack : MonoBehaviour
         else GetComponent<EnemyHealth>().stunMultiplier = 1f;
 
         if (canFly) animator.SetBool("isFlying", isFlying);
-        
         ef.enabled = isFlying;
         rb.gravityScale = isFlying ? 0 : 8;
+        
+        if (currentAttackCooldown > 0) currentAttackCooldown -= Time.deltaTime;
+        canAttack = currentAttackCooldown <= 0;
     }
 
     private void CheckModes()
@@ -141,7 +148,7 @@ public class EnemyAttack : MonoBehaviour
         {
             if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime;
             else currentSpareTimer = spareTimer;
-            if (currentSpareTimer <= 0) ec.ChangeState(EnemyController.EnemyState.Patrolling);
+            if (currentSpareTimer <= 0) ec.ChangeState(EnemyController.EnemyState.Idle);
         }
     }
 
@@ -149,8 +156,12 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
-            if (!defensiveCheck) animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)]
-                : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
+            if (!defensiveCheck)
+            {
+                animator.Play(!isFlying
+                    ? activeMoves[Random.Range(0, activeMoves.Length)]
+                    : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
+            }
         }
     }
 
@@ -180,27 +191,27 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-    private void ActivateCooldown(float atkCD)
+    private void ActivateCooldown(float atkCd)
     {
-        currentAttackCooldown = atkCD;
+        currentAttackCooldown = atkCd;
         if (isFlying) ef.moveSpeed = Math.Abs(rb.linearVelocity.x) / 2;
+        else
+        {
+            ez.enabled = true;
+            ez.currentZonePeriod = currentAttackCooldown;
+            ec.ChangeState(EnemyController.EnemyState.Zoning);
+        }
     }
-
-    private void CooldownTimer()
-    {
-        if (currentAttackCooldown > 0) currentAttackCooldown -= Time.deltaTime;
-        canAttack = currentAttackCooldown <= 0 ? canAttack = true : canAttack = false;
-    }
-
+    
     private void Attack()
     {
-        hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player", "Invincible"));
+        hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.isFacingRight, damageType);
+                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.ec.isFacingRight, damageType);
                 damageable.Stun(stunTime);
                 FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
             }
@@ -224,22 +235,6 @@ public class EnemyAttack : MonoBehaviour
             movesBeforeFlyingCount = 0;
         }
     }
-
-    
-    
-    private void MoveDuringFight()
-    {
-        /*if (enabled && !em.isDashing && !isAttacking && !ep.isPatrolling && !isFlying)
-        {
-            var rng = Random.Range(0, 101);
-            var rng2 = Random.Range(0, 101);
-            if (rng <= 70)
-            {
-                rb.linearVelocity = new Vector2(rng2 <= 50 ? em.dashSpeed / 2 : -em.dashSpeed / 2, rb.linearVelocity.y);
-                animator.Play("Strafe");
-            }
-        }*/
-    }
     
     public void ApplyStyle(float factor)
     {
@@ -257,20 +252,6 @@ public class EnemyAttack : MonoBehaviour
                 break;
         }
     }
-    
-    private void FacePlayer()
-    {
-        if (canFacePlayer)
-        {
-            if (playerTransform == null) return;
-
-            // Determine direction to player
-            float directionToPlayer = playerTransform.position.x - transform.position.x;
-
-            if (directionToPlayer > 0 && !ep.isFacingRight) Flip();
-            else if (directionToPlayer < 0 && ep.isFacingRight) Flip();
-        }
-    }
 
     private void OnDrawGizmosSelected()
     {
@@ -280,11 +261,5 @@ public class EnemyAttack : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, defensiveModeRadius);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(attackTransform.position, attackRange);
-    }
-    
-    private void Flip()
-    {
-        ep.isFacingRight = !ep.isFacingRight;
-        transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 }

@@ -45,7 +45,7 @@ public class EnemyMovement : MonoBehaviour
     }
     private void Dash()
     {
-        if (isDashing) ea.rb.linearVelocity = ep.isFacingRight ? new Vector2(dashSpeed, ea.rb.linearVelocity.y)
+        if (isDashing) ea.rb.linearVelocity = ep.ec.isFacingRight ? new Vector2(dashSpeed, ea.rb.linearVelocity.y)
             : new Vector2(-dashSpeed, ea.rb.linearVelocity.y);
         else if (!isDashing) ea.rb.linearVelocity = new Vector2(ea.rb.linearVelocity.x, ea.rb.linearVelocity.y);
     }

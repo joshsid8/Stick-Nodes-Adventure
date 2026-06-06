@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class EnemyZone : MonoBehaviour
 {
+    public float currentZonePeriod;
     [SerializeField] private bool isZoning;
     [SerializeField] private float zoneTime = 1;
-    [SerializeField] private float currentZoneTime;
+    public float activeZoneTime;
     [SerializeField] private float zoneSpeed = 10;
     
     private EnemyController ec;
@@ -18,6 +19,7 @@ public class EnemyZone : MonoBehaviour
     private Animator animator;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Start() => currentZonePeriod = ea.currentAttackCooldown; 
     // AWAKE HOWEVER IS BEFORREEEE
     void Awake()
     {
@@ -26,7 +28,7 @@ public class EnemyZone : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
-
+    
     // Update is called once per frame
     private void Update()
     {
@@ -35,6 +37,8 @@ public class EnemyZone : MonoBehaviour
         passiveCheck = ea.passiveCheck;
         animator.SetBool("isZoning", isZoning);
         Zone();
+        if (currentZonePeriod <= 0) ec.ChangeState(EnemyController.EnemyState.Attacking);
+        else currentZonePeriod -= Time.deltaTime;
     }
 
     private void OnDisable()
@@ -46,16 +50,16 @@ public class EnemyZone : MonoBehaviour
 
     private void Zone()
     {
-        print("finding my spot!");
-        var playerDist = ea.playerTransform.position.x - transform.position.x;
-        if (currentZoneTime > 0) currentZoneTime -= Time.deltaTime;
+        var playerDist = PlayerHealth.Instance.transform.position.x - transform.position.x;
+        if (activeZoneTime > 0) activeZoneTime -= Time.deltaTime;
         else
         {
-            currentZoneTime = zoneTime;
+            activeZoneTime = zoneTime;
             isZoning = !isZoning;
+            if (!isZoning) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
         
-        if (ec.enemyState == EnemyController.EnemyState.Zoning && currentZoneTime > 0 && isZoning)
+        if (ec.enemyState == EnemyController.EnemyState.Zoning && activeZoneTime > 0 && isZoning)
         {
             switch (styleMode)
             {

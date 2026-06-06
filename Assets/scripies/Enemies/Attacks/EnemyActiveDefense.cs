@@ -15,6 +15,10 @@ public class EnemyActiveDefense : MonoBehaviour
     private void Update()
     {
         inRange = Physics2D.OverlapCircle(ea.attackTransform.position, ea.attackRange * 1.25f, LayerMask.GetMask("Player"));
-        if (ea.canAttack && !ea.isAttacking && inRange) GetComponent<Animator>().Play(ea.evasiveMoves[Random.Range(0, ea.evasiveMoves.Length)]);
+        if (ea.canAttack && !ea.isAttacking && inRange)
+        {
+            GetComponent<Animator>().Play(ea.evasiveMoves[Random.Range(0, ea.evasiveMoves.Length)]);
+            print("Clueless.");
+        }
     }
 }

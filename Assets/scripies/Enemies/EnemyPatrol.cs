@@ -32,13 +32,12 @@ public class EnemyPatrol : MonoBehaviour
     
     [HideInInspector] public Rigidbody2D rb;
     private Animator animator; 
-    public bool isFacingRight = true;
-    
+    public EnemyController ec;
     void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        isFacingRight = true;
+        ec = GetComponent<EnemyController>();
     }
 
     private void OnDisable()
@@ -62,7 +61,7 @@ public class EnemyPatrol : MonoBehaviour
     
     void Patrol()
     {
-        if (isWalking && canWalk) rb.linearVelocity = new Vector2(isFacingRight ? walkSpeed : -walkSpeed, rb.linearVelocity.y);
+        if (isWalking && canWalk) rb.linearVelocity = new Vector2(ec.isFacingRight ? walkSpeed : -walkSpeed, rb.linearVelocity.y);
         
         randomPause -= Time.deltaTime;
         if (randomPause <= 0 && canWalk)
@@ -79,7 +78,7 @@ public class EnemyPatrol : MonoBehaviour
         isGrounded = Physics2D.Raycast(edgeCheck.position, Vector2.down * transform.localScale.y, edgeCheckRay, groundLayer);
         if (!isGrounded && rb.linearVelocity.y == 0) Flip();
         
-        hasFoundPlayer = Physics2D.Raycast(playerCheck.position, isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x , eyeSight, playerLayer);
+        hasFoundPlayer = Physics2D.Raycast(playerCheck.position, ec.isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x , eyeSight, playerLayer);
         if (hasFoundPlayer && isPatrolling) StartCoroutine(FoundPlayer());
     }
 
@@ -92,12 +91,8 @@ public class EnemyPatrol : MonoBehaviour
         player.GetComponent<PlayerController>().currentCombatTimer = player.GetComponent<PlayerController>().combatTimer;
         
         yield return new WaitForSeconds(0.5f);
-        if (TryGetComponent<EnemyController>(out var ec)) ec.ChangeState(EnemyController.EnemyState.Attacking);
-        else
-        {
-            GetComponent<EnemyAttack>().enabled = true;
-            enabled = false;
-        }
+        if (TryGetComponent<EnemyController>(out var ec)) ec.ChangeState(EnemyController.EnemyState.Zoning);
+        else print("uhhhh, no controller");
     }
 
     private IEnumerator Pause()
@@ -111,18 +106,14 @@ public class EnemyPatrol : MonoBehaviour
         if (rng >= chance) Flip();
         randomPause = 3;
     }
-    private void Flip()
-    {
-        isFacingRight = !isFacingRight;
-        transform.Rotate(0.0f, 180.0f, 0.0f);
-    }
+    private void Flip() => ec.Flip();
 
     private void OnDrawGizmosSelected()
     {
         if (!GetComponent<EnemyAttack>())
         {
             Gizmos.color = Color.grey;
-            Vector3 rayDirection = isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x * eyeSight;
+            Vector3 rayDirection = ec.isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x * eyeSight;
             Gizmos.DrawLine(playerCheck.position, playerCheck.position + rayDirection);
             Gizmos.color = Color.red;
             Vector3 rayDirection2 = Vector2.down * transform.localScale.y * wallCheckRay;

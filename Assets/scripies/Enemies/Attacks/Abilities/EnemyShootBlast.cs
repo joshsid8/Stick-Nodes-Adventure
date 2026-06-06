@@ -33,21 +33,21 @@ public class EnemyShootBlast : MonoBehaviour
                 {
                     var projectile = newAbility.GetComponent<Projectile>();
                     ability.SetProperties(projectile);
-                    projectile.SetValues(2, ba != null ? ba.isFacingRight : ep.isFacingRight);
+                    projectile.SetValues(2, ba != null ? ba.isFacingRight : ep.ec.isFacingRight);
                     projectile.direction = abilityDirection;
                 }
                 else if (newAbility.GetComponentInChildren<Pillar>() != null)
                 {
                     var pillar = newAbility.GetComponentInChildren<Pillar>();
                     ability.SetProperties(pillar);
-                    pillar.SetValues(2, ba != null ? ba.isFacingRight : ep.isFacingRight);
+                    pillar.SetValues(2, ba != null ? ba.isFacingRight : ep.ec.isFacingRight);
                     pillar.direction = abilityDirection;
                 }
                 else if (newAbility.GetComponentInChildren<Beam>() != null)
                 {
                     var beam = newAbility.GetComponentInChildren<Beam>();
                     ability.SetProperties(beam);
-                    beam.SetValues(2, ba != null ? ba.isFacingRight : ep.isFacingRight);
+                    beam.SetValues(2, ba != null ? ba.isFacingRight : ep.ec.isFacingRight);
                     beam.direction = abilityDirection;
                 }
                 else Debug.LogError("where is bro's ability");

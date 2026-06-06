@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -10,8 +9,8 @@ public class EnemyController : MonoBehaviour
     private EnemyAttack attack;
     private EnemyHealth health;
     private EnemyZone zone;
-    
-    [SerializeField] private float altTimer;
+
+    public bool isFacingRight = true;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,9 +19,9 @@ public class EnemyController : MonoBehaviour
         attack = GetComponent<EnemyAttack>();
         health = GetComponent<EnemyHealth>();
         zone = GetComponent<EnemyZone>();
-        
         if (patrol != null && patrol.isPatrolling) ChangeState(EnemyState.Patrolling);
         else ChangeState(EnemyState.Idle);
+        isFacingRight = true;
     }
 
     private void Update()
@@ -47,12 +46,6 @@ public class EnemyController : MonoBehaviour
             case EnemyState.Patrolling:
                 InactiveState(2);
                 break;
-            case EnemyState.Attacking:
-                AttackState();
-                break;
-            case EnemyState.Zoning:
-                ZoningState();
-                break;
             case EnemyState.Stunned:
                 if (!health.isStunned)
                 {
@@ -67,7 +60,7 @@ public class EnemyController : MonoBehaviour
                 InactiveState();
                 break;
         }
-        altTimer -= Time.deltaTime;
+        FacePlayer();
     }
 
     public void ChangeState(EnemyState newState)
@@ -75,9 +68,26 @@ public class EnemyController : MonoBehaviour
         if (enemyState == newState) return;
         enemyState = newState;
 
-        if (patrol != null) patrol.enabled = newState == EnemyState.Patrolling;
-        if (attack != null) attack.enabled = newState == EnemyState.Attacking;
-        if (zone != null) zone.enabled = newState == EnemyState.Zoning;
+        switch (enemyState)
+        {
+            case EnemyState.Idle:
+                patrol.enabled = true;
+                patrol.isPatrolling = false;
+                break;
+            case EnemyState.Patrolling:
+                patrol.enabled = true;
+                patrol.isPatrolling = true;
+                print("pah");
+                break;
+            case EnemyState.Zoning:
+                zone.enabled = true;
+                attack.enabled = false;
+                break;
+            case EnemyState.Attacking:
+                attack.enabled = true;
+                zone.enabled = false;
+                break;
+        }
     }
 
     private void InactiveState(int factor = 1)
@@ -85,36 +95,20 @@ public class EnemyController : MonoBehaviour
         if (!patrol.enabled) patrol.enabled = true;
         patrol.isPatrolling = factor != 1;
     }
-
-    private void AttackState()
+    
+    private void FacePlayer()
     {
-        if (attack.playerTransform == null) return;
-        var dist = Vector2.Distance(transform.position, attack.playerTransform.position);
-        if (dist >= attack.passiveModeRadius * 5f && attack.styleMode != EnemyAttack.StyleMode.Active) ChangeState(EnemyState.Patrolling);
-        
-        if (altTimer <= 0)
+        if (attack.canFacePlayer)
         {
-            var rng = Random.Range(0, 101);
-            if (rng <= 50)
-            {
-                ChangeState(EnemyState.Zoning);
-                altTimer = 1f;
-            }
-            else altTimer = 1.5f;
+            if (attack.playerTransform == null) return;
+            var directionToPlayer = attack.playerTransform.position.x - transform.position.x;
+            if (directionToPlayer > 0 && !isFacingRight || directionToPlayer < 0 && isFacingRight) Flip();
         }
     }
 
-    private void ZoningState()
+    public void Flip()
     {
-        if (altTimer <= 0)
-        {
-            var rng = Random.Range(0, 101);
-            if (rng <= 50)
-            {
-                ChangeState(EnemyState.Attacking);
-                altTimer = 2f;
-            }
-            else altTimer = 0.5f;
-        }
+        isFacingRight = !isFacingRight;
+        transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 }
