@@ -45,7 +45,6 @@ public class EnemyZone : MonoBehaviour
     {
         isZoning = false;
         animator.SetBool("isZoning", false);
-        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
 
     private void Zone()

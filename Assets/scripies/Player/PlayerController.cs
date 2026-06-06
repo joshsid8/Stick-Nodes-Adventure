@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public bool canMove = true;
     public float movementSpeed = 10f;
     public float movementSpeedMult = 1f;
+    public float originalMovementSpeed;
     
     [SerializeField] private bool isMoving;
     
@@ -103,6 +104,7 @@ public class PlayerController : MonoBehaviour
         pab = GetComponent<PlayerAbility>();
         kb = GetComponent<Knockback>();
         
+        originalMovementSpeed = movementSpeed;
         originalJumpForce = jumpForce;
         availableWallsLeft = availableWalls;
         

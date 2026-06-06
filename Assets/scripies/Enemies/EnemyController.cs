@@ -77,21 +77,33 @@ public class EnemyController : MonoBehaviour
             case EnemyState.Patrolling:
                 patrol.enabled = true;
                 patrol.isPatrolling = true;
-                print("pah");
                 break;
             case EnemyState.Zoning:
+                patrol.enabled = false;
                 zone.enabled = true;
                 attack.enabled = false;
                 break;
             case EnemyState.Attacking:
+                patrol.enabled = false;
                 attack.enabled = true;
                 zone.enabled = false;
+                break;
+            case EnemyState.Stunned:
+                patrol.enabled = false;
+                zone.enabled = false;
+                attack.enabled = false;
+                break;
+            case EnemyState.Dead:
+                patrol.enabled = false;
+                zone.enabled = false;
+                attack.enabled = false;
                 break;
         }
     }
 
     private void InactiveState(int factor = 1)
     {
+        if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling) return;
         if (!patrol.enabled) patrol.enabled = true;
         patrol.isPatrolling = factor != 1;
     }
