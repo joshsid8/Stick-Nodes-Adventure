@@ -6,23 +6,21 @@ SNADV Notes
     Priorities:
        
         Enemy Logic
-            Zoning/Attacking is still unstable
-                I managed to BREAK it even more, in exchange for a more efficient system
-                Zoning and attacking work on their own, but isnt optimised
-                Patrolling is always on and cant be turned off
-                    debug logs added
-                I think the enemy patrols while zoning, and can even lead to attacking too
-                    IT WAS ALL FINE BEFORE!!!
-                Moved flipping logic to the controller
-                    but now the enemy can very randomly just turn around
-                        a fix would prolly be to make a call to check what condition triggered it
+            Zoning/Attacking is stable!
+            Flying needs to now adhere to the zoning logic
+                check fishman and how they zone currently and fix whatever problems arise
+        
+        Blocking Logic
+            Made it so that you can walk during blocking
+                Rarely, the player's movement gets set to 0 after blocking
+                    find a fix
+                Add walk blocking animation
                                    
         Ability Logic
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
                     I think i have to use MATHS!!!
-                        lemme learn this at uni first XD
-                    
+                        lemme learn this at uni first XD                    
 
     Optimisations & Hotfixes:
                  

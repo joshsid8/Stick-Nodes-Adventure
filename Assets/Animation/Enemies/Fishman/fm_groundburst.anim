@@ -989,7 +989,7 @@ AnimationClip:
     messageOptions: 0
   - time: 1.4375
     functionName: FollowupAttack
-    data: ActiveMove
+    data: Active
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

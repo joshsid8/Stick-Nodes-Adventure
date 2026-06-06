@@ -19,6 +19,7 @@ public class PlayerDefense : MonoBehaviour
     public bool isBlocking;
     public float blockDamageResistance;
     private float blockStunMultiplier;
+    public float blockMoveSpeed;
     
     private PlayerHealth hp;
     private PlayerController pc;
@@ -49,32 +50,40 @@ public class PlayerDefense : MonoBehaviour
     
     private void Block()
     {
-        if (isBlocking && canBlock && !pc.isDashing && !pc.isWallSliding && !pa.isPerformingAbility && !pf.isAirAttacking && !pf.isAttacking)
+        if (isBlocking)
         {
-            pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
-            if (pc.canMove) pc.canMove = false;
-            pc.jumpForce = 0f;
-            hp.shockMultiplier = 0f;
-            if (counterAbility && canCounter && isBlocking)
+            if (canBlock && !pc.isDashing && !pc.isWallSliding && !pa.isPerformingAbility && !pf.isAirAttacking && !pf.isAttacking)
             {
-                currentCounterTime = counterTime;
-                canCounter = false;
-                counterWindow = true;
+                pc.movementSpeed = blockMoveSpeed;
+                pc.jumpForce = 0f;
+                hp.shockMultiplier = 0f;
+
+                if (counterAbility && canCounter)
+                {
+                    currentCounterTime = counterTime;
+                    canCounter = false;
+                    counterWindow = true;
+                }
             }
-            
-            if (Input.GetButtonUp("Block") || !pc.canAct || pc.isWallSliding || pc.isDashing || hp.isStunned)
-            {
-                isBlocking = false;
-                pc.canMove = true;
-                hp.shockMultiplier = hp.originalShockMultiplier;
-                pc.jumpForce = pc.originalJumpForce;
-                currentCounterTime = 0f;
-                canCounter = true;
-            }
+            else StopBlocking();
+
+            if (Input.GetButtonUp("Block") || !pc.canAct || pc.isWallSliding || pc.isDashing || hp.isStunned) 
+                StopBlocking();
         }
-        
+
         if (counterWindow && !canCounter) currentCounterTime -= Time.deltaTime;
         if (currentCounterTime <= 0) counterWindow = false;
+    }
+
+    private void StopBlocking()
+    {
+        isBlocking = false;
+        pc.canMove = true;
+        hp.shockMultiplier = hp.originalShockMultiplier;
+        pc.jumpForce = pc.originalJumpForce;
+        pc.movementSpeed = pc.originalMovementSpeed;
+        currentCounterTime = 0f;
+        canCounter = true;
     }
 
     public void CounterAttack()

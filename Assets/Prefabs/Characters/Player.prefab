@@ -252,14 +252,8 @@ MonoBehaviour:
   - {fileID: 0}
   abilityDamageMult: 1
   abilityPotency: 1
-  abilityDirection: 0
   abilityLifetimeMult: 1
-  xVector: 1
-  abilityAmount: 050000000300000001000000
-  spawnInterval:
-  - 0.1
-  - 0.1
-  - 0.1
+  abilityAmountMult: 010000000100000001000000
   isActivated: 0
   unavailable: 0
   terrainLayers:
@@ -345,7 +339,7 @@ MonoBehaviour:
   getStunned: 0
   isStunned: 0
   stunTime: 5
-  originalShockMultiplier: 0
+  originalShockMultiplier: 1
   shockMultiplier: 1
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintSpeed: 5

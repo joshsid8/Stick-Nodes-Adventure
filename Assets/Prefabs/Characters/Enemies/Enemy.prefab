@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   enemyState: 0
-  altTimer: 0
+  isFacingRight: 1
 --- !u!114 &9002268324909943343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,7 +390,7 @@ MonoBehaviour:
     m_Bits: 128
   edgeCheckRay: 0.45
   rb: {fileID: 0}
-  isFacingRight: 1
+  ec: {fileID: 0}
 --- !u!114 &4126844800543476695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,16 +398,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6953562033605771950}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20a409aa2f8b99247805dfdf4565f8b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyZone
+  currentZonePeriod: 0
   isZoning: 0
   zoneTime: 1
-  currentZoneTime: 0
+  activeZoneTime: 0
   zoneSpeed: 6
-  playerTransform: {fileID: 0}
 --- !u!114 &2866762415245452275
 MonoBehaviour:
   m_ObjectHideFlags: 0

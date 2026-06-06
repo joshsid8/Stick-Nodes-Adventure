@@ -57,7 +57,7 @@ public class EnemyAttack : MonoBehaviour
     private EnemyFly ef;
     private EnemyHealth eh;
     private EnemyController ec;
-    private EnemyZone ez;
+    private EnemyZone ez; // ez lol git gud
 
     public bool canFacePlayer;
     [SerializeField] private bool canSpare = true;
@@ -138,12 +138,6 @@ public class EnemyAttack : MonoBehaviour
         if (defensiveCheck) passiveCheck = false;
         else if (passiveCheck) defensiveCheck = false;
         
-        if (defensiveCheck && styleMode == StyleMode.Active)
-        {
-            if (styleMode != StyleMode.Active)
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-        }
-        
         if (canSpare)
         {
             if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime;
@@ -156,12 +150,9 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
-            if (!defensiveCheck)
-            {
-                animator.Play(!isFlying
-                    ? activeMoves[Random.Range(0, activeMoves.Length)]
-                    : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
-            }
+            animator.Play(!isFlying
+                ? activeMoves[Random.Range(0, activeMoves.Length)]
+                : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
         }
     }
 

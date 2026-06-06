@@ -123,7 +123,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 // blocking successfully
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.blockDamageResistance;
                 else playerHealth -= damageAmount * pd.blockDamageResistance;
-                kb.CallKnockback(knockbackForce * pd.blockDamageResistance * shockMultiplier, pc.inputDirection);
+                kb.CallKnockback(knockbackForce * pd.blockDamageResistance, pc.inputDirection);
             }
             else if (pd.isBlocking && pd.counterWindow && damageType < 2)
             {

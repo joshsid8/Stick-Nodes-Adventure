@@ -49,9 +49,8 @@ public class EnemyPatrol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (isPatrolling) Patrol();
-        //else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
-        Patrol();
+        if (isPatrolling) Patrol();
+        
         animator.SetBool("isPatrolling", isPatrolling);
         animator.SetBool("isWalking", isWalking);
         
