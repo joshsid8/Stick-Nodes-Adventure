@@ -41,7 +41,7 @@ public class Beam : AbilityBase
         {
             energyProc = proc;
             if (pa != null && typeFactor == 1) pa.energy -= procTimes;
-        } 
+        }
         else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
         
         gameObject.layer = typeFactor switch
@@ -76,7 +76,7 @@ public class Beam : AbilityBase
 
     private void HitBox()
     {
-        if (inContact != null && procTimer <= 0)
+        if (inContact.Count != 0 && procTimer <= 0)
         {
             switch (typeFactor)
             {

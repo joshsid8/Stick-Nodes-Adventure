@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool hasJumped;
     public bool canDoubleJump;
     private bool doubleJump;
-     
+    
     // Jump optimisations
     [SerializeField] private float coyoteTime = 0.2f; // Adjust as needed
     private float coyoteTimeCounter;

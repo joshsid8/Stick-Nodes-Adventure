@@ -151,13 +151,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 }
             }
         }
-        /*else if (GetComponent<PlayerPerformAbility>().isReinforcing)
-        {
-            // reinforcing
-            if (playerExtraHealth > 0) playerExtraHealth -= damageAmount; // * reinforcementDamageResistance;
-            else playerHealth -= damageAmount; // * reinforcementDamageResistance;
-            kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
-        }*/
         else
         {
             // the player blocking but getting hit at the back
@@ -167,6 +160,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             else playerHealth -= damageAmount * rawDamageResistance;
             spriteRenderer.color = damageTint;
             isTinting = true;
+            pd.StopBlocking();
             if (knockbackForce != Vector2.zero)
             {
                 pc.animator.SetTrigger("Damaged");
