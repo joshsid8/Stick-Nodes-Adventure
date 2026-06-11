@@ -150,6 +150,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
+            em.FreezeX();
             animator.Play(!isFlying
                 ? activeMoves[Random.Range(0, activeMoves.Length)]
                 : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
@@ -160,6 +161,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
+            em.FreezeX();
             if (!passiveCheck && !defensiveCheck) animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)] 
                 : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
             else if (defensiveCheck && !passiveCheck) animator.Play(!isFlying ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
@@ -173,6 +175,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
+            em.FreezeX();
             if (defensiveCheck) animator.Play(!isFlying ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
                 : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
             else if (passiveCheck) animator.Play(!isFlying ? passiveMoves[Random.Range(0, passiveMoves.Length)] 

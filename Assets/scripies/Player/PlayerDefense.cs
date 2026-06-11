@@ -75,7 +75,7 @@ public class PlayerDefense : MonoBehaviour
         if (currentCounterTime <= 0) counterWindow = false;
     }
 
-    private void StopBlocking()
+    public void StopBlocking()
     {
         isBlocking = false;
         pc.canMove = true;

@@ -8,12 +8,13 @@ public class AbilityObjSO : ScriptableObject
      [Header("Ability Object Properties")]
      [Tooltip("If this is false, all the properties below will be ignored and the game object will use its default values.")]
      public bool setProperties;
-     public float direction;
+     //public float direction;
      public bool isDirectional;
      public float energyRequired;
      public float proc;
 
-     [Space] [Header("Caster Properties")] public int amount = 1;
+     [Space] [Header("Caster Properties")] 
+     public int amount = 1;
      public float initSeparation = 5f;
      public float separation = 1.5f;
      public float spawnInterval = 0.1f;
@@ -34,7 +35,7 @@ public class AbilityObjSO : ScriptableObject
                ab.damage *= damageMult;
                ab.knockbackForce *= potency;
                ab.stunTime *= potency;
-               ab.direction = direction;
+               //ab.direction = direction;
                ab.isDirectional = isDirectional;
                ab.energyRequired = energyRequired;
                ab.cooldown *= cooldownMult;

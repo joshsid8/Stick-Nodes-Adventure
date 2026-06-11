@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085255e3a03594428d4b653873ec179, type: 3}
+  m_Name: Water Jet
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityObjSO
+  abilityPrefab: {fileID: 527549009820817163, guid: 653bd4e95aafbd344852914b7449c136, type: 3}
+  setProperties: 1
+  isDirectional: 1
+  energyRequired: 0
+  proc: 1
+  amount: 1
+  initSeparation: 5
+  separation: 1.5
+  spawnInterval: 0.2
+  speedMult: 1
+  cooldownMult: 1
+  lifetimeMult: 0
+  damageMult: 5
+  potency: 1
+  sizeMult: 1
+  isHoldable: 0
+  abilityOnCollide: 0

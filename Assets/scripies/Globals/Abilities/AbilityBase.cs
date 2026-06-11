@@ -6,6 +6,7 @@ public abstract class AbilityBase : MonoBehaviour
     [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
     public int typeFactor;
     public int elementType;
+    public int damageFactor;
     [FormerlySerializedAs("beamDamage")]
     [FormerlySerializedAs("projectileDamage")]
     [FormerlySerializedAs("pillarDamage")]

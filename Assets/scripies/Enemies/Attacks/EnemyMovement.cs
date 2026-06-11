@@ -78,7 +78,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    private void FreezeX()
+    public void FreezeX()
     {
         ea.rb.linearVelocity = new Vector2(0, ea.rb.linearVelocity.y);
     }

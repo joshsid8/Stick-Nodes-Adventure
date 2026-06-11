@@ -114,18 +114,18 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
     }
 
-    public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageType)
+    public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageFactor)
     {
         if (facingRight && !pc.isFacingRight || !facingRight && pc.isFacingRight)
         {
-            if (pd.isBlocking && !pd.counterWindow && damageType < 1)
+            if (pd.isBlocking && !pd.counterWindow && damageFactor < 1)
             {
                 // blocking successfully
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.blockDamageResistance;
                 else playerHealth -= damageAmount * pd.blockDamageResistance;
                 kb.CallKnockback(knockbackForce * pd.blockDamageResistance, pc.inputDirection);
             }
-            else if (pd.isBlocking && pd.counterWindow && damageType < 2)
+            else if (pd.isBlocking && pd.counterWindow && damageFactor < 2)
             {
                 // perfect blocking / counter
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.counterDamageResistance;
@@ -151,13 +151,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 }
             }
         }
-        /*else if (GetComponent<PlayerPerformAbility>().isReinforcing)
-        {
-            // reinforcing
-            if (playerExtraHealth > 0) playerExtraHealth -= damageAmount; // * reinforcementDamageResistance;
-            else playerHealth -= damageAmount; // * reinforcementDamageResistance;
-            kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
-        }*/
         else
         {
             // the player blocking but getting hit at the back
@@ -167,6 +160,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             else playerHealth -= damageAmount * rawDamageResistance;
             spriteRenderer.color = damageTint;
             isTinting = true;
+            pd.StopBlocking();
             if (knockbackForce != Vector2.zero)
             {
                 pc.animator.SetTrigger("Damaged");

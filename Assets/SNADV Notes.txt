@@ -4,11 +4,12 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-       
-        Enemy Logic
-            Zoning/Attacking is stable!
-            Flying needs to now adhere to the zoning logic
-                check fishman and how they zone currently and fix whatever problems arise
+        
+        Damage Logic
+            Send a lot more detailed data to victims when damaged
+                Element type
+                i forgot the rest.
+                    REMBER!!!
         
         Blocking Logic
             Made it so that you can walk during blocking
@@ -20,7 +21,11 @@ SNADV Notes
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
                     I think i have to use MATHS!!!
-                        lemme learn this at uni first XD                    
+                        lemme learn this at uni first XD
+            Water shield and bubbles arent working as intended
+                For enemies specifically
+                    Water shield falls like a rock XD
+                    bubbles get split forward, which is cool but not what i want
 
     Optimisations & Hotfixes:
                  

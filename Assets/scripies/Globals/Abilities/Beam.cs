@@ -41,7 +41,7 @@ public class Beam : AbilityBase
         {
             energyProc = proc;
             if (pa != null && typeFactor == 1) pa.energy -= procTimes;
-        } 
+        }
         else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
         
         gameObject.layer = typeFactor switch
@@ -76,7 +76,7 @@ public class Beam : AbilityBase
 
     private void HitBox()
     {
-        if (inContact != null && procTimer <= 0)
+        if (inContact.Count != 0 && procTimer <= 0)
         {
             switch (typeFactor)
             {
@@ -98,7 +98,7 @@ public class Beam : AbilityBase
                         var damageable = hit.gameObject.GetComponent<PDamageable>();
                         if (damageable != null)
                         {
-                            damageable.Damage(damage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
+                            damageable.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, damageFactor);
                             damageable.Stun(stunTime);
                             PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
                         }
@@ -123,7 +123,7 @@ public class Beam : AbilityBase
                             var pDmg = hit.gameObject.GetComponent<PDamageable>();
                             if (pDmg != null)
                             {
-                                pDmg.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
+                                pDmg.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, damageFactor);
                                 pDmg.Stun(stunTime);
                                 PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
                             }

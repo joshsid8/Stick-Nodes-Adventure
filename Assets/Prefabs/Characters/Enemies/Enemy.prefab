@@ -387,7 +387,7 @@ MonoBehaviour:
   edgeCheck: {fileID: 2214132920280649281}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 65664
   edgeCheckRay: 0.45
   rb: {fileID: 0}
   ec: {fileID: 0}
