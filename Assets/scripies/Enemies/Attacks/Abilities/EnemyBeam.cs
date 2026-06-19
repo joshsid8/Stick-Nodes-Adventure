@@ -62,8 +62,8 @@ public class EnemyBeam : MonoBehaviour
                         damageable.Stun(beamStunTime);
 
                         GameObject player = GameObject.FindGameObjectWithTag("Player");
-                        player.GetComponent<PlayerController>().currentCombatTimer = +
-                            player.GetComponent<PlayerController>().combatTimer * 0.5f;
+                        PlayerHealth.Instance.currentCombatTimer = +
+                            PlayerHealth.Instance.combatTimer * 0.5f;
                     }
                 }
             }

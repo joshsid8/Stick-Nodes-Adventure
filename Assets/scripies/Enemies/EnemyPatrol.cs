@@ -86,8 +86,7 @@ public class EnemyPatrol : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         isPatrolling = false;
         isWalking = false;
-        var player = PlayerHealth.Instance.gameObject;
-        player.GetComponent<PlayerController>().currentCombatTimer = player.GetComponent<PlayerController>().combatTimer;
+        PlayerHealth.Instance.currentCombatTimer = PlayerHealth.Instance.combatTimer;
         
         yield return new WaitForSeconds(0.5f);
         if (TryGetComponent<EnemyController>(out var ec)) ec.ChangeState(EnemyController.EnemyState.Zoning);

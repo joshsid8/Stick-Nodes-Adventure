@@ -275,7 +275,7 @@ public class PlayerManager : MonoBehaviour
                 if (pd != null) pd.counterTime = value;
                 break;
             case "CombatTimer":
-                if (pc != null) pc.currentCombatTimer = value;
+                if (pc != null) ph.currentCombatTimer = value;
                 break;
             case "Money":
                 if (pm != null) pm.nodeBucks += value;
@@ -327,7 +327,7 @@ public class PlayerManager : MonoBehaviour
                 if (pd != null) pd.counterTime += value;
                 break;
             case "CombatTimer":
-                if (pc != null) pc.currentCombatTimer += value;
+                if (pc != null) ph.currentCombatTimer += value;
                 break;
             case "Money":
                 if (pm != null) pm.nodeBucks += value;
@@ -363,7 +363,7 @@ public class PlayerManager : MonoBehaviour
         data.abilityPotency = pp.abilityPotency;
 
         data.blockDamageResistance = pd.blockDamageResistance;
-        data.combatTime = pc.currentCombatTimer;
+        data.combatTime = ph.currentCombatTimer;
         data.counterDamage = pd.counterDamage;
         data.counterDamageResistance = pd.counterDamageResistance;
     }
@@ -372,7 +372,7 @@ public class PlayerManager : MonoBehaviour
     {
         pd.counterDamageResistance = data.counterDamageResistance;
         pd.counterDamage = data.counterDamage;
-        pc.currentCombatTimer = data.combatTime;
+        ph.currentCombatTimer = data.combatTime;
         pd.blockDamageResistance = data.blockDamageResistance;
 
         pp.abilityPotency = data.abilityPotency;

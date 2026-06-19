@@ -53,8 +53,8 @@ public class PlayerSummonPillar : MonoBehaviour
                 {
                     damageable.Damage(pillarDamage, knockbackForce * transform.up);
                     damageable.Stun(0f);
-                    PlayerHealth.Instance.pc.currentCombatTimer = +
-                        PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                    PlayerHealth.Instance.currentCombatTimer = +
+                        PlayerHealth.Instance.combatTimer * 0.5f;
                 }
             }
         }

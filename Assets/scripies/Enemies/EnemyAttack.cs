@@ -207,7 +207,7 @@ public class EnemyAttack : MonoBehaviour
             {
                 damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.ec.isFacingRight, damageType);
                 damageable.Stun(stunTime);
-                FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
+                PlayerHealth.Instance.currentCombatTimer =+ 180f;
             }
         }
     }

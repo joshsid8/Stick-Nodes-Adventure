@@ -78,7 +78,7 @@ public class Pillar : AbilityBase
                         {
                             damageable.Damage(damage, knockbackForce * transform.up);
                             damageable.Stun(stunTime);
-                            PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                            PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.5f;
                         }
                     }
                     break;
@@ -90,7 +90,7 @@ public class Pillar : AbilityBase
                         {
                             damageable.Damage(damage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
                             damageable.Stun(stunTime);
-                            PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                            PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.5f;
                         }
                     }
                     break;
@@ -105,7 +105,7 @@ public class Pillar : AbilityBase
                             {
                                 eDmg.Stun(stunTime);
                                 eDmg.Damage(damage, knockbackForce);
-                                PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.5f;
                             }
                         }
                         else if (entity.CompareTag("Player"))
@@ -116,7 +116,7 @@ public class Pillar : AbilityBase
                                 pDmg.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
                                 pDmg.Stun(stunTime);
 
-                                PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.5f;
                             }
                         }
                         else print("Clueless.");

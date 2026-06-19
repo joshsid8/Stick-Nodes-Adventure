@@ -86,7 +86,7 @@ public class BossHealth : MonoBehaviour, EDamageables
             spriteRenderer.enabled = true;
             yield return new WaitForSeconds(3);
             isDead = false;
-            PlayerHealth.Instance.pc.currentCombatTimer = 0;
+            PlayerHealth.Instance.currentCombatTimer = 0;
             animator.SetTrigger("Rise");
             DialogueUI.Instance.ShowDialogue(deathDialogue);
         }

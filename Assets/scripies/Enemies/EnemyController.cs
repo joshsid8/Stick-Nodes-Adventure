@@ -60,6 +60,19 @@ public class EnemyController : MonoBehaviour
                 InactiveState();
                 break;
         }
+        
+        if (enemyState == EnemyState.Attacking || enemyState == EnemyState.Zoning)
+        {
+            if (!PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
+                PlayerHealth.Instance.aggressiveEnemies.Add(gameObject);
+            if (PlayerHealth.Instance.aggressiveEnemies.Count > 1) JumpPlayer();
+        }
+        else
+        {
+            if (PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
+                PlayerHealth.Instance.aggressiveEnemies.Remove(gameObject);
+        }
+
         FacePlayer();
     }
 
@@ -106,6 +119,11 @@ public class EnemyController : MonoBehaviour
         if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling) return;
         if (!patrol.enabled) patrol.enabled = true;
         patrol.isPatrolling = factor != 1;
+    }
+
+    private void JumpPlayer()
+    {
+        print($"{name}: jump him!");
     }
     
     private void FacePlayer()

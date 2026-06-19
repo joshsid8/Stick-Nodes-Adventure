@@ -104,7 +104,7 @@ public class PlayerDefense : MonoBehaviour
                     pa.energy += 10f;
                     eDamageable.Damage(counterDamage, counterKnockbackForce * num * pf.attackPotency);
                     eDamageable.Stun(counterStun * pf.attackPotency);
-                    pc.currentCombatTimer += pc.combatTimer / 2;
+                    PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 2;
                 }
             }
             else if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("EVFX") || hits[i].collider.gameObject.layer == LayerMask.NameToLayer("FX"))

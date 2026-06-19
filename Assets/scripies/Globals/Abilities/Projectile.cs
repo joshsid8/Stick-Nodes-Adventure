@@ -108,6 +108,7 @@ public class Projectile : AbilityBase
     {
         hits[0] = Physics2D.CircleCast(transform.position, projectileRange, transform.right, 0f, target[0]);
         hits[1] = Physics2D.CircleCast(transform.position, projectileRange, transform.right, 0f, target[1]);
+        var deflected = false;
         
         foreach (var hit in hits) 
         {
@@ -121,13 +122,22 @@ public class Projectile : AbilityBase
                         {
                             eDamageable.Stun(stunTime);
                             eDamageable.Damage(damage, knockbackForce * objectDirection);
-                            PlayerHealth.Instance.pc.currentCombatTimer = +PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                            PlayerHealth.Instance.currentCombatTimer = +PlayerHealth.Instance.combatTimer * 0.5f;
                             //Add a global combat trigger method
                         }
                         else print($"Clueless: {hit.collider.gameObject.name} doesnt have a damageable component.");
 
                         break;
                     case 2:
+                        if (hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow)
+                        {
+                            deflected = true;
+                            typeFactor = 1;
+                            PlayerHealth.Instance.pc.animator.SetTrigger("Counter");
+                            hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow = false;
+                            hit.collider.gameObject.GetComponent<PlayerDefense>().isBlocking = false;
+                            break;
+                        }
                         var pDamageable = hit.collider.gameObject.GetComponent<PDamageable>();
                         if (pDamageable != null)
                         {
@@ -135,7 +145,7 @@ public class Projectile : AbilityBase
                                 isFacingRightDirection, elementType);
                             pDamageable.Stun(stunTime);
 
-                            PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                            PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.5f;
                         }
 
                         break;
@@ -148,12 +158,21 @@ public class Projectile : AbilityBase
                             {
                                 eDmg.Stun(stunTime);
                                 eDmg.Damage(damage, knockbackForce * objectDirection);
-                                PlayerHealth.Instance.pc.currentCombatTimer =
-                                    +PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                                PlayerHealth.Instance.currentCombatTimer =
+                                    +PlayerHealth.Instance.combatTimer * 0.5f;
                             }
                         }
                         else if (entity.CompareTag("Player"))
                         {
+                            if (hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow)
+                            {
+                                deflected = true;
+                                typeFactor = 1;
+                                PlayerHealth.Instance.pc.animator.SetTrigger("Counter");
+                                hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow = false;
+                                hit.collider.gameObject.GetComponent<PlayerDefense>().isBlocking = false;
+                                break;
+                            }
                             var pDmg = hit.collider.gameObject.GetComponent<PDamageable>();
                             if (pDmg != null)
                             {
@@ -161,8 +180,8 @@ public class Projectile : AbilityBase
                                     isFacingRightDirection, elementType);
                                 pDmg.Stun(stunTime);
 
-                                PlayerHealth.Instance.pc.currentCombatTimer +=
-                                    PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                                PlayerHealth.Instance.currentCombatTimer +=
+                                    PlayerHealth.Instance.combatTimer * 0.5f;
                             }
                         }
                         else print("Clueless.");
@@ -170,7 +189,7 @@ public class Projectile : AbilityBase
                 }
             }
         }
-        Crash();
+        if (!deflected) Crash(); else Deflect(typeFactor);
     }
 
     private void Crash()

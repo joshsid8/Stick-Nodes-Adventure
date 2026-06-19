@@ -83,7 +83,7 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Damage(groundDamageAmount * attackDamageMult, new Vector2(knockbackForce.x * attackPotency * transform.right.x, knockbackForce.y * attackPotency * transform.up.y));
                 eDamageable.Stun(stunTime * attackPotency);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
-                pc.currentCombatTimer += pc.combatTimer / 3;
+                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 3;
             }
         }
         comboInterval[0]++;
@@ -106,7 +106,7 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Damage(airDamageAmount * attackDamageMult, Vector2.zero);
                 eDamageable.Stun(stunTime * attackPotency);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
-                pc.currentCombatTimer += pc.combatTimer / 3;
+                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 3;
                 if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
                 {
                     StartCoroutine(AirCombo(hits[i].collider.gameObject));

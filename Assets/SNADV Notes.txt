@@ -5,27 +5,17 @@ SNADV Notes
     
     Priorities:
         
-        Damage Logic
-            Send a lot more detailed data to victims when damaged
-                Element type
-                i forgot the rest.
-                    REMBER!!!
+        Jumping logic
+            If multiple enemies are fighting the player, let them have a choice to
+                Take turns fighting the player one on one
+                Fight the player at the same time
+                    Maybe even add extra moves that the enemies do  
         
-        Blocking Logic
-            Made it so that you can walk during blocking
-                Rarely, the player's movement gets set to 0 after blocking
-                    find a fix
-                Add walk blocking animation
-                                   
         Ability Logic
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
                     I think i have to use MATHS!!!
                         lemme learn this at uni first XD
-            Water shield and bubbles arent working as intended
-                For enemies specifically
-                    Water shield falls like a rock XD
-                    bubbles get split forward, which is cool but not what i want
 
     Optimisations & Hotfixes:
                  
@@ -36,6 +26,7 @@ SNADV Notes
                     First step before walking
                     Wall jumping
                     Better dashing
+                    Walk blocking
                 Cynder
                     More slashing animations
                 
@@ -58,18 +49,17 @@ SNADV Notes
             Simply put, a water attack on a cynderian will hurt them more
             Ill need to assign tags of what element of attack it is
             In general there should be sustain damage or damage over time
-            Fire will almost always have dot, water and air can too    
+            Fire will almost always have dot, water and air can too
+            Send a lot more detailed data to victims when damaged
+                Element type has been added
+                    Now this can make change the damage of moves depending on the element (To be Implemented)
         
         Knockback Logic
             It's so bad
             i want it to be a lot more efficient, than just an ease of movement left or right cuh
             thats if thats even possible
             MAFFS will be used to make it better
-        
-        Deflect Logic
-            When a move is parried of mirrored, instead of generating a new object, it should just be reflected with different properties
-                Such as if a player parried a fire ball from cynder, the same fire ball should be deflected, but with player's properties'
-        
+                
         Audio flexibility
             Make it so that the music never stops, but rather silences before moving onto another track
             
@@ -83,13 +73,7 @@ SNADV Notes
             Different playstyle when low health
                 Sparing
                 Deceiving
-                Asking to fight
-                
-            Add jumping logic
-                If multiple enemies are fighting the player, let them have a choice to
-                    Take turns fighting the player one on one
-                    Fight the player at the same time
-                        Maybe even add extra moves that the enemies do    
+                Asking to fight  
         
         Fused Animations
             anims that fuse the 2 entities together for a joint animation

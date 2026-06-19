@@ -48,8 +48,8 @@ public class EnemyPillar : MonoBehaviour
             {
                 damageable.Damage(pillarDamage, knockbackForce * transform.up, playerFacingRight, pillarDamageType);
                 damageable.Stun(0f);
-                PlayerHealth.Instance.pc.currentCombatTimer = +
-                    PlayerHealth.Instance.pc.combatTimer * 0.5f;
+                PlayerHealth.Instance.currentCombatTimer = +
+                    PlayerHealth.Instance.combatTimer * 0.5f;
             }
         }
     }
