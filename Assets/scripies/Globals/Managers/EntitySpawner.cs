@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class EntitySpawner : MonoBehaviour
@@ -36,6 +37,7 @@ public class EntitySpawner : MonoBehaviour
                         {
                             SceneManager.MoveGameObjectToScene(instance, targetScene);
                             instance.GetComponent<Identifier>().AutomateID(targetScene);
+                            if (spawn.settings != null) instance.GetComponent<EnemyController>().enemy = spawn.settings;
                         }
                     }
                     yield return new WaitForSeconds(spawnTime);
@@ -89,5 +91,6 @@ public class EntitySpawner : MonoBehaviour
     {
         public GameObject objectToSpawn;
         public float spawnAmount;
+        public Enemy settings;
     }
 }

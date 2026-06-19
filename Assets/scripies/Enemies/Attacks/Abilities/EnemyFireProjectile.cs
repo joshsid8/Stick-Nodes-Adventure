@@ -96,9 +96,8 @@ public class EnemyFireProjectile : MonoBehaviour
                 damageable.Damage(projectileDamage, projectileKnockbackForce * playerDirection, isFacingRightDirection, projectileDamageType);
                 damageable.Stun(projectileStunTime);
 
-                GameObject player = GameObject.FindGameObjectWithTag("Player");
-                player.GetComponent<PlayerController>().currentCombatTimer =+
-                    player.GetComponent<PlayerController>().combatTimer * 0.5f;
+                PlayerHealth.Instance.currentCombatTimer =+
+                    PlayerHealth.Instance.combatTimer * 0.5f;
             }
         }
         if (collideAnim != null) animator.Play(collideAnim.name);

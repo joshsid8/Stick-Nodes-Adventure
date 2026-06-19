@@ -77,7 +77,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (!isPerformingAbility)
         {
-            if (pc.inCombat) energy += Time.deltaTime * 2 * energyRefill;
+            if (PlayerHealth.Instance.inCombat) energy += Time.deltaTime * 2 * energyRefill;
             else energy += Time.deltaTime * 5 * energyRefill;
         }
 

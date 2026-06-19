@@ -76,7 +76,7 @@ public class BossAttack : MonoBehaviour
     private void AttackSystem2()
     {
         GetComponent<DialogueTrigger>().enabled = false;
-        PlayerHealth.Instance.pc.currentCombatTimer = 69;
+        PlayerHealth.Instance.currentCombatTimer = 69;
         canFacePlayer = true;
         if (canAttack && !bh.isStunned)
         {

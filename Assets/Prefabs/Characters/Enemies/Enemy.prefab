@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 5774492939275019919}
   - component: {fileID: 8455541738676426996}
   - component: {fileID: 4126844800543476695}
+  - component: {fileID: 5523440918564517291}
   - component: {fileID: 2866762415245452275}
   - component: {fileID: 1920835200029510645}
   - component: {fileID: 7115054256094536775}
@@ -247,6 +248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   enemyState: 0
+  idName: 
+  enemy: {fileID: 0}
   isFacingRight: 1
 --- !u!114 &9002268324909943343
 MonoBehaviour:
@@ -346,6 +349,11 @@ MonoBehaviour:
   currentAttackCooldown: 0
   stunnable: 1
   rb: {fileID: 0}
+  ep: {fileID: 0}
+  em: {fileID: 0}
+  ef: {fileID: 0}
+  eh: {fileID: 0}
+  ez: {fileID: 0}
   canFacePlayer: 1
   canSpare: 1
   spareTimer: 10
@@ -408,6 +416,25 @@ MonoBehaviour:
   zoneTime: 1
   activeZoneTime: 0
   zoneSpeed: 6
+--- !u!114 &5523440918564517291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953562033605771950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda6fc7820a67ba41b882342e8a1caea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyJump
+  jumpType: 0
+  myTurn: 0
+  turnTime: 5
+  turnTimer: 0
+  partners:
+  - {fileID: 0}
+  leader: {fileID: 0}
 --- !u!114 &2866762415245452275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,7 +613,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

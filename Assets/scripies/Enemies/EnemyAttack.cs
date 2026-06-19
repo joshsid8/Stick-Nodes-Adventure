@@ -52,12 +52,12 @@ public class EnemyAttack : MonoBehaviour
     
     [HideInInspector] public Rigidbody2D rb;
     private Animator animator;
-    private EnemyPatrol ep;
-    private EnemyMovement em;
-    private EnemyFly ef;
-    private EnemyHealth eh;
+    [HideInInspector] public EnemyPatrol ep;
+    [HideInInspector] public EnemyMovement em;
+    [HideInInspector] public EnemyFly ef;
+    [HideInInspector] public EnemyHealth eh;
     private EnemyController ec;
-    private EnemyZone ez; // ez lol git gud
+    [HideInInspector] public EnemyZone ez; // ez lol git gud
 
     public bool canFacePlayer;
     [SerializeField] private bool canSpare = true;
@@ -207,7 +207,7 @@ public class EnemyAttack : MonoBehaviour
             {
                 damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.ec.isFacingRight, damageType);
                 damageable.Stun(stunTime);
-                FindAnyObjectByType<PlayerController>().currentCombatTimer =+ 180f;
+                PlayerHealth.Instance.currentCombatTimer =+ 180f;
             }
         }
     }

@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour
     public GameObject[] gUI;
     
     [SerializeField] private bool withPlayer = true;
-    private PlayerController player;
+    private PlayerHealth player;
 
     [SerializeField] private bool toggle;
 
@@ -32,7 +32,7 @@ public class AudioManager : MonoBehaviour
         
         musicSource.clip = backgroundMusic[0];
         musicSource.Play();
-        if (withPlayer) player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        if (withPlayer) player = PlayerHealth.Instance;
     }
 
     // Update is called once per frame

@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: id
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: -2052741742867292352, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 11400000, guid: b5366c7e0c601204ea43e6b6d5a409e2, type: 2}
     - target: {fileID: 1439657276797700270, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: abilityPoint
       value: 

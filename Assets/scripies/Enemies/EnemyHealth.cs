@@ -111,7 +111,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
                 spriteRenderer.enabled = true;
                 yield return new WaitForSeconds(0.025f);
             }
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().currentCombatTimer = 0;
+            PlayerHealth.Instance.currentCombatTimer = 0;
             Destroy(gameObject);
         }
     }

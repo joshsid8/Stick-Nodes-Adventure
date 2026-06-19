@@ -1,14 +1,18 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public enum EnemyState { Idle, Patrolling, Zoning, Attacking, Stunned, Dead }
+    public enum EnemyState { Idle, Patrolling, Zoning, Attacking, Jumping, Stunned, Dead }
     public EnemyState enemyState;
 
     private EnemyPatrol patrol;
     private EnemyAttack attack;
     private EnemyHealth health;
     private EnemyZone zone;
+    private EnemyJump jump;
+    [HideInInspector] public string idName;
+    public Enemy enemy;
 
     public bool isFacingRight = true;
     
@@ -19,6 +23,7 @@ public class EnemyController : MonoBehaviour
         attack = GetComponent<EnemyAttack>();
         health = GetComponent<EnemyHealth>();
         zone = GetComponent<EnemyZone>();
+        if (enemy != null) enemy.SetProperties(attack);
         if (patrol != null && patrol.isPatrolling) ChangeState(EnemyState.Patrolling);
         else ChangeState(EnemyState.Idle);
         isFacingRight = true;
@@ -60,6 +65,19 @@ public class EnemyController : MonoBehaviour
                 InactiveState();
                 break;
         }
+        
+        if (enemyState == EnemyState.Attacking || enemyState == EnemyState.Zoning)
+        {
+            if (!PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
+                PlayerHealth.Instance.aggressiveEnemies.Add(gameObject);
+            if (PlayerHealth.Instance.aggressiveEnemies.Count > 1) ChangeState(EnemyState.Jumping);
+        }
+        else
+        {
+            if (PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
+                PlayerHealth.Instance.aggressiveEnemies.Remove(gameObject);
+        }
+
         FacePlayer();
     }
 
@@ -71,32 +89,38 @@ public class EnemyController : MonoBehaviour
         switch (enemyState)
         {
             case EnemyState.Idle:
-                patrol.enabled = true;
                 patrol.isPatrolling = false;
+                jump.enabled = false;
+                patrol.enabled = true;
                 break;
             case EnemyState.Patrolling:
-                patrol.enabled = true;
                 patrol.isPatrolling = true;
+                jump.enabled = false;
+                patrol.enabled = true;
                 break;
             case EnemyState.Zoning:
                 patrol.enabled = false;
-                zone.enabled = true;
                 attack.enabled = false;
+                jump.enabled = false;
+                zone.enabled = true;
                 break;
             case EnemyState.Attacking:
                 patrol.enabled = false;
-                attack.enabled = true;
                 zone.enabled = false;
+                jump.enabled = false;
+                attack.enabled = true;
                 break;
-            case EnemyState.Stunned:
+            case EnemyState.Jumping:
                 patrol.enabled = false;
                 zone.enabled = false;
-                attack.enabled = false;
+                jump.enabled = true;
                 break;
+            case EnemyState.Stunned:
             case EnemyState.Dead:
                 patrol.enabled = false;
                 zone.enabled = false;
                 attack.enabled = false;
+                jump.enabled = false;
                 break;
         }
     }

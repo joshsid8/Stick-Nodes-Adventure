@@ -88,7 +88,7 @@ public class Beam : AbilityBase
                         {
                             damageable.Damage(damage, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
                             damageable.Stun(stunTime);
-                            PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
+                            PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.25f;
                         }
                     }
                     break;
@@ -100,7 +100,7 @@ public class Beam : AbilityBase
                         {
                             damageable.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, damageFactor);
                             damageable.Stun(stunTime);
-                            PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
+                            PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.25f;
                         }
                     }
                     break;
@@ -115,7 +115,7 @@ public class Beam : AbilityBase
                             {
                                 damageable.Damage(damage, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
                                 damageable.Stun(stunTime);
-                                PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
+                                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.25f;
                             }
                         }
                         else if (entity.CompareTag("Player"))
@@ -125,7 +125,7 @@ public class Beam : AbilityBase
                             {
                                 pDmg.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, damageFactor);
                                 pDmg.Stun(stunTime);
-                                PlayerHealth.Instance.pc.currentCombatTimer += PlayerHealth.Instance.pc.combatTimer * 0.25f;
+                                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.25f;
                             }
                         }
                         else print("Clueless.");

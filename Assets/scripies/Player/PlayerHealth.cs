@@ -1,5 +1,6 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,6 +40,13 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     [SerializeField] private bool isTinting;
     private SpriteRenderer spriteRenderer;
     [SerializeField] private bool spawnOnAwake = true;
+    
+    public bool inCombat;
+    public float combatTimer;
+    public float currentCombatTimer;
+    public List<GameObject> aggressiveEnemies = new List<GameObject>();
+    public int aggressiveEnemyID;
+    public float jumpRotationTimer;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -71,6 +79,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         Stunned();
         Tint();
         Regeneration();
+        JumpRotate();
         healthBar.fillAmount = playerHealth / playerMaxHealth;
         //healthText.text = playerHealth == playerMaxHealth ? playerHealth.ToString("F0") +  " / " + playerMaxHealth.ToString("F0")
         //    : playerHealth.ToString("F1") +  " / " + playerMaxHealth.ToString("F0");
@@ -110,11 +119,11 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             isDead = false;
             gameObject.layer = LayerMask.NameToLayer("Player");
             pc.canAct = true;
-            pc.currentCombatTimer = 0;
+            currentCombatTimer = 0;
         }
     }
 
-    public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageFactor)
+    public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageFactor, int elementFactor)
     {
         if (facingRight && !pc.isFacingRight || !facingRight && pc.isFacingRight)
         {
@@ -211,9 +220,20 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     {
         if (playerHealth > 0 && playerHealth < playerMaxHealth)
         {
-            if (pc.inCombat) playerHealth += Time.deltaTime * 3 * regenerationMultiplier;
-            else playerHealth += Time.deltaTime * 1 * regenerationMultiplier;
+            if (inCombat) playerHealth += Time.deltaTime * 3 * regenerationMultiplier;
+            else playerHealth += Time.deltaTime * regenerationMultiplier;
         }
         if (playerHealth > playerMaxHealth) playerHealth = playerMaxHealth;
+    }
+    
+    private void JumpRotate()
+    {
+        jumpRotationTimer -= Time.deltaTime;
+        if (inCombat && aggressiveEnemies.Count > 0 && jumpRotationTimer <= 0)
+        {
+            foreach (var enemy in aggressiveEnemies) enemy.GetComponent<EnemyJump>().myTurn = false;
+            aggressiveEnemies[aggressiveEnemyID].GetComponent<EnemyJump>().myTurn = true;
+            jumpRotationTimer = aggressiveEnemies[aggressiveEnemyID].GetComponent<EnemyJump>().turnTimer;
+        }
     }
 }

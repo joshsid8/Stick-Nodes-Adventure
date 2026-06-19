@@ -73,10 +73,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
     public float inputDirection;
-    public bool inCombat;
-    public float combatTimer;
-    public float currentCombatTimer;
-    public LayerMask oneWayPlatformLayer; // Assign the "OneWayPlatform" layer in the Inspector
+    
+    public LayerMask oneWayPlatformLayer;
     public float dropThroughDuration = 0.3f;
     public GameObject currentCheckPoint;
     public GameObject currentSpawnPoint;
@@ -108,7 +106,7 @@ public class PlayerController : MonoBehaviour
         originalJumpForce = jumpForce;
         availableWallsLeft = availableWalls;
         
-        currentCombatTimer = 0;
+        PlayerHealth.Instance.currentCombatTimer = 0;
     }
 
     // Update is called once per frame
@@ -378,14 +376,14 @@ public class PlayerController : MonoBehaviour
 
     private void InCombat()
     {
-        if (currentCombatTimer > 0) inCombat = true;
-        if (inCombat)
+        if (PlayerHealth.Instance.currentCombatTimer > 0) PlayerHealth.Instance.inCombat = true;
+        if (PlayerHealth.Instance.inCombat)
         {
             combatIndicator.SetActive(true);
-            currentCombatTimer -= Time.deltaTime;
-            if (currentCombatTimer <= 0) inCombat = false;
+            PlayerHealth.Instance.currentCombatTimer -= Time.deltaTime;
+            if (PlayerHealth.Instance.currentCombatTimer <= 0) PlayerHealth.Instance.inCombat = false;
         }
-        if (!inCombat) combatIndicator.SetActive(false);
+        if (!PlayerHealth.Instance.inCombat) combatIndicator.SetActive(false);
     }
     private IEnumerator DropThroughPlatform(Collider2D platformCollider)
     {
