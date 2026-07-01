@@ -319,6 +319,12 @@ MonoBehaviour:
   tintSpeed: 5
   isTinting: 0
   spawnOnAwake: 0
+  inCombat: 0
+  combatTimer: 0
+  currentCombatTimer: 0
+  aggressiveEnemies: []
+  aggressiveEnemyID: 0
+  jumpRotationTimer: 5
 --- !u!114 &114786552731468920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,9 +425,6 @@ MonoBehaviour:
   rb: {fileID: 0}
   animator: {fileID: 0}
   inputDirection: 0
-  inCombat: 0
-  combatTimer: 20
-  currentCombatTimer: 0
   oneWayPlatformLayer:
     serializedVersion: 2
     m_Bits: 65536

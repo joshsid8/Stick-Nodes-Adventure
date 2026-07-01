@@ -6,10 +6,15 @@ SNADV Notes
     Priorities:
         
         Jumping logic
-            If multiple enemies are fighting the player, let them have a choice to
-                Take turns fighting the player one on one
-                Fight the player at the same time
-                    Maybe even add extra moves that the enemies do  
+            This is making some decent progress
+                The intervals between enemies are being recognised
+                The behaviour needs some work
+                    Sometimes 2 enemies are attacking even when they shouldnt
+                        A fix would maybe be the state changes or the jump script?
+                    bystanding enemies are just idle instead of zoning
+                        unsure what could be done to fix this
+                even when clearly visible, a null ref is shown when jumping begins
+                    WE dont know why
         
         Ability Logic
             Hitbox logic

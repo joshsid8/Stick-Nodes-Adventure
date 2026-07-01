@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     private EnemyAttack attack;
     private EnemyHealth health;
     private EnemyZone zone;
-    private EnemyJump jump;
+    [SerializeField] private EnemyJump jump;
     [HideInInspector] public string idName;
     public Enemy enemy;
 
@@ -23,6 +23,7 @@ public class EnemyController : MonoBehaviour
         attack = GetComponent<EnemyAttack>();
         health = GetComponent<EnemyHealth>();
         zone = GetComponent<EnemyZone>();
+        jump = GetComponent<EnemyJump>();
         if (enemy != null) enemy.SetProperties(attack);
         if (patrol != null && patrol.isPatrolling) ChangeState(EnemyState.Patrolling);
         else ChangeState(EnemyState.Idle);
@@ -70,14 +71,13 @@ public class EnemyController : MonoBehaviour
         {
             if (!PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
                 PlayerHealth.Instance.aggressiveEnemies.Add(gameObject);
-            if (PlayerHealth.Instance.aggressiveEnemies.Count > 1) ChangeState(EnemyState.Jumping);
         }
-        else
+        else if (enemyState == EnemyState.Dead || enemyState == EnemyState.Idle || enemyState == EnemyState.Patrolling)
         {
             if (PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
                 PlayerHealth.Instance.aggressiveEnemies.Remove(gameObject);
         }
-
+        
         FacePlayer();
     }
 
@@ -90,12 +90,10 @@ public class EnemyController : MonoBehaviour
         {
             case EnemyState.Idle:
                 patrol.isPatrolling = false;
-                jump.enabled = false;
                 patrol.enabled = true;
                 break;
             case EnemyState.Patrolling:
                 patrol.isPatrolling = true;
-                jump.enabled = false;
                 patrol.enabled = true;
                 break;
             case EnemyState.Zoning:

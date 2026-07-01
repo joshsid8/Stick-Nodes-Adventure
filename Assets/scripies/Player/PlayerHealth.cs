@@ -228,12 +228,20 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     
     private void JumpRotate()
     {
-        jumpRotationTimer -= Time.deltaTime;
-        if (inCombat && aggressiveEnemies.Count > 0 && jumpRotationTimer <= 0)
+        if (jumpRotationTimer > 0) jumpRotationTimer -= Time.deltaTime;
+        if (aggressiveEnemies.Count > 1 && jumpRotationTimer <= 0)
         {
-            foreach (var enemy in aggressiveEnemies) enemy.GetComponent<EnemyJump>().myTurn = false;
+            foreach (var enemy in aggressiveEnemies)
+            {
+                enemy.GetComponent<EnemyJump>().myTurn = false;
+                enemy.GetComponent<EnemyController>().ChangeState(EnemyController.EnemyState.Zoning);
+            }
             aggressiveEnemies[aggressiveEnemyID].GetComponent<EnemyJump>().myTurn = true;
-            jumpRotationTimer = aggressiveEnemies[aggressiveEnemyID].GetComponent<EnemyJump>().turnTimer;
+            aggressiveEnemies[aggressiveEnemyID].GetComponent<EnemyController>().ChangeState(EnemyController.EnemyState.Jumping);
+            jumpRotationTimer = 5;//aggressiveEnemies[aggressiveEnemyID].GetComponent<EnemyJump>().turnTimer;
+            aggressiveEnemyID++;
+            if (aggressiveEnemyID >= aggressiveEnemies.Count) aggressiveEnemyID = 0;
+            print($"switching to {aggressiveEnemies[aggressiveEnemyID].name}");
         }
     }
 }

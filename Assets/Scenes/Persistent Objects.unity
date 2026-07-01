@@ -7900,6 +7900,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3867000731731542275, guid: e20865639346b7740a0545167afb8c2c, type: 3}
+      propertyPath: jump
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3938795057032240365, guid: e20865639346b7740a0545167afb8c2c, type: 3}
       propertyPath: m_Name
       value: Hostile Cynderian
@@ -11725,11 +11729,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -60.76789
+      value: -68.40117
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 33.233665
+      value: 26.206196
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13352,7 +13356,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -59.381054, y: 33.28754, z: -0.059537888}
+  m_LocalPosition: {x: -67.01433, y: 26.26007, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14682,7 +14686,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -59.381054, y: 33.28754, z: -0.059537888}
+  m_LocalPosition: {x: -67.01433, y: 26.26007, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
