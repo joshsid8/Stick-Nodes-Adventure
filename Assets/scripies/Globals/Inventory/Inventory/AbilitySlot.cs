@@ -2,14 +2,12 @@ using UnityEngine;
 public class AbilitySlot : MonoBehaviour
 {
     // Ability Scroll Data
-    public GameObject abilityPrefab;
-    public int abilityType;
+    public AbilityObjSO abilityObj;
     
-    public void AddAbility(AbilitySO ability, int type)
+    public void AddAbility(AbilitySO ability)
     {
-        abilityType = type;
-        abilityPrefab = ability.abilityPrefab;
-        PlayerHealth.Instance.gameObject.GetComponent<PlayerPerformAbility>().objects[abilityType].abilityPrefab = abilityPrefab;
+        abilityObj = ability.abilityObject;
+        PlayerHealth.Instance.gameObject.GetComponent<PerformAbility>().objects[PlayerHealth.Instance.GetComponent<PlayerAbility>().blastIndex] = abilityObj;
     }
     
 }

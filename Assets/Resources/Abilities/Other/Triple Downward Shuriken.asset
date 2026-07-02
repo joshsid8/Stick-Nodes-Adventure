@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085255e3a03594428d4b653873ec179, type: 3}
+  m_Name: Triple Downward Shuriken
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityObjSO
+  abilityPrefab: {fileID: 5179120200687164443, guid: 20811f14f99480c4c9cb21db31c3e97c, type: 3}
+  setProperties: 1
+  isDirectional: 1
+  energyRequired: 0
+  proc: 0
+  amount: 3
+  initSeparation: 0
+  separation: 1
+  spawnInterval: 0
+  speedMult: 0.8
+  cooldownMult: 1
+  lifetimeMult: 1
+  damageMult: 1.2
+  potency: 1
+  sizeMult: 1
+  isHoldable: 0
+  abilityOnCollide: 0

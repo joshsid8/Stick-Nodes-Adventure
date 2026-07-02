@@ -17,7 +17,7 @@ public class PlayerAbility : MonoBehaviour
     public bool isPerformingAbility;
     public bool isHolding;
     [SerializeField] private int maxBlastIndex;
-    [SerializeField] private int blastIndex;
+    public int blastIndex;
     [SerializeField] private int blastType;
     
     public PerformAbility ability;

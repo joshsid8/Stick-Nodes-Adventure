@@ -15,12 +15,14 @@ SNADV Notes
                         unsure what could be done to fix this
                 even when clearly visible, a null ref is shown when jumping begins
                     WE dont know why
-        
+	Enemy Logic
+        When an enemy forgets the player, they merge their facing logic
+		    Patrolling happens but they try to face the player, which breaks them 
+
         Ability Logic
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
                     I think i have to use MATHS!!!
-                        lemme learn this at uni first XD
 
     Optimisations & Hotfixes:
                  

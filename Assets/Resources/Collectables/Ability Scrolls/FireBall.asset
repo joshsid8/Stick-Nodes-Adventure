@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Fire Ball
   itemDescription: 
-  itemSprite: {fileID: 0}
-  abilityType: 0
-  abilityPrefab: {fileID: 405958439007119369, guid: 43d5ccae8f2b58c468a7580a5e7993c3, type: 3}
+  itemSprite: {fileID: 21300000, guid: 10dfbb59757f33544b410b620c1a1986, type: 3}
+  abilityObject: {fileID: 11400000, guid: 27de6398fc421b6459c99cb7e3019e89, type: 2}

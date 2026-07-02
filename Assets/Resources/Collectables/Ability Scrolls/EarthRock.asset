@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Earth Rock
   itemDescription: 
-  itemSprite: {fileID: 0}
-  abilityType: 0
-  abilityPrefab: {fileID: 1196550910580000029, guid: f0a8db11793dab94dba11873795ee258, type: 3}
+  itemSprite: {fileID: -517000693774824612, guid: 3a06d524836d6034f8df6cb1099336a4, type: 3}
+  abilityObject: {fileID: 11400000, guid: a572cc0c9f1b21249b0613e2dc962b89, type: 2}

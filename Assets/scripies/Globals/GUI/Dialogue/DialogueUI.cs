@@ -48,8 +48,8 @@ public class DialogueUI : MonoBehaviour
         player.jumpForce = 0f;
         isAnimated = dialogueObject.IsAnimated;
         dialogueBox.SetActive(true);
-        InvManager.Instance.isActivated = false;
-        InvManager.Instance.inventoryMenu.SetActive(false);
+        InvManager.Instance.isActivated = true;
+        InvManager.Instance.ToggleInventory();
         textIndex = dialogueObject.colourIndex;
         currentColourIndex = 0;
         currentBoldIndex = 0;

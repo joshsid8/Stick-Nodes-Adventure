@@ -15,22 +15,22 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
     private PlayerController pc;
     private PlayerHealth ph;
     private PlayerAbility pa;
-    private PlayerPerformAbility pp;
+    private PerformAbility pp;
     private PlayerDefense pd;
     private PlayerCombat pf;
     private StatsManager statsManager;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    private void Awake()
     {
         statDescription.text = string.Empty;
         isClicked = false;
-        pc = FindAnyObjectByType<PlayerController>();
-        ph = FindAnyObjectByType<PlayerHealth>();
-        pa = FindAnyObjectByType<PlayerAbility>();
-        pp = FindAnyObjectByType<PlayerPerformAbility>();
-        pd = FindAnyObjectByType<PlayerDefense>();
-        pf = FindAnyObjectByType<PlayerCombat>();
+        pc = PlayerHealth.Instance.pc;
+        ph = PlayerHealth.Instance;
+        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
+        pp = PlayerHealth.Instance.GetComponent<PerformAbility>();
+        pd = PlayerHealth.Instance.GetComponent<PlayerDefense>();
+        pf = PlayerHealth.Instance.GetComponent<PlayerCombat>();
         statsManager = FindAnyObjectByType<StatsManager>();
         ClearInfo();
     }

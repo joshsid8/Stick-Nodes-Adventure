@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Water Beam
   itemDescription: 
-  itemSprite: {fileID: 0}
-  abilityType: 2
-  abilityPrefab: {fileID: 527549009820817163, guid: 653bd4e95aafbd344852914b7449c136, type: 3}
+  itemSprite: {fileID: 21300000, guid: b935ead5ac6156e4a9d9d5642bd66be5, type: 3}
+  abilityObject: {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}

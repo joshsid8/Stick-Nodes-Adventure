@@ -14,7 +14,6 @@ public class InvManager : MonoBehaviour
     public AbilitySlot abilitySlot;
     public InvIndex Index;
 
-
     public Button useButton;
     public Button destroyButton;
 
@@ -29,7 +28,6 @@ public class InvManager : MonoBehaviour
         if (player == null) Debug.LogWarning("InvManager: PlayerController not found.");
         if (playerManager == null) Debug.LogWarning("InvManager: PlayerManager not found.");
 
-        if (inventoryMenu != null) inventoryMenu.SetActive(false); 
         InitializeAllSlots();
     }
 
@@ -52,14 +50,14 @@ public class InvManager : MonoBehaviour
         if (Input.GetKeyDown("p")) SaveSystem.Load();
     }
 
-    private void ToggleInventory()
+    public void ToggleInventory()
     {
         isActivated = !isActivated;
-        if (inventoryMenu != null) inventoryMenu.SetActive(isActivated);
+        if (inventoryMenu != null) GetComponent<RectTransform>().anchoredPosition = new Vector2(0, isActivated ? 0 : -1000);
         if (player != null) player.canAct = !isActivated;
     }
 
-    public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType, ItemSO itemSo ,AspectSO aspect, AbilitySO ability, int abilitype)
+    public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {
@@ -120,9 +118,9 @@ public class InvManager : MonoBehaviour
         AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null ,aspect, null, 0);
     }
 
-    public void EquipAbility(AbilitySO ability, int abilityType)
+    public void EquipAbility(AbilitySO ability)
     {
-        if (abilitySlot != null) abilitySlot.AddAbility(ability, abilityType); 
+        if (abilitySlot != null) abilitySlot.AddAbility(ability); 
     }
 
     public void SelectSlot()
@@ -136,8 +134,8 @@ public class InvManager : MonoBehaviour
 
     public void DeselectAllSlots()
     {
-        foreach (ItemSlot slot in itemSlots) if (slot != null) slot.Deselect();
-        foreach (AspectSlot slot in aspectSlots) if (slot != null) slot.Deselect();
+        foreach (var slot in itemSlots) if (slot != null) slot.Deselect();
+        foreach (var slot in aspectSlots) if (slot != null) slot.Deselect();
         useButton.gameObject.SetActive(false);
         destroyButton.gameObject.SetActive(false);
     }
@@ -168,7 +166,7 @@ public class InvManager : MonoBehaviour
             
             else if (data.storedItems[i] is AbilitySO)
                 AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, 
-                    "Ability", null, null, ability, ability.abilityType);
+                    "Ability", null, null, ability);
         }
     }
     

@@ -1032,7 +1032,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToUnload.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: 'scenesToLoad.Array.data[0]'
@@ -1059,9 +1059,17 @@ PrefabInstance:
       value: Water Teste
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[1].m_SceneName
+      value: Air Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToUnload.Array.data[0].m_SceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[1].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 0aa6d8d28337fc84781eeca2a6d3f87e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3819,9 +3827,9 @@ MonoBehaviour:
   mapTextColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
   mapBgColor: {r: 0.29411766, g: 0.19607843, b: 0.19607843, a: 1}
   newOst:
-  - {fileID: 8300000, guid: fc393531e1e22a84485c076e1c1d9624, type: 3}
+  - {fileID: 8300000, guid: 4ce7f5177ccbeaf48acc3fc90841ec29, type: 3}
   - {fileID: 8300000, guid: 70aea786642af9e4f93925edccda9df4, type: 3}
-  - {fileID: 8300000, guid: 70aea786642af9e4f93925edccda9df4, type: 3}
+  - {fileID: 8300000, guid: e309fd76ab94f0742a7087260299b423, type: 3}
   sceneName: 
   sceneObjects: []
   doorObjects: []
@@ -4188,7 +4196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToUnload.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: 'scenesToLoad.Array.data[0]'
@@ -4223,9 +4231,17 @@ PrefabInstance:
       value: Earth Teste
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[1].m_SceneName
+      value: Air Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToUnload.Array.data[0].m_SceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[1].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 0aa6d8d28337fc84781eeca2a6d3f87e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5068,7 +5084,11 @@ PrefabInstance:
     - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: itemSpawner.Array.data[0].collectable
       value: 
-      objectReference: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
+      objectReference: {fileID: 11400000, guid: 619807cf4a3de5745a10a564311b843e, type: 2}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: itemSpawner.Array.data[0].objectToSpawn
+      value: 
+      objectReference: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
     - target: {fileID: 5190355191559164575, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: m_Offset.x
       value: 0

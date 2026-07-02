@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Water Shield
   itemDescription: 
-  itemSprite: {fileID: 0}
-  abilityType: 0
-  abilityPrefab: {fileID: 5666566314921807767, guid: 3a931a06a111b764aa4176f4edcf61f6, type: 3}
+  itemSprite: {fileID: 81878385346070119, guid: e81f63579cc8f1b40ad3422b8310cd1c, type: 3}
+  abilityObject: {fileID: 11400000, guid: c26ce271830d9f0479166b4cb8def539, type: 2}

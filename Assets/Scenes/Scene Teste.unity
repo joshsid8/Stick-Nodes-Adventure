@@ -726,6 +726,10 @@ PrefabInstance:
       propertyPath: mapManager
       value: 
       objectReference: {fileID: 944811995}
+    - target: {fileID: 3280337274249721655, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: Lens.OrthographicSize
+      value: 10.61
+      objectReference: {fileID: 0}
     - target: {fileID: 4524482998962597035, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: objective
       value: 1
@@ -738,6 +742,18 @@ PrefabInstance:
       propertyPath: 'keys.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
+    - target: {fileID: 6566410319582992843, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: Composition.DeadZone.Size.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566410319582992843, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: Composition.DeadZone.Size.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566410319582992843, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: Composition.ScreenPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9019721987122131995, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_Name
       value: Section

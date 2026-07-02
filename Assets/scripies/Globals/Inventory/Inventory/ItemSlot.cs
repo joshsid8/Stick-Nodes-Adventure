@@ -86,7 +86,10 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             if (itemImage != null)
             {
                 itemImage.enabled = true;
+                itemImage.preserveAspect = true;
+                if (itemSprite != null) itemImage.color = Color.white;
                 itemImage.sprite = itemSprite;
+                //itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(itemImage.GetComponent<RectTransform>().sizeDelta.x * 1.2f, itemImage.GetComponent<RectTransform>().sizeDelta.y * 1.2f);
             }
             
             if (amountText != null)
@@ -173,7 +176,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     private void ItemTypeAction()
     {
         if (itemType != null && itemType == "Aspect") EquipAspect();
-        else if (itemType != null && itemType == "Ability") invManager.EquipAbility(abilityStats, abilitySlotType);
+        else if (itemType != null && itemType == "Ability") invManager.EquipAbility(abilityStats);
         else if (itemType != "Key") UseItem();
     }
 
