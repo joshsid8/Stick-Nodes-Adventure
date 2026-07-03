@@ -9,9 +9,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource sfxSource;
     
     public AudioClip[] backgroundMusic;
+    public float[] backgroundMusicVolume;
     public AudioClip[] sFXMusic;
     
-    public float musicVolume;
+    //public float musicVolume;
 
     public GameObject[] gUI;
     
@@ -49,6 +50,7 @@ public class AudioManager : MonoBehaviour
             toggle = true;
             musicSource.Pause();
             musicSource.clip = backgroundMusic[1];
+            musicSource.volume = backgroundMusicVolume[1];
             musicSource.Play();
         }
         else if (!player.inCombat)
@@ -56,6 +58,7 @@ public class AudioManager : MonoBehaviour
             toggle = false;
             musicSource.Pause();
             musicSource.clip = backgroundMusic[0];
+            musicSource.volume = backgroundMusicVolume[0];
             musicSource.Play();
         }
     }
@@ -65,13 +68,13 @@ public class AudioManager : MonoBehaviour
         {
             if (gUI[i].activeInHierarchy)
             {
-                musicSource.volume = musicVolume;
+                musicSource.volume = backgroundMusicVolume[0] / 2;
                 sfxSource.volume = 0.2f;
 
             }
             if (!gUI[i].activeInHierarchy)
             {
-                musicSource.volume = 1f;
+                musicSource.volume = backgroundMusicVolume[0];
                 sfxSource.volume = 1f;
             }
         }

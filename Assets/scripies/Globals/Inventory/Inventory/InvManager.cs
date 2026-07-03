@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InvManager : MonoBehaviour
+public class InvManager : GUIBase
 {
     public static InvManager Instance {get; private set;}
     

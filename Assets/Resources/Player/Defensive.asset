@@ -14,30 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 120
   regenerationMultiplier: 3
-  modRegenerationMultiplier: 2
-  movementSpeed: 7
+  shockMultiplier: 1
+  rawDamageResistance: 1
+  movementSpeedMultiplier: 1
+  jumpForceMultiplier: 1
   dashSpeed: 20
-  startDashTime: 0.65
+  dashTime: 0.65
   dashCooldown: 0.7
   dashEnergyCost: 7.5
   maxEnergy: 50
-  energyRefill: 4
-  modEnergyRefill: 2
-  abilityEnergyCost: 10
-  damageMultiplier: 1
-  abilityCooldown: 1
+  energyRefillMultiplier: 1
+  abilityDamageMultiplier: 1
+  abilityCooldownMultiplier: 1
+  abilityPotency: 1
+  abilityLifetimeMultiplier: 1
   m1Ability: 1
-  groundDamageAmount: 15
-  groundAttackCooldown: 0.3
-  groundAttackEnergy: 5
-  airDamageAmount: 12
-  airAttackForce: 10
-  airAttackCooldown: 0.15
-  playerAttackStunTime: 0.3
+  airAttackForce: 5
+  attackDamageMultiplier: 1
+  attackPotency: 1.2
+  attackCooldownMultiplier: 1.2
   blockDamageResistance: 0.6
-  stunMultiplier: 0.5
   counterAbility: 1
   counterTime: 0.2
   counterDamageResistance: 0.1
   counterDamage: 30
-  counterStun: 1

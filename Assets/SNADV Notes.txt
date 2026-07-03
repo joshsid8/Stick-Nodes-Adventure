@@ -5,6 +5,11 @@ SNADV Notes
     
     Priorities:
         
+        GUI Logic
+            Let all gui's have a base class for stuff like
+                Stopping the player from moving when any pops
+                Probably other stuff but the idea is there
+        
         Jumping logic
             This is making some decent progress
                 The intervals between enemies are being recognised
@@ -15,17 +20,19 @@ SNADV Notes
                         unsure what could be done to fix this
                 even when clearly visible, a null ref is shown when jumping begins
                     WE dont know why
-	Enemy Logic
-        When an enemy forgets the player, they merge their facing logic
-		    Patrolling happens but they try to face the player, which breaks them 
+	    Enemy Logic
+            When an enemy forgets the player, they merge their facing logic
+		        Patrolling happens but they try to face the player, which breaks them 
 
+        
+
+    Optimisations & Hotfixes:
+        
         Ability Logic
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
                     I think i have to use MATHS!!!
-
-    Optimisations & Hotfixes:
-                 
+                
         Animations
             Make better/seperate animations in general
                 Player

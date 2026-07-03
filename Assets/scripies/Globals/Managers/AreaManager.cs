@@ -33,7 +33,7 @@ public class AreaManager : MonoBehaviour
         Display();
     }
 
-    public IEnumerator Announce(string title, string description, Color textColor , Color bgColor)
+    public IEnumerator Announce(string title, string description, Color textColor, Color bgColor)
     {
         isAnnouncing = true;
         titleText.text = title;

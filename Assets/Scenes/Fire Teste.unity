@@ -3830,6 +3830,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4ce7f5177ccbeaf48acc3fc90841ec29, type: 3}
   - {fileID: 8300000, guid: 70aea786642af9e4f93925edccda9df4, type: 3}
   - {fileID: 8300000, guid: e309fd76ab94f0742a7087260299b423, type: 3}
+  ostVolume:
+  - 0.5
+  - 0.7
+  - 0.7
   sceneName: 
   sceneObjects: []
   doorObjects: []

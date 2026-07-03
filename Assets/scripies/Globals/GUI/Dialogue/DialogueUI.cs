@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-public class DialogueUI : MonoBehaviour
+public class DialogueUI : GUIBase
 {
     public static DialogueUI Instance {get; private set;}
     

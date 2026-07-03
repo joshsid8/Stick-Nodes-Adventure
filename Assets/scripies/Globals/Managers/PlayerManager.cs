@@ -90,7 +90,7 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["CounterTime"] = basePlayerStats.CounterTime;
         currentFloatStats["CounterDamageResistance"] = basePlayerStats.CounterDamageResistance;
         currentFloatStats["CounterDamage"] = basePlayerStats.CounterDamage;
-        currentFloatStats["AvailableWalls"] = basePlayerStats.AvailableWalls;
+        //currentFloatStats["AvailableWalls"] = basePlayerStats.AvailableWalls;
 
         // Populate currentBooleanStats with initial values from basePlayerStats
         currentBooleanStats["CounterAbility"] = basePlayerStats.CounterAbility;

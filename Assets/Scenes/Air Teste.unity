@@ -576,8 +576,12 @@ MonoBehaviour:
   mapBgColor: {r: 0.75686276, g: 0.8627451, b: 0.90588236, a: 1}
   newOst:
   - {fileID: 8300000, guid: 583e99ab9497ba64e9553f56ec99da42, type: 3}
-  - {fileID: 8300000, guid: 583e99ab9497ba64e9553f56ec99da42, type: 3}
   - {fileID: 8300000, guid: 96e1a91bb9faf844d96dafb7ff0633b3, type: 3}
+  - {fileID: 8300000, guid: 583e99ab9497ba64e9553f56ec99da42, type: 3}
+  ostVolume:
+  - 0.7
+  - 0.7
+  - 0.7
   sceneName: 
   sceneObjects: []
   doorObjects: []

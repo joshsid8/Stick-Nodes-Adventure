@@ -11681,7 +11681,7 @@ PrefabInstance:
     - target: {fileID: 386975709121032260, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: ability
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8277281213622200415}
     - target: {fileID: 386975709121032260, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: energyBar
       value: 
@@ -11732,11 +11732,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 42.88864
+      value: 27.210854
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 19.867561
+      value: 30.422491
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12936,6 +12936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5326360456dc3964aad414e4fcf16120, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
   inventoryMenu: {fileID: 4461149075969398643}
   isActivated: 0
   itemSlots:
@@ -13351,7 +13352,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 43.27548, y: 19.921436, z: -0.059537888}
+  m_LocalPosition: {x: 27.59769, y: 30.476368, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14395,8 +14396,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  backgroundMusicVolume:
+  - 0
+  - 0
+  - 0
   sFXMusic: []
-  musicVolume: 0.5
   gUI:
   - {fileID: 8025661200280666599}
   withPlayer: 1
@@ -14673,7 +14677,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 43.27548, y: 19.921436, z: -0.059537888}
+  m_LocalPosition: {x: 27.59769, y: 30.476368, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15361,6 +15365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefd940e4ea217b41bb38b18a8036832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
   dialogueBox: {fileID: 8025661200280666599}
   textLabel: {fileID: 3993206632223023890}
   npcNameLabel: {fileID: 4443174417944041316}
@@ -16737,6 +16742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4cd9818c2b4ec04782616546225f838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
   titleText: {fileID: 8549860784608265913}
   messageText: {fileID: 9169072465693684123}
   positiveButton: {fileID: 3607127566457109644}

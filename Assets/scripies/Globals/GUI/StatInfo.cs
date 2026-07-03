@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StatInfo : MonoBehaviour, IPointerClickHandler
+public class StatInfo : GUIBase, IPointerClickHandler
 {
     [SerializeField] private TMP_Text statName;
     [SerializeField] private GameObject shader;

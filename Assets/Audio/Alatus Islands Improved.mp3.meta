@@ -1,25 +1,21 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Audio/Alatus Islands Improved.mp3.meta
 guid: 583e99ab9497ba64e9553f56ec99da42
-========
-guid: c702acffab3d7cd43a0069cacbbf30db
->>>>>>>> 4dd133f00a14da4beac10e2fdf275befe2450f7e:Assets/Audio/Noxus Temple.mp3.meta
 AudioImporter:
   externalObjects: {}
   serializedVersion: 8
   defaultSettings:
     serializedVersion: 2
-    loadType: 0
+    loadType: 1
     sampleRateSetting: 0
-    sampleRateOverride: 44100
+    sampleRateOverride: 0
     compressionFormat: 1
     quality: 1
     conversionMode: 0
-    preloadAudioData: 0
+    preloadAudioData: 1
   platformSettingOverrides: {}
   forceToMono: 0
   normalize: 1
-  loadInBackground: 0
+  loadInBackground: 1
   ambisonic: 0
   3D: 1
   userData: 

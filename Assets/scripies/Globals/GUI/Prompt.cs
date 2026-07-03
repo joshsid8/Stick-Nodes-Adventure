@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Prompt : MonoBehaviour
+public class Prompt : GUIBase
 {
     public TMP_Text titleText;
     public TMP_Text messageText;

@@ -29,9 +29,9 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float jumpForceMultiplier = 1f;
     public float JumpForceMultiplier => jumpForceMultiplier;
     
-    [Tooltip("The amount of wall jumps before landing")]
+    /*[Tooltip("The amount of wall jumps before landing")]
     [SerializeField] private float availableWalls;
-    public float AvailableWalls => availableWalls;
+    public float AvailableWalls => availableWalls;*/
         
     [Tooltip("Speed of the dash")]
     [SerializeField] private float dashSpeed = 25f;

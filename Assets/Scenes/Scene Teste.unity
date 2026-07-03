@@ -591,6 +591,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 25b86c86108058141b317ba059b1cd8f, type: 3}
   - {fileID: 8300000, guid: a598244769fb27148b6779d5be7fac6f, type: 3}
   - {fileID: 8300000, guid: 43403296c6de0aa4996eed30c6d583b6, type: 3}
+  ostVolume:
+  - 0.7
+  - 0.7
+  - 0.7
   sceneName: 
   sceneObjects: []
   doorObjects: []

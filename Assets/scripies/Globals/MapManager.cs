@@ -15,6 +15,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] private Color mapTextColor = Color.white;
     [SerializeField] private Color mapBgColor = Color.white;
     [SerializeField] private AudioClip[] newOst;
+    public float[] ostVolume = {0.5f,0.5f,0.5f};
 
     #endregion
 
@@ -68,9 +69,12 @@ public class MapManager : MonoBehaviour
         {
             AreaManager.Instance.StartCoroutine(AreaManager.Instance.Announce(mapName, mapDescription, mapTextColor, mapBgColor));
             AudioManager.Instance.musicSource.Stop();
-            AudioManager.Instance.backgroundMusic[0] = newOst[0];
-            AudioManager.Instance.backgroundMusic[1] = newOst[1];
-            AudioManager.Instance.backgroundMusic[2] = newOst[2];
+            for (var i = 0; i < AudioManager.Instance.backgroundMusic.Length; i++)
+            {
+                AudioManager.Instance.backgroundMusic[i] = newOst[i];
+                AudioManager.Instance.backgroundMusicVolume[i] = ostVolume[i];
+            }
+
             AudioManager.Instance.musicSource.Play();
             GameObject.Find("Main Camera").GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
         }
