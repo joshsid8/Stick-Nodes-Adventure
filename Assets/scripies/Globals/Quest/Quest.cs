@@ -99,10 +99,10 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 var needs = Array.Empty<(CollectableSOBase id, int count)>();
                 for (var i = 0; i < oTi.Length; i++) needs = new (CollectableSOBase id, int count)[] {(oTi[i], noOfO[i])};
                 
-                if (InvManager.Instance == null || InvManager.Instance.Index == null)
+                if (InvManager.Instance == null || InvManager.Instance.invIndex == null)
                 {Debug.LogWarning("Quest: InvManager/InvIndex doesnt exist. KILL YOURSELF!!!"); return;}
                 
-                var canCompleteQuest = InvManager.Instance.Index.MeetsAllCounts(needs);
+                var canCompleteQuest = InvManager.Instance.invIndex.MeetsAllCounts(needs);
                 if (canCompleteQuest) questCompleted = true;
                 break;
             

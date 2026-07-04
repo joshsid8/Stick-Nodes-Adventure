@@ -39,7 +39,7 @@ public class SaveSystem
         PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);
         PlayerManager.Instance.Save(ref saveData.playerStats);
         InvManager.Instance.Save(ref saveData.playerInventory);
-        InvManager.Instance.Index.Save(ref saveData.playerIndex);
+        InvManager.Instance.invIndex.Save(ref saveData.playerIndex);
         QuestLogManager.Instance.Save(ref saveData.playerQuests);
     }
 
@@ -49,7 +49,7 @@ public class SaveSystem
         PlayerHealth.Instance.pc.Load(saveData.playerCurrentData);
         PlayerManager.Instance.Load(saveData.playerStats);
         InvManager.Instance.Load(saveData.playerInventory);
-        InvManager.Instance.Index.Load(saveData.playerIndex);
+        InvManager.Instance.invIndex.Load(saveData.playerIndex);
         QuestLogManager.Instance.Load(saveData.playerQuests);
     }
 

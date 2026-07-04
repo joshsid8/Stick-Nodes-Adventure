@@ -18,13 +18,18 @@ public class Prompt : GUIBase
     public bool no;
     public bool neutral;
     
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         neutral = true;
         gameObject.SetActive(false);
+        GetActive(false);
     }
-
     private void Update()
     {
         if (yes) no = false;
@@ -39,6 +44,7 @@ public class Prompt : GUIBase
     public void Choices()
     {
         gameObject.SetActive(true);
+        if (!gameObject.activeSelf) GetActive(true);
         neutral = false;
         positiveButton.onClick.AddListener(() => Positive());
         negativeButton.onClick.AddListener(() => Negative());
@@ -47,16 +53,16 @@ public class Prompt : GUIBase
     private void Positive()
     {
         yes = true;
-        Disable();
+        Finish();
     }
 
     private void Negative()
     {
         no = true;
-        Disable();
+        Finish();
     }
 
-    public void Disable()
+    public void Finish()
     {
         neutral = true;
         positiveButton.onClick.RemoveAllListeners();
@@ -65,5 +71,6 @@ public class Prompt : GUIBase
         titleText.text = "Are you sure?";
         messageText.text = "Are you certain of what you want to do?";
         gameObject.SetActive(false);
+        GetActive(false);
     }
 }

@@ -6,9 +6,11 @@ SNADV Notes
     Priorities:
         
         GUI Logic
-            Let all gui's have a base class for stuff like
-                Stopping the player from moving when any pops
-                Probably other stuff but the idea is there
+            The base has been implemented! just one small error
+                When DialogueUI closes the other uis, the player can still move
+                    This may be because the active gui count gets decremented more than once
+                    But even then, after making a makeshift fix (forcing it to be 1), the player can still move
+                    This is probably something Junie can fix
         
         Jumping logic
             This is making some decent progress

@@ -21,8 +21,9 @@ public class StatInfo : GUIBase, IPointerClickHandler
     private StatsManager statsManager;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         statDescription.text = string.Empty;
         isClicked = false;
         pc = PlayerHealth.Instance.pc;

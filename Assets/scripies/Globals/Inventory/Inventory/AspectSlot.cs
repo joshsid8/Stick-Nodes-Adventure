@@ -145,13 +145,13 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
             choice.yes = false;
             invManager.UnequipAspect(itemName, itemSprite, itemDescription, aspectStats);
             ClearSlot();
-            choice.Disable();
+            choice.Finish();
             UpdateSlotUI();
         }
         else if (choice.no)
         {
             choice.no = false;
-            choice.Disable();
+            choice.Finish();
         }
     }
     

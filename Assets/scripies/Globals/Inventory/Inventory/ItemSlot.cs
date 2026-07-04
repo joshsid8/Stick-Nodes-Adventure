@@ -72,7 +72,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         abilitySlotType = abilityType;
         itemAmount += amount;
 
-        if (invManager.Index != null && itemScriptableObject != null) invManager.Index.AddItem(itemScriptableObject, amount);
+        if (invManager.invIndex != null && itemScriptableObject != null) invManager.invIndex.AddItem(itemScriptableObject, amount);
         usedSlot = true;
         UpdateSlotUI();
     }
@@ -184,7 +184,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         if (invManager.playerManager != null && itemType != "Key") invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
         else if (invManager.playerManager == null) Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
-        if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject);
+        if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
         
         itemAmount--;
         if (itemAmount <= 0)
@@ -207,7 +207,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
                 {
                     string iName = itemName;
                     Sprite iSprite = itemSprite; string iDescription = itemDescription; AspectSO aStats = aspectStats;
-                    if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject);
+                    if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
                     ClearSlot();
                     invManager.EquipAspect(iName, iSprite, iDescription, aStats);
                     
@@ -232,15 +232,15 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (choice.yes)
         {
             choice.yes = false;
-            if (invManager.Index != null) invManager.Index.RemoveItem(itemScriptableObject, itemAmount);
+            if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject, itemAmount);
             ClearSlot();
-            choice.Disable();
+            choice.Finish();
             UpdateSlotUI();
         }
         else if (choice.no)
         {
             choice.no = false;
-            choice.Disable();
+            choice.Finish();
         }
     }
     

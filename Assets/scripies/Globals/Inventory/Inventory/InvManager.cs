@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InvManager : GUIBase
@@ -7,27 +8,26 @@ public class InvManager : GUIBase
     public static InvManager Instance {get; private set;}
     
     public GameObject inventoryMenu;
-    public bool isActivated;
-    private PlayerController player;
     public ItemSlot[] itemSlots;
     public AspectSlot[] aspectSlots;
     public AbilitySlot abilitySlot;
-    public InvIndex Index;
+    public InvIndex invIndex;
 
     public Button useButton;
     public Button destroyButton;
 
     public PlayerManager playerManager;
-    void Awake()
+    protected override void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        player = FindAnyObjectByType<PlayerController>();
+        base.Awake();
+        rt = GetComponent<RectTransform>();
         playerManager = FindAnyObjectByType<PlayerManager>();
-        Index = new InvIndex();
+        invIndex = new InvIndex();
         if (player == null) Debug.LogWarning("InvManager: PlayerController not found.");
         if (playerManager == null) Debug.LogWarning("InvManager: PlayerManager not found.");
-
+        if (isActive) ToggleInventory();
         InitializeAllSlots();
     }
 
@@ -41,9 +41,9 @@ public class InvManager : GUIBase
     void Update()
     {
         if (Input.GetButtonDown("Inventory")) ToggleInventory();
-        else if (Input.GetButtonDown("Cancel") && isActivated)
+        if (Input.GetButtonDown("Cancel") && isActive)
         {
-            isActivated = true;
+            isActive = true;
             ToggleInventory();
         }
         if (Input.GetKeyDown("o")) SaveSystem.Save();
@@ -52,9 +52,13 @@ public class InvManager : GUIBase
 
     public void ToggleInventory()
     {
-        isActivated = !isActivated;
-        if (inventoryMenu != null) GetComponent<RectTransform>().anchoredPosition = new Vector2(0, isActivated ? 0 : -1000);
-        if (player != null) player.canAct = !isActivated;
+        if (inventoryMenu != null)
+        {
+            isActive = !isActive;
+            rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
+            inventoryMenu.SetActive(isActive);
+            GetActive(isActive);
+        }
     }
 
     public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)

@@ -69,7 +69,7 @@ public class DoorObjective : MonoBehaviour
             case Objectives.FindKeys:
                 if (playerDetected)
                 {
-                    foreach (var key in keys) if (!InvManager.Instance.Index.HasAtLeast(key, 1)) 
+                    foreach (var key in keys) if (!InvManager.Instance.invIndex.HasAtLeast(key, 1)) 
                         return;
                     isOpen = true;
                     foreach (var key in keys)

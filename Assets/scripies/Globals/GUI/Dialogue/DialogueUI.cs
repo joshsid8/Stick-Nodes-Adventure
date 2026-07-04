@@ -14,14 +14,13 @@ public class DialogueUI : GUIBase
     private DialogueResponseHandler handler; // Already exists
     private GameObject playerBars;
     public bool isAnimated;
-    private PlayerController player;
     public Animator animator;
     [SerializeField] int textIndex;
     [SerializeField] int currentColourIndex;
     private bool isBold;
     [SerializeField] int currentBoldIndex;
     
-    private void Start()
+    protected override void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -29,10 +28,11 @@ public class DialogueUI : GUIBase
             return;
         }
         Instance = this;
+        base.Awake();
         
         typeWriter = GetComponent<TypeWriterFX>();
         handler = GetComponent<DialogueResponseHandler>();
-        player = GameObject.Find("Player").GetComponent<PlayerController>();
+        rt = GetComponent<RectTransform>();
         playerBars = GameObject.Find("PlayerBars");
         CloseDialogue(null);
     }
@@ -41,15 +41,12 @@ public class DialogueUI : GUIBase
     
     public void ShowDialogue(DialogueObject dialogueObject)
     {
+        CloseAll();
         playerBars.SetActive(false);
-        player.canAct = false;
-        player.isFrozen = true;
-        player.isFrozen = false;
-        player.jumpForce = 0f;
         isAnimated = dialogueObject.IsAnimated;
         dialogueBox.SetActive(true);
-        InvManager.Instance.isActivated = true;
-        InvManager.Instance.ToggleInventory();
+        gameObject.SetActive(true);
+        GetActive(true);
         textIndex = dialogueObject.colourIndex;
         currentColourIndex = 0;
         currentBoldIndex = 0;
@@ -87,14 +84,14 @@ public class DialogueUI : GUIBase
     {
         if (dialogueObject.isQuestInteraction && dialogueObject.questActionType == Quest.QuestType.GiveTo)
         {
-            if (InvManager.Instance == null || InvManager.Instance.Index == null) Debug.LogError("Quest Check: InvManager or its Index is not ready!");
+            if (InvManager.Instance == null || InvManager.Instance.invIndex == null) Debug.LogError("Quest Check: InvManager or its Index is not ready!");
             else
             {
                 var needs = new (CollectableSOBase id, int count)[dialogueObject.questItems.Length];
                 for (var i = 0; i < dialogueObject.questItems.Length; i++)
                     needs[i] = (dialogueObject.questItems[i], dialogueObject.questItemAmounts[i]);
                 
-                var hasItems = InvManager.Instance.Index.MeetsAllCounts(needs);
+                var hasItems = InvManager.Instance.invIndex.MeetsAllCounts(needs);
                 if (!hasItems)
                 {
                     if (dialogueObject.itemCheckFailureDialogue != null) 
@@ -128,17 +125,13 @@ public class DialogueUI : GUIBase
 
         typeWriter.actionFactor = 0;
         dialogueBox.SetActive(false);
+        GetActive(false);
         textLabel.text = String.Empty;
-        if (player != null)
-        {
-            player.canAct = true;
-            player.jumpForce = player.originalJumpForce;
-        }
-
+        if (player != null) player.canAct = true;
         playerBars.SetActive(true);
         textLabel.color = Color.black;
         npcNameLabel.color = Color.black;
-
+        
         if (dialogueObject != null && dialogueObject.isQuestInteraction && dialogueObject.questActionType == Quest.QuestType.SpeakTo &&
             dialogueObject.completeSpeakQuestOnClose)
         {

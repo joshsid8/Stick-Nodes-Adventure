@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class QuestLogManager : MonoBehaviour
+public class QuestLogManager : GUIBase
 {
     public static QuestLogManager Instance { get; private set; }
 
     public Quest[] questSlots;
 
     public GameObject questMenu;
-    public bool isActivated;
-    private PlayerController player;
-    private RectTransform rt;
 
     string[] questNames;
     string[] questDescriptions;
@@ -27,18 +25,18 @@ public class QuestLogManager : MonoBehaviour
 
 
 
-    private void Awake()
+    protected override void Awake()
     {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
+        base.Awake();
         player = FindAnyObjectByType<PlayerController>();
         rt = GetComponent<RectTransform>();
-
+        
         var n = questSlots != null && questSlots.Length > 0 ? questSlots.Length : 8;
 
         questNames = new string[n];
@@ -51,7 +49,7 @@ public class QuestLogManager : MonoBehaviour
         questNoOfObjects = new int[n][];
         questNpCs = new DialogueObject[n];
         questRewards = new CollectableSOBase[n][];
-
+        if (isActive) ToggleQuestLog();
     }
 
     public void AssignQuest(QuestSO quest)
@@ -64,18 +62,23 @@ public class QuestLogManager : MonoBehaviour
     void Update()
     {
         if (Input.GetButtonDown("Quest")) ToggleQuestLog();
-        else if (Input.GetButtonDown("Cancel") && isActivated)
+        else if (Input.GetButtonDown("Cancel") && isActive)
         {
-            isActivated = true;
+            isActive = true;
             ToggleQuestLog();
         }
+        
     }
 
-    private void ToggleQuestLog()
+    public void ToggleQuestLog()
     {
-        isActivated = !isActivated;
-        if (questMenu != null) rt.anchoredPosition = new Vector2(0, isActivated ? 0 : 1000);
-        if (player != null) player.canAct = !isActivated;
+        if (questMenu != null)
+        {
+            isActive = !isActive;
+            rt.anchoredPosition = new Vector2(0, isActive ? 0 : 1000);
+            questMenu.SetActive(isActive);
+            GetActive(isActive);
+        }
     }
 
     private void AddQuest(Quest.QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat,
