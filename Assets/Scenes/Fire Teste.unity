@@ -3828,8 +3828,8 @@ MonoBehaviour:
   mapBgColor: {r: 0.29411766, g: 0.19607843, b: 0.19607843, a: 1}
   newOst:
   - {fileID: 8300000, guid: 4ce7f5177ccbeaf48acc3fc90841ec29, type: 3}
+  - {fileID: 8300000, guid: 3752fe360d066c54f98ee63340ab0d2a, type: 3}
   - {fileID: 8300000, guid: 70aea786642af9e4f93925edccda9df4, type: 3}
-  - {fileID: 8300000, guid: e309fd76ab94f0742a7087260299b423, type: 3}
   ostVolume:
   - 0.5
   - 0.7

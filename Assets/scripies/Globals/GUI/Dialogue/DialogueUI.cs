@@ -127,7 +127,6 @@ public class DialogueUI : GUIBase
         dialogueBox.SetActive(false);
         GetActive(false);
         textLabel.text = String.Empty;
-        if (player != null) player.canAct = true;
         playerBars.SetActive(true);
         textLabel.color = Color.black;
         npcNameLabel.color = Color.black;

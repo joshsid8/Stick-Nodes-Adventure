@@ -52,13 +52,13 @@ public class InvManager : GUIBase
 
     public void ToggleInventory()
     {
+        isActive = !isActive;
         if (inventoryMenu != null)
         {
-            isActive = !isActive;
             rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
             inventoryMenu.SetActive(isActive);
-            GetActive(isActive);
         }
+        GetActive(isActive);
     }
 
     public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)

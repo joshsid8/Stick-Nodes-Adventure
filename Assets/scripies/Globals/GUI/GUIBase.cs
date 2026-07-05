@@ -10,23 +10,21 @@ public abstract class GUIBase : MonoBehaviour
     protected PlayerController player;
     protected RectTransform rt;
 
-    protected virtual void Awake()
-    {
-        GetPlayer();
-    }
+    protected virtual void Awake() => GetPlayer();
+    
 
     private void Update()
     {
         if (ActiveGUICount < 0) ActiveGUICount = 0;
     }
 
-    protected void GetPlayer()
+    private void GetPlayer()
     {
         if (player == null && PlayerHealth.Instance != null)
             player = PlayerHealth.Instance.GetComponent<PlayerController>();
     }
 
-    protected virtual void Enable()
+    private void Enable()
     {
         isActive = true;
         ActiveGUICount++;
@@ -36,24 +34,20 @@ public abstract class GUIBase : MonoBehaviour
 
     protected void CloseAll()
     {
-        foreach (var gui in FindObjectsByType<GUIBase>(FindObjectsSortMode.None)){
-            if (gui.isActive)
+        var allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
+        foreach (var gui in allGuis){
+            if (gui.isActive && gui != this)
             {
                 if (gui.TryGetComponent<InvManager>(out var inv)) inv.ToggleInventory();
                 else if (gui.TryGetComponent<QuestLogManager>(out var quest)) quest.ToggleQuestLog();
-                else
-                {
-                    print($"Closing {gui.gameObject.name}");
-                    gui.isActive = false;
-                    gui.GetActive(false);
-                }
-                ActiveGUICount--;
+                else gui.GetActive(false);
             }
         }
     }
 
-    protected void Disable()
+    private void Disable()
     {
+        //if (!isActive) return;
         isActive = false;
         ActiveGUICount = Mathf.Max(0, ActiveGUICount - 1);
         UpdatePlayerState();

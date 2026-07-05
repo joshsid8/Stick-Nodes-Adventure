@@ -5,28 +5,16 @@ SNADV Notes
     
     Priorities:
         
-        GUI Logic
-            The base has been implemented! just one small error
-                When DialogueUI closes the other uis, the player can still move
-                    This may be because the active gui count gets decremented more than once
-                    But even then, after making a makeshift fix (forcing it to be 1), the player can still move
-                    This is probably something Junie can fix
-        
         Jumping logic
-            This is making some decent progress
-                The intervals between enemies are being recognised
-                The behaviour needs some work
-                    Sometimes 2 enemies are attacking even when they shouldnt
-                        A fix would maybe be the state changes or the jump script?
-                    bystanding enemies are just idle instead of zoning
-                        unsure what could be done to fix this
-                even when clearly visible, a null ref is shown when jumping begins
-                    WE dont know why
+            This is making some alright progress
+                I think i think the switching between enemies work now i think
+                Zoning tho needs work
+                    It needs intervals for when the enemy strafes
+                       this is to make it less robotic and sometimes running into the player
+                
 	    Enemy Logic
             When an enemy forgets the player, they merge their facing logic
 		        Patrolling happens but they try to face the player, which breaks them 
-
-        
 
     Optimisations & Hotfixes:
         

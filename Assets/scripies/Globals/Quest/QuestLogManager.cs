@@ -72,13 +72,13 @@ public class QuestLogManager : GUIBase
 
     public void ToggleQuestLog()
     {
+        isActive = !isActive;
         if (questMenu != null)
         {
-            isActive = !isActive;
             rt.anchoredPosition = new Vector2(0, isActive ? 0 : 1000);
             questMenu.SetActive(isActive);
-            GetActive(isActive);
         }
+        GetActive(isActive);
     }
 
     private void AddQuest(Quest.QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat,

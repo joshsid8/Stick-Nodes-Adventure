@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public enum EnemyState { Idle, Patrolling, Zoning, Attacking, Jumping, Stunned, Dead }
+    public enum EnemyState { Idle, Patrolling, Zoning, Attacking, Stunned, Dead }
     public EnemyState enemyState;
 
     private EnemyPatrol patrol;
     private EnemyAttack attack;
     private EnemyHealth health;
     private EnemyZone zone;
-    [SerializeField] private EnemyJump jump;
+    private EnemyJump jump;
     [HideInInspector] public string idName;
     public Enemy enemy;
 
@@ -76,8 +76,9 @@ public class EnemyController : MonoBehaviour
         {
             if (PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
                 PlayerHealth.Instance.aggressiveEnemies.Remove(gameObject);
+            jump.isJumping = false;
         }
-        
+        jump.isJumping = PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject) && PlayerHealth.Instance.aggressiveEnemies.Count > 1;
         FacePlayer();
     }
 
@@ -99,26 +100,18 @@ public class EnemyController : MonoBehaviour
             case EnemyState.Zoning:
                 patrol.enabled = false;
                 attack.enabled = false;
-                jump.enabled = false;
                 zone.enabled = true;
                 break;
             case EnemyState.Attacking:
                 patrol.enabled = false;
                 zone.enabled = false;
-                jump.enabled = false;
                 attack.enabled = true;
-                break;
-            case EnemyState.Jumping:
-                patrol.enabled = false;
-                zone.enabled = false;
-                jump.enabled = true;
                 break;
             case EnemyState.Stunned:
             case EnemyState.Dead:
                 patrol.enabled = false;
                 zone.enabled = false;
                 attack.enabled = false;
-                jump.enabled = false;
                 break;
         }
     }
