@@ -11,14 +11,16 @@ public class EnemyJump : MonoBehaviour
     [SerializeField] private GameObject[] partners = new GameObject[1];
     private EnemyController ec;
     private EnemyAttack ea;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+
+    public EnemyAttack.StyleMode prevState;
+    private void Awake()
     {
         ec = GetComponent<EnemyController>();
         ea = GetComponent<EnemyAttack>();
     }
     private void UpdatePartners()
     {
+        prevState = ea.styleMode;
         var allies = PlayerHealth.Instance.aggressiveEnemies;
         var prePartners = new List<GameObject>();
         foreach (var ally in allies)
@@ -30,16 +32,13 @@ public class EnemyJump : MonoBehaviour
     {
         if (isJumping)
         {
-            if (myTurn && turnTimer > 0)
-            {
-                turnTimer -= Time.deltaTime;
-                print($"{gameObject.name}'s turn");
-            }
+            if (myTurn && turnTimer > 0) turnTimer -= Time.deltaTime;
 
             if (turnTimer <= 0)
             {
                 myTurn = false;
                 turnTimer = turnTime;
+                ea.styleMode = EnemyAttack.StyleMode.Passive;
                 ec.ChangeState(EnemyController.EnemyState.Zoning);
             }
         }

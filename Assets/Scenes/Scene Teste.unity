@@ -564,6 +564,7 @@ GameObject:
   - component: {fileID: 944811997}
   - component: {fileID: 944811996}
   - component: {fileID: 944811995}
+  - component: {fileID: 944811998}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -584,7 +585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapName: Building Stimulation
-  mapDescription: 'For engineering, cuz where are we tho '
+  mapDescription: A place for testing, cuz where are we tho
   mapTextColor: {r: 0.95294124, g: 0.9960785, b: 0.854902, a: 1}
   mapBgColor: {r: 0.27450982, g: 0.27450982, b: 0.27450982, a: 1}
   newOst:
@@ -592,10 +593,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a598244769fb27148b6779d5be7fac6f, type: 3}
   - {fileID: 8300000, guid: 43403296c6de0aa4996eed30c6d583b6, type: 3}
   ostVolume:
+  - 1
   - 0.7
   - 0.7
-  - 0.7
-  sceneName: 
+  sceneName: Scene Teste
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -674,6 +675,44 @@ Transform:
   - {fileID: 133440351}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &944811998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944811994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a851b4b95a4a5240abb79aa3392fb79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
+  weatherFactor: 1
+  weatherProperties:
+  - weatherMapName: Heat Place
+    weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
+    weatherTextColor: {r: 0.9528302, g: 0.72387344, b: 0.50787646, a: 1}
+    weatherBgColor: {r: 0.7254902, g: 0.5176471, b: 0.31764707, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    weatherOstVolume:
+    - 0.7
+    - 1
+    - 0.7
+  - weatherMapName: Cold Place
+    weatherMapDesc: '*Freeze gun mk!! sound effect*'
+    weatherTextColor: {r: 0.50980395, g: 0.9529412, b: 0.93078697, a: 1}
+    weatherBgColor: {r: 0.31764707, g: 0.65114826, b: 0.7254902, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: c669484eb0d37a943bee55cb9de126ad, type: 3}
+    - {fileID: 8300000, guid: 15ec6ab4e5a27bc458bd6d81eca6199b, type: 3}
+    - {fileID: 8300000, guid: 15ec6ab4e5a27bc458bd6d81eca6199b, type: 3}
+    weatherOstVolume:
+    - 1
+    - 1
+    - 1
 --- !u!1001 &1002234505
 PrefabInstance:
   m_ObjectHideFlags: 0

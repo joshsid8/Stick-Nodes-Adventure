@@ -56,17 +56,17 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
         Instance = this;
         if (spawnOnAwake) StartCoroutine(Spawn(0, true));
+        pc = GetComponent<PlayerController>();
+        pd = GetComponent<PlayerDefense>();
+        kb = GetComponent<Knockback>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        pc = GetComponent<PlayerController>();
-        pd = GetComponent<PlayerDefense>();
-        pc.animator = GetComponent<Animator>();
-        kb = GetComponent<Knockback>();
         currentStunTime = stunTime * shockMultiplier;
-        spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         originalShockMultiplier = shockMultiplier;
     }
@@ -112,6 +112,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             deathToggle = true;
             isDead = true;
+            StartCoroutine(Shenanigans.Instance.JumpScare(GameObject.Find("JumpScare")));
             yield return new WaitForSeconds(respawnTime);
             StartCoroutine(Spawn(0, true));
             playerHealth = playerMaxHealth * 0.25f;
@@ -220,7 +221,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     {
         if (playerHealth > 0 && playerHealth < playerMaxHealth)
         {
-            if (inCombat) playerHealth += Time.deltaTime * 3 * regenerationMultiplier;
+            if (!inCombat) playerHealth += Time.deltaTime * 3 * regenerationMultiplier;
             else playerHealth += Time.deltaTime * regenerationMultiplier;
         }
         if (playerHealth > playerMaxHealth) playerHealth = playerMaxHealth;
@@ -239,9 +240,10 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 enemy.GetComponent<EnemyController>().ChangeState(EnemyController.EnemyState.Zoning);
                 enemy.GetComponent<EnemyZone>().currentZonePeriod = jumpRotationTimer;
             }
-
+            
             agg.GetComponent<EnemyJump>().myTurn = true;
             agg.GetComponent<EnemyController>().ChangeState(EnemyController.EnemyState.Attacking);
+            agg.GetComponent<EnemyAttack>().styleMode = agg.GetComponent<EnemyJump>().prevState;
             jumpRotationTimer = agg.GetComponent<EnemyJump>().turnTime;
             aggressiveEnemyID++;
             if (aggressiveEnemyID >= aggressiveEnemies.Count) aggressiveEnemyID = 0;

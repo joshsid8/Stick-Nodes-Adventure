@@ -63,24 +63,28 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private IEnumerator OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && AreaManager.Instance.titleText.text != mapName || collision.CompareTag("Player") && AreaManager.Instance.titleText.text != null)
         {
-            AreaManager.Instance.StartCoroutine(AreaManager.Instance.Announce(mapName, mapDescription, mapTextColor, mapBgColor));
-            AudioManager.Instance.musicSource.Stop();
-            for (var i = 0; i < AudioManager.Instance.backgroundMusic.Length; i++)
-            {
-                AudioManager.Instance.backgroundMusic[i] = newOst[i];
-                AudioManager.Instance.backgroundMusicVolume[i] = ostVolume[i];
-            }
-
-            AudioManager.Instance.musicSource.Play();
-            GameObject.Find("Main Camera").GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
+            yield return new WaitForSeconds(0.1f);
+            GetComponent<WeatherManager>().SetWeather();
         }
-        
-        //if (collision.CompareTag("Player")) LoadSceneData();
-        
+    }
+
+    public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
+    public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume)
+    {
+        AreaManager.Instance.StartCoroutine(AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor));
+        AudioManager.Instance.musicSource.Stop();
+        for (var i = 0; i < AudioManager.Instance.backgroundMusic.Length; i++)
+        {
+            AudioManager.Instance.backgroundMusic[i] = mOst[i];
+            AudioManager.Instance.backgroundMusicVolume[i] = mOstVolume[i];
+        }
+
+        AudioManager.Instance.musicSource.Play();
+        GameObject.Find("Main Camera").GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
     }
 
     private void OnTriggerExit2D(Collider2D collision)

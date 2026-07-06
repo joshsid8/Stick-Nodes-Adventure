@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
     private EnemyJump jump;
     [HideInInspector] public string idName;
     public Enemy enemy;
-
+    private bool canFacePlayer;
     public bool isFacingRight = true;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -79,7 +79,8 @@ public class EnemyController : MonoBehaviour
             jump.isJumping = false;
         }
         jump.isJumping = PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject) && PlayerHealth.Instance.aggressiveEnemies.Count > 1;
-        FacePlayer();
+        canFacePlayer = attack.canFacePlayer;
+        if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling && enemyState != EnemyState.Dead) FacePlayer();
     }
 
     public void ChangeState(EnemyState newState)
@@ -125,10 +126,9 @@ public class EnemyController : MonoBehaviour
     
     private void FacePlayer()
     {
-        if (attack.canFacePlayer)
+        if (canFacePlayer)
         {
-            if (attack.playerTransform == null) return;
-            var directionToPlayer = attack.playerTransform.position.x - transform.position.x;
+            var directionToPlayer = PlayerHealth.Instance.transform.position.x - transform.position.x;
             if (directionToPlayer > 0 && !isFacingRight || directionToPlayer < 0 && isFacingRight) Flip();
         }
     }

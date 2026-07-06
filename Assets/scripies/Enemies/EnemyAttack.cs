@@ -14,8 +14,8 @@ public class EnemyAttack : MonoBehaviour
     private string flyTrigger = "FlyJump";
     
     [Tooltip("When the player runs near")] public bool defensiveCheck; 
-    [Tooltip("Certain actions performed if the player isn't close or far")] public bool passiveCheck; // Certain actions performed if the player isnt close or far
-
+    [Tooltip("Certain actions performed if the player isn't close or far")] public bool passiveCheck;
+    
     [Tooltip("The enemy coming close to the player")] public string[] activeMoves; 
     [Tooltip("Certain actions performed if the player isn't close or far")] public string[] passiveMoves;
     [Tooltip("The enemy evading/backing up from the player")] public string[] evasiveMoves;
@@ -142,7 +142,7 @@ public class EnemyAttack : MonoBehaviour
         {
             if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime;
             else currentSpareTimer = spareTimer;
-            if (currentSpareTimer <= 0) ec.ChangeState(EnemyController.EnemyState.Idle);
+            if (currentSpareTimer <= 0) ec.ChangeState(EnemyController.EnemyState.Patrolling);
         }
     }
 

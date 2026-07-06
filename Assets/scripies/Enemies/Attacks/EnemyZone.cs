@@ -9,6 +9,7 @@ public class EnemyZone : MonoBehaviour
     public float activeZoneTime;
     [SerializeField] private float zoneSpeed = 10;
     [SerializeField] private float zoneInterval = 0.3f;
+    [SerializeField] private float intervalTimer;
     private EnemyController ec;
     private EnemyAttack ea;
     private EnemyJump ej;
@@ -19,9 +20,6 @@ public class EnemyZone : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start() => currentZonePeriod = ea.currentAttackCooldown; 
-    // AWAKE HOWEVER IS BEFORREEEE
     void Awake()
     {
         ec = GetComponent<EnemyController>();
@@ -37,54 +35,85 @@ public class EnemyZone : MonoBehaviour
         styleMode = ea.styleMode;
         defensiveCheck = ea.defensiveCheck;
         passiveCheck = ea.passiveCheck;
-        animator.SetBool("isZoning", isZoning);
+        defensiveCheck = Physics2D.OverlapCircle(transform.position, ea.defensiveModeRadius, ea.pLayer);
+        passiveCheck = Physics2D.OverlapCircle(transform.position, ea.passiveModeRadius, ea.pLayer);
+        
+        animator.SetBool("isZoning", rb.linearVelocity.x != 0);
         if (currentZonePeriod <= 0 && !ej.isJumping || currentZonePeriod <= 0 && ej.isJumping && ej.myTurn) ec.ChangeState(EnemyController.EnemyState.Attacking);
         //else if (currentZonePeriod <= 0 && ej.isJumping && !ej.myTurn) then we dont know
         else currentZonePeriod -= Time.deltaTime;
+        intervalTimer -= Time.deltaTime;
+        if (activeZoneTime > 0) activeZoneTime -= Time.deltaTime;
+        else
+        {
+            isZoning = !isZoning;
+            if (!isZoning) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            else activeZoneTime = zoneTime;
+        }
     }
 
-    private void FixedUpdate() => StartCoroutine(Zone());
+    private void FixedUpdate()
+    {
+        if (intervalTimer <= 0 && activeZoneTime > 0 && isZoning)
+        {
+            Zone();
+            intervalTimer = zoneInterval;
+        }
+    }
+    private void OnEnable()
+    {
+        intervalTimer = zoneInterval;
+        currentZonePeriod = ea.currentAttackCooldown;
+    }
     
     private void OnDisable()
     {
         isZoning = false;
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         animator.SetBool("isZoning", false);
     }
 
-    private IEnumerator Zone()
+    private void Zone()
     {
         var playerDist = PlayerHealth.Instance.transform.position.x - transform.position.x;
-        if (activeZoneTime > 0) activeZoneTime -= Time.deltaTime;
-        else
+
+        switch (styleMode)
         {
-            activeZoneTime = zoneTime;
-            isZoning = !isZoning;
-            if (!isZoning) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        }
-        
-        if (ec.enemyState == EnemyController.EnemyState.Zoning && activeZoneTime > 0 && isZoning)
-        {
-            switch (styleMode)
-            {
-                case EnemyAttack.StyleMode.Active:
-                    if (!defensiveCheck)
-                        rb.linearVelocity = new Vector2(playerDist > 0 ? zoneSpeed : -zoneSpeed, rb.linearVelocity.y);
-                    break;
-                case EnemyAttack.StyleMode.Passive:
-                    if (!passiveCheck)
-                        rb.linearVelocity = new Vector2(playerDist > 0 ? zoneSpeed : -zoneSpeed, rb.linearVelocity.y);
-                    break;
-                case EnemyAttack.StyleMode.Evasive:
-                    if (defensiveCheck || passiveCheck)
-                        rb.linearVelocity = new Vector2(playerDist > 0 ? -zoneSpeed : zoneSpeed, rb.linearVelocity.y);
-                    else rb.linearVelocity = new Vector2(playerDist > 0 ? zoneSpeed : -zoneSpeed, rb.linearVelocity.y);
-                    break;
-                default:
-                    int[] rng = {Random.Range(0, 101), Random.Range(0, 101)};
-                    rb.linearVelocity = new Vector2(rng[0] <= 100 ? rng[1] <= 50 ? zoneSpeed : -zoneSpeed : 0, rb.linearVelocity.y);
-                    break;
-            }
-            yield return new WaitForSeconds(zoneInterval);
+            case EnemyAttack.StyleMode.Active:
+                if (!defensiveCheck)
+                    rb.linearVelocity = new Vector2(playerDist > 0 ? zoneSpeed : -zoneSpeed, rb.linearVelocity.y);
+                else
+                {
+                    int[] rng = { Random.Range(0, 101), Random.Range(0, 101) };
+                    rb.linearVelocity = new Vector2(rng[0] <= 50 ? rng[1] <= 50 ? zoneSpeed : -zoneSpeed : 0,
+                        rb.linearVelocity.y);
+                }
+                break;
+            case EnemyAttack.StyleMode.Passive:
+                if (defensiveCheck)
+                    rb.linearVelocity = new Vector2(playerDist > 0 ? -zoneSpeed : zoneSpeed, rb.linearVelocity.y);
+                else if (!passiveCheck && !defensiveCheck)
+                    rb.linearVelocity = new Vector2(playerDist > 0 ? zoneSpeed : -zoneSpeed, rb.linearVelocity.y);
+                else if (passiveCheck)
+                {
+                    int[] rng = { Random.Range(0, 101), Random.Range(0, 101) };
+                    rb.linearVelocity = new Vector2(rng[0] <= 50 ? rng[1] <= 50 ? zoneSpeed : -zoneSpeed : 0,
+                        rb.linearVelocity.y);
+                }
+                break;
+            case EnemyAttack.StyleMode.Evasive:
+                if (defensiveCheck || passiveCheck)
+                    rb.linearVelocity = new Vector2(playerDist > 0 ? -zoneSpeed : zoneSpeed, rb.linearVelocity.y);
+                else
+                {
+                    rb.linearVelocity = new Vector2(playerDist > 0 ? zoneSpeed : -zoneSpeed, rb.linearVelocity.y);
+                }
+                break;
+            default:
+                int[] rng2 = { Random.Range(0, 101), Random.Range(0, 101) };
+                rb.linearVelocity = new Vector2(rng2[0] <= 50 ? rng2[1] <= 50 ? zoneSpeed : -zoneSpeed : 0,
+                    rb.linearVelocity.y);
+                break;
         }
     }
 }

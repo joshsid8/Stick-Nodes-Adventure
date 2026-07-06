@@ -4,17 +4,11 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        
-        Jumping logic
-            This is making some alright progress
-                I think i think the switching between enemies work now i think
-                Zoning tho needs work
-                    It needs intervals for when the enemy strafes
-                       this is to make it less robotic and sometimes running into the player
-                
+             
 	    Enemy Logic
-            When an enemy forgets the player, they merge their facing logic
-		        Patrolling happens but they try to face the player, which breaks them 
+            When switching back to patrol or idle i think attack is left or forced on still
+            The FISHMAN specifically doesnt want to move when zoning, unless he is with another enemy
+                so strange
 
     Optimisations & Hotfixes:
         
@@ -44,7 +38,7 @@ SNADV Notes
             Remake the player animation controller
                 At the moment, it is too tangled
                 Using layers can help make the controller more efficient and look good
-
+        
         Noxu
             !!!!!!!!!Initial Boulder Throwing!!!!!!!!!
                 Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
@@ -73,12 +67,6 @@ SNADV Notes
 
     Things to be added:
         
-        Enemy Logic
-            Different playstyle when low health
-                Sparing
-                Deceiving
-                Asking to fight  
-        
         Fused Animations
             anims that fuse the 2 entities together for a joint animation
                 e.g a finisher on the player from cynder
@@ -104,4 +92,4 @@ SNADV Notes
             TJ is basically will be split into 2 bosses
 
 When you are done: Find the one piece.
-    (This should mean the base has been completed, and I can start on the designs!)
+    (This should mean the base has been completed, and I can start on designs!)

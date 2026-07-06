@@ -248,7 +248,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   enemyState: 0
-  jump: {fileID: 0}
   idName: 
   enemy: {fileID: 0}
   isFacingRight: 1
@@ -417,6 +416,8 @@ MonoBehaviour:
   zoneTime: 1
   activeZoneTime: 0
   zoneSpeed: 6
+  zoneInterval: 0.5
+  intervalTimer: 0
 --- !u!114 &5523440918564517291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,6 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda6fc7820a67ba41b882342e8a1caea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyJump
+  isJumping: 0
   jumpTogether: 0
   myTurn: 0
   turnTime: 5

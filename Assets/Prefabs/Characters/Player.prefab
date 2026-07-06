@@ -320,7 +320,7 @@ MonoBehaviour:
   isTinting: 0
   spawnOnAwake: 0
   inCombat: 0
-  combatTimer: 0
+  combatTimer: 10
   currentCombatTimer: 0
   aggressiveEnemies: []
   aggressiveEnemyID: 0

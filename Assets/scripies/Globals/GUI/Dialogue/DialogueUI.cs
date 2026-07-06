@@ -122,7 +122,6 @@ public class DialogueUI : GUIBase
             isAnimated = false;
             animator = null;
         }
-
         typeWriter.actionFactor = 0;
         dialogueBox.SetActive(false);
         GetActive(false);
