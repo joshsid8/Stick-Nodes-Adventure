@@ -15,8 +15,8 @@ public abstract class GUIBase : MonoBehaviour
 
     private void Update()
     {
-        print(ActiveGUICount);
         if (ActiveGUICount < 0) ActiveGUICount = 0;
+        
     }
 
     private void GetPlayer()

@@ -37,7 +37,7 @@ public class DialogueUI : GUIBase
         CloseDialogue(null);
     }
 
-    private void Update() {textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;}
+    private void Update() {textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal; Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount" ,1);}
     
     public void ShowDialogue(DialogueObject dialogueObject)
     {
@@ -114,7 +114,7 @@ public class DialogueUI : GUIBase
             }
         }
     }
-    
+    public void DecrementActiveGUICount() => ActiveGUICount--;
     private void CloseDialogue(DialogueObject dialogueObject)
     {
         if (isAnimated)
