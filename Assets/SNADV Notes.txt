@@ -9,6 +9,17 @@ SNADV Notes
             When switching back to patrol or idle i think attack is left or forced on still
             The FISHMAN specifically doesnt want to move when zoning, unless he is with another enemy
                 so strange
+        
+        GUI Logic
+            It seems that i think when scene data loads, it makes boss dialogue's index increment
+                Cynder for example speaks as if he already fought the player once
+                
+            It also for some reason makes all gui stop the player from moving after beign dismissed
+                when a choice is shown, it increments the active gui again
+                    i made a makeshift fix by decrementing right after
+                    maybe find a real way to fix it
+        WallJump Logic
+            Make Walljumps go diagonal instead of just an extra jump
 
     Optimisations & Hotfixes:
         

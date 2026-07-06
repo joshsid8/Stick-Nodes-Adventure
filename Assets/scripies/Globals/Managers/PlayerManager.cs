@@ -81,7 +81,7 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["AbilityLifetimeMultiplier"] = basePlayerStats.AbilityLifetimeMultiplier;
         currentFloatStats["AbilityDamageMultiplier"] = basePlayerStats.AbilityDamageMultiplier;
         
-        currentFloatStats["AirAttackForce"] = basePlayerStats.AirAttackForce;
+        //currentFloatStats["AirAttackForce"] = basePlayerStats.AirAttackForce;
         currentFloatStats["AttackDamageMultiplier"] = basePlayerStats.AttackDamageMultiplier;
         currentFloatStats["AttackPotency"] = basePlayerStats.AttackPotency;
         currentFloatStats["AttackCooldownMultiplier"] = basePlayerStats.AttackCooldownMultiplier;

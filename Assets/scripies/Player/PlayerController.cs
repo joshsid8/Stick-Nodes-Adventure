@@ -91,16 +91,20 @@ public class PlayerController : MonoBehaviour
     public GameObject combatIndicator;
     #endregion
     #region Main Methods
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        pco = GetComponent<PlayerCombat>();
+        pab = GetComponent<PlayerAbility>();
+        kb = GetComponent<Knockback>();
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
         canAct = true;
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        defaultGravity = GetComponent<Rigidbody2D>().gravityScale;
-        pco = GetComponent<PlayerCombat>();
-        pab = GetComponent<PlayerAbility>();
-        kb = GetComponent<Knockback>();
+        defaultGravity = rb.gravityScale;
         
         originalMovementSpeed = movementSpeed;
         originalJumpForce = jumpForce;

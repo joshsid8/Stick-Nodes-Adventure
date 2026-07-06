@@ -29,10 +29,9 @@ MonoBehaviour:
   abilityPotency: 1
   abilityLifetimeMultiplier: 1
   m1Ability: 1
-  airAttackForce: 5
   attackDamageMultiplier: 1
   attackPotency: 1
-  attackCooldownMultiplier: 1
+  attackCooldownMultiplier: 0.9
   blockDamageResistance: 0.3
   counterAbility: 0
   counterTime: 0.2

@@ -24,9 +24,9 @@ public class DialogueResponseHandler : MonoBehaviour
 
     public void ShowResponses(DialogueObject dialogueObject)
     {
+        dialogueUI.DecrementActiveGUICount();
         responseButtonsParent.gameObject.SetActive(true);
         responseBox.gameObject.SetActive(true);
-
         // Set button texts
         yesButtonText.text = dialogueObject.YesResponse.ResponseText;
         noButtonText.text = dialogueObject.NoResponse.ResponseText;

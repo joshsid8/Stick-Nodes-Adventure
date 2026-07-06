@@ -79,9 +79,9 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private bool m1Ability = true;
     public bool M1Ability => m1Ability;
 
-    [Tooltip("ARE WE TAILS?! NO I DONT THINK SOOOOOOO")]
-    [SerializeField] private float airAttackForce = 20f;
-    public float AirAttackForce => airAttackForce;
+    //[Tooltip("ARE WE TAILS?! NO I DONT THINK SOOOOOOO")]
+    //[SerializeField] private float airAttackForce = 20f;
+    //public float AirAttackForce => airAttackForce;
     
     [Tooltip("for da damage!!!")]
     [SerializeField] private float attackDamageMultiplier = 1f;

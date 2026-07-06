@@ -13,14 +13,18 @@ public class Beam : AbilityBase
     [SerializeField] private List<GameObject> inContact = new List<GameObject>();
     [SerializeField] private BoxCollider2D beamCollider;
 
-    private void Start()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
+    }
+
+    private void Start()
+    {
         if (anim != null) animator.Play(anim.name);
         lifeTimer = lifeTime; 
         parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? direction : -direction + 180f);
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
-        coll = GetComponent<Collider2D>();
         playerTransform = PlayerHealth.Instance.gameObject.transform;
         procTimes = lifeTime / proc;
         procTimes = energyRequired / procTimes;

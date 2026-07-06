@@ -43,5 +43,4 @@ public class EnemyJump : MonoBehaviour
             }
         }
     }
-    private void OnEnable() => UpdatePartners();
 }

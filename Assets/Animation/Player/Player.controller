@@ -30,7 +30,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Attack
-  m_Speed: 1
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5364511779273057001}
@@ -423,7 +423,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0
+  m_ExitTime: 1
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -509,7 +509,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AirPunch
-  m_Speed: 1
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8643550429391309325}
@@ -674,11 +674,11 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.75000006
+  m_ExitTime: 0
   m_HasExitTime: 0
-  m_HasFixedDuration: 1
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 1
+  m_OrderedInterruption: 0
   m_CanTransitionToSelf: 0
 --- !u!1102 &-2441048867520430572
 AnimatorState:
@@ -875,9 +875,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 1
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.53125
+  m_ExitTime: 0
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1270,7 +1270,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AltAirAttack
-  m_Speed: 1
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1773927518742457956}
@@ -1564,7 +1564,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AltAttack
-  m_Speed: 0.8
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1116354510313427875}
@@ -1609,7 +1609,7 @@ AnimatorStateMachine:
     m_Position: {x: -380, y: -160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8343830942123852575}
-    m_Position: {x: 770, y: 80, z: 0}
+    m_Position: {x: 790, y: 80, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5883790491407836112}
     m_Position: {x: -320, y: -260, z: 0}
@@ -1651,7 +1651,7 @@ AnimatorStateMachine:
     m_Position: {x: -40, y: -360, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5433344073892914720}
-    m_Position: {x: 800, y: 170, z: 0}
+    m_Position: {x: 800, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1259919070278470626}
     m_Position: {x: 890, y: -250, z: 0}
@@ -1689,7 +1689,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AirAttack
-  m_Speed: 1
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 294032334459258191}

@@ -23,12 +23,15 @@ public class EnemyFly : MonoBehaviour
     private EnemyAttack ea;
     private Rigidbody2D rb;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    private void Awake()
     {
         ea = GetComponent<EnemyAttack>();
         rb = GetComponent<Rigidbody2D>();
-        
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Start()
+    {
         previousMoveSpeed = moveSpeed;
         playerTransform = PlayerHealth.Instance.gameObject.transform;
         /*while (isChasing)

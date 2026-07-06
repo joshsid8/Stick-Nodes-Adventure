@@ -26,8 +26,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private bool inRange;
     [SerializeField] private bool isFrozen;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
         ea = GetComponent<EnemyAttack>();

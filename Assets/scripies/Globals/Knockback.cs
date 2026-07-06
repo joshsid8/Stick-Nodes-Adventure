@@ -10,8 +10,7 @@ public class Knockback : MonoBehaviour
     public bool IsBeingKnocked {get; private set;}
     private Rigidbody2D rb;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }

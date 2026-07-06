@@ -344,7 +344,7 @@ MonoBehaviour:
   isAttacking: 0
   canAttack: 0
   attackEnergy: 5
-  attackCooldown: 0.2
+  attackCooldown: 0.15
   airAttackCooldown: 0.15
   airDamageAmount: 20
   airAttackTransform: {fileID: 8094868948852248977}
@@ -361,7 +361,7 @@ MonoBehaviour:
     m_Bits: 1536
   stunTime: 0.2
   knockbackForce: {x: 1, y: 0}
-  airKnockbackForce: {x: 0, y: 0}
+  airKnockbackForce: {x: 1.5, y: 10}
   attackPotency: 1
   attackDamageMult: 1
   attackCooldownMult: 1

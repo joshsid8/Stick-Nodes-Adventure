@@ -12,13 +12,16 @@ public class Pillar : AbilityBase
     [SerializeField] private List<GameObject> inContact = new List<GameObject>();
     [SerializeField] private BoxCollider2D pillarCollider;
     
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        animator = GetComponent<Animator>();
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
-        coll = GetComponent<Collider2D>();
-        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
         if (anim != null) animator.Play(anim.name);
         playerTransform = PlayerHealth.Instance.gameObject.transform;
 
