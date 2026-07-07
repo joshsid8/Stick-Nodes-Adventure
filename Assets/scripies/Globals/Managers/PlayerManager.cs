@@ -231,7 +231,7 @@ public class PlayerManager : MonoBehaviour
         {
             pf.attackDamageMult = GetCurrentFloat("AttackDamageMultiplier");
             pf.attackCooldownMult = GetCurrentFloat("AttackCooldownMultiplier");
-            pf.airAttackForce = GetCurrentFloat("AirAttackForce");
+            //pf.airAttackForce = GetCurrentFloat("AirAttackForce");
             pf.attackPotency = GetCurrentFloat("AttackPotency");
         }
     }

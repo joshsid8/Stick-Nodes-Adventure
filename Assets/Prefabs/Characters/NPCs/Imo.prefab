@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 6671282002503159600}
   - component: {fileID: 912533807617976524}
   - component: {fileID: 4415548856573830941}
+  - component: {fileID: 3332884147948508450}
   - component: {fileID: 1477013022968616644}
   - component: {fileID: 2258819688666097509}
   - component: {fileID: 443793689555385365}
-  - component: {fileID: 4289199599298098837}
   - component: {fileID: 3846862392007994587}
   - component: {fileID: 5629469084799020678}
   - component: {fileID: 5970463740093113175}
@@ -125,6 +125,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3332884147948508450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846562907364595286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 6
+  spawnId: 0
+  typeOfObject: 0
+  mapManager: {fileID: 0}
 --- !u!114 &1477013022968616644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,28 +204,6 @@ MonoBehaviour:
   isHomingPlayer: 0
   inRange: 0
   isFrozen: 0
---- !u!114 &4289199599298098837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2846562907364595286}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bbd76a3cb29da6449033c7973895d1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityPoint: {fileID: 0}
-  projectileSpeed: 0
-  damageMult: 0
-  lifetimeMult: 0
-  potency: 0
-  abilityDirection: 0
-  damageType: 0
-  terrainLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &3846862392007994587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1756532dbb0c340b9ff0c1a323815b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  styleFactor: 0
+  styleMode: 0
   canFly: 0
   isFlying: 0
   movesBeforeFlyingCount: 0
@@ -255,8 +249,12 @@ MonoBehaviour:
   currentAttackCooldown: 0
   stunnable: 0
   rb: {fileID: 0}
+  ep: {fileID: 0}
+  em: {fileID: 0}
+  ef: {fileID: 0}
+  eh: {fileID: 0}
+  ez: {fileID: 0}
   canFacePlayer: 0
-  playerIsDead: 0
   canSpare: 1
   spareTimer: 10
 --- !u!114 &5629469084799020678
@@ -274,6 +272,7 @@ MonoBehaviour:
   isPatrolling: 0
   walkSpeed: 5
   eyeSight: 10
+  canWalk: 1
   walkTime:
   - 2
   - 4
@@ -299,7 +298,7 @@ MonoBehaviour:
     m_Bits: 0
   edgeCheckRay: 2
   rb: {fileID: 0}
-  isFacingRight: 1
+  ec: {fileID: 0}
 --- !u!114 &5970463740093113175
 MonoBehaviour:
   m_ObjectHideFlags: 0

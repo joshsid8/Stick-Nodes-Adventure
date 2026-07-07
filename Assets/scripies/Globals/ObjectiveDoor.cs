@@ -15,8 +15,9 @@ public class ObjectiveDoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (objectiveComplete)
+        if (objectiveComplete && MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
         {
+            mm.SaveSceneData();
             Destroy(gameObject, finishTime);
         }
     }

@@ -19,10 +19,21 @@ public class ItemSpawner : MonoBehaviour
     public TriggerTag triggerTag;
     public enum TriggerTag {Player, Enemy, Boss, Npc}
     [SerializeField] private float spawnInterval;
+
+    private void OnEnable()
+    {
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+            mm.RegisterSpawner(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+            mm.UnregisterSpawner(gameObject);
+    }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()  {
-        GetComponent<Identifier>().AutomateID();
         StartCoroutine(Spawn());
     }
 

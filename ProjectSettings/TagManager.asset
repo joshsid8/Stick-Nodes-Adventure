@@ -12,6 +12,8 @@ TagManager:
   - Boss
   - Item
   - Door
+  - Section
+  - Spawner
   layers:
   - Default
   - TransparentFX

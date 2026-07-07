@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 13393108}
   m_Layer: 12
   m_Name: Section (2)
-  m_TagString: Door
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -496,7 +496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019721987122131995, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_TagString
-      value: Door
+      value: Section
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1456,7 +1456,7 @@ GameObject:
   - component: {fileID: 177574532}
   m_Layer: 7
   m_Name: Door
-  m_TagString: Terrain
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2032,8 +2032,8 @@ Transform:
   m_GameObject: {fileID: 212202268}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 19.6133, y: 55.438602, z: -0.028428493}
-  m_LocalScale: {x: 6.8803945, y: 5.4551487, z: 1}
+  m_LocalPosition: {x: 19.5735, y: 55.438602, z: -0.028428493}
+  m_LocalScale: {x: 6.800582, y: 5.4551487, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 580845221}
@@ -2285,7 +2285,7 @@ GameObject:
   - component: {fileID: 227789834}
   m_Layer: 12
   m_Name: Section
-  m_TagString: Untagged
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2712,7 +2712,7 @@ GameObject:
   - component: {fileID: 341918499}
   m_Layer: 0
   m_Name: Sections
-  m_TagString: Untagged
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3835,12 +3835,12 @@ MonoBehaviour:
   - 0.5
   - 0.7
   - 0.7
-  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
   enemySceneData: []
   enemyIds: 
+  bossHealth: {fileID: 0}
   bossSceneData:
     activeBoss: 
     isDead: 0
@@ -4317,8 +4317,8 @@ Transform:
   m_GameObject: {fileID: 685261973}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.0343, y: 58.4, z: -0.0284}
-  m_LocalScale: {x: 58.15916, y: 0.92788476, z: 2.2241373}
+  m_LocalPosition: {x: -6.0691, y: 58.4, z: -0.0284}
+  m_LocalScale: {x: 58.089367, y: 0.92788476, z: 2.2241373}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 580845221}
@@ -5740,27 +5740,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2913160656945845021, guid: f283c487c77e003499e04c5e0d747125, type: 3}
   m_PrefabInstance: {fileID: 214149323}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1159266702 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2846562907364595286, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-  m_PrefabInstance: {fileID: 1911017936266180913}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1159266715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159266702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 6
-  spawnId: 0
-  typeOfObject: 0
-  mapManager: {fileID: 0}
 --- !u!1 &1174752089
 GameObject:
   m_ObjectHideFlags: 0
@@ -6307,8 +6286,8 @@ Transform:
   m_GameObject: {fileID: 1311922852}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.47349, y: -0.36436, z: -0.14694409}
-  m_LocalScale: {x: 0.06116287, y: 0.28119317, z: 1}
+  m_LocalPosition: {x: -0.47472, y: -0.36436, z: -0.14694409}
+  m_LocalScale: {x: 0.058698006, y: 0.28119317, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 13393103}
@@ -7587,7 +7566,7 @@ GameObject:
   - component: {fileID: 1684563622}
   m_Layer: 0
   m_Name: Spawners
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8803,7 +8782,7 @@ GameObject:
   - component: {fileID: 1969304537}
   m_Layer: 12
   m_Name: Section (3)
-  m_TagString: Untagged
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9963,7 +9942,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019721987122131995, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_TagString
-      value: Door
+      value: Section
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9978,21 +9957,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      propertyPath: dialogue
-      value: 
-      objectReference: {fileID: 11400000, guid: 9bc21a44d25d1d3459fa8753ea4a1945, type: 2}
-    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      propertyPath: chatRadius
-      value: 2.05
-      objectReference: {fileID: 0}
     - target: {fileID: 2846562907364595286, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_Name
       value: Imo
-      objectReference: {fileID: 0}
-    - target: {fileID: 2846562907364595286, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10037,10 +10004,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2846562907364595286, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1159266715}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
 --- !u!1001 &4245894609604807764
 PrefabInstance:
@@ -10290,6 +10254,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: 'scenesToLoad.Array.data[0]'
       value: Water Teste
       objectReference: {fileID: 0}
@@ -10309,6 +10277,14 @@ PrefabInstance:
       propertyPath: scenesToLoad.Array.data[1].m_SceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[0].m_SceneName
+      value: Air Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[0].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 0aa6d8d28337fc84781eeca2a6d3f87e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

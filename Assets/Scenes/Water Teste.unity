@@ -336,7 +336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToUnload.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToLoad.Array.data[0].m_SceneName
@@ -794,12 +794,12 @@ MonoBehaviour:
   - 0.7
   - 0.7
   - 0.7
-  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
   enemySceneData: []
   enemyIds: 
+  bossHealth: {fileID: 0}
   bossSceneData:
     activeBoss: 
     isDead: 0
@@ -1049,7 +1049,7 @@ GameObject:
   - component: {fileID: 341918499}
   m_Layer: 0
   m_Name: Sections
-  m_TagString: Untagged
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3605,7 +3605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToUnload.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToLoad.Array.data[0].m_SceneName
@@ -3620,9 +3620,17 @@ PrefabInstance:
       value: Earth Teste
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[1].m_SceneName
+      value: Fire Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToUnload.Array.data[0].m_SceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
+    - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
+      propertyPath: scenesToUnload.Array.data[1].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

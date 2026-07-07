@@ -133,6 +133,8 @@ public class BossHealth : MonoBehaviour, EDamageables
             deathToggle = true;
             bossHealth = 0;
             isDead = true;
+            if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+                mm.OnBossDefeated();
             StartCoroutine(Defeat());
         }
         else if (bossHealth <= phase2Health) phase2 = true;

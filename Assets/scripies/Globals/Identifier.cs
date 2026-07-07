@@ -13,35 +13,63 @@ public class Identifier : MonoBehaviour
     
     [HideInInspector] public MapManager mapManager;
 
-    //an overload, something to learn more about
+    [ContextMenu("Automate ID")]
     public void AutomateID() => AutomateID(gameObject.scene);
     
     public void AutomateID(Scene targetScene)
     {
         if (mapManager == null)
         {
-            var maps = targetScene.GetRootGameObjects();
-            foreach (var m in maps)
-                if (m.name == "Map")
+            var rootObjects = targetScene.GetRootGameObjects();
+            foreach (var obj in rootObjects)
+            {
+                var mm = obj.GetComponentInChildren<MapManager>(true);
+                if (mm != null)
                 {
-                    mapManager = m.GetComponent<MapManager>(); 
+                    mapManager = mm;
                     break;
                 }
-        }
-        var idn = 1;
-        foreach (var eID in mapManager.enemyIds) if (idn != eID) break; else idn++;
-
-        for (var i = 0; i < mapManager.enemyIds.Count; i++)
-        {
-            if (mapManager.enemyIds[i] == 0)
-            {
-                mapManager.enemyIds[i] = idn;
-                spawnId = idn;
-                return;
             }
         }
+        
+        if (mapManager == null)
+        {
+            Debug.LogWarning($"MapManager not found in scene {targetScene.name} for {name}", this);
+            return;
+        }
 
-        mapManager.enemyIds.Add(idn);
-        spawnId = idn;
+        if (typeOfObject == ObjectType.Entity)
+        {
+            if (spawnId != 0) return;
+            
+            var idn = 1;
+            while (mapManager.enemyIds.Contains(idn)) idn++;
+            
+            mapManager.enemyIds.Add(idn);
+            spawnId = idn;
+        }
+        else
+        {
+            if (id != 0) return;
+
+            // Simple unique ID logic for non-entities: find max and increment
+            int maxId = 0;
+            var allIdentifiers = FindObjectsByType<Identifier>(FindObjectsSortMode.None);
+            foreach (var ident in allIdentifiers)
+            {
+                if (ident.gameObject.scene == targetScene && ident.typeOfObject != ObjectType.Entity && ident.id > maxId)
+                    maxId = ident.id;
+            }
+            id = maxId + 1;
+        }
+
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            UnityEditor.EditorUtility.SetDirty(this);
+            if (mapManager != null) UnityEditor.EditorUtility.SetDirty(mapManager);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+        }
+#endif
     }
 }

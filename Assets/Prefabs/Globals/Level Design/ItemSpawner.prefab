@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5190355191559164575}
   m_Layer: 0
   m_Name: ItemSpawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,7 +68,6 @@ MonoBehaviour:
   itemSpawner:
   - objectToSpawn: {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
     collectable: {fileID: 11400000, guid: cb8962a33a8c630488f8c1305482dbc0, type: 2}
-  scene: 
   spawnPoints:
   - {fileID: 934838064383561076}
   spawnedObjects: []

@@ -9,7 +9,6 @@ public class CollectableTrigger : MonoBehaviour
     private void Awake()
     {
         collectable = GetComponent<Collectable>();
-        if (GetComponent<Identifier>().mapManager != null) GetComponent<Identifier>().AutomateID();
     }
 
     public void OnCollisionEnter2D(Collision2D collision)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class SceneLoadTrigger : MonoBehaviour
@@ -17,7 +18,7 @@ public class SceneLoadTrigger : MonoBehaviour
         if (collision.gameObject == player)
         { 
             LoadScenes();
-            UnloadScenes();
+            StartCoroutine(UnloadScenes());
         }
     }
 
@@ -34,24 +35,19 @@ public class SceneLoadTrigger : MonoBehaviour
                     isSceneLoaded = true;
                     break;
                 }
-
-                /*var sceneObjects = loadedScene.GetRootGameObjects();
-                foreach (var obj in sceneObjects)
-                {
-                    if (obj.name == "Map")
-                    {
-                        obj.GetComponent<MapManager>().LoadSceneData();
-                        print($"Loaded {scene.SceneName}");
-                        break;
-                    }
-                    print($"This aint a map, its {obj.name} >:(");
-                }*/
+                
             }
             if (!isSceneLoaded) SceneManager.LoadSceneAsync(scene.SceneName, LoadSceneMode.Additive);
+            /*else
+            {
+                if (MapManager.Instances.TryGetValue(scene.SceneName, out var mapManager)) 
+                    mapManager.LoadSceneData();
+                
+            }*/
         }
     }
 
-    private void UnloadScenes()
+    private IEnumerator UnloadScenes()
     {
         foreach (var scene in scenesToUnload)
         {
@@ -60,15 +56,11 @@ public class SceneLoadTrigger : MonoBehaviour
                 var loadedScene = SceneManager.GetSceneAt(j);
                 if (loadedScene.name == scene.SceneName)
                 {
-                    var sceneObjects = loadedScene.GetRootGameObjects();
-                    foreach (var obj in sceneObjects)
+                    if (MapManager.Instances.TryGetValue(scene.SceneName, out var mapManager))
                     {
-                        if (obj.name == "Map")
-                        {
-                            obj.GetComponent<MapManager>().SaveSceneData();
-                            obj.GetComponent<MapManager>().MakeDataPersistent();
-                            break;
-                        }
+                        mapManager.SaveSceneData();
+                        yield return new WaitForSeconds(0.1f);
+                        mapManager.MakeDataPersistent();
                     }
                     SceneManager.UnloadSceneAsync(scene);
                 }

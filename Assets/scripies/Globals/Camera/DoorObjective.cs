@@ -21,6 +21,18 @@ public class DoorObjective : MonoBehaviour
         DefeatBoss
     }
 
+    private void OnEnable()
+    {
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+            mm.RegisterDoor(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+            mm.UnregisterDoor(gameObject);
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (!isOpen) switch (objective)
@@ -28,16 +40,15 @@ public class DoorObjective : MonoBehaviour
             case Objectives.DefeatEnemy:
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
-                    enemies = new GameObject[1];
-                    for (int i = 0; i < enemies.Length; i++) if (enemies[i] == null) enemies[i] = collision.gameObject;
+                    if (enemies == null || enemies.Length != 1) enemies = new GameObject[1];
+                    if (enemies[0] == null) enemies[0] = collision.gameObject;
                 }
                 break;
             case Objectives.FindKeys:
                 if (collision.gameObject.CompareTag("Player")) playerDetected = true; else playerDetected = false;
                 break;
             case Objectives.DefeatBoss: 
-                if (objective == Objectives.DefeatBoss) 
-                    if (collision.gameObject.CompareTag("Boss")) boss = collision.gameObject;
+                if (collision.gameObject.CompareTag("Boss")) boss = collision.gameObject;
                 break;
             default:
                 print("Clueless.");
@@ -47,6 +58,7 @@ public class DoorObjective : MonoBehaviour
 
     public void InstantOpen()
     {
+        isOpen = true;
         foreach (var door in doorObj)
         {
             if (door != null)
@@ -56,34 +68,44 @@ public class DoorObjective : MonoBehaviour
             }
         }
     }
+
+    private void Open()
+    {
+        if (isOpen) return;
+        isOpen = true;
+        foreach (var door in doorObj) if (door != null) door.objectiveComplete = true;
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+            mm.OnDoorStatusChanged(this, true);
+    }
+
     private void Update()
     {
-        
-        if (isOpen) foreach (var door in doorObj) door.objectiveComplete = true;
+        if (isOpen) return;
         
         switch (objective)
         {
             case Objectives.DefeatEnemy:
-                if (enemies == null) isOpen = true;
+                if (enemies == null) Open();
                 break;
             case Objectives.FindKeys:
                 if (playerDetected)
                 {
                     foreach (var key in keys) if (!InvManager.Instance.invIndex.HasAtLeast(key, 1)) 
                         return;
-                    isOpen = true;
+                    
                     foreach (var key in keys)
                     {
                         foreach (var item in InvManager.Instance.itemSlots)
-                            if (item != null && item.itemScriptableObject == key) {item.UseItem(); return;}
+                            if (item != null && item.itemScriptableObject == key) {item.UseItem(); break;}
                     }
+                    Open();
                 }
                 break;
             case Objectives.DefeatBoss:
                 if (boss != null)
                 {
-                    BossHealth bossHealth = boss.GetComponent<BossHealth>();
-                    if (bossHealth != null && bossHealth.isDead) isOpen = true;
+                    BossHealth bh = boss.GetComponent<BossHealth>();
+                    if (bh != null && bh.isDead) Open();
                 }
                 break;
             default:

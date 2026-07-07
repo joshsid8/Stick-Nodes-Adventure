@@ -11,9 +11,7 @@ SNADV Notes
                 so strange
         
         GUI Logic
-            It seems that i think when scene data loads, it makes boss dialogue's index increment
-                Cynder for example speaks as if he already fought the player once
-                
+ 
             It also for some reason makes all gui stop the player from moving after beign dismissed
                 when a choice is shown, it increments the active gui again
                     i made a makeshift fix by decrementing right after
@@ -50,9 +48,13 @@ SNADV Notes
                 At the moment, it is too tangled
                 Using layers can help make the controller more efficient and look good
         
-        Noxu
-            !!!!!!!!!Initial Boulder Throwing!!!!!!!!!
-                Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
+        Boss Logic
+            When the Player dies, the dialogue for all bosses get incremented
+                All i need to do is ensure the boss' dialogue gets incremented if they defeat the player
+
+            Noxu has one minor issue...
+                !!!!!!!!!Initial Boulder Throwing!!!!!!!!!
+                    Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
             
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more

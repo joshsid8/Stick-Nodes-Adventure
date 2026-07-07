@@ -6,7 +6,7 @@ using UnityEngine;
 public class SceneDataManager : MonoBehaviour
 {
     public static SceneDataManager Instance { get; private set; }
-
+    public GameObject mainCamera;
     public List<SceneList> sceneData = new List<SceneList>();
 
     [Serializable]
@@ -18,7 +18,7 @@ public class SceneDataManager : MonoBehaviour
         public List<NpcSceneData> npcs = new List<NpcSceneData>();
         public List<DoorSceneData> doors = new List<DoorSceneData>();
         public List<SpawnerSceneData> spawners = new List<SpawnerSceneData>();
-
+        
         public GameObject ItemToStore => GameObject.Find("persistentItem");
         
         public string activeBoss;
@@ -50,6 +50,7 @@ public class SceneDataManager : MonoBehaviour
     {
         public int activeNpc;
         public bool willTravel;
+        public DialogueObject[] dialogue;
     }
 
     [Serializable]
@@ -65,7 +66,7 @@ public class SceneDataManager : MonoBehaviour
     public class DoorSceneData
     {
         public int activeDoor;
-        public bool isOpen = true;
+        public bool isOpen;
     }
 
     [Serializable]

@@ -1543,7 +1543,7 @@ GameObject:
   - component: {fileID: 341918499}
   m_Layer: 0
   m_Name: Sections
-  m_TagString: Untagged
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2166,12 +2166,12 @@ MonoBehaviour:
   - 0.7
   - 0.7
   - 0.7
-  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
   enemySceneData: []
   enemyIds: 
+  bossHealth: {fileID: 0}
   bossSceneData:
     activeBoss: 
     isDead: 0
@@ -2180,6 +2180,8 @@ MonoBehaviour:
   collectableSceneData: []
   doorSceneData:
   - activeDoors: {fileID: 811889214}
+    doorObjective: {fileID: 0}
+    id: 0
     isOpen: 1
   spawnerSceneData: []
 --- !u!114 &580845224
@@ -2923,7 +2925,7 @@ GameObject:
   - component: {fileID: 811889216}
   m_Layer: 12
   m_Name: Section
-  m_TagString: Untagged
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5140,7 +5142,7 @@ GameObject:
   - component: {fileID: 1684563622}
   m_Layer: 0
   m_Name: Spawners
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

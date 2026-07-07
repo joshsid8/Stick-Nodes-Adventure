@@ -602,6 +602,7 @@ MonoBehaviour:
   spawnerObjects: []
   enemySceneData: []
   enemyIds: 
+  bossHealth: {fileID: 0}
   bossSceneData:
     activeBoss: 
     isDead: 0

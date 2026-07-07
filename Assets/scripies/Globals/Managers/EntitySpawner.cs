@@ -17,12 +17,23 @@ public class EntitySpawner : MonoBehaviour
     public float spawnTime;
     public bool spawnOnStart = true;
     public bool canSpawn = true;
+
+    private void OnEnable()
+    {
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+            mm.RegisterSpawner(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+            mm.UnregisterSpawner(gameObject);
+    }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private IEnumerator Start()
     {
         scene = gameObject.scene.name;
-        GetComponent<Identifier>().AutomateID();
         if (canSpawn && spawnAbility && !isOneTime)
         {
             foreach (var spawn in eSpawn)

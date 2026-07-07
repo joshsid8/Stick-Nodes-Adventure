@@ -583,12 +583,12 @@ MonoBehaviour:
   - 0.7
   - 0.7
   - 0.7
-  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
   enemySceneData: []
   enemyIds: 
+  bossHealth: {fileID: 0}
   bossSceneData:
     activeBoss: 
     isDead: 0
@@ -1009,7 +1009,7 @@ GameObject:
   - component: {fileID: 1560809729}
   m_Layer: 0
   m_Name: Sections
-  m_TagString: Untagged
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

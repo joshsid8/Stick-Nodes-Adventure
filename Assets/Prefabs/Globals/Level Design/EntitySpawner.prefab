@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5190355191559164575}
   m_Layer: 0
   m_Name: EntitySpawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
   eSpawn:
   - objectToSpawn: {fileID: 3938795057032240365, guid: e20865639346b7740a0545167afb8c2c, type: 3}
     spawnAmount: 1
-  scene: 
+    settings: {fileID: 0}
   spawnAbility: 1
   spawnPoints:
   - {fileID: 934838064383561076}
