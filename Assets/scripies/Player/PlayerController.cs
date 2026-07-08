@@ -4,11 +4,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region Variables
+    [Header("Settings")]
     public bool canAct = true;
     public bool canFlip = true;
     public bool isFrozen;
     
-    // Simply move speed
+    [Space]
+    [Header("Movement")]
     public bool canMove = true;
     public float movementSpeed = 10f;
     public float movementSpeedMult = 1f;
@@ -16,7 +18,8 @@ public class PlayerController : MonoBehaviour
     
     [SerializeField] private bool isMoving;
     
-    // Jumping
+    [Space]
+    [Header("Jumping")]
     public float originalJumpForce;
     public float jumpForce = 8.0f;
     public float jumpForceMult = 1f;
@@ -27,17 +30,19 @@ public class PlayerController : MonoBehaviour
     private bool hasJumped;
     public bool canDoubleJump;
     private bool doubleJump;
-    
-    // Jump optimisations
-    [SerializeField] private float coyoteTime = 0.2f; // Adjust as needed
+
+    [Space] [Header("Jump Optimisations")] 
+    [SerializeField] private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
-    [SerializeField] private float jumpBufferTime = 0.1f; // Adjust as needed
+    [SerializeField] private float jumpBufferTime = 0.1f;
     private float jumpBufferCounter;
     
-    // Wall Jumping
+    [Space]
+    [Header("Wall Jumping")]
     public float wallSlideSpeed;
     public float wallJumpForce;
-
+    public Vector2 wallJumpDirection;
+    public float wallJumpTime;
     public bool canWallJump;
     
     private bool isTouchingWall;
@@ -49,13 +54,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask whatIsWall;
     [SerializeField] private float wallCheckRay;
 
-    // Ground Check
+    [Space]
+    [Header("Ground Check")]
     [SerializeField] private float groundCheckCircle;
     public Transform groundCheck;
     public LayerMask whatIsGround;
     [HideInInspector] public bool isGrounded;
     
-    // Dashing
+    [Space]
+    [Header("Dashing")]
     public float dashSpeed;
     public float dashTime;
     public float dashCooldown;
@@ -68,7 +75,8 @@ public class PlayerController : MonoBehaviour
     private bool hasDashedInAir;
     public float dashEnergyCost;
     
-    // Physics and QoL
+    [Space]
+    [Header("Physics and QoL")]
     [HideInInspector] public float defaultGravity;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
@@ -79,12 +87,14 @@ public class PlayerController : MonoBehaviour
     public GameObject currentCheckPoint;
     public GameObject currentSpawnPoint;
 
-    // Related to running and flipping
+    [Space]
+    [Header("Running and Flipping")]
     private bool isRunning;
     public bool isFacingRight = true;
     
-	//Extra Components
-	private PlayerCombat pco;
+    [Space]
+    [Header("Extra Components")]
+    private PlayerCombat pco;
     private PlayerDefense pdf;
     private PlayerAbility pab;
     private Knockback kb;
@@ -110,7 +120,7 @@ public class PlayerController : MonoBehaviour
         originalJumpForce = jumpForce;
         availableWallsLeft = availableWalls;
         
-        PlayerHealth.Instance.currentCombatTimer = 0;
+        //PlayerHealth.Instance.currentCombatTimer = 0;
     }
 
     // Update is called once per frame
@@ -139,7 +149,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.gravityScale = 0;
             rb.linearVelocity = transform.right * dashDirection * dashSpeed;
-            canFlip = false;
+            //canFlip = false;
             currentDashTime -= Time.deltaTime * 1.75f;
             if (currentDashTime <= 0)
             {
@@ -148,7 +158,7 @@ public class PlayerController : MonoBehaviour
                 if (isMoving)
                 {
                     rb.gravityScale = defaultGravity;
-                    canFlip = true;
+                    //canFlip = true;
                     isMoving = false;
                     rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
                 }
@@ -194,33 +204,58 @@ public class PlayerController : MonoBehaviour
         if (dashCooldownTimer >= 0)
         {
             dashCooldownTimer -= Time.deltaTime;
-            canDash = false; // Disable dash while on cooldown
+            canDash = false;
         }
         else if (dashCooldownTimer <= 0 && hasDashedInAir) canDash = false;
-        else canDash = dashAbility; // Allow dash when cooldown is over
+        else canDash = dashAbility;
     }
 
     private void WallSlide()
     {
         if (isTouchingWall && !isGrounded && rb.linearVelocity.y < 0 && canWallJump)
         {
-            jumpBufferCounter = 0f;
             isWallSliding = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
             if (pab.isPerformingAbility) pab.isPerformingAbility = false;
-            if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen) WallJump();
+            if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen) 
+                StartCoroutine(WallJump());
         }
         else isWallSliding = false;
     }
 
-    private void WallJump()
+    private IEnumerator WallJump()
     {
-        if (isWallSliding && Input.GetButtonDown("Jump") && canWallJump && availableWallsLeft > 0 && !isDashing)
+        if (isWallSliding && jumpBufferCounter > 0 && canWallJump && !isDashing)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, wallJumpForce);
+            var wjForce = new Vector2(wallJumpForce * wallJumpDirection.x * (isFacingRight ? -1 : 1), wallJumpForce * wallJumpDirection.y);
+            var weakForce = new Vector2(wallJumpForce * wallJumpDirection.x * (isFacingRight ? -1 : 1), wallJumpForce * wallJumpDirection.y / 3);
+            var wallJumpTimer = wallJumpTime;
+            jumpBufferCounter = 0f;
+            Flip();
             isWallSliding = false;
             isWallJumping = true;
+            while (wallJumpTimer > 0)
+            {
+                rb.linearVelocity = availableWallsLeft > 0 ? wjForce : weakForce;
+                wallJumpTimer -= Time.deltaTime;
+                yield return new WaitForFixedUpdate();
+            }
             availableWallsLeft--;
+            
+            // lerp stuff i must learn
+            const float easeDuration = 0.2f;
+            var elapsed = 0f;
+            var velocityAtEnd = rb.linearVelocity;
+            while (elapsed < easeDuration && inputDirection == 0 && !isGrounded)
+            {
+                elapsed += Time.fixedDeltaTime;
+                var t = elapsed / easeDuration;
+                var newX = Mathf.Lerp(velocityAtEnd.x, 0, t);
+                rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
+                yield return new WaitForFixedUpdate();
+            }
+            if (inputDirection == 0) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            isWallJumping = false;
         }
     }
 
@@ -228,7 +263,7 @@ public class PlayerController : MonoBehaviour
     {
         if (rb.linearVelocity.y < 0)
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        else if (rb.linearVelocity.y > 0 && !Input.GetButton("Jump") && !pco.isAirAttacking)
+        else if (rb.linearVelocity.y > 0 && !Input.GetButton("Jump") && !pco.isAirAttacking && !isWallJumping)
         {
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
             coyoteTimeCounter = 0f;
@@ -241,7 +276,7 @@ public class PlayerController : MonoBehaviour
     
     private void Jump()
     {
-        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0)
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && !isDashing && !isWallSliding)
         {
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
@@ -260,10 +295,7 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
         }
         
-        if (isJumping && isGrounded)
-        {
-            isWallJumping = false;
-        }
+        if (isJumping && isGrounded) isWallJumping = false; 
     }
 
     private void DoubleJump()
@@ -278,7 +310,7 @@ public class PlayerController : MonoBehaviour
     
     private void ApplyMovement()
     {
-        if (canMove && !isFrozen && !kb.IsBeingKnocked)
+        if (canMove && !isFrozen && !kb.IsBeingKnocked && !isWallJumping)
         {
             if (inputDirection != 0)
             {
@@ -308,7 +340,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.gravityScale = defaultGravity;
         }
-        else if (rb.linearVelocity.y < 0)
+        else if (rb.linearVelocity.y <= 0)
         {
             isJumping = false;
             isWallJumping = false;
@@ -355,7 +387,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         if (isFrozen) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        if (inputDirection == 0 && !isDashing && !GetComponent<Knockback>().IsBeingKnocked && rb.linearVelocity.x != 0)
+        if (inputDirection == 0 && !isDashing && !isWallJumping && !GetComponent<Knockback>().IsBeingKnocked && rb.linearVelocity.x != 0)
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
     

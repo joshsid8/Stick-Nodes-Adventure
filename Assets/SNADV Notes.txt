@@ -4,20 +4,15 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-             
+
+        Noxu has one minor issue...
+            !!!!!!!!!Initial Boulder Throwing!!!!!!!!!
+                Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR     
+        
 	    Enemy Logic
             When switching back to patrol or idle i think attack is left or forced on still
             The FISHMAN specifically doesnt want to move when zoning, unless he is with another enemy
                 so strange
-        
-        GUI Logic
- 
-            It also for some reason makes all gui stop the player from moving after beign dismissed
-                when a choice is shown, it increments the active gui again
-                    i made a makeshift fix by decrementing right after
-                    maybe find a real way to fix it
-        WallJump Logic
-            Make Walljumps go diagonal instead of just an extra jump
 
     Optimisations & Hotfixes:
         
@@ -47,15 +42,7 @@ SNADV Notes
             Remake the player animation controller
                 At the moment, it is too tangled
                 Using layers can help make the controller more efficient and look good
-        
-        Boss Logic
-            When the Player dies, the dialogue for all bosses get incremented
-                All i need to do is ensure the boss' dialogue gets incremented if they defeat the player
-
-            Noxu has one minor issue...
-                !!!!!!!!!Initial Boulder Throwing!!!!!!!!!
-                    Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR
-            
+          
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more
             Ill need to assign tags of what element of attack it is

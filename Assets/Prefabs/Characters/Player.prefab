@@ -395,8 +395,10 @@ MonoBehaviour:
   canDoubleJump: 0
   coyoteTime: 0.1
   jumpBufferTime: 0.15
-  wallSlideSpeed: 1
-  wallJumpForce: 25
+  wallSlideSpeed: 1.5
+  wallJumpForce: 22
+  wallJumpDirection: {x: 0.5, y: 0.8}
+  wallJumpTime: 0.15
   canWallJump: 1
   isWallSliding: 0
   isWallJumping: 0

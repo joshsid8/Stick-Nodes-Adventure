@@ -158,7 +158,7 @@ public class BossAttack : MonoBehaviour
 
     IEnumerator Restart()
     {
-        if (PlayerHealth.Instance.isDead && !playerIsDead)
+        if (PlayerHealth.Instance.isDead && !playerIsDead && isAttacking)
         {
             playerIsDead = true;
             isAttacking = false;
