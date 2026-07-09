@@ -233,8 +233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackTime: 0.25
-  hitDirectionForce: 1
+  knockbackTime: 0.2
+  hitDirectionForce: 20
 --- !u!114 &-2052741742867292352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +437,7 @@ MonoBehaviour:
   turnTimer: 0
   partners:
   - {fileID: 0}
+  prevState: 0
 --- !u!114 &2866762415245452275
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,7 +8,10 @@ public class Shenanigans : MonoBehaviour
 {
     // This script is meant to manage literally every small function that occurs in this game, similar to the player manager.
     // If it cant be managed anywhere else without it being inconvenient, add it here!
-     
+    
+    [Header("Stored Object")]
+    public GameObject storedObj;
+    
     public static Shenanigans Instance {get; private set;}
 
     private void Awake()
@@ -36,5 +39,17 @@ public class Shenanigans : MonoBehaviour
             }
             jsObj.GetComponent<Image>().enabled = false;
         }
+    }
+
+    public void StoreObject(GameObject obj) => storedObj = obj;
+    
+    public void ApplyForce(Vector2 force, GameObject obj = null)
+    {
+        if (storedObj != null)
+        {
+            storedObj.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+            storedObj = null;
+        }
+        else if (obj != null) obj.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
     }
 }

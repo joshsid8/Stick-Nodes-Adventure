@@ -81,6 +81,7 @@ public class EnemyController : MonoBehaviour
         jump.isJumping = PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject) && PlayerHealth.Instance.aggressiveEnemies.Count > 1;
         canFacePlayer = attack.canFacePlayer;
         if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling && enemyState != EnemyState.Dead) FacePlayer();
+        if (PlayerHealth.Instance.isDead) ChangeState(EnemyState.Patrolling);
     }
 
     public void ChangeState(EnemyState newState)
@@ -95,8 +96,9 @@ public class EnemyController : MonoBehaviour
                 patrol.enabled = true;
                 break;
             case EnemyState.Patrolling:
-                patrol.isPatrolling = true;
                 patrol.enabled = true;
+                patrol.isPatrolling = true;
+                attack.enabled = false;
                 break;
             case EnemyState.Zoning:
                 patrol.enabled = false;

@@ -5,51 +5,45 @@ using UnityEngine;
 public class Knockback : MonoBehaviour
 {
     // jump yourself
-    public float knockbackTime = 0.1f;
-    public float hitDirectionForce = 1f;
+    public float knockbackTime = 0.2f;
+    public float hitDirectionForce = 20f;
     public bool IsBeingKnocked {get; private set;}
     private Rigidbody2D rb;
     
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
+    private void Awake() => rb = GetComponent<Rigidbody2D>();
 
-    private IEnumerator KnockbackAction(Vector2 hitDirection, float inputDirection = 0)
+    private IEnumerator KnockbackAction(Vector2 hitDirection)
     {
-        if (hitDirection.x == 0 && hitDirection.y != 0) rb.linearVelocity = new Vector2(0, hitDirection.y);
-        else if (hitDirection != Vector2.zero)
+        if (hitDirection == Vector2.zero) yield break;
+
+        IsBeingKnocked = true;
+        
+        // Calculate the starting force vector
+        Vector2 startForce = hitDirection.normalized * hitDirectionForce;
+        float elapsed = 0f;
+
+        while (elapsed < knockbackTime)
         {
-            IsBeingKnocked = true;
-            Vector2 hitForce;
-            Vector2 knockbackForce;
-            Vector2 combinedForce;
-
-            hitForce = hitDirection * hitDirectionForce;
+            elapsed += Time.fixedDeltaTime;
+            float normalizedTime = elapsed / knockbackTime;
             
-            var currentTime = 0f;
-            while (currentTime < knockbackTime)
-            {
-                currentTime += Time.fixedDeltaTime;
-                knockbackForce = hitForce;
-                if (inputDirection != 0) combinedForce = knockbackForce + new Vector2(inputDirection, 0f);
-                else combinedForce = knockbackForce;
-                
-                combinedForce.x /= currentTime;
-                if (combinedForce.y == 0) rb.linearVelocity = new Vector2(combinedForce.x, rb.linearVelocity.y);
-                else if (combinedForce.x == 0) rb.linearVelocity = new Vector2(rb.linearVelocity.x, combinedForce.y);
-                else rb.linearVelocity = combinedForce;
-                yield return new WaitForFixedUpdate();
-            }
-
-            IsBeingKnocked = false;
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            // Smoothly reduce velocity from startForce to zero
+            // We keep the current Y velocity if you want gravity to still affect the player during knockback
+            Vector2 currentKnockback = Vector2.Lerp(startForce, Vector2.zero, normalizedTime);
+            
+            rb.linearVelocity = new Vector2(currentKnockback.x, currentKnockback.y != 0 ? currentKnockback.y : rb.linearVelocity.y);
+            
+            yield return new WaitForFixedUpdate();
         }
 
+        IsBeingKnocked = false;
+        // Optionally reset horizontal velocity to stop sliding at the end
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
 
-    public void CallKnockback(Vector2 hitDirection, float inputDirection)
+    public void CallKnockback(Vector2 hitDirection, float unusedInput = 0)
     {
-        StartCoroutine(KnockbackAction(hitDirection, inputDirection));
+        StopAllCoroutines(); 
+        StartCoroutine(KnockbackAction(hitDirection));
     }
 }

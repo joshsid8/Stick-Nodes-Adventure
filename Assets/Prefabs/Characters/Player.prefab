@@ -324,7 +324,7 @@ MonoBehaviour:
   currentCombatTimer: 0
   aggressiveEnemies: []
   aggressiveEnemyID: 0
-  jumpRotationTimer: 5
+  jumpRotationTimer: 1
 --- !u!114 &114786552731468920
 MonoBehaviour:
   m_ObjectHideFlags: 0

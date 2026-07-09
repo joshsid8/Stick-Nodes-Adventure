@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6671282002503159600}
   - component: {fileID: 912533807617976524}
   - component: {fileID: 4415548856573830941}
-  - component: {fileID: 3332884147948508450}
   - component: {fileID: 1477013022968616644}
   - component: {fileID: 2258819688666097509}
   - component: {fileID: 443793689555385365}
@@ -125,22 +124,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3332884147948508450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2846562907364595286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 6
-  spawnId: 0
-  typeOfObject: 0
-  mapManager: {fileID: 0}
 --- !u!114 &1477013022968616644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,8 +323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackTime: 0.1
-  hitDirectionForce: 1
+  knockbackTime: 0.3
+  hitDirectionForce: 20
 --- !u!61 &2710689748645888265
 BoxCollider2D:
   m_ObjectHideFlags: 0

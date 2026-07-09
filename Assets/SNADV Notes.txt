@@ -7,12 +7,7 @@ SNADV Notes
 
         Noxu has one minor issue...
             !!!!!!!!!Initial Boulder Throwing!!!!!!!!!
-                Maybe use shenanigans to make the object move specifically, SUCH AS THE BOULDERR     
-        
-	    Enemy Logic
-            When switching back to patrol or idle i think attack is left or forced on still
-            The FISHMAN specifically doesnt want to move when zoning, unless he is with another enemy
-                so strange
+                For storing objects, it needs to automatically store what projectile was just fired
 
     Optimisations & Hotfixes:
         

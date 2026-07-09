@@ -20,6 +20,8 @@ public abstract class BossBase : MonoBehaviour
     protected RaycastHit2D hit;
     public float attackRange;
     public Transform attackTransform;
+
+    public Transform fireTransform;
     
     // Jumping
     public float jumpCooldown;
@@ -137,6 +139,14 @@ public abstract class BossBase : MonoBehaviour
         ba.ActionCooldown(meleeCooldown * 0.5f);
         
     }
+
+    protected void SpawnStoreObject(GameObject obj)
+    {
+        Instantiate(obj, fireTransform.position, Quaternion.identity);
+        Shenanigans.Instance.StoreObject(obj);
+    }
+
+    protected void ApplyForce(GameObject obj, Vector2 force) => Shenanigans.Instance.ApplyForce(force, obj);
     
     public abstract void Gamble();
     
