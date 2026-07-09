@@ -69,20 +69,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
-      propertyPath: randomRes
+      propertyPath: damage
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: cooldown
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: stunTime
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: direction
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: collideAnim
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
-      propertyPath: randomAngle
-      value: 0
+      propertyPath: gravityScale
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: airResistance
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: randomisation
@@ -101,12 +113,20 @@ PrefabInstance:
       value: 0.87
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: projectileSpeed
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: knockbackForce.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: projectileDamage
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: projectileHeight
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: projectileMinSpeed

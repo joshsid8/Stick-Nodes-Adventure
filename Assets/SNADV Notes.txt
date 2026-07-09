@@ -4,10 +4,13 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-
-        Noxu has one minor issue...
-            !!!!!!!!!Initial Boulder Throwing!!!!!!!!!
-                For storing objects, it needs to automatically store what projectile was just fired
+        Noxu Logic
+            !!!!!!!!!Initial Boulder Throwing is real!!!!!!!!!
+                I need to calibrate the boulder physics to make the kick connect
+            Make pillar logic have a flag to enable a "shockwave" variant
+                This means instead of multiple pillars going forward, it will spawn at the front and back
+                    At the moment, this will only make Decimate work, but more other abilities should use this later
+                
 
     Optimisations & Hotfixes:
         

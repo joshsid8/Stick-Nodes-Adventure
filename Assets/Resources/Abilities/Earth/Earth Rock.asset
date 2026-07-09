@@ -13,18 +13,14 @@ MonoBehaviour:
   m_Name: Earth Rock
   m_EditorClassIdentifier: Assembly-CSharp::AbilityObjSO
   abilityPrefab: {fileID: 1196550910580000029, guid: f0a8db11793dab94dba11873795ee258, type: 3}
-  setProperties: 0
-  damage: 0
-  knockbackForce: {x: 0, y: 0}
-  stunTime: 0
-  direction: 0
+  setProperties: 1
   isDirectional: 0
   energyRequired: 0
-  cooldown: 0
-  lifeTime: 0
   proc: 0
   amount: 1
-  spawnInterval: 0.1
+  initSeparation: 0
+  separation: 0
+  spawnInterval: 0
   speedMult: 1
   cooldownMult: 1
   lifetimeMult: 1
@@ -32,4 +28,5 @@ MonoBehaviour:
   potency: 1
   sizeMult: 1
   isHoldable: 0
+  swapForce: 0
   abilityOnCollide: 0

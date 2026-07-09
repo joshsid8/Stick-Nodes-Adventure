@@ -2,24 +2,34 @@ using UnityEngine;
 
 public class Projectile : AbilityBase
 {
+    [Header("Physics Settings")]
     public float projectileSpeed = 20;
-    [SerializeField] private float projectileMinSpeed = 10;
     [SerializeField] private float projectileHeight = 1;
+    [SerializeField] private float gravityScale;
     [SerializeField] private float airResistance = 1;
+    public bool swapForce;
 
+    [Space]
+    [Header("Randomisation")]
     [SerializeField] private bool randomisation;
     [SerializeField] private float randomRes = 0.1f;
     [SerializeField] private float randomAngle = 2f;
     [SerializeField] private bool upwardOnly = true;
+
+    [Space]
+    [Header("Targeting")]
     [SerializeField] private float projectileRange;
-    
-    private RaycastHit2D[] hits = new RaycastHit2D[2];
     [SerializeField] private LayerMask[] target;
+    private RaycastHit2D[] hits = new RaycastHit2D[2];
     
+    [Space]
+    [Header("Direction & Rotation")]
+    [SerializeField] private float rotationOffset = 90;
     private bool isFacingRightDirection;
     private float objectDirection;
-    [SerializeField] private float rotationOffset = 90;
     
+    [Space]
+    [Header("Internal State")]
     private Rigidbody2D rb;
     private bool collided;
     
@@ -37,6 +47,14 @@ public class Projectile : AbilityBase
             airResistance = Random.Range(upwardOnly ? airResistance : airResistance - airResistance * randomRes, airResistance + airResistance * randomRes);
             projectileHeight = Random.Range(upwardOnly ? 0 : -projectileHeight - randomAngle, projectileHeight + randomAngle);
         }
+
+        if (swapForce)
+        {
+            var temp = projectileSpeed;
+            var temp2 = projectileHeight;
+            projectileSpeed = temp2;
+            projectileHeight = temp;
+        }
         ApplyInitialDirection();
         Destroy(gameObject, lifeTime);
     }
@@ -49,16 +67,16 @@ public class Projectile : AbilityBase
             2 => LayerMask.NameToLayer("EVFX"),
             _ => LayerMask.NameToLayer("FX")
         };
-        if (projectileMinSpeed < projectileSpeed) projectileSpeed -= Time.deltaTime * airResistance;
-        if (!collided && projectileSpeed > 0)
-            rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, rb.linearVelocity.y);
         
         // This makes the object point to where its moving - something to learn (MAFFS)
-        var velocity = rb.linearVelocity;
-        if (velocity.sqrMagnitude > 0.001f)
+        if (!collided)
         {
-            var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
+            var velocity = rb.linearVelocity;
+            if (velocity.sqrMagnitude > 0.001f)
+            {
+                var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
+            }
         }
     }
 
@@ -90,17 +108,21 @@ public class Projectile : AbilityBase
 
     private void ApplyInitialDirection()
     {
+        rb.gravityScale = gravityScale;
+        rb.linearDamping = airResistance;
+
         if (!isDirectional)
         {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, isFacingRightDirection ? 90 + randomAngle : -90 + randomAngle);
+            float angleDeg = isFacingRightDirection ? 90 + randomAngle : -90 + randomAngle;
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angleDeg);
             objectDirection = isFacingRightDirection ? 1f : -1f;
             rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, projectileHeight);
         }
         else
         {
             transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, direction);
-            var angle = direction * Mathf.Deg2Rad;
-            rb.linearVelocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * projectileSpeed;
+            var angleRad = direction * Mathf.Deg2Rad;
+            rb.linearVelocity = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * projectileSpeed;
         }
     }
         

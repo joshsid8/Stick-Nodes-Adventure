@@ -180,6 +180,9 @@ MonoBehaviour:
   knockbackForce: {x: 1, y: 0}
   attackRange: 2.11
   attackTransform: {fileID: 2954646569225375092}
+  storedObjects: []
+  storedObjectIndex: 0
+  fireTransform: {fileID: 1328446686802652935}
   jumpCooldown: 1.5
   isRandomised: 1
   jumpForceY: 30

@@ -8,7 +8,6 @@ public class AbilityObjSO : ScriptableObject
      [Header("Ability Object Properties")]
      [Tooltip("If this is false, all the properties below will be ignored and the game object will use its default values.")]
      public bool setProperties;
-     //public float direction;
      public bool isDirectional;
      public float energyRequired;
      public float proc;
@@ -25,6 +24,8 @@ public class AbilityObjSO : ScriptableObject
      public float potency = 1;
      public float sizeMult = 1;
      public bool isHoldable;
+     [Tooltip("Only for projectiles")]
+     public bool swapForce;
      [Tooltip("Will another ability be spawned when this one collides?")]
      public bool abilityOnCollide;
 
@@ -35,13 +36,13 @@ public class AbilityObjSO : ScriptableObject
                ab.damage *= damageMult;
                ab.knockbackForce *= potency;
                ab.stunTime *= potency;
-               //ab.direction = direction;
                ab.isDirectional = isDirectional;
                ab.energyRequired = energyRequired;
                ab.cooldown *= cooldownMult;
                ab.lifeTime *= lifetimeMult;
                ab.proc = proc;
                if (speedMult != 1) ab.gameObject.GetComponent<Projectile>().projectileSpeed *= speedMult;
+               if (swapForce) ab.gameObject.GetComponent<Projectile>().swapForce = true;
                ab.isHoldable = isHoldable;
                ab.abilityOnCollide = abilityOnCollide;
                ab.transform.localScale *= sizeMult;

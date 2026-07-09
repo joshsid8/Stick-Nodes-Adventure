@@ -4,8 +4,9 @@ using UnityEngine;
 public class Noxu : BossBase
 {
     // Update is called once per frame
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         Strafe();
         if (freezeMovement) rb.linearVelocity = Vector2.zero;
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);

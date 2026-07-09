@@ -7,8 +7,9 @@ public class Cynder : BossBase
     public float backflipForceX;
 
     // Update is called once per frame
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         Strafe();
         FlyDash();
 

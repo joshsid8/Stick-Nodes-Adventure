@@ -596,7 +596,6 @@ MonoBehaviour:
   - 1
   - 0.7
   - 0.7
-  sceneName: Scene Teste
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []

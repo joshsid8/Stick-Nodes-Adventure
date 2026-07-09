@@ -43,7 +43,11 @@ public class Shenanigans : MonoBehaviour
 
     public void StoreObject(GameObject obj) => storedObj = obj;
     
-    public void ApplyForce(Vector2 force, GameObject obj = null)
+    
+    /// <summary>
+    ///  Applies a force to a stored object, or any object thats in the radius if otherwise.
+    /// </summary>
+    public void ApplyForce(Vector2 force, float radius = 0, GameObject obj = null, Transform area = null)
     {
         if (storedObj != null)
         {
@@ -51,5 +55,10 @@ public class Shenanigans : MonoBehaviour
             storedObj = null;
         }
         else if (obj != null) obj.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        else if (area != null)
+        {
+           var hit = Physics2D.CircleCast(area.position, radius, new Vector2(area.transform.right.x, area.transform.up.y), 0f, LayerMask.GetMask("FX", "EVFX", "PVFX"));
+           if (hit.collider != null) hit.collider.gameObject.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
     }
 }

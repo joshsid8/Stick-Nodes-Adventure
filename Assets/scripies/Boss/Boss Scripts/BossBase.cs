@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public abstract class BossBase : MonoBehaviour
 {
@@ -12,15 +16,17 @@ public abstract class BossBase : MonoBehaviour
     public bool isFlyDashing;
     public Vector2 dashDirection;
     
-    // Melee
+    // Melee & Ability
     public float meleeCooldown;
     public float stunTime;
     public float damageAmount;
     public Vector2 knockbackForce;
-    protected RaycastHit2D hit;
+    private RaycastHit2D hit;
     public float attackRange;
     public Transform attackTransform;
-
+    
+    public List<GameObject> storedObjects = new List<GameObject>();
+    public int storedObjectIndex;
     public Transform fireTransform;
     
     // Jumping
@@ -54,7 +60,13 @@ public abstract class BossBase : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         bh = GetComponent<BossHealth>();
     }
-    
+
+    protected virtual void Update()
+    {
+        for (var i = storedObjects.Count - 1; i >= 0; i--) 
+            if (storedObjects[i].IsDestroyed()) storedObjects.RemoveAt(i); 
+    }
+
     protected void FindPlayerPosition()
     {
         var rng = Random.Range(0, 101);
@@ -140,13 +152,17 @@ public abstract class BossBase : MonoBehaviour
         
     }
 
-    protected void SpawnStoreObject(GameObject obj)
+    protected void StoreObject(GameObject obj)
     {
-        Instantiate(obj, fireTransform.position, Quaternion.identity);
-        Shenanigans.Instance.StoreObject(obj);
+        var projHit = Physics2D.CircleCast(fireTransform.position, 10f, new Vector2(fireTransform.transform.right.x, fireTransform.transform.up.y), 0f, LayerMask.GetMask("FX", "EVFX", "PVFX"));
+        if (projHit.collider != null)
+        {
+            storedObjects.Add(projHit.collider.gameObject);
+            print($"found and stored a {projHit.collider.gameObject.name}");
+        }
     }
 
-    protected void ApplyForce(GameObject obj, Vector2 force) => Shenanigans.Instance.ApplyForce(force, obj);
+    protected void ApplyForce(float force) => Shenanigans.Instance.ApplyForce(new Vector2(force, force / 2), obj: storedObjects[storedObjectIndex]);
     
     public abstract void Gamble();
     

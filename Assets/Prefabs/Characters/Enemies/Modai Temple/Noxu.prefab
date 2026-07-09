@@ -422,6 +422,7 @@ MonoBehaviour:
   knockbackForce: {x: 1, y: 0}
   attackRange: 1.6
   attackTransform: {fileID: 7664445667877575837}
+  fireTransform: {fileID: 5574741311073989549}
   jumpCooldown: 0
   isRandomised: 0
   jumpForceY: 0
