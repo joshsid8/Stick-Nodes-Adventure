@@ -106,23 +106,25 @@ public class PerformAbility : MonoBehaviour
         var isFacingRight = GetFacingRight();
         var casterFactor = casterType == CasterType.Player ? 1 : 2;
         var amount = casterType == CasterType.Player ? (int)Mathf.Round(ability.amount * abilityAmountMult[currentSlot]) : ability.amount;
-        var xOffset = 0f;
+        var xOffset = blastType == 1 ? ability.initSeparation : 0f;
 
         for (var i = 0; i < amount; i++)
         {
             if (casterType == CasterType.Player && blastType == 0 && ability.isHoldable && !pa.isHolding) break;
-            if (!unavailable && ability.shockwave && i != 0 || !unavailable && !ability.shockwave) Spawn(i, blastType, xOffset, isFacingRight, casterFactor, ability);
-            else i++;
+            if (!unavailable && ability.shockwave && i != 0 || !unavailable && !ability.shockwave)
+            {
+                Spawn(i, blastType, xOffset, isFacingRight, casterFactor, ability);
 
-            if (blastType != 0) xOffset += ability.separation;
-            yield return new WaitForSeconds(ability.spawnInterval);
+                if (blastType != 0) xOffset += ability.separation;
+                if (!unavailable && ability.shockwave && i != 0 || !unavailable && !ability.shockwave)
+                    yield return new WaitForSeconds(ability.spawnInterval);
+            }
         }
-        if (casterType == CasterType.Player) pa.isPerformingAbility = false;
+        if (casterType == CasterType.Player && blastType == 0) pa.isPerformingAbility = false;
     }
 
     private void Spawn(int i, int blastType, float xOffset, bool isFacingRight, int casterFactor, AbilityObjSO ability)
     {
-        if (i == 0 && blastType == 1) xOffset = ability.initSeparation;
         Vector3[] spawnPos = {abilityPoint.position + transform.right * xOffset, abilityPoint.position - transform.right * xOffset};
         var spawnRot = blastType == 2 ? abilityPoint.rotation : Quaternion.identity;
         GameObject[] newObjs = {Instantiate(ability.abilityPrefab, spawnPos[0], spawnRot), Instantiate(ability.abilityPrefab, spawnPos[1], spawnRot)};
@@ -143,8 +145,6 @@ public class PerformAbility : MonoBehaviour
                     {
                         pa.energy -= abScript.energyRequired / 2;
                         pa.currentAbilityCooldown = abScript.cooldown * pa.abilityCooldownMult;
-
-                        if (blastType != 0 && !abScript.isHoldable) pa.isPerformingAbility = false;
                     }
                 }
             }
@@ -165,8 +165,6 @@ public class PerformAbility : MonoBehaviour
                 {
                     pa.energy -= abScript.energyRequired;
                     pa.currentAbilityCooldown = abScript.cooldown * pa.abilityCooldownMult;
-
-                    if (blastType != 0 && !abScript.isHoldable) pa.isPerformingAbility = false;
                 }
             }
         }

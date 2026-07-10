@@ -2,13 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Pillar : AbilityBase
-{
-    [SerializeField] private float pillarTimer;
-    [SerializeField] private float procTimes;
-    [SerializeField] private float energyProc;
+{ 
     [SerializeField] private bool shockwave;
-    [SerializeField] private bool activeHitbox;
-    [SerializeField] private bool isErupting;
     [SerializeField] private List<GameObject> inContact = new List<GameObject>();
     [SerializeField] private BoxCollider2D pillarCollider;
     
@@ -18,36 +13,16 @@ public class Pillar : AbilityBase
         coll = GetComponent<Collider2D>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
-    {
-        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
-        if (anim != null) animator.Play(anim.name);
-        playerTransform = PlayerHealth.Instance.gameObject.transform;
-
-        procTimes = lifeTime / proc;
-        procTimes = energyRequired / procTimes;
-    }
-
     void Update()
     {
         Lifetime();
-        procTimer -= Time.deltaTime;
-        energyProc -= Time.deltaTime;
         gameObject.layer = typeFactor switch
         {
             1 => LayerMask.NameToLayer("PVFX"),
             2 => LayerMask.NameToLayer("EVFX"),
             _ => LayerMask.NameToLayer("FX")
         };
-        
-        if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
-        {
-            energyProc = proc;
-            if (pa != null && typeFactor == 1) pa.energy -= procTimes;
-        } 
-        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
-
+        Proc();
         Hitbox();
     }
     
@@ -69,7 +44,7 @@ public class Pillar : AbilityBase
     
     private void Hitbox()
     {
-        if (inContact != null && procTimer <= 0)
+        if (inContact.Count != 0 && procTimer <= 0 && activeHitbox)
         {
             switch (typeFactor)
             {
@@ -77,7 +52,7 @@ public class Pillar : AbilityBase
                     foreach (var hit in inContact)
                     {
                         var damageable = hit.gameObject.GetComponent<EDamageables>();
-                        if (damageable != null && isErupting)
+                        if (damageable != null)
                         {
                             damageable.Damage(damage, knockbackForce * transform.up);
                             damageable.Stun(stunTime);
@@ -89,7 +64,7 @@ public class Pillar : AbilityBase
                     foreach (var hit in inContact)
                     {
                         var damageable = hit.gameObject.GetComponent<PDamageable>();
-                        if (damageable != null && isErupting)
+                        if (damageable != null)
                         {
                             damageable.Damage(damage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor);
                             damageable.Stun(stunTime);
@@ -132,19 +107,9 @@ public class Pillar : AbilityBase
     
     public override void SetValues(int factor, bool facingRight) => typeFactor = factor;
     
-    private void Lifetime()
+    private void OnDestroy()
     {
-        if (isErupting && pillarTimer > 0)
-        {
-            pillarTimer -= Time.deltaTime;
-            if (!pa.isHolding && isHoldable && typeFactor == 1) pillarTimer = 0;
-            if (pillarTimer <= 0 && endAnim != null)
-            {
-                isErupting = false;
-                if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
-                animator.Play(endAnim.name);
-            }
-        }
+        if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
     }
     
     private static float GetHealth(GameObject entity)
@@ -162,6 +127,5 @@ public class Pillar : AbilityBase
         }
     }
     
-    void Boom() => Destroy(GetComponent<FindFloor>().bottomPoint.transform.gameObject);
-    void ApplyTimer() => pillarTimer = lifeTime;
+    void ApplyTimer() => lifeTimer = lifeTime;
 }

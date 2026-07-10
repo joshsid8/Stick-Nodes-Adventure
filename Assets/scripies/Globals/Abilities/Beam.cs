@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class Beam : AbilityBase
 {
-    [SerializeField] private bool activeHitbox;
-    [SerializeField] private float energyProc;
-    [SerializeField] private float procTimes;
+
     private bool isFacingRightDirection;
     
     [SerializeField] private List<GameObject> inContact = new List<GameObject>();
@@ -19,34 +17,19 @@ public class Beam : AbilityBase
         coll = GetComponent<Collider2D>();
     }
 
-    private void Start()
+    protected override void Start()
     {
-        if (anim != null) animator.Play(anim.name);
-        lifeTimer = lifeTime; 
+        base.Start();
         parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? direction : -direction + 180f);
-        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
-        playerTransform = PlayerHealth.Instance.gameObject.transform;
-        procTimes = lifeTime / proc;
-        procTimes = energyRequired / procTimes;
     }
 
     private void Update()
     {
         Lifetime();
-        procTimer -= Time.deltaTime;
-        energyProc -= Time.deltaTime;
-
         if (pa != null && typeFactor == 1) pa.currentAbilityCooldown = cooldown * pa.abilityCooldownMult;
         if (isFacingRightDirection) transform.eulerAngles = Vector3.zero;
         else transform.eulerAngles = new Vector3(0, 180, 0);
         transform.localEulerAngles = new Vector3(0, 0, 0);
-        
-        if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
-        {
-            energyProc = proc;
-            if (pa != null && typeFactor == 1) pa.energy -= procTimes;
-        }
-        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
         
         gameObject.layer = typeFactor switch
         {
@@ -54,7 +37,7 @@ public class Beam : AbilityBase
             2 => LayerMask.NameToLayer("EVFX"),
             _ => LayerMask.NameToLayer("FX")
         };
-        
+        Proc();
         HitBox();
     }
     
@@ -80,7 +63,7 @@ public class Beam : AbilityBase
 
     private void HitBox()
     {
-        if (inContact.Count != 0 && procTimer <= 0)
+        if (inContact.Count != 0 && procTimer <= 0 && activeHitbox)
         {
             switch (typeFactor)
             {
@@ -140,15 +123,9 @@ public class Beam : AbilityBase
         }
     }
 
-    private void Lifetime()
+    private void OnDestroy()
     {
-        lifeTimer -= Time.deltaTime;
-        if (!pa.isHolding && isHoldable && typeFactor == 1) lifeTimer = 0;
-        if (lifeTimer <= 0)
-        {
-            if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
-            animator.Play(endAnim.name);
-        }
+        if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
     }
 
     private static float GetHealth(GameObject entity)
@@ -166,5 +143,4 @@ public class Beam : AbilityBase
         }
     }
 
-    private void Boom() => Destroy(parentObject);
 }

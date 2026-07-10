@@ -17,7 +17,6 @@ public class AbilityObjSO : ScriptableObject
      public float initSeparation;
      public float separation = 1.5f;
      public float spawnInterval = 0.1f;
-     public float speedMult = 1;
      public float cooldownMult = 1;
      public float lifetimeMult = 1;
      public float damageMult = 1;
@@ -28,6 +27,7 @@ public class AbilityObjSO : ScriptableObject
      public bool abilityOnCollide;
      [Space] [Tooltip("Only for projectiles")]
      public bool swapForce;
+     public float speedMult = 1;
      [Tooltip("Only for pillars")]
      public bool shockwave;
      

@@ -39,6 +39,12 @@ public abstract class AbilityBase : MonoBehaviour
     [FormerlySerializedAs("pillarProcTimer")]
     public float procTimer;
     
+    [FormerlySerializedAs("isErupting")]
+    public bool activeHitbox;
+    
+    public float energyProc;
+    public float procTimes;
+    
     [FormerlySerializedAs("beamLifetime")]
     [FormerlySerializedAs("projectileLifeTime")]
     [FormerlySerializedAs("pillarLifeTime")]
@@ -50,7 +56,7 @@ public abstract class AbilityBase : MonoBehaviour
     public bool isHoldable;
     public bool abilityOnCollide;
     public AbilityObjSO[] subAbilities;
-
+    
     public Transform playerTransform;
     public Animator animator;
     
@@ -66,4 +72,45 @@ public abstract class AbilityBase : MonoBehaviour
     public AnimationClip endAnim;
 
     public abstract void SetValues(int factor, bool facingRight);
+
+    protected virtual void Start()
+    {
+        procTimer = 0;
+        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
+        parentObject = transform.parent.gameObject;
+        if (anim != null) animator.Play(anim.name);
+        lifeTimer = lifeTime;
+        playerTransform = PlayerHealth.Instance.gameObject.transform;
+
+        procTimes = lifeTime / proc;
+        procTimes = energyRequired / procTimes;
+    }
+    
+    protected void Proc()
+    {
+        procTimer -= Time.deltaTime;
+        energyProc -= Time.deltaTime;
+        if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
+        {
+            energyProc = proc;
+            if (pa != null && typeFactor == 1) pa.energy -= procTimes;
+        }
+        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
+    }
+    protected void Lifetime()
+    {
+        if (lifeTimer > 0)
+        {
+            lifeTimer -= Time.deltaTime;
+            if (!pa.isHolding && isHoldable && typeFactor == 1) lifeTimer = 0;
+            if (lifeTimer <= 0 && endAnim != null)
+            {
+                if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
+                animator.Play(endAnim.name);
+            }
+        }
+    }
+    
+    public void Boom() => Destroy(parentObject);
+
 }

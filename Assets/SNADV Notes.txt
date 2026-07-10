@@ -4,29 +4,47 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Noxu Logic
-            !!!!!!!!!Initial Boulder Throwing is real!!!!!!!!!
-                I need to calibrate the boulder physics to make the kick connect
-                
+
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more
-            Ill need to assign tags of what element of attack it is
             In general there should be sustain damage or damage over time
-            Fire will almost always have dot, water and air can too
+                There kind of already is, but not in a real way
+                    fire pillars and water beams do DOT, but there isnt actual ailment logic yet
             Send a lot more detailed data to victims when damaged
                 Element type has been added
                     Now this can make change the damage of moves depending on the element (To be Implemented)
-            
-                
 
     Optimisations & Hotfixes:
         
+        Instability
+            Replicatable bugs
+                Cynder doesnt get hit by abilities
+                    no idea whats happening here, Noxu is fine but cynder isnt
+                
+                When fishmen fly, but spares the player, they continue flying and chase the player while patrolling
+                    This was at the time right before fighting the fishwoman
+                
+                Noxu's pillars when hitting the walls offset themselves upward by a small amount
+                    I know there is a fix for this, but i dont know which one is the most efficient
+            
+            One time occurrences/ Rare bugs
+                One time, the fishwoman's state logic crashed out
+                    its states were going from idle to patrolling instantly
+                    It was just zoning still during this
+                    I need to find a way to replicate this and find a fix
+
+                I had a bug where the player performed a pillar move, but the performability flag was on indefinitely after, freezing the player
+                    This might be something to do with turning the flag as false
+                
+                I think when the game lags a slight, the player can m1 without cooldowns
+                    Its like it ignores all conditions and i can simply just m1 again
+
         Ability Logic
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
                     I think i have to use MATHS!!!
                 
-        Animations
+        Animation
             Make better/seperate animations in general
                 Player
                     Turning around
@@ -47,16 +65,15 @@ SNADV Notes
             Remake the player animation controller
                 At the moment, it is too tangled
                 Using layers can help make the controller more efficient and look good
-          
-        
-        
-        Knockback Logic
-            It's so bad
-            i want it to be a lot more efficient, than just an ease of movement left or right cuh
-            thats if thats even possible
-            MAFFS will be used to make it better
+            
+            Fused Animations
+                anims that fuse the 2 entities together for a joint animation
+                    e.g a finisher on the player from cynder
+                    the player dapping up a friendly character
+                    fishfolk successfully decieving the player by fakely asking for forgiveness
+                    cynder's dash attack clashing with the player
                 
-        Audio flexibility
+        Audio
             Make it so that the music never stops, but rather silences before moving onto another track
             
             SFX
@@ -64,22 +81,21 @@ SNADV Notes
                 I can make/edit my own sfx
 
     Things to be added:
-        
-        Fused Animations
-            anims that fuse the 2 entities together for a joint animation
-                e.g a finisher on the player from cynder
-                the player dapping up a friendly character
-                fishfolk successfully decieving the player by fakely asking for forgiveness
-                cynder's dash attack clashing with the player
-                
+           
         Shop Logic
             Make nodebucks useful
+            This shouldnt be hard at all, unless trying to make it professionally efficient
         
         Mini Bosses
             a normal enemy-boss hybrid
+                This is basically already a thing, for there are spawners that have a onetime flag
+                Tho they arent a physical thing yet
         
         Obstacles
             stray projectiles/neutral elements that can hurt both the player and enemies
+                Spikes!
+                Lava
+                stuff like that
             natural elements/disasters
                 Thunderstorms
                 Wind
