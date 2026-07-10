@@ -162,7 +162,7 @@ public abstract class BossBase : MonoBehaviour
         }
     }
 
-    protected void ApplyForce(float force) => Shenanigans.Instance.ApplyForce(new Vector2(force, force / 2), obj: storedObjects[storedObjectIndex]);
+    protected void ApplyForce(float force) => Shenanigans.Instance.ApplyForce(new Vector2(ba.isFacingRight ? force : -force, force), obj: storedObjects[storedObjectIndex]);
     
     public abstract void Gamble();
     

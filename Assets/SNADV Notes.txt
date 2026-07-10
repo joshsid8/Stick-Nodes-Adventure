@@ -7,9 +7,16 @@ SNADV Notes
         Noxu Logic
             !!!!!!!!!Initial Boulder Throwing is real!!!!!!!!!
                 I need to calibrate the boulder physics to make the kick connect
-            Make pillar logic have a flag to enable a "shockwave" variant
-                This means instead of multiple pillars going forward, it will spawn at the front and back
-                    At the moment, this will only make Decimate work, but more other abilities should use this later
+                
+        Damage Logic
+            Simply put, a water attack on a cynderian will hurt them more
+            Ill need to assign tags of what element of attack it is
+            In general there should be sustain damage or damage over time
+            Fire will almost always have dot, water and air can too
+            Send a lot more detailed data to victims when damaged
+                Element type has been added
+                    Now this can make change the damage of moves depending on the element (To be Implemented)
+            
                 
 
     Optimisations & Hotfixes:
@@ -41,14 +48,7 @@ SNADV Notes
                 At the moment, it is too tangled
                 Using layers can help make the controller more efficient and look good
           
-        Damage Logic
-            Simply put, a water attack on a cynderian will hurt them more
-            Ill need to assign tags of what element of attack it is
-            In general there should be sustain damage or damage over time
-            Fire will almost always have dot, water and air can too
-            Send a lot more detailed data to victims when damaged
-                Element type has been added
-                    Now this can make change the damage of moves depending on the element (To be Implemented)
+        
         
         Knockback Logic
             It's so bad

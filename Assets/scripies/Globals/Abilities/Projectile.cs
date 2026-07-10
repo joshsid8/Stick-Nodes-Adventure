@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class Projectile : AbilityBase
 {
-    [Header("Physics Settings")]
-    public float projectileSpeed = 20;
+    [Header("Physics")]
     [SerializeField] private float projectileHeight = 1;
+    public float projectileSpeed = 20;
     [SerializeField] private float gravityScale;
     [SerializeField] private float airResistance = 1;
+    [Tooltip("Turning this on will swap height with speed, making the projectile get shot upward.")]
     public bool swapForce;
 
     [Space]
@@ -20,7 +21,7 @@ public class Projectile : AbilityBase
     [Header("Targeting")]
     [SerializeField] private float projectileRange;
     [SerializeField] private LayerMask[] target;
-    private RaycastHit2D[] hits = new RaycastHit2D[2];
+    private readonly RaycastHit2D[] hits = new RaycastHit2D[2];
     
     [Space]
     [Header("Direction & Rotation")]
@@ -29,7 +30,7 @@ public class Projectile : AbilityBase
     private float objectDirection;
     
     [Space]
-    [Header("Internal State")]
+    [Header("Checks")]
     private Rigidbody2D rb;
     private bool collided;
     
@@ -55,7 +56,7 @@ public class Projectile : AbilityBase
             projectileSpeed = temp2;
             projectileHeight = temp;
         }
-        ApplyInitialDirection();
+        ApplyForce();
         Destroy(gameObject, lifeTime);
     }
 
@@ -95,8 +96,7 @@ public class Projectile : AbilityBase
                 break;
             case 2:
                 if (collision.CompareTag("Player")) Collided();
-                else if (collision.CompareTag("Terrain") || collision.gameObject.layer == LayerMask.NameToLayer("PVFX")) 
-                    Crash();
+                else if (collision.CompareTag("Terrain") || collision.gameObject.layer == LayerMask.NameToLayer("PVFX")) Crash();
                 break;
             default:
                 if (collision.CompareTag("Player") || collision.CompareTag("Enemy") || collision.CompareTag("Boss")) Collided();
@@ -106,7 +106,7 @@ public class Projectile : AbilityBase
         }
     }
 
-    private void ApplyInitialDirection()
+    private void ApplyForce()
     {
         rb.gravityScale = gravityScale;
         rb.linearDamping = airResistance;
@@ -169,7 +169,6 @@ public class Projectile : AbilityBase
 
                             PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.5f;
                         }
-
                         break;
                     default:
                         var entity = hit.collider;
@@ -236,8 +235,15 @@ public class Projectile : AbilityBase
     {
         typeFactor = factor;
         isFacingRightDirection = !isFacingRightDirection;
-        ApplyInitialDirection();
         projectileSpeed += 5f;
+        if (swapForce)
+        {
+            var temp = projectileSpeed;
+            var temp2 = projectileHeight;
+            projectileSpeed = temp2;
+            projectileHeight = temp;
+        }
+        ApplyForce();
     }
 
     private void OnDrawGizmosSelected()

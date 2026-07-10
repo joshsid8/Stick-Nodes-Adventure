@@ -14,7 +14,7 @@ public class AbilityObjSO : ScriptableObject
 
      [Space] [Header("Caster Properties")] 
      public int amount = 1;
-     public float initSeparation = 5f;
+     public float initSeparation;
      public float separation = 1.5f;
      public float spawnInterval = 0.1f;
      public float speedMult = 1;
@@ -24,10 +24,13 @@ public class AbilityObjSO : ScriptableObject
      public float potency = 1;
      public float sizeMult = 1;
      public bool isHoldable;
-     [Tooltip("Only for projectiles")]
-     public bool swapForce;
      [Tooltip("Will another ability be spawned when this one collides?")]
      public bool abilityOnCollide;
+     [Space] [Tooltip("Only for projectiles")]
+     public bool swapForce;
+     [Tooltip("Only for pillars")]
+     public bool shockwave;
+     
 
      public void SetProperties(AbilityBase ab)
      {
@@ -43,6 +46,7 @@ public class AbilityObjSO : ScriptableObject
                ab.proc = proc;
                if (speedMult != 1) ab.gameObject.GetComponent<Projectile>().projectileSpeed *= speedMult;
                if (swapForce) ab.gameObject.GetComponent<Projectile>().swapForce = true;
+               if (shockwave)
                ab.isHoldable = isHoldable;
                ab.abilityOnCollide = abilityOnCollide;
                ab.transform.localScale *= sizeMult;

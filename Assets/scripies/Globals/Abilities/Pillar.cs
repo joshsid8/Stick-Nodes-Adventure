@@ -6,7 +6,7 @@ public class Pillar : AbilityBase
     [SerializeField] private float pillarTimer;
     [SerializeField] private float procTimes;
     [SerializeField] private float energyProc;
-    
+    [SerializeField] private bool shockwave;
     [SerializeField] private bool activeHitbox;
     [SerializeField] private bool isErupting;
     [SerializeField] private List<GameObject> inContact = new List<GameObject>();

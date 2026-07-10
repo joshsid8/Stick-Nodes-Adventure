@@ -111,39 +111,65 @@ public class PerformAbility : MonoBehaviour
         for (var i = 0; i < amount; i++)
         {
             if (casterType == CasterType.Player && blastType == 0 && ability.isHoldable && !pa.isHolding) break;
-
-            if (!unavailable)
-            {
-                if (i == 0 && blastType == 1) xOffset = ability.initSeparation;
-                var spawnPos = abilityPoint.position + transform.right * xOffset;
-                var spawnRot = blastType == 2 ? abilityPoint.rotation : Quaternion.identity;
-
-                var newObj = Instantiate(ability.abilityPrefab, spawnPos, spawnRot);
-                // the ??, i assume its an 'if null. do this'. learn what that is!!!
-                var abScript = newObj.GetComponent<AbilityBase>() ?? newObj.GetComponentInChildren<AbilityBase>();
-
-                if (abScript != null)
-                {
-                    ability.SetProperties(abScript);
-                    abScript.SetValues(casterFactor, isFacingRight);
-                    
-                    if (casterType == CasterType.Enemy) abScript.direction = abilityDirection;
-
-                    if (casterType == CasterType.Player)
-                    {
-                        pa.energy -= abScript.energyRequired;
-                        pa.currentAbilityCooldown = abScript.cooldown * pa.abilityCooldownMult;
-                        
-                        if (blastType != 0 && !abScript.isHoldable) pa.isPerformingAbility = false;
-                    }
-                }
-                else Debug.LogError($"Prefab {ability.abilityPrefab.name} has no AbilityBase >:(");
-            }
+            if (!unavailable && ability.shockwave && i != 0 || !unavailable && !ability.shockwave) Spawn(i, blastType, xOffset, isFacingRight, casterFactor, ability);
+            else i++;
 
             if (blastType != 0) xOffset += ability.separation;
             yield return new WaitForSeconds(ability.spawnInterval);
         }
         if (casterType == CasterType.Player) pa.isPerformingAbility = false;
+    }
+
+    private void Spawn(int i, int blastType, float xOffset, bool isFacingRight, int casterFactor, AbilityObjSO ability)
+    {
+        if (i == 0 && blastType == 1) xOffset = ability.initSeparation;
+        Vector3[] spawnPos = {abilityPoint.position + transform.right * xOffset, abilityPoint.position - transform.right * xOffset};
+        var spawnRot = blastType == 2 ? abilityPoint.rotation : Quaternion.identity;
+        GameObject[] newObjs = {Instantiate(ability.abilityPrefab, spawnPos[0], spawnRot), Instantiate(ability.abilityPrefab, spawnPos[1], spawnRot)};
+        if (ability.shockwave)
+        {
+            foreach (var obj in newObjs)
+            {
+                var abScript = obj.GetComponent<AbilityBase>() ?? obj.GetComponentInChildren<AbilityBase>();
+
+                if (abScript != null)
+                {
+                    ability.SetProperties(abScript);
+                    abScript.SetValues(casterFactor, isFacingRight);
+
+                    if (casterType == CasterType.Enemy) abScript.direction = abilityDirection;
+
+                    if (casterType == CasterType.Player)
+                    {
+                        pa.energy -= abScript.energyRequired / 2;
+                        pa.currentAbilityCooldown = abScript.cooldown * pa.abilityCooldownMult;
+
+                        if (blastType != 0 && !abScript.isHoldable) pa.isPerformingAbility = false;
+                    }
+                }
+            }
+        }
+        else if (!ability.shockwave)
+        {
+            Destroy(newObjs[1]);
+            var abScript = newObjs[0].GetComponent<AbilityBase>() ?? newObjs[0].GetComponentInChildren<AbilityBase>();
+
+            if (abScript != null)
+            {
+                ability.SetProperties(abScript);
+                abScript.SetValues(casterFactor, isFacingRight);
+
+                if (casterType == CasterType.Enemy) abScript.direction = abilityDirection;
+
+                if (casterType == CasterType.Player)
+                {
+                    pa.energy -= abScript.energyRequired;
+                    pa.currentAbilityCooldown = abScript.cooldown * pa.abilityCooldownMult;
+
+                    if (blastType != 0 && !abScript.isHoldable) pa.isPerformingAbility = false;
+                }
+            }
+        }
     }
 
     private bool GetFacingRight()

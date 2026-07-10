@@ -28,5 +28,6 @@ MonoBehaviour:
   potency: 1
   sizeMult: 1
   isHoldable: 0
-  swapForce: 0
   abilityOnCollide: 0
+  swapForce: 0
+  shockwave: 0

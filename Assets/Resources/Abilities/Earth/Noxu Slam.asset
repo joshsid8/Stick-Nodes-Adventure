@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085255e3a03594428d4b653873ec179, type: 3}
+  m_Name: Noxu Slam
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityObjSO
+  abilityPrefab: {fileID: 8784087263159481748, guid: ab78610f2332ffc45af38f2dc1564c42, type: 3}
+  setProperties: 0
+  isDirectional: 0
+  energyRequired: 0
+  proc: 0
+  amount: 3
+  initSeparation: 0
+  separation: 4.6
+  spawnInterval: 0.05
+  speedMult: 1
+  cooldownMult: 1
+  lifetimeMult: 1
+  damageMult: 1
+  potency: 1
+  sizeMult: 0.6
+  isHoldable: 0
+  abilityOnCollide: 0
+  swapForce: 0
+  shockwave: 0

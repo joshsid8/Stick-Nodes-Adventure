@@ -29,7 +29,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.6333333
-        value: {x: 0, y: 0.8, z: 0}
+        value: {x: 2.9702973, y: 0.8, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -511,7 +511,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.6333333
-        value: 0
+        value: 2.9702973
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -600,7 +600,7 @@ AnimationClip:
   - time: 0.6333333
     functionName: Perform
     data: 
-    objectReferenceParameter: {fileID: 11400000, guid: 46534a11fdd4ed648abd73207bf30591, type: 2}
+    objectReferenceParameter: {fileID: 11400000, guid: b7feb5e037d036044a2ad35e1b4b43df, type: 2}
     floatParameter: 0
     intParameter: 4
     messageOptions: 0
