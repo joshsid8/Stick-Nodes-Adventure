@@ -116,6 +116,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8172104874274776891, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: jumpForceY
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8339654333849830333, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_LocalPosition.x
       value: 129.43967

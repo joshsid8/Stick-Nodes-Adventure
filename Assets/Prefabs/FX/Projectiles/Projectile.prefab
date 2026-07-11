@@ -109,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeFactor: 0
   elementType: 0
+  damageFactor: 0
   damage: 15
   knockbackForce: {x: 0, y: 0}
   direction: 0
@@ -118,6 +119,9 @@ MonoBehaviour:
   cooldown: 0.5
   proc: 0
   procTimer: 0
+  activeHitbox: 0
+  energyProc: 0
+  procTimes: 0
   lifeTime: 3
   lifeTimer: 0
   isHoldable: 0
@@ -130,10 +134,11 @@ MonoBehaviour:
   pa: {fileID: 0}
   anim: {fileID: 0}
   endAnim: {fileID: 0}
-  projectileSpeed: 20
-  projectileMinSpeed: 10
   projectileHeight: 1
-  airResistance: 1
+  projectileSpeed: 20
+  gravityScale: 1
+  airResistance: 0.1
+  swapForce: 0
   randomisation: 1
   randomRes: 5
   randomAngle: 3
@@ -210,7 +215,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 311296
+    m_Bits: 49152
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

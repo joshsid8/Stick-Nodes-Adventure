@@ -13,19 +13,14 @@ MonoBehaviour:
   m_Name: Shuriken
   m_EditorClassIdentifier: Assembly-CSharp::AbilityObjSO
   abilityPrefab: {fileID: 5179120200687164443, guid: 20811f14f99480c4c9cb21db31c3e97c, type: 3}
-  setProperties: 0
-  damage: 0
-  knockbackForce: {x: 0, y: 0}
-  stunTime: 0
-  direction: 0
+  setProperties: 1
   isDirectional: 0
   energyRequired: 0
-  cooldown: 0
-  lifeTime: 0
   proc: 0
-  amount: 1
-  spawnInterval: 0.1
-  speedMult: 1
+  amount: 3
+  initSeparation: 0
+  separation: 1.5
+  spawnInterval: 0
   cooldownMult: 1
   lifetimeMult: 1
   damageMult: 1
@@ -33,3 +28,6 @@ MonoBehaviour:
   sizeMult: 1
   isHoldable: 0
   abilityOnCollide: 0
+  swapForce: 0
+  speedMult: 1
+  shockwave: 0

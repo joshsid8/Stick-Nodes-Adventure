@@ -15,17 +15,19 @@ MonoBehaviour:
   abilityPrefab: {fileID: 527549009820817163, guid: 653bd4e95aafbd344852914b7449c136, type: 3}
   setProperties: 1
   isDirectional: 1
-  energyRequired: 0
+  energyRequired: 15
   proc: 1
   amount: 1
   initSeparation: 5
   separation: 1.5
   spawnInterval: 0.2
-  speedMult: 1
   cooldownMult: 1
-  lifetimeMult: 0
+  lifetimeMult: 0.1
   damageMult: 5
   potency: 1
   sizeMult: 1
   isHoldable: 0
   abilityOnCollide: 0
+  swapForce: 0
+  speedMult: 1
+  shockwave: 0

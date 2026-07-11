@@ -4,7 +4,10 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-
+        
+        Make noxu's cooldowns at the end of each certain animation
+            now that there is a flag to ensure they are performing an ability
+        
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more
             In general there should be sustain damage or damage over time
@@ -26,6 +29,10 @@ SNADV Notes
                 
                 Noxu's pillars when hitting the walls offset themselves upward by a small amount
                     I know there is a fix for this, but i dont know which one is the most efficient
+                
+                It seems that the quest log manager cant properly hold more than 1 quest
+                    Also, before making a makefix, izuno's questlien gave a null ref only if i started with the main menu, which made absolutelyn o sense
+                    I think i should just improve the overall logic of the quest system
             
             One time occurrences/ Rare bugs
                 One time, the fishwoman's state logic crashed out
@@ -34,7 +41,7 @@ SNADV Notes
                     I need to find a way to replicate this and find a fix
 
                 I had a bug where the player performed a pillar move, but the performability flag was on indefinitely after, freezing the player
-                    This might be something to do with turning the flag as false
+                    This might be something to do with the player getting hurt, not turning it off
                 
                 I think when the game lags a slight, the player can m1 without cooldowns
                     Its like it ignores all conditions and i can simply just m1 again

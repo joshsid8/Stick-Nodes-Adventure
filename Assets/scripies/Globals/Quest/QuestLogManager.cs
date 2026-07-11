@@ -81,8 +81,8 @@ public class QuestLogManager : GUIBase
         GetActive(isActive);
     }
 
-    private void AddQuest(Quest.QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat,
-        CollectableSOBase[] objects, int[] noOfO, DialogueObject npc, CollectableSOBase[] reward)
+    private void AddQuest(Quest.QuestType type, string title, string description = null, int[] enemyIDs = null, int[] eToDefeat = null,
+        CollectableSOBase[] objects = null, int[] noOfO = null, DialogueObject npc = null, CollectableSOBase[] reward = null)
     {
         for (var i = 0; i < questSlots.Length; i++)
         {
@@ -95,12 +95,12 @@ public class QuestLogManager : GUIBase
                 questDescriptions[i] = description;
                 questTypes[i] = type;
 
-                questEnemies[i] = (int[])enemyIDs.Clone();
-                questNoOfEnemies[i] = (int[])eToDefeat.Clone();
-                questObjects[i] = (CollectableSOBase[])objects.Clone();
-                questNoOfObjects[i] = (int[])noOfO.Clone();
+                if (enemyIDs != null) questEnemies[i] = (int[])enemyIDs.Clone();
+                if (eToDefeat != null) questNoOfEnemies[i] = (int[])eToDefeat.Clone();
+                if (objects != null) questObjects[i] = (CollectableSOBase[])objects.Clone();
+                if (noOfO != null) questNoOfObjects[i] = (int[])noOfO.Clone();
                 questNpCs[i] = npc;
-                questRewards[i] = (CollectableSOBase[])reward.Clone();
+                if (reward != null) questRewards[i] = (CollectableSOBase[])reward.Clone();
 
                 return;
             }

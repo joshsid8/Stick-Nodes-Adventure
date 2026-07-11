@@ -152,6 +152,11 @@ public abstract class BossBase : MonoBehaviour
         
     }
 
+    protected void FollowupMove()
+    {
+        
+    }
+
     protected void StoreObject(GameObject obj)
     {
         var projHit = Physics2D.CircleCast(fireTransform.position, 10f, new Vector2(fireTransform.transform.right.x, fireTransform.transform.up.y), 0f, LayerMask.GetMask("FX", "EVFX", "PVFX"));

@@ -16,30 +16,26 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private SceneField levelScene;
     
     private List<AsyncOperation> scenesToLoad = new List<AsyncOperation>();
-    
+
     void Awake()
     {
         loadingBar.SetActive(false);
+        DontDestroyOnLoad(gameObject.transform.root.gameObject);
     }
 
     public void StartGame()
-    {
+    {  
         HideMenu();
-        
         loadingBar.SetActive(true);
-        
-        scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
-        scenesToLoad.Add(SceneManager.LoadSceneAsync(levelScene, LoadSceneMode.Additive));
-        SaveSystem.Load();
         StartCoroutine(ProgressLoading());
     }
 
-    void HideMenu()
+    private void HideMenu()
     {
         for (int i = 0; i < objectsToHide.Length; i++) objectsToHide[i].SetActive(false);
     }
 
-    IEnumerator ProgressLoading()
+    private IEnumerator ProgressLoading()
     {
         float progress = 0;
         for (int i = 0; i < scenesToLoad.Count; i++)
@@ -51,5 +47,11 @@ public class MainMenuManager : MonoBehaviour
                 yield return null;
             }
         }
+        scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
+        scenesToLoad.Add(SceneManager.LoadSceneAsync(levelScene, LoadSceneMode.Additive));
+        yield return new WaitForSeconds(0.1f);
+        SaveSystem.Load();
+        SceneManager.UnloadSceneAsync(gameObject.scene);
+        Destroy(gameObject.transform.root.gameObject);
     }
 }

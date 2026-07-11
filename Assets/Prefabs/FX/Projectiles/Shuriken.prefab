@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: aa2b221c0ce594f4885ddfa5d06d42bb, type: 3}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: damage
-      value: 10
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: stunTime
@@ -62,15 +62,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: randomRes
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: randomAngle
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
-      propertyPath: airResistance
-      value: 2
+      propertyPath: isDirectional
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: projectileSpeed

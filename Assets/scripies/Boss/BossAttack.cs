@@ -9,6 +9,7 @@ public class BossAttack : MonoBehaviour
     // boss attack system
     public bool isAttacking;
     [SerializeField] private bool canAttack;
+    public bool isPerformingAttack;
     
     private bool moveDuringCooldown;
     
@@ -84,12 +85,12 @@ public class BossAttack : MonoBehaviour
             if (closeRange)
             {
                 attackFactor = Random.Range(0, defensiveAtk.Length);
-                if (defensiveAtk[attackFactor] != null && isAttacking) animator.SetTrigger(defensiveAtk[attackFactor]);
+                if (defensiveAtk[attackFactor] != null && isAttacking && !isPerformingAttack) animator.SetTrigger(defensiveAtk[attackFactor]);
             }
             else if (!closeRange)
             {
                 attackFactor = Random.Range(0, activeAtk.Length);
-                if (activeAtk[attackFactor] != null && isAttacking) animator.SetTrigger(activeAtk[attackFactor]);
+                if (activeAtk[attackFactor] != null && isAttacking && !isPerformingAttack) animator.SetTrigger(activeAtk[attackFactor]);
             }
             ActionCooldown(2f);
         }
@@ -148,7 +149,7 @@ public class BossAttack : MonoBehaviour
     public void ActionCooldown(float cooldownTime)
     {
         currentAttackCooldown = bh.phase2 ?  cooldownTime * 0.5f : cooldownTime;
-        //GuardDown();
+        GuardDown();
     }
 
     private void GuardDown(float stunnableTime = 0.4f)
@@ -166,6 +167,7 @@ public class BossAttack : MonoBehaviour
             yield return new WaitForSeconds(PlayerHealth.Instance.respawnTime);
             transform.position = originalPosition;
             bh.bossHealth = bh.bossMaxHealth;
+            bh.phase2 = false;
             yield return new WaitForSeconds(1f);
             noMercy = true;
             if (dialogueNo <= bh.introDialogue.Length - 1)

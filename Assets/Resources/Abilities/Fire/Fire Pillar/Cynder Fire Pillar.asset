@@ -14,19 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityObjSO
   abilityPrefab: {fileID: 3959228808640859595, guid: 6bf42199654978f44af9f347fffc8e99, type: 3}
   setProperties: 1
-  direction: 0
   isDirectional: 0
   energyRequired: 0
   proc: 0.1
   amount: 8
   initSeparation: 1.5
   separation: 1.7
-  spawnInterval: 0.08
-  speedMult: 1
+  spawnInterval: 0.06
   cooldownMult: 1
   lifetimeMult: 0.25
-  damageMult: 2
+  damageMult: 1
   potency: 1
   sizeMult: 1.1
   isHoldable: 0
   abilityOnCollide: 0
+  swapForce: 0
+  speedMult: 1
+  shockwave: 0

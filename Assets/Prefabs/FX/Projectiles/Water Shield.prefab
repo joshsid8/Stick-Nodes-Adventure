@@ -78,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: randomRes
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: upwardOnly
@@ -90,15 +90,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: randomAngle
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: gravityScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: airResistance
-      value: 2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: isDirectional
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: randomisation
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: energyRequired
