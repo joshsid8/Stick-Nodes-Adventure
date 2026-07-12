@@ -43,7 +43,7 @@ public class AbilityObjSO : ScriptableObject
                ab.energyRequired = energyRequired;
                ab.cooldown *= cooldownMult;
                ab.lifeTime *= lifetimeMult;
-               ab.proc = proc;
+               if (proc > 0) ab.proc = proc;
                if (speedMult != 1) ab.gameObject.GetComponent<Projectile>().projectileSpeed *= speedMult;
                if (swapForce) ab.gameObject.GetComponent<Projectile>().swapForce = true;
                if (shockwave)

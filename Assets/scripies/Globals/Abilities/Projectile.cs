@@ -60,7 +60,7 @@ public class Projectile : AbilityBase
         Destroy(gameObject, lifeTime);
     }
 
-    private void Update()
+    protected override void Update()
     {
         gameObject.layer = typeFactor switch
         {
@@ -68,7 +68,6 @@ public class Projectile : AbilityBase
             2 => LayerMask.NameToLayer("EVFX"),
             _ => LayerMask.NameToLayer("FX")
         };
-        
         // This makes the object point to where its moving - something to learn (MAFFS)
         if (!collided)
         {

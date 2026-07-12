@@ -5,8 +5,10 @@ SNADV Notes
     
     Priorities:
         
-        Make noxu's cooldowns at the end of each certain animation
-            now that there is a flag to ensure they are performing an ability
+        It seems that the quest log manager cant properly hold more than 1 quest
+            Also, before making a makefix, izuno's questline gave a nullref only if i started with the main menu, which made absolutely no sense
+            I think i should just improve the overall logic of the quest system
+                Thats if i understand what its rlly doing
         
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more
@@ -16,13 +18,16 @@ SNADV Notes
             Send a lot more detailed data to victims when damaged
                 Element type has been added
                     Now this can make change the damage of moves depending on the element (To be Implemented)
+        
+        Input Logic
+            switch input systems!
+            I should be smart enough to know how to use it now
 
     Optimisations & Hotfixes:
         
         Instability
             Replicatable bugs
-                Cynder doesnt get hit by abilities
-                    no idea whats happening here, Noxu is fine but cynder isnt
+                Bosses (almost[noxu can sometimes get hit by a rock?]) always dont get hit by player abilties, but they do collide
                 
                 When fishmen fly, but spares the player, they continue flying and chase the player while patrolling
                     This was at the time right before fighting the fishwoman
@@ -30,10 +35,6 @@ SNADV Notes
                 Noxu's pillars when hitting the walls offset themselves upward by a small amount
                     I know there is a fix for this, but i dont know which one is the most efficient
                 
-                It seems that the quest log manager cant properly hold more than 1 quest
-                    Also, before making a makefix, izuno's questlien gave a null ref only if i started with the main menu, which made absolutelyn o sense
-                    I think i should just improve the overall logic of the quest system
-            
             One time occurrences/ Rare bugs
                 One time, the fishwoman's state logic crashed out
                     its states were going from idle to patrolling instantly
@@ -45,7 +46,9 @@ SNADV Notes
                 
                 I think when the game lags a slight, the player can m1 without cooldowns
                     Its like it ignores all conditions and i can simply just m1 again
-
+        
+        
+        
         Ability Logic
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
@@ -84,8 +87,9 @@ SNADV Notes
             Make it so that the music never stops, but rather silences before moving onto another track
             
             SFX
-                vine boom XD
-                I can make/edit my own sfx
+                vine boom has been added!
+                now just use the array in audiomanager to add more sfx
+                    I can make/edit my own sfx
 
     Things to be added:
            

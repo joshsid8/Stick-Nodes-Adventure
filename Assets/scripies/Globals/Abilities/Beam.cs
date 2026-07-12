@@ -23,21 +23,13 @@ public class Beam : AbilityBase
         parentObject.transform.eulerAngles = new Vector3(0, 0, isFacingRightDirection ? direction : -direction + 180f);
     }
 
-    private void Update()
+    protected override void Update()
     {
-        Lifetime();
+        base.Update();
         if (pa != null && typeFactor == 1) pa.currentAbilityCooldown = cooldown * pa.abilityCooldownMult;
         if (isFacingRightDirection) transform.eulerAngles = Vector3.zero;
         else transform.eulerAngles = new Vector3(0, 180, 0);
         transform.localEulerAngles = new Vector3(0, 0, 0);
-        
-        gameObject.layer = typeFactor switch
-        {
-            1 => LayerMask.NameToLayer("PVFX"),
-            2 => LayerMask.NameToLayer("EVFX"),
-            _ => LayerMask.NameToLayer("FX")
-        };
-        Proc();
         HitBox();
     }
     

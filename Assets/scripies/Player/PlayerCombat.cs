@@ -107,7 +107,7 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Stun(stunTime * attackPotency);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 3;
-                if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
+                if (hits[i].collider.CompareTag("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
                 {
                     StartCoroutine(AirCombo(hits[i].collider.gameObject));
                     pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airKnockbackForce.y);

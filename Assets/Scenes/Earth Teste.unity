@@ -7850,30 +7850,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: defensiveAtk.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'defensiveAtk.Array.data[0]'
-      value: Boulder
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'defensiveAtk.Array.data[1]'
-      value: Counter
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'defensiveAtk.Array.data[2]'
-      value: Shield
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'defensiveAtk.Array.data[3]'
-      value: Decimate
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'defensiveAtk.Array.data[4]'
-      value: Decimate
-      objectReference: {fileID: 0}
     - target: {fileID: 9085918208820846365, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: m_Name
       value: Noxu

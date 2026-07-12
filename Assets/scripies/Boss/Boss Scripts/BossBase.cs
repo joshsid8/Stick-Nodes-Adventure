@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,6 +14,7 @@ public abstract class BossBase : MonoBehaviour
     
     public bool isFlyDashing;
     public Vector2 dashDirection;
+    [SerializeField] private string inRangeAnim = "HAttack";
     
     // Melee & Ability
     public float meleeCooldown;
@@ -38,6 +38,7 @@ public abstract class BossBase : MonoBehaviour
     // Teleporting and Dropping
     public Transform teleportPoint;
     public float dropSpeed;
+    [SerializeField] private string teleportAnim = "DAttack";
     
     // Checks
     [HideInInspector] public bool isInRange;
@@ -53,7 +54,7 @@ public abstract class BossBase : MonoBehaviour
     protected BossHealth bh;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected void Start()
+    protected void Awake()
     {
         ba = GetComponent<BossAttack>();
         animator = GetComponent<Animator>();
@@ -65,6 +66,7 @@ public abstract class BossBase : MonoBehaviour
     {
         for (var i = storedObjects.Count - 1; i >= 0; i--) 
             if (storedObjects[i].IsDestroyed()) storedObjects.RemoveAt(i); 
+        Strafe();
     }
 
     protected void FindPlayerPosition()
@@ -85,7 +87,7 @@ public abstract class BossBase : MonoBehaviour
     
     protected void Teleport()
     {
-        animator.SetTrigger("DAttack");
+        animator.SetTrigger(teleportAnim);
         var rng = Random.Range(0, 101);
         var x = rng <= 50 ? 3 : -3;
         transform.position = new Vector3(ba.playerTransform.position.x + x, teleportPoint.position.y, transform.position.z);
@@ -97,7 +99,7 @@ public abstract class BossBase : MonoBehaviour
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
     }
     
-    protected void Strafe()
+    private void Strafe()
     {
         if (isStrafing) rb.linearVelocity = ba.isFacingRight ? new Vector2(strafeSpeed, rb.linearVelocity.y) :
             new Vector2(-strafeSpeed, rb.linearVelocity.y);
@@ -112,8 +114,7 @@ public abstract class BossBase : MonoBehaviour
             if (isInRange)
             {
                 isFlyDashing = false;
-                animator.SetTrigger("HAttack");
-                ba.ActionCooldown(strafeCooldown);
+                animator.SetTrigger(inRangeAnim);
             }
         }
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
@@ -130,7 +131,6 @@ public abstract class BossBase : MonoBehaviour
             }
 
             rb.linearVelocity = new Vector2(jumpForceX, jumpForceY);
-            ba.ActionCooldown(jumpCooldown);
         }
     }
     
@@ -139,7 +139,6 @@ public abstract class BossBase : MonoBehaviour
         hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
-            ba.ActionCooldown(meleeCooldown * 0.5f);
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
@@ -148,23 +147,15 @@ public abstract class BossBase : MonoBehaviour
                 PlayerHealth.Instance.currentCombatTimer =+ 180f;
             }
         }
-        ba.ActionCooldown(meleeCooldown * 0.5f);
-        
     }
-
-    protected void FollowupMove()
-    {
-        
-    }
+    protected void FollowupMove(string move) => animator.SetTrigger(move);
 
     protected void StoreObject(GameObject obj)
     {
-        var projHit = Physics2D.CircleCast(fireTransform.position, 10f, new Vector2(fireTransform.transform.right.x, fireTransform.transform.up.y), 0f, LayerMask.GetMask("FX", "EVFX", "PVFX"));
-        if (projHit.collider != null)
-        {
-            storedObjects.Add(projHit.collider.gameObject);
-            print($"found and stored a {projHit.collider.gameObject.name}");
-        }
+        var projHit = Physics2D.CircleCast(fireTransform.position, 10f,
+            new Vector2(fireTransform.transform.right.x, fireTransform.transform.up.y), 0f, 
+            LayerMask.GetMask("FX", "EVFX", "PVFX"));
+        if (projHit.collider != null) storedObjects.Add(projHit.collider.gameObject);
     }
 
     protected void ApplyForce(float force) => Shenanigans.Instance.ApplyForce(new Vector2(ba.isFacingRight ? force : -force, force), obj: storedObjects[storedObjectIndex]);

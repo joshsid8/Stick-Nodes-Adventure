@@ -33,7 +33,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: isErupting
+    attribute: activeHitbox
     path: 
     classID: 114
     script: {fileID: 11500000, guid: 583ad71d6abd4f04aa1796341b7bb9fa, type: 3}
@@ -57,7 +57,7 @@ AnimationClip:
     genericBindings:
     - serializedVersion: 2
       path: 0
-      attribute: 873643100
+      attribute: 3646669991
       script: {fileID: 11500000, guid: 583ad71d6abd4f04aa1796341b7bb9fa, type: 3}
       typeID: 114
       customType: 0
@@ -112,7 +112,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: isErupting
+    attribute: activeHitbox
     path: 
     classID: 114
     script: {fileID: 11500000, guid: 583ad71d6abd4f04aa1796341b7bb9fa, type: 3}

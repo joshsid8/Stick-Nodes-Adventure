@@ -112,6 +112,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         {
             deathToggle = true;
             isDead = true;
+            AudioManager.Instance.sfxSource.Play();
             StartCoroutine(Shenanigans.Instance.JumpScare(GameObject.Find("JumpScare")));
             yield return new WaitForSeconds(respawnTime);
             StartCoroutine(Spawn(0, true));

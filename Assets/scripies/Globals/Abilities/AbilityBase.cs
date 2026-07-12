@@ -85,8 +85,20 @@ public abstract class AbilityBase : MonoBehaviour
         procTimes = lifeTime / proc;
         procTimes = energyRequired / procTimes;
     }
+
+    protected virtual void Update()
+    {
+        Lifetime();
+        Proc();
+        gameObject.layer = typeFactor switch
+        {
+            1 => LayerMask.NameToLayer("PVFX"),
+            2 => LayerMask.NameToLayer("EVFX"),
+            _ => LayerMask.NameToLayer("FX")
+        };
+    }
     
-    protected void Proc()
+    private void Proc()
     {
         procTimer -= Time.deltaTime;
         energyProc -= Time.deltaTime;
@@ -97,7 +109,7 @@ public abstract class AbilityBase : MonoBehaviour
         }
         else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
     }
-    protected void Lifetime()
+    private void Lifetime()
     {
         if (lifeTimer > 0)
         {

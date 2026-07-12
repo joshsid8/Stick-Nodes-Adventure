@@ -11,8 +11,6 @@ public class BossAttack : MonoBehaviour
     [SerializeField] private bool canAttack;
     public bool isPerformingAttack;
     
-    private bool moveDuringCooldown;
-    
     public float attackCooldown;
     public float currentAttackCooldown;
     
@@ -92,7 +90,6 @@ public class BossAttack : MonoBehaviour
                 attackFactor = Random.Range(0, activeAtk.Length);
                 if (activeAtk[attackFactor] != null && isAttacking && !isPerformingAttack) animator.SetTrigger(activeAtk[attackFactor]);
             }
-            ActionCooldown(2f);
         }
     }
     
@@ -133,7 +130,7 @@ public class BossAttack : MonoBehaviour
         }
     }
     
-    void FacePlayer()
+    private void FacePlayer()
     {
         if (canFacePlayer)
         {
@@ -149,15 +146,12 @@ public class BossAttack : MonoBehaviour
     public void ActionCooldown(float cooldownTime)
     {
         currentAttackCooldown = bh.phase2 ?  cooldownTime * 0.5f : cooldownTime;
-        GuardDown();
+        GuardDown(cooldownTime);
     }
 
-    private void GuardDown(float stunnableTime = 0.4f)
-    {
-        stunnableTimer += stunnableTime;
-    }
+    private void GuardDown(float stunnableTime = 0.4f) => stunnableTimer = stunnableTime;
 
-    IEnumerator Restart()
+    private IEnumerator Restart()
     {
         if (PlayerHealth.Instance.isDead && !playerIsDead && isAttacking)
         {
@@ -186,7 +180,7 @@ public class BossAttack : MonoBehaviour
         }
     }
 
-    void Flip()
+    private void Flip()
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(0.0f, 180.0f, 0.0f);

@@ -10,7 +10,6 @@ public class Cynder : BossBase
     protected override void Update()
     {
         base.Update();
-        Strafe();
         FlyDash();
 
         isInRange = Physics2D.OverlapCircle(transform.position, attackRange * 1.5f, ba.playerLayer);
@@ -32,11 +31,7 @@ public class Cynder : BossBase
         if (ba.directionToPlayer >= 8f || ba.directionToPlayer <= -8f)
         {
             var rng = Random.Range(0, 101);
-            if (rng <= 40)
-            {
-                animator.SetTrigger("Homing");
-                ba.ActionCooldown(3f);
-            }
+            if (rng <= 40) animator.SetTrigger("Homing"); 
         }
     }
     

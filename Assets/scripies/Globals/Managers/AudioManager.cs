@@ -6,7 +6,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance {get; private set;}
     
     public AudioSource musicSource;
-    [SerializeField] private AudioSource sfxSource;
+    public AudioSource sfxSource;
     
     public AudioClip[] backgroundMusic;
     public float[] backgroundMusicVolume;

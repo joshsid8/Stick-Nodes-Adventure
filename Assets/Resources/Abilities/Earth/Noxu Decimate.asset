@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: Noxu Decimate
   m_EditorClassIdentifier: Assembly-CSharp::AbilityObjSO
   abilityPrefab: {fileID: 8784087263159481748, guid: ab78610f2332ffc45af38f2dc1564c42, type: 3}
-  setProperties: 0
+  setProperties: 1
   isDirectional: 0
   energyRequired: 0
   proc: 0
   amount: 8
   initSeparation: 0
   separation: 4.3
-  spawnInterval: 0.08
-  speedMult: 1
+  spawnInterval: 0.1
   cooldownMult: 1
-  lifetimeMult: 1
-  damageMult: 1
+  lifetimeMult: 0.6
+  damageMult: 0.4
   potency: 1
-  sizeMult: 0.5
+  sizeMult: 1
   isHoldable: 0
   abilityOnCollide: 0
   swapForce: 0
+  speedMult: 1
   shockwave: 1

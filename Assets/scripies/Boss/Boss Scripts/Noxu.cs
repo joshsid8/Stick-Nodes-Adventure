@@ -1,4 +1,4 @@
-using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Noxu : BossBase
@@ -7,15 +7,14 @@ public class Noxu : BossBase
     protected override void Update()
     {
         base.Update();
-        Strafe();
-        if (freezeMovement) rb.linearVelocity = Vector2.zero;
-        else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+        rb.linearVelocity = freezeMovement ? Vector2.zero : new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
 
     private void ReplenishShield(float shieldHp) => bh.shieldHealth = shieldHp;
 
     public override void Gamble()
     {
+        if (storedObjects[0] == null || storedObjects[0].IsDestroyed()) return;
         var rng = Random.Range(0, 3);
         animator.SetInteger("factor", rng);
     }

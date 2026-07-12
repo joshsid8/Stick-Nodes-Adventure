@@ -13,16 +13,9 @@ public class Pillar : AbilityBase
         coll = GetComponent<Collider2D>();
     }
 
-    void Update()
+    protected override void Update()
     {
-        Lifetime();
-        gameObject.layer = typeFactor switch
-        {
-            1 => LayerMask.NameToLayer("PVFX"),
-            2 => LayerMask.NameToLayer("EVFX"),
-            _ => LayerMask.NameToLayer("FX")
-        };
-        Proc();
+        base.Update();
         Hitbox();
     }
     
