@@ -18,13 +18,10 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     
     public bool questCompleted;
 
-    [Tooltip("enemies to defeat")] public int[] eTd = Array.Empty<int>(); 
-    [Tooltip("Number of enemies currently defeated")] [SerializeField] private int[] noOfE = Array.Empty<int>();
-    [SerializeField] private GameObject[] targetEnemies;
-    private Dictionary<int, int> requiredById;  
-    private Dictionary<int, int> remainingById; 
-    private Dictionary<GameObject, int> enemyToId;
-    private InvIndex invIndex;
+    [Tooltip("enemies to defeat")] public Enemy[] eTd = Array.Empty<Enemy>(); 
+    [Tooltip("Number of enemies currently defeated")] public int[] noOfE = Array.Empty<int>();
+    private Dictionary<Enemy, int> requiredByEnemy = new Dictionary<Enemy, int>();  
+    private Dictionary<Enemy, int> currentKillsByEnemy = new Dictionary<Enemy, int>(); 
     
     [Tooltip("objects to take, give, or find")] public CollectableSOBase[] oTi;
     public int[] noOfO;
@@ -37,18 +34,103 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     { 
         DefeatEnemy, HaveInInventory, GiveTo, SpeakTo, NullQuest
     }
+
+    private void OnEnable()
+    {
+        EnemyHealth.OnEnemyKilled += OnEnemyKilled;
+        if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
+            InvManager.Instance.invIndex.OnInventoryChanged += OnInventoryChanged;
+    }
+
+    private void OnDisable()
+    {
+        EnemyHealth.OnEnemyKilled -= OnEnemyKilled;
+        if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
+            InvManager.Instance.invIndex.OnInventoryChanged -= OnInventoryChanged;
+    }
+
     private void Start()
     { 
         foreach (var text in titleTexts) text.text = questTitle;
+        RefreshQuestState();
     }
-    private void Update()
+
+    private void OnEnemyKilled(Enemy enemy)
     {
-        QuestTrack();
-        if (questType == QuestType.NullQuest) 
+        if (questType != QuestType.DefeatEnemy || questCompleted || enemy == null) return;
+
+        if (requiredByEnemy.ContainsKey(enemy))
         {
-            foreach (var text in titleTexts) text.text = "";
-            questDescription = "";
+            if (!currentKillsByEnemy.ContainsKey(enemy)) currentKillsByEnemy[enemy] = 0;
+            
+            if (currentKillsByEnemy[enemy] < requiredByEnemy[enemy])
+            {
+                currentKillsByEnemy[enemy]++;
+                CheckCompletion();
+            }
         }
+    }
+
+    private void OnInventoryChanged()
+    {
+        if (questType != QuestType.HaveInInventory || questCompleted) return;
+        CheckCompletion();
+    }
+
+    private void CheckCompletion()
+    {
+        if (questCompleted || questType == QuestType.NullQuest) return;
+
+        bool allMet = true;
+        switch (questType)
+        {
+            case QuestType.DefeatEnemy:
+                foreach (var kvp in requiredByEnemy)
+                {
+                    int current = currentKillsByEnemy.ContainsKey(kvp.Key) ? currentKillsByEnemy[kvp.Key] : 0;
+                    if (current < kvp.Value)
+                    {
+                        allMet = false;
+                        break;
+                    }
+                }
+                break;
+            case QuestType.HaveInInventory:
+                if (InvManager.Instance == null || InvManager.Instance.invIndex == null) return;
+                for (int i = 0; i < oTi.Length; i++)
+                {
+                    if (!InvManager.Instance.invIndex.HasAtLeast(oTi[i], noOfO[i]))
+                    {
+                        allMet = false;
+                        break;
+                    }
+                }
+                break;
+        }
+
+        if (allMet)
+        {
+            questCompleted = true;
+            GiveRewards();
+            ClearUI();
+        }
+    }
+
+    private void GiveRewards()
+    {
+        if (rewardObj == null) return;
+        foreach (var rewardSO in questRewards)
+        {
+            var reward = Instantiate(rewardObj, PlayerHealth.Instance.gameObject.transform.position, Quaternion.identity);
+            var collectable = reward.GetComponent<Collectable>();
+            if (collectable != null) collectable.collectable = rewardSO;
+        }
+    }
+
+    private void RefreshQuestState()
+    {
+        if (questType == QuestType.NullQuest) return;
+        CheckCompletion();
     }
 
     void UpdateUI()
@@ -56,146 +138,54 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         infoTitle.text = questTitle;
         infoDescription.text = questDescription;
     }
-    private void QuestTrack()
-    {
-        switch (questType)
-        {
-            case QuestType.DefeatEnemy:
-                var alive = new List<GameObject>(targetEnemies.Length);
-                for (int i = 0; i < targetEnemies.Length; i++)
-                {
-                    var go = targetEnemies[i];
-                    if (go == null) continue;
-                    var eh = go.GetComponent<EnemyHealth>();
-                    if (eh == null) continue;
-                    if (!enemyToId.TryGetValue(go, out var id))
-                    {
-                        id = eh.gameObject.GetComponent<Identifier>().id;
-                        enemyToId[go] = id;
-                    }
-                    if (eh.isDead)
-                    {
-                        if (remainingById.TryGetValue(id, out var rem) && rem > 0) remainingById[id] = rem - 1;
-                        enemyToId.Remove(go);
-                        continue;
-                    }
-                    alive.Add(go);
-                }
-                targetEnemies = alive.ToArray();
-                var totalRequired = 0;
-                var totalRemaining = 0;
-                foreach (var kv in requiredById) totalRequired += kv.Value;
-                foreach (var kv in remainingById) totalRemaining += kv.Value;
-                var totalDefeated = totalRequired - totalRemaining;
-                //objectiveText.text = $"Defeat {totalDefeated}/{totalRequired} enemies";
-                if (totalRemaining <= 0 && questType == QuestType.DefeatEnemy)
-                {
-                    questCompleted = true;
-                    targetEnemies = Array.Empty<GameObject>();
-                }
-                break;
-            
-            case QuestType.HaveInInventory:
-                var needs = Array.Empty<(CollectableSOBase id, int count)>();
-                for (var i = 0; i < oTi.Length; i++) needs = new (CollectableSOBase id, int count)[] {(oTi[i], noOfO[i])};
-                
-                if (InvManager.Instance == null || InvManager.Instance.invIndex == null)
-                {Debug.LogWarning("Quest: InvManager/InvIndex doesnt exist. KILL YOURSELF!!!"); return;}
-                
-                var canCompleteQuest = InvManager.Instance.invIndex.MeetsAllCounts(needs);
-                if (canCompleteQuest) questCompleted = true;
-                break;
-            
-            case QuestType.GiveTo:
-                
-                break;
-            case QuestType.SpeakTo:
-                break;
-            case QuestType.NullQuest:
-                break;
-        }
-        if (questCompleted)
-        {
-            for (var i = 0; i < questRewards.Length; i++)
-            {
-                var reward = Instantiate(rewardObj, PlayerHealth.Instance.gameObject.transform.position, Quaternion.identity);
-                reward.GetComponent<Collectable>().collectable = questRewards[i]; 
-            }
-            ClearUI();
-        }
-    }
-    public void LogQuest(QuestType type, string title, string description, int[] enemyIDs, int[] eToDefeat, CollectableSOBase[] objects, int[] noOfObj, DialogueObject npc, CollectableSOBase[] rewards)
+    
+    public void LogQuest(QuestType type, string title, string description, Enemy[] enemies, int[] eToDefeat, CollectableSOBase[] objects, int[] noOfObj, DialogueObject npc, CollectableSOBase[] rewards)
     {
         questType = type;
         questTitle = title;
         questDescription = description;
         nTi = npc;
-        eTd = enemyIDs != null ? (int[])enemyIDs.Clone() : Array.Empty<int>();
+        eTd = enemies != null ? (Enemy[])enemies.Clone() : Array.Empty<Enemy>();
         noOfE = eToDefeat != null ? (int[])eToDefeat.Clone() : Array.Empty<int>();
         oTi = objects != null ? (CollectableSOBase[])objects.Clone() : Array.Empty<CollectableSOBase>();
         noOfO = noOfObj != null ? (int[])noOfObj.Clone() : Array.Empty<int>();
         questRewards = rewards != null ? (CollectableSOBase[])rewards.Clone() : Array.Empty<CollectableSOBase>();
 
-        foreach (var text in titleTexts) text.text = questTitle;
-        
-        switch (questType)
+        requiredByEnemy.Clear();
+        currentKillsByEnemy.Clear();
+
+        if (questType == QuestType.DefeatEnemy && eTd != null && noOfE != null)
         {
-            case QuestType.DefeatEnemy:
-                var enemies = FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None);
-                var targets = new List<GameObject>(enemies.Length);
-                foreach (var eh in enemies)
-                {
-                    if (eh == null) continue;
-                    if (Array.IndexOf(eTd, eh.gameObject.GetComponent<Identifier>().id) >= 0) targets.Add(eh.gameObject);
-                }
-                targetEnemies = targets.ToArray();
-
-                requiredById = new Dictionary<int, int>();
-                remainingById = new Dictionary<int, int>();
-
-                var len = Math.Min(eTd.Length, noOfE.Length);
-                for (var i = 0; i < len; i++)
-                {
-                    var id = eTd[i];
-                    var toDefeat = noOfE[i];
-                    if (requiredById.TryGetValue(id, out var curReq)) requiredById[id] = curReq + toDefeat;
-                    else requiredById[id] = toDefeat;
-                    remainingById[id] = requiredById[id];
-                }
-
-                enemyToId = new Dictionary<GameObject, int>(targetEnemies.Length);
-                for (var i = 0; i < targetEnemies.Length; i++)
-                {
-                    var go = targetEnemies[i];
-                    if (go == null) continue;
-                    var eh = go.GetComponent<EnemyHealth>();
-                    if (eh == null) continue;
-                    enemyToId[go] = eh.gameObject.GetComponent<Identifier>().id;
-                }
-                break;
-            case QuestType.HaveInInventory:
-                //print($"ensure you have {objects[0]} in your inventory!");
-                break;
-            case QuestType.NullQuest:
-                // this aint nothin dawg
-                break;
+            int len = Math.Min(eTd.Length, noOfE.Length);
+            for (int i = 0; i < len; i++)
+            {
+                var enemy = eTd[i];
+                if (enemy == null) continue;
+                int count = noOfE[i];
+                if (requiredByEnemy.ContainsKey(enemy)) requiredByEnemy[enemy] += count;
+                else requiredByEnemy[enemy] = count;
+            }
         }
+
+        foreach (var text in titleTexts) text.text = questTitle;
+        RefreshQuestState();
     }
 
     public void ClearUI()
     {
         foreach (var text in titleTexts) text.text = "";
         questDescription = "";
-        targetEnemies = Array.Empty<GameObject>();
         oTi = Array.Empty<CollectableSOBase>();
         nTi = null;
-        eTd = Array.Empty<int>();
+        eTd = Array.Empty<Enemy>();
         noOfE = Array.Empty<int>();
         questRewards = Array.Empty<CollectableSOBase>();
         questCompleted = false;
         questType = QuestType.NullQuest;
         infoDescription.text = "";
         infoTitle.text = "";
+        requiredByEnemy.Clear();
+        currentKillsByEnemy.Clear();
     }
     public void OnPointerClick(PointerEventData eventData)
     {

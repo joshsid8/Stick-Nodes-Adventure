@@ -5,10 +5,10 @@ SNADV Notes
     
     Priorities:
         
-        It seems that the quest log manager cant properly hold more than 1 quest
-            Also, before making a makefix, izuno's questline gave a nullref only if i started with the main menu, which made absolutely no sense
-            I think i should just improve the overall logic of the quest system
-                Thats if i understand what its rlly doing
+        Quest Logic
+            I got Junie to refactor the quest logic, it seems a lot more efficient now
+            Then again, its still a vibe code, thus it doesnt work yet
+                Fix.
         
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more

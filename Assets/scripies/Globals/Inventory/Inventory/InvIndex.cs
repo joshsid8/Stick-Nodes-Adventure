@@ -5,6 +5,7 @@ using UnityEngine;
 
 public sealed class InvIndex
 {
+    public event Action OnInventoryChanged;
     private readonly Dictionary<CollectableSOBase, int> counts;
 
     public InvIndex()
@@ -18,6 +19,7 @@ public sealed class InvIndex
 
         if (counts.TryGetValue(id, out var current)) counts[id] = current + amount;
         else counts[id] = amount;
+        OnInventoryChanged?.Invoke();
     }
 
     public void RemoveItem(CollectableSOBase id, int amount = 1)
@@ -28,6 +30,7 @@ public sealed class InvIndex
         var newCount = current - amount;
         if (newCount > 0) counts[id] = newCount;
         else counts.Remove(id);
+        OnInventoryChanged?.Invoke();
     }
 
     public int GetCount(CollectableSOBase id) => counts.TryGetValue(id, out var c) ? c : 0;
@@ -49,13 +52,18 @@ public sealed class InvIndex
     public void Load(PlayerSaveIndex data)
     {
         counts.Clear();
-        if (data.items == null) return;
+        if (data.items == null)
+        {
+            OnInventoryChanged?.Invoke();
+            return;
+        }
         foreach (var item in data.items)
         {
             var so = ItemDatabase.Instance.GetItemByName(item.itemID);
             if (so != null) AddItem(so, item.count);
             else Debug.LogWarning($"[InvIndex.Load] Failed to find item with ID: {item.itemID}");
         }
+        OnInventoryChanged?.Invoke();
     }
 }
 

@@ -12,19 +12,6 @@ public class QuestLogManager : GUIBase
 
     public GameObject questMenu;
 
-    string[] questNames;
-    string[] questDescriptions;
-    Quest.QuestType[] questTypes;
-
-    int[][] questEnemies;
-    int[][] questNoOfEnemies;
-    CollectableSOBase[][] questObjects;
-    int[][] questNoOfObjects;
-    DialogueObject[] questNpCs;
-    CollectableSOBase[][] questRewards;
-
-
-
     protected override void Awake()
     {
         if (Instance != null && Instance != this)
@@ -37,26 +24,21 @@ public class QuestLogManager : GUIBase
         player = FindAnyObjectByType<PlayerController>();
         rt = GetComponent<RectTransform>();
         
-        var n = questSlots != null && questSlots.Length > 0 ? questSlots.Length : 8;
-
-        questNames = new string[n];
-        questDescriptions = new string[n];
-        questTypes = new Quest.QuestType[n];
-
-        questEnemies = new int[n][];
-        questNoOfEnemies = new int[n][];
-        questObjects = new CollectableSOBase[n][];
-        questNoOfObjects = new int[n][];
-        questNpCs = new DialogueObject[n];
-        questRewards = new CollectableSOBase[n][];
         if (isActive) ToggleQuestLog();
     }
 
     public void AssignQuest(QuestSO quest)
     {
-        AddQuest(quest.questType, quest.questName, quest.questDescription, quest.enemiesToDefeat,
-            quest.noOfEnemiesToDefeat, quest.objectsToInteract, quest.numberOfObjects, quest.npcToInteract,
-            quest.rewards);
+        for (var i = 0; i < questSlots.Length; i++)
+        {
+            if (questSlots[i] != null && questSlots[i].questType == Quest.QuestType.NullQuest)
+            {
+                questSlots[i].LogQuest(quest.questType, quest.questName, quest.questDescription, quest.enemiesToDefeat,
+                    quest.noOfEnemiesToDefeat, quest.objectsToInteract, quest.numberOfObjects, quest.npcToInteract,
+                    quest.rewards);
+                return;
+            }
+        }
     }
 
     void Update()
@@ -67,7 +49,6 @@ public class QuestLogManager : GUIBase
             isActive = true;
             ToggleQuestLog();
         }
-        
     }
 
     public void ToggleQuestLog()
@@ -81,155 +62,73 @@ public class QuestLogManager : GUIBase
         GetActive(isActive);
     }
 
-    private void AddQuest(Quest.QuestType type, string title, string description = null, int[] enemyIDs = null, int[] eToDefeat = null,
-        CollectableSOBase[] objects = null, int[] noOfO = null, DialogueObject npc = null, CollectableSOBase[] reward = null)
-    {
-        for (var i = 0; i < questSlots.Length; i++)
-        {
-            if (questSlots[i] != null && questSlots[i].questDescription == string.Empty)
-            {
-                questSlots[i].LogQuest(type, title, description, enemyIDs, eToDefeat, objects, noOfO, npc, reward);
-
-                // Save data into our parallel storage
-                questNames[i] = title;
-                questDescriptions[i] = description;
-                questTypes[i] = type;
-
-                if (enemyIDs != null) questEnemies[i] = (int[])enemyIDs.Clone();
-                if (eToDefeat != null) questNoOfEnemies[i] = (int[])eToDefeat.Clone();
-                if (objects != null) questObjects[i] = (CollectableSOBase[])objects.Clone();
-                if (noOfO != null) questNoOfObjects[i] = (int[])noOfO.Clone();
-                questNpCs[i] = npc;
-                if (reward != null) questRewards[i] = (CollectableSOBase[])reward.Clone();
-
-                return;
-            }
-        }
-
-    }
-
     public void Save(ref PlayerSaveQuests data)
     {
-        data.name = questNames;
-        data.description = questDescriptions;
-        data.type = questTypes;
-        data.npcs = questNpCs;
-        
-        data.enemies = ConvertJaggedArrayToSerializableList(questEnemies);
-        data.enemiesToDefeat = ConvertJaggedArrayToSerializableList(questNoOfEnemies);
-        
-        data.objectIDs = ConvertCollectableJaggedArrayToStrings(questObjects);
-        data.noOfObjects = ConvertJaggedArrayToSerializableList(questNoOfObjects);
-        data.rewardIDs = ConvertCollectableJaggedArrayToStrings(questRewards);
+        data.activeQuests = new List<QuestSaveData>();
+        foreach (var slot in questSlots)
+        {
+            if (slot != null && slot.questType != Quest.QuestType.NullQuest)
+            {
+                data.activeQuests.Add(new QuestSaveData
+                {
+                    questTitle = slot.questTitle,
+                    questDescription = slot.questDescription,
+                    questType = slot.questType,
+                    enemiesToDefeat = slot.eTd != null ? Array.ConvertAll(slot.eTd, e => e != null ? e.name : "") : Array.Empty<string>(),
+                    noOfEnemiesToDefeat = slot.noOfE,
+                    objectsToInteract = slot.oTi != null ? Array.ConvertAll(slot.oTi, o => o != null ? o.name : "") : Array.Empty<string>(),
+                    numberOfObjects = slot.noOfO,
+                    npcToInteract = slot.nTi != null ? slot.nTi.name : "",
+                    rewards = slot.questRewards != null ? Array.ConvertAll(slot.questRewards, r => r != null ? r.name : "") : Array.Empty<string>(),
+                    isCompleted = slot.questCompleted
+                });
+            }
+        }
     }
 
     public void Load(PlayerSaveQuests data)
     {
-        questNames = data.name;
-        questDescriptions = data.description;
-        questTypes = data.type;
-        questNpCs = data.npcs;
-        
-        questEnemies = ConvertSerializableListToJaggedArray(data.enemies);
-        questNoOfEnemies = ConvertSerializableListToJaggedArray(data.enemiesToDefeat);
-        
-        questObjects = ConvertStringJaggedArrayToCollectableSO(data.objectIDs);
-        questNoOfObjects = ConvertSerializableListToJaggedArray(data.noOfObjects);
-        questRewards = ConvertStringJaggedArrayToCollectableSO(data.rewardIDs);
-        
-        for (var i = 0; i < questSlots.Length; i++)
+        for (int i = 0; i < questSlots.Length; i++)
         {
-            if (questSlots[i] != null)
-            {
-                if (i < questNames.Length && !string.IsNullOrEmpty(questNames[i]))
-                    questSlots[i].LogQuest(questTypes[i], questNames[i], questDescriptions[i], questEnemies[i], 
-                        questNoOfEnemies[i], questObjects[i], questNoOfObjects[i], questNpCs[i], questRewards[i]);
-                else questSlots[i].ClearUI();
-            }
+            if (questSlots[i] != null) questSlots[i].ClearUI();
         }
-    }
-    private List<PlayerSaveQuests.SerializableIntArray> ConvertJaggedArrayToSerializableList(int[][] jaggedArray)
-    {
-        if (jaggedArray == null) return new List<PlayerSaveQuests.SerializableIntArray>();
-        
-        var serializableList = new List<PlayerSaveQuests.SerializableIntArray>(jaggedArray.Length);
-        
-        for (var i = 0; i < jaggedArray.Length; i++)
-            serializableList.Add(new PlayerSaveQuests.SerializableIntArray { array = jaggedArray[i] ?? Array.Empty<int>() });
-        return serializableList;
-    }
 
-    private int[][] ConvertSerializableListToJaggedArray(List<PlayerSaveQuests.SerializableIntArray> serializableList)
-    {
-        if (serializableList == null) return Array.Empty<int[]>();
-        
-        var jaggedArray = new int[serializableList.Count][];
-        for (var i = 0; i < serializableList.Count; i++) jaggedArray[i] = serializableList[i].array ?? Array.Empty<int>();
-        return jaggedArray;
-    }
+        if (data.activeQuests == null) return;
 
-    private List<PlayerSaveQuests.SerializableStringArray> ConvertCollectableJaggedArrayToStrings(CollectableSOBase[][] collectableArray)
-    {
-        if (collectableArray == null) return new List<PlayerSaveQuests.SerializableStringArray>();
-        
-        var serializableList = new List<PlayerSaveQuests.SerializableStringArray>(collectableArray.Length);
-        
-        for (var i = 0; i < collectableArray.Length; i++)
+        for (int i = 0; i < Math.Min(data.activeQuests.Count, questSlots.Length); i++)
         {
-            var innerArray = collectableArray[i];
-            if (innerArray == null) serializableList.Add(new PlayerSaveQuests.SerializableStringArray { array = Array.Empty<string>() });
-            else
-            {
-                // Convert CollectableSOBase references to their names (IDs)
-                var stringArray = new string[innerArray.Length];
-                for(var j = 0; j < innerArray.Length; j++) stringArray[j] = innerArray[j] != null ? innerArray[j].name : string.Empty;
-                serializableList.Add(new PlayerSaveQuests.SerializableStringArray { array = stringArray });
-            }
+            var qData = data.activeQuests[i];
+            var enemies = Array.ConvertAll(qData.enemiesToDefeat, name => EnemyDatabase.Instance.GetEnemyByName(name));
+            var objects = Array.ConvertAll(qData.objectsToInteract, id => ItemDatabase.Instance.GetItemByName(id));
+            var rewards = Array.ConvertAll(qData.rewards, id => ItemDatabase.Instance.GetItemByName(id));
+            
+            // Note: npcToInteract loading might need a database if it's a ScriptableObject
+            // For now, we'll assume it's handled or we'll need a way to look up DialogueObject by name.
+            
+            questSlots[i].LogQuest(qData.questType, qData.questTitle, qData.questDescription, enemies, 
+                qData.noOfEnemiesToDefeat, objects, qData.numberOfObjects, null, rewards);
+            questSlots[i].questCompleted = qData.isCompleted;
         }
-        return serializableList;
     }
+}
 
-    private CollectableSOBase[][] ConvertStringJaggedArrayToCollectableSO(List<PlayerSaveQuests.SerializableStringArray> stringList)
-    {
-        if (stringList == null) return Array.Empty<CollectableSOBase[]>();
-        
-        if (ItemDatabase.Instance == null)
-        {
-            Debug.LogError("[QuestLogManager] ItemDatabase not initialized. Cannot load quest items/rewards.");
-            return Array.Empty<CollectableSOBase[]>();
-        }
-        
-        var collectableArray = new CollectableSOBase[stringList.Count][];
-        
-        for (var i = 0; i < stringList.Count; i++)
-        {
-            var stringArray = stringList[i].array;
-            if (stringArray == null) collectableArray[i] = Array.Empty<CollectableSOBase>();
-            else
-            {
-                var soArray = new CollectableSOBase[stringArray.Length];
-                for(var j = 0; j < stringArray.Length; j++) soArray[j] = ItemDatabase.Instance.GetItemByName(stringArray[j]);
-                collectableArray[i] = soArray;
-            }
-        }
-        return collectableArray;
-    }
+[Serializable]
+public struct QuestSaveData
+{
+    public string questTitle;
+    public string questDescription;
+    public Quest.QuestType questType;
+    public string[] enemiesToDefeat;
+    public int[] noOfEnemiesToDefeat;
+    public string[] objectsToInteract;
+    public int[] numberOfObjects;
+    public string npcToInteract;
+    public string[] rewards;
+    public bool isCompleted;
 }
 
 [Serializable]
 public struct PlayerSaveQuests
 {
-    public string[] name;
-    public string[] description;
-    public Quest.QuestType[] type;
-    public DialogueObject[] npcs;
-    [Serializable]
-    public struct SerializableIntArray { public int[] array; }
-    [Serializable]
-    public struct SerializableStringArray { public string[] array; }
-    public List<SerializableIntArray> enemies;
-    public List<SerializableIntArray> enemiesToDefeat;
-    public List<SerializableIntArray> noOfObjects;
-    public List<SerializableStringArray> objectIDs;
-    public List<SerializableStringArray> rewardIDs;
+    public List<QuestSaveData> activeQuests;
 }

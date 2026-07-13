@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour, EDamageables
 {
+    public static event Action<Enemy> OnEnemyKilled;
+    public Enemy enemyData;
+
     //Enemy health
     public float enemyMaxHealth = 100f;
     public float enemyHealth = 100f;
@@ -37,6 +41,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     private Animator animator;
     private EnemyAttack ea;
     private EnemyPatrol ep;
+    private Identifier identifier;
     public bool isLight;
     
     public bool isOneTime;
@@ -51,6 +56,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         kb = GetComponent<Knockback>();
         ea = GetComponent<EnemyAttack>();
         ep = GetComponent<EnemyPatrol>();
+        identifier = GetComponent<Identifier>();
     }
 
     // Update is called once per frame
@@ -134,6 +140,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         {
             enemyHealth = 0;
             isDead = true;
+            OnEnemyKilled?.Invoke(enemyData);
             StartCoroutine(Death());
         }
         spriteRenderer.color = damageTint;
