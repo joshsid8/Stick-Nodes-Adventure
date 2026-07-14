@@ -17,11 +17,11 @@ MonoBehaviour:
   questDescription: Dec wants to find out how the fishmen move around so quickly,
     so he asked izuno to give him fish scales for some reason. Izuno passes down
     this quest unto you.
-  enemiesToDefeat: 
+  enemiesToDefeat: []
   noOfEnemiesToDefeat: 
   objectsToInteract:
   - {fileID: 11400000, guid: 488f220612b30434db1ed423bc6a35e3, type: 2}
   numberOfObjects: 01000000
-  npcToInteract: 
+  npcToInteract: {fileID: 0}
   rewards:
-  - {fileID: 11400000, guid: 3393927386ba418418c964459183e26f, type: 2}
+  - {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Dialogue/Dialogue Object")]
 public class DialogueObject : ScriptableObject
@@ -44,9 +45,6 @@ public class DialogueObject : ScriptableObject
     public QuestSO questToOffer;
     
     public bool isQuestInteraction;
-    public Quest.QuestType questActionType = Quest.QuestType.NullQuest;
-    public CollectableSOBase[] questItems;
-    public int[] questItemAmounts;
     public DialogueObject itemCheckFailureDialogue;
     public bool completeSpeakQuestOnClose;
     public DialogueObject derrivedDialogue;
@@ -68,4 +66,5 @@ public class DialogueObject : ScriptableObject
     
     [Tooltip("Anything else needs to be affected by this dialogue?")] public string externalInstance;
     public DialogueObject alteredExternalDialogue;
+
 }

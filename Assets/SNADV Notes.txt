@@ -5,10 +5,10 @@ SNADV Notes
     
     Priorities:
         
-        Quest Logic
-            I got Junie to refactor the quest logic, it seems a lot more efficient now
-            Then again, its still a vibe code, thus it doesnt work yet
-                Fix.
+        Quest/Dialogue Logic
+            Make the newly added events work
+            Utilise both the alter dialogue system and dialogue lists
+            Make overall adjustments i forgot
         
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more

@@ -57,6 +57,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void OnEnemyKilled(Enemy enemy)
     {
+        print("enemy has passed!");
         if (questType != QuestType.DefeatEnemy || questCompleted || enemy == null) return;
 
         if (requiredByEnemy.ContainsKey(enemy))
@@ -73,6 +74,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void OnInventoryChanged()
     {
+        print("Inventory has changed!");
         if (questType != QuestType.HaveInInventory || questCompleted) return;
         CheckCompletion();
     }

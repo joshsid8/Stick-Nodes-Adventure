@@ -169,11 +169,11 @@ public class BossAttack : MonoBehaviour
                 dt.enabled = true;
                 if (dialogueNo == -1)
                 {
-                    dt.dialogue = bh.introDialogue[dialogueNo + 1];
+                    dt.dialogue[0] = bh.introDialogue[dialogueNo + 1];
                     dialogueNo++;
                 }
-                else if (dialogueNo == bh.introDialogue.Length) dt.dialogue = bh.introDialogue[dialogueNo - 1];
-                else dt.dialogue = bh.introDialogue[dialogueNo];
+                else if (dialogueNo == bh.introDialogue.Length) dt.dialogue[0] = bh.introDialogue[dialogueNo - 1];
+                else dt.dialogue[0] = bh.introDialogue[dialogueNo];
                 dt.isForced = true;
                 dialogueNo++;
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
@@ -12,7 +13,7 @@ public class DialogueTrigger : MonoBehaviour
     public bool willTravel;
     
     public GameObject indicator;
-    public DialogueObject dialogue;
+    public List<DialogueObject> dialogue = new List<DialogueObject>();
     [SerializeField] private LayerMask pLayer;
 
     [SerializeField] private bool canTurn;
@@ -25,9 +26,9 @@ public class DialogueTrigger : MonoBehaviour
         if (playerObject != null) playerTransform = playerObject.transform;
     }
 
-    void Update()
+    private void Update()
     {
-        float inputDirection = Input.GetAxisRaw("Vertical");
+        var inputDirection = Input.GetAxisRaw("Vertical");
         
         isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
         if (isInRange && !isTriggered)
@@ -38,7 +39,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 isTriggered = true;
                 isForced = false;
-                if (dialogue != null) DialogueUI.Instance.ShowDialogue(dialogue);
+                if (dialogue != null) DialogueUI.Instance.ShowDialogue(dialogue[0]);
             }
         }
         else indicator.SetActive(false);

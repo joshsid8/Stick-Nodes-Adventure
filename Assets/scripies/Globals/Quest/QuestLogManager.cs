@@ -98,7 +98,7 @@ public class QuestLogManager : GUIBase
         for (int i = 0; i < Math.Min(data.activeQuests.Count, questSlots.Length); i++)
         {
             var qData = data.activeQuests[i];
-            var enemies = Array.ConvertAll(qData.enemiesToDefeat, name => EnemyDatabase.Instance.GetEnemyByName(name));
+            var enemies = Array.ConvertAll(qData.enemiesToDefeat, n => EnemyDatabase.Instance.GetEnemyByName(n));
             var objects = Array.ConvertAll(qData.objectsToInteract, id => ItemDatabase.Instance.GetItemByName(id));
             var rewards = Array.ConvertAll(qData.rewards, id => ItemDatabase.Instance.GetItemByName(id));
             

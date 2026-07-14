@@ -37,7 +37,7 @@ public class DialogueUI : GUIBase
         CloseDialogue(null);
     }
 
-    private void Update() {textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal; Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount" ,1);}
+    //private void Update() {textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal; Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount" ,1);}
     
     public void ShowDialogue(DialogueObject dialogueObject)
     {
@@ -82,14 +82,14 @@ public class DialogueUI : GUIBase
 
     private void QuestHandling(DialogueObject dialogueObject)
     {
-        if (dialogueObject.isQuestInteraction && dialogueObject.questActionType == Quest.QuestType.GiveTo)
+        if (dialogueObject.isQuestInteraction && dialogueObject.questToOffer.questType == Quest.QuestType.GiveTo)
         {
             if (InvManager.Instance == null || InvManager.Instance.invIndex == null) Debug.LogError("Quest Check: InvManager or its Index is not ready!");
             else
             {
-                var needs = new (CollectableSOBase id, int count)[dialogueObject.questItems.Length];
-                for (var i = 0; i < dialogueObject.questItems.Length; i++)
-                    needs[i] = (dialogueObject.questItems[i], dialogueObject.questItemAmounts[i]);
+                var needs = new (CollectableSOBase id, int count)[dialogueObject.questToOffer.objectsToInteract.Length];
+                for (var i = 0; i < dialogueObject.questToOffer.objectsToInteract.Length; i++)
+                    needs[i] = (dialogueObject.questToOffer.objectsToInteract[i], dialogueObject.questToOffer.numberOfObjects[i]);
                 
                 var hasItems = InvManager.Instance.invIndex.MeetsAllCounts(needs);
                 if (!hasItems)
@@ -130,7 +130,7 @@ public class DialogueUI : GUIBase
         textLabel.color = Color.black;
         npcNameLabel.color = Color.black;
         
-        if (dialogueObject != null && dialogueObject.isQuestInteraction && dialogueObject.questActionType == Quest.QuestType.SpeakTo &&
+        if (dialogueObject != null && dialogueObject.isQuestInteraction && dialogueObject.questToOffer.questType == Quest.QuestType.SpeakTo &&
             dialogueObject.completeSpeakQuestOnClose)
         {
             var slots = QuestLogManager.Instance.questSlots;
@@ -141,10 +141,10 @@ public class DialogueUI : GUIBase
         if (dialogueObject != null)
         {
             if (dialogueObject.alteredDialogue != null)
-                GameObject.Find(dialogueObject.speaker).GetComponent<DialogueTrigger>().dialogue = dialogueObject.alteredDialogue;
+                GameObject.Find(dialogueObject.speaker).GetComponent<DialogueTrigger>().dialogue[0] = dialogueObject.alteredDialogue;
             
             if (dialogueObject.alteredExternalDialogue != null)
-                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().dialogue =
+                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().dialogue[0] =
                     dialogueObject.alteredExternalDialogue;
         }
     }

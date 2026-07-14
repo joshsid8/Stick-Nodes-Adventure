@@ -5127,11 +5127,11 @@ PrefabInstance:
     - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: itemSpawner.Array.data[0].collectable
       value: 
-      objectReference: {fileID: 11400000, guid: 619807cf4a3de5745a10a564311b843e, type: 2}
+      objectReference: {fileID: 11400000, guid: 488f220612b30434db1ed423bc6a35e3, type: 2}
     - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: itemSpawner.Array.data[0].objectToSpawn
       value: 
-      objectReference: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+      objectReference: {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
     - target: {fileID: 5190355191559164575, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: m_Offset.x
       value: 0

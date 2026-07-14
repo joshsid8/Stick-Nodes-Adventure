@@ -15,9 +15,9 @@ MonoBehaviour:
   npcName: Izuno
   dialogue:
   - Yo, i have another task for you.
-  - Dec wants me to find some... fish scales?
-  - No idea why, but id like you do do it for me if thats alright?
-  - Thanks, ill give you something in return.
+  - Dec needs some fish scales...
+  - No idea why, but it would be better for you to explore for one
+  - Ill give you something in return, of course. Preciate it
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -37,9 +37,6 @@ MonoBehaviour:
   willGiveQuest: 1
   questToOffer: {fileID: 11400000, guid: 08eab099a7c0289439727471c3bf8b03, type: 2}
   isQuestInteraction: 0
-  questActionType: 4
-  questItems: []
-  questItemAmounts: 
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 0
   derrivedDialogue: {fileID: 0}
