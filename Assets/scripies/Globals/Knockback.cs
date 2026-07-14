@@ -18,30 +18,24 @@ public class Knockback : MonoBehaviour
 
         IsBeingKnocked = true;
         
-        // Calculate the starting force vector
-        Vector2 startForce = hitDirection.normalized * hitDirectionForce;
-        float elapsed = 0f;
+        var startForce = hitDirection.normalized * hitDirectionForce;
+        var elapsed = 0f;
 
         while (elapsed < knockbackTime)
         {
             elapsed += Time.fixedDeltaTime;
-            float normalizedTime = elapsed / knockbackTime;
-            
-            // Smoothly reduce velocity from startForce to zero
-            // We keep the current Y velocity if you want gravity to still affect the player during knockback
-            Vector2 currentKnockback = Vector2.Lerp(startForce, Vector2.zero, normalizedTime);
+            var normalizedTime = elapsed / knockbackTime;
+            var currentKnockback = Vector2.Lerp(startForce, Vector2.zero, normalizedTime);
             
             rb.linearVelocity = new Vector2(currentKnockback.x, currentKnockback.y != 0 ? currentKnockback.y : rb.linearVelocity.y);
-            
             yield return new WaitForFixedUpdate();
         }
 
         IsBeingKnocked = false;
-        // Optionally reset horizontal velocity to stop sliding at the end
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
 
-    public void CallKnockback(Vector2 hitDirection, float unusedInput = 0)
+    public void CallKnockback(Vector2 hitDirection)
     {
         StopAllCoroutines(); 
         StartCoroutine(KnockbackAction(hitDirection));

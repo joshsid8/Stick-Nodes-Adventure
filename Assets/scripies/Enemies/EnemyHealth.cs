@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour, EDamageables
 {
     public static event Action<Enemy> OnEnemyKilled;
-    public Enemy enemyData;
 
     //Enemy health
     public float enemyMaxHealth = 100f;
@@ -39,6 +38,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     
     //other
     private Animator animator;
+    private EnemyController ec;
     private EnemyAttack ea;
     private EnemyPatrol ep;
     private Identifier identifier;
@@ -56,6 +56,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         kb = GetComponent<Knockback>();
         ea = GetComponent<EnemyAttack>();
         ep = GetComponent<EnemyPatrol>();
+        ec = GetComponent<EnemyController>();
         identifier = GetComponent<Identifier>();
     }
 
@@ -91,18 +92,9 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     {
         if (isDead)
         {
+            OnEnemyKilled?.Invoke(ec.enemy);
             GetComponent<Loot>().DropLoot();
-            
-            if (TryGetComponent<EnemyController>(out var ec))
-            {
-                ec.ChangeState(EnemyController.EnemyState.Dead);
-            }
-            else
-            {
-                GetComponent<EnemyAttack>().enabled = false;
-                GetComponent<EnemyFly>().enabled = false;
-            }
-            
+            ec.ChangeState(EnemyController.EnemyState.Dead);
             GetComponent<Rigidbody2D>().gravityScale = 8;
             spriteRenderer.color = Color.white;
             gameObject.layer = LayerMask.NameToLayer("EDead");
@@ -127,20 +119,19 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         if (isBlocking)
         {
             enemyHealth -= damageAmount * damageResistance;
-            if (movable) kb.CallKnockback(knockbackForce * 0.5f, 0);
+            if (movable) kb.CallKnockback(knockbackForce * 0.5f);
         }
         else if (isCountering) animator.SetTrigger("Counter");
         else
         {
             enemyHealth -= damageAmount;
-            if (movable) kb.CallKnockback(knockbackForce, 0);
+            if (movable) kb.CallKnockback(knockbackForce);
             if (ea.stunnable) ea.currentAttackCooldown = 0.1f;
         }
         if (enemyHealth <= 0)
         {
             enemyHealth = 0;
             isDead = true;
-            OnEnemyKilled?.Invoke(enemyData);
             StartCoroutine(Death());
         }
         spriteRenderer.color = damageTint;

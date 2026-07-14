@@ -47,7 +47,8 @@ public class DialogueObject : ScriptableObject
     public bool isQuestInteraction;
     public DialogueObject itemCheckFailureDialogue;
     public bool completeSpeakQuestOnClose;
-    public DialogueObject derrivedDialogue;
+    [Tooltip("If the player has already completed this quest, this dialogue will be shown instead")]
+    public DialogueObject derivedDialogue;
     
     [Space(10)] [Header("Item Drops")] [Tooltip("How many of x items the speaker should give")]
     public bool canDropItem;
@@ -64,7 +65,7 @@ public class DialogueObject : ScriptableObject
     [Header("NPC Control")] [Tooltip("Who is speaking?")] public string speaker;
     public DialogueObject alteredDialogue;
     
-    [Tooltip("Anything else needs to be affected by this dialogue?")] public string externalInstance;
+    [Tooltip("Anyone else needs to be affected by this dialogue?")] public string externalInstance;
     public DialogueObject alteredExternalDialogue;
 
 }

@@ -3,18 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour, PDamageable
 {
     public static PlayerHealth Instance {get; private set;}
     
-    public Image healthBar;
+    public Image[] healthBars;
     public TMP_Text healthText;
     public float playerMaxHealth = 100;
     public float playerHealth = 100;
     public float playerExtraHealth;
     public float rawDamageResistance = 1f;
+    public enum ElementFactor {Fire, Earth, Water, Air}
+
+    public Dictionary<ElementFactor, float> elementFactors = new Dictionary<ElementFactor, float>();
 
     public float regenerationMultiplier;
     
@@ -60,7 +64,12 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         pd = GetComponent<PlayerDefense>();
         kb = GetComponent<Knockback>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
+        
+        //TODO: apply this by making this dictionary some form of multiplier. once damaged, the dmg taken will be multiplied by the attackers element factor. make enemies have this too.
+        elementFactors.Add(ElementFactor.Fire, 1f);
+        elementFactors.Add(ElementFactor.Earth, 1f);
+        elementFactors.Add(ElementFactor.Water, 1f);
+        elementFactors.Add(ElementFactor.Air, 1f);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -80,7 +89,8 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         Tint();
         Regeneration();
         JumpRotate();
-        healthBar.fillAmount = playerHealth / playerMaxHealth;
+        healthBars[0].fillAmount = playerHealth / playerMaxHealth;
+        healthBars[1].fillAmount = playerExtraHealth / playerMaxHealth;
         //healthText.text = playerHealth == playerMaxHealth ? playerHealth.ToString("F0") +  " / " + playerMaxHealth.ToString("F0")
         //    : playerHealth.ToString("F1") +  " / " + playerMaxHealth.ToString("F0");
         if (playerHealth < 0) playerHealth = 0;
@@ -93,7 +103,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
     }
 
-    void Animation()
+    private void Animation()
     {
         pc.animator.SetBool("isStunned", isStunned);
         pc.animator.SetBool("isDead", isDead);
@@ -102,11 +112,10 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public IEnumerator Spawn(float timer, bool realSpawn)
     {
         yield return new WaitForSeconds(timer);
-        if (!realSpawn) transform.position = pc.currentCheckPoint.transform.position;
-        else transform.position = pc.currentSpawnPoint.transform.position;
+        transform.position = realSpawn ? pc.currentSpawnPoint.transform.position : pc.currentCheckPoint.transform.position;
     }
 
-    IEnumerator Death()
+    private IEnumerator Death()
     {
         if (playerHealth <= 0 && !deathToggle)
         {
@@ -127,29 +136,24 @@ public class PlayerHealth : MonoBehaviour, PDamageable
 
     public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageFactor, int elementFactor)
     {
-        if (facingRight && !pc.isFacingRight || !facingRight && pc.isFacingRight)
+        var isFacingAttacker = facingRight && !pc.isFacingRight || !facingRight && pc.isFacingRight;
+        switch (isFacingAttacker)
         {
-            if (pd.isBlocking && !pd.counterWindow && damageFactor < 1)
-            {
+            case true when pd.isBlocking && !pd.counterWindow && damageFactor < 1:
                 // blocking successfully
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.blockDamageResistance;
                 else playerHealth -= damageAmount * pd.blockDamageResistance;
-                kb.CallKnockback(knockbackForce * pd.blockDamageResistance, pc.inputDirection);
-            }
-            else if (pd.isBlocking && pd.counterWindow && damageFactor < 2)
-            {
+                kb.CallKnockback(knockbackForce * pd.blockDamageResistance);
+                break;
+            case true when pd.isBlocking && pd.counterWindow && damageFactor < 2:
                 // perfect blocking / counter
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.counterDamageResistance;
                 else playerHealth -= damageAmount * pd.counterDamageResistance;
                 pc.animator.SetTrigger("Counter");
                 pd.counterWindow = false;
-                pd.isBlocking = false;
-            }
-            else
-            {
+                break;
+            case true:
                 // the player not blocking at all
-                pd.isBlocking = false;
-                GetComponent<PlayerAbility>().isPerformingAbility = false;
                 if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
                 else playerHealth -= damageAmount * rawDamageResistance;
                 spriteRenderer.color = damageTint;
@@ -157,28 +161,25 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 if (knockbackForce != Vector2.zero)
                 {
                     pc.animator.SetTrigger("Damaged");
-                    kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
-                    pc.currentDashTime = 0f;
+                    kb.CallKnockback(knockbackForce * shockMultiplier);
                 }
-            }
+                break;
+            case false:
+                // the player blocking but getting hit at the back
+                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
+                else playerHealth -= damageAmount * rawDamageResistance;
+                spriteRenderer.color = damageTint;
+                isTinting = true;
+                pd.StopBlocking();
+                if (knockbackForce != Vector2.zero)
+                {
+                    pc.animator.SetTrigger("Damaged");
+                    kb.CallKnockback(knockbackForce * shockMultiplier);
+                }
+                break;
         }
-        else
-        {
-            // the player blocking but getting hit at the back
-            pd.isBlocking = false;
-            GetComponent<PlayerAbility>().isPerformingAbility = false;
-            if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
-            else playerHealth -= damageAmount * rawDamageResistance;
-            spriteRenderer.color = damageTint;
-            isTinting = true;
-            pd.StopBlocking();
-            if (knockbackForce != Vector2.zero)
-            {
-                pc.animator.SetTrigger("Damaged");
-                kb.CallKnockback(knockbackForce * shockMultiplier, pc.inputDirection);
-                pc.currentDashTime = 0f;
-            }
-        }
+        pc.currentDashTime = 0f;
+        GetComponent<PlayerAbility>().isPerformingAbility = false;
     }
     
     public void Stun(float stunDuration)
@@ -209,6 +210,9 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             }
         }
     }
+
+    public void ApplyCombat(float combatDuration = 5, bool additive = false) => combatTimer = additive ? combatTimer + combatDuration : combatDuration;
+    
     private void Tint()
     {
         if (isTinting)

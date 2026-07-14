@@ -100,13 +100,14 @@ public class QuestLogManager : GUIBase
             var qData = data.activeQuests[i];
             var enemies = Array.ConvertAll(qData.enemiesToDefeat, n => EnemyDatabase.Instance.GetEnemyByName(n));
             var objects = Array.ConvertAll(qData.objectsToInteract, id => ItemDatabase.Instance.GetItemByName(id));
+            var npc = NPCDatabase.Instance.GetNpcByName(qData.npcToInteract);
             var rewards = Array.ConvertAll(qData.rewards, id => ItemDatabase.Instance.GetItemByName(id));
             
             // Note: npcToInteract loading might need a database if it's a ScriptableObject
             // For now, we'll assume it's handled or we'll need a way to look up DialogueObject by name.
             
             questSlots[i].LogQuest(qData.questType, qData.questTitle, qData.questDescription, enemies, 
-                qData.noOfEnemiesToDefeat, objects, qData.numberOfObjects, null, rewards);
+                qData.noOfEnemiesToDefeat, objects, qData.numberOfObjects, npc, rewards);
             questSlots[i].questCompleted = qData.isCompleted;
         }
     }

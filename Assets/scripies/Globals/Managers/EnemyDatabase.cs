@@ -5,7 +5,7 @@ public class EnemyDatabase : MonoBehaviour
 {
     public static EnemyDatabase Instance { get; private set; }
     
-    private Dictionary<string, Enemy> enemyDatabase = new Dictionary<string, Enemy>();
+    private readonly Dictionary<string, Enemy> enemyDatabase = new Dictionary<string, Enemy>();
 
     void Awake()
     {
@@ -26,14 +26,8 @@ public class EnemyDatabase : MonoBehaviour
 
         foreach (var enemy in allEnemies)
         {
-            if (!enemyDatabase.ContainsKey(enemy.name))
-            {
-                enemyDatabase.Add(enemy.name, enemy);
-            }
-            else
-            {
-                Debug.LogWarning($"[EnemyDatabase] Duplicate enemy name found: {enemy.name}.");
-            }
+            if (!enemyDatabase.ContainsKey(enemy.name)) enemyDatabase.Add(enemy.name, enemy);
+            else Debug.LogWarning($"[EnemyDatabase] Duplicate enemy name found: {enemy.name}.");
         }
     }
     

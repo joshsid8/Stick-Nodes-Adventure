@@ -13,6 +13,7 @@ public class DialogueTrigger : MonoBehaviour
     public bool willTravel;
     
     public GameObject indicator;
+    public NPC npc;
     public List<DialogueObject> dialogue = new List<DialogueObject>();
     [SerializeField] private LayerMask pLayer;
 
@@ -22,7 +23,7 @@ public class DialogueTrigger : MonoBehaviour
     
     private void Awake()
     {
-        GameObject playerObject = PlayerHealth.Instance.gameObject;
+        var playerObject = PlayerHealth.Instance.gameObject;
         if (playerObject != null) playerTransform = playerObject.transform;
     }
 
@@ -39,7 +40,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 isTriggered = true;
                 isForced = false;
-                if (dialogue != null) DialogueUI.Instance.ShowDialogue(dialogue[0]);
+                if (dialogue != null) DialogueUI.Instance.ShowDialogue(dialogue[0], npc);
             }
         }
         else indicator.SetActive(false);

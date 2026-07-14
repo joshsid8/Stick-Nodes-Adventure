@@ -300,7 +300,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bab46a9a9c2bf14b9c9bd94e0bce670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
+  healthBars:
+  - {fileID: 0}
+  - {fileID: 0}
   healthText: {fileID: 0}
   playerMaxHealth: 100
   playerHealth: 100
@@ -480,7 +482,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 0.56399095, y: 3.8738856}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.02
 --- !u!50 &6912180873562474404
 Rigidbody2D:
   serializedVersion: 5

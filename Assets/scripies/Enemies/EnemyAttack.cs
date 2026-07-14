@@ -85,7 +85,11 @@ public class EnemyAttack : MonoBehaviour
         em.enabled = true;
     }
     
-    private void OnDisable() => isAttacking = false;
+    private void OnDisable()
+    {
+        isAttacking = false;
+        ef.enabled = false;
+    }
     
     private void Update()
     {
@@ -207,7 +211,7 @@ public class EnemyAttack : MonoBehaviour
             {
                 damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.ec.isFacingRight, damageType);
                 damageable.Stun(stunTime);
-                PlayerHealth.Instance.currentCombatTimer =+ 180f;
+                PlayerHealth.Instance.ApplyCombat(20);
             }
         }
     }

@@ -7,6 +7,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 {
     public string questTitle;
     [TextArea(5, 10)] public string questDescription;
+    public enum QuestType { DefeatEnemy, HaveInInventory, GiveTo, SpeakTo, NullQuest }
     public QuestType questType;
     
     [SerializeField] private TMP_Text[] titleTexts;
@@ -20,35 +21,21 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     [Tooltip("enemies to defeat")] public Enemy[] eTd = Array.Empty<Enemy>(); 
     [Tooltip("Number of enemies currently defeated")] public int[] noOfE = Array.Empty<int>();
-    private Dictionary<Enemy, int> requiredByEnemy = new Dictionary<Enemy, int>();  
-    private Dictionary<Enemy, int> currentKillsByEnemy = new Dictionary<Enemy, int>(); 
+    private readonly Dictionary<Enemy, int> requiredByEnemy = new Dictionary<Enemy, int>();  
+    private readonly Dictionary<Enemy, int> currentKillsByEnemy = new Dictionary<Enemy, int>(); 
     
     [Tooltip("objects to take, give, or find")] public CollectableSOBase[] oTi;
     public int[] noOfO;
 
-    [Tooltip("the npc you may have to speak to")] public DialogueObject nTi;
+    [Tooltip("the npc you may have to speak to")] public NPC nTi;
 
     public GameObject rewardObj;
     public CollectableSOBase[] questRewards;
-    public enum QuestType
-    { 
-        DefeatEnemy, HaveInInventory, GiveTo, SpeakTo, NullQuest
-    }
-
-    private void OnEnable()
-    {
-        EnemyHealth.OnEnemyKilled += OnEnemyKilled;
-        if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
-            InvManager.Instance.invIndex.OnInventoryChanged += OnInventoryChanged;
-    }
-
-    private void OnDisable()
-    {
-        EnemyHealth.OnEnemyKilled -= OnEnemyKilled;
-        if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
-            InvManager.Instance.invIndex.OnInventoryChanged -= OnInventoryChanged;
-    }
-
+    
+    //TODO: i was thinking of making the other quest types have to speak to the npc before the rewards are given. have a think about this
+    //public GameObject questGiver;
+    //public DialogueObject appreciationDialogue;
+    
     private void Start()
     { 
         foreach (var text in titleTexts) text.text = questTitle;
@@ -57,9 +44,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void OnEnemyKilled(Enemy enemy)
     {
-        print("enemy has passed!");
         if (questType != QuestType.DefeatEnemy || questCompleted || enemy == null) return;
-
         if (requiredByEnemy.ContainsKey(enemy))
         {
             if (!currentKillsByEnemy.ContainsKey(enemy)) currentKillsByEnemy[enemy] = 0;
@@ -74,7 +59,6 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void OnInventoryChanged()
     {
-        print("Inventory has changed!");
         if (questType != QuestType.HaveInInventory || questCompleted) return;
         CheckCompletion();
     }
@@ -83,14 +67,14 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     {
         if (questCompleted || questType == QuestType.NullQuest) return;
 
-        bool allMet = true;
+        var allMet = true;
         switch (questType)
         {
             case QuestType.DefeatEnemy:
-                foreach (var kvp in requiredByEnemy)
+                foreach (var enemy in requiredByEnemy)
                 {
-                    int current = currentKillsByEnemy.ContainsKey(kvp.Key) ? currentKillsByEnemy[kvp.Key] : 0;
-                    if (current < kvp.Value)
+                    var current = currentKillsByEnemy.ContainsKey(enemy.Key) ? currentKillsByEnemy[enemy.Key] : 0;
+                    if (current < enemy.Value)
                     {
                         allMet = false;
                         break;
@@ -99,7 +83,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 break;
             case QuestType.HaveInInventory:
                 if (InvManager.Instance == null || InvManager.Instance.invIndex == null) return;
-                for (int i = 0; i < oTi.Length; i++)
+                for (var i = 0; i < oTi.Length; i++)
                 {
                     if (!InvManager.Instance.invIndex.HasAtLeast(oTi[i], noOfO[i]))
                     {
@@ -112,20 +96,34 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
         if (allMet)
         {
-            questCompleted = true;
+            OnCleared();
             GiveRewards();
             ClearUI();
         }
+    }
+    
+    private void OnAssigned()
+    {
+        EnemyHealth.OnEnemyKilled += OnEnemyKilled;
+        if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
+            InvManager.Instance.invIndex.OnInventoryChanged += OnInventoryChanged;
+    }
+
+    private void OnCleared()
+    {
+        EnemyHealth.OnEnemyKilled -= OnEnemyKilled;
+        if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
+            InvManager.Instance.invIndex.OnInventoryChanged -= OnInventoryChanged;
     }
 
     private void GiveRewards()
     {
         if (rewardObj == null) return;
-        foreach (var rewardSO in questRewards)
+        foreach (var rewardSo in questRewards)
         {
             var reward = Instantiate(rewardObj, PlayerHealth.Instance.gameObject.transform.position, Quaternion.identity);
             var collectable = reward.GetComponent<Collectable>();
-            if (collectable != null) collectable.collectable = rewardSO;
+            if (collectable != null) collectable.collectable = rewardSo;
         }
     }
 
@@ -135,13 +133,13 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         CheckCompletion();
     }
 
-    void UpdateUI()
+    private void UpdateUI()
     {
         infoTitle.text = questTitle;
         infoDescription.text = questDescription;
     }
     
-    public void LogQuest(QuestType type, string title, string description, Enemy[] enemies, int[] eToDefeat, CollectableSOBase[] objects, int[] noOfObj, DialogueObject npc, CollectableSOBase[] rewards)
+    public void LogQuest(QuestType type, string title, string description, Enemy[] enemies, int[] eToDefeat, CollectableSOBase[] objects, int[] noOfObj, NPC npc, CollectableSOBase[] rewards)
     {
         questType = type;
         questTitle = title;
@@ -152,29 +150,30 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         oTi = objects != null ? (CollectableSOBase[])objects.Clone() : Array.Empty<CollectableSOBase>();
         noOfO = noOfObj != null ? (int[])noOfObj.Clone() : Array.Empty<int>();
         questRewards = rewards != null ? (CollectableSOBase[])rewards.Clone() : Array.Empty<CollectableSOBase>();
-
+        
         requiredByEnemy.Clear();
         currentKillsByEnemy.Clear();
 
         if (questType == QuestType.DefeatEnemy && eTd != null && noOfE != null)
         {
-            int len = Math.Min(eTd.Length, noOfE.Length);
-            for (int i = 0; i < len; i++)
+            var len = Math.Min(eTd.Length, noOfE.Length);
+            for (var i = 0; i < len; i++)
             {
                 var enemy = eTd[i];
                 if (enemy == null) continue;
-                int count = noOfE[i];
+                var count = noOfE[i];
                 if (requiredByEnemy.ContainsKey(enemy)) requiredByEnemy[enemy] += count;
                 else requiredByEnemy[enemy] = count;
             }
         }
-
+        OnAssigned();
         foreach (var text in titleTexts) text.text = questTitle;
         RefreshQuestState();
     }
 
     public void ClearUI()
     {
+        questTitle = "";
         foreach (var text in titleTexts) text.text = "";
         questDescription = "";
         oTi = Array.Empty<CollectableSOBase>();
@@ -191,6 +190,6 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left) UpdateUI();
+        if (eventData.button == PointerEventData.InputButton.Left && questType != QuestType.NullQuest) UpdateUI();
     }
 }

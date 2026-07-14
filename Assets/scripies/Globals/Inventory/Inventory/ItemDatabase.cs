@@ -32,8 +32,8 @@ public class ItemDatabase : MonoBehaviour
 
         foreach (var item in allItems)
         {
-            if (!itemDatabase.ContainsKey(item.name)) { itemDatabase.Add(item.name, item); }
-            else { Debug.LogWarning($"[ItemDatabase] Duplicate item name found: {item.name}."); }
+            if (!itemDatabase.ContainsKey(item.name)) itemDatabase.Add(item.name, item); 
+            else Debug.LogWarning($"[ItemDatabase] Duplicate item name found: {item.name}."); 
         }
         
         //Debug.Log($"[ItemDatabase] Database built with {itemDatabase.Count} items.");

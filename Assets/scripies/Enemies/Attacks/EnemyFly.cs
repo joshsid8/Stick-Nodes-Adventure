@@ -48,7 +48,12 @@ public class EnemyFly : MonoBehaviour
         }*/
     }
 
-    private void OnDisable() => GetComponent<Animator>().SetBool("isFlying", false);
+    private void OnDisable()
+    {
+        GetComponent<Animator>().SetBool("isFlying", false);
+        isChasing = false;
+        isTargeting = false;
+    }
 
     private void Update()
     {

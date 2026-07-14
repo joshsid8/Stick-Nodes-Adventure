@@ -15,7 +15,7 @@ MonoBehaviour:
   npcName: Izuno
   dialogue:
   - Yo, you need something?
-  - If, anything, just hit me up.
+  - If anything, just hit me up.
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -35,12 +35,9 @@ MonoBehaviour:
   willGiveQuest: 0
   questToOffer: {fileID: 0}
   isQuestInteraction: 0
-  questActionType: 4
-  questItems: []
-  questItemAmounts: 
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 0
-  derrivedDialogue: {fileID: 0}
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

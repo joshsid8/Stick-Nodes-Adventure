@@ -15,10 +15,11 @@ public class DialogueUI : GUIBase
     private GameObject playerBars;
     public bool isAnimated;
     public Animator animator;
-    [SerializeField] int textIndex;
-    [SerializeField] int currentColourIndex;
+    private NPC currentNpc;
+    [SerializeField] private int textIndex;
+    [SerializeField] private int currentColourIndex;
     private bool isBold;
-    [SerializeField] int currentBoldIndex;
+    [SerializeField] private int currentBoldIndex;
     
     protected override void Awake()
     {
@@ -34,13 +35,14 @@ public class DialogueUI : GUIBase
         handler = GetComponent<DialogueResponseHandler>();
         rt = GetComponent<RectTransform>();
         playerBars = GameObject.Find("PlayerBars");
-        CloseDialogue(null);
+        CloseDialogue();
     }
 
     //private void Update() {textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal; Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount" ,1);}
     
-    public void ShowDialogue(DialogueObject dialogueObject)
+    public void ShowDialogue(DialogueObject dialogueObject, NPC npc = null)
     {
+        if (npc != null) currentNpc = npc;
         CloseAll();
         playerBars.SetActive(false);
         isAnimated = dialogueObject.IsAnimated;
@@ -99,7 +101,7 @@ public class DialogueUI : GUIBase
                     else
                     {
                         Debug.LogWarning("Player failed item check, but no failure dialogue is set.");
-                        CloseDialogue(null);
+                        CloseDialogue();
                     }
                 }
                 else 
@@ -107,7 +109,7 @@ public class DialogueUI : GUIBase
                     var slots = QuestLogManager.Instance.questSlots;
                     foreach (var slot in slots)
                     {
-                        if (slot != null && slot.questType == Quest.QuestType.GiveTo && slot.nTi == dialogueObject.derrivedDialogue)
+                        if (slot != null && slot.questType == Quest.QuestType.GiveTo && slot.nTi == currentNpc)
                             slot.questCompleted = true;
                     }
                 }
@@ -115,7 +117,7 @@ public class DialogueUI : GUIBase
         }
     }
     public void DecrementActiveGUICount() => ActiveGUICount--;
-    private void CloseDialogue(DialogueObject dialogueObject)
+    private void CloseDialogue(DialogueObject dialogueObject = null)
     {
         if (isAnimated)
         {
@@ -134,8 +136,12 @@ public class DialogueUI : GUIBase
             dialogueObject.completeSpeakQuestOnClose)
         {
             var slots = QuestLogManager.Instance.questSlots;
-            for (var i = 0; i < slots.Length; i++)
-                if (slots[i] != null && slots[i].questType == Quest.QuestType.SpeakTo && slots[i].nTi == dialogueObject) slots[i].questCompleted = true;
+            foreach (var slot in slots)
+                if (slot != null && slot.questType == Quest.QuestType.SpeakTo && slot.nTi == currentNpc)
+                {
+                    slot.questCompleted = true;
+                    print($"speakto quest done");
+                }
         }
         
         if (dialogueObject != null)
@@ -144,12 +150,11 @@ public class DialogueUI : GUIBase
                 GameObject.Find(dialogueObject.speaker).GetComponent<DialogueTrigger>().dialogue[0] = dialogueObject.alteredDialogue;
             
             if (dialogueObject.alteredExternalDialogue != null)
-                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().dialogue[0] =
-                    dialogueObject.alteredExternalDialogue;
+                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().dialogue[0] = dialogueObject.alteredExternalDialogue;
         }
     }
 
-    private IEnumerator ChoiceDialogue(DialogueObject dialogueObject)
+    private IEnumerator ChoiceDialogue(DialogueObject dialogueObject = null)
     {
         if (dialogueObject != null)
         {

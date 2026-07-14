@@ -5,19 +5,14 @@ SNADV Notes
     
     Priorities:
         
-        Quest/Dialogue Logic
-            Make the newly added events work
-            Utilise both the alter dialogue system and dialogue lists
-            Make overall adjustments i forgot
-        
         Damage Logic
             Simply put, a water attack on a cynderian will hurt them more
             In general there should be sustain damage or damage over time
                 There kind of already is, but not in a real way
                     fire pillars and water beams do DOT, but there isnt actual ailment logic yet
             Send a lot more detailed data to victims when damaged
-                Element type has been added
-                    Now this can make change the damage of moves depending on the element (To be Implemented)
+                Element factor for player has been added
+                    Copy this for enemies too
         
         Input Logic
             switch input systems!
@@ -47,7 +42,8 @@ SNADV Notes
                 I think when the game lags a slight, the player can m1 without cooldowns
                     Its like it ignores all conditions and i can simply just m1 again
         
-        
+        Dialogue Logic
+             Utilise both the alter dialogue system and dialogue lists
         
         Ability Logic
             Hitbox logic

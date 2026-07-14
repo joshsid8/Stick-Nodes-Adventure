@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour
     private EnemyHealth health;
     private EnemyZone zone;
     private EnemyJump jump;
+    private EnemyFly fly;
     [HideInInspector] public string idName;
     public Enemy enemy;
     private bool canFacePlayer;
@@ -24,6 +25,7 @@ public class EnemyController : MonoBehaviour
         health = GetComponent<EnemyHealth>();
         zone = GetComponent<EnemyZone>();
         jump = GetComponent<EnemyJump>();
+        fly = GetComponent<EnemyFly>();
         if (enemy != null) enemy.SetProperties(attack);
         if (patrol != null && patrol.isPatrolling) ChangeState(EnemyState.Patrolling);
         else ChangeState(EnemyState.Idle);

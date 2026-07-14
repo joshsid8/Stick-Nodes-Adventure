@@ -98,7 +98,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         {
             bossHealth -= damageAmount * dmgRes;
             shieldHealth -= damageAmount;
-            if (movable) kb.CallKnockback(knockbackForce / 4, 0);
+            if (movable) kb.CallKnockback(knockbackForce / 4);
             spriteRenderer.color = damageTint / 2;
             isTinting = true;
         }
@@ -106,7 +106,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         {
             animator.Play("Damaged");
             bossHealth -= damageAmount * 1.2f;
-            if (movable) kb.CallKnockback(knockbackForce / 2, 0);
+            if (movable) kb.CallKnockback(knockbackForce / 2);
             spriteRenderer.color = damageTint;
             isTinting = true;
         }
@@ -118,7 +118,7 @@ public class BossHealth : MonoBehaviour, EDamageables
         else
         {
             bossHealth -= damageAmount;
-            if (movable) kb.CallKnockback(knockbackForce / 2, 0);
+            if (movable) kb.CallKnockback(knockbackForce / 2);
             if (ba.stunnable && movable)
             {
                 var rng = Random.Range(0, 3);
