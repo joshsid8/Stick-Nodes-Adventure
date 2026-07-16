@@ -12222,6 +12222,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3086887463199061304}
     - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: playerExtraHealth
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: 'healthBars.Array.data[0]'
       value: 
       objectReference: {fileID: 3274327158704612846}
@@ -12251,11 +12255,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.5885086
+      value: 0.5267334
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.995367
+      value: 29.767075
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13870,7 +13874,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.9753456, y: 31.049244, z: -0.059537888}
+  m_LocalPosition: {x: 0.9135704, y: 29.82095, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15195,7 +15199,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.9753456, y: 31.049244, z: -0.059537888}
+  m_LocalPosition: {x: 0.9135704, y: 29.82095, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

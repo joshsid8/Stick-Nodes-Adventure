@@ -92,27 +92,25 @@ public class BossHealth : MonoBehaviour, EDamageables
         }
     }
 
-    public void Damage(float damageAmount, Vector2 knockbackForce, int damageFactor = 0,
-        EDamageables.ElementType elementType = EDamageables.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
-        bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F)
+    public void Damage(float damageAmount, int damageFactor = 0,
+        EDamageables.ElementType elementType = EDamageables.ElementType.Normal, float elementFactor = 1f, bool isTrue = false,
+        bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
     {
         if (isBlocking && shieldHealth > 0)
         {
             bossHealth -= damageAmount * dmgRes;
             shieldHealth -= damageAmount;
-            if (movable) kb.CallKnockback(knockbackForce / 4);
             spriteRenderer.color = damageTint / 2;
             isTinting = true;
         }
-        else if (isBlocking && shieldHealth <= 0)
+        else if (isBlocking && shieldHealth <= 0 && !isTrue)
         {
             animator.Play("Damaged");
             bossHealth -= damageAmount * 1.2f;
-            if (movable) kb.CallKnockback(knockbackForce / 2);
             spriteRenderer.color = damageTint;
             isTinting = true;
         }
-        else if (isCountering)
+        else if (isCountering && !isTrue)
         {
             animator.Play("CSuccess");
             isCountering = false;
@@ -120,7 +118,6 @@ public class BossHealth : MonoBehaviour, EDamageables
         else
         {
             bossHealth -= damageAmount;
-            if (movable) kb.CallKnockback(knockbackForce / 2);
             if (ba.stunnable && movable)
             {
                 var rng = Random.Range(0, 3);
@@ -172,9 +169,15 @@ public class BossHealth : MonoBehaviour, EDamageables
             if (spriteRenderer.color == originalColor) isTinting = false;
         }
     }
-    public void Stun(float stunDuration)
+    public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 0,
+        float knockbackTime = 0)
     {
         stunTime = ba.stunnable ? stunDuration : 0;
         if (stunTime >= 69) print("jump yourself");
+        if (movable)
+        {
+            if (isBlocking && shieldHealth > 0) kb.CallKnockback(knockbackDirection* transform.right, knockbackForce / 4, knockbackTime);
+            else kb.CallKnockback(knockbackDirection* transform.right, knockbackForce / 2 , knockbackTime);
+        }
     }
 }

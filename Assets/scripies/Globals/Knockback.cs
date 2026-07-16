@@ -4,27 +4,24 @@ using UnityEngine;
 
 public class Knockback : MonoBehaviour
 {
-    // jump yourself
-    public float knockbackTime = 0.2f;
-    public float hitDirectionForce = 20f;
     public bool IsBeingKnocked {get; private set;}
     private Rigidbody2D rb;
     
     private void Awake() => rb = GetComponent<Rigidbody2D>();
 
-    private IEnumerator KnockbackAction(Vector2 hitDirection)
-    {
+    private IEnumerator KnockbackAction(Vector2 hitDirection, float force, float time)
+    {    
         if (hitDirection == Vector2.zero) yield break;
 
         IsBeingKnocked = true;
         
-        var startForce = hitDirection.normalized * hitDirectionForce;
+        var startForce = hitDirection.normalized * force;
         var elapsed = 0f;
 
-        while (elapsed < knockbackTime)
+        while (elapsed < time)
         {
             elapsed += Time.fixedDeltaTime;
-            var normalizedTime = elapsed / knockbackTime;
+            var normalizedTime = elapsed / time;
             var currentKnockback = Vector2.Lerp(startForce, Vector2.zero, normalizedTime);
             
             rb.linearVelocity = new Vector2(currentKnockback.x, currentKnockback.y != 0 ? currentKnockback.y : rb.linearVelocity.y);
@@ -35,9 +32,9 @@ public class Knockback : MonoBehaviour
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
 
-    public void CallKnockback(Vector2 hitDirection)
+    public void CallKnockback(Vector2 hitDirection, float force = 20f, float time = 0.2f)
     {
-        StopAllCoroutines(); 
-        StartCoroutine(KnockbackAction(hitDirection));
+        StopAllCoroutines();
+        StartCoroutine(KnockbackAction(hitDirection, force, time));
     }
 }

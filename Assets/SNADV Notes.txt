@@ -5,7 +5,8 @@ SNADV Notes
     
     Priorities:
         
-        Test dmg logic
+        Fix Knockback Logic for enemies
+            also find out what transform.right rlly does cuz IM SO CONFUSED!!!
         
         Refactoring
             Everything (kinda)!

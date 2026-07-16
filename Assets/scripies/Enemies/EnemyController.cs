@@ -83,12 +83,11 @@ public class EnemyController : MonoBehaviour
         jump.isJumping = PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject) && PlayerHealth.Instance.aggressiveEnemies.Count > 1;
         canFacePlayer = attack.canFacePlayer;
         if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling && enemyState != EnemyState.Dead) FacePlayer();
-        if (PlayerHealth.Instance.isDead) ChangeState(EnemyState.Patrolling);
+        if (PlayerHealth.Instance.isDead && enemyState != EnemyState.Patrolling) ChangeState(EnemyState.Patrolling);
     }
 
     public void ChangeState(EnemyState newState)
     {
-        print($"changing from {enemyState} to {newState}");
         if (enemyState == newState) return;
         enemyState = newState;
         switch (enemyState)

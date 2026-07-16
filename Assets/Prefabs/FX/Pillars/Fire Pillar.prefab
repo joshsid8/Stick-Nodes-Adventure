@@ -9,6 +9,22 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 7400000, guid: 3e80794bfbf0d0a4a85a04f5b1be7fc6, type: 2}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: damage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: endAnim
+      value: 
+      objectReference: {fileID: 7400000, guid: 3e964e419455b9e4c937b5409ee5f1e7, type: 2}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: procDmg
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: eruptAnim
       value: 
       objectReference: {fileID: 7400000, guid: 3e80794bfbf0d0a4a85a04f5b1be7fc6, type: 2}
@@ -23,6 +39,14 @@ PrefabInstance:
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: pillarDamage
       value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: procInterval
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: damageOverTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4635439681108189195, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: m_Name

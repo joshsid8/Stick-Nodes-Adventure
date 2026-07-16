@@ -12,8 +12,9 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     public float enemyMaxHealth = 100f;
     public float enemyHealth = 100f;
     public bool isDead;
-
-    public List<float> defElementFactors = new List<float>(4) {1,1,1,1};
+    
+    [Tooltip("0 = normal, 1 = fire, 2 = earth, 3 = water, 4 = wind")]
+    public List<float> defElementFactors = new List<float>(5) {1,1,1,1,1};
 
     //Stun logic
     private bool getStunned;
@@ -115,9 +116,9 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         }
     }
 
-    public void Damage(float damageAmount, Vector2 knockbackForce, int damageFactor = 0,
-        EDamageables.ElementType elementType = EDamageables.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
-        bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F)
+    public void Damage(float damageAmount, int damageFactor = 0,
+        EDamageables.ElementType elementType = EDamageables.ElementType.Normal, float elementFactor = 1f, bool isTrue = false,
+        bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
     {
         var calcDamage = damageAmount * elementFactor;
         if (elementType != EDamageables.ElementType.Normal)
@@ -129,16 +130,14 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             }
         }
         
-        if (isBlocking)
+        if (isBlocking && !isTrue)
         {
             enemyHealth -= calcDamage * blockResistance;
-            if (movable) kb.CallKnockback(knockbackForce * blockResistance);
         }
-        else if (isCountering) animator.SetTrigger("Counter");
+        else if (isCountering && !isTrue) animator.SetTrigger("Counter");
         else
         {
             enemyHealth -= calcDamage;
-            if (movable) kb.CallKnockback(knockbackForce);
             if (ea.stunnable) ea.currentAttackCooldown = 0.1f;
         }
         if (enemyHealth <= 0)
@@ -165,10 +164,11 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         }
     }
 
-    public void Stun(float stunDuration)
+    public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f)
     {
         stunTime = stunDuration * stunMultiplier;
         if (stunTime > 0) getStunned = true;
+        if (movable) kb.CallKnockback(knockbackDirection * (isBlocking ? blockResistance : 1f), knockbackForce, knockbackTime);
     }
 
     private void Flash()

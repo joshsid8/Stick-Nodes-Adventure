@@ -105,8 +105,8 @@ public class PlayerDefense : MonoBehaviour
                 if (eDamageable != null)
                 {
                     pa.energy += 10f;
-                    eDamageable.Damage(counterDamage, counterKnockbackForce * num * pf.attackPotency);
-                    eDamageable.Stun(counterStun * pf.attackPotency);
+                    eDamageable.Damage(counterDamage, 0);
+                    eDamageable.Shock(counterStun * pf.attackPotency, counterKnockbackForce * num * pf.attackPotency);
                     PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 2;
                 }
             }

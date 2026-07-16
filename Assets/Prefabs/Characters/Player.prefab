@@ -216,8 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackTime: 0.1
-  hitDirectionForce: 1
 --- !u!114 &1682819759057836702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,7 +275,7 @@ MonoBehaviour:
   counterTime: 0.3
   currentCounterTime: 0
   counterDamageResistance: 0.1
-  counterRadius: 5
+  counterRadius: 3
   counterDamage: 20
   counterStun: 1
   counterKnockbackForce: {x: 2, y: 0}
@@ -309,6 +307,12 @@ MonoBehaviour:
   playerExtraHealth: 0
   rawDamageResistance: 1
   regenerationMultiplier: 5
+  defElementFactors:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
   pc: {fileID: 0}
   isDead: 0
   respawnTime: 5
@@ -362,8 +366,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1536
   stunTime: 0.2
-  knockbackForce: {x: 1, y: 0}
-  airKnockbackForce: {x: 1.5, y: 10}
+  knockbackDirections:
+  - {x: 1, y: 0}
+  - {x: 1, y: 2}
+  knockbackForces:
+  - 20
+  - 20
+  knockbackTimes:
+  - 0.2
+  - 0.2
   attackPotency: 1
   attackDamageMult: 1
   attackCooldownMult: 1

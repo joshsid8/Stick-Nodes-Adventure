@@ -22,14 +22,14 @@ public class PlayerCombat : MonoBehaviour
     public bool isAirComboing;
     [SerializeField] private bool hasAirBoosted;
     public int airComboAmount = 3;
-    
     [SerializeField] private int[] maxComboInterval = new int[2];
     [SerializeField] private int[] comboInterval = new int[2];
     
     [SerializeField] private LayerMask enemyLayer;
     public float stunTime = 0.2f;
-    public Vector2 knockbackForce;
-    public Vector2 airKnockbackForce;
+    public Vector2[] knockbackDirections = new Vector2[2];
+    public float[] knockbackForces = new float[2];
+    public float[] knockbackTimes = new float[2];
     
     public float attackPotency = 1f;
     public float attackDamageMult = 1f;
@@ -80,10 +80,10 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(groundDamageAmount * attackDamageMult, new Vector2(knockbackForce.x * attackPotency * transform.right.x, knockbackForce.y * attackPotency * transform.up.y));
-                eDamageable.Stun(stunTime * attackPotency);
+                eDamageable.Damage(groundDamageAmount * attackDamageMult);
+                eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[0].x * attackPotency * transform.right.x, knockbackDirections[0].y * attackPotency * transform.up.y), knockbackForces[0], knockbackTimes[0]);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
-                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 3;
+                PlayerHealth.Instance.ApplyCombat(additive: true);
             }
         }
         comboInterval[0]++;
@@ -103,21 +103,22 @@ public class PlayerCombat : MonoBehaviour
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(airDamageAmount * attackDamageMult, Vector2.zero);
-                eDamageable.Stun(stunTime * attackPotency);
+                eDamageable.Damage(airDamageAmount * attackDamageMult, 0);
+                eDamageable.Shock(stunTime * attackPotency, Vector2.zero);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
-                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 3;
+                PlayerHealth.Instance.ApplyCombat(additive: true);
                 if (hits[i].collider.CompareTag("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
                 {
                     StartCoroutine(AirCombo(hits[i].collider.gameObject));
-                    pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airKnockbackForce.y);
-                    eDamageable.Damage(0, new Vector2(airKnockbackForce.x * attackPotency * transform.right.x * 1.5f, -airKnockbackForce.y * attackPotency * transform.up.y));
-                    eDamageable.Stun(stunTime * 1.25f);
+                    pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, knockbackDirections[1].y);
+                    eDamageable.Damage(0, 0);
+                    eDamageable.Shock(stunTime * 1.25f, new Vector2(knockbackDirections[1].x * attackPotency * transform.right.x * 1.5f, -knockbackDirections[1].y * attackPotency * transform.up.y));
                 }
                 else
                 {
-                    eDamageable.Damage(0, new Vector2(airKnockbackForce.x * attackPotency * transform.right.x,
-                            airKnockbackForce.y * attackPotency * transform.up.y));
+                    eDamageable.Damage(0, 0);
+                    eDamageable.Shock(0, new Vector2(knockbackDirections[1].x * attackPotency * transform.right.x,
+                        knockbackDirections[1].y * attackPotency * transform.up.y), knockbackForces[1], knockbackTimes[1]);
                 }
                 airComboAmount--;
             }

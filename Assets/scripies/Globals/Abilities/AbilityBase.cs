@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public abstract class AbilityBase : MonoBehaviour
+public abstract class AbilityBase : MonoBehaviour //at this point this is just the pillar script
 {
     [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
     public int typeFactor;
@@ -64,10 +65,14 @@ public abstract class AbilityBase : MonoBehaviour
     public bool abilityOnCollide;
     public AbilityObjSO[] subAbilities;
     
+    private List<GameObject> inContact = new List<GameObject>();
+    public bool isFacingRightDirection;
     public Transform playerTransform;
     public Animator animator;
     
     public GameObject parentObject;
+    [FormerlySerializedAs("pillarCollider")]
+    [FormerlySerializedAs("beamCollider")]
     public Collider2D coll;
     public PlayerAbility pa;
     
@@ -78,7 +83,17 @@ public abstract class AbilityBase : MonoBehaviour
     [FormerlySerializedAs("finishAnim")]
     public AnimationClip endAnim;
 
-    public virtual void SetValues(int factor, bool facingRight) => typeFactor = factor;
+    public virtual void SetValues(int factor, bool facingRight)
+    {
+        typeFactor = factor;
+        isFacingRightDirection = facingRight;
+    }
+
+    protected virtual void Awake()
+    {
+        animator = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
+    }
     
     protected virtual void Start()
     {
@@ -97,6 +112,7 @@ public abstract class AbilityBase : MonoBehaviour
     {
         Lifetime();
         Proc();
+        HitBox();
         gameObject.layer = typeFactor switch
         {
             1 => LayerMask.NameToLayer("PVFX"),
@@ -104,21 +120,77 @@ public abstract class AbilityBase : MonoBehaviour
             _ => LayerMask.NameToLayer("FX")
         };
     }
+    
+    protected virtual void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
+            if (!inContact.Contains(collision.gameObject) && GetHealth(collision.gameObject) > 0) 
+                inContact.Add(collision.gameObject);
+        
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Dead") || collision.gameObject.layer == LayerMask.NameToLayer("EDead")) 
+            inContact.Remove(collision.gameObject);
+    }
+    protected virtual void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
+            inContact.Remove(collision.gameObject);
+    }
+    
+    protected virtual void HitBox()
+    {
+        if (inContact.Count != 0 && procTimer <= 0 && activeHitbox)
+        {
+            switch (typeFactor)
+            {
+                case 1:
+                    foreach (var hit in inContact)
+                    {
+                        var damageable = hit.gameObject.GetComponent<EDamageables>();
+                        Damageable(eDamageables: damageable);
+                    }
+                    break;
+                case 2:
+                    foreach (var hit in inContact)
+                    {
+                        var damageable = hit.gameObject.GetComponent<PDamageable>();
+                        Damageable(damageable);
+                    }
+                    break;
+                default:
+                    foreach (var hit in inContact)
+                    {
+                        var entity = hit;
+                        if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
+                        {
+                            var eDmg = hit.gameObject.GetComponent<EDamageables>();
+                            Damageable(eDamageables: eDmg);
+                        }
+                        else if (entity.CompareTag("Player"))
+                        {
+                            var pDmg = hit.gameObject.GetComponent<PDamageable>();
+                            Damageable(pDmg);
+                        }
+                        else print("Clueless.");
+                    }
+                    break;
+            }
+            procTimer = proc;
+        }
+    }
 
-    protected void Damageable(PDamageable pDamageable = null, EDamageables eDamageables = null)
+    protected virtual void Damageable(PDamageable pDamageable = null, EDamageables eDamageables = null)
     {
         if (pDamageable != null)
         {
-            pDamageable.Damage(damage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            pDamageable.Stun(stunTime);
-            PlayerHealth.Instance.ApplyCombat(additive: true);
+            pDamageable.Damage(damage, true, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            pDamageable.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
         }
         else if (eDamageables != null)
         {
-            eDamageables.Damage(damage, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), damageFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            eDamageables.Stun(stunTime);
-            PlayerHealth.Instance.ApplyCombat(additive: true);
+            eDamageables.Damage(damage, typeFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            eDamageables.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
         }
+        PlayerHealth.Instance.ApplyCombat(additive: true);
     }
     
     private void Proc()
@@ -132,6 +204,9 @@ public abstract class AbilityBase : MonoBehaviour
         }
         else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
     }
+    
+    void ApplyTimer() => lifeTimer = lifeTime;
+
     private void Lifetime()
     {
         if (lifeTimer > 0)
@@ -143,6 +218,21 @@ public abstract class AbilityBase : MonoBehaviour
                 if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
                 animator.Play(endAnim.name);
             }
+        }
+    }
+    
+    private static float GetHealth(GameObject entity)
+    {
+        switch (entity.tag)
+        {
+            case "Player":
+                return PlayerHealth.Instance.playerHealth;
+            case "Enemy":
+                return entity.GetComponent<EnemyHealth>().enemyHealth;
+            case "Boss":
+                return entity.GetComponent<BossHealth>().bossHealth;
+            default:
+                return 0;
         }
     }
     

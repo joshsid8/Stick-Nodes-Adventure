@@ -26,7 +26,6 @@ public class Projectile : AbilityBase
     [Space]
     [Header("Direction & Rotation")]
     [SerializeField] private float rotationOffset = 90;
-    private bool isFacingRightDirection;
     private float objectDirection;
     
     [Space]
@@ -39,7 +38,6 @@ public class Projectile : AbilityBase
     {
         rb =  GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        coll = GetComponent<Collider2D>();
         playerTransform = PlayerHealth.Instance.gameObject.transform;
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
         if (anim != null) animator.Play(anim.name); 
@@ -79,12 +77,12 @@ public class Projectile : AbilityBase
             }
         }
     }
-
     public override void SetValues(int factor, bool facingRight)
     {
-        typeFactor = factor;
+        base.SetValues(factor, facingRight);
         isFacingRightDirection = facingRight;
     }
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         switch (typeFactor)
@@ -104,7 +102,12 @@ public class Projectile : AbilityBase
                 break; 
         }
     }
-
+    
+    // We leave these empty so projectile doesnt use beam/pillar logic (YET???)
+    protected override void OnTriggerExit2D(Collider2D collision){}
+    protected override void OnTriggerStay2D(Collider2D collision){}
+    protected override void HitBox(){}
+    
     private void ApplyForce()
     {
         rb.gravityScale = gravityScale;
@@ -139,15 +142,8 @@ public class Projectile : AbilityBase
                 {
                     case 1:
                         var eDamageable = hit.collider.gameObject.GetComponent<EDamageables>();
-                        if (eDamageable != null)
-                        {
-                            eDamageable.Stun(stunTime);
-                            eDamageable.Damage(damage, knockbackForce * objectDirection);
-                            PlayerHealth.Instance.currentCombatTimer = +PlayerHealth.Instance.combatTimer * 0.5f;
-                            //Add a global combat trigger method
-                        }
-                        else print($"Clueless: {hit.collider.gameObject.name} doesnt have a damageable component.");
-
+                        Damageable(eDamageables: eDamageable);
+                        PlayerHealth.Instance.ApplyCombat(additive: true);
                         break;
                     case 2:
                         if (hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow)
@@ -162,11 +158,8 @@ public class Projectile : AbilityBase
                         var pDamageable = hit.collider.gameObject.GetComponent<PDamageable>();
                         if (pDamageable != null)
                         {
-                            pDamageable.Damage(damage, knockbackForce * objectDirection,
-                                isFacingRightDirection, elementType, 0F);
-                            pDamageable.Stun(stunTime);
-
-                            PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.5f;
+                            Damageable(pDamageable);
+                            PlayerHealth.Instance.ApplyCombat(additive: true);
                         }
                         break;
                     default:
@@ -174,13 +167,8 @@ public class Projectile : AbilityBase
                         if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
                         {
                             var eDmg = hit.collider.gameObject.GetComponent<EDamageables>();
-                            if (eDmg != null)
-                            {
-                                eDmg.Stun(stunTime);
-                                eDmg.Damage(damage, knockbackForce * objectDirection);
-                                PlayerHealth.Instance.currentCombatTimer =
-                                    +PlayerHealth.Instance.combatTimer * 0.5f;
-                            }
+                            Damageable(eDamageables: eDmg);
+                            PlayerHealth.Instance.ApplyCombat(additive: true);
                         }
                         else if (entity.CompareTag("Player"))
                         {
@@ -194,15 +182,8 @@ public class Projectile : AbilityBase
                                 break;
                             }
                             var pDmg = hit.collider.gameObject.GetComponent<PDamageable>();
-                            if (pDmg != null)
-                            {
-                                pDmg.Damage(damage, knockbackForce * objectDirection,
-                                    isFacingRightDirection, elementType, 0F);
-                                pDmg.Stun(stunTime);
-
-                                PlayerHealth.Instance.currentCombatTimer +=
-                                    PlayerHealth.Instance.combatTimer * 0.5f;
-                            }
+                            Damageable(pDmg);
+                            PlayerHealth.Instance.ApplyCombat(additive: true);
                         }
                         else print("Clueless.");
                         break;
@@ -211,7 +192,23 @@ public class Projectile : AbilityBase
         }
         if (!deflected) Crash(); else Deflect(typeFactor);
     }
+    
+    protected override void Damageable(PDamageable pDamageable = null, EDamageables eDamageables = null)
+    {
+        if (pDamageable != null)
+        {
+            pDamageable.Damage(damage, true, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            pDamageable.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+        }
+        else if (eDamageables != null)
+        {
+            eDamageables.Damage(damage, typeFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            eDamageables.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+        }
+        PlayerHealth.Instance.ApplyCombat(2f, additive: true);
+    }
 
+    
     private void Crash()
     {
         collided = true;
