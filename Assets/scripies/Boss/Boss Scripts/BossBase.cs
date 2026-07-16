@@ -142,7 +142,7 @@ public abstract class BossBase : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ba.isFacingRight, damageType);
+                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ba.isFacingRight, damageType, 0F);
                 damageable.Stun(stunTime);
                 PlayerHealth.Instance.currentCombatTimer =+ 180f;
             }

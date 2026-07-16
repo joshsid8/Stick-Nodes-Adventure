@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.iOS;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -16,11 +17,9 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public float playerHealth = 100;
     public float playerExtraHealth;
     public float rawDamageResistance = 1f;
-    public enum ElementFactor {Fire, Earth, Water, Air}
-
-    public Dictionary<ElementFactor, float> elementFactors = new Dictionary<ElementFactor, float>();
-
+    
     public float regenerationMultiplier;
+    public List<float> defElementFactors = new List<float>(4) {1,1,1,1};
     
     [HideInInspector] public PlayerController pc;
     private PlayerDefense pd;
@@ -64,12 +63,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         pd = GetComponent<PlayerDefense>();
         kb = GetComponent<Knockback>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        
-        //TODO: apply this by making this dictionary some form of multiplier. once damaged, the dmg taken will be multiplied by the attackers element factor. make enemies have this too.
-        elementFactors.Add(ElementFactor.Fire, 1f);
-        elementFactors.Add(ElementFactor.Earth, 1f);
-        elementFactors.Add(ElementFactor.Water, 1f);
-        elementFactors.Add(ElementFactor.Air, 1f);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -133,53 +126,66 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             currentCombatTimer = 0;
         }
     }
-
-    public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageFactor, int elementFactor)
+    // TODO: test this in unity, make an ability true and have DOT properties, and see if this works
+    public void Damage(float damageAmount, Vector2 knockbackForce, bool facingRight, int damageFactor,
+        PDamageable.ElementType elementType = PDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
+        bool damageOverTime = false, float procDmg = 0, float procInterval = 0)
     {
+        var calcDamage = damageAmount * elementFactor;
+        if (elementType != PDamageable.ElementType.Normal)
+        {
+            for (var i = 0; i < defElementFactors.Count; i++)
+            {
+                if ((int)elementType == i) continue;
+                calcDamage *= defElementFactors[i];
+            }
+        }
+        
         var isFacingAttacker = facingRight && !pc.isFacingRight || !facingRight && pc.isFacingRight;
         switch (isFacingAttacker)
         {
             case true when pd.isBlocking && !pd.counterWindow && damageFactor < 1:
                 // blocking successfully
-                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.blockDamageResistance;
-                else playerHealth -= damageAmount * pd.blockDamageResistance;
-                kb.CallKnockback(knockbackForce * pd.blockDamageResistance);
+                StartCoroutine(ApplyDamage(calcDamage * pd.blockDamageResistance, knockbackForce, false, damageOverTime, procDmg, procInterval));
                 break;
             case true when pd.isBlocking && pd.counterWindow && damageFactor < 2:
                 // perfect blocking / counter
-                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * pd.counterDamageResistance;
-                else playerHealth -= damageAmount * pd.counterDamageResistance;
                 pc.animator.SetTrigger("Counter");
                 pd.counterWindow = false;
+                StartCoroutine(ApplyDamage(calcDamage * pd.counterDamageResistance, knockbackForce, false, damageOverTime, procDmg, procInterval));
                 break;
             case true:
-                // the player not blocking at all
-                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
-                else playerHealth -= damageAmount * rawDamageResistance;
-                spriteRenderer.color = damageTint;
-                isTinting = true;
-                if (knockbackForce != Vector2.zero)
-                {
-                    pc.animator.SetTrigger("Damaged");
-                    kb.CallKnockback(knockbackForce * shockMultiplier);
-                }
-                break;
             case false:
-                // the player blocking but getting hit at the back
-                if (playerExtraHealth > 0) playerExtraHealth -= damageAmount * rawDamageResistance;
-                else playerHealth -= damageAmount * rawDamageResistance;
-                spriteRenderer.color = damageTint;
-                isTinting = true;
-                pd.StopBlocking();
-                if (knockbackForce != Vector2.zero)
-                {
-                    pc.animator.SetTrigger("Damaged");
-                    kb.CallKnockback(knockbackForce * shockMultiplier);
-                }
+                print("owch");
+                // the player blocking but getting hit at the back OR the player not blocking at all
+                StartCoroutine(ApplyDamage(calcDamage * rawDamageResistance, knockbackForce, true, damageOverTime, procDmg, procInterval));
                 break;
         }
         pc.currentDashTime = 0f;
         GetComponent<PlayerAbility>().isPerformingAbility = false;
+    }
+
+    private IEnumerator ApplyDamage(float damageAmount, Vector2 knockbackForce, bool blockBreak = false, bool dOt = false, float procDmg = 1, float procInterval = 0.2f, bool isTrue = false)
+    {
+        if (playerExtraHealth > 0 && !isTrue) playerExtraHealth -= damageAmount;
+        else playerHealth -= damageAmount;
+        kb.CallKnockback(knockbackForce * shockMultiplier);
+        if (blockBreak)
+        {
+            spriteRenderer.color = damageTint;
+            pd.StopBlocking();
+            isTinting = true;
+            if (knockbackForce != Vector2.zero) pc.animator.SetTrigger("Damaged");
+        }
+        var procTaken = procDmg;
+        var procAmount = procDmg * procInterval;
+        while (procTaken > 0 && dOt)
+        {
+            if (playerExtraHealth > 0 && !isTrue) playerExtraHealth -= procAmount;
+            else playerHealth -= procAmount;
+            procTaken -= procAmount;
+            yield return new WaitForSeconds(procInterval);
+        }
     }
     
     public void Stun(float stunDuration)
@@ -211,7 +217,8 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
     }
 
-    public void ApplyCombat(float combatDuration = 5, bool additive = false) => combatTimer = additive ? combatTimer + combatDuration : combatDuration;
+    public void ApplyCombat(float combatDuration = 5, bool additive = false)
+        => combatTimer = additive ? combatTimer + combatDuration : combatDuration;
     
     private void Tint()
     {

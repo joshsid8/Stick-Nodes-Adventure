@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemyHealth : MonoBehaviour, EDamageables
 {
@@ -10,6 +12,8 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     public float enemyMaxHealth = 100f;
     public float enemyHealth = 100f;
     public bool isDead;
+
+    public List<float> defElementFactors = new List<float>(4) {1,1,1,1};
 
     //Stun logic
     private bool getStunned;
@@ -21,11 +25,11 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     //block logic
     public bool isCountering;
     public bool isBlocking;
-    public float damageResistance;
+    [FormerlySerializedAs("damageResistance")] public float blockResistance;
 
     //Tint variables
-    public Color damageTint = Color.red; // The color to tint when damaged.
-    public float tintSpeed = 5f;       // Speed of the color transition.
+    public Color damageTint = Color.red;
+    public float tintSpeed = 5f;
     private Color originalColor;
     [SerializeField] private bool isTinting = false;
     private SpriteRenderer spriteRenderer;
@@ -52,7 +56,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         animator = GetComponent<Animator>();
         currentStunTime = stunTime * stunMultiplier;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        originalColor = spriteRenderer.color; // Store the original color.
+        originalColor = spriteRenderer.color;
         kb = GetComponent<Knockback>();
         ea = GetComponent<EnemyAttack>();
         ep = GetComponent<EnemyPatrol>();
@@ -69,10 +73,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         Tint();
         if (enemyHealth <= phase2 && phase2Style > 0)
         {
-            if (!ea.styleMode.Equals(phase2Style))
-            {
-                ea.ApplyStyle(phase2Style);
-            }
+            if (!ea.styleMode.Equals(phase2Style)) ea.ApplyStyle(phase2Style);
             else print($"Clueful: styleMode is {ea.styleMode} and phase2Style is {phase2Style}");
         }
         if (isDead && ep.isGrounded) ep.rb.linearVelocity = new Vector2(0, ep.rb.linearVelocity.y);
@@ -101,30 +102,42 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
             
-            yield return new WaitForSeconds(5f);
-            for (int i = 0; i < 25; i++)
+            yield return new WaitForSeconds(3f);
+            for (var i = 0; i < 25; i++)
             {
                 spriteRenderer.enabled = false;
                 yield return new WaitForSeconds(0.025f);
                 spriteRenderer.enabled = true;
                 yield return new WaitForSeconds(0.025f);
             }
-            PlayerHealth.Instance.currentCombatTimer = 0;
+            PlayerHealth.Instance.ApplyCombat(0f);
             Destroy(gameObject);
         }
     }
 
-    public void Damage(float damageAmount, Vector2 knockbackForce)
+    public void Damage(float damageAmount, Vector2 knockbackForce, int damageFactor = 0,
+        EDamageables.ElementType elementType = EDamageables.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
+        bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F)
     {
+        var calcDamage = damageAmount * elementFactor;
+        if (elementType != EDamageables.ElementType.Normal)
+        {
+            for (var i = 0; i < defElementFactors.Count; i++)
+            {
+                if ((int)elementType == i) continue;
+                calcDamage *= defElementFactors[i];
+            }
+        }
+        
         if (isBlocking)
         {
-            enemyHealth -= damageAmount * damageResistance;
-            if (movable) kb.CallKnockback(knockbackForce * 0.5f);
+            enemyHealth -= calcDamage * blockResistance;
+            if (movable) kb.CallKnockback(knockbackForce * blockResistance);
         }
         else if (isCountering) animator.SetTrigger("Counter");
         else
         {
-            enemyHealth -= damageAmount;
+            enemyHealth -= calcDamage;
             if (movable) kb.CallKnockback(knockbackForce);
             if (ea.stunnable) ea.currentAttackCooldown = 0.1f;
         }
@@ -134,10 +147,22 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             isDead = true;
             StartCoroutine(Death());
         }
-        spriteRenderer.color = damageTint;
-        isTinting = true;
+        Flash();
+        if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
+        if (GetComponent<EnemyPatrol>().enabled) ec.ChangeState(EnemyController.EnemyState.Attacking);
+    }
 
-        if (GetComponent<EnemyPatrol>().enabled) StartCoroutine(GetComponent<EnemyPatrol>().FoundPlayer());
+    private IEnumerator DamageOverTime(float procDmg, float procInterval)
+    {
+        var procTaken = procDmg;
+        var procAmount = procDmg * procInterval;
+        while (procTaken > 0)
+        {
+            enemyHealth -= procAmount;
+            Flash();
+            procTaken -= procAmount;
+            yield return new WaitForSeconds(procInterval);
+        }
     }
 
     public void Stun(float stunDuration)
@@ -154,13 +179,10 @@ public class EnemyHealth : MonoBehaviour, EDamageables
 
     private void Tint()
     {
-        if (isTinting && !isDead)
+        if (isTinting)
         {
             spriteRenderer.color = Color.Lerp(spriteRenderer.color, originalColor, tintSpeed * Time.deltaTime);
-            if (spriteRenderer.color == originalColor)
-            {
-                isTinting = false;
-            }
+            if (spriteRenderer.color == originalColor) isTinting = false;
         }
     }
 }

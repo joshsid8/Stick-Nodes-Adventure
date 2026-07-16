@@ -209,7 +209,7 @@ public class EnemyAttack : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.ec.isFacingRight, damageType);
+                damageable.Damage(damageAmount, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), ep.ec.isFacingRight, damageType, 0F);
                 damageable.Stun(stunTime);
                 PlayerHealth.Instance.ApplyCombat(20);
             }

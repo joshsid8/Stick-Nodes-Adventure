@@ -92,7 +92,9 @@ public class BossHealth : MonoBehaviour, EDamageables
         }
     }
 
-    public void Damage(float damageAmount, Vector2 knockbackForce)
+    public void Damage(float damageAmount, Vector2 knockbackForce, int damageFactor = 0,
+        EDamageables.ElementType elementType = EDamageables.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
+        bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F)
     {
         if (isBlocking && shieldHealth > 0)
         {
@@ -128,6 +130,28 @@ public class BossHealth : MonoBehaviour, EDamageables
             spriteRenderer.color = damageTint;
             isTinting = true;
         }
+        if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
+
+        CheckStatus();
+    }
+    
+    private IEnumerator DamageOverTime(float procDmg, float procInterval)
+    {
+        var procTaken = procDmg;
+        var procAmount = procDmg * procInterval;
+        while (procTaken > 0)
+        {
+            bossHealth -= procAmount;
+            spriteRenderer.color = damageTint;
+            isTinting = true;
+            procTaken -= procAmount;
+            CheckStatus();
+            yield return new WaitForSeconds(procInterval);
+        }
+    }
+
+    private void CheckStatus()
+    {
         if (bossHealth <= 0 && !deathToggle)
         {
             deathToggle = true;
@@ -139,7 +163,6 @@ public class BossHealth : MonoBehaviour, EDamageables
         }
         else if (bossHealth <= phase2Health) phase2 = true;
     }
-
     
     private void Tint()
     {

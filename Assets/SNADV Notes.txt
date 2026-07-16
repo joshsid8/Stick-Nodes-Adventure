@@ -5,14 +5,12 @@ SNADV Notes
     
     Priorities:
         
-        Damage Logic
-            Simply put, a water attack on a cynderian will hurt them more
-            In general there should be sustain damage or damage over time
-                There kind of already is, but not in a real way
-                    fire pillars and water beams do DOT, but there isnt actual ailment logic yet
-            Send a lot more detailed data to victims when damaged
-                Element factor for player has been added
-                    Copy this for enemies too
+        Test dmg logic
+        
+        Refactoring
+            Everything (kinda)!
+                Give titles to most scripts in the inspector
+                Probably add comments to code
         
         Input Logic
             switch input systems!

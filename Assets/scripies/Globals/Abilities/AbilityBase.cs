@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -6,11 +7,17 @@ public abstract class AbilityBase : MonoBehaviour
     [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
     public int typeFactor;
     public int elementType;
+    public int elementFactor;
     public int damageFactor;
+    public bool trueDamage;
     [FormerlySerializedAs("beamDamage")]
     [FormerlySerializedAs("projectileDamage")]
     [FormerlySerializedAs("pillarDamage")]
     public float damage;
+    
+    public bool damageOverTime;
+    public float procDmg;
+    public float procInterval;
     
     [FormerlySerializedAs("beamKnockbackForce")]
     [FormerlySerializedAs("projectileKnockbackForce")]
@@ -71,8 +78,8 @@ public abstract class AbilityBase : MonoBehaviour
     [FormerlySerializedAs("finishAnim")]
     public AnimationClip endAnim;
 
-    public abstract void SetValues(int factor, bool facingRight);
-
+    public virtual void SetValues(int factor, bool facingRight) => typeFactor = factor;
+    
     protected virtual void Start()
     {
         procTimer = 0;
@@ -96,6 +103,22 @@ public abstract class AbilityBase : MonoBehaviour
             2 => LayerMask.NameToLayer("EVFX"),
             _ => LayerMask.NameToLayer("FX")
         };
+    }
+
+    protected void Damageable(PDamageable pDamageable = null, EDamageables eDamageables = null)
+    {
+        if (pDamageable != null)
+        {
+            pDamageable.Damage(damage, knockbackForce * transform.up, !PlayerHealth.Instance.pc.isFacingRight, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            pDamageable.Stun(stunTime);
+            PlayerHealth.Instance.ApplyCombat(additive: true);
+        }
+        else if (eDamageables != null)
+        {
+            eDamageables.Damage(damage, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y), damageFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            eDamageables.Stun(stunTime);
+            PlayerHealth.Instance.ApplyCombat(additive: true);
+        }
     }
     
     private void Proc()

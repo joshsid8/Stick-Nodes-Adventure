@@ -88,9 +88,9 @@ public class EnemyController : MonoBehaviour
 
     public void ChangeState(EnemyState newState)
     {
+        print($"changing from {enemyState} to {newState}");
         if (enemyState == newState) return;
         enemyState = newState;
-
         switch (enemyState)
         {
             case EnemyState.Idle:

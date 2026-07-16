@@ -63,24 +63,14 @@ public class Beam : AbilityBase
                     foreach (var hit in inContact)
                     {
                         var damageable = hit.gameObject.GetComponent<EDamageables>();
-                        if (damageable != null)
-                        {
-                            damageable.Damage(damage, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
-                            damageable.Stun(stunTime);
-                            PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.25f;
-                        }
+                        Damageable(eDamageables: damageable);
                     }
                     break;
                 case 2:
                     foreach (var hit in inContact)
                     {
                         var damageable = hit.gameObject.GetComponent<PDamageable>();
-                        if (damageable != null)
-                        {
-                            damageable.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, damageFactor);
-                            damageable.Stun(stunTime);
-                            PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.25f;
-                        }
+                        Damageable(damageable);
                     }
                     break;
                 default:
@@ -89,23 +79,13 @@ public class Beam : AbilityBase
                         var entity = hit;
                         if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
                         {
-                            var damageable = hit.gameObject.GetComponent<EDamageables>();
-                            if (damageable != null)
-                            {
-                                damageable.Damage(damage, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
-                                damageable.Stun(stunTime);
-                                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.25f;
-                            }
+                            var eDmg = hit.gameObject.GetComponent<EDamageables>();
+                            Damageable(eDamageables: eDmg);
                         }
                         else if (entity.CompareTag("Player"))
                         {
                             var pDmg = hit.gameObject.GetComponent<PDamageable>();
-                            if (pDmg != null)
-                            {
-                                pDmg.Damage(damage, knockbackForce, !PlayerHealth.Instance.pc.isFacingRight, damageFactor);
-                                pDmg.Stun(stunTime);
-                                PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.25f;
-                            }
+                            Damageable(pDmg);
                         }
                         else print("Clueless.");
                     }

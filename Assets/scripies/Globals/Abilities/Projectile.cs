@@ -163,7 +163,7 @@ public class Projectile : AbilityBase
                         if (pDamageable != null)
                         {
                             pDamageable.Damage(damage, knockbackForce * objectDirection,
-                                isFacingRightDirection, elementType);
+                                isFacingRightDirection, elementType, 0F);
                             pDamageable.Stun(stunTime);
 
                             PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer * 0.5f;
@@ -197,7 +197,7 @@ public class Projectile : AbilityBase
                             if (pDmg != null)
                             {
                                 pDmg.Damage(damage, knockbackForce * objectDirection,
-                                    isFacingRightDirection, elementType);
+                                    isFacingRightDirection, elementType, 0F);
                                 pDmg.Stun(stunTime);
 
                                 PlayerHealth.Instance.currentCombatTimer +=
