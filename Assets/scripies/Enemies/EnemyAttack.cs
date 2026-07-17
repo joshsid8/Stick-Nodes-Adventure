@@ -7,25 +7,25 @@ public class EnemyAttack : MonoBehaviour
     public enum StyleMode {Active, Passive, Evasive}
     public StyleMode styleMode;
 
+    [Header("Fly stuff")]
     public bool canFly;
     public bool isFlying;
     public int movesBeforeFlyingCount;
     public int[] movesBeforeFlying = new int[2];
     private string flyTrigger = "FlyJump";
     
+    [Header("Moves and Checks")]
     [Tooltip("When the player runs near")] public bool defensiveCheck; 
     [Tooltip("Certain actions performed if the player isn't close or far")] public bool passiveCheck;
     
     [Tooltip("The enemy coming close to the player")] public string[] activeMoves; 
     [Tooltip("Certain actions performed if the player isn't close or far")] public string[] passiveMoves;
     [Tooltip("The enemy evading/backing up from the player")] public string[] evasiveMoves;
-
     public string[] flyingActiveMoves;
     public string[] flyingPassiveMoves;
     public string[] flyingEvasiveMoves;
     
-    public string spareAnimation;
-    
+    [Space]
     public float defensiveModeRadius;
     public float modDefensiveModeRadius;
     private float originalDefensiveModeRadius;
@@ -33,7 +33,8 @@ public class EnemyAttack : MonoBehaviour
     public float passiveModeRadius;
     public float modPassiveModeRadius;
     private float originalPassiveModeRadius;
-    
+    [Space]
+    [Header("Melee Attack")]
     public float stunTime;
     public float damageAmount;
     public Vector2 knockbackForce;
@@ -44,12 +45,15 @@ public class EnemyAttack : MonoBehaviour
     
     public LayerMask pLayer;
     [HideInInspector] public Transform playerTransform;
-
+    [Space]
+    [Header("Combat Checks")]
     public bool canAttack;
     public bool isAttacking;
     public float currentAttackCooldown;
     public bool stunnable;
-    
+    public bool canFacePlayer;
+    [Space]
+    [Header("References")]
     [HideInInspector] public Rigidbody2D rb;
     private Animator animator;
     [HideInInspector] public EnemyPatrol ep;
@@ -58,8 +62,9 @@ public class EnemyAttack : MonoBehaviour
     [HideInInspector] public EnemyHealth eh;
     private EnemyController ec;
     [HideInInspector] public EnemyZone ez; // ez lol git gud
-
-    public bool canFacePlayer;
+    [Space]
+    [Header("Sparing (To complete)")]
+    public string spareAnimation;
     [SerializeField] private bool canSpare = true;
     [SerializeField] private float spareTimer = 10;
     private float currentSpareTimer;

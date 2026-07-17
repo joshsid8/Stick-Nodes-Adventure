@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
 {
     public static event Action<Enemy> OnEnemyKilled;
 
-    //Enemy health
+    [Header("Health")]
     public float enemyMaxHealth = 100f;
     public float enemyHealth = 100f;
     public bool isDead;
@@ -16,39 +16,39 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     [Tooltip("0 = normal, 1 = fire, 2 = earth, 3 = water, 4 = wind")]
     public List<float> defElementFactors = new List<float>(5) {1,1,1,1,1};
 
-    //Stun logic
+    [Header("Shock")]
     private bool getStunned;
     public bool isStunned;
     private float stunTime;
     [SerializeField] private float currentStunTime;
     public float stunMultiplier = 1;
+    private Knockback kb;
+    public bool movable = true;
     
-    //block logic
+    [Header("Defense status")]
     public bool isCountering;
     public bool isBlocking;
-    [FormerlySerializedAs("damageResistance")] public float blockResistance;
+    [FormerlySerializedAs("damageResistance")]
+    public float blockResistance;
 
-    //Tint variables
+    [Header("Damage Tinting")]
     public Color damageTint = Color.red;
     public float tintSpeed = 5f;
     private Color originalColor;
-    [SerializeField] private bool isTinting = false;
+    [SerializeField] private bool isTinting;
     private SpriteRenderer spriteRenderer;
-    private Knockback kb;
-    public bool movable = true;
 
-    //phase 2
+    [Header("Phase 2")]
     public float phase2;
     public int phase2Style;
     
-    //other
+    [Header("References & Other")]
     private Animator animator;
     private EnemyController ec;
     private EnemyAttack ea;
     private EnemyPatrol ep;
     private Identifier identifier;
     public bool isLight;
-    
     public bool isOneTime;
 
     // Start is called before the first execution of Update after the MonoBehaviour is created

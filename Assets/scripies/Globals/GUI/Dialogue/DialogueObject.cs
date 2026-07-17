@@ -13,6 +13,7 @@ public class DialogueObject : ScriptableObject
     [SerializeField] [TextArea(1, 2)] private string choiceQuestion;
     [SerializeField] private bool isAnimated;
 
+    [Header("Responses")]
     public DialogueResponse yesResponse;
     public DialogueResponse noResponse;
 
@@ -24,6 +25,7 @@ public class DialogueObject : ScriptableObject
     
     public DialogueResponse YesResponse => yesResponse;
     public DialogueResponse NoResponse => noResponse;
+    
     public bool IsAnimated => isAnimated;
     
     [Header("Custom Global Variable Change (once the Dialogue closes)")] 

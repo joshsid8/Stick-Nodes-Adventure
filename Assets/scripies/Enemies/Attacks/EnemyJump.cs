@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemyJump : MonoBehaviour
 {
+    [Header("Jump checks")]
     public bool isJumping;
     public bool jumpTogether;
     public bool myTurn;
@@ -24,7 +25,7 @@ public class EnemyJump : MonoBehaviour
         var allies = PlayerHealth.Instance.aggressiveEnemies;
         var prePartners = new List<GameObject>();
         foreach (var ally in allies)
-            if (ally.GetComponent<EnemyController>().idName == ec.idName && !prePartners.Contains(ally)) prePartners.Add(ally);
+            if (ally.GetComponent<EnemyController>().enemy.enemyName == ec.enemy.enemyName && !prePartners.Contains(ally)) prePartners.Add(ally);
         partners = prePartners.ToArray();
     }
     // Update is called once per frame

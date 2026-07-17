@@ -8,11 +8,6 @@ SNADV Notes
         Fix Knockback Logic for enemies
             also find out what transform.right rlly does cuz IM SO CONFUSED!!!
         
-        Refactoring
-            Everything (kinda)!
-                Give titles to most scripts in the inspector
-                Probably add comments to code
-        
         Input Logic
             switch input systems!
             I should be smart enough to know how to use it now

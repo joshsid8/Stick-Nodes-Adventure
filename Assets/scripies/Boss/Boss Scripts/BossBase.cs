@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public abstract class BossBase : MonoBehaviour
 {
-    // Strafing/Dashing
+     [Header("Strafing/Dashing")]
     [FormerlySerializedAs("dashSpeed")]
     public float strafeSpeed = 10f;
     public bool isStrafing;
@@ -15,8 +15,8 @@ public abstract class BossBase : MonoBehaviour
     public bool isFlyDashing;
     public Vector2 dashDirection;
     [SerializeField] private string inRangeAnim = "HAttack";
-    
-    // Melee & Ability
+    [Space]
+    [Header("Melee Attacks")]
     public float meleeCooldown;
     public float stunTime;
     public float damageAmount;
@@ -24,30 +24,30 @@ public abstract class BossBase : MonoBehaviour
     private RaycastHit2D hit;
     public float attackRange;
     public Transform attackTransform;
-    
+    [Space]
+    [Header("Stored Objects")]
     public List<GameObject> storedObjects = new List<GameObject>();
     public int storedObjectIndex;
     public Transform fireTransform;
-    
-    // Jumping
-    public float jumpCooldown;
+    [Space]
+    [Header("Jumping")]
     public bool isRandomised;
     public float jumpForceY;
     public float jumpForceX;
-    
-    // Teleporting and Dropping
+    [Space]
+    [Header("Teleporting and Dropping")]
     public Transform teleportPoint;
     public float dropSpeed;
     [SerializeField] private string teleportAnim = "DAttack";
     
-    // Checks
+    [Space]
+    [Header("Checks")]
     [HideInInspector] public bool isInRange;
     [HideInInspector] public bool freezeMovement;
     [HideInInspector] public bool isFalling;
     public int damageType;
     public LayerMask terrainLayers;
     
-    // Components
     protected Rigidbody2D rb;
     protected Animator animator;
     protected BossAttack ba;

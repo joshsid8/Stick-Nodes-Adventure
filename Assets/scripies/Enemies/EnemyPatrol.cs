@@ -5,26 +5,31 @@ using Random = UnityEngine.Random;
 
 public class EnemyPatrol : MonoBehaviour
 {
+    [Header("Patrol")]
     public bool isPatrolling = true;
-    public float walkSpeed = 5f;
     public float eyeSight = 10f;
-    
+    [Space]
+    [Header("Walking")]
+    public float walkSpeed = 5f;
     [SerializeField] private bool canWalk = true;
     private bool isWalking = true;
     [SerializeField] private float[] walkTime = {2, 4f};
     private float currentWalkTime;
     [SerializeField] private float randomPause;
     [SerializeField] private float[] randomPauseChance = {20f, 101f};
-    
+    [Space]
+    [Header("Player Check")]
     [SerializeField] private bool hasFoundPlayer;
     public Transform playerCheck;
     public LayerMask playerLayer;
-    
+    [Space]
+    [Header("Wall Check")]
     [SerializeField] private bool touchingWall;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask whatIsWall;
     [SerializeField] private float wallCheckRay = 2f;
-    
+    [Space]
+    [Header("Ground Check")]
     public bool isGrounded;
     [SerializeField] private Transform edgeCheck;
     [SerializeField] private LayerMask groundLayer;

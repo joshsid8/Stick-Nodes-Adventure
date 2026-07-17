@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Cynder : BossBase
 {
+    [Header("Backflipping")]
     public float backflipForceY;
     public float backflipForceX;
 

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemyZone : MonoBehaviour
 {
+    [Header("Zoning")]
     public float currentZonePeriod;
     [SerializeField] private bool isZoning;
     [SerializeField] private float zoneTime = 1;
@@ -10,13 +11,15 @@ public class EnemyZone : MonoBehaviour
     [SerializeField] private float zoneSpeed = 10;
     [SerializeField] private float zoneInterval = 0.3f;
     [SerializeField] private float intervalTimer;
-    private EnemyController ec;
-    private EnemyAttack ea;
-    private EnemyJump ej;
     
+    [Header("Checks (Being updated by enemyAttack)")]
     private EnemyAttack.StyleMode styleMode;
     private bool defensiveCheck;
     private bool passiveCheck;
+    
+    private EnemyController ec;
+    private EnemyAttack ea;
+    private EnemyJump ej;
     private Rigidbody2D rb;
     private Animator animator;
     

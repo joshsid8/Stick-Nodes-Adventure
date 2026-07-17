@@ -1,30 +1,31 @@
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class EnemyMovement : MonoBehaviour
 {
-    // Dashing
+    [Header("Dashing")]
     public float dashSpeed = 10f;
     public bool isDashing;
     
     [SerializeField] private Vector2 dashDirection;
     public bool isFlyDashing;
     
-    // Jumping
+    [Space]
+    [Header("Jumping")]
     public float jumpForceY;
     public float jumpForceX;
     public bool isRandomised;
+    
+    [Space]
+    [Header("Checks")]
+    [SerializeField] private bool isHomingPlayer;
+    [SerializeField] private bool inRange;
+    [SerializeField] private bool isFrozen;
     
     // Components
     private EnemyAttack ea;
     private EnemyPatrol ep;
     private Animator animator;
-    
-    // Checks
-    [SerializeField] private bool isHomingPlayer;
-    [SerializeField] private bool inRange;
-    [SerializeField] private bool isFrozen;
     
     private void Awake()
     {

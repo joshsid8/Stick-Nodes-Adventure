@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerDefense : MonoBehaviour
 {
+    [Header("Countering")]
     public bool counterAbility;
     public bool canCounter;
     public bool counterWindow;
@@ -15,17 +16,18 @@ public class PlayerDefense : MonoBehaviour
     private RaycastHit2D[] hits;
     public LayerMask eLayer;
     
+    [Header("Blocking")]
     public bool canBlock;
     public bool isBlocking;
     public float blockDamageResistance;
     private float blockStunMultiplier;
     public float blockMoveSpeed;
     
+    [Header("References")]
     private PlayerHealth hp;
     private PlayerController pc;
     private PlayerCombat pf;
     private PlayerAbility pa;
-    
     private Animator animator;
     
     private void Awake()

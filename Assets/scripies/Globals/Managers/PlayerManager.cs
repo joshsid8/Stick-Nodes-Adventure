@@ -4,7 +4,6 @@ using System.Linq; // For Linq operations like Sum
 
 public class PlayerManager : MonoBehaviour
 {
-    // Singleton instance
     public static PlayerManager Instance { get; private set; }
 
     // Reference to your base player stats (PlayerStats ScriptableObject)
@@ -19,18 +18,12 @@ public class PlayerManager : MonoBehaviour
     private PlayerDefense pd;
     private PlayerCombat pf;
     private PerformAbility pp;
-
-    // --- Core Stat Management Dictionaries ---
-    // These dictionaries will hold the *current, modified* values of the player's stats.
-    // They are derived from basePlayerStats + all active modifiers.
+    
     private Dictionary<string, float> currentFloatStats = new Dictionary<string, float>();
     private Dictionary<string, bool> currentBooleanStats = new Dictionary<string, bool>();
-
-    // A list to keep track of all active AspectSO references
-    // This is crucial for recalculating stats when an aspect is unequipped.
+    
     private List<AspectSO> activeAspects = new List<AspectSO>();
-
-
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -92,16 +85,13 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["CounterDamage"] = basePlayerStats.CounterDamage;
         //currentFloatStats["AvailableWalls"] = basePlayerStats.AvailableWalls;
 
-        // Populate currentBooleanStats with initial values from basePlayerStats
         currentBooleanStats["CounterAbility"] = basePlayerStats.CounterAbility;
         currentBooleanStats["M1Ability"] = basePlayerStats.M1Ability;
 
-        // Immediately apply these initial stats to the player components
         ApplyAllStatsToComponents();
     }
 
 
-    // --- Public Getters ---
     public float GetCurrentFloat(string variableName)
     {
         if (currentFloatStats.ContainsKey(variableName)) return currentFloatStats[variableName];
@@ -116,65 +106,42 @@ public class PlayerManager : MonoBehaviour
         return false;
     }
 
-    // --- Core Methods for Applying/Removing Aspect Modifiers ---
-
-    // This method is called when an Aspect is EQUIPPED
     public void ApplyAspectModifiers(AspectSO aspect)
     {
-        //Debug.Log("Applying Stats...");
         if (!activeAspects.Contains(aspect))
         {
-            activeAspects.Add(aspect); // Add aspect to active list
-            RecalculateAllStats(); // Recalculate all stats based on new active aspects
-            //Debug.Log($"PlayerManager: Applied modifiers from aspect: {aspect.name}.");
+            activeAspects.Add(aspect);
+            RecalculateAllStats();
         }
-        else
-        {
-            Debug.LogWarning($"PlayerManager: Attempted to apply already active aspect: {aspect.name}.");
-        }
+        else Debug.LogWarning($"PlayerManager: Attempted to apply already active aspect: {aspect.name}.");
     }
 
-    // This method is called when an Aspect is UNEQUIPPED
     public void RemoveAspectModifiers(AspectSO aspect)
     {
         if (activeAspects.Contains(aspect))
         {
-            activeAspects.Remove(aspect); // Remove aspect from active list
-            RecalculateAllStats(); // Recalculate all stats based on remaining active aspects
-            //Debug.Log($"PlayerManager: Removed modifiers from aspect: {aspect.name}.");
+            activeAspects.Remove(aspect);
+            RecalculateAllStats();
         }
-        else
-        {
-            Debug.LogWarning($"PlayerManager: Attempted to remove inactive aspect: {aspect.name}.");
-        }
+        else Debug.LogWarning($"PlayerManager: Attempted to remove inactive aspect: {aspect.name}.");
     }
 
-    // --- Recalculation Logic ---
     private void RecalculateAllStats()
     {
-        // Start with base stats
-        InitializeBaseStats(); // Resets currentFloatStats to base values
+        InitializeBaseStats();
 
-        // Apply modifiers from all active aspects
-        foreach (AspectSO aspect in activeAspects)
+        foreach (var aspect in activeAspects)
         {
-            for (int i = 0; i < aspect.floatStatsName.Length; i++)
+            for (var i = 0; i < aspect.floatStatsName.Length; i++)
             {
-                string statName = aspect.floatStatsName[i];
-                float statValue = aspect.floatStats[i]; // This is the 'value' or 'percentage' from the aspect
+                var statName = aspect.floatStatsName[i];
+                var statValue = aspect.floatStats[i];
 
-                if (currentFloatStats.ContainsKey(statName))
-                {
+                if (currentFloatStats.ContainsKey(statName)) 
                     currentFloatStats[statName] += currentFloatStats[statName] * statValue;
-                    // If some values are meant to be percentages, you'd need a separate mechanism
-                    // E.g., AspectSO has floatStatTypes[] { "Flat", "Percent" }
-                    // if (statType == "Percent") _currentFloatStats[statName] *= (1 + statValue);
-                    // else _currentFloatStats[statName] += statValue;
-                }
-                else
-                {
+                else 
                     Debug.LogWarning($"PlayerManager: Aspect '{aspect.name}' trying to modify unknown stat: {statName}");
-                }
+                
             }
             // For boolean stats, you might need a "OR" logic (if any aspect enables it, it's enabled)
             // Example:
@@ -186,13 +153,9 @@ public class PlayerManager : MonoBehaviour
             // }
         }
 
-        // After recalculating all stats, apply them to the actual player components
         ApplyAllStatsToComponents();
     }
 
-
-    // --- Apply Stats to Player Components ---
-    // This method is called after any stat change to push values to actual MonoBehaviour components.
     private void ApplyAllStatsToComponents()
     {
         if (ph != null) //health

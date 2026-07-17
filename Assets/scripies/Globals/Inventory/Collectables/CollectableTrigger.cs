@@ -6,10 +6,7 @@ public class CollectableTrigger : MonoBehaviour
 {
     private Collectable collectable;
 
-    private void Awake()
-    {
-        collectable = GetComponent<Collectable>();
-    }
+    private void Awake() => collectable = GetComponent<Collectable>();
 
     public void OnCollisionEnter2D(Collision2D collision)
     {

@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public class Loot : MonoBehaviour
 {
+    [Header("Loot")]
     public GameObject moneyLoot;
     public CurrencySO currencyType;
     public int minMoneyAmount;
@@ -16,8 +17,8 @@ public class Loot : MonoBehaviour
     public float[] itemChance;
     
     private bool dropping = true;
-
-
+    [Space]
+    [Header("Popping (Objects getting moved a certain way)")]
     [SerializeField] private float minPopX;
     [SerializeField] private float maxPopX;
     

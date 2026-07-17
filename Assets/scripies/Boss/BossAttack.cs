@@ -1,59 +1,65 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 public class BossAttack : MonoBehaviour
 {
-    // Smartness (get it? haha...)
+    [Header("Smartness")]
     private bool closeRange;
     public float rangeRadius;
-    
-    // boss attack system
+    [Space]
+    [Header("Attack Check")]
     public bool isAttacking;
     [SerializeField] private bool canAttack;
     public bool isPerformingAttack;
-    
     public float attackCooldown;
     public float currentAttackCooldown;
-    
     public int attackFactor;
-    private Animator animator;
-    
+    [Space]
+    [Header("Attacks")]
     public string[] defensiveAtk = new string[5];
     public string[] activeAtk = new string[5];
-
-    // Checks
+    [Space]
+    [Header("Checks")]
     public LayerMask playerLayer;
     [SerializeField] private float groundCheckRadius;
     public Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     public bool isGrounded;
-    private BossHealth bh;
     [HideInInspector] public float directionToPlayer;
-
     [HideInInspector] public bool isTouchingWall;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckRay;
-    public bool stunnable;
-    public float stunnableTimer;
-
     public bool isFacingRight;
     public bool canFacePlayer;
     [HideInInspector] public Transform playerTransform;
-
+    [Space]
+    [Header("Stun and Dialogue")]
+    public bool stunnable;
+    public float stunnableTimer;
     [SerializeField] private bool playerIsDead;
-    private DialogueTrigger dt;
     [SerializeField] private int dialogueNo = -1;
     [SerializeField] private bool inRange;
     private bool noMercy;
     private Vector3 originalPosition;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    private DialogueTrigger dt;
+    private BossHealth bh;
+    private Animator animator;
+
+    private void Awake()
     {
         bh = GetComponent<BossHealth>();
         animator = GetComponent<Animator>();
+        dt = GetComponent<DialogueTrigger>();
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Start()
+    {
         currentAttackCooldown = attackCooldown;
         playerTransform = PlayerHealth.Instance.gameObject.transform;
-        dt = GetComponent<DialogueTrigger>();
         originalPosition = transform.position;
     }
 

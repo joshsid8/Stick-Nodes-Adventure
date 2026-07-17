@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 
 public abstract class AbilityBase : MonoBehaviour //at this point this is just the pillar script
 {
+    [Header("Factors")]
     [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
     public int typeFactor;
     public int elementType;
@@ -15,11 +16,11 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     [FormerlySerializedAs("projectileDamage")]
     [FormerlySerializedAs("pillarDamage")]
     public float damage;
-    
     public bool damageOverTime;
     public float procDmg;
     public float procInterval;
-    
+    [Space]
+    [Header("Properties")]
     [FormerlySerializedAs("beamKnockbackForce")]
     [FormerlySerializedAs("projectileKnockbackForce")]
     public Vector2 knockbackForce;
@@ -28,6 +29,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     [FormerlySerializedAs("projectileDirection")]
     public float direction;
     public bool isDirectional;
+    public bool isFacingRightDirection;
     
     [FormerlySerializedAs("beamStunTime")]
     [FormerlySerializedAs("projectileStunTime")]
@@ -38,7 +40,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     
     [FormerlySerializedAs("abilityCooldown")]
     public float cooldown;
-    
+    [Space]
+    [Header("Proccing")]
     [FormerlySerializedAs("beamProc")]
     [FormerlySerializedAs("pillarProc")]
     public float proc;
@@ -52,7 +55,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     
     public float energyProc;
     public float procTimes;
-    
+    [Space]
+    [Header("Lifetime")]
     [FormerlySerializedAs("beamLifetime")]
     [FormerlySerializedAs("projectileLifeTime")]
     [FormerlySerializedAs("pillarLifeTime")]
@@ -66,7 +70,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public AbilityObjSO[] subAbilities;
     
     private List<GameObject> inContact = new List<GameObject>();
-    public bool isFacingRightDirection;
+    [Space]
+    [Header("References")]
     public Transform playerTransform;
     public Animator animator;
     

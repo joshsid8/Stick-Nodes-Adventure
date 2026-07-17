@@ -5,20 +5,25 @@ using Random = UnityEngine.Random;
 
 public class EnemyFly : MonoBehaviour
 {
-    // Fly stuff
+    [Header("Fly checks")]
     public bool isChasing;
     public bool isTargeting;
     public float moveSpeed = 10f;
     private float previousMoveSpeed;
     
+    [Space]
+    [Header("Fly movement")]
     [SerializeField] private float[] flightOffset = new float[3];
     [SerializeField] private Vector2 flyDirection;
     [SerializeField] private float smoothing = 0.15f;
     public Vector2 targetPositions;
     [SerializeField] private float[] timer = new float[2];
     
+    [Space]
+    [Header("Player refs")]
     [SerializeField] private float playerRadius;
     [SerializeField] private Transform playerTransform;
+    
     // Components
     private EnemyAttack ea;
     private Rigidbody2D rb;

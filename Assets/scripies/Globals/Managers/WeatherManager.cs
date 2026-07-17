@@ -25,18 +25,14 @@ public class WeatherManager : MonoBehaviour
                 PlayerHealth.Instance.pc.movementSpeed = preValues[1];
                 break;
             case WeatherFactor.Hot:
-                preValues[0] = PlayerHealth.Instance.regenerationMultiplier;
-                preValues[1] = PlayerHealth.Instance.pc.movementSpeed;
                 PlayerHealth.Instance.regenerationMultiplier = 0;
                 PlayerHealth.Instance.pc.movementSpeed = preValues[1] * 0.8f;
                 mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
                 break;
             case WeatherFactor.Cold:
-                preValues[0] = PlayerHealth.Instance.regenerationMultiplier;
-                preValues[1] = PlayerHealth.Instance.pc.movementSpeed;
                 PlayerHealth.Instance.regenerationMultiplier = 0;
-                PlayerHealth.Instance.pc.movementSpeed = preValues[1] * 0.6f;
+                PlayerHealth.Instance.pc.movementSpeed = preValues[1] * 0.8f;
                 mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
                 break;

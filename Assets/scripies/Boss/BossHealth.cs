@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BossHealth : MonoBehaviour, EDamageables
 {
-    //boss health
+    [Header("Health")]
     private Image healthBar;
     private TMP_Text healthText;
     private TMP_Text bossTitle;
@@ -15,33 +15,35 @@ public class BossHealth : MonoBehaviour, EDamageables
     [HideInInspector] public bool deathToggle;
     public string bossName;
     
-    //phases
+    [Header("Phases and Dialogue")]
     public bool phase2;
     public float phase2Health;
     public DialogueObject[] introDialogue;
     public DialogueObject deathDialogue;
     
-    //tint variables
+    [Header("Damage Tinting")]
     public Color damageTint = Color.red;
     public float tintDuration = 0.1f;
     public float tintSpeed = 5f;
     private Color originalColor;
-    [SerializeField] private bool isTinting = false; 
+    [SerializeField] private bool isTinting; 
     private SpriteRenderer spriteRenderer;
     
-    //defense
+    [Header("Defense status")]
     public bool isBlocking;
     public float shieldHealth;
     public float dmgRes;
     public bool isCountering;
     
-    //other
-    private BossAttack ba;
-    Animator animator;
+    [Header("Shock")]
     float stunTime;
     public bool isStunned;
     private Knockback kb;
     public bool movable = true;
+    
+    [Header("References")]
+    private BossAttack ba;
+    private Animator animator;
     
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -169,8 +171,7 @@ public class BossHealth : MonoBehaviour, EDamageables
             if (spriteRenderer.color == originalColor) isTinting = false;
         }
     }
-    public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 0,
-        float knockbackTime = 0)
+    public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 0, float knockbackTime = 0)
     {
         stunTime = ba.stunnable ? stunDuration : 0;
         if (stunTime >= 69) print("jump yourself");

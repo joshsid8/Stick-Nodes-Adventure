@@ -3,38 +3,44 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    public bool m1Ability;
+    [Header("Ground Attack")]
     public float groundDamageAmount = 20f;
-    [SerializeField] private Transform attackTransform;
     [SerializeField] private float attackRange = 1.5f;
     [HideInInspector] public bool isAttacking;
-    public bool canAttack;
+    public float attackCooldown;
     private float currentAttackCooldown;
     public float attackEnergy;
-    
-    public float attackCooldown;
+    [SerializeField] private Transform attackTransform;
+    [Space]
+    [Header("Air Attack")]
     public float airAttackCooldown;
     public float airDamageAmount = 20f;
-    [SerializeField] private Transform airAttackTransform;
     [SerializeField] private float airAttackRange = 1f;
     public float airAttackForce;
     [HideInInspector] public bool isAirAttacking;
     public bool isAirComboing;
     [SerializeField] private bool hasAirBoosted;
     public int airComboAmount = 3;
+    [SerializeField] private Transform airAttackTransform;
+    [Space]
+    [Header("Attack Properties")]
+    public bool m1Ability;
+    public bool canAttack;
     [SerializeField] private int[] maxComboInterval = new int[2];
     [SerializeField] private int[] comboInterval = new int[2];
-    
     [SerializeField] private LayerMask enemyLayer;
+    [Space]
+    [Header("Shock and Potency")]
     public float stunTime = 0.2f;
     public Vector2[] knockbackDirections = new Vector2[2];
     public float[] knockbackForces = new float[2];
     public float[] knockbackTimes = new float[2];
-    
+    [Space]
     public float attackPotency = 1f;
     public float attackDamageMult = 1f;
     public float attackCooldownMult = 1f;
-    
+    [Space]
+    [Header("References")]
     private RaycastHit2D[] hits;
     private Animator animator;
     private PlayerController pc;

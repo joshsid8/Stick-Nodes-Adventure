@@ -11,24 +11,23 @@ public class PlayerHealth : MonoBehaviour, PDamageable
 {
     public static PlayerHealth Instance {get; private set;}
     
+    [Header("Health & Damage Resistance")]
     public Image[] healthBars;
     public TMP_Text healthText;
     public float playerMaxHealth = 100;
     public float playerHealth = 100;
     public float playerExtraHealth;
     public float rawDamageResistance = 1f;
-    
     public float regenerationMultiplier;
     [Tooltip("0 = normal, 1 = fire, 2 = earth, 3 = water, 4 = wind")]
-    public List<float> defElementFactors = new List<float>(5) {1,1,1,1,1};
+    public List<float> defElementFactors = new (5) {1,1,1,1,1};
     
-    [HideInInspector] public PlayerController pc;
-    private PlayerDefense pd;
-
+    [Header("Death!")]
     public bool isDead;
     private bool deathToggle;
     public float respawnTime;
     
+    [Header("Shock")]
     [SerializeField] private bool getStunned;
     [HideInInspector] public bool isStunned;
     public float stunTime;
@@ -36,8 +35,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public float originalShockMultiplier;
     public float shockMultiplier = 1;
     
-    private Knockback kb;
-
+    [Header("Tinting")]
     public Color damageTint = Color.red;
     public float tintSpeed = 5f;
     private Color originalColor;
@@ -45,12 +43,19 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     private SpriteRenderer spriteRenderer;
     [SerializeField] private bool spawnOnAwake = true;
     
+    [Header("Combat & Jumping")]
     public bool inCombat;
     public float combatTimer;
     public float currentCombatTimer;
-    public List<GameObject> aggressiveEnemies = new List<GameObject>();
+    public List<GameObject> aggressiveEnemies = new();
     public int aggressiveEnemyID;
     public float jumpRotationTimer;
+    
+    [Header("References")]
+    private Knockback kb;
+    [HideInInspector] public PlayerController pc;
+    private PlayerDefense pd;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class ItemSlot : MonoBehaviour, IPointerClickHandler
 {
-    // Item Data
+    [Header("Item Data")]
     public string itemName;
     public int itemAmount;
     public int maxItemAmount;
@@ -15,7 +15,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public string itemDescription;
     public string itemType;
     public float restoreValue;
-
+    [Space]
+    [Header("UI Properties")]
     public TMP_Text itemDescTitle;
     public TMP_Text itemDescInfo;
     public TMP_Text useButtonText;
@@ -28,10 +29,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     
     [SerializeField] private InvManager invManager;
     public Prompt choice;
-    
+    [Space]
+    [Header("Aspect and Ability Stuff")]
     public AspectSO aspectStats;
     [SerializeField] private bool aspectSlotFull;
-    [SerializeField] private AspectSlot[] equippedAspectSlots; // Reference to the equipped AspectSlots in the UI
+    [SerializeField] private AspectSlot[] equippedAspectSlots;
     
     public AbilitySO abilityStats;
     [SerializeField] private int abilitySlotType;

@@ -8,8 +8,11 @@ public class DialogueTrigger : MonoBehaviour
     public float chatRadius;
     public Transform chatPoint;
     [SerializeField] private bool isInRange;
+    [Tooltip("This is turned on when the dialogue ui has been activated")] 
     public bool isTriggered;
+    [Tooltip("Usually for bosses only: the dialogue will activate without the player pressing the talk button")]
     public bool isForced;
+    [Tooltip("Will this npc move somewhere else at a certain point?")]
     public bool willTravel;
     
     public GameObject indicator;

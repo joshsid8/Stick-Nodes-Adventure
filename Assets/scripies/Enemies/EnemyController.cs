@@ -5,17 +5,17 @@ public class EnemyController : MonoBehaviour
 {
     public enum EnemyState { Idle, Patrolling, Zoning, Attacking, Stunned, Dead }
     public EnemyState enemyState;
-
+    
+    public Enemy enemy;
+    private bool canFacePlayer;
+    public bool isFacingRight = true;
+    
     private EnemyPatrol patrol;
     private EnemyAttack attack;
     private EnemyHealth health;
     private EnemyZone zone;
     private EnemyJump jump;
     private EnemyFly fly;
-    [HideInInspector] public string idName;
-    public Enemy enemy;
-    private bool canFacePlayer;
-    public bool isFacingRight = true;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
