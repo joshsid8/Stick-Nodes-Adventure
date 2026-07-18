@@ -48,6 +48,14 @@ PrefabInstance:
       propertyPath: enemyID
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 4126844800543476695, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: zoneSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4126844800543476695, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: zoneInterval
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5667144582252735850, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
       value: 1792

@@ -243,7 +243,7 @@ public class PlayerController : MonoBehaviour
             availableWallsLeft--;
             
             // lerp stuff i must learn
-            const float easeDuration = 0.2f;
+            const float easeDuration = 0.1f;
             var elapsed = 0f;
             var velocityAtEnd = rb.linearVelocity;
             while (elapsed < easeDuration && inputDirection == 0 && !isGrounded)

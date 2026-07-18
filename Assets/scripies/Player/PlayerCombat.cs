@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class PlayerCombat : MonoBehaviour
 {
     [Header("Ground Attack")]
@@ -45,7 +45,8 @@ public class PlayerCombat : MonoBehaviour
     private Animator animator;
     private PlayerController pc;
     private PlayerAbility pa;
-    
+    public PlayerInput playerInput;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -53,6 +54,7 @@ public class PlayerCombat : MonoBehaviour
         pa = GetComponent<PlayerAbility>();
         animator = GetComponent<Animator>();
         canAttack = true;
+        playerInput = new PlayerInput();
     }
 
     // Update is called once per frame
@@ -112,7 +114,7 @@ public class PlayerCombat : MonoBehaviour
                 eDamageable.Damage(airDamageAmount * attackDamageMult, 0);
                 eDamageable.Shock(stunTime * attackPotency, Vector2.zero);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
-                PlayerHealth.Instance.ApplyCombat(additive: true);
+                if (PlayerHealth.Instance.currentCombatTimer < 30) PlayerHealth.Instance.ApplyCombat(additive: true);
                 if (hits[i].collider.CompareTag("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
                 {
                     StartCoroutine(AirCombo(hits[i].collider.gameObject));

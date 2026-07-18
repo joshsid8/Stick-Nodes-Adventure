@@ -142,14 +142,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   surfaceLayers:
     serializedVersion: 2
-    m_Bits: 65728
+    m_Bits: 65664
   bottomPoint: {fileID: 8569537563959189878}
   rayDistance: 100
-  raySpeed: 1
   scriptToWake: {fileID: 1010433018989780878}
-  masks:
-    serializedVersion: 2
-    m_Bits: 542464
 --- !u!114 &1010433018989780878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,18 +159,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeFactor: 0
-  pillarDamage: 0.75
-  pillarStunTime: 0
-  pillarLifeTime: 1
-  energyRequired: 20
-  abilityCooldown: 1.2
+  elementType: 0
+  elementFactor: 0
+  damageFactor: 0
+  trueDamage: 0
+  damage: 0.75
+  damageOverTime: 0
+  procDmg: 0
+  procInterval: 0
   knockbackForce: {x: 0, y: 0}
-  pillarProc: 0.2
-  pillarProcTimer: 0
-  isErupting: 1
-  pillarCollider: {fileID: 6437316070702605537}
-  eruptAnim: {fileID: 0}
-  finishAnim: {fileID: 0}
+  direction: 0
+  isDirectional: 0
+  isFacingRightDirection: 0
+  stunTime: 0
+  energyRequired: 20
+  cooldown: 1.2
+  proc: 0.2
+  procTimer: 0
+  activeHitbox: 1
+  energyProc: 0
+  procTimes: 0
+  lifeTime: 1
+  lifeTimer: 0
+  isHoldable: 0
+  abilityOnCollide: 0
+  subAbilities: []
+  playerTransform: {fileID: 0}
+  animator: {fileID: 0}
+  parentObject: {fileID: 0}
+  coll: {fileID: 6437316070702605537}
+  pa: {fileID: 0}
+  anim: {fileID: 0}
+  endAnim: {fileID: 0}
+  shockwave: 0
 --- !u!61 &6437316070702605537
 BoxCollider2D:
   m_ObjectHideFlags: 0

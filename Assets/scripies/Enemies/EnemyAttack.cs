@@ -159,10 +159,20 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && !isAttacking && !eh.isStunned)
         {
-            em.FreezeX();
-            animator.Play(!isFlying
-                ? activeMoves[Random.Range(0, activeMoves.Length)]
-                : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
+            if (!defensiveCheck)
+            {
+                em.FreezeX();
+                animator.Play(!isFlying
+                    ? activeMoves[Random.Range(0, activeMoves.Length)]
+                    : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
+            }
+            else
+            {
+                em.FreezeX();
+                animator.Play(!isFlying
+                    ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
+                    : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
+            }
         }
     }
 

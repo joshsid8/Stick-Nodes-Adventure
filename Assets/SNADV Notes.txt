@@ -5,36 +5,45 @@ SNADV Notes
     
     Priorities:
         
-        Fix Knockback Logic for enemies
-            also find out what transform.right rlly does cuz IM SO CONFUSED!!!
+        find out what transform.right rlly does cuz IM SO CONFUSED!!!
+            Because of this, knockback is broken
+                It shoudnt be that hard to fix
         
-        Input Logic
-            switch input systems!
-            I should be smart enough to know how to use it now
+        Bosses abilities in terms of damage just dont work
+            The player gets stunned but not damaged ANYMOREEE
+            i dont think bosses get damaged either
+            see why damage is so unstable in this area
 
     Optimisations & Hotfixes:
         
         Instability
-            Replicatable bugs
-                Bosses (almost[noxu can sometimes get hit by a rock?]) always dont get hit by player abilties, but they do collide
-                
+            Replicatable bugs                
                 When fishmen fly, but spares the player, they continue flying and chase the player while patrolling
                     This was at the time right before fighting the fishwoman
                 
                 Noxu's pillars when hitting the walls offset themselves upward by a small amount
                     I know there is a fix for this, but i dont know which one is the most efficient
+                    Probably one could be to seperate the walls and floors into their own layers, so findfloor can only check dedicated floors
+                        provided the walls are always climbable, i would have to make a flag to make certain walls unclimbable
                 
             One time occurrences/ Rare bugs
-                One time, the fishwoman's state logic crashed out
-                    its states were going from idle to patrolling instantly
-                    It was just zoning still during this
-                    I need to find a way to replicate this and find a fix
-
-                I had a bug where the player performed a pillar move, but the performability flag was on indefinitely after, freezing the player
-                    This might be something to do with the player getting hurt, not turning it off
-                
                 I think when the game lags a slight, the player can m1 without cooldowns
                     Its like it ignores all conditions and i can simply just m1 again
+                    i may have to refactor the cooldown logic
+                    
+                Fishwoman has a state crashout once
+                    at the moment tho, she seems very stable
+                    idk how to replicate this bug, so i will lower this priority
+
+                I had a bug where the player performed a pillar move, but the performability flag was on indefinitely after, freezing the player
+                    I think its been fixed, not too sure tho
+                
+        
+                
+        Input Logic
+            switch input systems!
+                Turns out i wasnt smart enough D:
+                I have initialised the settings, but will now need to implement it programmatically
         
         Dialogue Logic
              Utilise both the alter dialogue system and dialogue lists
