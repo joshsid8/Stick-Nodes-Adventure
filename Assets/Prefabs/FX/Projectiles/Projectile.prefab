@@ -109,11 +109,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeFactor: 0
   elementType: 0
+  elementFactor: 1
   damageFactor: 0
+  trueDamage: 0
   damage: 15
+  damageOverTime: 0
+  procDmg: 0
+  procInterval: 0
   knockbackForce: {x: 0, y: 0}
   direction: 0
   isDirectional: 1
+  isFacingRightDirection: 0
   stunTime: 0.5
   energyRequired: 10
   cooldown: 0.5
@@ -139,6 +145,7 @@ MonoBehaviour:
   gravityScale: 1
   airResistance: 0.1
   swapForce: 0
+  pierceAmount: 0
   randomisation: 1
   randomRes: 5
   randomAngle: 3

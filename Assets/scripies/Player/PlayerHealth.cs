@@ -165,6 +165,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
                 StartCoroutine(ApplyDamage(calcDamage * rawDamageResistance, true, damageOverTime, procDmg, procInterval, isTrue));
                 break;
         }
+        
         pc.currentDashTime = 0f;
         GetComponent<PlayerAbility>().isPerformingAbility = false;
     }
@@ -194,11 +195,9 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     {
         stunTime = stunDuration * shockMultiplier;
         if (stunTime > 0 && !pd.isBlocking) getStunned = true;
-        kb.CallKnockback(knockbackDirection * transform.right, knockbackForce * shockMultiplier / 2, knockbackTime * shockMultiplier);
+        kb.CallKnockback(knockbackDirection, knockbackForce * shockMultiplier / 2, knockbackTime * shockMultiplier);
         if (knockbackDirection != Vector2.zero && (!pd.isBlocking || !pc.isFacingRight && knockbackDirection.x > 0 || pc.isFacingRight && knockbackDirection.x < 0))
-        {
             pc.animator.SetTrigger("Damaged");
-        }
     }
 
     private void Stunned()

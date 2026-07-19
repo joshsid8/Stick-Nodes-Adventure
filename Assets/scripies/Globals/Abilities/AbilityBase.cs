@@ -9,7 +9,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
     public int typeFactor;
     public int elementType;
-    public int elementFactor;
+    public int elementFactor = 1;
     public int damageFactor;
     public bool trueDamage;
     [FormerlySerializedAs("beamDamage")]
@@ -137,7 +137,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     }
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             inContact.Remove(collision.gameObject);
     }
     
@@ -187,12 +187,12 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         if (pDamageable != null)
         {
-            pDamageable.Damage(damage, true, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            pDamageable.Damage(damage, isFacingRightDirection, damageFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
             pDamageable.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
         }
         else if (eDamageables != null)
         {
-            eDamageables.Damage(damage, typeFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            eDamageables.Damage(damage, damageFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
             eDamageables.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
         }
         PlayerHealth.Instance.ApplyCombat(additive: true);

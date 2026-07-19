@@ -9,6 +9,7 @@ public class Projectile : AbilityBase
     [SerializeField] private float airResistance = 1;
     [Tooltip("Turning this on will swap height with speed, making the projectile get shot upward.")]
     public bool swapForce;
+    public int pierceAmount;
 
     [Space]
     [Header("Randomisation")]
@@ -19,7 +20,6 @@ public class Projectile : AbilityBase
 
     [Space]
     [Header("Targeting")]
-    [SerializeField] private float projectileRange;
     [SerializeField] private LayerMask[] target;
     private readonly RaycastHit2D[] hits = new RaycastHit2D[2];
     
@@ -32,6 +32,7 @@ public class Projectile : AbilityBase
     [Header("Checks")]
     private Rigidbody2D rb;
     private bool collided;
+    private CircleCollider2D ccoll;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
@@ -40,6 +41,7 @@ public class Projectile : AbilityBase
         animator = GetComponent<Animator>();
         playerTransform = PlayerHealth.Instance.gameObject.transform;
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
+        ccoll = GetComponent<CircleCollider2D>();
         if (anim != null) animator.Play(anim.name); 
         if (randomisation)
         {
@@ -66,6 +68,7 @@ public class Projectile : AbilityBase
             2 => LayerMask.NameToLayer("EVFX"),
             _ => LayerMask.NameToLayer("FX")
         };
+        
         // This makes the object point to where its moving - something to learn (MAFFS)
         if (!collided)
         {
@@ -83,12 +86,16 @@ public class Projectile : AbilityBase
         isFacingRightDirection = facingRight;
     }
     
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
         switch (typeFactor)
         {
             case 1:
-                if (collision.CompareTag("Enemy") || collision.CompareTag("Boss")) Collided();
+                if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
+                {
+                    Collided();
+                    pierceAmount--;
+                }
                 else if (collision.CompareTag("Terrain") || collision.gameObject.layer == LayerMask.NameToLayer("EVFX")) Crash();
                 break;
             case 2:
@@ -104,8 +111,8 @@ public class Projectile : AbilityBase
     }
     
     // We leave these empty so projectile doesnt use beam/pillar logic (YET???)
-    protected override void OnTriggerExit2D(Collider2D collision){}
     protected override void OnTriggerStay2D(Collider2D collision){}
+    protected override void OnTriggerExit2D(Collider2D collision){}
     protected override void HitBox(){}
     
     private void ApplyForce()
@@ -130,8 +137,8 @@ public class Projectile : AbilityBase
         
     private void Collided()
     {
-        hits[0] = Physics2D.CircleCast(transform.position, projectileRange, transform.right, 0f, target[0]);
-        hits[1] = Physics2D.CircleCast(transform.position, projectileRange, transform.right, 0f, target[1]);
+        hits[0] = Physics2D.CircleCast(transform.position, ccoll.radius, transform.right, 0f, target[0]);
+        hits[1] = Physics2D.CircleCast(transform.position, ccoll.radius, transform.right, 0f, target[1]);
         var deflected = false;
         
         foreach (var hit in hits) 
@@ -143,7 +150,6 @@ public class Projectile : AbilityBase
                     case 1:
                         var eDamageable = hit.collider.gameObject.GetComponent<EDamageables>();
                         Damageable(eDamageables: eDamageable);
-                        PlayerHealth.Instance.ApplyCombat(additive: true);
                         break;
                     case 2:
                         if (hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow)
@@ -156,11 +162,7 @@ public class Projectile : AbilityBase
                             break;
                         }
                         var pDamageable = hit.collider.gameObject.GetComponent<PDamageable>();
-                        if (pDamageable != null)
-                        {
-                            Damageable(pDamageable);
-                            PlayerHealth.Instance.ApplyCombat(additive: true);
-                        }
+                        if (pDamageable != null) Damageable(pDamageable);
                         break;
                     default:
                         var entity = hit.collider;
@@ -168,7 +170,6 @@ public class Projectile : AbilityBase
                         {
                             var eDmg = hit.collider.gameObject.GetComponent<EDamageables>();
                             Damageable(eDamageables: eDmg);
-                            PlayerHealth.Instance.ApplyCombat(additive: true);
                         }
                         else if (entity.CompareTag("Player"))
                         {
@@ -183,28 +184,29 @@ public class Projectile : AbilityBase
                             }
                             var pDmg = hit.collider.gameObject.GetComponent<PDamageable>();
                             Damageable(pDmg);
-                            PlayerHealth.Instance.ApplyCombat(additive: true);
                         }
                         else print("Clueless.");
                         break;
                 }
             }
         }
-        if (!deflected) Crash(); else Deflect(typeFactor);
+        if (!deflected && pierceAmount <= 0) Crash();
+        else if (deflected) Deflect(typeFactor);
     }
     
     protected override void Damageable(PDamageable pDamageable = null, EDamageables eDamageables = null)
     {
         if (pDamageable != null)
         {
-            pDamageable.Damage(damage, true, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            pDamageable.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+            pDamageable.Damage(damage, isFacingRightDirection, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            pDamageable.Shock(stunTime, new Vector2(knockbackForce.x, knockbackForce.y));
         }
         else if (eDamageables != null)
         {
             eDamageables.Damage(damage, typeFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            eDamageables.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+            eDamageables.Shock(stunTime, new Vector2(knockbackForce.x, knockbackForce.y));
         }
+        else print("clueless.");
         PlayerHealth.Instance.ApplyCombat(2f, additive: true);
     }
 
@@ -245,6 +247,6 @@ public class Projectile : AbilityBase
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, projectileRange);
+        Gizmos.DrawWireSphere(transform.position, ccoll.radius);
     }
 }

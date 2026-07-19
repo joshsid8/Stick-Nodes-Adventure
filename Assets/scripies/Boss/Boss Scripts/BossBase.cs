@@ -10,17 +10,25 @@ public abstract class BossBase : MonoBehaviour
     [FormerlySerializedAs("dashSpeed")]
     public float strafeSpeed = 10f;
     public bool isStrafing;
-    public float strafeCooldown;
     
     public bool isFlyDashing;
     public Vector2 dashDirection;
     [SerializeField] private string inRangeAnim = "HAttack";
     [Space]
     [Header("Melee Attacks")]
-    public float meleeCooldown;
     public float stunTime;
     public float damageAmount;
-    public Vector2 knockbackForce;
+    public int damageFactor;
+    public int elementType;
+    public float elementFactor;
+    [FormerlySerializedAs("knockbackForce")]
+    public Vector2 knockbackDirection;
+    public float knockbackForce;
+    public float knockbackTime;
+    public bool isTrue;
+    public bool damageOverTime;
+    public float procDmg;
+    public float procInterval;
     private RaycastHit2D hit;
     public float attackRange;
     public Transform attackTransform;
@@ -45,7 +53,6 @@ public abstract class BossBase : MonoBehaviour
     [HideInInspector] public bool isInRange;
     [HideInInspector] public bool freezeMovement;
     [HideInInspector] public bool isFalling;
-    public int damageType;
     public LayerMask terrainLayers;
     
     protected Rigidbody2D rb;
@@ -142,8 +149,8 @@ public abstract class BossBase : MonoBehaviour
             PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, ba.isFacingRight, damageType, 0);
-                damageable.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+                damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (PDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
+                damageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y));
                 PlayerHealth.Instance.currentCombatTimer =+ 180f;
             }
         }

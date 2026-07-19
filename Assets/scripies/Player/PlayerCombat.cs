@@ -89,7 +89,7 @@ public class PlayerCombat : MonoBehaviour
             if (eDamageable != null)
             {
                 eDamageable.Damage(groundDamageAmount * attackDamageMult);
-                eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[0].x * attackPotency * transform.right.x, knockbackDirections[0].y * attackPotency * transform.up.y), knockbackForces[0], knockbackTimes[0]);
+                eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[0].x * attackPotency, knockbackDirections[0].y * attackPotency), knockbackForces[0], knockbackTimes[0]);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 PlayerHealth.Instance.ApplyCombat(additive: true);
             }
@@ -120,13 +120,13 @@ public class PlayerCombat : MonoBehaviour
                     StartCoroutine(AirCombo(hits[i].collider.gameObject));
                     pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, knockbackDirections[1].y);
                     eDamageable.Damage(0, 0);
-                    eDamageable.Shock(stunTime * 1.25f, new Vector2(knockbackDirections[1].x * attackPotency * transform.right.x * 1.5f, -knockbackDirections[1].y * attackPotency * transform.up.y));
+                    eDamageable.Shock(stunTime * 1.25f, new Vector2(knockbackDirections[1].x * attackPotency * 1.5f, -knockbackDirections[1].y * attackPotency * transform.up.y));
                 }
                 else
                 {
                     eDamageable.Damage(0, 0);
-                    eDamageable.Shock(0, new Vector2(knockbackDirections[1].x * attackPotency * transform.right.x,
-                        knockbackDirections[1].y * attackPotency * transform.up.y), knockbackForces[1], knockbackTimes[1]);
+                    eDamageable.Shock(0, new Vector2(knockbackDirections[1].x * attackPotency,
+                        knockbackDirections[1].y * attackPotency), knockbackForces[1], knockbackTimes[1]);
                 }
                 airComboAmount--;
             }
@@ -140,7 +140,7 @@ public class PlayerCombat : MonoBehaviour
     {
         while (airComboAmount > 0 && !pc.isGrounded && target.GetComponent<EnemyHealth>().movable)
         {
-            target.transform.position = new Vector3(airAttackTransform.transform.position.x + 1f * transform.right.x, airAttackTransform.transform.position.y, 0);
+            target.transform.position = new Vector3(airAttackTransform.transform.position.x + 1f, airAttackTransform.transform.position.y, 0);
             isAirComboing = true;
             yield return new WaitForFixedUpdate();
         }

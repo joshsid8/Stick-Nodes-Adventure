@@ -397,8 +397,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackTime: 0.1
-  hitDirectionForce: 1
 --- !u!114 &5548932522893990080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,26 +411,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strafeSpeed: 10
   isStrafing: 0
-  strafeCooldown: 0
   isFlyDashing: 0
   dashDirection: {x: 0, y: 0}
-  meleeCooldown: 1
+  inRangeAnim: HAttack
   stunTime: 1
-  damageAmount: 0
-  knockbackForce: {x: 1, y: 0}
+  damageAmount: 20
+  damageFactor: 0
+  elementType: 2
+  elementFactor: 2
+  knockbackDirection: {x: 1, y: 0}
+  knockbackForce: 10
+  knockbackTime: 0.5
+  isTrue: 0
+  damageOverTime: 0
+  procDmg: 0
+  procInterval: 0
   attackRange: 1.6
   attackTransform: {fileID: 7664445667877575837}
+  storedObjects: []
+  storedObjectIndex: 0
   fireTransform: {fileID: 5574741311073989549}
-  jumpCooldown: 0
   isRandomised: 0
   jumpForceY: 0
   jumpForceX: 0
   teleportPoint: {fileID: 0}
   dropSpeed: 0
+  teleportAnim: DAttack
   isInRange: 0
   freezeMovement: 0
   isFalling: 0
-  damageType: 0
   terrainLayers:
     serializedVersion: 2
     m_Bits: 65728
@@ -451,6 +458,7 @@ MonoBehaviour:
   rangeRadius: 3.91
   isAttacking: 0
   canAttack: 0
+  isPerformingAttack: 0
   attackCooldown: 5.6
   currentAttackCooldown: 0
   attackFactor: 0
@@ -475,11 +483,11 @@ MonoBehaviour:
   isTouchingWall: 0
   wallCheck: {fileID: 2309042343713983920}
   wallCheckRay: 1.91
-  stunnable: 0
-  stunnableTimer: 0
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
+  stunnable: 0
+  stunnableTimer: 0
   playerIsDead: 0
   dialogueNo: -1
   inRange: 0
@@ -535,7 +543,11 @@ MonoBehaviour:
   isForced: 1
   willTravel: 0
   indicator: {fileID: 8715122064913410510}
-  dialogue: {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
+  npc: {fileID: 0}
+  dialogue:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   pLayer:
     serializedVersion: 2
     m_Bits: 256

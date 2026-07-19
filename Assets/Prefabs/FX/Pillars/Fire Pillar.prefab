@@ -37,6 +37,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: trueDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: pillarDamage
       value: 2.75
       objectReference: {fileID: 0}

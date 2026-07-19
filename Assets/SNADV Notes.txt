@@ -5,15 +5,11 @@ SNADV Notes
     
     Priorities:
         
-        find out what transform.right rlly does cuz IM SO CONFUSED!!!
-            Because of this, knockback is broken
-                It shoudnt be that hard to fix
+        Fix knockback direction bug (probably by removing transform.right for now)
+        Fix projectile ranges by readding the float value instead of relying on collider's radius
         
-        Bosses abilities in terms of damage just dont work
-            The player gets stunned but not damaged ANYMOREEE
-            i dont think bosses get damaged either
-            see why damage is so unstable in this area
-
+        Once the above is done, abilities logic should be all working
+        
     Optimisations & Hotfixes:
         
         Instability
@@ -31,7 +27,8 @@ SNADV Notes
                     Its like it ignores all conditions and i can simply just m1 again
                     i may have to refactor the cooldown logic
                     
-                Fishwoman has a state crashout once
+            Lower Priority/unconfirmed fixed Bugs
+                Fishwoman had a state crashout once
                     at the moment tho, she seems very stable
                     idk how to replicate this bug, so i will lower this priority
 
