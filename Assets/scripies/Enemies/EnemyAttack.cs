@@ -55,7 +55,7 @@ public class EnemyAttack : MonoBehaviour
     [Space]
     [Header("References")]
     [HideInInspector] public Rigidbody2D rb;
-    private Animator animator;
+    public Animator animator;
     [HideInInspector] public EnemyPatrol ep;
     [HideInInspector] public EnemyMovement em;
     [HideInInspector] public EnemyFly ef;
@@ -93,7 +93,7 @@ public class EnemyAttack : MonoBehaviour
     private void OnDisable()
     {
         isAttacking = false;
-        ef.enabled = false;
+        ef.CeaseFlying();
     }
     
     private void Update()
@@ -131,9 +131,9 @@ public class EnemyAttack : MonoBehaviour
         else if (stunnable && styleMode == StyleMode.Evasive) GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
         else GetComponent<EnemyHealth>().stunMultiplier = 1f;
 
-        if (canFly) animator.SetBool("isFlying", isFlying);
+        //if (canFly) animator.SetBool("isFlying", isFlying);
+        //rb.gravityScale = isFlying ? 0 : 8;
         ef.enabled = isFlying;
-        rb.gravityScale = isFlying ? 0 : 8;
         
         if (currentAttackCooldown > 0) currentAttackCooldown -= Time.deltaTime;
         canAttack = currentAttackCooldown <= 0;

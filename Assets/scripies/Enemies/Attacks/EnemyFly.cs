@@ -5,19 +5,19 @@ using Random = UnityEngine.Random;
 
 public class EnemyFly : MonoBehaviour
 {
-    [Header("Fly checks")]
-    public bool isChasing;
+    [Header("Fly checks")] public bool isChasing;
     public bool isTargeting;
     public float moveSpeed = 10f;
     private float previousMoveSpeed;
-    
-    [Space]
-    [Header("Fly movement")]
-    [SerializeField] private float[] flightOffset = new float[3];
+
+    [Space] [Header("Fly movement")] [SerializeField]
+    private float[] flightOffset = new float[3];
+
     [SerializeField] private Vector2 flyDirection;
     [SerializeField] private float smoothing = 0.15f;
     public Vector2 targetPositions;
     [SerializeField] private float[] timer = new float[2];
+    public float[] gravities = {8, 0};
     
     [Space]
     [Header("Player refs")]
@@ -35,10 +35,12 @@ public class EnemyFly : MonoBehaviour
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    private void OnEnable()
     {
         previousMoveSpeed = moveSpeed;
         playerTransform = PlayerHealth.Instance.gameObject.transform;
+        rb.gravityScale = gravities[1];
+        ea.animator.SetBool( "isFlying", true);
         /*while (isChasing)
         {
             StartCoroutine(EaseIn());
@@ -53,11 +55,14 @@ public class EnemyFly : MonoBehaviour
         }*/
     }
 
-    private void OnDisable()
+    public void CeaseFlying()
     {
-        GetComponent<Animator>().SetBool("isFlying", false);
+        ea.isFlying = false;
         isChasing = false;
         isTargeting = false;
+        rb.gravityScale = gravities[0];
+        ea.animator.SetBool( "isFlying", false);
+        enabled = false;
     }
 
     private void Update()

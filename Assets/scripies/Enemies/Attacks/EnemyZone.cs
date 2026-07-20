@@ -63,12 +63,7 @@ public class EnemyZone : MonoBehaviour
             intervalTimer = zoneInterval;
         }
     }
-    private void OnEnable()
-    {
-        intervalTimer = zoneInterval;
-        currentZonePeriod = ea.currentAttackCooldown;
-        isZoning = true;
-    }
+    private void OnEnable() => currentZonePeriod = ea.currentAttackCooldown;
     
     private void OnDisable()
     {

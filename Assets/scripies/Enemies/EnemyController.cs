@@ -95,6 +95,7 @@ public class EnemyController : MonoBehaviour
             case EnemyState.Idle:
                 patrol.isPatrolling = false;
                 patrol.enabled = true;
+                attack.enabled = false;
                 break;
             case EnemyState.Patrolling:
                 patrol.enabled = true;

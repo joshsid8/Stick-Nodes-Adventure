@@ -5,15 +5,17 @@ SNADV Notes
     
     Priorities:
         
+        Flying enemies for some reason end up not following the player and WE dont know why
+            Ill prolly get junie to fix this
+        
         Utilise both the alter dialogue system and dialogue lists
-        Make a proper disable fly system for fishmen (and other flying enemies)
         
 
     Optimisations & Hotfixes:
         
         Instability
             Replicatable bugs                
-                None on standby
+                N/A
                 
             One time occurrences/Rare bugs
                 I think when the game lags a slight, the player can m1 without cooldowns
