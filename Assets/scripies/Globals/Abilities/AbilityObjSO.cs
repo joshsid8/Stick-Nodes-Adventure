@@ -38,7 +38,7 @@ public class AbilityObjSO : ScriptableObject
           if (setProperties)
           {
                ab.damage *= damageMult;
-               ab.knockbackForce *= potency;
+               ab.knockbackDirection *= potency;
                ab.stunTime *= potency;
                ab.isDirectional = isDirectional;
                ab.energyRequired = energyRequired;
@@ -48,7 +48,6 @@ public class AbilityObjSO : ScriptableObject
                if (proc > 0) ab.proc = proc;
                if (speedMult != 1) ab.gameObject.GetComponent<Projectile>().projectileSpeed *= speedMult;
                if (swapForce) ab.gameObject.GetComponent<Projectile>().swapForce = true;
-               if (shockwave)
                ab.isHoldable = isHoldable;
                ab.abilityOnCollide = abilityOnCollide;
                ab.transform.localScale *= sizeMult;

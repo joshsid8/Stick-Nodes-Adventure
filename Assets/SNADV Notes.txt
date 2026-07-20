@@ -5,29 +5,22 @@ SNADV Notes
     
     Priorities:
         
-        Fix knockback direction bug (probably by removing transform.right for now)
-        Fix projectile ranges by readding the float value instead of relying on collider's radius
+        Utilise both the alter dialogue system and dialogue lists
+        Make a proper disable fly system for fishmen (and other flying enemies)
         
-        Once the above is done, abilities logic should be all working
-        
+
     Optimisations & Hotfixes:
         
         Instability
             Replicatable bugs                
-                When fishmen fly, but spares the player, they continue flying and chase the player while patrolling
-                    This was at the time right before fighting the fishwoman
+                None on standby
                 
-                Noxu's pillars when hitting the walls offset themselves upward by a small amount
-                    I know there is a fix for this, but i dont know which one is the most efficient
-                    Probably one could be to seperate the walls and floors into their own layers, so findfloor can only check dedicated floors
-                        provided the walls are always climbable, i would have to make a flag to make certain walls unclimbable
-                
-            One time occurrences/ Rare bugs
+            One time occurrences/Rare bugs
                 I think when the game lags a slight, the player can m1 without cooldowns
                     Its like it ignores all conditions and i can simply just m1 again
                     i may have to refactor the cooldown logic
                     
-            Lower Priority/unconfirmed fixed Bugs
+            Low Priority/Unconfirmed fixed Bugs
                 Fishwoman had a state crashout once
                     at the moment tho, she seems very stable
                     idk how to replicate this bug, so i will lower this priority
@@ -35,20 +28,22 @@ SNADV Notes
                 I had a bug where the player performed a pillar move, but the performability flag was on indefinitely after, freezing the player
                     I think its been fixed, not too sure tho
                 
-        
+                Knockback logic should be all working now, but maybe i couldve missed some transform.right implementations
                 
+                I am very scared of ability logic
+                    It is all working as of now, but this is only from a dev's perspective
+                    I need testers!
+                    
         Input Logic
             switch input systems!
                 Turns out i wasnt smart enough D:
                 I have initialised the settings, but will now need to implement it programmatically
         
-        Dialogue Logic
-             Utilise both the alter dialogue system and dialogue lists
-        
         Ability Logic
             Hitbox logic
                 What i want to do now is make hitboxes/knockback more accurate
-                    I think i have to use MATHS!!!
+                    Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS
+                    maybe this explosion type can even be considered an ability type
                 
         Animation
             Make better/seperate animations in general

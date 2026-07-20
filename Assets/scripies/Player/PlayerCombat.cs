@@ -4,17 +4,17 @@ using UnityEngine.InputSystem;
 public class PlayerCombat : MonoBehaviour
 {
     [Header("Ground Attack")]
-    public float groundDamageAmount = 20f;
+    public float damageAmount = 20f;
     [SerializeField] private float attackRange = 1.5f;
     [HideInInspector] public bool isAttacking;
     public float attackCooldown;
     private float currentAttackCooldown;
     public float attackEnergy;
     [SerializeField] private Transform attackTransform;
+    
     [Space]
     [Header("Air Attack")]
     public float airAttackCooldown;
-    public float airDamageAmount = 20f;
     [SerializeField] private float airAttackRange = 1f;
     public float airAttackForce;
     [HideInInspector] public bool isAirAttacking;
@@ -22,6 +22,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private bool hasAirBoosted;
     public int airComboAmount = 3;
     [SerializeField] private Transform airAttackTransform;
+    
     [Space]
     [Header("Attack Properties")]
     public bool m1Ability;
@@ -29,16 +30,27 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private int[] maxComboInterval = new int[2];
     [SerializeField] private int[] comboInterval = new int[2];
     [SerializeField] private LayerMask enemyLayer;
+    
     [Space]
     [Header("Shock and Potency")]
     public float stunTime = 0.2f;
     public Vector2[] knockbackDirections = new Vector2[2];
     public float[] knockbackForces = new float[2];
     public float[] knockbackTimes = new float[2];
+    
     [Space]
     public float attackPotency = 1f;
     public float attackDamageMult = 1f;
     public float attackCooldownMult = 1f;
+
+    [Space] public int damageFactor;
+    public int elementType;
+    public float elementFactor = 1;
+    public bool isTrue;
+    public bool damageOverTime;
+    public float procDmg;
+    public float procInterval;
+    
     [Space]
     [Header("References")]
     private RaycastHit2D[] hits;
@@ -82,14 +94,14 @@ public class PlayerCombat : MonoBehaviour
     {
         hits = Physics2D.CircleCastAll(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, enemyLayer);
 
-        for (int i = 0; i < hits.Length; i++)
+        for (var i = 0; i < hits.Length; i++)
         {
-            EDamageables eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
+            var eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(groundDamageAmount * attackDamageMult);
-                eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[0].x * attackPotency, knockbackDirections[0].y * attackPotency), knockbackForces[0], knockbackTimes[0]);
+                eDamageable.Damage(damageAmount * attackDamageMult, damageFactor, (EDamageables.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
+                eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right, knockbackForces[0], knockbackTimes[0] * attackPotency);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 PlayerHealth.Instance.ApplyCombat(additive: true);
             }
@@ -105,13 +117,13 @@ public class PlayerCombat : MonoBehaviour
         
         hits = Physics2D.CircleCastAll(airAttackTransform.position, airAttackRange, new Vector2(transform.right.x, transform.up.y), 0f, enemyLayer);
 
-        for (int i = 0; i < hits.Length; i++)
+        for (var i = 0; i < hits.Length; i++)
         {
-            EDamageables eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
+            var eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(airDamageAmount * attackDamageMult, 0);
+                eDamageable.Damage(damageAmount * attackDamageMult, damageFactor, (EDamageables.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
                 eDamageable.Shock(stunTime * attackPotency, Vector2.zero);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 if (PlayerHealth.Instance.currentCombatTimer < 30) PlayerHealth.Instance.ApplyCombat(additive: true);
@@ -119,14 +131,12 @@ public class PlayerCombat : MonoBehaviour
                 {
                     StartCoroutine(AirCombo(hits[i].collider.gameObject));
                     pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, knockbackDirections[1].y);
-                    eDamageable.Damage(0, 0);
-                    eDamageable.Shock(stunTime * 1.25f, new Vector2(knockbackDirections[1].x * attackPotency * 1.5f, -knockbackDirections[1].y * attackPotency * transform.up.y));
+                    eDamageable.Shock(stunTime * 1.25f, new Vector2(knockbackDirections[1].x * 1.5f, -knockbackDirections[1].y) * transform.right, knockbackForces[1], knockbackTimes[1] * 1.25f);
                 }
                 else
                 {
-                    eDamageable.Damage(0, 0);
                     eDamageable.Shock(0, new Vector2(knockbackDirections[1].x * attackPotency,
-                        knockbackDirections[1].y * attackPotency), knockbackForces[1], knockbackTimes[1]);
+                        knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], knockbackTimes[1] * attackPotency);
                 }
                 airComboAmount--;
             }
@@ -149,10 +159,10 @@ public class PlayerCombat : MonoBehaviour
     
     private void Attack()
     {   
-        if (Input.GetMouseButtonDown(0) && currentAttackCooldown
-            <= 0 && !pc.isDashing && !pc.isWallSliding && m1Ability && !pa.isPerformingAbility && !GetComponent<PlayerDefense>().isBlocking)
-            if (canAttack) animator.SetTrigger("Attack");
-        currentAttackCooldown -= Time.deltaTime * 0.5f; if (currentAttackCooldown <= 0) canAttack = true; 
+        if (Input.GetMouseButtonDown(0) && currentAttackCooldown <= 0 && m1Ability && !pc.isPerformingAction && canAttack)
+            animator.SetTrigger("Attack");
+        currentAttackCooldown -= Time.deltaTime * 0.5f; 
+        if (currentAttackCooldown <= 0) canAttack = true; 
     }
     
     private void OnDrawGizmosSelected()

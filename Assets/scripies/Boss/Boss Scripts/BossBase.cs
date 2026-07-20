@@ -150,7 +150,7 @@ public abstract class BossBase : MonoBehaviour
             if (damageable != null)
             {
                 damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (PDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
-                damageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y));
+                damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
                 PlayerHealth.Instance.currentCombatTimer =+ 180f;
             }
         }

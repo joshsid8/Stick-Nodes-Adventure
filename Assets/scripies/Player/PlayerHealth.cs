@@ -225,7 +225,6 @@ public class PlayerHealth : MonoBehaviour, PDamageable
 
     public void ApplyCombat(float combatDuration = 5, bool additive = false) => currentCombatTimer = additive ? currentCombatTimer + combatDuration : combatDuration;
     
-
     private void Tint()
     {
         if (isTinting)
@@ -239,7 +238,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     {
         if (playerHealth > 0 && playerHealth < playerMaxHealth)
         {
-            if (!inCombat) playerHealth += Time.deltaTime * 3 * regenerationMultiplier;
+            if (!inCombat) playerHealth += Time.deltaTime * 1.5f * regenerationMultiplier;
             else playerHealth += Time.deltaTime * regenerationMultiplier;
         }
         if (playerHealth > playerMaxHealth) playerHealth = playerMaxHealth;

@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public bool canAct = true;
     public bool canFlip = true;
     public bool isFrozen;
+    public bool isPerformingAction;
     
     [Space]
     [Header("Movement")]
@@ -108,6 +109,7 @@ public class PlayerController : MonoBehaviour
         pco = GetComponent<PlayerCombat>();
         pab = GetComponent<PlayerAbility>();
         kb = GetComponent<Knockback>();
+        pdf = GetComponent<PlayerDefense>();
     }
 
     // Start is called before the first frame update
@@ -389,6 +391,9 @@ public class PlayerController : MonoBehaviour
         if (isFrozen) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         if (inputDirection == 0 && !isDashing && !isWallJumping && !GetComponent<Knockback>().IsBeingKnocked && rb.linearVelocity.x != 0)
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        
+        if (isWallJumping || isDashing || pab.isPerformingAbility || pco.isAttacking || pco.isAirAttacking || pdf.isBlocking || PlayerHealth.Instance.isStunned || kb.IsBeingKnocked || PlayerHealth.Instance.isDead)
+            isPerformingAction = true; else isPerformingAction = false;
     }
     
     private void UpdateAnimation()

@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3638805060968187661, guid: 4bb41d0eb7202d04cad5cb515bf12a94, type: 3}
       propertyPath: energyProc
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3638805060968187661, guid: 4bb41d0eb7202d04cad5cb515bf12a94, type: 3}
       propertyPath: isHoldable

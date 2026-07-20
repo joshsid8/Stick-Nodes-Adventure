@@ -313,7 +313,6 @@ MonoBehaviour:
   - 1
   - 1
   - 1
-  pc: {fileID: 0}
   isDead: 0
   respawnTime: 5
   getStunned: 0
@@ -331,6 +330,7 @@ MonoBehaviour:
   aggressiveEnemies: []
   aggressiveEnemyID: 0
   jumpRotationTimer: 1
+  pc: {fileID: 0}
 --- !u!114 &114786552731468920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,23 +343,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99d46a10026c3e47880182c6e847571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m1Ability: 1
-  groundDamageAmount: 20
-  attackTransform: {fileID: 8318362231415707056}
+  damageAmount: 20
   attackRange: 1.5
   isAttacking: 0
-  canAttack: 0
-  attackEnergy: 5
   attackCooldown: 0.15
+  attackEnergy: 5
+  attackTransform: {fileID: 8318362231415707056}
   airAttackCooldown: 0.15
-  airDamageAmount: 20
-  airAttackTransform: {fileID: 8094868948852248977}
   airAttackRange: 1.53
   airAttackForce: 5
   isAirAttacking: 0
   isAirComboing: 0
   hasAirBoosted: 0
   airComboAmount: 3
+  airAttackTransform: {fileID: 8094868948852248977}
+  m1Ability: 1
+  canAttack: 0
   maxComboInterval: 0100000001000000
   comboInterval: 0000000000000000
   enemyLayer:
@@ -378,6 +377,13 @@ MonoBehaviour:
   attackPotency: 1
   attackDamageMult: 1
   attackCooldownMult: 1
+  damageFactor: 0
+  elementType: 0
+  elementFactor: 1
+  isTrue: 0
+  damageOverTime: 0
+  procDmg: 0
+  procInterval: 0
 --- !u!114 &261623171632948894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,6 +399,7 @@ MonoBehaviour:
   canAct: 1
   canFlip: 1
   isFrozen: 0
+  isPerformingAction: 0
   canMove: 1
   movementSpeed: 10
   movementSpeedMult: 1

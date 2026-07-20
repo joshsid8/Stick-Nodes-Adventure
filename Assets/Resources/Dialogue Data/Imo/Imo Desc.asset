@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Imo
   dialogue:
-  - If you're wondering if i get hurt, it doesn't at all, really. however, i do feel
+  - If you're wondering if i get hurt, i dont at all, really. however, i do feel
     it.
-  - I only can conveniently nullify any attack, but i'm not invincible to natural
-    causas and stuff.
+  - I only can conveniently nullify any attack, but i'm not invincible to age and
+    time.
   - Basically, dont worry bout me in any way. ill always be here for ya!
   pendingChoice: 0
   choiceQuestion: 
@@ -30,17 +30,17 @@ MonoBehaviour:
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.13725491, g: 0.227451, b: 0.32156864, a: 1}
   appliesFloatChange: 0
-  targetFloatVariableName: 
-  newFloatValue: 0
   targetFloatVariables: []
   newFloatValues: []
   appliesBooleanChange: 0
-  targetBooleanVariableName: 
-  newBooleanValue: 0
   targetBoolVariables: []
   newBoolValues: 
   willGiveQuest: 0
   questToOffer: {fileID: 0}
+  isQuestInteraction: 0
+  itemCheckFailureDialogue: {fileID: 0}
+  completeSpeakQuestOnClose: 0
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

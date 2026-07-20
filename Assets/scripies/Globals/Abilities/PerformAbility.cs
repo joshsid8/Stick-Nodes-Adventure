@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PerformAbility : MonoBehaviour
@@ -19,17 +20,16 @@ public class PerformAbility : MonoBehaviour
 
     [Header("Enemy Properties")]
     public float abilityDirection;
-
+    
+    [HideInInspector] public bool isActivated;
+    [HideInInspector] public bool unavailable;
+    private int currentSlot;
+    private int currentBlastType;
+    
     private PlayerController pc;
     private PlayerAbility pa;
     private EnemyPatrol ep;
     private BossAttack ba;
-
-    [HideInInspector] public bool isActivated;
-    [HideInInspector] public bool unavailable;
-
-    private int currentSlot;
-    private int currentBlastType;
 
     private void Start()
     {
@@ -47,7 +47,7 @@ public class PerformAbility : MonoBehaviour
 
     private void Update()
     {
-        unavailable = Physics2D.OverlapCircle(abilityPoint.position, 0.5f, terrainLayers);
+        unavailable = Physics2D.OverlapCircle(new Vector2(abilityPoint.position.x, abilityPoint.position.y), 1f, terrainLayers);
         if (casterType == CasterType.Player)
             if (isActivated && pa.currentAbilityCooldown <= 0) isActivated = false;
     }
@@ -58,7 +58,7 @@ public class PerformAbility : MonoBehaviour
 
         var ability = objects[slot];
         if (ability == null) return;
-
+        
         var prefabBase = ability.abilityPrefab.GetComponent<AbilityBase>() ?? ability.abilityPrefab.GetComponentInChildren<AbilityBase>();
 
         if (prefabBase == null)
@@ -68,13 +68,10 @@ public class PerformAbility : MonoBehaviour
         }
 
         var totalAmount = Mathf.Round(ability.amount * abilityAmountMult[slot]);
-        var energyReq = prefabBase.energyRequired;
+        var energyReq = ability.energyRequired == 0 ? prefabBase.energyRequired : ability.energyRequired;
         
-        var hasEnoughEnergy = false;
-        if (blastType == 0) hasEnoughEnergy = pa.energy >= energyReq * totalAmount;
-        else hasEnoughEnergy = pa.energy >= energyReq;
-
-        if (hasEnoughEnergy)
+        var hasEnoughEnergy = pa.energy >= energyReq * totalAmount;
+        if (hasEnoughEnergy && !unavailable)
         {
             isActivated = true;
             currentBlastType = blastType;
@@ -119,6 +116,11 @@ public class PerformAbility : MonoBehaviour
                 if (!unavailable && ability.shockwave && i != 0 || !unavailable && !ability.shockwave)
                     yield return new WaitForSeconds(ability.spawnInterval);
             }
+            else if (i == 0)
+            {
+                pa.isPerformingAbility = false;
+                yield break;
+            }
         }
         if (casterType == CasterType.Player && blastType == 0) pa.isPerformingAbility = false;
     }
@@ -128,6 +130,11 @@ public class PerformAbility : MonoBehaviour
         Vector3[] spawnPos = {abilityPoint.position + transform.right * xOffset, abilityPoint.position - transform.right * xOffset};
         var spawnRot = blastType == 2 ? abilityPoint.rotation : Quaternion.identity;
         GameObject[] newObjs = {Instantiate(ability.abilityPrefab, spawnPos[0], spawnRot), Instantiate(ability.abilityPrefab, spawnPos[1], spawnRot)};
+        if (newObjs[0].IsDestroyed() || newObjs[1].IsDestroyed())
+        {
+            pa.isPerformingAbility = false;
+            return;
+        }
         if (ability.shockwave)
         {
             foreach (var obj in newObjs)

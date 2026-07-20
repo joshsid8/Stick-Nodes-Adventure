@@ -19,11 +19,15 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public bool damageOverTime;
     public float procDmg;
     public float procInterval;
+    [FormerlySerializedAs("knockbackForce")]
     [Space]
     [Header("Properties")]
     [FormerlySerializedAs("beamKnockbackForce")]
     [FormerlySerializedAs("projectileKnockbackForce")]
-    public Vector2 knockbackForce;
+    [FormerlySerializedAs("knockbackForce")]
+    public Vector2 knockbackDirection;
+    public float knockbackForce = 20f;
+    public float knockbackTime = 0.2f;
     
     [FormerlySerializedAs("beamDirection")]
     [FormerlySerializedAs("projectileDirection")]
@@ -53,8 +57,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     [FormerlySerializedAs("isErupting")]
     public bool activeHitbox;
     
-    public float energyProc;
-    public float procTimes;
+    private float energyProc;
+    private float procTimes;
     [Space]
     [Header("Lifetime")]
     [FormerlySerializedAs("beamLifetime")]
@@ -188,12 +192,12 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (pDamageable != null)
         {
             pDamageable.Damage(damage, isFacingRightDirection, damageFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            pDamageable.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+            pDamageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
         }
         else if (eDamageables != null)
         {
             eDamageables.Damage(damage, damageFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            eDamageables.Shock(stunTime, new Vector2(knockbackForce.x * transform.right.x, knockbackForce.y * transform.up.y));
+            eDamageables.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
         }
         PlayerHealth.Instance.ApplyCombat(additive: true);
     }

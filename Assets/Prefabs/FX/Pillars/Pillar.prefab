@@ -167,12 +167,14 @@ MonoBehaviour:
   damageOverTime: 0
   procDmg: 0
   procInterval: 0
-  knockbackForce: {x: 0, y: 0}
+  knockbackDirection: {x: 0, y: 0}
+  knockbackForce: 20
+  knockbackTime: 0.2
   direction: 0
   isDirectional: 0
   isFacingRightDirection: 0
   stunTime: 0
-  energyRequired: 20
+  energyRequired: 2
   cooldown: 1.2
   proc: 0.2
   procTimer: 0

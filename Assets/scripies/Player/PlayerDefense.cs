@@ -108,7 +108,7 @@ public class PlayerDefense : MonoBehaviour
                 {
                     pa.energy += 10f;
                     eDamageable.Damage(counterDamage, 0);
-                    eDamageable.Shock(counterStun * pf.attackPotency, counterKnockbackForce * num * pf.attackPotency);
+                    eDamageable.Shock(counterStun * pf.attackPotency, counterKnockbackForce * num * pf.attackPotency * transform.right);
                     PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 2;
                 }
             }

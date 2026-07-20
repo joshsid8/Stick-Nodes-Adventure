@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityPrefab: {fileID: 5179120200687164443, guid: 20811f14f99480c4c9cb21db31c3e97c, type: 3}
   setProperties: 1
   isDirectional: 0
-  energyRequired: 0
+  energyRequired: 2
   proc: 0
   amount: 3
   initSeparation: 0
@@ -27,6 +27,7 @@ MonoBehaviour:
   potency: 1
   sizeMult: 1
   isHoldable: 0
+  trueDamage: 0
   abilityOnCollide: 0
   swapForce: 0
   speedMult: 1

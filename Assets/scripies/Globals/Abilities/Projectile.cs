@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Projectile : AbilityBase
 {
@@ -33,15 +35,23 @@ public class Projectile : AbilityBase
     private Rigidbody2D rb;
     private bool collided;
     private CircleCollider2D ccoll;
+    [SerializeField] private float objectRange;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        rb =  GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        ccoll = GetComponent<CircleCollider2D>();
+    }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
-        rb =  GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
         playerTransform = PlayerHealth.Instance.gameObject.transform;
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
-        ccoll = GetComponent<CircleCollider2D>();
+        objectRange = ccoll.radius / 3.3333333333f;
+        
         if (anim != null) animator.Play(anim.name); 
         if (randomisation)
         {
@@ -56,6 +66,7 @@ public class Projectile : AbilityBase
             projectileSpeed = temp2;
             projectileHeight = temp;
         }
+
         ApplyForce();
         Destroy(gameObject, lifeTime);
     }
@@ -122,7 +133,7 @@ public class Projectile : AbilityBase
 
         if (!isDirectional)
         {
-            float angleDeg = isFacingRightDirection ? 90 + randomAngle : -90 + randomAngle;
+            var angleDeg = isFacingRightDirection ? 90 + randomAngle : -90 + randomAngle;
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angleDeg);
             objectDirection = isFacingRightDirection ? 1f : -1f;
             rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, projectileHeight);
@@ -137,8 +148,8 @@ public class Projectile : AbilityBase
         
     private void Collided()
     {
-        hits[0] = Physics2D.CircleCast(transform.position, ccoll.radius, transform.right, 0f, target[0]);
-        hits[1] = Physics2D.CircleCast(transform.position, ccoll.radius, transform.right, 0f, target[1]);
+        hits[0] = Physics2D.CircleCast(transform.position,objectRange, transform.right, 0f, target[0]);
+        hits[1] = Physics2D.CircleCast(transform.position, objectRange, transform.right, 0f, target[1]);
         var deflected = false;
         
         foreach (var hit in hits) 
@@ -199,14 +210,13 @@ public class Projectile : AbilityBase
         if (pDamageable != null)
         {
             pDamageable.Damage(damage, isFacingRightDirection, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            pDamageable.Shock(stunTime, new Vector2(knockbackForce.x, knockbackForce.y));
+            pDamageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
         }
         else if (eDamageables != null)
         {
             eDamageables.Damage(damage, typeFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            eDamageables.Shock(stunTime, new Vector2(knockbackForce.x, knockbackForce.y));
+            eDamageables.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
         }
-        else print("clueless.");
         PlayerHealth.Instance.ApplyCombat(2f, additive: true);
     }
 
@@ -247,6 +257,6 @@ public class Projectile : AbilityBase
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, ccoll.radius);
+        Gizmos.DrawWireSphere(transform.position, objectRange);
     }
 }

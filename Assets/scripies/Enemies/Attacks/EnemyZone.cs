@@ -12,7 +12,7 @@ public class EnemyZone : MonoBehaviour
     [SerializeField] private float zoneInterval = 0.3f;
     [SerializeField] private float intervalTimer;
     
-    [Header("Checks (Being updated by enemyAttack)")]
+    //[Header("Checks (Being updated by enemyAttack)")]
     private EnemyAttack.StyleMode styleMode;
     private bool defensiveCheck;
     private bool passiveCheck;
@@ -67,6 +67,7 @@ public class EnemyZone : MonoBehaviour
     {
         intervalTimer = zoneInterval;
         currentZonePeriod = ea.currentAttackCooldown;
+        isZoning = true;
     }
     
     private void OnDisable()
