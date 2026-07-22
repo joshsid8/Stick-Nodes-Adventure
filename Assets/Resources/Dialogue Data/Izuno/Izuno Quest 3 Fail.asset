@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Izuno
   dialogue:
-  - Yo, you need something?
-  - If anything, just hit me up.
+  - Yo, need something?
+  - If anything, hit me up.
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   colourIndex: 0
   canBeBold: 0
   bold: 
-  speaker: Izuno
-  alteredDialogue: {fileID: 11400000, guid: d764165b30177764590650f359c01bf3, type: 2}
+  speaker: 
+  alteredDialogue: {fileID: 0}
   externalInstance: 
   alteredExternalDialogue: {fileID: 0}

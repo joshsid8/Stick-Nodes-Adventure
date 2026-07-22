@@ -47,7 +47,7 @@ public class DialogueTrigger : MonoBehaviour
                 {   // '^' means "from the end of a list datatype" WHICH IS SO COOL
                     var priorityDialogue = dialogue[^1];
                     DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
-                    if (dialogue.Count > 1 && priorityDialogue.alteredDialogue == null) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
+                    if (dialogue.Count > 1) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
                 }
             }
         }

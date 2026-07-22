@@ -5,8 +5,9 @@ SNADV Notes
     
     Priorities:
         
-        Speakto quests get autocompleted
-            See why and fix it
+        Replace as many references as possible with events
+            I will be able to sort my scripts out and make compilation faster if done
+            Apparently i have to use more interfaces, something i havent learned fully yet
         
         What i want to do now is make hitboxes/knockback more accurate
             Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS
@@ -27,19 +28,10 @@ SNADV Notes
                 Fishwoman had a state crashout once
                     at the moment tho, she seems very stable
                     idk how to replicate this bug, so i will lower this priority
-
-                I had a bug where the player performed a pillar move, but the performability flag was on indefinitely after, freezing the player
-                    I think its been fixed, not too sure tho
-                
-                Knockback logic should be all working now, but maybe i couldve missed some transform.right implementations
-                
+                                
                 Fly logic may need a rework
                     I found the fix to the movespeed issue
                     flying tho is still kinda janky, ill fix this much later
-                
-                I am very scared of ability logic
-                    It is all working as of now, but this is only from a dev's perspective
-                    I need testers!
                     
         Input Logic
             switch input systems!

@@ -13,7 +13,4 @@ MonoBehaviour:
   m_Name: Noxu
   m_EditorClassIdentifier: Assembly-CSharp::NPC
   npcName: Noxu
-  dialogue:
-  - {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
-  - {fileID: 11400000, guid: fc546ccfcc2d4514ba3eb062aa5a92af, type: 2}
-  - {fileID: 11400000, guid: 6cfa5a20770f557408dd62bd9a6c7ea6, type: 2}
+  willTravel: 1

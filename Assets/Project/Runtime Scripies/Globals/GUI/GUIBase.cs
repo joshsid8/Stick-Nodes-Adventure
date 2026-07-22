@@ -12,7 +12,6 @@ public abstract class GUIBase : MonoBehaviour
 
     protected virtual void Awake() => GetPlayer();
     
-
     private void Update()
     {
         if (ActiveGUICount < 0) ActiveGUICount = 0;
@@ -32,7 +31,7 @@ public abstract class GUIBase : MonoBehaviour
         OnActivated();
     }
 
-    protected void CloseAll()
+    public void CloseAll()
     {
         var allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
         foreach (var gui in allGuis){

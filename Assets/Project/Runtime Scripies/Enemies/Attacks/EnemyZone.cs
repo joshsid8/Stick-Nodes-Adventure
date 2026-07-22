@@ -7,12 +7,11 @@ public class EnemyZone : MonoBehaviour
     public float currentZonePeriod;
     [SerializeField] private bool isZoning;
     [SerializeField] private float zoneTime = 1;
-    public float activeZoneTime;
     [SerializeField] private float zoneSpeed = 10;
     [SerializeField] private float zoneInterval = 0.3f;
     [SerializeField] private float intervalTimer;
     
-    //[Header("Checks (Being updated by enemyAttack)")]
+    //Checks (Being updated by enemyAttack)
     private EnemyAttack.StyleMode styleMode;
     private bool defensiveCheck;
     private bool passiveCheck;
@@ -46,30 +45,27 @@ public class EnemyZone : MonoBehaviour
         //else if (currentZonePeriod <= 0 && ej.isJumping && !ej.myTurn) then we dont know
         else currentZonePeriod -= Time.deltaTime;
         intervalTimer -= Time.deltaTime;
-        if (activeZoneTime > 0) activeZoneTime -= Time.deltaTime;
-        else
-        {
-            isZoning = !isZoning;
-            if (!isZoning) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            else activeZoneTime = zoneTime;
-        }
     }
 
     private void FixedUpdate()
     {
-        if (intervalTimer <= 0 && activeZoneTime > 0 && isZoning)
+        if (intervalTimer <= 0 && isZoning)
         {
             Zone();
             intervalTimer = zoneInterval;
         }
     }
-    private void OnEnable() => currentZonePeriod = ea.currentAttackCooldown;
-    
+    private void OnEnable() {
+        currentZonePeriod = ea.currentAttackCooldown;
+        InvokeRepeating(nameof(ToggleZone), 0, zoneTime);
+    }
+    private void ToggleZone() => isZoning = !isZoning;
     private void OnDisable()
     {
         isZoning = false;
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         animator.SetBool("isZoning", false);
+        CancelInvoke(nameof(ToggleZone));
     }
 
     private void Zone()

@@ -28,6 +28,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     public int[] noOfO;
 
     [Tooltip("the npc you may have to speak to")] public NPC nTi;
+    private NPC npcBuffer;
 
     public GameObject rewardObj;
     public CollectableSOBase[] questRewards;
@@ -44,8 +45,8 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void OnEnemyKilled(Enemy enemy)
     {
-        if (questType != QuestType.DefeatEnemy || questCompleted || enemy == null) return;
-        if (requiredByEnemy.ContainsKey(enemy))
+        if (questType != QuestType.DefeatEnemy || questCompleted) return;
+        if (requiredByEnemy.ContainsKey(enemy) && enemy != null)
         {
             if (!currentKillsByEnemy.ContainsKey(enemy)) currentKillsByEnemy[enemy] = 0;
             
@@ -61,6 +62,15 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     {
         if (questType != QuestType.HaveInInventory || questCompleted) return;
         CheckCompletion();
+    }
+
+    private void OnDialogueClosed(NPC npc)
+    {
+        if (questType == QuestType.SpeakTo || questType == QuestType.GiveTo)
+        {
+            npcBuffer = npc;
+            CheckCompletion();
+        }
     }
 
     private void CheckCompletion()
@@ -92,6 +102,13 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                     }
                 }
                 break;
+            case QuestType.GiveTo:
+            case QuestType.SpeakTo:
+                if (npcBuffer != nTi || npcBuffer == null) allMet = false;
+                break;
+            case QuestType.NullQuest:
+            default:
+                break;
         }
 
         if (allMet)
@@ -104,6 +121,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     
     private void OnAssigned()
     {
+        DialogueUI.OnDialogueClose += OnDialogueClosed;
         EnemyHealth.OnEnemyKilled += OnEnemyKilled;
         if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
             InvManager.Instance.invIndex.OnInventoryChanged += OnInventoryChanged;
@@ -111,6 +129,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void OnCleared()
     {
+        DialogueUI.OnDialogueClose -= OnDialogueClosed;
         EnemyHealth.OnEnemyKilled -= OnEnemyKilled;
         if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
             InvManager.Instance.invIndex.OnInventoryChanged -= OnInventoryChanged;
@@ -178,6 +197,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         questDescription = "";
         oTi = Array.Empty<CollectableSOBase>();
         nTi = null;
+        npcBuffer = null;
         eTd = Array.Empty<Enemy>();
         noOfE = Array.Empty<int>();
         questRewards = Array.Empty<CollectableSOBase>();

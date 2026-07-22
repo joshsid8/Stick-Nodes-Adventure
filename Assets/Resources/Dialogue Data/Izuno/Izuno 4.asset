@@ -39,7 +39,7 @@ MonoBehaviour:
   isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 0
-  derrivedDialogue: {fileID: 0}
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []
@@ -48,7 +48,7 @@ MonoBehaviour:
   colourIndex: 0
   canBeBold: 0
   bold: 
-  speaker: Izuno
-  alteredDialogue: {fileID: 11400000, guid: 657afb249bfe09344917153690b19101, type: 2}
+  speaker: 
+  alteredDialogue: {fileID: 0}
   externalInstance: 
   alteredExternalDialogue: {fileID: 0}

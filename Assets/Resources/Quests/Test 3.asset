@@ -16,12 +16,12 @@ MonoBehaviour:
   questName: Deliver the Gem of Life to Izuno
   questDescription: Imo found a gem that isnt useful for him. He wants you to give
     it to Izuno, as he may find a use for it.
-  enemiesToDefeat: 
+  enemiesToDefeat: []
   noOfEnemiesToDefeat: 
   objectsToInteract:
   - {fileID: 11400000, guid: 324dc0839a888484da1b58cbf1ccaadd, type: 2}
   numberOfObjects: 01000000
-  npcToInteract: {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
+  npcToInteract: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
   rewards:
   - {fileID: 11400000, guid: 3393927386ba418418c964459183e26f, type: 2}
   - {fileID: 11400000, guid: 3393927386ba418418c964459183e26f, type: 2}

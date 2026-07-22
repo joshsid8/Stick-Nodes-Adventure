@@ -6,6 +6,7 @@ using TMPro;
 public class DialogueUI : GUIBase
 {
     public static DialogueUI Instance {get; private set;}
+    public static event Action<NPC> OnDialogueClose;
     
     public GameObject dialogueBox;
     [SerializeField] private TMP_Text textLabel;
@@ -69,7 +70,7 @@ public class DialogueUI : GUIBase
             else isBold = false;
             if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
             //TODO: This is a very expensive invocation. find a way to maybe use the npc SO to reference the animator instead 
-            animator = isAnimated ? GameObject.Find(dialogueObject.speaker).GetComponent<Animator>() : null;
+            animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
             yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
             yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
         }
@@ -84,7 +85,7 @@ public class DialogueUI : GUIBase
 
     private void QuestHandling(DialogueObject dialogueObject)
     {
-        if (dialogueObject.isQuestInteraction && dialogueObject.questToOffer.questType == Quest.QuestType.GiveTo)
+        if (dialogueObject.isQuestInteraction && dialogueObject.questToOffer != null)
         {
             if (InvManager.Instance == null || InvManager.Instance.invIndex == null) Debug.LogError("Quest Check: InvManager or its Index is not ready!");
             else
@@ -119,6 +120,31 @@ public class DialogueUI : GUIBase
     public void DecrementActiveGUICount() => ActiveGUICount--;
     private void CloseDialogue(DialogueObject dialogueObject = null)
     {
+        // This were the old way to complete a speakto quest, it was expensive. now we use events!
+        /*if (dialogueObject != null && dialogueObject.isQuestInteraction && dialogueObject.completeSpeakQuestOnClose)
+        {
+            var slots = QuestLogManager.Instance.questSlots;
+            foreach (var slot in slots)
+                if (slot != null && slot.questType == Quest.QuestType.SpeakTo && slot.nTi == currentNpc)
+                {
+                    slot.questCompleted = true;
+                    print("speakto quest done");
+                }
+        }*/
+        OnDialogueClose?.Invoke(currentNpc);
+        if (dialogueObject != null)
+        {
+            if (dialogueObject.alteredDialogue != null)
+                GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName).GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredDialogue);
+            
+            if (dialogueObject.alteredExternalDialogue != null)
+                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredExternalDialogue);
+        }
+        ClearData();
+    }
+
+    private void ClearData()
+    {
         if (isAnimated)
         {
             isAnimated = false;
@@ -131,34 +157,13 @@ public class DialogueUI : GUIBase
         playerBars.SetActive(true);
         textLabel.color = Color.black;
         npcNameLabel.color = Color.black;
-        
-        if (dialogueObject != null && dialogueObject.isQuestInteraction && dialogueObject.questToOffer.questType == Quest.QuestType.SpeakTo &&
-            dialogueObject.completeSpeakQuestOnClose)
-        {
-            var slots = QuestLogManager.Instance.questSlots;
-            foreach (var slot in slots)
-                if (slot != null && slot.questType == Quest.QuestType.SpeakTo && slot.nTi == currentNpc)
-                {
-                    slot.questCompleted = true;
-                    print("speakto quest done");
-                }
-        }
-        
-        if (dialogueObject != null)
-        {
-            if (dialogueObject.alteredDialogue != null)
-                GameObject.Find(dialogueObject.speaker).GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredDialogue);
-            
-            if (dialogueObject.alteredExternalDialogue != null)
-                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredExternalDialogue);
-        }
+        currentNpc = null;
     }
-
     private IEnumerator ChoiceDialogue(DialogueObject dialogueObject = null)
     {
         if (dialogueObject != null)
         {
-            npcNameLabel.text = dialogueObject.NPCName;
+            npcNameLabel.text = dialogueObject.NPCName ?? dialogueObject.speaker ?? currentNpc.npcName ?? "HUH?! WHERE IS EVERYTHING?!";
             yield return typeWriter.Run(dialogueObject.ChoiceQuestion, textLabel, npcNameLabel);
             handler.ShowResponses(dialogueObject);
         }
