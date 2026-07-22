@@ -1,10 +1,7 @@
-using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour, PDamageable
@@ -51,10 +48,12 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     public int aggressiveEnemyID;
     public float jumpRotationTimer;
     
-    [Header("References")]
+    // Components
     private Knockback kb;
     [HideInInspector] public PlayerController pc;
-    private PlayerDefense pd;
+    [HideInInspector] public PlayerDefense pd;
+    [HideInInspector] public PlayerAbility pa;
+    [HideInInspector] public PlayerCombat pf;
     
     private void Awake()
     {
@@ -68,11 +67,13 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         pc = GetComponent<PlayerController>();
         pd = GetComponent<PlayerDefense>();
         kb = GetComponent<Knockback>();
+        pa = GetComponent<PlayerAbility>();
+        pf = GetComponent<PlayerCombat>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         currentStunTime = stunTime * shockMultiplier;
         originalColor = spriteRenderer.color;
@@ -80,7 +81,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         Animation();
         StartCoroutine(Death());
@@ -156,6 +157,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             case true when pd.isBlocking && pd.counterWindow && damageFactor < 2:
                 // perfect blocking / counter
                 pc.animator.SetTrigger("Counter");
+                StartCoroutine(AreaManager.Instance.StopTime(0.5f));
                 pd.counterWindow = false;
                 StartCoroutine(ApplyDamage(calcDamage * pd.counterDamageResistance, false, damageOverTime, procDmg, procInterval, isTrue));
                 break;
@@ -167,7 +169,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
         
         pc.currentDashTime = 0f;
-        GetComponent<PlayerAbility>().isPerformingAbility = false;
+        pa.isPerformingAbility = false;
     }
 
     private IEnumerator ApplyDamage(float damageAmount, bool blockBreak = false, bool dOt = false, float procDmg = 0f, float procInterval = 0.2f, bool isTrue = false)
@@ -191,15 +193,15 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
     }
     
-    public void Shock(float stunDuration = 0f, Vector2 knockbackDirection = default, float knockbackForce = 0f, float knockbackTime = 0f)
+    public void Shock(float stunDuration = 0f, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f)
     {
         stunTime = stunDuration * shockMultiplier;
         if (stunTime > 0 && !pd.isBlocking) getStunned = true;
         kb.CallKnockback(knockbackDirection, knockbackForce * shockMultiplier / 2, knockbackTime * shockMultiplier);
-        if (knockbackDirection != Vector2.zero && (!pd.isBlocking || !pc.isFacingRight && knockbackDirection.x > 0 || pc.isFacingRight && knockbackDirection.x < 0))
+        if (!pd.isBlocking)
         {
             pc.animator.SetTrigger("Damaged");
-            GetComponent<PlayerAbility>().isPerformingAbility = false;
+            pa.isPerformingAbility = false;
         }
     }
 
@@ -218,7 +220,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             if (currentStunTime <= 0)
             {
                 pc.canAct = true;
-                GetComponent<PlayerCombat>().canAttack = true;
+                pf.canAttack = true;
                 shockMultiplier = originalShockMultiplier;
                 isStunned = false;
                 pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);

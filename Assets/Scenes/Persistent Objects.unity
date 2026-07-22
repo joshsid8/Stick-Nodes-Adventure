@@ -6734,11 +6734,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -59.102493
+      value: -54.660736
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 27.761497
+      value: 34.153294
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6771,6 +6771,10 @@ PrefabInstance:
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3197981128176101314, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
+      propertyPath: moveSpeed
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3463261996892548931, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_Name
@@ -27658,9 +27662,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65728
   objects:
-  - {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
   - {fileID: 11400000, guid: a5c66102e32418743b031821f4c56614, type: 2}
   - {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}
+  - {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
   abilityDamageMult: 1
   abilityPotency: 1
   abilityLifetimeMult: 1

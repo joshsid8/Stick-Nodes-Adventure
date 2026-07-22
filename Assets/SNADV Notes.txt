@@ -8,13 +8,10 @@ SNADV Notes
         Speakto quests get autocompleted
             See why and fix it
         
-        Utilise both the alter dialogue system and dialogue lists
-            Test this out in game
+        What i want to do now is make hitboxes/knockback more accurate
+            Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS
+            maybe this explosion type can even be considered an ability type
 
-        Fly logic may need a rework
-            Used rb's AddForce to make flying smoother
-            The movement after reenabling flying is still not working
-                
     Optimisations & Hotfixes:
         
         Instability
@@ -36,6 +33,10 @@ SNADV Notes
                 
                 Knockback logic should be all working now, but maybe i couldve missed some transform.right implementations
                 
+                Fly logic may need a rework
+                    I found the fix to the movespeed issue
+                    flying tho is still kinda janky, ill fix this much later
+                
                 I am very scared of ability logic
                     It is all working as of now, but this is only from a dev's perspective
                     I need testers!
@@ -44,12 +45,6 @@ SNADV Notes
             switch input systems!
                 Turns out i wasnt smart enough D:
                 I have initialised the settings, but will now need to implement it programmatically
-        
-        Ability Logic
-            Hitbox logic
-                What i want to do now is make hitboxes/knockback more accurate
-                    Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS
-                    maybe this explosion type can even be considered an ability type
                 
         Animation
             Make better/seperate animations in general

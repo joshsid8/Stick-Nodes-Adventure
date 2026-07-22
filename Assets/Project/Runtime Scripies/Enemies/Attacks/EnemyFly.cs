@@ -7,12 +7,12 @@ public class EnemyFly : MonoBehaviour
 {
     [Header("Fly checks")] public bool isChasing;
     public bool isTargeting;
-    public float moveSpeed = 10f;
-    private float previousMoveSpeed;
-
-    [Space] [Header("Fly movement")] [SerializeField]
-    private float[] flightOffset = new float[3];
-
+    [SerializeField] private float baseFlySpeed = 10f;
+    [HideInInspector] public float currentFlySpeed = 10f;
+    [SerializeField] private float flyAcceleration = 10f;
+    [Space] 
+    [Header("Fly movement")] 
+    [SerializeField] private float[] flightOffset = new float[3];
     [SerializeField] private Vector2 flyDirection;
     [SerializeField] private float smoothing = 0.15f;
     public Vector2 targetPositions;
@@ -37,7 +37,7 @@ public class EnemyFly : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnEnable()
     {
-        previousMoveSpeed = moveSpeed;
+        currentFlySpeed = baseFlySpeed;
         playerTransform = PlayerHealth.Instance.gameObject.transform;
         rb.gravityScale = gravities[1];
         ea.animator.SetBool( "isFlying", true);
@@ -73,8 +73,8 @@ public class EnemyFly : MonoBehaviour
         if (timer[0] <= 0)
         {
             
-            if (rb.linearVelocity.x == 0) moveSpeed = 0; 
-            else moveSpeed = Math.Abs(rb.linearVelocity.x * 2);
+            if (rb.linearVelocity.x == 0) currentFlySpeed = 0; 
+            else currentFlySpeed = Math.Abs(rb.linearVelocity.x * 2);
             
             var orng = Random.Range(-8, 8);
             orng = orng < 3 && orng > 0 ? 4 : orng > -3 && orng < 0 ? -4 : orng;
@@ -89,8 +89,8 @@ public class EnemyFly : MonoBehaviour
             timer[1] = 1.5f;
         }
         
-        if (moveSpeed < previousMoveSpeed) moveSpeed += Time.deltaTime * 6.5f;
-        else moveSpeed = previousMoveSpeed;
+        if (currentFlySpeed < baseFlySpeed) currentFlySpeed += Time.deltaTime * flyAcceleration;
+        else currentFlySpeed = baseFlySpeed;
     }
 
     private void FixedUpdate()
@@ -101,15 +101,15 @@ public class EnemyFly : MonoBehaviour
                 playerTransform.position.y + flightOffset[1]);
             var target = flyDirection + new Vector2(flightOffset[2], flightOffset[2]);
             var smoothedPosition = Vector2.Lerp(rb.position, target, smoothing);
-            var force = (smoothedPosition - rb.position) * moveSpeed;
-            rb.AddForce(force * 5);
+            var force = (smoothedPosition - rb.position) * currentFlySpeed;
+            rb.AddForce(force);
         }
         else if (isTargeting)
         {
             flyDirection = new Vector2(playerTransform.position.x + targetPositions.x, playerTransform.position.y + targetPositions.y);
             var smoothedPosition = Vector2.Lerp(rb.position, flyDirection, smoothing);
-            var force = (smoothedPosition - rb.position) * moveSpeed;
-            rb.AddForce(force * 5);
+            var force = (smoothedPosition - rb.position) * currentFlySpeed;
+            rb.AddForce(force);
         }
     }
     

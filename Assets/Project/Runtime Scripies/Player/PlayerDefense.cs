@@ -61,7 +61,6 @@ public class PlayerDefense : MonoBehaviour
             {
                 pc.movementSpeed = blockMoveSpeed;
                 pc.jumpForce = 0f;
-                hp.shockMultiplier = 0f;
 
                 if (counterAbility && canCounter)
                 {
@@ -93,7 +92,6 @@ public class PlayerDefense : MonoBehaviour
 
     public void CounterAttack()
     {
-        StartCoroutine(AreaManager.Instance.StopTime(0.5f));
         pa.energy += pa.maxEnergy * 0.15f;
         hits = Physics2D.CircleCastAll(transform.position, counterRadius, Vector2.one, 0f, eLayer);
         for (var i = 0; i < hits.Length; i++)

@@ -168,6 +168,7 @@ public class Projectile : AbilityBase
                             deflected = true;
                             typeFactor = 1;
                             PlayerHealth.Instance.pc.animator.SetTrigger("Counter");
+                            StartCoroutine(AreaManager.Instance.StopTime(0.3f));
                             hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow = false;
                             hit.collider.gameObject.GetComponent<PlayerDefense>().isBlocking = false;
                             break;

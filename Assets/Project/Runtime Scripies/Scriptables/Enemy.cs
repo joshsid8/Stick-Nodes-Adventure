@@ -15,7 +15,7 @@ public class Enemy : ScriptableObject
         ea.damageAmount *= damageMult;
         ea.eh.enemyHealth *= healthMult;
         ea.em.dashSpeed *= speedMult;
-        if (ea.ef != null) ea.ef.moveSpeed *= speedMult;
+        if (ea.ef != null) ea.ef.currentFlySpeed *= speedMult;
         ea.ep.walkSpeed *= speedMult;
     }
 }

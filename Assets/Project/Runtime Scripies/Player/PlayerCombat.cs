@@ -66,7 +66,7 @@ public class PlayerCombat : MonoBehaviour
         pa = GetComponent<PlayerAbility>();
         animator = GetComponent<Animator>();
         canAttack = true;
-        playerInput = new PlayerInput();
+        //playerInput = new PlayerInput();
     }
 
     // Update is called once per frame

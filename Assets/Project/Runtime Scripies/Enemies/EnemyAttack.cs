@@ -207,7 +207,7 @@ public class EnemyAttack : MonoBehaviour
     private void ActivateCooldown(float atkCd)
     {
         currentAttackCooldown = atkCd;
-        if (isFlying) ef.moveSpeed = Math.Abs(rb.linearVelocity.x) / 2;
+        if (isFlying) ef.currentFlySpeed = Math.Abs(rb.linearVelocity.x) / 2;
         else
         {
             ez.enabled = true;
