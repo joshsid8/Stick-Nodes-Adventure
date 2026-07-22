@@ -101,13 +101,15 @@ public class EnemyFly : MonoBehaviour
                 playerTransform.position.y + flightOffset[1]);
             var target = flyDirection + new Vector2(flightOffset[2], flightOffset[2]);
             var smoothedPosition = Vector2.Lerp(rb.position, target, smoothing);
-            rb.linearVelocity = (smoothedPosition - rb.position) * moveSpeed;
+            var force = (smoothedPosition - rb.position) * moveSpeed;
+            rb.AddForce(force * 5);
         }
         else if (isTargeting)
         {
             flyDirection = new Vector2(playerTransform.position.x + targetPositions.x, playerTransform.position.y + targetPositions.y);
             var smoothedPosition = Vector2.Lerp(rb.position, flyDirection, smoothing);
-            rb.linearVelocity = (smoothedPosition - rb.position) * moveSpeed;
+            var force = (smoothedPosition - rb.position) * moveSpeed;
+            rb.AddForce(force * 5);
         }
     }
     

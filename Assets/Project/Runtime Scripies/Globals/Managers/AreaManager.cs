@@ -17,7 +17,7 @@ public class AreaManager : MonoBehaviour
     [SerializeField] private bool isAnnouncing;
 
     [SerializeField] private bool[] toggle;
-    
+    [SerializeField] private Camera actualCamera;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -28,10 +28,7 @@ public class AreaManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Update()
-    {
-        Display();
-    }
+    private void Update() => Display();
 
     public IEnumerator Announce(string title, string description, Color textColor, Color bgColor)
     {
@@ -40,7 +37,7 @@ public class AreaManager : MonoBehaviour
         descriptionText.text = description;
         titleText.color = textColor;
         areaInfoColor = titleText.color;
-        GameObject.Find("Actual Camera").GetComponent<Camera>().backgroundColor = bgColor;
+        actualCamera.backgroundColor = bgColor;
         toggle[1] = false;
         toggle[0] = false;
         yield return new WaitForSeconds(showTime);
@@ -82,7 +79,7 @@ public class AreaManager : MonoBehaviour
         }
     }
 
-    public IEnumerator StopTime(float time)
+    public IEnumerator StopTime(float time = 0.2f)
     {
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(time);

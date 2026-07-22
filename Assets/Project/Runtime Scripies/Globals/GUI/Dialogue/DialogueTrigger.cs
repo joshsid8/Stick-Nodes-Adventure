@@ -29,7 +29,7 @@ public class DialogueTrigger : MonoBehaviour
         var playerObject = PlayerHealth.Instance.gameObject;
         if (playerObject != null) playerTransform = playerObject.transform;
     }
-
+    
     private void Update()
     {
         var inputDirection = Input.GetAxisRaw("Vertical");
@@ -43,7 +43,12 @@ public class DialogueTrigger : MonoBehaviour
             {
                 isTriggered = true;
                 isForced = false;
-                if (dialogue != null) DialogueUI.Instance.ShowDialogue(dialogue[0], npc);
+                if (dialogue != null)
+                {   // '^' means "from the end of a list datatype" WHICH IS SO COOL
+                    var priorityDialogue = dialogue[^1];
+                    DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                    if (dialogue.Count > 1 && priorityDialogue.alteredDialogue == null) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
+                }
             }
         }
         else indicator.SetActive(false);
@@ -51,6 +56,7 @@ public class DialogueTrigger : MonoBehaviour
         if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
     }
 
+    public void AddDialogue(DialogueObject dialogueObject) => dialogue.Add(dialogueObject);
     
     private void OnDrawGizmosSelected()
     {
@@ -59,10 +65,8 @@ public class DialogueTrigger : MonoBehaviour
     }
     private void FacePlayer()
     {
-        float directionToPlayer = playerTransform.position.x - transform.position.x;
-
-        if (directionToPlayer > 0 && !isFacingRight) Flip();
-        else if (directionToPlayer < 0 && isFacingRight) Flip();
+        var directionToPlayer = playerTransform.position.x - transform.position.x;
+        if (directionToPlayer > 0 && !isFacingRight || directionToPlayer < 0 && isFacingRight) Flip();
     }
 
     private void Flip()

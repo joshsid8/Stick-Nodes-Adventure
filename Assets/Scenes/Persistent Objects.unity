@@ -1885,6 +1885,7 @@ MonoBehaviour:
   lerpSpeed: 2
   isAnnouncing: 0
   toggle: 0000
+  actualCamera: {fileID: 4624440029649430630}
 --- !u!4 &282623049
 Transform:
   m_ObjectHideFlags: 0
@@ -6733,11 +6734,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -59.994484
+      value: -59.102493
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 35.04609
+      value: 27.761497
       objectReference: {fileID: 0}
     - target: {fileID: 2536545642050645584, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15940,6 +15941,7 @@ MonoBehaviour:
   dialogueBox: {fileID: 8025661200280666599}
   textLabel: {fileID: 3993206632223023890}
   npcNameLabel: {fileID: 4443174417944041316}
+  playerBars: {fileID: 2166704030395067842}
   isAnimated: 0
   animator: {fileID: 0}
   textIndex: 0

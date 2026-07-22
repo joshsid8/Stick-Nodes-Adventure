@@ -11,8 +11,8 @@ public class DialogueUI : GUIBase
     [SerializeField] private TMP_Text textLabel;
     [SerializeField] private TMP_Text npcNameLabel;
     private TypeWriterFX typeWriter;
-    private DialogueResponseHandler handler; // Already exists
-    private GameObject playerBars;
+    private DialogueResponseHandler handler;
+    public GameObject playerBars;
     public bool isAnimated;
     public Animator animator;
     private NPC currentNpc;
@@ -34,11 +34,10 @@ public class DialogueUI : GUIBase
         typeWriter = GetComponent<TypeWriterFX>();
         handler = GetComponent<DialogueResponseHandler>();
         rt = GetComponent<RectTransform>();
-        playerBars = GameObject.Find("PlayerBars");
         CloseDialogue();
     }
 
-    //private void Update() {textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal; Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount" ,1);}
+    private void Update() => textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;
     
     public void ShowDialogue(DialogueObject dialogueObject, NPC npc = null)
     {
@@ -59,7 +58,7 @@ public class DialogueUI : GUIBase
 
     private IEnumerator StepThroughDialogue(DialogueObject dialogueObject)
     {
-        foreach (string dialogue in dialogueObject.Dialogue)
+        foreach (var dialogue in dialogueObject.Dialogue)
         {
             npcNameLabel.text = dialogueObject.NPCName;
             npcNameLabel.color = dialogueObject.nameColour;
@@ -69,6 +68,7 @@ public class DialogueUI : GUIBase
             if (dialogueObject.canBeBold) isBold = dialogueObject.bold[currentBoldIndex];
             else isBold = false;
             if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
+            //TODO: This is a very expensive invocation. find a way to maybe use the npc SO to reference the animator instead 
             animator = isAnimated ? GameObject.Find(dialogueObject.speaker).GetComponent<Animator>() : null;
             yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
             yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
@@ -140,17 +140,17 @@ public class DialogueUI : GUIBase
                 if (slot != null && slot.questType == Quest.QuestType.SpeakTo && slot.nTi == currentNpc)
                 {
                     slot.questCompleted = true;
-                    print($"speakto quest done");
+                    print("speakto quest done");
                 }
         }
         
         if (dialogueObject != null)
         {
             if (dialogueObject.alteredDialogue != null)
-                GameObject.Find(dialogueObject.speaker).GetComponent<DialogueTrigger>().dialogue[0] = dialogueObject.alteredDialogue;
+                GameObject.Find(dialogueObject.speaker).GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredDialogue);
             
             if (dialogueObject.alteredExternalDialogue != null)
-                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().dialogue[0] = dialogueObject.alteredExternalDialogue;
+                GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredExternalDialogue);
         }
     }
 
@@ -174,13 +174,13 @@ public class DialogueUI : GUIBase
 
         if (dialogueObject.appliesFloatChange)
         {
-            for (int i = 0; i < dialogueObject.targetFloatVariables.Length; i++)
+            for (var i = 0; i < dialogueObject.targetFloatVariables.Length; i++)
                 PlayerManager.Instance.SetGlobalFloat(dialogueObject.targetFloatVariables[i], dialogueObject.newFloatValues[i]);
         }
 
         if (dialogueObject.appliesBooleanChange)
         {
-            for (int i = 0; i < dialogueObject.targetBoolVariables.Length; i++)
+            for (var i = 0; i < dialogueObject.targetBoolVariables.Length; i++)
                 PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i], dialogueObject.newBoolValues[i]);
         }
 
@@ -188,7 +188,7 @@ public class DialogueUI : GUIBase
         
         if (dialogueObject.canDropItem)
         {
-            for (int i = 0; i < dialogueObject.itemDrop.Length; i++)
+            for (var i = 0; i < dialogueObject.itemDrop.Length; i++)
             {
                 dialogueObject.itemDrop[i].GetComponent<Collectable>().collectable = dialogueObject.itemType[i];
                 Instantiate(dialogueObject.itemDrop[i], player.transform.position, Quaternion.identity);

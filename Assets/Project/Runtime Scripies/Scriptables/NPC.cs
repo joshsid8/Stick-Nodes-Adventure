@@ -3,5 +3,5 @@ using UnityEngine;
 public class NPC : ScriptableObject
 {
     public string npcName;
-    public DialogueObject[] dialogue;
+    public bool willTravel;
 }

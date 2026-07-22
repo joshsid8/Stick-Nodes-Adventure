@@ -5,12 +5,16 @@ SNADV Notes
     
     Priorities:
         
-        Flying enemies for some reason end up not following the player and WE dont know why
-            Ill prolly get junie to fix this
+        Speakto quests get autocompleted
+            See why and fix it
         
         Utilise both the alter dialogue system and dialogue lists
-        
+            Test this out in game
 
+        Fly logic may need a rework
+            Used rb's AddForce to make flying smoother
+            The movement after reenabling flying is still not working
+                
     Optimisations & Hotfixes:
         
         Instability

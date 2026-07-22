@@ -37,12 +37,9 @@ MonoBehaviour:
   willGiveQuest: 1
   questToOffer: {fileID: 11400000, guid: 7f67d483ba4ed7d449a711ff5e4d14c1, type: 2}
   isQuestInteraction: 0
-  questActionType: 4
-  questItems: []
-  questItemAmounts: 
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 0
-  derrivedDialogue: {fileID: 0}
+  derivedDialogue: {fileID: 0}
   canDropItem: 1
   itemDrop:
   - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
@@ -53,7 +50,7 @@ MonoBehaviour:
   colourIndex: 0
   canBeBold: 0
   bold: 
-  speaker: Imo
-  alteredDialogue: {fileID: 11400000, guid: 0f6a20fe5a0531c409d084eb9c5b3192, type: 2}
+  speaker: 
+  alteredDialogue: {fileID: 0}
   externalInstance: Izuno
   alteredExternalDialogue: {fileID: 11400000, guid: d764165b30177764590650f359c01bf3, type: 2}

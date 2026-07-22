@@ -176,6 +176,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: npc
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: Dialogue
       value: 
       objectReference: {fileID: 11400000, guid: a5fe877f9e4656f4f80bb92de2d3a2d7, type: 2}
@@ -202,7 +206,7 @@ PrefabInstance:
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: 'dialogue.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 4e7d05becd58b1c46b25efa4008a6088, type: 2}
+      objectReference: {fileID: 11400000, guid: 39b6a0102b17491438d8ddaf59c22f49, type: 2}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: 'dialogue.Array.data[1]'
       value: 
@@ -210,7 +214,7 @@ PrefabInstance:
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: 'dialogue.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: 39b6a0102b17491438d8ddaf59c22f49, type: 2}
+      objectReference: {fileID: 11400000, guid: 4e7d05becd58b1c46b25efa4008a6088, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7604,13 +7608,9 @@ PrefabInstance:
     - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: 'dialogue.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 9bc21a44d25d1d3459fa8753ea4a1945, type: 2}
-    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      propertyPath: 'dialogue.Array.data[1]'
-      value: 
       objectReference: {fileID: 11400000, guid: 0f6a20fe5a0531c409d084eb9c5b3192, type: 2}
     - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      propertyPath: 'dialogue.Array.data[2]'
+      propertyPath: 'dialogue.Array.data[1]'
       value: 
       objectReference: {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
     - target: {fileID: 2846562907364595286, guid: 4684f0e6b68055245993b81a1433f709, type: 3}

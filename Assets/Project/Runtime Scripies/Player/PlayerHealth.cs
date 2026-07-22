@@ -197,7 +197,10 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         if (stunTime > 0 && !pd.isBlocking) getStunned = true;
         kb.CallKnockback(knockbackDirection, knockbackForce * shockMultiplier / 2, knockbackTime * shockMultiplier);
         if (knockbackDirection != Vector2.zero && (!pd.isBlocking || !pc.isFacingRight && knockbackDirection.x > 0 || pc.isFacingRight && knockbackDirection.x < 0))
+        {
             pc.animator.SetTrigger("Damaged");
+            GetComponent<PlayerAbility>().isPerformingAbility = false;
+        }
     }
 
     private void Stunned()

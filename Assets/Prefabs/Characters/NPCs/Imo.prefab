@@ -159,7 +159,11 @@ MonoBehaviour:
   isForced: 0
   willTravel: 0
   indicator: {fileID: 3168872611885930534}
-  dialogue: {fileID: 11400000, guid: 9bc21a44d25d1d3459fa8753ea4a1945, type: 2}
+  npc: {fileID: 0}
+  dialogue:
+  - {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
+  - {fileID: 11400000, guid: 0f6a20fe5a0531c409d084eb9c5b3192, type: 2}
+  - {fileID: 11400000, guid: 9bc21a44d25d1d3459fa8753ea4a1945, type: 2}
   pLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -212,7 +216,6 @@ MonoBehaviour:
   flyingActiveMoves: []
   flyingPassiveMoves: []
   flyingEvasiveMoves: []
-  spareAnimation: 
   defensiveModeRadius: 0
   modDefensiveModeRadius: 0
   passiveModeRadius: 0
@@ -231,13 +234,15 @@ MonoBehaviour:
   isAttacking: 0
   currentAttackCooldown: 0
   stunnable: 0
+  canFacePlayer: 0
   rb: {fileID: 0}
+  animator: {fileID: 0}
   ep: {fileID: 0}
   em: {fileID: 0}
   ef: {fileID: 0}
   eh: {fileID: 0}
   ez: {fileID: 0}
-  canFacePlayer: 0
+  spareAnimation: 
   canSpare: 1
   spareTimer: 10
 --- !u!114 &5629469084799020678
@@ -253,8 +258,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPatrolling: 0
-  walkSpeed: 5
   eyeSight: 10
+  walkSpeed: 5
   canWalk: 1
   walkTime:
   - 2
@@ -297,16 +302,22 @@ MonoBehaviour:
   enemyMaxHealth: 3.402823e+38
   enemyHealth: 3.402823e+38
   isDead: 0
+  defElementFactors:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
   isStunned: 0
   currentStunTime: 0
   stunMultiplier: 1.2
+  movable: 1
   isCountering: 0
   isBlocking: 0
-  damageResistance: 0
+  blockResistance: 0
   damageTint: {r: 1, g: 0.078431375, b: 0, a: 1}
   tintSpeed: 5
   isTinting: 0
-  movable: 1
   phase2: 40
   phase2Style: 3
   isLight: 0
@@ -323,8 +334,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackTime: 0.3
-  hitDirectionForce: 20
 --- !u!61 &2710689748645888265
 BoxCollider2D:
   m_ObjectHideFlags: 0

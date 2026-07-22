@@ -93,7 +93,8 @@ public class PlayerDefense : MonoBehaviour
 
     public void CounterAttack()
     {
-        pa.energy += 5f;
+        StartCoroutine(AreaManager.Instance.StopTime(0.5f));
+        pa.energy += pa.maxEnergy * 0.15f;
         hits = Physics2D.CircleCastAll(transform.position, counterRadius, Vector2.one, 0f, eLayer);
         for (var i = 0; i < hits.Length; i++)
         {
@@ -101,14 +102,12 @@ public class PlayerDefense : MonoBehaviour
             {
                 var eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
                 Vector2 distance = hits[i].collider.gameObject.transform.position - transform.position;
-                int num;
-                if (distance.x >= 0) num = 1;
-                else num = -1;
+                var dir = distance.x >= 0 ? 1 : -1;
                 if (eDamageable != null)
                 {
                     pa.energy += 10f;
-                    eDamageable.Damage(counterDamage, 0);
-                    eDamageable.Shock(counterStun * pf.attackPotency, counterKnockbackForce * num * pf.attackPotency * transform.right);
+                    eDamageable.Damage(counterDamage, GetComponent<PlayerCombat>().damageFactor, 0, 1, true);
+                    eDamageable.Shock(counterStun * pf.attackPotency, counterKnockbackForce * dir * pf.attackPotency * transform.right);
                     PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 2;
                 }
             }
