@@ -1,4 +1,5 @@
 using System;
+using scripies.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -221,10 +222,10 @@ public class EnemyAttack : MonoBehaviour
         hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
-            PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
+            var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, ec.isFacingRight, damageType, 0);
+                damageable.Damage(damageAmount, ec.isFacingRight, damageType);
                 damageable.Shock(stunTime, new Vector2(knockbackForce.x, knockbackForce.y * transform.up.y));
                 PlayerHealth.Instance.ApplyCombat(20);
             }

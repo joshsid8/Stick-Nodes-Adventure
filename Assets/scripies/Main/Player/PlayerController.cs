@@ -1,4 +1,5 @@
 using System.Collections;
+using scripies.Core;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -121,8 +122,9 @@ public class PlayerController : MonoBehaviour
         originalMovementSpeed = movementSpeed;
         originalJumpForce = jumpForce;
         availableWallsLeft = availableWalls;
+        PlayerHealth.Instance.ApplyCombat(0);
         
-        //PlayerHealth.Instance.currentCombatTimer = 0;
+        GameEvents.OnPlayerAction += OnPlayerAction;
     }
 
     // Update is called once per frame
@@ -143,6 +145,11 @@ public class PlayerController : MonoBehaviour
         InCombat();
     }
 
+    void OnPlayerAction(string action)
+    {
+        animator.SetTrigger(action);
+    }
+    
     private void FixedUpdate()
     {
         ApplyMovement();

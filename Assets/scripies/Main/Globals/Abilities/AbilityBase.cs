@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using scripies.Core;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -161,7 +162,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
                 case 2:
                     foreach (var hit in inContact)
                     {
-                        var damageable = hit.gameObject.GetComponent<PDamageable>();
+                        var damageable = hit.gameObject.GetComponent<IDamageable>();
                         Damageable(damageable);
                     }
                     break;
@@ -176,7 +177,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
                         }
                         else if (entity.CompareTag("Player"))
                         {
-                            var pDmg = hit.gameObject.GetComponent<PDamageable>();
+                            var pDmg = hit.gameObject.GetComponent<IDamageable>();
                             Damageable(pDmg);
                         }
                         else print("Clueless.");
@@ -187,11 +188,11 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         }
     }
 
-    protected virtual void Damageable(PDamageable pDamageable = null, EDamageables eDamageables = null)
+    protected virtual void Damageable(IDamageable pDamageable = null, EDamageables eDamageables = null)
     {
         if (pDamageable != null)
         {
-            pDamageable.Damage(damage, isFacingRightDirection, damageFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            pDamageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
             pDamageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
         }
         else if (eDamageables != null)

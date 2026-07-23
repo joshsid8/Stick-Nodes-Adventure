@@ -6,8 +6,11 @@ SNADV Notes
     Priorities:
         
         Replace as many references as possible with events
-            I will be able to sort my scripts out and make compilation faster if done
-            Apparently i have to use more interfaces, something i havent learned fully yet
+            I got junie to make a static class with certain events, and a few interfaces
+                add more events and make any relevant script subscribe to them (very tedious)
+                Make use of the player status interface and finish off the use of the damageable interface
+                    so far, the player now uses this interface, and PDamageable is (almost) nugatory!
+                    finish all this off so i can remove the previous interface
         
         What i want to do now is make hitboxes/knockback more accurate
             Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS

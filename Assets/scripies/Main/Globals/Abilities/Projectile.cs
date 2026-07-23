@@ -1,4 +1,5 @@
 using System;
+using scripies.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -36,7 +37,6 @@ public class Projectile : AbilityBase
     private bool collided;
     private CircleCollider2D ccoll;
     [SerializeField] private float objectRange;
-
     protected override void Awake()
     {
         base.Awake();
@@ -167,13 +167,14 @@ public class Projectile : AbilityBase
                         {
                             deflected = true;
                             typeFactor = 1;
-                            PlayerHealth.Instance.pc.animator.SetTrigger("Counter");
+                            //PlayerHealth.Instance.pc.animator.SetTrigger("Counter");
+                            GameEvents.TriggerPlayerAction("Counter");
                             StartCoroutine(AreaManager.Instance.StopTime(0.3f));
                             hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow = false;
                             hit.collider.gameObject.GetComponent<PlayerDefense>().isBlocking = false;
                             break;
                         }
-                        var pDamageable = hit.collider.gameObject.GetComponent<PDamageable>();
+                        var pDamageable = hit.collider.gameObject.GetComponent<IDamageable>();
                         if (pDamageable != null) Damageable(pDamageable);
                         break;
                     default:
@@ -194,7 +195,7 @@ public class Projectile : AbilityBase
                                 hit.collider.gameObject.GetComponent<PlayerDefense>().isBlocking = false;
                                 break;
                             }
-                            var pDmg = hit.collider.gameObject.GetComponent<PDamageable>();
+                            var pDmg = hit.collider.gameObject.GetComponent<IDamageable>();
                             Damageable(pDmg);
                         }
                         else print("Clueless.");
@@ -206,11 +207,11 @@ public class Projectile : AbilityBase
         else if (deflected) Deflect(typeFactor);
     }
     
-    protected override void Damageable(PDamageable pDamageable = null, EDamageables eDamageables = null)
+    protected override void Damageable(IDamageable pDamageable = null, EDamageables eDamageables = null)
     {
         if (pDamageable != null)
         {
-            pDamageable.Damage(damage, isFacingRightDirection, typeFactor, (PDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            pDamageable.Damage(damage, isFacingRightDirection, typeFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
             pDamageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
         }
         else if (eDamageables != null)

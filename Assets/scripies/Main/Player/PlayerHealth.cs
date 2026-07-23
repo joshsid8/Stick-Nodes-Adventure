@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
+using scripies.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour, PDamageable
+public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerStatus
 {
     public static PlayerHealth Instance {get; private set;}
     
@@ -101,6 +103,13 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             gameObject.layer = LayerMask.NameToLayer("Dead");
             spriteRenderer.color = Color.white;
         }
+        
+        // Interface refs D:
+        IsDead = isDead;
+        IsStunned = isStunned;
+        Position = transform.position;
+        CurrentHealth = playerHealth;
+        MaxHealth = playerMaxHealth;
     }
 
     private void Animation()
@@ -122,6 +131,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             deathToggle = true;
             isDead = true;
             AudioManager.Instance.sfxSource.Play();
+            GameEvents.TriggerPlayerDeath();
             StartCoroutine(Shenanigans.Instance.JumpScare(GameObject.Find("JumpScare")));
             yield return new WaitForSeconds(respawnTime);
             StartCoroutine(Spawn(0, true));
@@ -134,11 +144,11 @@ public class PlayerHealth : MonoBehaviour, PDamageable
         }
     }
     public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
-        PDamageable.ElementType elementType = PDamageable.ElementType.Normal, float elementFactor = 1f, bool isTrue = false,
+        IDamageable.ElementType elementType = 0, float elementFactor = 1f, bool isTrue = false,
         bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
     {
         var calcDamage = damageAmount * elementFactor;
-        if (elementType != PDamageable.ElementType.Normal)
+        if (elementType != 0)
         {
             for (var i = 0; i < defElementFactors.Count; i++)
             {
@@ -176,6 +186,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
     {
         if (playerExtraHealth > 0 && !isTrue) playerExtraHealth -= damageAmount;
         else playerHealth -= damageAmount;
+        GameEvents.TriggerPlayerHealthChanged(damageAmount);
         if (blockBreak || isTrue)
         {
             spriteRenderer.color = damageTint;
@@ -189,6 +200,7 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             if (playerExtraHealth > 0 && !isTrue) playerExtraHealth -= procAmount;
             else playerHealth -= procAmount;
             procTaken -= procAmount;
+            GameEvents.TriggerPlayerHealthChanged(procAmount);
             yield return new WaitForSeconds(procInterval);
         }
     }
@@ -270,5 +282,19 @@ public class PlayerHealth : MonoBehaviour, PDamageable
             aggressiveEnemyID++;
             if (aggressiveEnemyID >= aggressiveEnemies.Count) aggressiveEnemyID = 0;
         }
+    }
+
+    public float CurrentHealth { get; private set;}
+    public float MaxHealth { get; private set; }
+    public bool IsDead { get; private set; }
+    public bool IsStunned { get; private set;}
+    public Vector3 Position { get; private set; }
+    
+    
+
+    public void Heal(float amount)
+    {
+        if (playerHealth < playerMaxHealth) playerHealth += amount;
+        else playerExtraHealth += amount;
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using scripies.Core;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -63,6 +64,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         ep = GetComponent<EnemyPatrol>();
         ec = GetComponent<EnemyController>();
         identifier = GetComponent<Identifier>();
+        GameEvents.TriggerEnemySpawn(gameObject);
     }
 
     // Update is called once per frame
@@ -102,7 +104,7 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             gameObject.layer = LayerMask.NameToLayer("EDead");
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
-            
+            GameEvents.TriggerEnemyDefeated(gameObject);
             yield return new WaitForSeconds(3f);
             for (var i = 0; i < 25; i++)
             {
