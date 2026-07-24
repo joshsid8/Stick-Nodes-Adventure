@@ -31,7 +31,8 @@ public class AbilityObjSO : ScriptableObject
      public float speedMult = 1;
      [Tooltip("Only for pillars")]
      public bool shockwave;
-     
+     [Tooltip("Only for beams")]
+     public bool moveWithCaster;
 
      public void SetProperties(AbilityBase ab)
      {

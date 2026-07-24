@@ -29,7 +29,14 @@ namespace scripies.Dialogue
         [SerializeField] private bool canTurn;
         [SerializeField] private bool isFacingRight;
         private Transform playerTransform;
-
+        
+        // Getters and Setters
+        public bool Enabled { get; set; }
+        public DialogueObject[] Dialogue { get; private set; }
+        public bool IsForced { get; set; }
+        public Transform ChatPoint { get; private set; }
+        public float ChatRadius { get; private set;}
+        
         private void Awake()
         {
             var playerObject = PlayerHealth.Instance.gameObject;
@@ -61,6 +68,11 @@ namespace scripies.Dialogue
             else indicator.SetActive(false);
 
             if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
+            
+            // interface refs
+            IsForced = isForced;
+            ChatPoint = chatPoint;
+            ChatRadius = chatRadius;
         }
         
         public void AddDialogue(ScriptableObject dialogueObject) => dialogue.Add(dialogueObject as DialogueObject);
@@ -91,10 +103,6 @@ namespace scripies.Dialogue
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
 
-        public bool Enabled { get; set; }
-        public DialogueObject[] Dialogue { get; }
-        public bool IsForced { get; set; }
-        public Transform ChatPoint { get; }
-        public float ChatRadius { get; }
+
     }
 }

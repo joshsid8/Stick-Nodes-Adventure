@@ -21,11 +21,15 @@ MonoBehaviour:
   initSeparation: 5
   separation: 1.5
   spawnInterval: 0.1
-  speedMult: 1
   cooldownMult: 1
   lifetimeMult: 1
   damageMult: 1
   potency: 1
   sizeMult: 1
   isHoldable: 0
+  trueDamage: 0
   abilityOnCollide: 0
+  swapForce: 0
+  speedMult: 1
+  shockwave: 0
+  moveWithCaster: 1

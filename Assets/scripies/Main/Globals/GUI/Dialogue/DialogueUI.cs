@@ -42,12 +42,7 @@ namespace scripies.Dialogue
             CloseDialogue();
         }
 
-        private void OnEnable()
-        {
-            gameObject.SetActive(false);
-            GameEvents.ShowDialogue += ShowDialogue;
-        }
-
+        private void OnEnable() => GameEvents.ShowDialogue += ShowDialogue;
         private void OnDisable() => GameEvents.ShowDialogue -= ShowDialogue;
 
         private void Update() => textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;

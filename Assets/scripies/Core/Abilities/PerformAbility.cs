@@ -17,7 +17,7 @@ public class PerformAbility : MonoBehaviour
     public float abilityPotency = 1f;
     public float abilityLifetimeMult = 1f;
     public int[] abilityAmountMult = { 1, 1, 1 };
-
+    
     [Header("Enemy Properties")]
     public float abilityDirection;
     

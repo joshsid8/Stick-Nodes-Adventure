@@ -27,7 +27,9 @@ MonoBehaviour:
   potency: 1
   sizeMult: 1
   isHoldable: 0
+  trueDamage: 0
   abilityOnCollide: 0
   swapForce: 0
   speedMult: 1
   shockwave: 0
+  moveWithCaster: 1

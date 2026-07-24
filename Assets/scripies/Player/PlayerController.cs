@@ -143,7 +143,11 @@ namespace scripies.Player
             InCombat();
         }
 
-        private void OnPlayerAction(string action) => animator.SetTrigger(action);
+        private void OnPlayerAction(string action, bool play)
+        {
+            if (!play) animator.SetTrigger(action);
+            else animator.Play(action);
+        }
 
         private void AddCooldown(string variable, float cooldown, bool additive = false)
         {

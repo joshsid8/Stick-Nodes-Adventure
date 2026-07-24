@@ -82,6 +82,7 @@ namespace scripies.Player
         private void Execute(int slot = 0)
         {
             if (ability == null) return;
+            blastType = GetType(ability.objects[slot]);
             var abilitySo = ability.objects[slot];
             var prefabBase = abilitySo.abilityPrefab.GetComponent<AbilityBase>() ?? abilitySo.abilityPrefab.GetComponentInChildren<AbilityBase>();
 
@@ -109,8 +110,16 @@ namespace scripies.Player
                     2 => "Beam",
                     _ => "Fire"
                 };
-                GameEvents.TriggerPlayerAction(animName);
+                GameEvents.TriggerPlayerAction(animName, true);
             }
+        }
+
+        int GetType(AbilityObjSO ab)
+        {
+            if (ab.abilityPrefab.GetComponent<Projectile>() != null) return 0;
+            if (ab.abilityPrefab.GetComponentInChildren<Pillar>() != null) return 1;
+            if (ab.abilityPrefab.GetComponentInChildren<Beam>() != null) return 2;
+            return 0;
         }
 
         private void AddEnergy(float amount)

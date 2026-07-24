@@ -5,9 +5,21 @@ SNADV Notes
     
     Priorities:
         
-        Refactor Jump Logic
-            Because of the assembly incident (LOL), i need to use interfaces instead of references for lists
-            I honestly dont know how to use this fully yet, but o well
+        Assembly Incident
+            
+            Honestly, nearly everything is back and working!
+            
+            Boss dialogue has been slightly affected
+                I think all i have to do is readd the dialogue to the dialogue lists bosses have
+                also make the disableDialogueTrigger method work
+                
+            Without even having to check, i know that fly logic is broken
+                Obviously its cuz of the lack of player access
+                We hope this wont be too hard of a fix
+            
+            Refactor Jump Logic
+                Because of the assembly incident (LOL), i need to use interfaces instead of references for lists
+                I honestly dont know how to use this fully yet, but o well
         
         What i want to do now is make hitboxes/knockback more accurate
             Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS

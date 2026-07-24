@@ -67,6 +67,7 @@ namespace scripies.Player
         public bool IsPerformingAbility { get; private set; }
         public float CurrentEnergy { get; private set; }
         public float CurrentAbilityCooldown { get; private set; }
+        public Transform AbilityPoint { get; private set; }
 
         private void Awake()
         {
@@ -92,6 +93,9 @@ namespace scripies.Player
             currentStunTime = stunTime * shockMultiplier;
             originalColor = spriteRenderer.color;
             originalShockMultiplier = shockMultiplier;
+            
+            GameEvents.OnPlayerDeath += ResetCombat;
+            GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
         }
 
         // Update is called once per frame
@@ -271,6 +275,9 @@ namespace scripies.Player
 
         public void ApplyCombat(float combatDuration = 5, bool additive = false) => currentCombatTimer =
             additive ? currentCombatTimer + combatDuration : combatDuration;
+        
+        private void ResetCombat() => currentCombatTimer = 0;
+        private void ResetCombatViaEnemy(GameObject enemy) => currentCombatTimer = 0;
 
         private void Tint()
         {

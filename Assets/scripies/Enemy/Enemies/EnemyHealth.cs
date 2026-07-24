@@ -114,13 +114,13 @@ namespace scripies.Enemy
             {
                 OnEnemyKilled?.Invoke(ec.enemy);
                 GameEvents.TriggerDropLoot(gameObject);
+                GameEvents.TriggerEnemyDefeated(gameObject);
                 ec.ChangeState(EnemyController.EnemyState.Dead);
                 GetComponent<Rigidbody2D>().gravityScale = 8;
                 spriteRenderer.color = Color.white;
                 gameObject.layer = LayerMask.NameToLayer("EDead");
                 gameObject.tag = "Dead";
                 spriteRenderer.enabled = true;
-                GameEvents.TriggerEnemyDefeated(gameObject);
                 yield return new WaitForSeconds(3f);
                 for (var i = 0; i < 25; i++)
                 {

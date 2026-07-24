@@ -16,7 +16,7 @@ namespace scripies.Core
         // Player events
         public static Action<float> OnPlayerHealthChanged;
         public static Action OnPlayerDeath;
-        public static Action<string> PlayerAction;
+        public static Action<string, bool> PlayerAction;
         public static Action OnPlayerCounter;
         public static Action<float> AddPlayerEnergy;
         public static Action<bool> PlayerPerformAbility;
@@ -33,7 +33,7 @@ namespace scripies.Core
         // Methods to trigger events
         public static void TriggerPlayerHealthChanged(float currentHealth) => OnPlayerHealthChanged?.Invoke(currentHealth);
         public static void TriggerPlayerDeath() => OnPlayerDeath?.Invoke();
-        public static void TriggerPlayerAction(string action) => PlayerAction?.Invoke(action);
+        public static void TriggerPlayerAction(string action, bool play = false) => PlayerAction?.Invoke(action, play);
         public static void TriggerPlayerCounter() => OnPlayerCounter?.Invoke();
         public static void TriggerAddPlayerEnergy(float energy) => AddPlayerEnergy?.Invoke(energy);
         public static void TriggerPlayerPerformAbility(bool ability) => PlayerPerformAbility?.Invoke(ability);

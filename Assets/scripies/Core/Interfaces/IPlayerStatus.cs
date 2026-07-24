@@ -20,6 +20,7 @@ namespace scripies.Core
         bool IsPerformingAbility { get; }
         float CurrentEnergy { get; }
         float CurrentAbilityCooldown { get; }
+        Transform AbilityPoint { get; }
         
         // Defense
         bool IsCountering { get; }

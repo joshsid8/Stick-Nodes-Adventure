@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 5629469084799020678}
   - component: {fileID: 5970463740093113175}
   - component: {fileID: 3824992177583557412}
+  - component: {fileID: 747642969072967609}
   - component: {fileID: 2710689748645888265}
   - component: {fileID: 8146153522666933081}
   m_Layer: 9
@@ -159,10 +160,10 @@ MonoBehaviour:
   isForced: 0
   willTravel: 0
   indicator: {fileID: 3168872611885930534}
-  npc: {fileID: 0}
+  npc: {fileID: 11400000, guid: da97b6db299c7b840bd83977b71c9d4f, type: 2}
   dialogue:
-  - {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
   - {fileID: 11400000, guid: 0f6a20fe5a0531c409d084eb9c5b3192, type: 2}
+  - {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
   - {fileID: 11400000, guid: 9bc21a44d25d1d3459fa8753ea4a1945, type: 2}
   pLayer:
     serializedVersion: 2
@@ -334,6 +335,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0470dff136b49946ba44b08776c0b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &747642969072967609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846562907364595286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b121ae2d8c218d4d85f17b2619e2334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: scripies.Enemy::scripies.Enemy.EnemyController
+  enemyState: 0
+  enemy: {fileID: 0}
+  isFacingRight: 1
 --- !u!61 &2710689748645888265
 BoxCollider2D:
   m_ObjectHideFlags: 0

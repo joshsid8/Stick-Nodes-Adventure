@@ -141,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 26.28575
+      value: 24.433577
       objectReference: {fileID: 0}
     - target: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7195,18 +7195,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      propertyPath: npc
-      value: 
-      objectReference: {fileID: 11400000, guid: da97b6db299c7b840bd83977b71c9d4f, type: 2}
-    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      propertyPath: 'dialogue.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 0f6a20fe5a0531c409d084eb9c5b3192, type: 2}
-    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
-      propertyPath: 'dialogue.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
+    - target: {fileID: 747642969072967609, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
+      propertyPath: vegetable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2846562907364595286, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_Name
       value: Imo

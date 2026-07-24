@@ -21,14 +21,12 @@ namespace scripies.Enemy
         public Enemy enemy;
         private bool canFacePlayer;
         public bool isFacingRight = true;
-
+        public bool vegetable;
         private EnemyPatrol patrol;
         private EnemyAttack attack;
         private EnemyHealth health;
         private EnemyZone zone;
-        private EnemyJump jump;
-        private EnemyFly fly;
-
+        
         private Transform playerTransform;
         private IPlayerStatus ps;
 
@@ -39,8 +37,6 @@ namespace scripies.Enemy
             attack = GetComponent<EnemyAttack>();
             health = GetComponent<EnemyHealth>();
             zone = GetComponent<EnemyZone>();
-            jump = GetComponent<EnemyJump>();
-            fly = GetComponent<EnemyFly>();
             var player = GameObject.FindGameObjectWithTag("Player");
             playerTransform = player.transform;
             ps = player.GetComponent<IPlayerStatus>();
@@ -52,6 +48,7 @@ namespace scripies.Enemy
 
         private void Update()
         {
+            if (vegetable) return;
             if (health.isDead && enemyState != EnemyState.Dead)
             {
                 ChangeState(EnemyState.Dead);

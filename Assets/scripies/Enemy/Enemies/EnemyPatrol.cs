@@ -55,8 +55,9 @@ namespace scripies.Enemy
         // Update is called once per frame
         void Update()
         {
+            if (ec.vegetable) return;
             if (isPatrolling) Patrol();
-
+            
             animator.SetBool("isPatrolling", isPatrolling);
             animator.SetBool("isWalking", isWalking);
 
