@@ -1,3 +1,4 @@
+using scripies.Enemy;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Quest", menuName = "UI/QuestSO")]

@@ -37,6 +37,7 @@ namespace scripies.Player
             ability = GetComponent<PerformAbility>();
             maxEnergy = energy;
             GameEvents.AddPlayerEnergy += AddEnergy;
+            GameEvents.PlayerPerformAbility += TogglePa;
         }
 
         // Update is called once per frame
@@ -108,7 +109,7 @@ namespace scripies.Player
                     2 => "Beam",
                     _ => "Fire"
                 };
-                GameEvents.PlayerAction(animName);
+                GameEvents.TriggerPlayerAction(animName);
             }
         }
 
@@ -117,6 +118,8 @@ namespace scripies.Player
             energy += amount;
             if (energy > maxEnergy) energy = maxEnergy;
         }
+
+        private void TogglePa(bool state) => isPerformingAbility = state;
 
         private void Energy()
         {

@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
 using scripies.Core;
+using scripies.Dialogue;
 using TMPro;
 using UnityEngine.UI;
 
-public class BossHealth : MonoBehaviour, IDamageable
+public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
 {
     [Header("Health")]
     private Image healthBar;
@@ -50,8 +51,11 @@ public class BossHealth : MonoBehaviour, IDamageable
     public float CurrentHealth { get; private set;}
     public float MaxHealth { get; private set;}
     public bool IsDead { get; private set;}
+    public bool IsStunned { get; private set;}
     public Vector3 Position { get; private set;}
-    
+    public bool IsGrounded { get; private set;}
+    public bool IsFacingRight { get; private set;}
+
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -84,6 +88,9 @@ public class BossHealth : MonoBehaviour, IDamageable
         CurrentHealth = bossHealth;
         MaxHealth = bossMaxHealth;
         Position = transform.position;
+        IsStunned = isStunned;
+        IsGrounded = ba.isGrounded;
+        IsFacingRight = ba.isFacingRight;
     }
     
     private IEnumerator Defeat()
@@ -91,7 +98,7 @@ public class BossHealth : MonoBehaviour, IDamageable
         if (isDead)
         {
             spriteRenderer.color = Color.white;
-            GetComponent<Loot>().DropLoot();
+            GameEvents.TriggerDropLoot(gameObject);
             GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             GetComponent<BossAttack>().isAttacking = false;
             GetComponent<BossAttack>().rangeRadius = 0;
@@ -103,7 +110,7 @@ public class BossHealth : MonoBehaviour, IDamageable
             isDead = false;
             GameEvents.TriggerAddPlayerTime("Combat", 0, false);
             animator.SetTrigger("Rise");
-            DialogueUI.Instance.ShowDialogue(deathDialogue);
+            GameEvents.TriggerShowDialogue(deathDialogue);
         }
     }
 
@@ -169,8 +176,8 @@ public class BossHealth : MonoBehaviour, IDamageable
             deathToggle = true;
             bossHealth = 0;
             isDead = true;
-            if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
-                mm.OnBossDefeated();
+            // TODO: I Kinda forgot what this does, i guess test the game and see what bugs arise?
+            //if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm)) mm.OnBossDefeated();
             StartCoroutine(Defeat());
         }
         else if (bossHealth <= phase2Health) phase2 = true;

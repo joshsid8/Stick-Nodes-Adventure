@@ -46,7 +46,7 @@ namespace scripies.Dialogue
         [Space(10)] [Header("Questing")] [Tooltip("Will this NPC assign a quest for the player?")]
         public bool willGiveQuest;
 
-        public QuestSO questToOffer;
+        public ScriptableObject questToOffer;
 
         public bool isQuestInteraction;
         public DialogueObject itemCheckFailureDialogue;

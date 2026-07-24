@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
+using scripies.Core;
 using scripies.Player;
 using UnityEngine;
 
 namespace scripies.Dialogue
 {
-    public class DialogueTrigger : MonoBehaviour
+    public class DialogueTrigger : MonoBehaviour, IDialogueTrigger
     {
         public float chatRadius;
         public Transform chatPoint;
@@ -60,9 +62,17 @@ namespace scripies.Dialogue
 
             if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
         }
-
-        public void AddDialogue(DialogueObject dialogueObject) => dialogue.Add(dialogueObject);
-
+        
+        public void AddDialogue(ScriptableObject dialogueObject) => dialogue.Add(dialogueObject as DialogueObject);
+        
+        private void OnEnable() => GameEvents.OnToggleDialogueTrigger += ToggleDialogueTrigger;
+        private void OnDisable() => GameEvents.OnToggleDialogueTrigger -= ToggleDialogueTrigger;
+        
+        private void ToggleDialogueTrigger(GameObject obj, bool state)
+        {
+            if (obj == gameObject) isForced = state;
+        }
+        
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.cyan;
@@ -80,5 +90,11 @@ namespace scripies.Dialogue
             isFacingRight = !isFacingRight;
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
+
+        public bool Enabled { get; set; }
+        public DialogueObject[] Dialogue { get; }
+        public bool IsForced { get; set; }
+        public Transform ChatPoint { get; }
+        public float ChatRadius { get; }
     }
 }

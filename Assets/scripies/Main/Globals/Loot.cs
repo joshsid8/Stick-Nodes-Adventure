@@ -1,4 +1,5 @@
 using System;
+using scripies.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -25,8 +26,12 @@ public class Loot : MonoBehaviour
     [SerializeField] private float minPopY;
     [SerializeField] private float maxPopY;
 
-    public void DropLoot()
+    private void OnEnable() => GameEvents.DropLoot += DropLoot;
+    private void OnDisable() => GameEvents.DropLoot -= DropLoot;
+
+    private void DropLoot(GameObject obj)
     {
+        if (obj != gameObject) return;
         if (dropping)
         {
             dropping = false;

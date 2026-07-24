@@ -21,8 +21,8 @@ namespace scripies.Enemy
             ec = GetComponent<EnemyController>();
             ea = GetComponent<EnemyAttack>();
         }
-
-        private void UpdatePartners()
+        //We will have to use ITarget in PlayerHealth for this to work
+        /*private void UpdatePartners()
         {
             prevState = ea.styleMode;
             var allies = PlayerHealth.Instance.aggressiveEnemies;
@@ -32,7 +32,7 @@ namespace scripies.Enemy
                     !prePartners.Contains(ally))
                     prePartners.Add(ally);
             partners = prePartners.ToArray();
-        }
+        }*/
 
         // Update is called once per frame
         private void Update()

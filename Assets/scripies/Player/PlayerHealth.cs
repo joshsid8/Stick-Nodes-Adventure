@@ -151,9 +151,9 @@ namespace scripies.Player
             {
                 deathToggle = true;
                 isDead = true;
-                GameEvents.PlaySound(null);
                 GameEvents.TriggerPlayerDeath();
                 GameEvents.TriggerJumpScare();
+                GameEvents.TriggerSound();
                 yield return new WaitForSeconds(respawnTime);
                 StartCoroutine(Spawn(0, true));
                 playerHealth = playerMaxHealth * 0.25f;

@@ -5,6 +5,7 @@ namespace scripies.Core
     public interface IEnemyStatus
     {
         // Health
+        float CurrentHealth { get; }
         bool IsDead { get; }
         bool IsStunned { get; }
         

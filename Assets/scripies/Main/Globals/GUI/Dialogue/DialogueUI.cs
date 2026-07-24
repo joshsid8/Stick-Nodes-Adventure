@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using scripies.Core;
 using UnityEngine;
 using TMPro;
 
@@ -41,10 +42,20 @@ namespace scripies.Dialogue
             CloseDialogue();
         }
 
+        private void OnEnable()
+        {
+            gameObject.SetActive(false);
+            GameEvents.ShowDialogue += ShowDialogue;
+        }
+
+        private void OnDisable() => GameEvents.ShowDialogue -= ShowDialogue;
+
         private void Update() => textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;
 
-        public void ShowDialogue(DialogueObject dialogueObject, NPC npc = null)
+        public void ShowDialogue(ScriptableObject dO, NPC npc = null)
         {
+            var dialogueObject = dO as DialogueObject;
+            if (dialogueObject == null) return;
             if (npc != null) currentNpc = npc;
             CloseAll();
             playerBars.SetActive(false);
@@ -94,16 +105,15 @@ namespace scripies.Dialogue
         {
             if (dialogueObject.isQuestInteraction && dialogueObject.questToOffer != null)
             {
-                if (InvManager.Instance == null || InvManager.Instance.invIndex == null)
-                    Debug.LogError("Quest Check: InvManager or its Index is not ready!");
+                var quest = dialogueObject.questToOffer as QuestSO;
+                if (InvManager.Instance == null || InvManager.Instance.invIndex == null || quest == null)
+                    Debug.LogError("Quest Check: InvManager or its Index is not ready... or the quest is null.");
                 else
                 {
-                    var needs = new (CollectableSOBase id, int count)[dialogueObject.questToOffer.objectsToInteract
+                    var needs = new (CollectableSOBase id, int count)[quest.objectsToInteract
                         .Length];
-                    for (var i = 0; i < dialogueObject.questToOffer.objectsToInteract.Length; i++)
-                        needs[i] = (dialogueObject.questToOffer.objectsToInteract[i],
-                            dialogueObject.questToOffer.numberOfObjects[i]);
-
+                    for (var i = 0; i < quest.objectsToInteract.Length; i++)
+                        needs[i] = (quest.objectsToInteract[i], quest.numberOfObjects[i]);
                     var hasItems = InvManager.Instance.invIndex.MeetsAllCounts(needs);
                     if (!hasItems)
                     {
@@ -132,17 +142,6 @@ namespace scripies.Dialogue
 
         private void CloseDialogue(DialogueObject dialogueObject = null)
         {
-            // This were the old way to complete a speakto quest, it was expensive. now we use events!
-            /*if (dialogueObject != null && dialogueObject.isQuestInteraction && dialogueObject.completeSpeakQuestOnClose)
-            {
-                var slots = QuestLogManager.Instance.questSlots;
-                foreach (var slot in slots)
-                    if (slot != null && slot.questType == Quest.QuestType.SpeakTo && slot.nTi == currentNpc)
-                    {
-                        slot.questCompleted = true;
-                        print("speakto quest done");
-                    }
-            }*/
             OnDialogueClose?.Invoke(currentNpc);
             if (dialogueObject != null)
             {
@@ -154,7 +153,6 @@ namespace scripies.Dialogue
                     GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>()
                         .AddDialogue(dialogueObject.alteredExternalDialogue);
             }
-
             ClearData();
         }
 
@@ -210,7 +208,7 @@ namespace scripies.Dialogue
                         dialogueObject.newBoolValues[i]);
             }
 
-            if (dialogueObject.willGiveQuest) QuestLogManager.Instance.AssignQuest(dialogueObject.questToOffer);
+            if (dialogueObject.willGiveQuest) QuestLogManager.Instance.AssignQuest(dialogueObject.questToOffer as QuestSO);
 
             if (dialogueObject.canDropItem)
             {

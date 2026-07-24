@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using scripies.Enemy;
 using UnityEngine;
 
 public class EnemyDatabase : MonoBehaviour

@@ -45,7 +45,7 @@ public class BossAttack : MonoBehaviour
     private bool noMercy;
     private Vector3 originalPosition;
     
-    private DialogueTrigger dt;
+    private IDialogueTrigger dt;
     private BossHealth bh;
     private Animator animator;
 
@@ -53,7 +53,7 @@ public class BossAttack : MonoBehaviour
     {
         bh = GetComponent<BossHealth>();
         animator = GetComponent<Animator>();
-        dt = GetComponent<DialogueTrigger>();
+        dt = GetComponent<IDialogueTrigger>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -82,7 +82,7 @@ public class BossAttack : MonoBehaviour
     
     private void AttackSystem2()
     {
-        dt.enabled = false;
+        GameEvents.TriggerToggleDialogue(gameObject, false);
         GameEvents.TriggerAddPlayerTime("Combat", 69);
         canFacePlayer = true;
         if (canAttack && !bh.isStunned)
@@ -118,9 +118,9 @@ public class BossAttack : MonoBehaviour
         else if (currentAttackCooldown <= 0 && isAttacking && isGrounded) canAttack = true;
         
         if (!ps.IsDead && playerIsDead) playerIsDead = false;
-        inRange = Physics2D.OverlapCircle(dt.chatPoint.position, dt.chatRadius, LayerMask.GetMask("Player"));
+        inRange = Physics2D.OverlapCircle(dt.ChatPoint.position, dt.ChatRadius, LayerMask.GetMask("Player"));
         
-        if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.enabled && noMercy) 
+        if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.Enabled && noMercy) 
             if (!bh.isDead && !bh.deathToggle) isAttacking = true; 
         
         if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
@@ -174,15 +174,9 @@ public class BossAttack : MonoBehaviour
             noMercy = true;
             if (dialogueNo <= bh.introDialogue.Length - 1)
             {
-                dt.enabled = true;
-                if (dialogueNo == -1)
-                {
-                    dt.dialogue[0] = bh.introDialogue[dialogueNo + 1];
-                    dialogueNo++;
-                }
-                else if (dialogueNo == bh.introDialogue.Length) dt.dialogue[0] = bh.introDialogue[dialogueNo - 1];
-                else dt.dialogue[0] = bh.introDialogue[dialogueNo];
-                dt.isForced = true;
+                GameEvents.TriggerToggleDialogue(gameObject, true);
+                dt.AddDialogue(bh.introDialogue[dialogueNo]);
+                dt.IsForced = true;
                 dialogueNo++;
             }
         }

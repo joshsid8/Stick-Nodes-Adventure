@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using scripies.Enemy;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;

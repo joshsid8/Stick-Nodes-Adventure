@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using scripies.Dialogue;
+using scripies.Enemy;
 using scripies.Player;
 using TMPro;
 using UnityEngine;

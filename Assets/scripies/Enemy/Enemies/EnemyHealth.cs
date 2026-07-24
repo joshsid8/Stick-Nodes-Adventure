@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
 using UnityEngine;
+using UnityEngine.Scripting;
 using UnityEngine.Serialization;
 
 namespace scripies.Enemy
@@ -112,7 +113,7 @@ namespace scripies.Enemy
             if (isDead)
             {
                 OnEnemyKilled?.Invoke(ec.enemy);
-                GetComponent<Loot>().DropLoot();
+                GameEvents.TriggerDropLoot(gameObject);
                 ec.ChangeState(EnemyController.EnemyState.Dead);
                 GetComponent<Rigidbody2D>().gravityScale = 8;
                 spriteRenderer.color = Color.white;

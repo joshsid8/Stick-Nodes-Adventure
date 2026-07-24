@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using scripies.Dialogue;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;

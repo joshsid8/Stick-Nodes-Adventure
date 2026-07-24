@@ -233,11 +233,9 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         {
             case "Player":
                 return pa.CurrentHealth;
-            // TODO: i think i have to make IEnemyStatus for health checks
-            /*case "Enemy":
-                return entity.GetComponent<EnemyHealth>().enemyHealth;
+            case "Enemy":
             case "Boss":
-                return entity.GetComponent<BossHealth>().bossHealth;*/
+                return entity.GetComponent<IEnemyStatus>().CurrentHealth;
             default:
                 return 0;
         }
