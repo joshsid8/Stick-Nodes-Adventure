@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using scripies.Core;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -146,10 +147,10 @@ public abstract class BossBase : MonoBehaviour
         hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
-            PDamageable damageable = hit.collider.gameObject.GetComponent<PDamageable>();
+            var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (PDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
+                damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
                 damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
                 PlayerHealth.Instance.currentCombatTimer =+ 180f;
             }

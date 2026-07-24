@@ -1,3 +1,4 @@
+using scripies.Core;
 using UnityEngine;
 
 public class PlayerDefense : MonoBehaviour
@@ -43,6 +44,8 @@ public class PlayerDefense : MonoBehaviour
     private void Start()
     {
         canCounter = true;
+        canBlock = true;
+        GameEvents.OnPlayerCounter += StopBlocking;
     }
 
     // Update is called once per frame
@@ -98,21 +101,15 @@ public class PlayerDefense : MonoBehaviour
         {
             if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                var eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
+                var eDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
                 Vector2 distance = hits[i].collider.gameObject.transform.position - transform.position;
                 var dir = distance.x >= 0 ? 1 : -1;
                 if (eDamageable != null)
                 {
                     pa.energy += 10f;
-                    eDamageable.Damage(counterDamage, GetComponent<PlayerCombat>().damageFactor, 0, 1, true);
+                    eDamageable.Damage(counterDamage, pc.isFacingRight, GetComponent<PlayerCombat>().damageFactor, 0, 1, true);
                     eDamageable.Shock(counterStun * pf.attackPotency, counterKnockbackForce * dir * pf.attackPotency * transform.right);
-                    PlayerHealth.Instance.currentCombatTimer += PlayerHealth.Instance.combatTimer / 2;
                 }
-            }
-            else if (hits[i].collider.gameObject.layer == LayerMask.NameToLayer("EVFX") || hits[i].collider.gameObject.layer == LayerMask.NameToLayer("FX"))
-            {
-                var projectile = hits[i].collider.gameObject.GetComponent<Projectile>();
-                if (projectile != null) projectile.Deflect(1);
             }
         }
     }

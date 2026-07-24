@@ -2,12 +2,16 @@ using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using scripies.Core;
 using UnityEngine.UI;
 
 public class Shenanigans : MonoBehaviour
 {
     // This script is meant to manage literally every small function that occurs in this game, similar to the player manager.
     // If it cant be managed anywhere else without it being inconvenient, add it here!
+
+    [Header("Jump Scare Object")] 
+    [SerializeField] private Image jkObjImage;
     
     [Header("Stored Object")]
     public GameObject storedObj;
@@ -22,22 +26,36 @@ public class Shenanigans : MonoBehaviour
             return;
         }
         Instance = this;
+        
+        GameEvents.JumpScare += JumpScare;
+        GameEvents.StopTime += StopTime;
+    }
+    
+    private void StopTime(float time = 0.2f) => StartCoroutine(StopTimeC(time));
+    
+    private static IEnumerator StopTimeC(float time = 0.2f)
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(time);
+        Time.timeScale = 1;
     }
 
-    public IEnumerator JumpScare(GameObject jsObj = null,Image image = null, float duration = 0.08f, float fadeMult = 1.5f)
+    private void JumpScare(Image image, float duration, float fadeMult) => StartCoroutine(StartJumpScare(image, duration, fadeMult)); 
+
+    private IEnumerator StartJumpScare(Image image, float duration, float fadeMult)
     {
-        if (jsObj != null)
+        if (jkObjImage != null)
         {
-            if (image != null) jsObj.GetComponent<Image>().sprite = image.sprite;
-            jsObj.GetComponent<Image>().color = new Color(1,1,1,1);
-            jsObj.GetComponent<Image>().enabled = true;
+            if (image != null) jkObjImage.sprite = image.sprite;
+            jkObjImage.color = new Color(1,1,1,1);
+            jkObjImage.enabled = true;
             yield return new WaitForSeconds(duration);
-            while (jsObj.GetComponent<Image>().color.a > 0)
+            while (jkObjImage.color.a > 0)
             {
-                jsObj.GetComponent<Image>().color -= new Color(1, 0, 0, Time.deltaTime * fadeMult);
+                jkObjImage.color -= new Color(1, 0, 0, Time.deltaTime * fadeMult);
                 yield return new WaitForFixedUpdate();
             }
-            jsObj.GetComponent<Image>().enabled = false;
+            jkObjImage.enabled = false;
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using scripies.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -91,7 +92,7 @@ public class EnemyPatrol : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         isPatrolling = false;
         isWalking = false;
-        PlayerHealth.Instance.currentCombatTimer = PlayerHealth.Instance.combatTimer;
+        GameEvents.TriggerAddPlayerTime("Combat", 5, true);
         
         yield return new WaitForSeconds(0.5f);
         if (TryGetComponent<EnemyController>(out var ec)) ec.ChangeState(EnemyController.EnemyState.Zoning);

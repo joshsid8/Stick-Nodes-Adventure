@@ -1,3 +1,4 @@
+using scripies.Core;
 using UnityEngine;
 
 public class Pillar : AbilityBase
@@ -8,7 +9,7 @@ public class Pillar : AbilityBase
 
     private void OnDestroy()
     {
-        if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
+        if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
     }
     
 }

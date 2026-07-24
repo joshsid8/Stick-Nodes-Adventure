@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using scripies.Core;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -23,71 +23,26 @@ public class PerformAbility : MonoBehaviour
     
     [HideInInspector] public bool isActivated;
     [HideInInspector] public bool unavailable;
-    private int currentSlot;
-    private int currentBlastType;
+    public int currentSlot;
+    public int currentBlastType;
     
-    private PlayerController pc;
-    private PlayerAbility pa;
-    private EnemyPatrol ep;
-    private BossAttack ba;
+    protected IPlayerStatus pa;
+    private IEnemyStatus es;
 
     private void Start()
     {
-        if (casterType == CasterType.Player)
-        {
-            pa = GetComponent<PlayerAbility>();
-            pc = GetComponent<PlayerController>();
-        }
-        else
-        {
-            ep = GetComponent<EnemyPatrol>();
-            ba = GetComponent<BossAttack>();
-        }
+        if (casterType == CasterType.Player) pa = GetComponent<IPlayerStatus>();
+        else es = GetComponent<IEnemyStatus>();
     }
 
     private void Update()
     {
         unavailable = Physics2D.OverlapCircle(new Vector2(abilityPoint.position.x, abilityPoint.position.y), 1f, terrainLayers);
         if (casterType == CasterType.Player)
-            if (isActivated && pa.currentAbilityCooldown <= 0) isActivated = false;
+            if (isActivated && pa.CurrentAbilityCooldown <= 0) isActivated = false;
     }
 
-    public void Execute(int blastType = 0, int slot = 0)
-    {
-        if (casterType != CasterType.Player || isActivated) return;
 
-        var ability = objects[slot];
-        if (ability == null) return;
-        
-        var prefabBase = ability.abilityPrefab.GetComponent<AbilityBase>() ?? ability.abilityPrefab.GetComponentInChildren<AbilityBase>();
-
-        if (prefabBase == null)
-        {
-            Debug.LogError("Ability prefab missing AbilityBase component!");
-            return;
-        }
-
-        var totalAmount = Mathf.Round(ability.amount * abilityAmountMult[slot]);
-        var energyReq = ability.energyRequired == 0 ? prefabBase.energyRequired : ability.energyRequired;
-        
-        var hasEnoughEnergy = pa.energy >= energyReq * totalAmount;
-        if (hasEnoughEnergy && !unavailable)
-        {
-            isActivated = true;
-            currentBlastType = blastType;
-            currentSlot = slot;
-            pa.isPerformingAbility = true;
-
-            var animName = blastType switch
-            {
-                0 => pc.isGrounded ? "Fire" : "AirFire",
-                1 => "Pillar",
-                2 => "Beam",
-                _ => "Fire"
-            };
-            pa.animator.Play(animName);
-        }
-    }
     
     public void Perform(AbilityObjSO ability) => StartCoroutine(SpawnRoutine(ability, casterType == CasterType.Player ? currentBlastType : -1));
 
@@ -107,7 +62,7 @@ public class PerformAbility : MonoBehaviour
 
         for (var i = 0; i < amount; i++)
         {
-            if (casterType == CasterType.Player && blastType == 0 && ability.isHoldable && !pa.isHolding) break;
+            if (casterType == CasterType.Player && blastType == 0 && ability.isHoldable && !pa.IsHoldingAbility) break;
             if (!unavailable && ability.shockwave && i != 0 || !unavailable && !ability.shockwave)
             {
                 Spawn(i, blastType, xOffset, isFacingRight, casterFactor, ability);
@@ -118,11 +73,11 @@ public class PerformAbility : MonoBehaviour
             }
             else if (i == 0)
             {
-                pa.isPerformingAbility = false;
+                GameEvents.TriggerPlayerPerformAbility(false);
                 yield break;
             }
         }
-        if (casterType == CasterType.Player && blastType == 0) pa.isPerformingAbility = false;
+        if (casterType == CasterType.Player && blastType == 0) GameEvents.TriggerPlayerPerformAbility(false);;
     }
 
     private void Spawn(int i, int blastType, float xOffset, bool isFacingRight, int casterFactor, AbilityObjSO ability)
@@ -132,7 +87,7 @@ public class PerformAbility : MonoBehaviour
         GameObject[] newObjs = {Instantiate(ability.abilityPrefab, spawnPos[0], spawnRot), Instantiate(ability.abilityPrefab, spawnPos[1], spawnRot)};
         if (newObjs[0].IsDestroyed() || newObjs[1].IsDestroyed())
         {
-            pa.isPerformingAbility = false;
+            GameEvents.TriggerPlayerPerformAbility(false);
             return;
         }
         if (ability.shockwave)
@@ -150,8 +105,8 @@ public class PerformAbility : MonoBehaviour
 
                     if (casterType == CasterType.Player)
                     {
-                        pa.energy -= abScript.energyRequired / 2;
-                        pa.currentAbilityCooldown = abScript.cooldown * pa.abilityCooldownMult;
+                        GameEvents.AddPlayerEnergy(-abScript.energyRequired / 2);
+                        GameEvents.TriggerAddPlayerTime("Ability", abScript.cooldown);
                     }
                 }
             }
@@ -170,8 +125,8 @@ public class PerformAbility : MonoBehaviour
 
                 if (casterType == CasterType.Player)
                 {
-                    pa.energy -= abScript.energyRequired;
-                    pa.currentAbilityCooldown = abScript.cooldown * pa.abilityCooldownMult;
+                    GameEvents.AddPlayerEnergy(-abScript.energyRequired);
+                    GameEvents.TriggerAddPlayerTime("Ability", abScript.cooldown);
                 }
             }
         }
@@ -179,9 +134,8 @@ public class PerformAbility : MonoBehaviour
 
     private bool GetFacingRight()
     {
-        if (casterType == CasterType.Player) return pc.isFacingRight;
-        if (ba != null) return ba.isFacingRight;
-        if (ep != null) return ep.ec.isFacingRight;
+        if (casterType == CasterType.Player) return pa.IsFacingRight;
+        if (es != null) return es.IsFacingRight;
         return true;
     }
 }

@@ -6,11 +6,10 @@ SNADV Notes
     Priorities:
         
         Replace as many references as possible with events
-            I got junie to make a static class with certain events, and a few interfaces
-                add more events and make any relevant script subscribe to them (very tedious)
-                Make use of the player status interface and finish off the use of the damageable interface
-                    so far, the player now uses this interface, and PDamageable is (almost) nugatory!
-                    finish all this off so i can remove the previous interface
+            Everything is in shambles!
+                The game is currently unplayable as of now
+                its only because certain shared utility scripts try to find player scripts, which arent allowed
+                find a way to use maybe interfaces or the events without much clutter
         
         What i want to do now is make hitboxes/knockback more accurate
             Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS

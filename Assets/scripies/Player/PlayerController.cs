@@ -124,7 +124,8 @@ public class PlayerController : MonoBehaviour
         availableWallsLeft = availableWalls;
         PlayerHealth.Instance.ApplyCombat(0);
         
-        GameEvents.OnPlayerAction += OnPlayerAction;
+        GameEvents.PlayerAction += OnPlayerAction;
+        GameEvents.AddPlayerTime += AddCooldown;
     }
 
     // Update is called once per frame
@@ -145,9 +146,25 @@ public class PlayerController : MonoBehaviour
         InCombat();
     }
 
-    void OnPlayerAction(string action)
+    private void OnPlayerAction(string action)
     {
         animator.SetTrigger(action);
+    }
+
+    private void AddCooldown(string variable, float cooldown, bool additive = false)
+    {
+        switch (variable)
+        {
+            case "Dash":
+                dashCooldown = additive ? dashCooldown + cooldown : cooldown;
+                break;
+            case "Ability":
+                pab.currentAbilityCooldown = additive ? pab.currentAbilityCooldown + cooldown : cooldown;
+                break;
+            case "Combat":
+                PlayerHealth.Instance.ApplyCombat(cooldown, additive);
+                break;
+        }
     }
     
     private void FixedUpdate()

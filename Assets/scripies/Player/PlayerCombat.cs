@@ -1,6 +1,7 @@
 using System.Collections;
+using scripies.Core;
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 public class PlayerCombat : MonoBehaviour
 {
     [Header("Ground Attack")]
@@ -51,13 +52,12 @@ public class PlayerCombat : MonoBehaviour
     public float procDmg;
     public float procInterval;
     
-    [Space]
-    [Header("References")]
+    // Components
     private RaycastHit2D[] hits;
     private Animator animator;
     private PlayerController pc;
     private PlayerAbility pa;
-    public PlayerInput playerInput;
+    //public PlayerInput playerInput;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -96,11 +96,11 @@ public class PlayerCombat : MonoBehaviour
 
         for (var i = 0; i < hits.Length; i++)
         {
-            var eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
+            var eDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(damageAmount * attackDamageMult, damageFactor, (EDamageables.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
+                eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight,damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
                 eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right, knockbackForces[0], knockbackTimes[0] * attackPotency);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 PlayerHealth.Instance.ApplyCombat(additive: true);
@@ -119,15 +119,15 @@ public class PlayerCombat : MonoBehaviour
 
         for (var i = 0; i < hits.Length; i++)
         {
-            var eDamageable = hits[i].collider.gameObject.GetComponent<EDamageables>();
+            var eDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
 
             if (eDamageable != null)
             {
-                eDamageable.Damage(damageAmount * attackDamageMult, damageFactor, (EDamageables.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
+                eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
                 eDamageable.Shock(stunTime * attackPotency, Vector2.zero);
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 if (PlayerHealth.Instance.currentCombatTimer < 30) PlayerHealth.Instance.ApplyCombat(additive: true);
-                if (hits[i].collider.CompareTag("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
+                /*if (hits[i].collider.CompareTag("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
                 {
                     StartCoroutine(AirCombo(hits[i].collider.gameObject));
                     pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, knockbackDirections[1].y);
@@ -137,7 +137,9 @@ public class PlayerCombat : MonoBehaviour
                 {
                     eDamageable.Shock(0, new Vector2(knockbackDirections[1].x * attackPotency,
                         knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], knockbackTimes[1] * attackPotency);
-                }
+                }*/
+                eDamageable.Shock(0, new Vector2(knockbackDirections[1].x * attackPotency,
+                    knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], knockbackTimes[1] * attackPotency);
                 airComboAmount--;
             }
         }
@@ -148,7 +150,7 @@ public class PlayerCombat : MonoBehaviour
 
     private IEnumerator AirCombo(GameObject target)
     {
-        while (airComboAmount > 0 && !pc.isGrounded && target.GetComponent<EnemyHealth>().movable)
+        while (airComboAmount > 0 && !pc.isGrounded)
         {
             target.transform.position = new Vector3(airAttackTransform.transform.position.x + 1f, airAttackTransform.transform.position.y, 0);
             isAirComboing = true;

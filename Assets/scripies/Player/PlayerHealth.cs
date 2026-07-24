@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
 using scripies.Core;
 using TMPro;
 using UnityEngine;
@@ -57,6 +56,21 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerStatus
     [HideInInspector] public PlayerAbility pa;
     [HideInInspector] public PlayerCombat pf;
     
+    [Header("Getters and Setters")]
+    public float CurrentHealth { get; private set;}
+    public float MaxHealth { get; private set; }
+    public bool IsDead { get; private set; }
+    public bool IsStunned { get; private set;}
+    public Vector3 Position { get; private set; }
+    public bool IsGrounded { get; private set;}
+    public bool IsFacingRight { get; private set; }
+    public bool IsCountering { get; private set; }
+    public bool IsPerformingAction { get; private set; }
+    public bool IsHoldingAbility { get;  private set;}
+    public bool IsPerformingAbility { get; private set;}
+    public float CurrentEnergy { get; private set; }
+    public float CurrentAbilityCooldown { get; private set; }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -110,6 +124,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerStatus
         Position = transform.position;
         CurrentHealth = playerHealth;
         MaxHealth = playerMaxHealth;
+        IsCountering = pd.counterWindow;
+        IsGrounded = pc.isGrounded;
+        IsFacingRight = pc.isFacingRight;
+        IsHoldingAbility = pa.isHolding;
+        IsPerformingAction = pc.isPerformingAction;
+        IsPerformingAbility = pa.isPerformingAbility;
+        CurrentEnergy = pa.energy;
+        CurrentAbilityCooldown = pa.currentAbilityCooldown;
     }
 
     private void Animation()
@@ -130,9 +152,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerStatus
         {
             deathToggle = true;
             isDead = true;
-            AudioManager.Instance.sfxSource.Play();
+            GameEvents.PlaySound(null);
             GameEvents.TriggerPlayerDeath();
-            StartCoroutine(Shenanigans.Instance.JumpScare(GameObject.Find("JumpScare")));
+            GameEvents.TriggerJumpScare();
             yield return new WaitForSeconds(respawnTime);
             StartCoroutine(Spawn(0, true));
             playerHealth = playerMaxHealth * 0.25f;
@@ -167,8 +189,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerStatus
             case true when pd.isBlocking && pd.counterWindow && damageFactor < 2:
                 // perfect blocking / counter
                 pc.animator.SetTrigger("Counter");
-                StartCoroutine(AreaManager.Instance.StopTime(0.5f));
                 pd.counterWindow = false;
+                GameEvents.TriggerStopTime(0.5f);
                 StartCoroutine(ApplyDamage(calcDamage * pd.counterDamageResistance, false, damageOverTime, procDmg, procInterval, isTrue));
                 break;
             case true:
@@ -264,7 +286,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerStatus
     private void JumpRotate()
     {
         if (jumpRotationTimer > 0) jumpRotationTimer -= Time.deltaTime;
-        if (aggressiveEnemies.Count > 1 && jumpRotationTimer <= 0)
+        // TODO: Use the interface ITarget instead of referencing enemy scripts
+        /*if (aggressiveEnemies.Count > 1 && jumpRotationTimer <= 0)
         {
             var agg = aggressiveEnemies[aggressiveEnemyID];
             foreach (var enemy in aggressiveEnemies)
@@ -281,17 +304,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerStatus
             jumpRotationTimer = agg.GetComponent<EnemyJump>().turnTime;
             aggressiveEnemyID++;
             if (aggressiveEnemyID >= aggressiveEnemies.Count) aggressiveEnemyID = 0;
-        }
+        }*/
     }
-
-    public float CurrentHealth { get; private set;}
-    public float MaxHealth { get; private set; }
-    public bool IsDead { get; private set; }
-    public bool IsStunned { get; private set;}
-    public Vector3 Position { get; private set; }
     
-    
-
     public void Heal(float amount)
     {
         if (playerHealth < playerMaxHealth) playerHealth += amount;

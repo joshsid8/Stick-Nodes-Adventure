@@ -5,7 +5,7 @@ using scripies.Core;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class EnemyHealth : MonoBehaviour, EDamageables
+public class EnemyHealth : MonoBehaviour, IDamageable, IEnemyStatus
 {
     public static event Action<Enemy> OnEnemyKilled;
 
@@ -48,9 +48,17 @@ public class EnemyHealth : MonoBehaviour, EDamageables
     private EnemyController ec;
     private EnemyAttack ea;
     private EnemyPatrol ep;
-    private Identifier identifier;
     public bool isLight;
     public bool isOneTime;
+    
+    [Header("Getters & Setters")]
+    public float CurrentHealth { get; private set; }
+    public float MaxHealth { get; private set;}
+    public bool IsDead { get; private set;}
+    public bool IsStunned { get; private set; }
+    public Vector3 Position { get; private set;}
+    public bool IsGrounded { get; private set; }
+    public bool IsFacingRight { get; private set; }
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -63,7 +71,6 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         ea = GetComponent<EnemyAttack>();
         ep = GetComponent<EnemyPatrol>();
         ec = GetComponent<EnemyController>();
-        identifier = GetComponent<Identifier>();
         GameEvents.TriggerEnemySpawn(gameObject);
     }
 
@@ -80,6 +87,15 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             else print($"Clueful: styleMode is {ea.styleMode} and phase2Style is {phase2Style}");
         }
         if (isDead && ep.isGrounded) ep.rb.linearVelocity = new Vector2(0, ep.rb.linearVelocity.y);
+        
+        // Interface refs D:
+        IsDead = isDead;
+        IsStunned = isStunned;
+        Position = transform.position;
+        CurrentHealth = enemyHealth;
+        MaxHealth = enemyMaxHealth;
+        IsGrounded = ep.isGrounded;
+        IsFacingRight = ec.isFacingRight;
     }
     
     private void Stunned()
@@ -113,17 +129,17 @@ public class EnemyHealth : MonoBehaviour, EDamageables
                 spriteRenderer.enabled = true;
                 yield return new WaitForSeconds(0.025f);
             }
-            PlayerHealth.Instance.ApplyCombat(0f);
             Destroy(gameObject);
         }
     }
 
-    public void Damage(float damageAmount, int damageFactor = 0,
-        EDamageables.ElementType elementType = EDamageables.ElementType.Normal, float elementFactor = 1f, bool isTrue = false,
+
+    public void Damage(float damageAmount, bool facingRight = true, int damageFactor = 0,
+        IDamageable.ElementType elementType = 0, float elementFactor = 1f, bool isTrue = false,
         bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
     {
         var calcDamage = damageAmount * elementFactor;
-        if (elementType != EDamageables.ElementType.Normal)
+        if (elementType != IDamageable.ElementType.Normal)
         {
             for (var i = 0; i < defElementFactors.Count; i++)
             {
@@ -132,11 +148,11 @@ public class EnemyHealth : MonoBehaviour, EDamageables
             }
         }
         
-        if (isBlocking && !isTrue)
+        if (isBlocking && !isTrue && damageFactor < 1)
         {
             enemyHealth -= calcDamage * blockResistance;
         }
-        else if (isCountering && !isTrue) animator.SetTrigger("Counter");
+        else if (isCountering && !isTrue && damageFactor < 2) animator.SetTrigger("Counter");
         else
         {
             enemyHealth -= calcDamage;
@@ -173,6 +189,8 @@ public class EnemyHealth : MonoBehaviour, EDamageables
         if (movable) kb.CallKnockback(knockbackDirection * (isBlocking ? blockResistance : 1f), knockbackForce, knockbackTime);
     }
 
+    public void Heal(float amount) => enemyHealth += amount;
+    
     private void Flash()
     {
         spriteRenderer.color = damageTint;

@@ -1,3 +1,4 @@
+using scripies.Core;
 using UnityEngine;
 
 public class Beam : AbilityBase
@@ -11,7 +12,7 @@ public class Beam : AbilityBase
     protected override void Update()
     {
         base.Update();
-        if (pa != null && typeFactor == 1) pa.currentAbilityCooldown = cooldown * pa.abilityCooldownMult;
+        if (pa != null && typeFactor == 1) GameEvents.TriggerAddPlayerTime("Ability", cooldown, false);
         if (isFacingRightDirection) transform.eulerAngles = Vector3.zero;
         else transform.eulerAngles = new Vector3(0, 180, 0);
         transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -25,7 +26,7 @@ public class Beam : AbilityBase
     
     private void OnDestroy()
     {
-        if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
+        if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
     }
 
 }

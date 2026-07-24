@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using scripies.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -80,8 +81,8 @@ public class BossAttack : MonoBehaviour
     
     private void AttackSystem2()
     {
-        GetComponent<DialogueTrigger>().enabled = false;
-        PlayerHealth.Instance.currentCombatTimer = 69;
+        dt.enabled = false;
+        GameEvents.TriggerAddPlayerTime("Combat", 69);
         canFacePlayer = true;
         if (canAttack && !bh.isStunned)
         {

@@ -1,4 +1,5 @@
 using System;
+using scripies.Core;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -34,16 +35,18 @@ public class AudioManager : MonoBehaviour
         musicSource.clip = backgroundMusic[0];
         musicSource.Play();
         if (withPlayer) player = PlayerHealth.Instance;
+        
+        GameEvents.PlaySound += PlaySfx;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         QuietOnGUI();
         if (player != null) InCombat();
     }
 
-    void InCombat()
+    private void InCombat()
     {
         if (player.inCombat && !toggle)
         {
@@ -62,7 +65,14 @@ public class AudioManager : MonoBehaviour
             musicSource.Play();
         }
     }
-    void QuietOnGUI()
+
+    private void PlaySfx(AudioClip clip = null)
+    {
+        sfxSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        sfxSource.PlayOneShot(clip ?? sFXMusic[0]);
+    }
+    
+    private void QuietOnGUI()
     {
         for (int i = 0; i < gUI.Length; i++)
         {

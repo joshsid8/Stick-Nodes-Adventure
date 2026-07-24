@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using scripies.Core;
 using TMPro;
 using UnityEngine.UI;
 
-public class BossHealth : MonoBehaviour, EDamageables
+public class BossHealth : MonoBehaviour, IDamageable
 {
     [Header("Health")]
     private Image healthBar;
@@ -45,6 +46,12 @@ public class BossHealth : MonoBehaviour, EDamageables
     private BossAttack ba;
     private Animator animator;
     
+    [Header("Getters and Setters")]
+    public float CurrentHealth { get; private set;}
+    public float MaxHealth { get; private set;}
+    public bool IsDead { get; private set;}
+    public Vector3 Position { get; private set;}
+    
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -71,6 +78,12 @@ public class BossHealth : MonoBehaviour, EDamageables
         bossTitle.text = bossName;
         stunTime -= Time.deltaTime;
         isStunned = stunTime > 0;
+        
+        // Interface refs D:
+        IsDead = isDead;
+        CurrentHealth = bossHealth;
+        MaxHealth = bossMaxHealth;
+        Position = transform.position;
     }
     
     private IEnumerator Defeat()
@@ -94,25 +107,25 @@ public class BossHealth : MonoBehaviour, EDamageables
         }
     }
 
-    public void Damage(float damageAmount, int damageFactor = 0,
-        EDamageables.ElementType elementType = EDamageables.ElementType.Normal, float elementFactor = 1f, bool isTrue = false,
+    public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
+        IDamageable.ElementType elementType = 0, float elementFactor = 1f, bool isTrue = false,
         bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
     {
-        if (isBlocking && shieldHealth > 0)
+        if (isBlocking && shieldHealth > 0 && damageFactor < 1)
         {
             bossHealth -= damageAmount * dmgRes;
             shieldHealth -= damageAmount;
             spriteRenderer.color = damageTint / 2;
             isTinting = true;
         }
-        else if (isBlocking && shieldHealth <= 0 && !isTrue)
+        else if (isBlocking && shieldHealth <= 0 && !isTrue && damageFactor < 1)
         {
             animator.Play("Damaged");
             bossHealth -= damageAmount * 1.2f;
             spriteRenderer.color = damageTint;
             isTinting = true;
         }
-        else if (isCountering && !isTrue)
+        else if (isCountering && !isTrue && damageFactor < 2)
         {
             animator.Play("CSuccess");
             isCountering = false;
@@ -181,4 +194,5 @@ public class BossHealth : MonoBehaviour, EDamageables
             else kb.CallKnockback(knockbackDirection* transform.right, knockbackForce / 2 , knockbackTime);
         }
     }
+    public void Heal(float amount) => bossHealth += amount;
 }

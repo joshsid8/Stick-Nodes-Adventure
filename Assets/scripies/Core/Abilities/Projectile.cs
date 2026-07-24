@@ -48,8 +48,6 @@ public class Projectile : AbilityBase
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
-        playerTransform = PlayerHealth.Instance.gameObject.transform;
-        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
         objectRange = ccoll.radius / 3.3333333333f;
         
         if (anim != null) animator.Play(anim.name); 
@@ -156,11 +154,11 @@ public class Projectile : AbilityBase
         {
             if (hit.collider != null)
             {
-                switch (typeFactor)
+                /*switch (typeFactor)
                 {
                     case 1:
                         var eDamageable = hit.collider.gameObject.GetComponent<EDamageables>();
-                        Damageable(eDamageables: eDamageable);
+                        Damageable();
                         break;
                     case 2:
                         if (hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow)
@@ -182,7 +180,7 @@ public class Projectile : AbilityBase
                         if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
                         {
                             var eDmg = hit.collider.gameObject.GetComponent<EDamageables>();
-                            Damageable(eDamageables: eDmg);
+                            Damageable();
                         }
                         else if (entity.CompareTag("Player"))
                         {
@@ -200,28 +198,31 @@ public class Projectile : AbilityBase
                         }
                         else print("Clueless.");
                         break;
+                }*/
+                var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
+                var pStatus = hit.collider.gameObject.GetComponent<IPlayerStatus>();
+                if (pStatus != null && pStatus.IsCountering)
+                {
+                    deflected = true;
+                    GameEvents.TriggerPlayerAction("Counter");
+                    GameEvents.TriggerPlayerCounter();
                 }
+                
+                Damageable(damageable);
             }
         }
         if (!deflected && pierceAmount <= 0) Crash();
         else if (deflected) Deflect(typeFactor);
     }
     
-    protected override void Damageable(IDamageable pDamageable = null, EDamageables eDamageables = null)
+    protected override void Damageable(IDamageable damageable = null)
     {
-        if (pDamageable != null)
+        if (damageable != null)
         {
-            pDamageable.Damage(damage, isFacingRightDirection, typeFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            pDamageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
+            damageable.Damage(damage, isFacingRightDirection, typeFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            damageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
         }
-        else if (eDamageables != null)
-        {
-            eDamageables.Damage(damage, typeFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            eDamageables.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
-        }
-        PlayerHealth.Instance.ApplyCombat(2f, additive: true);
     }
-
     
     private void Crash()
     {
@@ -241,7 +242,7 @@ public class Projectile : AbilityBase
         Destroy(gameObject, 0.2f);
     }
 
-    public void Deflect(int factor)
+    private void Deflect(int factor)
     {
         typeFactor = factor;
         isFacingRightDirection = !isFacingRightDirection;

@@ -2,7 +2,6 @@
     "name": "Project.External",
     "rootNamespace": "",
     "references": [
-        "GUID:91c3f92d67bca374e880ed4f6a993d89",
         "GUID:a12f187f4332af14fb15d3b05d7b9674"
     ],
     "includePlatforms": [],

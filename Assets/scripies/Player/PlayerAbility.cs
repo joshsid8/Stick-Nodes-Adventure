@@ -1,5 +1,5 @@
+using scripies.Core;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,6 +33,7 @@ public class PlayerAbility : MonoBehaviour
         pd = GetComponent<PlayerDefense>();
         ability = GetComponent<PerformAbility>();
         maxEnergy = energy;
+        GameEvents.AddPlayerEnergy += AddEnergy;
     }
 
     // Update is called once per frame
@@ -57,12 +58,12 @@ public class PlayerAbility : MonoBehaviour
         if (canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && pc.canAct && !ability.isActivated)
             if (Input.GetButtonDown("Fire"))
             {
-                if (ability.objects[blastIndex].abilityPrefab.GetComponent<Projectile>() != null)
-                    ability.Execute(0, blastIndex);
+                if (ability.objects[blastIndex].abilityPrefab.GetComponent<Projectile>() != null) 
+                    Execute();
                 else if (ability.objects[blastIndex].abilityPrefab.GetComponentInChildren<Pillar>() != null)
-                    ability.Execute(1, blastIndex);
+                    Execute(1);
                 else if (ability.objects[blastIndex].abilityPrefab.GetComponentInChildren<Beam>() != null)
-                    ability.Execute(2, blastIndex);
+                    Execute(2);
             }
         
         if (!pc.isDashing && !pc.isWallSliding && pc.canAct)
@@ -72,7 +73,47 @@ public class PlayerAbility : MonoBehaviour
         if (currentAbilityCooldown <= 0) canAbility = true;
         else canAbility = false;
     }
+    
+    private void Execute(int slot = 0)
+    {
+        if (ability == null) return;
+        var abilitySo = ability.objects[slot];
+        var prefabBase = abilitySo.abilityPrefab.GetComponent<AbilityBase>() ?? abilitySo.abilityPrefab.GetComponentInChildren<AbilityBase>();
 
+        if (prefabBase == null)
+        {
+            Debug.LogError("Ability prefab missing AbilityBase component!");
+            return;
+        }
+
+        var totalAmount = Mathf.Round(abilitySo.amount * ability.abilityAmountMult[slot]);
+        var energyReq = abilitySo.energyRequired == 0 ? prefabBase.energyRequired : abilitySo.energyRequired;
+        
+        var hasEnoughEnergy = energy >= energyReq * totalAmount;
+        if (hasEnoughEnergy && !ability.unavailable)
+        {
+            ability.isActivated = true;
+            ability.currentBlastType = blastType;
+            ability.currentSlot = slot;
+            isPerformingAbility = true;
+
+            var animName = blastType switch
+            {
+                0 => pc.isGrounded ? "Fire" : "AirFire",
+                1 => "Pillar",
+                2 => "Beam",
+                _ => "Fire"
+            };
+            GameEvents.PlayerAction(animName);
+        }
+    }
+    
+    private void AddEnergy(float amount)
+    {
+        energy += amount;
+        if (energy > maxEnergy) energy = maxEnergy;
+    }
+    
     private void Energy()
     {
         if (!isPerformingAbility)

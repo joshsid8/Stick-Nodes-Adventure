@@ -77,14 +77,13 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     private List<GameObject> inContact = new List<GameObject>();
     [Space]
     [Header("References")]
-    public Transform playerTransform;
     public Animator animator;
     
     public GameObject parentObject;
     [FormerlySerializedAs("pillarCollider")]
     [FormerlySerializedAs("beamCollider")]
     public Collider2D coll;
-    public PlayerAbility pa;
+    protected IPlayerStatus pa;
     
     [FormerlySerializedAs("eruptAnim")]
     public AnimationClip anim;
@@ -108,12 +107,10 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     protected virtual void Start()
     {
         procTimer = 0;
-        pa = PlayerHealth.Instance.GetComponent<PlayerAbility>(); 
+        pa = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>(); 
         parentObject = transform.parent.gameObject;
         if (anim != null) animator.Play(anim.name);
         lifeTimer = lifeTime;
-        playerTransform = PlayerHealth.Instance.gameObject.transform;
-
         procTimes = lifeTime / proc;
         procTimes = energyRequired / procTimes;
     }
@@ -150,13 +147,13 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         if (inContact.Count != 0 && procTimer <= 0 && activeHitbox)
         {
-            switch (typeFactor)
+            /*switch (typeFactor)
             {
                 case 1:
                     foreach (var hit in inContact)
                     {
-                        var damageable = hit.gameObject.GetComponent<EDamageables>();
-                        Damageable(eDamageables: damageable);
+                        var damageable = hit.gameObject.GetComponent<IDamageable>();
+                        Damageable();
                     }
                     break;
                 case 2:
@@ -173,7 +170,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
                         if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
                         {
                             var eDmg = hit.gameObject.GetComponent<EDamageables>();
-                            Damageable(eDamageables: eDmg);
+                            Damageable();
                         }
                         else if (entity.CompareTag("Player"))
                         {
@@ -183,24 +180,23 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
                         else print("Clueless.");
                     }
                     break;
+            }*/
+            foreach (var hit in inContact)
+            {
+                var damageable = hit.gameObject.GetComponent<IDamageable>();
+                Damageable(damageable);
             }
             procTimer = proc;
         }
     }
 
-    protected virtual void Damageable(IDamageable pDamageable = null, EDamageables eDamageables = null)
+    protected virtual void Damageable(IDamageable damageable = null)
     {
-        if (pDamageable != null)
+        if (damageable != null)
         {
-            pDamageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            pDamageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
+            damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            damageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
         }
-        else if (eDamageables != null)
-        {
-            eDamageables.Damage(damage, damageFactor, (EDamageables.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            eDamageables.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
-        }
-        PlayerHealth.Instance.ApplyCombat(additive: true);
     }
     
     private void Proc()
@@ -210,7 +206,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
         {
             energyProc = proc;
-            if (pa != null && typeFactor == 1) pa.energy -= procTimes;
+            if (pa != null && typeFactor == 1) GameEvents.AddPlayerEnergy(-procTimes);
         }
         else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
     }
@@ -222,25 +218,26 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (lifeTimer > 0)
         {
             lifeTimer -= Time.deltaTime;
-            if (!pa.isHolding && isHoldable && typeFactor == 1) lifeTimer = 0;
+            if (!pa.IsHoldingAbility && isHoldable && typeFactor == 1) lifeTimer = 0;
             if (lifeTimer <= 0 && endAnim != null)
             {
-                if (pa != null && typeFactor == 1) pa.isPerformingAbility = false;
+                if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
                 animator.Play(endAnim.name);
             }
         }
     }
     
-    private static float GetHealth(GameObject entity)
+    private float GetHealth(GameObject entity)
     {
         switch (entity.tag)
         {
             case "Player":
-                return PlayerHealth.Instance.playerHealth;
-            case "Enemy":
+                return pa.CurrentHealth;
+            // TODO: i think i have to make IEnemyStatus for health checks
+            /*case "Enemy":
                 return entity.GetComponent<EnemyHealth>().enemyHealth;
             case "Boss":
-                return entity.GetComponent<BossHealth>().bossHealth;
+                return entity.GetComponent<BossHealth>().bossHealth;*/
             default:
                 return 0;
         }
