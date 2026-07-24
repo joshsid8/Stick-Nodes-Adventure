@@ -1,47 +1,50 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; // Required for Button
+using UnityEngine.UI;
 
-public class DialogueResponseHandler : MonoBehaviour
+namespace scripies.Dialogue
 {
-    [SerializeField] private RectTransform responseBox;
-    [SerializeField] private GameObject responseButtonsParent;
-
-    public Button yesButton;
-    public Button noButton;
-    public TMP_Text yesButtonText;
-    public TMP_Text noButtonText;
-
-    private DialogueUI dialogueUI;
-
-    private void Awake()
+    public class DialogueResponseHandler : MonoBehaviour
     {
-        dialogueUI = GetComponent<DialogueUI>();
-        responseBox.gameObject.SetActive(false);
-        responseButtonsParent.gameObject.SetActive(false);
-    }
+        [SerializeField] private RectTransform responseBox;
+        [SerializeField] private GameObject responseButtonsParent;
 
-    public void ShowResponses(DialogueObject dialogueObject)
-    {
-        dialogueUI.DecrementActiveGUICount();
-        responseButtonsParent.gameObject.SetActive(true);
-        responseBox.gameObject.SetActive(true);
+        public Button yesButton;
+        public Button noButton;
+        public TMP_Text yesButtonText;
+        public TMP_Text noButtonText;
 
-        yesButtonText.text = dialogueObject.YesResponse.ResponseText;
-        noButtonText.text = dialogueObject.NoResponse.ResponseText;
+        private DialogueUI dialogueUI;
 
-        yesButton.onClick.RemoveAllListeners();
-        noButton.onClick.RemoveAllListeners();
+        private void Awake()
+        {
+            dialogueUI = GetComponent<DialogueUI>();
+            responseBox.gameObject.SetActive(false);
+            responseButtonsParent.gameObject.SetActive(false);
+        }
 
-        yesButton.onClick.AddListener(() => OnPickedResponse(dialogueObject.YesResponse));
-        noButton.onClick.AddListener(() => OnPickedResponse(dialogueObject.NoResponse));
-    }
+        public void ShowResponses(DialogueObject dialogueObject)
+        {
+            dialogueUI.DecrementActiveGUICount();
+            responseButtonsParent.gameObject.SetActive(true);
+            responseBox.gameObject.SetActive(true);
 
-    private void OnPickedResponse(DialogueResponse response)
-    {
-        responseButtonsParent.gameObject.SetActive(false);
-        responseBox.gameObject.SetActive(false);
-        
-        dialogueUI.ShowDialogue(response.DialogueObject);
+            yesButtonText.text = dialogueObject.YesResponse.ResponseText;
+            noButtonText.text = dialogueObject.NoResponse.ResponseText;
+
+            yesButton.onClick.RemoveAllListeners();
+            noButton.onClick.RemoveAllListeners();
+
+            yesButton.onClick.AddListener(() => OnPickedResponse(dialogueObject.YesResponse));
+            noButton.onClick.AddListener(() => OnPickedResponse(dialogueObject.NoResponse));
+        }
+
+        private void OnPickedResponse(DialogueResponse response)
+        {
+            responseButtonsParent.gameObject.SetActive(false);
+            responseBox.gameObject.SetActive(false);
+
+            dialogueUI.ShowDialogue(response.DialogueObject);
+        }
     }
 }

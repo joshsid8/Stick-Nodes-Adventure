@@ -1,6 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic; // For Dictionary
-using System.Linq; // For Linq operations like Sum
+using System.Collections.Generic;
+using scripies.Player;
 
 public class PlayerManager : MonoBehaviour
 {

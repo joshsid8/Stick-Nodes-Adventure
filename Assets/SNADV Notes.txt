@@ -7,9 +7,14 @@ SNADV Notes
         
         Replace as many references as possible with events
             Everything is in shambles!
-                The game is currently unplayable as of now
-                its only because certain shared utility scripts try to find player scripts, which arent allowed
-                find a way to use maybe interfaces or the events without much clutter
+                There are boss scripts that want to reference dialogue scripts
+                It has caused a dilemma:
+                    Either move these scripts to the core assembly
+                        This causes a lot of more errors when tried, but will be more efficient if fixed
+                        The much harder path
+                    Or keep them in main, but find a way to reference them regardless
+                       This is will cost more compilation time if done
+                       The easier path
         
         What i want to do now is make hitboxes/knockback more accurate
             Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS

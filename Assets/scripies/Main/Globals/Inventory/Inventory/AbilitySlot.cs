@@ -1,3 +1,4 @@
+using scripies.Player;
 using UnityEngine;
 public class AbilitySlot : MonoBehaviour
 {

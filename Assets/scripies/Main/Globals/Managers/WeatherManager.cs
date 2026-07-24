@@ -1,4 +1,5 @@
 using System;
+using scripies.Player;
 using UnityEngine;
 using UnityEngine.Serialization;
 

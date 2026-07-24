@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;
-
+using scripies.Player;
 public class MapManager : MonoBehaviour
 {
     

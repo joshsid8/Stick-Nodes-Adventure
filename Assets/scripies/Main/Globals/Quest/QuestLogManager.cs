@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using scripies.Player;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;

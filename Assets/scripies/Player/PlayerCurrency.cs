@@ -1,15 +1,18 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerCurrency : MonoBehaviour
+namespace scripies.Player
 {
-    public float nodeBucks;
-    public TMP_Text bucksText;
-
-    // Update is called once per frame
-    void Update()
+    public class PlayerCurrency : MonoBehaviour
     {
-        bucksText.text = "₦odeBucks: " + nodeBucks.ToString("F0");
-        if (nodeBucks <= 0) nodeBucks = 0;
+        public float nodeBucks;
+        public TMP_Text bucksText;
+
+        // Update is called once per frame
+        void Update()
+        {
+            bucksText.text = "₦odeBucks: " + nodeBucks.ToString("F0");
+            if (nodeBucks <= 0) nodeBucks = 0;
+        }
     }
 }

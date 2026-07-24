@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using scripies.Core;
 using UnityEngine;
@@ -34,6 +33,7 @@ public class BossAttack : MonoBehaviour
     [SerializeField] private float wallCheckRay;
     public bool isFacingRight;
     public bool canFacePlayer;
+    private IPlayerStatus ps;
     [HideInInspector] public Transform playerTransform;
     [Space]
     [Header("Stun and Dialogue")]
@@ -60,7 +60,8 @@ public class BossAttack : MonoBehaviour
     private void Start()
     {
         currentAttackCooldown = attackCooldown;
-        playerTransform = PlayerHealth.Instance.gameObject.transform;
+        ps = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         originalPosition = transform.position;
     }
 
@@ -116,7 +117,7 @@ public class BossAttack : MonoBehaviour
         }
         else if (currentAttackCooldown <= 0 && isAttacking && isGrounded) canAttack = true;
         
-        if (!PlayerHealth.Instance.isDead && playerIsDead) playerIsDead = false;
+        if (!ps.IsDead && playerIsDead) playerIsDead = false;
         inRange = Physics2D.OverlapCircle(dt.chatPoint.position, dt.chatRadius, LayerMask.GetMask("Player"));
         
         if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.enabled && noMercy) 
@@ -160,12 +161,12 @@ public class BossAttack : MonoBehaviour
 
     private IEnumerator Restart()
     {
-        if (PlayerHealth.Instance.isDead && !playerIsDead && isAttacking)
+        if (ps.IsDead && !playerIsDead && isAttacking)
         {
             playerIsDead = true;
             isAttacking = false;
             noMercy = false;
-            yield return new WaitForSeconds(PlayerHealth.Instance.respawnTime);
+            yield return new WaitForSeconds(5);
             transform.position = originalPosition;
             bh.bossHealth = bh.bossMaxHealth;
             bh.phase2 = false;

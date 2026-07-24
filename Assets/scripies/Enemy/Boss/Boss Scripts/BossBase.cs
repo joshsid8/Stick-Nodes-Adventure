@@ -56,6 +56,7 @@ public abstract class BossBase : MonoBehaviour
     [HideInInspector] public bool isFalling;
     public LayerMask terrainLayers;
     
+    protected GameObject player;
     protected Rigidbody2D rb;
     protected Animator animator;
     protected BossAttack ba;
@@ -68,6 +69,7 @@ public abstract class BossBase : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         bh = GetComponent<BossHealth>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     protected virtual void Update()
@@ -84,8 +86,8 @@ public abstract class BossBase : MonoBehaviour
         if (!prediction) dashDirection = (ba.playerTransform.position - transform.position).normalized;
         else
         {
-            var x = PlayerHealth.Instance.pc.rb.linearVelocity.x;
-            var y = PlayerHealth.Instance.pc.rb.linearVelocity.y;
+            var x = player.GetComponent<Rigidbody2D>().linearVelocity.x;
+            var y = player.GetComponent<Rigidbody2D>().linearVelocity.y;
             var predictedDistanceX = x > 0 ? x * 0.2f : x * 0.2f * -1;
             var predictedDistanceY = y > 0 ? y * 0.2f : y * 0.2f * -1;
             dashDirection = new Vector2(ba.playerTransform.position.x + predictedDistanceX - transform.position.x,
@@ -101,7 +103,7 @@ public abstract class BossBase : MonoBehaviour
         transform.position = new Vector3(ba.playerTransform.position.x + x, teleportPoint.position.y, transform.position.z);
         
         var rng2 = Random.Range(0, 101);
-        var px = PlayerHealth.Instance.pc.rb.linearVelocity.x;
+        var px = player.GetComponent<Rigidbody2D>().linearVelocity.x;
         var predictedDistanceX = px > 0 ? px * 0.2f : px * 0.2f * -1;
         if (rng2 <= 50 || px == 0) rb.linearVelocity = new Vector2(rb.linearVelocity.x + predictedDistanceX, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
@@ -152,7 +154,6 @@ public abstract class BossBase : MonoBehaviour
             {
                 damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
                 damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
-                PlayerHealth.Instance.currentCombatTimer =+ 180f;
             }
         }
     }

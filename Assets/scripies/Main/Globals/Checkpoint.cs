@@ -1,4 +1,4 @@
-using System;
+using scripies.Player;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour

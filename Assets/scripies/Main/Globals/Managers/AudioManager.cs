@@ -1,5 +1,6 @@
 using System;
 using scripies.Core;
+using scripies.Player;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour

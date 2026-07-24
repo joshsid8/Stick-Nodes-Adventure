@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using scripies.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class SceneLoadTrigger : MonoBehaviour

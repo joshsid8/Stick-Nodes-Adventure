@@ -1,10 +1,13 @@
 using UnityEngine;
 
-[System.Serializable]
-public class DialogueResponse
+namespace scripies.Dialogue
 {
-    [SerializeField] private string responseText;
-    [SerializeField] private DialogueObject dialogueObject; // The next dialogue to show
-    public string ResponseText => responseText;
-    public DialogueObject DialogueObject => dialogueObject;
+    [System.Serializable]
+    public class DialogueResponse
+    {
+        [SerializeField] private string responseText;
+        [SerializeField] private DialogueObject dialogueObject; // The next dialogue to show
+        public string ResponseText => responseText;
+        public DialogueObject DialogueObject => dialogueObject;
+    }
 }
