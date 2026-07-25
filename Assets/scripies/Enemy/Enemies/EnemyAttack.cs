@@ -106,7 +106,7 @@ namespace scripies.Enemy
         private void OnDisable()
         {
             isAttacking = false;
-            ef.CeaseFlying();
+            if (canFly) ef.CeaseFlying();
         }
 
         private void Update()
@@ -146,7 +146,7 @@ namespace scripies.Enemy
 
             //if (canFly) animator.SetBool("isFlying", isFlying);
             //rb.gravityScale = isFlying ? 0 : 8;
-            ef.enabled = isFlying;
+            if (canFly) ef.enabled = isFlying;
 
             if (currentAttackCooldown > 0) currentAttackCooldown -= Time.deltaTime;
             canAttack = currentAttackCooldown <= 0;

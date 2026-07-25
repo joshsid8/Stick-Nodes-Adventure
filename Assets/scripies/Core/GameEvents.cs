@@ -30,6 +30,9 @@ namespace scripies.Core
         public static Action<float> StopTime;
         public static Action<Image, float, float> JumpScare;
         
+        // Events
+        public static Action<ITarget, bool> OnAggressiveStatusChanged;
+        
         // Methods to trigger events
         public static void TriggerPlayerHealthChanged(float currentHealth) => OnPlayerHealthChanged?.Invoke(currentHealth);
         public static void TriggerPlayerDeath() => OnPlayerDeath?.Invoke();
@@ -47,6 +50,7 @@ namespace scripies.Core
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);
         
         public static void TriggerSound(AudioClip clip = null) => PlaySound?.Invoke(clip);
+        public static void TriggerAggressiveStatusChanged(ITarget target, bool isAggressive) => OnAggressiveStatusChanged?.Invoke(target, isAggressive);
         public static void TriggerStopTime(float time) => StopTime?.Invoke(time);
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
     }

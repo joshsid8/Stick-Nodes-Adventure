@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 7400000, guid: 3e964e419455b9e4c937b5409ee5f1e7, type: 2}
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: procDmg
-      value: 3.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: eruptAnim

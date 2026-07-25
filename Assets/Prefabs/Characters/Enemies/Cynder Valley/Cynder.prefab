@@ -315,6 +315,8 @@ MonoBehaviour:
   abilityDirection: 0
   isActivated: 0
   unavailable: 0
+  currentSlot: 0
+  currentBlastType: 0
 --- !u!114 &1670248596730534493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,8 +338,6 @@ MonoBehaviour:
   indicator: {fileID: 6522456533086263551}
   npc: {fileID: 11400000, guid: 13aeb5d497c72af4488fe4d2c03bedc9, type: 2}
   dialogue:
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   pLayer:
     serializedVersion: 2

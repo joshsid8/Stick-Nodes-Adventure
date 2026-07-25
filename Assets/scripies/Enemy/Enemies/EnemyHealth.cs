@@ -49,13 +49,14 @@ namespace scripies.Enemy
         public bool isLight;
         public bool isOneTime;
 
-        [Header("Getters & Setters")] public float CurrentHealth { get; private set; }
-        public float MaxHealth { get; private set; }
-        public bool IsDead { get; private set; }
-        public bool IsStunned { get; private set; }
-        public Vector3 Position { get; private set; }
-        public bool IsGrounded { get; private set; }
-        public bool IsFacingRight { get; private set; }
+        [Header("Getters & Setters")] 
+        public float CurrentHealth => enemyHealth;
+        public float MaxHealth => enemyMaxHealth;
+        public bool IsDead => isDead;
+        public bool IsStunned => isStunned;
+        public Vector3 Position => transform.position;
+        public bool IsGrounded => ep.isGrounded;
+        public bool IsFacingRight => ec.isFacingRight;
 
         // Start is called before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -85,15 +86,6 @@ namespace scripies.Enemy
             }
 
             if (isDead && ep.isGrounded) ep.rb.linearVelocity = new Vector2(0, ep.rb.linearVelocity.y);
-
-            // Interface refs D:
-            IsDead = isDead;
-            IsStunned = isStunned;
-            Position = transform.position;
-            CurrentHealth = enemyHealth;
-            MaxHealth = enemyMaxHealth;
-            IsGrounded = ep.isGrounded;
-            IsFacingRight = ec.isFacingRight;
         }
 
         private void Stunned()

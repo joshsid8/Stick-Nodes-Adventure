@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using scripies.Core;
 using scripies.Dialogue;
 using TMPro;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
 {
@@ -48,16 +50,16 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     private Animator animator;
     
     [Header("Getters and Setters")]
-    public float CurrentHealth { get; private set;}
-    public float MaxHealth { get; private set;}
-    public bool IsDead { get; private set;}
-    public bool IsStunned { get; private set;}
-    public Vector3 Position { get; private set;}
-    public bool IsGrounded { get; private set;}
-    public bool IsFacingRight { get; private set;}
+    public float CurrentHealth => bossHealth;
+    public float MaxHealth => bossMaxHealth;
+    public bool IsDead => isDead;
+    public bool IsStunned => isStunned;
+    public Vector3 Position => transform.position;
+    public bool IsGrounded => ba.isGrounded;
+    public bool IsFacingRight => ba.isFacingRight;
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         healthBar = BossHealthUI.Instance.healthBar;
         healthText = BossHealthUI.Instance.healthText;
@@ -65,9 +67,13 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         ba = GetComponent<BossAttack>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        kb = GetComponent<Knockback>();
+    }
+
+    private void Start()
+    {
         originalColor = spriteRenderer.color;
         bossMaxHealth = bossHealth;
-        kb = GetComponent<Knockback>();
     }
 
     // Update is called once per frame
@@ -82,15 +88,6 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         bossTitle.text = bossName;
         stunTime -= Time.deltaTime;
         isStunned = stunTime > 0;
-        
-        // Interface refs D:
-        IsDead = isDead;
-        CurrentHealth = bossHealth;
-        MaxHealth = bossMaxHealth;
-        Position = transform.position;
-        IsStunned = isStunned;
-        IsGrounded = ba.isGrounded;
-        IsFacingRight = ba.isFacingRight;
     }
     
     private IEnumerator Defeat()

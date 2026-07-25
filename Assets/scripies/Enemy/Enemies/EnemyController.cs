@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace scripies.Enemy
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour, ITarget
     {
         public enum EnemyState
         {
@@ -26,9 +26,16 @@ namespace scripies.Enemy
         private EnemyAttack attack;
         private EnemyHealth health;
         private EnemyZone zone;
+        private EnemyJump jump;
         
         private Transform playerTransform;
         private IPlayerStatus ps;
+        private bool isAggressive;
+
+        // ITarget implementation
+        public Transform Transform => transform;
+        public bool IsActive => !health.isDead;
+        public int Priority => 0; // Default priority
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -37,6 +44,7 @@ namespace scripies.Enemy
             attack = GetComponent<EnemyAttack>();
             health = GetComponent<EnemyHealth>();
             zone = GetComponent<EnemyZone>();
+            jump = GetComponent<EnemyJump>();
             var player = GameObject.FindGameObjectWithTag("Player");
             playerTransform = player.transform;
             ps = player.GetComponent<IPlayerStatus>();
@@ -75,7 +83,6 @@ namespace scripies.Enemy
                         var rng = Random.Range(0, 101);
                         ChangeState(rng <= 50 ? EnemyState.Attacking : EnemyState.Zoning);
                     }
-
                     break;
                 case EnemyState.Dead:
                     health.isDead = true;
@@ -85,19 +92,26 @@ namespace scripies.Enemy
                     break;
             }
 
-            /*
             if (enemyState == EnemyState.Attacking || enemyState == EnemyState.Zoning)
             {
-                if (!PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
-                    PlayerHealth.Instance.aggressiveEnemies.Add(gameObject);
+                if (!isAggressive)
+                {
+                    isAggressive = true;
+                    GameEvents.TriggerAggressiveStatusChanged(this, true);
+                }
             }
             else if (enemyState == EnemyState.Dead || enemyState == EnemyState.Idle || enemyState == EnemyState.Patrolling)
             {
-                if (PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject))
-                    PlayerHealth.Instance.aggressiveEnemies.Remove(gameObject);
-                jump.isJumping = false;
+                if (isAggressive)
+                {
+                    isAggressive = false;
+                    GameEvents.TriggerAggressiveStatusChanged(this, false);
+                }
+                if (jump != null) jump.isJumping = false;
             }
-            jump.isJumping = PlayerHealth.Instance.aggressiveEnemies.Contains(gameObject) && PlayerHealth.Instance.aggressiveEnemies.Count > 1;*/
+
+            if (jump != null && ps.AggressiveEnemies > 1) jump.isJumping = isAggressive; 
+
             canFacePlayer = attack.canFacePlayer;
             if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling &&
                 enemyState != EnemyState.Dead) FacePlayer();

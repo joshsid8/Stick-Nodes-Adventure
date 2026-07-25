@@ -154,74 +154,21 @@ public class Projectile : AbilityBase
         {
             if (hit.collider != null)
             {
-                /*switch (typeFactor)
-                {
-                    case 1:
-                        var eDamageable = hit.collider.gameObject.GetComponent<EDamageables>();
-                        Damageable();
-                        break;
-                    case 2:
-                        if (hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow)
-                        {
-                            deflected = true;
-                            typeFactor = 1;
-                            //PlayerHealth.Instance.pc.animator.SetTrigger("Counter");
-                            GameEvents.TriggerPlayerAction("Counter");
-                            StartCoroutine(AreaManager.Instance.StopTime(0.3f));
-                            hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow = false;
-                            hit.collider.gameObject.GetComponent<PlayerDefense>().isBlocking = false;
-                            break;
-                        }
-                        var pDamageable = hit.collider.gameObject.GetComponent<IDamageable>();
-                        if (pDamageable != null) Damageable(pDamageable);
-                        break;
-                    default:
-                        var entity = hit.collider;
-                        if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
-                        {
-                            var eDmg = hit.collider.gameObject.GetComponent<EDamageables>();
-                            Damageable();
-                        }
-                        else if (entity.CompareTag("Player"))
-                        {
-                            if (hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow)
-                            {
-                                deflected = true;
-                                typeFactor = 1;
-                                PlayerHealth.Instance.pc.animator.SetTrigger("Counter");
-                                hit.collider.gameObject.GetComponent<PlayerDefense>().counterWindow = false;
-                                hit.collider.gameObject.GetComponent<PlayerDefense>().isBlocking = false;
-                                break;
-                            }
-                            var pDmg = hit.collider.gameObject.GetComponent<IDamageable>();
-                            Damageable(pDmg);
-                        }
-                        else print("Clueless.");
-                        break;
-                }*/
                 var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
                 var pStatus = hit.collider.gameObject.GetComponent<IPlayerStatus>();
                 if (pStatus != null && pStatus.IsCountering)
                 {
                     deflected = true;
+                    typeFactor = 1;
                     GameEvents.TriggerPlayerAction("Counter");
                     GameEvents.TriggerPlayerCounter();
                 }
                 
-                Damageable(damageable);
+                if (!deflected) Damageable(damageable);
             }
         }
         if (!deflected && pierceAmount <= 0) Crash();
         else if (deflected) Deflect(typeFactor);
-    }
-    
-    protected override void Damageable(IDamageable damageable = null)
-    {
-        if (damageable != null)
-        {
-            damageable.Damage(damage, isFacingRightDirection, typeFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            damageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
-        }
     }
     
     private void Crash()
@@ -239,7 +186,7 @@ public class Projectile : AbilityBase
                 ab.GetComponent<AbilityBase>().SetValues(typeFactor, isFacingRightDirection);
             }
         }
-        Destroy(gameObject, 0.2f);
+        Destroy(gameObject, 0.1f);
     }
 
     private void Deflect(int factor)

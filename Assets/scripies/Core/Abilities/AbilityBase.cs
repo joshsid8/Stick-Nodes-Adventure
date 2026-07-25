@@ -147,55 +147,35 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         if (inContact.Count != 0 && procTimer <= 0 && activeHitbox)
         {
-            /*switch (typeFactor)
-            {
-                case 1:
-                    foreach (var hit in inContact)
-                    {
-                        var damageable = hit.gameObject.GetComponent<IDamageable>();
-                        Damageable();
-                    }
-                    break;
-                case 2:
-                    foreach (var hit in inContact)
-                    {
-                        var damageable = hit.gameObject.GetComponent<IDamageable>();
-                        Damageable(damageable);
-                    }
-                    break;
-                default:
-                    foreach (var hit in inContact)
-                    {
-                        var entity = hit;
-                        if (entity.CompareTag("Enemy") || entity.CompareTag("Boss"))
-                        {
-                            var eDmg = hit.gameObject.GetComponent<EDamageables>();
-                            Damageable();
-                        }
-                        else if (entity.CompareTag("Player"))
-                        {
-                            var pDmg = hit.gameObject.GetComponent<IDamageable>();
-                            Damageable(pDmg);
-                        }
-                        else print("Clueless.");
-                    }
-                    break;
-            }*/
             foreach (var hit in inContact)
             {
-                var damageable = hit.gameObject.GetComponent<IDamageable>();
+                switch (typeFactor)
+                {
+                    case 1:
+                    {
+                        if (!hit.CompareTag("Enemy") || !hit.CompareTag("Boss")) return;
+                        break;
+                    }
+                    case 2:
+                    {
+                        if (!hit.CompareTag("Player")) return;
+                        break;
+                    }
+                }
+                var damageable = hit.GetComponent<IDamageable>();
                 Damageable(damageable);
             }
+            
             procTimer = proc;
         }
     }
 
-    protected virtual void Damageable(IDamageable damageable = null)
+    protected void Damageable(IDamageable damageable = null)
     {
         if (damageable != null)
         {
             damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            damageable.Shock(stunTime, new Vector2(knockbackDirection.x, knockbackDirection.y) * transform.right, knockbackForce, knockbackTime);
+            damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
         }
     }
     

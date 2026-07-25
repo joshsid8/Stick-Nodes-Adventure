@@ -1,4 +1,5 @@
 using System;
+using scripies.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,9 +22,8 @@ namespace scripies.Enemy
         [SerializeField] private float[] timer = new float[2];
         public float[] gravities = { 8, 0 };
 
-        [Space] [Header("Player refs")] [SerializeField]
-        private float playerRadius;
-
+        [Space] [Header("Player refs")] 
+        [SerializeField] private float playerRadius;
         [SerializeField] private Transform playerTransform;
 
         // Components

@@ -43,7 +43,7 @@ namespace scripies.Player
         [Header("Combat & Jumping")] public bool inCombat;
         public float combatTimer;
         public float currentCombatTimer;
-        public List<GameObject> aggressiveEnemies = new();
+        private List<ITarget> aggressiveEnemies = new();
         public int aggressiveEnemyID;
         public float jumpRotationTimer;
 
@@ -54,20 +54,21 @@ namespace scripies.Player
         [HideInInspector] public PlayerAbility pa;
         [HideInInspector] public PlayerCombat pf;
 
-        [Header("Getters and Setters")] public float CurrentHealth { get; private set; }
-        public float MaxHealth { get; private set; }
-        public bool IsDead { get; private set; }
-        public bool IsStunned { get; private set; }
-        public Vector3 Position { get; private set; }
-        public bool IsGrounded { get; private set; }
-        public bool IsFacingRight { get; private set; }
-        public bool IsCountering { get; private set; }
-        public bool IsPerformingAction { get; private set; }
-        public bool IsHoldingAbility { get; private set; }
-        public bool IsPerformingAbility { get; private set; }
-        public float CurrentEnergy { get; private set; }
-        public float CurrentAbilityCooldown { get; private set; }
-        public Transform AbilityPoint { get; private set; }
+        [Header("Getters and Setters")] 
+        public float CurrentHealth => playerHealth;
+        public float MaxHealth => playerMaxHealth;
+        public bool IsDead => isDead;
+        public bool IsStunned => isStunned;
+        public Vector3 Position => transform.position;
+        public bool IsGrounded => pc != null && pc.isGrounded;
+        public bool IsFacingRight => pc != null && pc.isFacingRight;
+        public bool IsCountering => pd != null && pd.counterWindow;
+        public bool IsPerformingAction => pc != null && pc.isPerformingAction;
+        public bool IsHoldingAbility => pa != null && pa.isHolding;
+        public bool IsPerformingAbility => pa != null && pa.isPerformingAbility;
+        public float CurrentEnergy => pa != null ? pa.energy : 0f;
+        public float CurrentAbilityCooldown => pa != null ? pa.currentAbilityCooldown : 0f;
+        public int AggressiveEnemies => aggressiveEnemies.Count;
 
         private void Awake()
         {
@@ -96,6 +97,19 @@ namespace scripies.Player
             
             GameEvents.OnPlayerDeath += ResetCombat;
             GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
+            GameEvents.OnAggressiveStatusChanged += UpdateAggressiveEnemies;
+        }
+
+        private void UpdateAggressiveEnemies(ITarget target, bool isAggressive)
+        {
+            if (isAggressive)
+            {
+                if (!aggressiveEnemies.Contains(target)) aggressiveEnemies.Add(target);
+            }
+            else
+            {
+                if (aggressiveEnemies.Contains(target)) aggressiveEnemies.Remove(target);
+            }
         }
 
         // Update is called once per frame
@@ -120,20 +134,6 @@ namespace scripies.Player
                 spriteRenderer.color = Color.white;
             }
 
-            // Interface refs D:
-            IsDead = isDead;
-            IsStunned = isStunned;
-            Position = transform.position;
-            CurrentHealth = playerHealth;
-            MaxHealth = playerMaxHealth;
-            IsCountering = pd.counterWindow;
-            IsGrounded = pc.isGrounded;
-            IsFacingRight = pc.isFacingRight;
-            IsHoldingAbility = pa.isHolding;
-            IsPerformingAction = pc.isPerformingAction;
-            IsPerformingAbility = pa.isPerformingAbility;
-            CurrentEnergy = pa.energy;
-            CurrentAbilityCooldown = pa.currentAbilityCooldown;
         }
 
         private void Animation()
@@ -188,7 +188,7 @@ namespace scripies.Player
             {
                 case true when pd.isBlocking && !pd.counterWindow && damageFactor < 1:
                     // blocking successfully
-                    StartCoroutine(ApplyDamage(calcDamage * pd.blockDamageResistance, false, damageOverTime, procDmg,
+                    StartCoroutine(ApplyDamage(calcDamage * pd.blockDamageResistance, false, damageOverTime, procDmg * pd.blockDamageResistance,
                         procInterval, isTrue));
                     break;
                 case true when pd.isBlocking && pd.counterWindow && damageFactor < 2:
@@ -196,13 +196,13 @@ namespace scripies.Player
                     pc.animator.SetTrigger("Counter");
                     pd.counterWindow = false;
                     GameEvents.TriggerStopTime(0.5f);
-                    StartCoroutine(ApplyDamage(calcDamage * pd.counterDamageResistance, false, damageOverTime, procDmg,
+                    StartCoroutine(ApplyDamage(calcDamage * pd.counterDamageResistance, false, damageOverTime, procDmg * pd.counterDamageResistance,
                         procInterval, isTrue));
                     break;
                 case true:
                 case false:
                     // the player blocking but getting hit at the back OR the player not blocking at all
-                    StartCoroutine(ApplyDamage(calcDamage * rawDamageResistance, true, damageOverTime, procDmg,
+                    StartCoroutine(ApplyDamage(calcDamage * rawDamageResistance, true, damageOverTime, procDmg * rawDamageResistance,
                         procInterval, isTrue));
                     break;
             }
@@ -239,9 +239,12 @@ namespace scripies.Player
         public void Shock(float stunDuration = 0f, Vector2 knockbackDirection = default, float knockbackForce = 20f,
             float knockbackTime = 0.2f)
         {
+            var force = knockbackForce * shockMultiplier;
+            if (pd.isBlocking) force = knockbackForce / pd.blockDamageResistance;
+            else if (pd.counterWindow) force = knockbackForce / pd.counterDamageResistance;
             stunTime = stunDuration * shockMultiplier;
             if (stunTime > 0 && !pd.isBlocking) getStunned = true;
-            kb.CallKnockback(knockbackDirection, knockbackForce * shockMultiplier / 2, knockbackTime * shockMultiplier);
+            kb.CallKnockback(knockbackDirection, knockbackForce, knockbackTime * shockMultiplier);
             if (!pd.isBlocking)
             {
                 pc.animator.SetTrigger("Damaged");
@@ -302,25 +305,32 @@ namespace scripies.Player
         private void JumpRotate()
         {
             if (jumpRotationTimer > 0) jumpRotationTimer -= Time.deltaTime;
-            // TODO: Use the interface ITarget instead of referencing enemy scripts
-            /*if (aggressiveEnemies.Count > 1 && jumpRotationTimer <= 0)
+            
+            if (aggressiveEnemies.Count > 1 && jumpRotationTimer <= 0)
             {
-                var agg = aggressiveEnemies[aggressiveEnemyID];
-                foreach (var enemy in aggressiveEnemies)
+                var aggTarget = aggressiveEnemies[aggressiveEnemyID];
+                foreach (var target in aggressiveEnemies)
                 {
-                    if (enemy != agg) continue;
-                    enemy.GetComponent<EnemyJump>().myTurn = false;
-                    enemy.GetComponent<EnemyController>().ChangeState(EnemyController.EnemyState.Zoning);
-                    enemy.GetComponent<EnemyZone>().currentZonePeriod = jumpRotationTimer;
+                    if (target.Transform.TryGetComponent<IEnemyJump>(out var jump))
+                    {
+                        if (target != aggTarget)
+                        {
+                            jump.MyTurn = false;
+                            jump.SetState("Zoning", jumpRotationTimer);
+                        }
+                        else
+                        {
+                            jump.MyTurn = true;
+                            jump.SetState("Attacking");
+                            jump.SetAttackStyleFromJump();
+                            jumpRotationTimer = jump.TurnTime;
+                        }
+                    }
                 }
 
-                agg.GetComponent<EnemyJump>().myTurn = true;
-                agg.GetComponent<EnemyController>().ChangeState(EnemyController.EnemyState.Attacking);
-                agg.GetComponent<EnemyAttack>().styleMode = agg.GetComponent<EnemyJump>().prevState;
-                jumpRotationTimer = agg.GetComponent<EnemyJump>().turnTime;
                 aggressiveEnemyID++;
                 if (aggressiveEnemyID >= aggressiveEnemies.Count) aggressiveEnemyID = 0;
-            }*/
+            }
         }
 
         public void Heal(float amount)
