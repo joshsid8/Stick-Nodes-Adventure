@@ -5,8 +5,10 @@ SNADV Notes
     
     Priorities:
 
-        Now that knockback logic is better, i should learn to make explosion type knockback using MAFFS
-        maybe this explosion type can even be considered an ability type
+        Explosion Logic 
+            It has been initiated, but its not doing what i want >:(
+            I will just need to change a bit of the logic for it to be good
+            also, maybe find a way to add some upward force to the explosion, but idk how to efficiently do that
 
     Optimisations & Hotfixes:
         

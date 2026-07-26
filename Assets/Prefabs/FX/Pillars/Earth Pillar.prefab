@@ -69,7 +69,19 @@ PrefabInstance:
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: explodeOnImpact
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: knockbackForce.y
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: useRadialKnockback
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: knockbackDirection.y
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4635439681108189195, guid: 33ebae16b079790438712e3440394eaf, type: 3}

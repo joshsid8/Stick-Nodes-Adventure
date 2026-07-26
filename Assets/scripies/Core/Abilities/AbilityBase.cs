@@ -42,6 +42,13 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public float stunTime;
     
     public float energyRequired;
+
+    [Space] [Header("Explosion Properties")]
+    public bool explodeOnImpact;
+    public bool useRadialKnockback;
+    public float explosionRadius = 5;
+    public float explosionForce = 20f;
+    public float explosionTime = 0.2f;
     
     [FormerlySerializedAs("abilityCooldown")]
     public float cooldown;
@@ -145,8 +152,9 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     
     protected virtual void HitBox()
     {
-        if (inContact.Count != 0 && procTimer <= 0 && activeHitbox)
-        {
+        if (explodeOnImpact) Explode();
+        else if (inContact.Count != 0 && procTimer <= 0 && activeHitbox)
+        {   
             foreach (var hit in inContact)
             {
                 switch (typeFactor)
@@ -175,7 +183,29 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (damageable != null)
         {
             damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
+            damageable.Shock(stunTime, knockbackDirection, knockbackForce, knockbackTime);
+        }
+    }
+
+    public virtual void Explode()
+    {
+        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
+        foreach (var obj in objects)
+        {
+            if (typeFactor == 1 && !obj.CompareTag("Enemy") && !obj.CompareTag("Boss")) continue;
+            if (typeFactor == 2 && !obj.CompareTag("Player")) continue;
+            
+            var damageable = obj.GetComponent<IDamageable>();
+            if (damageable != null && procTimer <= 0 && activeHitbox)
+            {
+                Vector2 radialDir;
+                if (useRadialKnockback) radialDir = (damageable.Position - transform.position).normalized; 
+                else radialDir = knockbackDirection * (isFacingRightDirection ? transform.right.x : -transform.right.x);
+
+                damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+                damageable.Shock(explosionTime, radialDir, explosionForce, explosionTime);
+                procTimer = proc;
+            }
         }
     }
     
@@ -201,6 +231,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             if (!pa.IsHoldingAbility && isHoldable && typeFactor == 1) lifeTimer = 0;
             if (lifeTimer <= 0 && endAnim != null)
             {
+                if (explodeOnImpact) Explode();
                 if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
                 animator.Play(endAnim.name);
             }
