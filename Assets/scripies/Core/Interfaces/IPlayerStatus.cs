@@ -26,5 +26,6 @@ namespace scripies.Core
         
         // Misc
         int AggressiveEnemies { get; }
+        float NodeBucks { get; }
     }
 }

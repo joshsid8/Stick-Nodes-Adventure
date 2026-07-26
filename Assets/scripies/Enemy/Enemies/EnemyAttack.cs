@@ -1,6 +1,7 @@
 using System;
 using scripies.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace scripies.Enemy
@@ -48,17 +49,27 @@ namespace scripies.Enemy
         public float passiveModeRadius;
         public float modPassiveModeRadius;
         private float originalPassiveModeRadius;
-        [Space] [Header("Melee Attack")] public float stunTime;
+        [Space] [Header("Melee Attack")]
+        public float stunTime;
         public float damageAmount;
-        public Vector2 knockbackForce;
+        public int elementType;
+        [FormerlySerializedAs("knockbackForce")] 
+        public Vector2 knockbackDirection = new Vector2(1, 0);
+        public float knockbackForce = 20f;
+        public float knockbackTime = 0.2f;
+        public bool isTrue;
+        public bool damageOverTime;
+        public float procDmg;
+        public float procInterval;
         private RaycastHit2D hit;
         public float attackRange;
         public Transform attackTransform;
-        public int damageType;
+        public int damageFactor;
 
         public LayerMask pLayer;
         [HideInInspector] public Transform playerTransform;
-        [Space] [Header("Combat Checks")] public bool canAttack;
+        [Space] [Header("Combat Checks")] 
+        public bool canAttack;
         public bool isAttacking;
         public float currentAttackCooldown;
         public bool stunnable;
@@ -229,17 +240,6 @@ namespace scripies.Enemy
             }
         }
 
-        private void ActivateCooldown(float atkCd)
-        {
-            currentAttackCooldown = atkCd;
-            if (isFlying) ef.currentFlySpeed = Math.Abs(rb.linearVelocity.x) / 2;
-            else
-            {
-                ez.enabled = true;
-                ez.currentZonePeriod = currentAttackCooldown;
-                ec.ChangeState(EnemyController.EnemyState.Zoning);
-            }
-        }
 
         private void Attack()
         {
@@ -250,15 +250,31 @@ namespace scripies.Enemy
                 var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.Damage(damageAmount, ec.isFacingRight, damageType);
-                    damageable.Shock(stunTime, new Vector2(knockbackForce.x, knockbackForce.y * transform.up.y));
+                    damageable.Damage(damageAmount, ec.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, 1, isTrue, damageOverTime, procDmg, procInterval);
+                    damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
                     GameEvents.TriggerAddPlayerTime("Combat", 5, true);
                 }
             }
         }
 
-        private void FollowupAttack(string attack) => animator.Play(attack);
+        private void FollowupAttack(string attack)
+        {
+            var rng = Random.Range(0, 101);
+            if (rng <= 70) animator.Play(attack);
+            else ActivateCooldown(0.5f);
+        }
 
+        private void ActivateCooldown(float atkCd = 1)
+        {
+            currentAttackCooldown = atkCd;
+            if (isFlying) ef.currentFlySpeed = Math.Abs(rb.linearVelocity.x) / 2;
+            else
+            {
+                ez.enabled = true;
+                ez.currentZonePeriod = currentAttackCooldown;
+                ec.ChangeState(EnemyController.EnemyState.Zoning);
+            }
+        }
         private void FlyTrigger()
         {
             movesBeforeFlyingCount++;

@@ -11,24 +11,16 @@ SNADV Notes
     Optimisations & Hotfixes:
         
         Instability
-            Replicatable bugs                
-                ability logic strikes again! 
-                    knockback isnt working for the player
-                    beams dont detect enemies AGAIINNNN
+            Replicatable bugs
+                N/A
                 
             One time occurrences/Rare bugs
+                N/A
+                    
+            Low Priority/Unconfirmed fixed Bugs
                 I think when the game lags a slight, the player can m1 without cooldowns
                     Its like it ignores all conditions and i can simply just m1 again
                     i may have to refactor the cooldown logic
-                    
-            Low Priority/Unconfirmed fixed Bugs
-                Fishwoman had a state crashout once
-                    at the moment tho, she seems very stable
-                    idk how to replicate this bug, so i will lower this priority
-                                
-                Fly logic may need a rework
-                    I found the fix to the movespeed issue
-                    flying tho is still kinda janky, ill fix this much later
                     
         Input Logic
             switch input systems!

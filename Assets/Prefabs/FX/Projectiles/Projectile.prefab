@@ -116,7 +116,9 @@ MonoBehaviour:
   damageOverTime: 0
   procDmg: 0
   procInterval: 0
-  knockbackForce: {x: 0, y: 0}
+  knockbackDirection: {x: 1, y: 0}
+  knockbackForce: 20
+  knockbackTime: 0.2
   direction: 0
   isDirectional: 1
   isFacingRightDirection: 0
@@ -126,18 +128,14 @@ MonoBehaviour:
   proc: 0
   procTimer: 0
   activeHitbox: 0
-  energyProc: 0
-  procTimes: 0
   lifeTime: 3
   lifeTimer: 0
   isHoldable: 0
   abilityOnCollide: 0
   subAbilities: []
-  playerTransform: {fileID: 0}
   animator: {fileID: 0}
   parentObject: {fileID: 0}
   coll: {fileID: 0}
-  pa: {fileID: 0}
   anim: {fileID: 0}
   endAnim: {fileID: 0}
   projectileHeight: 1
@@ -150,13 +148,13 @@ MonoBehaviour:
   randomRes: 5
   randomAngle: 3
   upwardOnly: 1
-  projectileRange: 0.68
   target:
   - serializedVersion: 2
     m_Bits: 512
   - serializedVersion: 2
     m_Bits: 256
   rotationOffset: 0
+  objectRange: 0
 --- !u!95 &1554104199335386888
 Animator:
   serializedVersion: 7

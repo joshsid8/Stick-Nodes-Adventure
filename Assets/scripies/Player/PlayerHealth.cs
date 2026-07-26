@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +11,6 @@ namespace scripies.Player
         public static PlayerHealth Instance { get; private set; }
 
         [Header("Health & Damage Resistance")] public Image[] healthBars;
-        public TMP_Text healthText;
         public float playerMaxHealth = 100;
         public float playerHealth = 100;
         public float playerExtraHealth;
@@ -54,6 +52,7 @@ namespace scripies.Player
         [HideInInspector] public PlayerAbility pa;
         [HideInInspector] public PlayerCombat pf;
 
+        #region Getters and Setters
         [Header("Getters and Setters")] 
         public float CurrentHealth => playerHealth;
         public float MaxHealth => playerMaxHealth;
@@ -69,6 +68,8 @@ namespace scripies.Player
         public float CurrentEnergy => pa != null ? pa.energy : 0f;
         public float CurrentAbilityCooldown => pa != null ? pa.currentAbilityCooldown : 0f;
         public int AggressiveEnemies => aggressiveEnemies.Count;
+        public float NodeBucks => GetComponent<PlayerCurrency>().nodeBucks;
+        #endregion
 
         private void Awake()
         {
@@ -123,8 +124,6 @@ namespace scripies.Player
             JumpRotate();
             healthBars[0].fillAmount = playerHealth / playerMaxHealth;
             healthBars[1].fillAmount = playerExtraHealth / playerMaxHealth;
-            //healthText.text = playerHealth == playerMaxHealth ? playerHealth.ToString("F0") +  " / " + playerMaxHealth.ToString("F0")
-            //    : playerHealth.ToString("F1") +  " / " + playerMaxHealth.ToString("F0");
             if (playerHealth < 0) playerHealth = 0;
             if (playerHealth > playerMaxHealth) playerExtraHealth = playerHealth - playerMaxHealth;
             if (isDead)
@@ -240,11 +239,11 @@ namespace scripies.Player
             float knockbackTime = 0.2f)
         {
             var force = knockbackForce * shockMultiplier;
-            if (pd.isBlocking) force = knockbackForce / pd.blockDamageResistance;
-            else if (pd.counterWindow) force = knockbackForce / pd.counterDamageResistance;
+            if (pd.isBlocking) force = knockbackForce * pd.blockDamageResistance;
+            else if (pd.counterWindow) force = knockbackForce * pd.counterDamageResistance;
             stunTime = stunDuration * shockMultiplier;
             if (stunTime > 0 && !pd.isBlocking) getStunned = true;
-            kb.CallKnockback(knockbackDirection, knockbackForce, knockbackTime * shockMultiplier);
+            kb.CallKnockback(knockbackDirection, force, knockbackTime * shockMultiplier);
             if (!pd.isBlocking)
             {
                 pc.animator.SetTrigger("Damaged");

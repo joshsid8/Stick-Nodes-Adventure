@@ -1,5 +1,4 @@
 using scripies.Core;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +7,6 @@ namespace scripies.Player
     public class PlayerAbility : MonoBehaviour
     {
         public Image energyBar;
-        public TMP_Text energyText;
         public float maxEnergy;
         public float energy;
         public float energyRefill;
@@ -142,9 +140,6 @@ namespace scripies.Player
             else if (energy < 0) energy = 0;
 
             energyBar.fillAmount = energy / maxEnergy;
-            energyText.text = energy == maxEnergy
-                ? energy.ToString("F0") + " / " + maxEnergy.ToString("F0")
-                : energy.ToString("F1") + " / " + maxEnergy.ToString("F0");
         }
     }
 }

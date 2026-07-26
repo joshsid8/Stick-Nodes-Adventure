@@ -153,7 +153,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
                 {
                     case 1:
                     {
-                        if (!hit.CompareTag("Enemy") || !hit.CompareTag("Boss")) return;
+                        if (!hit.CompareTag("Enemy") && !hit.CompareTag("Boss")) return;
                         break;
                     }
                     case 2:
