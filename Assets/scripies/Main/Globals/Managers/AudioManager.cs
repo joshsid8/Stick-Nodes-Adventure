@@ -1,11 +1,12 @@
-using System;
+using System.Collections;
 using scripies.Core;
-using scripies.Player;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : MonoBehaviour, IAudioStatus
 {
     public static AudioManager Instance {get; private set;}
+
+    public IAudioStatus.MusicType musicType { get; set; }
     
     public AudioSource musicSource;
     public AudioSource sfxSource;
@@ -14,14 +15,8 @@ public class AudioManager : MonoBehaviour
     public float[] backgroundMusicVolume;
     public AudioClip[] sFXMusic;
     
-    //public float musicVolume;
-
     public GameObject[] gUI;
-    
-    [SerializeField] private bool withPlayer = true;
-    private PlayerHealth player;
-
-    [SerializeField] private bool toggle;
+    //private bool toggle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -33,38 +28,37 @@ public class AudioManager : MonoBehaviour
         }
         Instance = this;
         
-        musicSource.clip = backgroundMusic[0];
-        musicSource.Play();
-        if (withPlayer) player = PlayerHealth.Instance;
-        
+        GameEvents.PlayMusic += PlayMusic;
         GameEvents.PlaySound += PlaySfx;
+        GameEvents.OnDisableGUI += QuietOnGUI;
+        GameEvents.OnEnableGUI += QuietOnGUI;
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void PlayMusic(int index, bool fade)
     {
-        QuietOnGUI();
-        if (player != null) InCombat();
+        StartCoroutine(BeginMusic(index, fade));
     }
-
-    private void InCombat()
+    
+    private IEnumerator BeginMusic(int index, bool fade)
     {
-        if (player.inCombat && !toggle)
+        //if (fade) StartCoroutine(FadeOutMusic()); else toggle = true;
+        //yield return new WaitUntil(() => toggle);
+        //toggle = false;
+        musicSource.clip = backgroundMusic[index];
+        musicSource.volume = backgroundMusicVolume[index];
+        musicType = (IAudioStatus.MusicType) index;
+        musicSource.Play();
+        yield return null;
+    }
+    
+    public IEnumerator FadeOutMusic(float fadeTime = 2)
+    {
+        while (musicSource.volume > 0)
         {
-            toggle = true;
-            musicSource.Pause();
-            musicSource.clip = backgroundMusic[1];
-            musicSource.volume = backgroundMusicVolume[1];
-            musicSource.Play();
+            musicSource.volume -= Time.deltaTime * fadeTime;
+            yield return null;
         }
-        else if (!player.inCombat)
-        {
-            toggle = false;
-            musicSource.Pause();
-            musicSource.clip = backgroundMusic[0];
-            musicSource.volume = backgroundMusicVolume[0];
-            musicSource.Play();
-        }
+        //toggle = true;
     }
 
     private void PlaySfx(AudioClip clip = null)
@@ -75,19 +69,19 @@ public class AudioManager : MonoBehaviour
     
     private void QuietOnGUI()
     {
-        for (int i = 0; i < gUI.Length; i++)
+        foreach (var g in gUI)
         {
-            if (gUI[i].activeInHierarchy)
+            if (g.activeInHierarchy)
             {
-                musicSource.volume = backgroundMusicVolume[0] / 2;
+                musicSource.volume = backgroundMusicVolume[(int)musicType] / 2;
                 sfxSource.volume = 0.2f;
-
             }
-            if (!gUI[i].activeInHierarchy)
+            else
             {
-                musicSource.volume = backgroundMusicVolume[0];
+                musicSource.volume = backgroundMusicVolume[(int)musicType];
                 sfxSource.volume = 1f;
             }
         }
     }
+
 }

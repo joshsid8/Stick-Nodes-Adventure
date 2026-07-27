@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using scripies.Core;
 using scripies.Dialogue;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;
 using scripies.Player;
+using Unity.VisualScripting;
+
 public class MapManager : MonoBehaviour
 {
     
@@ -88,21 +91,23 @@ public class MapManager : MonoBehaviour
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
     public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume)
     {
-        AreaManager.Instance.StartCoroutine(AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor));
-        AudioManager.Instance.musicSource.Stop();
+        AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor);
         for (var i = 0; i < AudioManager.Instance.backgroundMusic.Length; i++)
         {
             AudioManager.Instance.backgroundMusic[i] = mOst[i];
             AudioManager.Instance.backgroundMusicVolume[i] = mOstVolume[i];
         }
-
-        AudioManager.Instance.musicSource.Play();
+        GameEvents.TriggerMusic(0);
         if (mainCamera != null) mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player")) MakeDataPersistent();
+        if (collision.CompareTag("Player"))
+        {
+            MakeDataPersistent();
+            if (!AudioManager.Instance.gameObject.IsDestroyed() && AudioManager.Instance.enabled && AudioManager.Instance.gameObject.activeInHierarchy) StartCoroutine(AudioManager.Instance.FadeOutMusic());
+        }
     }
 
     private void CollateObjects()
@@ -125,15 +130,10 @@ public class MapManager : MonoBehaviour
         {
             if (obj.CompareTag("Spawner"))
             {
-                foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>())
-                {
+                foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>()) 
                     spawnerObjects.Add(spawner.gameObject);
-                }
-                
-                foreach (var spawner in obj.GetComponentsInChildren<ItemSpawner>())
-                {
+                foreach (var spawner in obj.GetComponentsInChildren<ItemSpawner>()) 
                     spawnerObjects.Add(spawner.gameObject);
-                }
             }
         }
     }

@@ -326,7 +326,7 @@ public class PlayerManager : MonoBehaviour
         data.abilityPotency = pp.abilityPotency;
 
         data.blockDamageResistance = pd.blockDamageResistance;
-        data.combatTime = ph.currentCombatTimer;
+        data.combatTime = ph.combatTimer;
         data.counterDamage = pd.counterDamage;
         data.counterDamageResistance = pd.counterDamageResistance;
     }
@@ -335,7 +335,7 @@ public class PlayerManager : MonoBehaviour
     {
         pd.counterDamageResistance = data.counterDamageResistance;
         pd.counterDamage = data.counterDamage;
-        ph.currentCombatTimer = data.combatTime;
+        ph.combatTimer = data.combatTime;
         pd.blockDamageResistance = data.blockDamageResistance;
 
         pp.abilityPotency = data.abilityPotency;

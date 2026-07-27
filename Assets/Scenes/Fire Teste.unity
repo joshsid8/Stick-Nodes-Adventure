@@ -3272,6 +3272,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cynder
       objectReference: {fileID: 0}
+    - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
     - target: {fileID: 8195243039380430539, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 37.299507
@@ -7205,11 +7209,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.418915
+      value: -10.652837
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.0827494
+      value: 1.6077275
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.z

@@ -29,7 +29,6 @@ public class Projectile : AbilityBase
     [Space]
     [Header("Direction & Rotation")]
     [SerializeField] private float rotationOffset = 90;
-    private float objectDirection;
     
     [Space]
     [Header("Checks")]
@@ -133,7 +132,6 @@ public class Projectile : AbilityBase
         {
             var angleDeg = isFacingRightDirection ? 90 + randomAngle : -90 + randomAngle;
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angleDeg);
-            objectDirection = isFacingRightDirection ? 1f : -1f;
             rb.linearVelocity = new Vector2(isFacingRightDirection ? projectileSpeed : -projectileSpeed, projectileHeight);
         }
         else

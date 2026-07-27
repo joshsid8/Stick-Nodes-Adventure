@@ -102,7 +102,8 @@ namespace scripies.Player
                     eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right,
                         knockbackForces[0], knockbackTimes[0] * attackPotency);
                     GetComponent<PlayerAbility>().energy += attackEnergy;
-                    PlayerHealth.Instance.ApplyCombat(additive: true);
+                    if (PlayerHealth.Instance.currentCombatTimer < 20)
+                        PlayerHealth.Instance.ApplyCombat(additive: true);
                 }
             }
 
@@ -129,7 +130,7 @@ namespace scripies.Player
                         procInterval);
                     eDamageable.Shock(stunTime * attackPotency, Vector2.zero);
                     GetComponent<PlayerAbility>().energy += attackEnergy;
-                    if (PlayerHealth.Instance.currentCombatTimer < 30)
+                    if (PlayerHealth.Instance.currentCombatTimer < 20)
                         PlayerHealth.Instance.ApplyCombat(additive: true);
                     /*if (hits[i].collider.CompareTag("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
                     {

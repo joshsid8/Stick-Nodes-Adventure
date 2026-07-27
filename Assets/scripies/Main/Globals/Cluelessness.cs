@@ -11,6 +11,9 @@ public class Cluelessness : MonoBehaviour
     //public bool[] cluelessBoolValue = new bool[2];
     [SerializeField] private int cluelessIndex;
 
+    [SerializeField] private bool alterTime;
+    [SerializeField] private float timeScale = 1;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -28,6 +31,8 @@ public class Cluelessness : MonoBehaviour
             if (text.text.Contains("Clueless1")) text.text = "";
             else if (text.text.Contains("Clueless2")) text.text = "";
         }
+        
+        if (alterTime) Time.timeScale = timeScale;
     }
 
     public void CluelessF(float value, string variableName, int index = 0)

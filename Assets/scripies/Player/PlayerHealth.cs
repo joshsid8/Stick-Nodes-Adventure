@@ -132,7 +132,7 @@ namespace scripies.Player
                 gameObject.layer = LayerMask.NameToLayer("Dead");
                 spriteRenderer.color = Color.white;
             }
-
+            
         }
 
         private void Animation()
@@ -146,6 +146,7 @@ namespace scripies.Player
             yield return new WaitForSeconds(timer);
             transform.position =
                 realSpawn ? pc.currentSpawnPoint.transform.position : pc.currentCheckPoint.transform.position;
+            Shenanigans.Instance.ToggleFreezeCamera(false);
         }
 
         private IEnumerator Death()
@@ -157,6 +158,7 @@ namespace scripies.Player
                 GameEvents.TriggerPlayerDeath();
                 GameEvents.TriggerJumpScare();
                 GameEvents.TriggerSound();
+                Shenanigans.Instance.ToggleFreezeCamera();
                 yield return new WaitForSeconds(respawnTime);
                 StartCoroutine(Spawn(0, true));
                 playerHealth = playerMaxHealth * 0.25f;
@@ -164,7 +166,7 @@ namespace scripies.Player
                 isDead = false;
                 gameObject.layer = LayerMask.NameToLayer("Player");
                 pc.canAct = true;
-                currentCombatTimer = 0;
+                ResetCombat();
             }
         }
 
@@ -275,12 +277,39 @@ namespace scripies.Player
             }
         }
 
-        public void ApplyCombat(float combatDuration = 5, bool additive = false) => currentCombatTimer =
-            additive ? currentCombatTimer + combatDuration : combatDuration;
-        
-        private void ResetCombat() => currentCombatTimer = 0;
-        private void ResetCombatViaEnemy(GameObject enemy) => currentCombatTimer = 0;
+        public void ApplyCombat(float combatDuration = 5, bool additive = false)
+        {
+            if (combatDuration <= 0)
+            {
+                ResetCombat();
+                return;
+            }
+            inCombat = true;
+            currentCombatTimer = additive ? currentCombatTimer + combatDuration : combatDuration;
+            pc.combatIndicator.SetActive(true);
+            if (GameObject.Find("AudioManager").GetComponent<IAudioStatus>().musicType != IAudioStatus.MusicType.Combat) GameEvents.TriggerMusic(1, false);
+            StartCoroutine(CombatTimer());
+        }
 
+        private IEnumerator CombatTimer()
+        {
+            while (currentCombatTimer > 0)
+            {
+                currentCombatTimer -= Time.deltaTime;
+                yield return null;
+            }
+            ResetCombat();
+        }
+        
+        private void ResetCombat() 
+        {
+            inCombat = false;
+            currentCombatTimer = 0;
+            pc.combatIndicator.SetActive(false);
+            GameEvents.TriggerMusic(0, false);
+        }
+        private void ResetCombatViaEnemy(GameObject enemy) => ResetCombat();
+        
         private void Tint()
         {
             if (isTinting)

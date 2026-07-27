@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using scripies.Core;
@@ -14,6 +15,10 @@ public class Shenanigans : MonoBehaviour
     [Header("Stored Object")]
     public GameObject storedObj;
     
+    [Header("Freeze Camera")]
+    public bool freezeCamera;
+    [SerializeField] private GameObject camObj;
+    
     public static Shenanigans Instance {get; private set;}
 
     private void Awake()
@@ -28,7 +33,12 @@ public class Shenanigans : MonoBehaviour
         GameEvents.JumpScare += JumpScare;
         GameEvents.StopTime += StopTime;
     }
-    
+
+    private void Update()
+    {
+        camObj.SetActive(freezeCamera);
+    }
+
     private void StopTime(float time = 0.2f) => StartCoroutine(StopTimeC(time));
     
     private static IEnumerator StopTimeC(float time = 0.2f)
@@ -59,7 +69,6 @@ public class Shenanigans : MonoBehaviour
 
     public void StoreObject(GameObject obj) => storedObj = obj;
     
-    
     /// <summary>
     ///  Applies a force to a stored object, or any object thats in the radius if otherwise.
     /// </summary>
@@ -77,4 +86,13 @@ public class Shenanigans : MonoBehaviour
            if (hit.collider != null) hit.collider.gameObject.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
     }
+    
+    public IEnumerator FreezeCameraTime(float freezeTime)
+    {
+        freezeCamera = true;
+        yield return new WaitForSecondsRealtime(freezeTime);
+        freezeCamera = false;
+    }
+    
+    public void ToggleFreezeCamera(bool freeze = true) => freezeCamera = freeze;
 }

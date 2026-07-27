@@ -194,8 +194,8 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         if (stunTime >= 69) print("jump yourself");
         if (movable)
         {
-            if (isBlocking && shieldHealth > 0) kb.CallKnockback(knockbackDirection* transform.right, knockbackForce / 4, knockbackTime);
-            else kb.CallKnockback(knockbackDirection* transform.right, knockbackForce / 2 , knockbackTime);
+            if (isBlocking && shieldHealth > 0) kb.CallKnockback(knockbackDirection, knockbackForce / 4, knockbackTime);
+            else kb.CallKnockback(knockbackDirection, knockbackForce / 2 , knockbackTime);
         }
     }
     public void Heal(float amount) => bossHealth += amount;

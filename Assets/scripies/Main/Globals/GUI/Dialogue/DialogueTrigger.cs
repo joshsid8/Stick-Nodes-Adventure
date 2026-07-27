@@ -78,6 +78,7 @@ namespace scripies.Dialogue
         public void AddDialogue(ScriptableObject dialogueObject) => dialogue.Add(dialogueObject as DialogueObject);
         
         private void OnEnable() => GameEvents.OnToggleDialogueTrigger += ToggleDialogueTrigger;
+        private void OnDisable() => GameEvents.OnToggleDialogueTrigger -= ToggleDialogueTrigger;
         
         private void ToggleDialogueTrigger(GameObject obj, bool state)
         {

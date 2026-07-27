@@ -45,7 +45,7 @@ namespace scripies.Player
         public bool canWallJump;
 
         private bool isTouchingWall;
-        [HideInInspector] public bool isWallSliding;
+        public bool isWallSliding;
         [SerializeField] private bool isWallJumping;
         [SerializeField] private int availableWalls;
         [SerializeField] private int availableWallsLeft;
@@ -118,7 +118,6 @@ namespace scripies.Player
             originalMovementSpeed = movementSpeed;
             originalJumpForce = jumpForce;
             availableWallsLeft = availableWalls;
-            PlayerHealth.Instance.ApplyCombat(0);
 
             GameEvents.PlayerAction += OnPlayerAction;
             GameEvents.AddPlayerTime += AddCooldown;
@@ -140,29 +139,12 @@ namespace scripies.Player
             VariableJumpHeight();
             WallSlide();
             Other();
-            InCombat();
         }
 
         private void OnPlayerAction(string action, bool play)
         {
             if (!play) animator.SetTrigger(action);
             else animator.Play(action);
-        }
-
-        private void AddCooldown(string variable, float cooldown, bool additive = false)
-        {
-            switch (variable)
-            {
-                case "Dash":
-                    dashCooldown = additive ? dashCooldown + cooldown : cooldown;
-                    break;
-                case "Ability":
-                    pab.currentAbilityCooldown = additive ? pab.currentAbilityCooldown + cooldown : cooldown;
-                    break;
-                case "Combat":
-                    PlayerHealth.Instance.ApplyCombat(cooldown, additive);
-                    break;
-            }
         }
 
         private void FixedUpdate()
@@ -173,7 +155,6 @@ namespace scripies.Player
             {
                 rb.gravityScale = 0;
                 rb.linearVelocity = transform.right * dashDirection * dashSpeed;
-                //canFlip = false;
                 currentDashTime -= Time.deltaTime * 1.75f;
                 if (currentDashTime <= 0)
                 {
@@ -182,7 +163,6 @@ namespace scripies.Player
                     if (isMoving)
                     {
                         rb.gravityScale = defaultGravity;
-                        //canFlip = true;
                         isMoving = false;
                         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
                     }
@@ -238,15 +218,16 @@ namespace scripies.Player
 
         private void WallSlide()
         {
-            if (isTouchingWall && !isGrounded && rb.linearVelocity.y < 0 && canWallJump)
+            if (isTouchingWall && !isGrounded && rb.linearVelocity.y < 0 && canWallJump) isWallSliding = true;
+            else isWallSliding = false;
+
+            if (isWallSliding)
             {
-                isWallSliding = true;
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
                 if (pab.isPerformingAbility) pab.isPerformingAbility = false;
                 if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
                     StartCoroutine(WallJump());
             }
-            else isWallSliding = false;
         }
 
         private IEnumerator WallJump()
@@ -450,20 +431,24 @@ namespace scripies.Player
             {
                 isFacingRight = !isFacingRight;
                 transform.Rotate(0.0f, 180.0f, 0.0f);
+                if (isWallSliding) isWallSliding = false;
             }
         }
 
-        private void InCombat()
+        private void AddCooldown(string variable, float cooldown, bool additive = false)
         {
-            if (PlayerHealth.Instance.currentCombatTimer > 0) PlayerHealth.Instance.inCombat = true;
-            if (PlayerHealth.Instance.inCombat)
+            switch (variable)
             {
-                combatIndicator.SetActive(true);
-                PlayerHealth.Instance.currentCombatTimer -= Time.deltaTime;
-                if (PlayerHealth.Instance.currentCombatTimer <= 0) PlayerHealth.Instance.inCombat = false;
+                case "Dash":
+                    dashCooldown = additive ? dashCooldown + cooldown : cooldown;
+                    break;
+                case "Ability":
+                    pab.currentAbilityCooldown = additive ? pab.currentAbilityCooldown + cooldown : cooldown;
+                    break;
+                case "Combat":
+                    PlayerHealth.Instance.ApplyCombat(cooldown, additive);
+                    break;
             }
-
-            if (!PlayerHealth.Instance.inCombat) combatIndicator.SetActive(false);
         }
 
         private IEnumerator DropThroughPlatform(Collider2D platformCollider)

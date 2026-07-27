@@ -46,6 +46,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     [Space] [Header("Explosion Properties")]
     public bool explodeOnImpact;
     public bool useRadialKnockback;
+    public float explosionUpwardForce = 2;
     public float explosionRadius = 5;
     public float explosionForce = 20f;
     public float explosionTime = 0.2f;
@@ -81,7 +82,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public bool abilityOnCollide;
     public AbilityObjSO[] subAbilities;
     
-    private List<GameObject> inContact = new List<GameObject>();
+    private List<GameObject> inContact = new();
     [Space]
     [Header("References")]
     public Animator animator;
@@ -183,13 +184,13 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (damageable != null)
         {
             damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            damageable.Shock(stunTime, knockbackDirection, knockbackForce, knockbackTime);
+            damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
         }
     }
 
-    public virtual void Explode()
+    protected void Explode()
     {
-        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
+        var objects = inContact;
         foreach (var obj in objects)
         {
             if (typeFactor == 1 && !obj.CompareTag("Enemy") && !obj.CompareTag("Boss")) continue;
@@ -199,7 +200,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             if (damageable != null && procTimer <= 0 && activeHitbox)
             {
                 Vector2 radialDir;
-                if (useRadialKnockback) radialDir = (damageable.Position - transform.position).normalized; 
+                if (useRadialKnockback) radialDir = new Vector2(damageable.Position.x - transform.position.x, 
+                        (damageable.Position.y - transform.position.y) + explosionUpwardForce).normalized;
                 else radialDir = knockbackDirection * (isFacingRightDirection ? transform.right.x : -transform.right.x);
 
                 damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);

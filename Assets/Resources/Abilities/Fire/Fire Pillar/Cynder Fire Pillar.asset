@@ -23,11 +23,13 @@ MonoBehaviour:
   spawnInterval: 0.06
   cooldownMult: 1
   lifetimeMult: 0.25
-  damageMult: 1
+  damageMult: 3
   potency: 1
   sizeMult: 1.1
   isHoldable: 0
+  trueDamage: 0
   abilityOnCollide: 0
   swapForce: 0
   speedMult: 1
   shockwave: 0
+  moveWithCaster: 0

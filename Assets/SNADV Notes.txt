@@ -4,11 +4,14 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-
-        Explosion Logic 
-            It has been initiated, but its not doing what i want >:(
-            I will just need to change a bit of the logic for it to be good
-            also, maybe find a way to add some upward force to the explosion, but idk how to efficiently do that
+        
+        Start adding weather elements!
+            Rainy type has been added, but i have no fx for it. but i think i can still program lightning logic
+            Earthquake shouldnt be too hard to add
+                e.g on event enabled, all ground types deal damage, or if on the ground, you take damage?
+            Wind might be hard cuz of all the velocity constraints
+                but the logic itself is simply move every object by a bit, or just slow everyone down idk
+                 
 
     Optimisations & Hotfixes:
         
@@ -20,76 +23,73 @@ SNADV Notes
                 N/A
                     
             Low Priority/Unconfirmed fixed Bugs
-                I think when the game lags a slight, the player can m1 without cooldowns
-                    Its like it ignores all conditions and i can simply just m1 again
-                    i may have to refactor the cooldown logic
+                N/A
                     
         Input Logic
             switch input systems!
-                Turns out i wasnt smart enough D:
                 I have initialised the settings, but will now need to implement it programmatically
-                
-        Animation
-            Make better/seperate animations in general
-                Player
-                    Turning around
-                    First step before walking
-                    Wall jumping
-                    Better dashing
-                    Walk blocking
-                Cynder
-                    More slashing animations
-                
-            Make 3 more moves for the fish folk
-                Fishwoman
-                    Flying bubble attack
-                    Flying dash attack
-                    Feinted dash counter
-                    Decieving attack
-                           
-            Remake the player animation controller
-                At the moment, it is too tangled
-                Using layers can help make the controller more efficient and look good
-            
-            Fused Animations
-                anims that fuse the 2 entities together for a joint animation
-                    e.g a finisher on the player from cynder
-                    the player dapping up a friendly character
-                    fishfolk successfully decieving the player by fakely asking for forgiveness
-                    cynder's dash attack clashing with the player
-                
-        Audio
-            Make it so that the music never stops, but rather silences before moving onto another track
-            
-            SFX
-                vine boom has been added!
-                now just use the array in audiomanager to add more sfx
-                    I can make/edit my own sfx
-
-    Things to be added:
-           
-        Shop Logic
-            Make nodebucks useful
-            This shouldnt be hard at all, unless trying to make it professionally efficient
+                    Watch a vid on how to do this
+                    
+    Things to be added/changed:
         
-        Mini Bosses
-            a normal enemy-boss hybrid
-                This is basically already a thing, for there are spawners that have a onetime flag
-                Tho they arent a physical thing yet
+        Pre-AO
+            Cant think of any right now
         
-        Obstacles
-            stray projectiles/neutral elements that can hurt both the player and enemies
-                Spikes!
-                Lava
-                stuff like that
-            natural elements/disasters
-                Thunderstorms
-                Wind
-                Earthquakes
+        Post-AO
+        
+            Mini Boss Logic
+                a normal enemy-boss hybrid
+                    This is basically already a thing; there are spawners that have a onetime flag
+                    Tho they arent a physical thing yet
             
-        Sira & TJ Boss Logic
-            I will do Sira last, as it is the most unique boss out of all of them
-            TJ is basically will be split into 2 bosses
-
+            Sira & TJ Boss Logic
+                I will do Sira last, as it is the most unique boss out of all of them
+                TJ is basically will be split into 2 bosses
+            
+            Audio
+                Make it so that the music never stops, but rather silences before moving onto another track (properly)
+                    Functions have been added, but it doesnt work yet
+                SFX
+                    vine boom has been added!
+                    now just use the array in audiomanager to add more sfx
+                        I can make/edit my own sfx
+            
+            A special kind of scene that freezes the camera('s y position) to show that the player has died 
+                
+    Animation Overhaul:
+    
+        This is where i will improve almost all animations, along with making some extra characters and FX
+        It be after almost all logic is completed
+    
+        Make better/seperate animations in general
+            Player
+                Turning around
+                First step before walking
+                Wall jumping/climbing
+                Better dashing
+                Walk blocking
+                Spawn animation?
+            Cynder/Cyderians
+                More/Improved animations
+            
+        Make 3 more moves for the fish folk
+            Fishwoman
+                Flying bubble attack
+                Flying dash attack
+                Feinted dash counter
+                Decieving attack
+        
+        Remake the player animation controller
+            At the moment, it is too tangled
+            Using layers can help make the controller more efficient and look good
+        
+        Fused Animations
+            anims that fuse the 2 entities together for a joint animation
+                e.g a finisher on the player from cynder
+                the player dapping up a friendly character
+                fishfolk successfully decieving the player by fakely asking for forgiveness
+                cynder's dash attack clashing with the player
+                
+        
 When you are done: Find the one piece.
     (This should mean the base has been completed, and I can start on designs!)
