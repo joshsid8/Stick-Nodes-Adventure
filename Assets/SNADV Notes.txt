@@ -6,12 +6,11 @@ SNADV Notes
     Priorities:
         
         Start adding weather elements!
-            Rainy type has been added, but i have no fx for it. but i think i can still program lightning logic
-            Earthquake shouldnt be too hard to add
-                e.g on event enabled, all ground types deal damage, or if on the ground, you take damage?
-            Wind might be hard cuz of all the velocity constraints
-                but the logic itself is simply move every object by a bit, or just slow everyone down idk
-                 
+            I have added all methods, but they havent been tested
+                Thunderstorm has a TODO: all its meant to do is instantiate a thunder bolt near the player,    
+                Earthquake should be working, very simple logic atm
+                Wind was semi vibe coded, so i doubt it will work well
+                Extreme temperatures are just as normal         
 
     Optimisations & Hotfixes:
         

@@ -1,39 +1,49 @@
 using System;
+using System.Collections.Generic;
 using scripies.Player;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class WeatherManager : MonoBehaviour
 {
-    public enum WeatherFactor {Clear, Hot, Cold, Rainy}
-    public WeatherFactor weatherFactor;
-    [FormerlySerializedAs("wp")] public WeatherProperties[] weatherProperties = new WeatherProperties[3];
+    public enum WeatherType {Clear, Hot, Cold, Rainy}
+    public WeatherType weatherType;
+    [FormerlySerializedAs("wp")]
+    public WeatherProperties[] weatherProperties = new WeatherProperties[3];
     private MapManager mm;
+
+    public Dictionary<string, float> disasters = new(5);
+    private float hurtTimer;
+    
     private readonly float[] preValues = new float[3];
+    private PlayerHealth player;
+    
     private void Awake()
     {
         mm = GetComponent<MapManager>();
-        preValues[0] = PlayerHealth.Instance.regenerationMultiplier;
-        preValues[1] = PlayerHealth.Instance.pc.movementSpeed;
+        player = PlayerHealth.Instance;
+        preValues[0] = player.regenerationMultiplier;
+        preValues[1] = player.pc.movementSpeed;
     }
     public void SetWeather()
     {
-        switch (weatherFactor)
+        switch (weatherType)
         {
-            case WeatherFactor.Clear:
+            case WeatherType.Clear:
                 mm.UpdateNormalAreaInfo();
-                PlayerHealth.Instance.regenerationMultiplier = preValues[0];
-                PlayerHealth.Instance.pc.movementSpeed = preValues[1];
+                player.regenerationMultiplier = preValues[0];
+                player.pc.movementSpeed = preValues[1];
                 break;
-            case WeatherFactor.Hot:
-                PlayerHealth.Instance.regenerationMultiplier = 0;
-                PlayerHealth.Instance.pc.movementSpeed = preValues[1] * 0.8f;
+            case WeatherType.Hot:
+                player.regenerationMultiplier = 0;
+                player.pc.movementSpeed = preValues[1] * 0.8f;
                 mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
                 break;
-            case WeatherFactor.Cold:
-                PlayerHealth.Instance.regenerationMultiplier = 0;
-                PlayerHealth.Instance.pc.movementSpeed = preValues[1] * 0.8f;
+            case WeatherType.Cold:
+                player.regenerationMultiplier = 0;
+                player.pc.movementSpeed = preValues[1] * 0.8f;
                 mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
                 break;
@@ -45,20 +55,73 @@ public class WeatherManager : MonoBehaviour
     
     private void Update()
     {
-        switch (weatherFactor)
+        DisasterEffects();
+        hurtTimer -= Time.deltaTime;
+    }
+    
+    public void SlowlyHurtPlayer(float damage = 0.5f, float time = 0)
+    {
+        if (hurtTimer <= 0)
         {
-            case WeatherFactor.Hot:
-            case WeatherFactor.Cold:
-                SlowlyHurtPlayer(0.002f, PlayerHealth.Instance);
+            player.playerHealth -= damage;
+            hurtTimer = time;
+        }
+    }
+
+    private void PollingHurtPlayer(float damage = 0.002f) => player.playerHealth -= damage;
+    
+    public void SetDisaster(string dName = "", float dFactor = 0)
+    {
+        if (disasters.ContainsKey(dName)) disasters[dName] = dFactor;
+    }
+
+    public void DisasterEffects()
+    {
+        EarthQuake();
+        Temperature();
+    }
+
+    private void EarthQuake()
+    {
+        if (disasters.ContainsKey("Earthquake") && disasters["Earthquake"] > 0 && player.pc.isGrounded) 
+            SlowlyHurtPlayer(1 * disasters["Earthquake"], 0.2f);
+    }
+
+    private void Temperature()
+    {
+        switch (weatherType)
+        {
+            case WeatherType.Hot:
+            case WeatherType.Cold:
+                PollingHurtPlayer(0.002f * disasters["Temperature"]);
                 break;
         }
     }
     
-    public void SlowlyHurtPlayer(float damage, PlayerHealth ph)
+    private float thunderTimer;
+    public void Thunderstorm()
     {
-        ph.playerHealth -= damage;
+        if (disasters.ContainsKey("Thunderstorm") && disasters["Thunderstorm"] > 0 && thunderTimer <= 0)
+        {
+            var rng = Random.Range(0, 101);
+            if (rng <= 50)
+            {
+                // TODO: A lightning bolt will strike near the player >:D
+                thunderTimer = 1 / disasters["Thunderstorm"];
+            }
+        }
+    }
+
+    public void Wind(bool isRight)
+    {
+        if (disasters.ContainsKey("Wind") && disasters["Wind"] > 0)
+        {
+            player.pc.rb.AddForce(new Vector2(isRight ? 1 : -1, 0) * 100 * disasters["Wind"]);
+        }
     }
 }
+
+
 [Serializable]
 public class WeatherProperties
 {
