@@ -36,7 +36,7 @@ public class Shenanigans : MonoBehaviour
 
     private void Update()
     {
-        camObj.SetActive(freezeCamera);
+        camObj.SetActive(!freezeCamera);
     }
 
     private void StopTime(float time = 0.2f) => StartCoroutine(StopTimeC(time));

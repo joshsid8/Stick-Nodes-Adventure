@@ -173,8 +173,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             deathToggle = true;
             bossHealth = 0;
             isDead = true;
-            // seems like nothing happened when this got disabled
-            //if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm)) mm.OnBossDefeated();
+            GameEvents.TriggerBossDefeated();
             StartCoroutine(Defeat());
         }
         else if (bossHealth <= phase2Health) phase2 = true;

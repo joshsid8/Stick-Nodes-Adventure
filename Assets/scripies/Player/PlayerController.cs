@@ -345,7 +345,7 @@ namespace scripies.Player
             if (isFacingRight && inputDirection < 0) Flip();
             else if (!isFacingRight && inputDirection > 0) Flip();
 
-            if (rb.linearVelocity.x <= -0.5f || rb.linearVelocity.x >= 0.5f) isRunning = true;
+            if (rb.linearVelocity.x <= -0.5f && inputDirection < 0 || rb.linearVelocity.x >= 0.5f && inputDirection > 0) isRunning = true;
             else isRunning = false;
         }
 

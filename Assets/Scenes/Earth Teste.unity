@@ -2166,6 +2166,17 @@ MonoBehaviour:
   - 0.7
   - 0.7
   - 0.7
+  mapDisasterNames:
+  - Temperature
+  - Earthquake
+  - Wind
+  - Thunderstorm
+  mapDisasterFactors:
+  - 0
+  - 0
+  - 0
+  - 0
+  sectionObj: {fileID: 341918498}
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -2196,7 +2207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a851b4b95a4a5240abb79aa3392fb79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
-  weatherFactor: 0
+  weatherType: 0
   weatherProperties:
   - weatherMapName: Heat Place
     weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
@@ -2222,6 +2233,9 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  thunderbolt: {fileID: 0}
+  thunderTimer: 5
+  thunderChance: 50
 --- !u!4 &620088607 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4970039674660754698, guid: ed2b161a279a9864aac83985aef7abd0, type: 3}

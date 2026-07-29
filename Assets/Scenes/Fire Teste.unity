@@ -488,7 +488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7248849954308778656, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.044965565
+      value: 0.034317717
       objectReference: {fileID: 0}
     - target: {fileID: 7248849954308778656, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3752,6 +3752,17 @@ MonoBehaviour:
   - 0.5
   - 0.7
   - 0.7
+  mapDisasterNames:
+  - Temperature
+  - Earthquake
+  - Wind
+  - Thunderstorm
+  mapDisasterFactors:
+  - 1
+  - 0
+  - 0
+  - 0
+  sectionObj: {fileID: 341918498}
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -3778,7 +3789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a851b4b95a4a5240abb79aa3392fb79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
-  weatherFactor: 0
+  weatherType: 0
   weatherProperties:
   - weatherMapName: Heat Place
     weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
@@ -3804,6 +3815,9 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
+  thunderTimer: 5
+  thunderChance: 50
 --- !u!1 &605936617
 GameObject:
   m_ObjectHideFlags: 0

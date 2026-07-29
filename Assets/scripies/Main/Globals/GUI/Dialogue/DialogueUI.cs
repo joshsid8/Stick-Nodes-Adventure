@@ -42,8 +42,16 @@ namespace scripies.Dialogue
             CloseDialogue();
         }
 
-        private void OnEnable() => GameEvents.ShowDialogue += ShowDialogue;
-        private void OnDisable() => GameEvents.ShowDialogue -= ShowDialogue;
+        private void OnEnable()
+        {
+            GameEvents.ShowDialogue += ShowDialogue;
+            GameEvents.OnDialogueClose += ForceCloseDialogue;
+        }
+        private void OnDisable()
+        {
+            GameEvents.ShowDialogue -= ShowDialogue;
+            GameEvents.OnDialogueClose -= ForceCloseDialogue;
+        }
 
         private void Update() => textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;
 
@@ -79,11 +87,10 @@ namespace scripies.Dialogue
                 if (dialogueObject.canBeBold) isBold = dialogueObject.bold[currentBoldIndex];
                 else isBold = false;
                 if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
-                //TODO: This is a very expensive invocation. find a way to maybe use the npc SO to reference the animator instead 
                 animator = isAnimated
+                // pretty expensive method, maybe refactor this
                     ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName)
-                        .GetComponent<Animator>()
-                    : null;
+                        .GetComponent<Animator>() : null;
                 yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
                 yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
             }
@@ -134,7 +141,9 @@ namespace scripies.Dialogue
         }
 
         public void DecrementActiveGUICount() => ActiveGUICount--;
-
+        
+        private void ForceCloseDialogue() => CloseDialogue();
+        
         private void CloseDialogue(DialogueObject dialogueObject = null)
         {
             OnDialogueClose?.Invoke(currentNpc);
@@ -199,8 +208,16 @@ namespace scripies.Dialogue
             if (dialogueObject.appliesBooleanChange)
             {
                 for (var i = 0; i < dialogueObject.targetBoolVariables.Length; i++)
+                {
+                    if (dialogueObject.targetBoolVariables[i] == "BossAttack")
+                    {
+                        GameEvents.TriggerBossAttack(dialogueObject.newBoolValues[i],
+                            GameObject.Find(currentNpc.npcName));
+                        break;
+                    }
                     PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i],
                         dialogueObject.newBoolValues[i]);
+                }
             }
 
             if (dialogueObject.willGiveQuest) QuestLogManager.Instance.AssignQuest(dialogueObject.questToOffer as QuestSO);

@@ -46,7 +46,7 @@ public class AbilityObjSO : ScriptableObject
                ab.cooldown *= cooldownMult;
                ab.lifeTime *= lifetimeMult;
                ab.trueDamage = trueDamage;
-               if (proc > 0) ab.proc = proc;
+               if (proc > 0) ab.procTime = proc;
                if (speedMult != 1) ab.gameObject.GetComponent<Projectile>().projectileSpeed *= speedMult;
                if (swapForce) ab.gameObject.GetComponent<Projectile>().swapForce = true;
                ab.isHoldable = isHoldable;

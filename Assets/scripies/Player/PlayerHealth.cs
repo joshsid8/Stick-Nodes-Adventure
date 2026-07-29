@@ -99,6 +99,7 @@ namespace scripies.Player
             GameEvents.OnPlayerDeath += ResetCombat;
             GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
             GameEvents.OnAggressiveStatusChanged += UpdateAggressiveEnemies;
+            GameEvents.AddPlayerCombat += ApplyCombat;
         }
 
         private void UpdateAggressiveEnemies(ITarget target, bool isAggressive)
@@ -276,8 +277,8 @@ namespace scripies.Player
                 }
             }
         }
-
-        public void ApplyCombat(float combatDuration = 5, bool additive = false)
+        
+        public void ApplyCombat(float combatDuration = 5, bool additive = false, string aggressor = null)
         {
             if (combatDuration <= 0)
             {
@@ -287,7 +288,10 @@ namespace scripies.Player
             inCombat = true;
             currentCombatTimer = additive ? currentCombatTimer + combatDuration : combatDuration;
             pc.combatIndicator.SetActive(true);
-            if (GameObject.Find("AudioManager").GetComponent<IAudioStatus>().musicType != IAudioStatus.MusicType.Combat) GameEvents.TriggerMusic(1, false);
+            if (GameObject.Find("AudioManager").GetComponent<IAudioStatus>().musicType != IAudioStatus.MusicType.Combat && aggressor != "Boss") 
+                GameEvents.TriggerMusic(1, false);
+            else if (aggressor == "Boss") 
+                GameEvents.TriggerMusic(2, false);
             StartCoroutine(CombatTimer());
         }
 

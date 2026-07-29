@@ -47,7 +47,6 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public bool explodeOnImpact;
     public bool useRadialKnockback;
     public float explosionUpwardForce = 2;
-    public float explosionRadius = 5;
     public float explosionForce = 20f;
     public float explosionTime = 0.2f;
     
@@ -55,13 +54,15 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public float cooldown;
     [Space]
     [Header("Proccing")]
+    [FormerlySerializedAs("proc")]
     [FormerlySerializedAs("beamProc")]
     [FormerlySerializedAs("pillarProc")]
-    public float proc;
+    public float procTime;
 
+    [FormerlySerializedAs("procTimer")]
     [FormerlySerializedAs("beamProcTimer")]
     [FormerlySerializedAs("pillarProcTimer")]
-    public float procTimer;
+    public float currentProcTimer;
     
     [FormerlySerializedAs("isErupting")]
     public bool activeHitbox;
@@ -114,13 +115,16 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     
     protected virtual void Start()
     {
-        procTimer = 0;
+        currentProcTimer = 0;
         pa = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>(); 
         parentObject = transform.parent.gameObject;
         if (anim != null) animator.Play(anim.name);
         lifeTimer = lifeTime;
-        procTimes = lifeTime / proc;
+        procTimes = lifeTime / procTime;
         procTimes = energyRequired / procTimes;
+                
+        if (animator.runtimeAnimatorController == null) 
+            Destroy(parentObject.gameObject ?? gameObject, lifeTime);
     }
 
     protected virtual void Update()
@@ -154,7 +158,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     protected virtual void HitBox()
     {
         if (explodeOnImpact) Explode();
-        else if (inContact.Count != 0 && procTimer <= 0 && activeHitbox)
+        else if (inContact.Count != 0 && currentProcTimer <= 0 && activeHitbox)
         {   
             foreach (var hit in inContact)
             {
@@ -175,7 +179,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
                 Damageable(damageable);
             }
             
-            procTimer = proc;
+            currentProcTimer = procTime;
         }
     }
 
@@ -197,7 +201,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             if (typeFactor == 2 && !obj.CompareTag("Player")) continue;
             
             var damageable = obj.GetComponent<IDamageable>();
-            if (damageable != null && procTimer <= 0 && activeHitbox)
+            if (damageable != null && currentProcTimer <= 0 && activeHitbox)
             {
                 Vector2 radialDir;
                 if (useRadialKnockback) radialDir = new Vector2(damageable.Position.x - transform.position.x, 
@@ -206,21 +210,21 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
 
                 damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
                 damageable.Shock(explosionTime, radialDir, explosionForce, explosionTime);
-                procTimer = proc;
+                currentProcTimer = procTime;
             }
         }
     }
     
     private void Proc()
     {
-        procTimer -= Time.deltaTime;
+        currentProcTimer -= Time.deltaTime;
         energyProc -= Time.deltaTime;
         if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
         {
-            energyProc = proc;
+            energyProc = procTime;
             if (pa != null && typeFactor == 1) GameEvents.AddPlayerEnergy(-procTimes);
         }
-        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = proc;
+        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = procTime;
     }
     
     void ApplyTimer() => lifeTimer = lifeTime;

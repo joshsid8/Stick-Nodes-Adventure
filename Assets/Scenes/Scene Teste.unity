@@ -868,6 +868,17 @@ MonoBehaviour:
   - 1
   - 0.7
   - 0.7
+  mapDisasterNames:
+  - Temperature
+  - Earthquake
+  - Wind
+  - Thunderstorm
+  mapDisasterFactors:
+  - 0
+  - 0
+  - 0
+  - 1
+  sectionObj: {fileID: 0}
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -959,7 +970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a851b4b95a4a5240abb79aa3392fb79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
-  weatherFactor: 1
+  weatherType: 3
   weatherProperties:
   - weatherMapName: Heat Place
     weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
@@ -985,6 +996,21 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  - weatherMapName: Thunder strom
+    weatherMapDesc: ah!
+    weatherTextColor: {r: 0.36863655, g: 0.7169812, b: 0.698485, a: 1}
+    weatherBgColor: {r: 0, g: 0.34697014, b: 0.4245283, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    weatherOstVolume:
+    - 1
+    - 1
+    - 1
+  thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
+  thunderTimer: 1
+  thunderChance: 50
 --- !u!1001 &1002234505
 PrefabInstance:
   m_ObjectHideFlags: 0

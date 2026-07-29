@@ -4,13 +4,7 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        
-        Start adding weather elements!
-            I have added all methods, but they havent been tested
-                Thunderstorm has a TODO: all its meant to do is instantiate a thunder bolt near the player,    
-                Earthquake should be working, very simple logic atm
-                Wind was semi vibe coded, so i doubt it will work well
-                Extreme temperatures are just as normal         
+        None so far???
 
     Optimisations & Hotfixes:
         
@@ -22,12 +16,8 @@ SNADV Notes
                 N/A
                     
             Low Priority/Unconfirmed fixed Bugs
-                N/A
-                    
-        Input Logic
-            switch input systems!
-                I have initialised the settings, but will now need to implement it programmatically
-                    Watch a vid on how to do this
+                After making boss attacking more efficient, i get a USELESS missingref exception
+                    everything still works, i just need to remove this exception.    
                     
     Things to be added/changed:
         
@@ -35,7 +25,12 @@ SNADV Notes
             Cant think of any right now
         
         Post-AO
-        
+            
+            Input Logic
+                switch input systems!
+                    I have initialised the settings, but will now need to implement it programmatically
+                        Watch a vid on how to do this
+            
             Mini Boss Logic
                 a normal enemy-boss hybrid
                     This is basically already a thing; there are spawners that have a onetime flag
@@ -46,12 +41,10 @@ SNADV Notes
                 TJ is basically will be split into 2 bosses
             
             Audio
-                Make it so that the music never stops, but rather silences before moving onto another track (properly)
-                    Functions have been added, but it doesnt work yet
-                SFX
-                    vine boom has been added!
-                    now just use the array in audiomanager to add more sfx
-                        I can make/edit my own sfx
+                Make it so that the music transitions smoothly
+                    maybe i have to fade the music out and simultaneously fade in the new one?
+                   
+                Basic gameplay SFX
             
             A special kind of scene that freezes the camera('s y position) to show that the player has died 
                 

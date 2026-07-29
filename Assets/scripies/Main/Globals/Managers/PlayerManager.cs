@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using scripies.Core;
 using scripies.Player;
 
 public class PlayerManager : MonoBehaviour
@@ -263,10 +264,6 @@ public class PlayerManager : MonoBehaviour
                     Debug.Log($"GameManager: PlayerCanAct set to {pc.canAct}");
                 }
                 else Debug.LogWarning($"PlayerController not found to set PlayerCanAct.");
-                break;
-            case "BossAttack":
-                GameObject boss = GameObject.FindGameObjectWithTag("Boss");
-                boss.GetComponent<BossAttack>().isAttacking = value;
                 break;
             // To be added later
             default:

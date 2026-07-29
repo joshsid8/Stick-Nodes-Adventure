@@ -44,10 +44,13 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         //if (fade) StartCoroutine(FadeOutMusic()); else toggle = true;
         //yield return new WaitUntil(() => toggle);
         //toggle = false;
-        musicSource.clip = backgroundMusic[index];
-        musicSource.volume = backgroundMusicVolume[index];
-        musicType = (IAudioStatus.MusicType) index;
-        musicSource.Play();
+        if (musicSource.clip != backgroundMusic[index])
+        {
+            musicSource.clip = backgroundMusic[index];
+            musicSource.volume = backgroundMusicVolume[index];
+            musicType = (IAudioStatus.MusicType)index;
+            musicSource.Play();
+        }
         yield return null;
     }
     

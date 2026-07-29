@@ -20,7 +20,10 @@ public class MapManager : MonoBehaviour
     [SerializeField] private Color mapBgColor = Color.white;
     [SerializeField] private AudioClip[] newOst;
     public float[] ostVolume = {0.5f,0.5f,0.5f};
+    public string[] mapDisasterNames = { "Temperature", "Earthquake", "Wind", "Thunderstorm" };
+    public float[] mapDisasterFactors = new float[4];
 
+    [SerializeField] private GameObject sectionObj;
     #endregion
 
     #region Scene Data
@@ -43,6 +46,8 @@ public class MapManager : MonoBehaviour
     public List<SpawnerSceneData> spawnerSceneData = new List<SpawnerSceneData>();
     #endregion
 
+    private void Awake() { if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections"); }
+    
     private IEnumerator Start()
     {
         sceneName = gameObject.scene.name;
@@ -50,6 +55,8 @@ public class MapManager : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         SaveSceneData();
         if (SceneDataManager.Instance.sceneData.Count > 0) LoadSceneData();
+        
+        GameEvents.OnBossDefeated += OnBossDefeated;
     }
 
     private void Update()
@@ -59,7 +66,7 @@ public class MapManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F3)) LoadSceneData();
     }
     
-    public void OnBossDefeated() => bossSceneData.isDead = true;
+    private void OnBossDefeated() => bossSceneData.isDead = true;
 
     public void OnDoorStatusChanged(DoorObjective doorObjective, bool isOpen)
     {
@@ -71,6 +78,7 @@ public class MapManager : MonoBehaviour
     {
         if (!Instances.ContainsKey(gameObject.scene.name))
             Instances.Add(gameObject.scene.name, this);
+        if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
     }
 
     private void OnDisable()
@@ -83,7 +91,11 @@ public class MapManager : MonoBehaviour
     {
         if (collision.CompareTag("Player") && AreaManager.Instance.titleText.text != mapName || collision.CompareTag("Player") && AreaManager.Instance.titleText.text != null)
         {
-            yield return new WaitForSeconds(0.1f);
+            //Shenanigans.Instance.freezeCamera = true;
+            sectionObj?.SetActive(false);
+            yield return new WaitForSeconds(1f);
+            //Shenanigans.Instance.freezeCamera = false;
+            sectionObj?.SetActive(true);
             GetComponent<WeatherManager>().SetWeather();
         }
     }
@@ -97,7 +109,7 @@ public class MapManager : MonoBehaviour
             AudioManager.Instance.backgroundMusic[i] = mOst[i];
             AudioManager.Instance.backgroundMusicVolume[i] = mOstVolume[i];
         }
-        GameEvents.TriggerMusic(0);
+        GameEvents.TriggerMusic(0, false);
         if (mainCamera != null) mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
     }
 
@@ -106,7 +118,8 @@ public class MapManager : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             MakeDataPersistent();
-            if (!AudioManager.Instance.gameObject.IsDestroyed() && AudioManager.Instance.enabled && AudioManager.Instance.gameObject.activeInHierarchy) StartCoroutine(AudioManager.Instance.FadeOutMusic());
+            if (!AudioManager.Instance.gameObject.IsDestroyed() && AudioManager.Instance.enabled && AudioManager.Instance.gameObject.activeInHierarchy && gameObject.activeInHierarchy) StartCoroutine(AudioManager.Instance.FadeOutMusic());
+            GetComponent<WeatherManager>().ClearDisasters();
         }
     }
 

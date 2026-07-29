@@ -1,5 +1,6 @@
 using System.Collections;
 using scripies.Core;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -39,7 +40,6 @@ public class BossAttack : MonoBehaviour
     [Header("Stun and Dialogue")]
     public bool stunnable;
     public float stunnableTimer;
-    [SerializeField] private bool playerIsDead;
     [SerializeField] private int dialogueNo = -1;
     [SerializeField] private bool inRange;
     private bool noMercy;
@@ -63,6 +63,9 @@ public class BossAttack : MonoBehaviour
         ps = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         originalPosition = transform.position;
+
+        GameEvents.OnBossAttack += BossAttackToggle;
+        GameEvents.OnPlayerDeath += ResetBoss;
     }
 
     // Update is called once per frame
@@ -71,8 +74,7 @@ public class BossAttack : MonoBehaviour
         Checks();
         FacePlayer();
         FactorCheck();
-        if (isAttacking) AttackSystem2();
-        StartCoroutine(Restart());
+        if (isAttacking) AttackSystem();
     }
 
     private void FactorCheck()
@@ -80,11 +82,21 @@ public class BossAttack : MonoBehaviour
         closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
     }
     
-    private void AttackSystem2()
+    private void BossAttackToggle(bool toggle, GameObject boss = null)
     {
-        GameEvents.TriggerToggleDialogue(gameObject, false);
-        GameEvents.TriggerAddPlayerTime("Combat", 69);
-        canFacePlayer = true;
+        if (boss != null && boss != gameObject) return;
+        isAttacking = toggle;
+        if (isAttacking)
+        {
+            GameEvents.TriggerToggleDialogue(gameObject, false);
+            GameEvents.TriggerAddPlayerCombat(69, false, "Boss");
+            GameEvents.TriggerDialogueClose();
+            canFacePlayer = true;
+        }
+    }
+    
+    private void AttackSystem()
+    {
         if (canAttack && !bh.isStunned)
         {
             stunnableTimer = 0;
@@ -117,7 +129,6 @@ public class BossAttack : MonoBehaviour
         }
         else if (currentAttackCooldown <= 0 && isAttacking && isGrounded) canAttack = true;
         
-        if (!ps.IsDead && playerIsDead) playerIsDead = false;
         inRange = Physics2D.OverlapCircle(dt.ChatPoint.position, dt.ChatRadius, LayerMask.GetMask("Player"));
         
         if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.Enabled && noMercy) 
@@ -159,26 +170,23 @@ public class BossAttack : MonoBehaviour
 
     private void GuardDown(float stunnableTime = 0.4f) => stunnableTimer = stunnableTime;
 
+    private void ResetBoss() { if (isAttacking) StartCoroutine(Restart()); }
     private IEnumerator Restart()
     {
-        if (ps.IsDead && !playerIsDead && isAttacking)
+        isAttacking = false;
+        noMercy = false;;
+        yield return new WaitUntil(() => !ps.IsDead);
+        transform.position = originalPosition;
+        bh.bossHealth = bh.bossMaxHealth;
+        bh.phase2 = false;
+        yield return new WaitForSeconds(1f);
+        noMercy = true;
+        if (dialogueNo <= bh.introDialogue.Length - 1)
         {
-            playerIsDead = true;
-            isAttacking = false;
-            noMercy = false;
-            yield return new WaitForSeconds(5);
-            transform.position = originalPosition;
-            bh.bossHealth = bh.bossMaxHealth;
-            bh.phase2 = false;
-            yield return new WaitForSeconds(1f);
-            noMercy = true;
-            if (dialogueNo <= bh.introDialogue.Length - 1)
-            {
-                GameEvents.TriggerToggleDialogue(gameObject, true);
-                dt.AddDialogue(bh.introDialogue[dialogueNo]);
-                dt.IsForced = true;
-                dialogueNo++;
-            }
+            GameEvents.TriggerToggleDialogue(gameObject, true);
+            dt.AddDialogue(bh.introDialogue[dialogueNo]);
+            dt.IsForced = true;
+            dialogueNo++;
         }
     }
 
