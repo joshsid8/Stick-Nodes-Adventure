@@ -22,6 +22,8 @@ public class MainMenuManager : MonoBehaviour
     {
         loadingBar.SetActive(false);
         DontDestroyOnLoad(gameObject.transform.root.gameObject);
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
     }
 
     public void StartGame()
@@ -29,6 +31,11 @@ public class MainMenuManager : MonoBehaviour
         HideMenu();
         loadingBar.SetActive(true);
         StartCoroutine(ProgressLoading());
+    }
+    
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
     private void HideMenu()
@@ -41,18 +48,30 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator ProgressLoading()
     {
-        float progress = 0;
-        foreach (var scene in scenesToLoad)
-        {
-            while (scene.isDone)
-            {
-                progress += scene.progress;
-                loadingBarImage.fillAmount = progress / scenesToLoad.Count;
-                yield return null;
-            }
-        }
+        // 1. Start loading the scenes first
         scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
         scenesToLoad.Add(SceneManager.LoadSceneAsync(levelScene, LoadSceneMode.Additive));
+
+        // 2. Wait for all scenes in the list to finish
+        float totalProgress;
+        var allDone = false;
+        
+        while (!allDone)
+        {
+            totalProgress = 0;
+            allDone = true;
+
+            foreach (var scene in scenesToLoad)
+            {
+                totalProgress += scene.progress;
+                if (!scene.isDone) allDone = false;
+            }
+
+            loadingBarImage.fillAmount = totalProgress / scenesToLoad.Count;
+            yield return null;
+        }
+
+        // 3. Finalize
         yield return new WaitForSeconds(0.1f);
         SaveSystem.Load();
         SceneManager.UnloadSceneAsync(gameObject.scene);

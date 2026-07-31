@@ -12,11 +12,7 @@ public abstract class GUIBase : MonoBehaviour
     protected PlayerController player;
     protected RectTransform rt;
 
-    protected virtual void Awake()
-    {
-        GetPlayer();
-        
-    }
+    protected virtual void Awake() => GetPlayer();
     
     private void Update()
     {

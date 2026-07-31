@@ -1,9 +1,6 @@
 using System.IO;
-using System.Net;
 using scripies.Player;
-using UnityEditor.Overlays;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SaveSystem
 {
@@ -62,7 +59,7 @@ public class SaveSystem
         {
             var json = JsonUtility.ToJson(saveData, true);
             File.WriteAllText(SaveFileName(), json);
-            Debug.Log($"[SaveSystem] Saved to: {SaveFileName()}");
+            //Debug.Log($"[SaveSystem] Saved to: {SaveFileName()}");
         }
         catch (IOException ex)
         {
@@ -86,7 +83,7 @@ public class SaveSystem
             saveData = JsonUtility.FromJson<SaveData>(saveDataString);
 
             HandleLoadData();
-            Debug.Log($"[SaveSystem] Loaded from: {path}");
+            //Debug.Log($"[SaveSystem] Loaded from: {path}");
         }
         catch (IOException ex)
         {

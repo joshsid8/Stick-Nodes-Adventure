@@ -125,7 +125,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             ClearSlotVisuals();
         }
     }
-
     
     private void ClearSlotVisuals()
     {
@@ -197,7 +196,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         UpdateSlotUI();
     }
 
-
     private void EquipAspect()
     {
         var equipped = false;
@@ -222,27 +220,17 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (!equipped) Debug.LogWarning("All equipped Aspect slots are full! Cannot equip " + itemName);
     }
 
-    public void ItemSelect()
-    {
-        OnLeftClick();
-    }
+    public void ItemSelect() => OnLeftClick();
+    
     private IEnumerator DestroyItem()
     {
-        choice.messageText.text = "Do you really want to destroy ALL of this item?";
-        choice.Choices();
-        yield return new WaitUntil(() => choice.yes || choice.no);
-        if (choice.yes)
+        choice.Choices(message: "Do you really want to destroy ALL of this item?");
+        yield return new WaitUntil(() => choice.choice != 0);
+        if (choice.choice == 2)
         {
-            choice.yes = false;
             if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject, itemAmount);
             ClearSlot();
-            choice.Finish();
             UpdateSlotUI();
-        }
-        else if (choice.no)
-        {
-            choice.no = false;
-            choice.Finish();
         }
     }
     

@@ -96,10 +96,7 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            OnLeftClick();
-        }
+        if (eventData.button == PointerEventData.InputButton.Left) OnLeftClick();
     }
 
     private void OnLeftClick()
@@ -129,36 +126,23 @@ public class AspectSlot : MonoBehaviour, IPointerClickHandler
 
     private void UnequipAspect()
     {
-        // Notify InvManager to handle stat reversal and moving aspect back to inventory
         invManager.UnequipAspect(itemName, itemSprite, itemDescription, aspectStats);
-        
-        ClearSlot(); // Clear this equipped aspect slot after it's moved/processed
-        // Deselect all after action is complete (InvManager.DeselectAllSlots handles this)
+        ClearSlot();
     }
     private IEnumerator DestroyItem()
     {
-        choice.messageText.text = "Do you really want to destroy this Aspect?";
-        choice.Choices();
-        yield return new WaitUntil(() => choice.yes || choice.no);
-        if (choice.yes)
+        choice.Choices(message: "Do you really want to destroy this aspect?");
+        yield return new WaitUntil(() => choice.choice != 0);
+        if (choice.choice == 2)
         {
-            choice.yes = false;
             invManager.UnequipAspect(itemName, itemSprite, itemDescription, aspectStats);
             ClearSlot();
-            choice.Finish();
             UpdateSlotUI();
-        }
-        else if (choice.no)
-        {
-            choice.no = false;
-            choice.Finish();
         }
     }
     
-    public void AspectSelect()
-    {
-        OnLeftClick();
-    }
+    public void AspectSelect() => OnLeftClick();
+    
     public void Deselect()
     {
         if (selectedShader != null) selectedShader.SetActive(false);

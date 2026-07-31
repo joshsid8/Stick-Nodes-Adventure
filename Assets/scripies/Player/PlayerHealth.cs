@@ -133,7 +133,6 @@ namespace scripies.Player
                 gameObject.layer = LayerMask.NameToLayer("Dead");
                 spriteRenderer.color = Color.white;
             }
-            
         }
 
         private void Animation()

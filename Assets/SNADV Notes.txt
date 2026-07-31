@@ -4,16 +4,17 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Make an official prototype release
-            I want the game to be released to the public for people to test
-            But first we need to fix all other bugs that are present rn
-                Find out why player gets extra energy when the game loads through the main menu
+        Look at Instability
+            I didnt see this coming, but i saw this coming D:
 
     Optimisations & Hotfixes:
         
         Instability
-            Replicatable bugs
-                N/A
+            Replicatable/From build bugs/problems
+                When cynder loses, and you fight noxu next, noxu's dialogue goes to the last one, and the game breaks!
+                Abilities ONCE AGAIN doesnt affect bosses
+                Projectiles' knockback is for some reason dependent on its own side
+                Combat timer is a bit too small, making the music repeat unecessarily often
                 
             One time occurrences/Rare bugs
                 N/A

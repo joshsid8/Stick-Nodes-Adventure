@@ -89,7 +89,7 @@ public class BossAttack : MonoBehaviour
         if (isAttacking)
         {
             GameEvents.TriggerToggleDialogue(gameObject, false);
-            GameEvents.TriggerAddPlayerCombat(69, false, "Boss");
+            GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
             GameEvents.TriggerDialogueClose();
             canFacePlayer = true;
         }

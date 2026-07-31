@@ -1,9 +1,7 @@
 {
-    "name": "Project.External",
+    "name": "scripies.External",
     "rootNamespace": "",
-    "references": [
-        "GUID:a12f187f4332af14fb15d3b05d7b9674"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

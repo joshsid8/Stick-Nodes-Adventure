@@ -40,6 +40,11 @@ public class InvManager : GUIBase
     // Update is called once per frame
     void Update()
     {
+        Inputs();
+    }
+
+    private void Inputs()
+    {
         if (Input.GetButtonDown("Inventory")) ToggleInventory();
         if (Input.GetButtonDown("Cancel") && isActive)
         {
