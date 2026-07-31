@@ -63,11 +63,11 @@ public class InvManager : GUIBase
 
     public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)
     {
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (var i = 0; i < itemSlots.Length; i++)
         {
             if (itemSlots[i] != null && itemSlots[i].usedSlot && itemSlots[i].itemName == itemName && itemSlots[i].itemAmount < itemSlots[i].maxItemAmount)
             {
-                int amountToAdd = Mathf.Min(itemAmount, itemSlots[i].maxItemAmount - itemSlots[i].itemAmount);
+                var amountToAdd = Mathf.Min(itemAmount, itemSlots[i].maxItemAmount - itemSlots[i].itemAmount);
                 itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, itemSo,aspect, ability, abilitype);
                 itemAmount -= amountToAdd;
                 if (itemAmount <= 0)

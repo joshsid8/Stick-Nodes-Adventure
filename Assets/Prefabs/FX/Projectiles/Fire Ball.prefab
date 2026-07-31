@@ -69,12 +69,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: randomAngle
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: gravityScale
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: procInterval
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: airResistance
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: isDirectional
@@ -98,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: projectileHeight
-      value: 1
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 4963594003989781806, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: m_Name

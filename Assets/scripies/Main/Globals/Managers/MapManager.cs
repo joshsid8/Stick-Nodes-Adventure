@@ -11,7 +11,6 @@ using Unity.VisualScripting;
 
 public class MapManager : MonoBehaviour
 {
-    
     #region Map Info and Ost
 
     [SerializeField] private string mapName;
@@ -23,6 +22,7 @@ public class MapManager : MonoBehaviour
     public string[] mapDisasterNames = { "Temperature", "Earthquake", "Wind", "Thunderstorm" };
     public float[] mapDisasterFactors = new float[4];
 
+    private WeatherManager weather;
     [SerializeField] private GameObject sectionObj;
     #endregion
 
@@ -52,11 +52,14 @@ public class MapManager : MonoBehaviour
     {
         sceneName = gameObject.scene.name;
         mainCamera = SceneDataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
+        weather = GetComponent<WeatherManager>();
         yield return new WaitForSeconds(0.05f);
         SaveSceneData();
         if (SceneDataManager.Instance.sceneData.Count > 0) LoadSceneData();
         
         GameEvents.OnBossDefeated += OnBossDefeated;
+        GameEvents.OnPlayerSpawned += StartMap;
+        yield return null;
     }
 
     private void Update()
@@ -91,15 +94,18 @@ public class MapManager : MonoBehaviour
     {
         if (collision.CompareTag("Player") && AreaManager.Instance.titleText.text != mapName || collision.CompareTag("Player") && AreaManager.Instance.titleText.text != null)
         {
-            //Shenanigans.Instance.freezeCamera = true;
             sectionObj?.SetActive(false);
             yield return new WaitForSeconds(1f);
-            //Shenanigans.Instance.freezeCamera = false;
-            sectionObj?.SetActive(true);
-            GetComponent<WeatherManager>().SetWeather();
+            StartMap();
         }
     }
 
+    public void StartMap()
+    {
+        sectionObj?.SetActive(true);
+        weather.SetWeather();
+    }
+    
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
     public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume)
     {
@@ -119,7 +125,7 @@ public class MapManager : MonoBehaviour
         {
             MakeDataPersistent();
             if (!AudioManager.Instance.gameObject.IsDestroyed() && AudioManager.Instance.enabled && AudioManager.Instance.gameObject.activeInHierarchy && gameObject.activeInHierarchy) StartCoroutine(AudioManager.Instance.FadeOutMusic());
-            GetComponent<WeatherManager>().ClearDisasters();
+            weather.ClearDisasters();
         }
     }
 

@@ -16,6 +16,7 @@ namespace scripies.Core
         public static Action OnBossDefeated;
         
         // Player events
+        public static Action OnPlayerSpawned;
         public static Action<float> OnPlayerHealthChanged;
         public static Action OnPlayerDeath;
         public static Action<string, bool> PlayerAction;
@@ -34,7 +35,7 @@ namespace scripies.Core
         public static Action OnDialogueClose;
         
         // Misc events
-        public static Action<AudioClip> PlaySound;
+        public static Action<AudioClip, bool> PlaySound;
         public static Action<int, bool> PlayMusic;
         
         public static Action<GameObject> DropLoot;
@@ -42,6 +43,7 @@ namespace scripies.Core
         public static Action<Image, float, float> JumpScare;
         
         // Methods to trigger events
+        public static void TriggerPlayerSpawn() => OnPlayerSpawned?.Invoke();
         public static void TriggerPlayerHealthChanged(float currentHealth) => OnPlayerHealthChanged?.Invoke(currentHealth);
         public static void TriggerPlayerDeath() => OnPlayerDeath?.Invoke();
         public static void TriggerPlayerAction(string action, bool play = false) => PlayerAction?.Invoke(action, play);
@@ -63,7 +65,7 @@ namespace scripies.Core
         public static void TriggerShowDialogue(ScriptableObject dialogue, NPC npc = null) => ShowDialogue?.Invoke(dialogue, npc);
         public static void TriggerDialogueClose() => OnDialogueClose?.Invoke();
         
-        public static void TriggerSound(AudioClip clip = null) => PlaySound?.Invoke(clip);
+        public static void TriggerSound(AudioClip clip = null, bool randomPitch = true) => PlaySound?.Invoke(clip, randomPitch);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
         
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);

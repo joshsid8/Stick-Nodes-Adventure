@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 8190457864786111480}
   - component: {fileID: 5981564579104747636}
   - component: {fileID: 1682819759057836702}
+  - component: {fileID: 7870431470146604584}
   - component: {fileID: 386975709121032260}
   - component: {fileID: 3132542422178999997}
   - component: {fileID: 2904327954621765790}
@@ -229,7 +230,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeBucks: 0
-  bucksText: {fileID: 0}
+--- !u!114 &7870431470146604584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8962740245041502727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2f1f55caf69b924ba9ad4cc4749329b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PerformAbility
+  casterType: 0
+  abilityPoint: {fileID: 3612494413874121855}
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 65728
+  objects:
+  - {fileID: 11400000, guid: 27de6398fc421b6459c99cb7e3019e89, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  abilityDamageMult: 1
+  abilityPotency: 1
+  abilityLifetimeMult: 1
+  abilityAmountMult: 010000000100000001000000
+  abilityDirection: 0
+  isActivated: 0
+  unavailable: 0
+  currentSlot: 0
+  currentBlastType: 0
 --- !u!114 &386975709121032260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,7 +273,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyBar: {fileID: 0}
-  energyText: {fileID: 0}
   maxEnergy: 75
   energy: 75
   energyRefill: 5
@@ -255,7 +284,7 @@ MonoBehaviour:
   maxBlastIndex: 2
   blastIndex: 0
   blastType: 0
-  ability: {fileID: 0}
+  ability: {fileID: 7870431470146604584}
   animator: {fileID: 0}
 --- !u!114 &3132542422178999997
 MonoBehaviour:
@@ -301,7 +330,6 @@ MonoBehaviour:
   healthBars:
   - {fileID: 0}
   - {fileID: 0}
-  healthText: {fileID: 0}
   playerMaxHealth: 100
   playerHealth: 100
   playerExtraHealth: 0
@@ -314,7 +342,7 @@ MonoBehaviour:
   - 1
   - 1
   isDead: 0
-  respawnTime: 5
+  respawnTime: 3
   getStunned: 0
   isStunned: 0
   stunTime: 5
@@ -327,10 +355,12 @@ MonoBehaviour:
   inCombat: 0
   combatTimer: 10
   currentCombatTimer: 0
-  aggressiveEnemies: []
   aggressiveEnemyID: 0
   jumpRotationTimer: 1
   pc: {fileID: 0}
+  pd: {fileID: 0}
+  pa: {fileID: 0}
+  pf: {fileID: 0}
 --- !u!114 &114786552731468920
 MonoBehaviour:
   m_ObjectHideFlags: 0

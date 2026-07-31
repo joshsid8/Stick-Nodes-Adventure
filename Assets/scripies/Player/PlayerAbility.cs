@@ -45,7 +45,7 @@ namespace scripies.Player
             if (Input.GetButtonDown("FireSwap"))
             {
                 blastIndex++;
-                if (blastIndex > maxBlastIndex) blastIndex = 0;
+                if (blastIndex > maxBlastIndex || blastIndex == maxBlastIndex && ability.objects[maxBlastIndex] == null || blastIndex == 1 && ability.objects[1] == null) blastIndex = 0;
             }
 
             Fire();

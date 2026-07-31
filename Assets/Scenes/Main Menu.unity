@@ -1028,6 +1028,8 @@ MonoBehaviour:
   loadingBar: {fileID: 375199483}
   loadingBarImage: {fileID: 375199485}
   objectsToHide: []
+  objectsToDestroy:
+  - {fileID: 2058421849}
   persistentGameplay:
     m_SceneAsset: {fileID: 102900000, guid: 1ef7b59d06af4ec499fa9ae6cc5fa1eb, type: 3}
     m_SceneName: Persistent Objects
@@ -1364,12 +1366,24 @@ MonoBehaviour:
   musicSource: {fileID: 518048549}
   sfxSource: {fileID: 1044450330}
   backgroundMusic:
-  - {fileID: 8300000, guid: 208505f0d11e21442aae3e8f4bcb37b5, type: 3}
-  backgroundMusicVolume: []
-  sFXMusic: []
+  - {fileID: 8300000, guid: afbe41b4a41ad3a489eb94f660859a2c, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  backgroundMusicVolume:
+  - 1
+  - 1
+  - 1
+  sFXMusic:
+  - {fileID: 8300000, guid: 0e3361d1050b4944f834ee843970a8fd, type: 3}
+  - {fileID: 8300000, guid: 1dd702b4d549b5a4bb8e282e1324250d, type: 3}
+  - {fileID: 8300000, guid: 89cf8e233f32f5f4ea4374cc7eb79457, type: 3}
+  - {fileID: 8300000, guid: 8a543f4ab10741340aea9e17371d83b9, type: 3}
+  - {fileID: 8300000, guid: 8b5faa6821c0ad04cb4a39a6a572e276, type: 3}
+  - {fileID: 8300000, guid: 8b5faa6821c0ad04cb4a39a6a572e276, type: 3}
+  - {fileID: 8300000, guid: 5d0adfcdbfe1d4d4481fb22b0ded1118, type: 3}
+  - {fileID: 8300000, guid: 0a518944207189746ab45d7a00f14c48, type: 3}
+  - {fileID: 8300000, guid: 360f9ffbf1a39cd4e9bfcc48af87cc79, type: 3}
   gUI: []
-  withPlayer: 0
-  toggle: 0
 --- !u!4 &2058421851
 Transform:
   m_ObjectHideFlags: 0

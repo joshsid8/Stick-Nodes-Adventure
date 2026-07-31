@@ -35,6 +35,7 @@ public class SceneDataManager : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
     
     #region Scene data classes

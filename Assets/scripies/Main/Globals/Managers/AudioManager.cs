@@ -27,11 +27,14 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
         
         GameEvents.PlayMusic += PlayMusic;
         GameEvents.PlaySound += PlaySfx;
         GameEvents.OnDisableGUI += QuietOnGUI;
         GameEvents.OnEnableGUI += QuietOnGUI;
+        
+        if (backgroundMusic[1] == null && backgroundMusic[2] == null) PlayMusic(0, false);
     }
 
     private void PlayMusic(int index, bool fade)
@@ -64,10 +67,10 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         //toggle = true;
     }
 
-    private void PlaySfx(AudioClip clip = null)
+    private void PlaySfx(AudioClip clip = null, bool randomPitch = true)
     {
-        sfxSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-        sfxSource.PlayOneShot(clip ?? sFXMusic[0]);
+        if (randomPitch) sfxSource.pitch = Random.Range(0.9f, 1.1f);
+        sfxSource.PlayOneShot(clip ?? sFXMusic[Random.Range(0, sFXMusic.Length)]);
     }
     
     private void QuietOnGUI()

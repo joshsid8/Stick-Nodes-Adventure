@@ -2695,11 +2695,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 448323176}
   m_CullTransparentMesh: 1
---- !u!1 &466038856 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8962740245041502727, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-  m_PrefabInstance: {fileID: 248988122477904817}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &479705288
 GameObject:
   m_ObjectHideFlags: 0
@@ -10072,11 +10067,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
---- !u!4 &1751184626 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3612494413874121855, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-  m_PrefabInstance: {fileID: 248988122477904817}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1762695677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12204,18 +12194,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: airDashSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: airDashForce.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: airDashForce.y
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 261623171632948894, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: combatIndicator
       value: 
@@ -12229,33 +12207,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1102427553}
     - target: {fileID: 386975709121032260, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: ability
-      value: 
-      objectReference: {fileID: 8277281213622200415}
-    - target: {fileID: 386975709121032260, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: energyBar
       value: 
       objectReference: {fileID: 1855423397912129973}
-    - target: {fileID: 386975709121032260, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: energyText
-      value: 
-      objectReference: {fileID: 5307621243025885138}
-    - target: {fileID: 1682819759057836702, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: bucksText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: healthBar
-      value: 
-      objectReference: {fileID: 3274327158704612846}
-    - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: healthText
-      value: 
-      objectReference: {fileID: 3086887463199061304}
-    - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: playerExtraHealth
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: 'healthBars.Array.data[0]'
       value: 
@@ -12264,26 +12218,10 @@ PrefabInstance:
       propertyPath: 'healthBars.Array.data[1]'
       value: 
       objectReference: {fileID: 1867922408}
-    - target: {fileID: 5951813543701095784, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: 'objects.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
-    - target: {fileID: 5951813543701095784, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+    - target: {fileID: 7870431470146604584, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: 'objects.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: 7914a45e9bcc54d46a919ffd276119da, type: 2}
-    - target: {fileID: 5951813543701095784, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: 'objects.Array.data[2]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}
-    - target: {fileID: 5981564579104747636, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: knockbackTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5981564579104747636, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: hitDirectionForce
-      value: 20
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
       value: 15.001007
@@ -12331,10 +12269,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8962740245041502727, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 8277281213622200415}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e88585536c850ce4385fa5ec67559865, type: 3}
 --- !u!114 &249639934046681797
 MonoBehaviour:
@@ -27635,36 +27570,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
   m_PrefabInstance: {fileID: 248988122477904817}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8277281213622200415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466038856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2f1f55caf69b924ba9ad4cc4749329b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PerformAbility
-  casterType: 0
-  abilityPoint: {fileID: 1751184626}
-  terrainLayers:
-    serializedVersion: 2
-    m_Bits: 65728
-  objects:
-  - {fileID: 11400000, guid: a5c66102e32418743b031821f4c56614, type: 2}
-  - {fileID: 11400000, guid: f016c3a4f94351145921537322d4f7c5, type: 2}
-  - {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}
-  abilityDamageMult: 1
-  abilityPotency: 1
-  abilityLifetimeMult: 1
-  abilityAmountMult: 010000000100000001000000
-  abilityDirection: 0
-  isActivated: 0
-  unavailable: 0
-  currentSlot: 0
-  currentBlastType: 0
 --- !u!82 &8285340363781611403
 AudioSource:
   m_ObjectHideFlags: 0

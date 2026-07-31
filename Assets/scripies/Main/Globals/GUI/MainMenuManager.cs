@@ -10,14 +10,15 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject loadingBar;
     [SerializeField] private Image loadingBarImage;
     [SerializeField] private GameObject[] objectsToHide;
+    [SerializeField] private GameObject[] objectsToDestroy;
     
     [Header("Persistent Gameplay")]
     [SerializeField] private SceneField persistentGameplay;
     [SerializeField] private SceneField levelScene;
     
-    private List<AsyncOperation> scenesToLoad = new List<AsyncOperation>();
+    private readonly List<AsyncOperation> scenesToLoad = new List<AsyncOperation>();
 
-    void Awake()
+    private void Awake()
     {
         loadingBar.SetActive(false);
         DontDestroyOnLoad(gameObject.transform.root.gameObject);
@@ -32,17 +33,20 @@ public class MainMenuManager : MonoBehaviour
 
     private void HideMenu()
     {
-        for (int i = 0; i < objectsToHide.Length; i++) objectsToHide[i].SetActive(false);
+        foreach (var obj in objectsToHide)
+            obj.SetActive(false);
+            
+        //foreach (var obj in objectsToDestroy) Destroy(obj);
     }
 
     private IEnumerator ProgressLoading()
     {
         float progress = 0;
-        for (int i = 0; i < scenesToLoad.Count; i++)
+        foreach (var scene in scenesToLoad)
         {
-            while (!scenesToLoad[i].isDone)
+            while (scene.isDone)
             {
-                progress += scenesToLoad[i].progress;
+                progress += scene.progress;
                 loadingBarImage.fillAmount = progress / scenesToLoad.Count;
                 yield return null;
             }

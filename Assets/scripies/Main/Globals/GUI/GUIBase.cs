@@ -26,7 +26,7 @@ public abstract class GUIBase : MonoBehaviour
     private void GetPlayer()
     {
         if (player == null && PlayerHealth.Instance != null)
-            player = PlayerHealth.Instance.GetComponent<PlayerController>();
+            player = PlayerHealth.Instance.pc;
     }
 
 

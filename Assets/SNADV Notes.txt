@@ -4,7 +4,10 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        None so far???
+        Make an official prototype release
+            I want the game to be released to the public for people to test
+            But first we need to fix all other bugs that are present rn
+                Find out why player gets extra energy when the game loads through the main menu
 
     Optimisations & Hotfixes:
         

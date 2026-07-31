@@ -89,9 +89,11 @@ namespace scripies.Player
 
         public bool isFacingRight = true;
 
-        [Space] [Header("Extra Components")] private PlayerCombat pco;
+        [Space] [Header("Extra Components")] 
+        private PlayerCombat pco;
         private PlayerDefense pdf;
         private PlayerAbility pab;
+        private PlayerCurrency pm;
         private Knockback kb;
         public GameObject combatIndicator;
 
@@ -107,6 +109,7 @@ namespace scripies.Player
             pab = GetComponent<PlayerAbility>();
             kb = GetComponent<Knockback>();
             pdf = GetComponent<PlayerDefense>();
+            pm = GetComponent<PlayerCurrency>();
         }
 
         // Start is called before the first frame update
@@ -485,7 +488,7 @@ namespace scripies.Player
             data.position = transform.position;
             data.health = PlayerHealth.Instance.playerHealth;
             data.energy = pab.energy;
-            data.money = GetComponent<PlayerCurrency>().nodeBucks;
+            data.money = pm.nodeBucks;
         }
 
         public void Load(PlayerSaveCurrentData data)
@@ -493,7 +496,7 @@ namespace scripies.Player
             transform.position = data.position;
             PlayerHealth.Instance.playerHealth = data.health;
             pab.energy = data.energy;
-            GetComponent<PlayerCurrency>().nodeBucks = data.money;
+            pm.nodeBucks = data.money;
         }
     }
 
