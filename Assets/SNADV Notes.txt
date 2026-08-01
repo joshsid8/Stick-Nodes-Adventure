@@ -11,6 +11,8 @@ SNADV Notes
         
         Instability
             Replicatable/From build bugs/problems
+                Trying to add the current scene as data, but it obviously doesnt work yet
+                    Its been saved, but loading it doesnt work and idk why, ill get junie find the error
                 When cynder loses, and you fight noxu next, noxu's dialogue goes to the last one, and the game breaks!
                 Section object is APPARENTLY missing even when its right thereeeeee
                 Projectiles' knockback is for some reason dependent on its own side

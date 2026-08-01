@@ -16031,6 +16031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd14626b034b7504fabf2f650b65e007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentScene: 
   musicSource: {fileID: 3026628980759326563}
   sfxSource: {fileID: 8285340363781611403}
   backgroundMusic:
@@ -18393,6 +18394,7 @@ MonoBehaviour:
   positiveButtonText: {fileID: 7418659677023414367}
   negativeButtonText: {fileID: 2805183930708455861}
   choice: 0
+  promptSound: {fileID: 8300000, guid: a8859e24101bf3d45b09ec33e929de05, type: 3}
 --- !u!114 &2970133609366747119
 MonoBehaviour:
   m_ObjectHideFlags: 0

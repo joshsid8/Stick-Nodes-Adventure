@@ -151,7 +151,7 @@ namespace scripies.Player
             transform.position =
                 realSpawn ? pc.currentSpawnPoint.transform.position : pc.currentCheckPoint.transform.position;
             Shenanigans.Instance.ToggleFreezeCamera(false);
-            if (realSpawn) GameEvents.TriggerPlayerSpawn();
+            if (realSpawn) GameEvents.TriggerPlayerSpawn(pc.currentCheckPoint);
             StartCoroutine(SpawnPeriod());
         }
 

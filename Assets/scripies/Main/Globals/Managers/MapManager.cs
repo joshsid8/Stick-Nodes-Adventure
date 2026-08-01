@@ -94,14 +94,22 @@ public class MapManager : MonoBehaviour
     {
         if (collision.CompareTag("Player") && AreaManager.Instance.titleText.text != mapName || collision.CompareTag("Player") && AreaManager.Instance.titleText.text != null)
         {
+            SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
             sectionObj?.SetActive(false);
             yield return new WaitForSeconds(1f);
-            StartMap();
+            StartMap(collision.gameObject);
+            SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
+
         }
     }
 
-    public void StartMap()
+    private void StartMap(GameObject spawnPoint = null)
     {
+        if (spawnPoint == null || spawnPoint.scene.name != gameObject.scene.name)
+        {
+            print($"spawnpoint isnt in the same scene as {gameObject.scene.name} ({spawnPoint?.scene.name})");
+            return;
+        }
         sectionObj?.SetActive(true);
         weather.SetWeather();
     }
@@ -115,6 +123,7 @@ public class MapManager : MonoBehaviour
             AudioManager.Instance.backgroundMusic[i] = mOst[i];
             AudioManager.Instance.backgroundMusicVolume[i] = mOstVolume[i];
         }
+        AudioManager.Instance.currentScene = gameObject.scene.name;
         GameEvents.TriggerMusic(0, false);
         if (mainCamera != null) mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
     }

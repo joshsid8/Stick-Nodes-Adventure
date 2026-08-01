@@ -173,7 +173,7 @@ MonoBehaviour:
   dashDirection: {x: 0, y: 0}
   inRangeAnim: HAttack
   stunTime: 0.3
-  damageAmount: 20
+  damageAmount: 15
   damageFactor: 0
   elementType: 1
   elementFactor: 1.5
@@ -328,6 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c122b40f75c093942a5f94f24c5ee65b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 1
   chatRadius: 5.8
   chatPoint: {fileID: 5176110196987568372}
   isInRange: 0

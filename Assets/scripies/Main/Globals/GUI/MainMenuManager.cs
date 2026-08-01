@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,8 @@ using System.Collections.Generic;
 
 public class MainMenuManager : MonoBehaviour
 {
+    public static MainMenuManager Instance;
+    
     [Header("Menu Objects")]
     [SerializeField] private GameObject loadingBar;
     [SerializeField] private Image loadingBarImage;
@@ -14,16 +17,37 @@ public class MainMenuManager : MonoBehaviour
     
     [Header("Persistent Gameplay")]
     [SerializeField] private SceneField persistentGameplay;
-    [SerializeField] private SceneField levelScene;
-    
     private readonly List<AsyncOperation> scenesToLoad = new List<AsyncOperation>();
+    [SerializeField] private AudioManager audioManager;
 
+    [Header("Settings")] 
+    private int fps = 60;
+    private bool vsync;
+    
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return; 
+        }
+        Instance = this;
+    }
+
+    private IEnumerator Start()
+    {
         loadingBar.SetActive(false);
+        yield return new WaitForSeconds(0.5f); 
+        var sceneBuffer = audioManager.currentScene;
+        SaveSystem.LoadSettings();
+        if (String.IsNullOrEmpty(audioManager.currentScene))
+        {
+            print("theres no scene name data. using buffer ._.");
+            audioManager.currentScene = sceneBuffer;
+        }
         DontDestroyOnLoad(gameObject.transform.root.gameObject);
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        if (!vsync) QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = fps;
     }
 
     public void StartGame()
@@ -35,6 +59,7 @@ public class MainMenuManager : MonoBehaviour
     
     public void QuitGame()
     {
+        SaveSystem.SaveSettings();
         Application.Quit();
     }
 
@@ -50,15 +75,15 @@ public class MainMenuManager : MonoBehaviour
     {
         // 1. Start loading the scenes first
         scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
-        scenesToLoad.Add(SceneManager.LoadSceneAsync(levelScene, LoadSceneMode.Additive));
+        scenesToLoad.Add(SceneManager.LoadSceneAsync(audioManager.currentScene, LoadSceneMode.Additive));
+        scenesToLoad.Add(SceneManager.LoadSceneAsync("Water Teste", LoadSceneMode.Additive));
 
         // 2. Wait for all scenes in the list to finish
-        float totalProgress;
         var allDone = false;
         
         while (!allDone)
         {
-            totalProgress = 0;
+            float totalProgress = 0;
             allDone = true;
 
             foreach (var scene in scenesToLoad)
@@ -77,4 +102,23 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(gameObject.scene);
         Destroy(gameObject.transform.root.gameObject);
     }
+
+    public void Save(ref MainMenuData data)
+    {
+        data.fps = fps;
+        data.vsync = vsync;
+    }
+    
+    public void Load(MainMenuData data)
+    {
+        fps = data.fps;
+        vsync = data.vsync;
+    }
+}
+
+[System.Serializable]
+public struct MainMenuData
+{
+    public int fps;
+    public bool vsync;
 }

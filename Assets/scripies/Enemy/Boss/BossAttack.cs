@@ -9,10 +9,10 @@ public class BossAttack : MonoBehaviour
     [Header("Smartness")]
     private bool closeRange;
     public float rangeRadius;
+    
     [Space]
     [Header("Attack Check")]
     public bool isAttacking;
-    [SerializeField] private bool canAttack;
     public bool isPerformingAttack;
     public float attackCooldown;
     public float currentAttackCooldown;
@@ -21,6 +21,7 @@ public class BossAttack : MonoBehaviour
     [Header("Attacks")]
     public string[] defensiveAtk = new string[5];
     public string[] activeAtk = new string[5];
+    
     [Space]
     [Header("Checks")]
     public LayerMask playerLayer;
@@ -36,6 +37,8 @@ public class BossAttack : MonoBehaviour
     public bool canFacePlayer;
     private IPlayerStatus ps;
     [HideInInspector] public Transform playerTransform;
+    [SerializeField] private float initStart = 1;
+    
     [Space]
     [Header("Stun and Dialogue")]
     public bool stunnable;
@@ -79,7 +82,6 @@ public class BossAttack : MonoBehaviour
         Checks();
         FacePlayer();
         FactorCheck();
-        if (isAttacking) AttackSystem();
     }
 
     private void FactorCheck() => closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
@@ -95,25 +97,27 @@ public class BossAttack : MonoBehaviour
             GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
             GameEvents.TriggerDialogueClose();
             canFacePlayer = true;
+            InvokeRepeating(nameof(AttackSystem), initStart, currentAttackCooldown);
         }
     }
     
     private void AttackSystem()
     {
-        if (canAttack && !bh.isStunned)
+        if (!isPerformingAttack && !bh.isStunned && !bh.isDead && isAttacking)
         {
             stunnableTimer = 0;
             if (closeRange)
             {
                 attackFactor = Random.Range(0, defensiveAtk.Length);
-                if (defensiveAtk[attackFactor] != null && isAttacking && !isPerformingAttack) animator.SetTrigger(defensiveAtk[attackFactor]);
+                if (defensiveAtk[attackFactor] != null) animator.SetTrigger(defensiveAtk[attackFactor]);
             }
             else if (!closeRange)
             {
                 attackFactor = Random.Range(0, activeAtk.Length);
-                if (activeAtk[attackFactor] != null && isAttacking && !isPerformingAttack) animator.SetTrigger(activeAtk[attackFactor]);
+                if (activeAtk[attackFactor] != null) animator.SetTrigger(activeAtk[attackFactor]);
             }
         }
+        if (!isAttacking) CancelInvoke(nameof(AttackSystem));
     }
     
     private void Checks()
@@ -124,13 +128,6 @@ public class BossAttack : MonoBehaviour
         animator.SetBool("isAttacking", isAttacking);
         
         BossHealthUI.Instance.gameObject.SetActive(isAttacking);
-        
-        if (currentAttackCooldown > 0 && isAttacking)
-        {
-            canAttack = false;
-            currentAttackCooldown -= Time.deltaTime;
-        }
-        else if (currentAttackCooldown <= 0 && isAttacking && isGrounded) canAttack = true;
         
         inRange = Physics2D.OverlapCircle(dt.ChatPoint.position, dt.ChatRadius, LayerMask.GetMask("Player"));
         
@@ -167,7 +164,7 @@ public class BossAttack : MonoBehaviour
 
     public void ActionCooldown(float cooldownTime)
     {
-        currentAttackCooldown = bh.phase2 ?  cooldownTime * 0.5f : cooldownTime;
+        currentAttackCooldown = bh.phase2 ? cooldownTime * 0.8f : cooldownTime;
         GuardDown(cooldownTime);
     }
 

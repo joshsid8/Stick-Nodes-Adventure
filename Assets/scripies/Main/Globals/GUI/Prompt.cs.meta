@@ -1,2 +1,19 @@
 fileFormatVersion: 2
 guid: b4cd9818c2b4ec04782616546225f838
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - prompt: {instanceID: 0}
+  - titleText: {instanceID: 0}
+  - messageText: {instanceID: 0}
+  - positiveButton: {instanceID: 0}
+  - negativeButton: {instanceID: 0}
+  - positiveButtonText: {instanceID: 0}
+  - negativeButtonText: {instanceID: 0}
+  - promptSound: {fileID: 8300000, guid: a8859e24101bf3d45b09ec33e929de05, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

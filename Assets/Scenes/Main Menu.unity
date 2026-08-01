@@ -1036,9 +1036,7 @@ MonoBehaviour:
   persistentGameplay:
     m_SceneAsset: {fileID: 102900000, guid: 1ef7b59d06af4ec499fa9ae6cc5fa1eb, type: 3}
     m_SceneName: Persistent Objects
-  levelScene:
-    m_SceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
-    m_SceneName: Fire Teste
+  audioManager: {fileID: 2058421850}
 --- !u!1 &1239484110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,6 +1636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd14626b034b7504fabf2f650b65e007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentScene: Fire Teste
   musicSource: {fileID: 518048549}
   sfxSource: {fileID: 1044450330}
   backgroundMusic:

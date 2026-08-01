@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using scripies.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,8 @@ public class Prompt : GUIBase
 
     [Tooltip("0 = Neutral, 1 = No, 2 = Yes")]
     public int choice;
+    
+    [SerializeField] AudioClip promptSound;
     
     protected override void Awake()
     {
@@ -51,6 +54,8 @@ public class Prompt : GUIBase
         negativeButtonText.text = negative;
         positiveButton.onClick.AddListener(() => Positive());
         negativeButton.onClick.AddListener(() => Negative());
+        
+        GameEvents.TriggerSound(promptSound);
     }
 
     private void Positive() => Finish(2);

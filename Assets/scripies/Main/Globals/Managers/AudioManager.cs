@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour, IAudioStatus
 {
     public static AudioManager Instance {get; private set;}
-
+    public string currentScene;
     public IAudioStatus.MusicType musicType { get; set; }
     
     public AudioSource musicSource;
@@ -28,7 +28,6 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        
         GameEvents.PlayMusic += PlayMusic;
         GameEvents.PlaySound += PlaySfx;
         GameEvents.OnDisableGUI += QuietOnGUI;
@@ -90,4 +89,12 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         }
     }
 
+    public void Save(ref SceneName data) => data.sceneName = currentScene;
+    public void Load(SceneName data) => currentScene = data.sceneName;
+}
+
+[System.Serializable]
+public struct SceneName
+{
+    public string sceneName;
 }

@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class SaveSystem
 {
-    private static SaveData saveData = new SaveData
+    private static SaveData saveData = new()
     {
         sceneData = new SceneData(true),
         playerCurrentData = new PlayerSaveCurrentData(),
         playerStats = new PlayerSaveStats(),
         playerInventory = new PlayerSaveInventory(),
         playerIndex = PlayerSaveIndex.CreateNew(),
-        playerQuests = new PlayerSaveQuests()
+        playerQuests = new PlayerSaveQuests(),
+        mainMenuData = new MainMenuData(),
+        currentScene = new SceneName()
     };
 
     [System.Serializable]
@@ -23,6 +25,8 @@ public class SaveSystem
         public PlayerSaveInventory playerInventory;
         public PlayerSaveIndex playerIndex;
         public PlayerSaveQuests playerQuests;
+        public MainMenuData mainMenuData;
+        public SceneName currentScene;
     }
 
     public static string SaveFileName()
@@ -39,6 +43,14 @@ public class SaveSystem
         InvManager.Instance.Save(ref saveData.playerInventory);
         InvManager.Instance.invIndex.Save(ref saveData.playerIndex);
         QuestLogManager.Instance.Save(ref saveData.playerQuests);
+        AudioManager.Instance.Save(ref saveData.currentScene);
+    }
+
+    public static void HandleSettingsSaveData() => MainMenuManager.Instance.Save(ref saveData.mainMenuData);
+    public static void HandleSettingsLoadData()
+    {
+        AudioManager.Instance.Load(saveData.currentScene);
+        MainMenuManager.Instance.Load(saveData.mainMenuData);
     }
 
     public static void HandleLoadData()
@@ -49,6 +61,7 @@ public class SaveSystem
         InvManager.Instance.Load(saveData.playerInventory);
         InvManager.Instance.invIndex.Load(saveData.playerIndex);
         QuestLogManager.Instance.Load(saveData.playerQuests);
+        AudioManager.Instance.Load(saveData.currentScene);
     }
 
     public static void Save()
@@ -65,8 +78,10 @@ public class SaveSystem
         {
             Debug.LogError($"[SaveSystem] Failed to save: {ex.Message}");
         }
-
     }
+    
+    public static void SaveSettings() => HandleSettingsSaveData();
+    public static void LoadSettings() => HandleSettingsLoadData();
 
     public static void Load()
     {
@@ -81,6 +96,8 @@ public class SaveSystem
         {
             var saveDataString = File.ReadAllText(path);
             saveData = JsonUtility.FromJson<SaveData>(saveDataString);
+            Debug.Log(saveData.currentScene);
+            Debug.Log(saveDataString);
 
             HandleLoadData();
             //Debug.Log($"[SaveSystem] Loaded from: {path}");
