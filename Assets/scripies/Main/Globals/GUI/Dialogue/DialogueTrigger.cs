@@ -8,6 +8,7 @@ namespace scripies.Dialogue
 {
     public class DialogueTrigger : MonoBehaviour, IDialogueTrigger
     {
+        public bool isActive = true;
         public float chatRadius;
         public Transform chatPoint;
         [SerializeField] private bool isInRange;
@@ -23,7 +24,7 @@ namespace scripies.Dialogue
 
         public GameObject indicator;
         public NPC npc;
-        public List<DialogueObject> dialogue = new List<DialogueObject>();
+        public List<DialogueObject> dialogue = new();
         [SerializeField] private LayerMask pLayer;
 
         [SerializeField] private bool canTurn;
@@ -31,11 +32,11 @@ namespace scripies.Dialogue
         private Transform playerTransform;
         
         // Getters and Setters
-        public bool Enabled { get; set; }
-        public DialogueObject[] Dialogue { get; private set; }
-        public bool IsForced { get; set; }
-        public Transform ChatPoint { get; private set; }
-        public float ChatRadius { get; private set;}
+        public bool Enabled { get => enabled; set => enabled = value; }
+        public DialogueObject[] Dialogue => dialogue.ToArray();
+        public bool IsForced { get => isForced; set => isForced = value; }
+        public Transform ChatPoint => chatPoint;
+        public float ChatRadius => chatRadius;
         
         private void Awake()
         {
@@ -46,33 +47,30 @@ namespace scripies.Dialogue
         private void Update()
         {
             var inputDirection = Input.GetAxisRaw("Vertical");
-
-            isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
-            if (isInRange && !isTriggered)
+            if (isActive)
             {
-                if (canTurn) FacePlayer();
-                indicator.SetActive(true);
-                if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
+                isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
+                if (isInRange && !isTriggered)
                 {
-                    isTriggered = true;
-                    isForced = false;
-                    if (dialogue != null)
+                    if (canTurn) FacePlayer();
+                    indicator.SetActive(true);
+                    if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
                     {
-                        // '^' means "from the end of a list datatype" WHICH IS SO COOL
-                        var priorityDialogue = dialogue[^1];
-                        DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
-                        if (dialogue.Count > 1) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
+                        isTriggered = true;
+                        isForced = false;
+                        if (dialogue != null)
+                        {
+                            // '^' means "from the end of a list datatype" WHICH IS SO COOL
+                            var priorityDialogue = dialogue[^1];
+                            DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                            if (dialogue.Count > 1) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
+                        }
                     }
                 }
-            }
-            else indicator.SetActive(false);
+                else indicator.SetActive(false);
 
-            if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
-            
-            // interface refs
-            IsForced = isForced;
-            ChatPoint = chatPoint;
-            ChatRadius = chatRadius;
+                if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
+            }
         }
         
         public void AddDialogue(ScriptableObject dialogueObject) => dialogue.Add(dialogueObject as DialogueObject);
@@ -82,7 +80,7 @@ namespace scripies.Dialogue
         
         private void ToggleDialogueTrigger(GameObject obj, bool state)
         {
-            if (obj == gameObject) enabled = state;
+            if (obj == gameObject) isActive = state;
         }
         
         private void OnDrawGizmosSelected()

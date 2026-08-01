@@ -175,8 +175,8 @@ MonoBehaviour:
   stunTime: 0.3
   damageAmount: 20
   damageFactor: 0
-  elementType: 0
-  elementFactor: 0
+  elementType: 1
+  elementFactor: 1.5
   knockbackDirection: {x: 1, y: 0}
   knockbackForce: 0
   knockbackTime: 0
@@ -254,7 +254,6 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   stunnable: 0
   stunnableTimer: 0
-  playerIsDead: 0
   dialogueNo: -1
   inRange: 0
 --- !u!114 &8376931847354496412

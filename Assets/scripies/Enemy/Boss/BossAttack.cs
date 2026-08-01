@@ -54,6 +54,11 @@ public class BossAttack : MonoBehaviour
         bh = GetComponent<BossHealth>();
         animator = GetComponent<Animator>();
         dt = GetComponent<IDialogueTrigger>();
+        
+        if (dt == null)
+        {
+            Debug.LogError($"[BossAttack] IDialogueTrigger component not found on {gameObject.name}!");
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -63,8 +68,8 @@ public class BossAttack : MonoBehaviour
         ps = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         originalPosition = transform.position;
-
-        GameEvents.OnBossAttack += BossAttackToggle;
+        
+        GameEvents.OnDialogueClose += StartFight;
         GameEvents.OnPlayerDeath += ResetBoss;
     }
 
@@ -77,17 +82,15 @@ public class BossAttack : MonoBehaviour
         if (isAttacking) AttackSystem();
     }
 
-    private void FactorCheck()
-    {
-        closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
-    }
+    private void FactorCheck() => closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
     
-    private void BossAttackToggle(bool toggle, GameObject boss = null)
+    private void StartFight(ScriptableObject dialogueToDerive)
     {
-        if (boss != null && boss != gameObject) return;
-        isAttacking = toggle;
-        if (isAttacking)
+        if (dt == null) return;
+        
+        if (dialogueToDerive == dt.Dialogue[^1])
         {
+            isAttacking = true;
             GameEvents.TriggerToggleDialogue(gameObject, false);
             GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
             GameEvents.TriggerDialogueClose();
@@ -174,20 +177,20 @@ public class BossAttack : MonoBehaviour
     private IEnumerator Restart()
     {
         isAttacking = false;
-        noMercy = false;;
+        noMercy = false;
         yield return new WaitUntil(() => !ps.IsDead);
         transform.position = originalPosition;
         bh.bossHealth = bh.bossMaxHealth;
         bh.phase2 = false;
+        dt.IsForced = true;
+        GameEvents.TriggerToggleDialogue(gameObject, true);
         yield return new WaitForSeconds(1f);
         noMercy = true;
-        if (dialogueNo <= bh.introDialogue.Length - 1)
+        /*if (dialogueNo <= bh.introDialogue.Length - 1)
         {
-            GameEvents.TriggerToggleDialogue(gameObject, true);
             dt.AddDialogue(bh.introDialogue[dialogueNo]);
-            dt.IsForced = true;
             dialogueNo++;
-        }
+        }*/
     }
 
     private void Flip()

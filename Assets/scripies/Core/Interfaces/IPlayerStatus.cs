@@ -8,6 +8,7 @@ namespace scripies.Core
         bool IsDead { get; }
         bool IsStunned { get; }
         float CurrentHealth { get; }
+        bool JustSpawned { get; }
         
         // Movement
         Vector3 Position { get; }

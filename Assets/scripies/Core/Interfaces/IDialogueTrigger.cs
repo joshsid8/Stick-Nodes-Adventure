@@ -1,12 +1,13 @@
-using scripies.Dialogue;
-using UnityEngine;
+namespace scripies.Core
+{
+    public interface IDialogueTrigger
+    {
+        bool Enabled { get; set; }
+        Dialogue.DialogueObject[] Dialogue { get; }
+        bool IsForced { get; set; }
+        UnityEngine.Transform ChatPoint { get; }
+        float ChatRadius { get; }
 
-public interface IDialogueTrigger {
-    bool Enabled { get; set; }
-    DialogueObject[] Dialogue { get; }
-    bool IsForced { get; set; }
-    Transform ChatPoint { get; }
-    float ChatRadius { get; }
-    
-    void AddDialogue(ScriptableObject dialogue);
+        void AddDialogue(UnityEngine.ScriptableObject dialogue);
+    }
 }

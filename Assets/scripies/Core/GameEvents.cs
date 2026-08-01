@@ -12,7 +12,6 @@ namespace scripies.Core
         // Enemy events
         public static Action<GameObject> OnEnemySpawned;
         public static Action<GameObject> OnEnemyDefeated;
-        public static Action<bool, GameObject> OnBossAttack;
         public static Action OnBossDefeated;
         
         // Player events
@@ -32,7 +31,8 @@ namespace scripies.Core
         public static Action OnDisableGUI;
         public static Action<GameObject, bool> OnToggleDialogueTrigger;
         public static Action<ScriptableObject, NPC> ShowDialogue;
-        public static Action OnDialogueClose;
+        public static Action CloseDialogue;
+        public static Action<ScriptableObject> OnDialogueClose;
         
         // Misc events
         public static Action<AudioClip, bool> PlaySound;
@@ -51,19 +51,19 @@ namespace scripies.Core
         public static void TriggerAddPlayerEnergy(float energy) => AddPlayerEnergy?.Invoke(energy);
         public static void TriggerPlayerPerformAbility(bool ability) => PlayerPerformAbility?.Invoke(ability);
         public static void TriggerAddPlayerTime(string variable = "Ability", float cooldown = 1f, bool additive = false) => AddPlayerTime?.Invoke(variable, cooldown, additive);
-        public static void TriggerAddPlayerCombat(float damage, bool additive, string type) => AddPlayerCombat?.Invoke(damage, additive, type);
+        public static void TriggerAddPlayerCombat(float time = 5, bool additive = true, string type = "") => AddPlayerCombat?.Invoke(time, additive, type);
         public static void TriggerAggressiveStatusChanged(ITarget target, bool isAggressive) => OnAggressiveStatusChanged?.Invoke(target, isAggressive);
         
         public static void TriggerEnemyDefeated(GameObject enemy) => OnEnemyDefeated?.Invoke(enemy);
         public static void TriggerEnemySpawn(GameObject enemy) => OnEnemySpawned?.Invoke(enemy);
-        public static void TriggerBossAttack(bool toggle, GameObject boss) => OnBossAttack?.Invoke(toggle, boss);
         public static void TriggerBossDefeated() => OnBossDefeated?.Invoke();
         
         public static void TriggerEnableGUI() => OnEnableGUI?.Invoke();
         public static void TriggerDisableGUI() => OnDisableGUI?.Invoke();
         public static void TriggerToggleDialogue(GameObject owner, bool state) => OnToggleDialogueTrigger?.Invoke(owner, state);
         public static void TriggerShowDialogue(ScriptableObject dialogue, NPC npc = null) => ShowDialogue?.Invoke(dialogue, npc);
-        public static void TriggerDialogueClose() => OnDialogueClose?.Invoke();
+        public static void TriggerDialogueClose() => CloseDialogue?.Invoke();
+        public static void TriggerDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
         
         public static void TriggerSound(AudioClip clip = null, bool randomPitch = true) => PlaySound?.Invoke(clip, randomPitch);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);

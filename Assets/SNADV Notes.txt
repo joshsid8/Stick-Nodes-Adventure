@@ -12,9 +12,8 @@ SNADV Notes
         Instability
             Replicatable/From build bugs/problems
                 When cynder loses, and you fight noxu next, noxu's dialogue goes to the last one, and the game breaks!
-                Abilities ONCE AGAIN doesnt affect bosses
+                Section object is APPARENTLY missing even when its right thereeeeee
                 Projectiles' knockback is for some reason dependent on its own side
-                Combat timer is a bit too small, making the music repeat unecessarily often
                 
             One time occurrences/Rare bugs
                 N/A

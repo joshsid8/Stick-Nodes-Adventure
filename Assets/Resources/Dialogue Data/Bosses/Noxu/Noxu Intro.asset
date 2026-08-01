@@ -39,19 +39,16 @@ MonoBehaviour:
   appliesFloatChange: 0
   targetFloatVariables: []
   newFloatValues: []
-  appliesBooleanChange: 1
+  appliesBooleanChange: 0
   targetBoolVariables:
   - BossAttack
   newBoolValues: 01
   willGiveQuest: 0
   questToOffer: {fileID: 0}
   isQuestInteraction: 0
-  questActionType: 4
-  questItems: []
-  questItemAmounts: 
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 0
-  derrivedDialogue: {fileID: 0}
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

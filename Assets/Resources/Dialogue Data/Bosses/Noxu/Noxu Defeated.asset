@@ -29,18 +29,18 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.2735849, g: 0.1509879, b: 0.1509879, a: 1}
-  appliesFloatChange: 1
-  targetFloatVariableName: CombatTimer
-  newFloatValue: 0
+  appliesFloatChange: 0
   targetFloatVariables: []
   newFloatValues: []
   appliesBooleanChange: 0
-  targetBooleanVariableName: BossAttack
-  newBooleanValue: 0
   targetBoolVariables: []
   newBoolValues: 
   willGiveQuest: 0
   questToOffer: {fileID: 0}
+  isQuestInteraction: 0
+  itemCheckFailureDialogue: {fileID: 0}
+  completeSpeakQuestOnClose: 0
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

@@ -21,7 +21,7 @@ public abstract class BossBase : MonoBehaviour
     public float damageAmount;
     public int damageFactor;
     public int elementType;
-    public float elementFactor;
+    public float elementFactor = 1;
     [FormerlySerializedAs("knockbackForce")]
     public Vector2 knockbackDirection;
     public float knockbackForce;
@@ -78,7 +78,9 @@ public abstract class BossBase : MonoBehaviour
             if (storedObjects[i].IsDestroyed()) storedObjects.RemoveAt(i); 
         Strafe();
     }
+    
 
+    
     protected void FindPlayerPosition()
     {
         var rng = Random.Range(0, 101);

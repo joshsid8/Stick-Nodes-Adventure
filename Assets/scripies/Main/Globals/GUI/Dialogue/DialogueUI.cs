@@ -45,12 +45,12 @@ namespace scripies.Dialogue
         private void OnEnable()
         {
             GameEvents.ShowDialogue += ShowDialogue;
-            GameEvents.OnDialogueClose += ForceCloseDialogue;
+            GameEvents.CloseDialogue += ForceCloseDialogue;
         }
         private void OnDisable()
         {
             GameEvents.ShowDialogue -= ShowDialogue;
-            GameEvents.OnDialogueClose -= ForceCloseDialogue;
+            GameEvents.CloseDialogue -= ForceCloseDialogue;
         }
 
         private void Update() => textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;
@@ -157,6 +157,7 @@ namespace scripies.Dialogue
                     GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>()
                         .AddDialogue(dialogueObject.alteredExternalDialogue);
             }
+            GameEvents.TriggerDialogueClose(dialogueObject);
             ClearData();
         }
 
@@ -209,12 +210,6 @@ namespace scripies.Dialogue
             {
                 for (var i = 0; i < dialogueObject.targetBoolVariables.Length; i++)
                 {
-                    if (dialogueObject.targetBoolVariables[i] == "BossAttack")
-                    {
-                        GameEvents.TriggerBossAttack(dialogueObject.newBoolValues[i],
-                            GameObject.Find(currentNpc.npcName));
-                        break;
-                    }
                     PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i],
                         dialogueObject.newBoolValues[i]);
                 }

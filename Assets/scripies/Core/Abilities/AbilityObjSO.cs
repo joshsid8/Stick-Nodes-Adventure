@@ -39,6 +39,7 @@ public class AbilityObjSO : ScriptableObject
           if (setProperties)
           {
                ab.damage *= damageMult;
+               ab.procDmg *= damageMult;
                ab.knockbackDirection *= potency;
                ab.stunTime *= potency;
                ab.isDirectional = isDirectional;

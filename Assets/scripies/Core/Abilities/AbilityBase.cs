@@ -142,9 +142,13 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     
     protected virtual void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
-            if (!inContact.Contains(collision.gameObject) && GetHealth(collision.gameObject) > 0) 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            if (!inContact.Contains(collision.gameObject) && GetHealth(collision.gameObject) > 0)
+            {
                 inContact.Add(collision.gameObject);
+            }
+        }
         
         if (collision.gameObject.layer == LayerMask.NameToLayer("Dead") || collision.gameObject.layer == LayerMask.NameToLayer("EDead")) 
             inContact.Remove(collision.gameObject);

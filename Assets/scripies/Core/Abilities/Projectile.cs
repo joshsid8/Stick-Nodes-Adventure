@@ -47,7 +47,7 @@ public class Projectile : AbilityBase
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
-        objectRange = ccoll.radius / 3.3333333333f;
+        objectRange = ccoll.radius / 3;
         
         if (anim != null) animator.Play(anim.name); 
         if (randomisation)

@@ -23,6 +23,7 @@ namespace scripies.Player
         [Header("Death!")] public bool isDead;
         private bool deathToggle;
         public float respawnTime;
+        public bool justSpawned;
 
         [Header("Shock")] [SerializeField] private bool getStunned;
         [HideInInspector] public bool isStunned;
@@ -56,6 +57,7 @@ namespace scripies.Player
         [Header("Getters and Setters")] 
         public float CurrentHealth => playerHealth;
         public float MaxHealth => playerMaxHealth;
+        public bool JustSpawned => justSpawned;
         public bool IsDead => isDead;
         public bool IsStunned => isStunned;
         public Vector3 Position => transform.position;
@@ -95,6 +97,8 @@ namespace scripies.Player
             currentStunTime = stunTime * shockMultiplier;
             originalColor = spriteRenderer.color;
             originalShockMultiplier = shockMultiplier;
+            
+            StartCoroutine(Spawn(0, false));
             
             GameEvents.OnPlayerDeath += ResetCombat;
             GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
@@ -148,6 +152,14 @@ namespace scripies.Player
                 realSpawn ? pc.currentSpawnPoint.transform.position : pc.currentCheckPoint.transform.position;
             Shenanigans.Instance.ToggleFreezeCamera(false);
             if (realSpawn) GameEvents.TriggerPlayerSpawn();
+            StartCoroutine(SpawnPeriod());
+        }
+
+        private IEnumerator SpawnPeriod()
+        {
+            justSpawned = true;
+            yield return new WaitForSeconds(1f);
+            justSpawned = false;
         }
 
         private IEnumerator Death()
@@ -208,7 +220,7 @@ namespace scripies.Player
                         procInterval, isTrue));
                     break;
             }
-
+            GameEvents.TriggerAddPlayerCombat();
             pc.currentDashTime = 0f;
             pa.isPerformingAbility = false;
         }
