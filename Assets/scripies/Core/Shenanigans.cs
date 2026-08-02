@@ -98,4 +98,20 @@ public class Shenanigans : MonoBehaviour
     }
     
     public void ToggleFreezeCamera(bool freeze = true) => freezeCamera = freeze;
+
+    public void RandomAttribute(float fidelity = 1, IDamageable target = null)
+    {
+        var rng = Random.Range(0, 2);
+        float[] rng2 = { Random.Range(0, 15), Random.Range(0, 2), Random.Range(0, 10), Random.Range(0, 4)};
+        switch (rng)
+        {
+            case 0:
+                target?.Damage(rng2[0] * fidelity, true, 2, IDamageable.ElementType.Normal, 1, true, rng2[1] == 0, rng2[2], 0.1f);
+                target?.Shock(rng2[3]);
+                break;
+            case 1:
+                target?.Heal(rng2[0]);
+                break;
+        }
+    }
 }

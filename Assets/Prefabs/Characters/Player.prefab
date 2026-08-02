@@ -352,7 +352,7 @@ MonoBehaviour:
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintSpeed: 5
   isTinting: 0
-  spawnOnAwake: 0
+  spawnOnAwake: 1
   inCombat: 0
   combatTimer: 10
   currentCombatTimer: 0

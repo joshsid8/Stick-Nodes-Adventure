@@ -991,7 +991,7 @@ MonoBehaviour:
     weatherOst:
     - {fileID: 8300000, guid: 9372da2ef9ae09b498736978538319dc, type: 3}
     - {fileID: 8300000, guid: b6d66485b7d3c8544a332508e91cdd88, type: 3}
-    - {fileID: 8300000, guid: 15ec6ab4e5a27bc458bd6d81eca6199b, type: 3}
+    - {fileID: 8300000, guid: b6d66485b7d3c8544a332508e91cdd88, type: 3}
     weatherOstVolume:
     - 1
     - 1
@@ -1008,6 +1008,8 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  randomWeather: 0
+  weatherChance: 10
   thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
   thunderTimer: 1
   thunderChance: 50

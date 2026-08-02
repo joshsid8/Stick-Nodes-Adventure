@@ -13,6 +13,8 @@ public class WeatherManager : MonoBehaviour
     public WeatherProperties[] weatherProperties = new WeatherProperties[3];
     private MapManager mm;
 
+    [SerializeField] private bool randomWeather;
+    [SerializeField] private float weatherChance = 10;
     public Dictionary<string, float> disasters = new(4);
     private float hurtTimer;
     
@@ -37,6 +39,8 @@ public class WeatherManager : MonoBehaviour
     }
     public void SetWeather()
     {
+        var rng = Random.Range(0, 101);
+        if (randomWeather && rng <= weatherChance) weatherType = (WeatherType) Random.Range(1, 4);
         switch (weatherType)
         {
             case WeatherType.Clear:

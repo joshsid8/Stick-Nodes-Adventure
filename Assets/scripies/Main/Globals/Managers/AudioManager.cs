@@ -58,6 +58,16 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         }
         yield return null;
     }
+
+    public IEnumerator FadeInMusic(float fadeTime = 1)
+    {
+        while (musicSource.volume < backgroundMusicVolume[(int)musicType])
+        {
+            musicSource.volume += Time.deltaTime * fadeTime;
+            yield return null;
+        }
+            
+    }
     
     public IEnumerator FadeOutMusic(float fadeTime = 2)
     {
