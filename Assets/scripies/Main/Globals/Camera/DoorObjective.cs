@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class DoorObjective : MonoBehaviour
     public ObjectiveDoor[] doorObj;
     [SerializeField] Objectives objective;
 
-    public GameObject[] enemies;
+    public List<GameObject> enemies = new();
     public GameObject boss;
     public CollectableSOBase[] keys;
     private bool playerDetected;
@@ -40,7 +41,7 @@ public class DoorObjective : MonoBehaviour
             case Objectives.DefeatEnemy:
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
-                    if (enemies == null || enemies.Length != 1) enemies = new GameObject[1];
+                    if (enemies.Count < 1) enemies.Add(collision.gameObject);
                     if (enemies[0] == null) enemies[0] = collision.gameObject;
                 }
                 break;
@@ -96,7 +97,11 @@ public class DoorObjective : MonoBehaviour
                     foreach (var key in keys)
                     {
                         foreach (var item in InvManager.Instance.itemSlots)
-                            if (item != null && item.itemScriptableObject == key) {item.UseItem(); break;}
+                            if (item != null && item.itemScriptableObject == key)
+                            {
+                                item.UseItem(); 
+                                break;
+                            }
                     }
                     Open();
                 }
@@ -104,7 +109,7 @@ public class DoorObjective : MonoBehaviour
             case Objectives.DefeatBoss:
                 if (boss != null)
                 {
-                    BossHealth bh = boss.GetComponent<BossHealth>();
+                    var bh = boss.GetComponent<BossHealth>();
                     if (bh != null && bh.isDead) Open();
                 }
                 break;
@@ -116,10 +121,23 @@ public class DoorObjective : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Dead"))
+
+        if (collision.gameObject.CompareTag("Dead") && objective == Objectives.DefeatEnemy)
         {
-            enemies = null;
+            foreach (var enemy in enemies)
+            {
+                if (collision.gameObject == enemy)
+                {
+                    enemies.Remove(enemy);
+                    if (enemies.Count == 0) enemies = null;
+                    break;
+                }
+                print($"{enemy} is NNNNNOT the same as {collision.gameObject}");
+            }
         }
         else if (collision.gameObject.CompareTag("Player")) playerDetected = false;
+        else if (collision.gameObject.CompareTag("Boss"))
+            boss.transform.position =
+                new Vector2(GetComponent<Collider2D>().bounds.center.x, boss.transform.position.y);
     }
 }

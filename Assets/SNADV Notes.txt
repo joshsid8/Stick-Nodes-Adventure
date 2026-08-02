@@ -5,15 +5,25 @@ SNADV Notes
     
     Priorities:
         Look at Instability
-            I didnt see this coming, but i saw this coming D:
+            I didnt see this coming, but i saw this coming D:          
 
     Optimisations & Hotfixes:
         
         Instability
             Replicatable/From build bugs/problems
                 
+                Noxu breaks on dialogue AS USUAL
+                    Probably cuz of the ondialogueclose event not wanting to work for him, or some reference things arent set up right
+                
                 Projectiles' knockback is for some reason dependent on its own side
                     Maybe ill get junie to fix this...
+                
+                Temperature logic works, but it polls at the wrong time, creating nullrefs that dont matter
+                    There should be a flag to ensure that it runs only if extreme temperature is activated
+                
+                After compiling, building doesnt work anymore and i have to restart unity
+                    I did remove the sprite and it did stop the errors
+                    adding it back made the error come back, so ill keep it removed
                 
             One time occurrences/Rare bugs
                 N/A
@@ -22,8 +32,13 @@ SNADV Notes
                 Trying to add the current scene as data, but it obviously doesnt work yet
                     Its been saved, but loading it doesnt work and idk why, ill get junie find the error
                     Right now, i just load all scenes instead if it cant find the data, but thats resource intensive
-                Section object is APPARENTLY missing even when its right thereeeeee
-                    Pretty sure this got fixed passively??
+                    
+                Cynder when backdashing doesnt invoke the attack system
+                    Then i think it uses the backup timer to start attacking again
+                    Idk if this either true or there is just a longer cooldown before backdashing
+                
+                Music fades out sometimes, when entering areas too quickly
+                    Honestly i will probably remove fading later, probably post AO
                     
     Things to be added/changed:
         

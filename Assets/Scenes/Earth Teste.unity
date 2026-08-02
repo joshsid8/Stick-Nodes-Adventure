@@ -2233,6 +2233,8 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  randomWeather: 0
+  weatherChance: 10
   thunderbolt: {fileID: 0}
   thunderTimer: 5
   thunderChance: 50
@@ -2978,7 +2980,6 @@ MonoBehaviour:
   isOpen: 0
   doorObj:
   - {fileID: 132701378}
-  - {fileID: 2048072639}
   objective: 2
   enemies: []
   boss: {fileID: 9003786030466987805}

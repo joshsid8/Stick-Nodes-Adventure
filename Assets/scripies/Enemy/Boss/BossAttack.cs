@@ -29,15 +29,20 @@ public class BossAttack : MonoBehaviour
     public Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     public bool isGrounded;
+    
     [HideInInspector] public float directionToPlayer;
     [HideInInspector] public bool isTouchingWall;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckRay;
+    
     public bool isFacingRight;
     public bool canFacePlayer;
+    
     private IPlayerStatus ps;
     [HideInInspector] public Transform playerTransform;
     [SerializeField] private float initStart = 1;
+
+    public float backupMoveTimer;
     
     [Space]
     [Header("Stun and Dialogue")]
@@ -97,11 +102,11 @@ public class BossAttack : MonoBehaviour
             GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
             GameEvents.TriggerDialogueClose();
             canFacePlayer = true;
-            InvokeRepeating(nameof(AttackSystem), initStart, currentAttackCooldown);
+            Invoke(nameof(AttackSystem), initStart);
         }
     }
     
-    private void AttackSystem()
+    public void AttackSystem()
     {
         if (!isPerformingAttack && !bh.isStunned && !bh.isDead && isAttacking)
         {
@@ -116,6 +121,8 @@ public class BossAttack : MonoBehaviour
                 attackFactor = Random.Range(0, activeAtk.Length);
                 if (activeAtk[attackFactor] != null) animator.SetTrigger(activeAtk[attackFactor]);
             }
+            CancelInvoke(nameof(AttackSystem));
+            backupMoveTimer = 5;
         }
         if (!isAttacking) CancelInvoke(nameof(AttackSystem));
     }
@@ -140,6 +147,8 @@ public class BossAttack : MonoBehaviour
         
         if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
         stunnable = stunnableTimer > 0;
+        if (backupMoveTimer > 0) backupMoveTimer -= Time.deltaTime;
+        if (isAttacking && !isPerformingAttack && backupMoveTimer <= 0) AttackSystem();
     }
     
     private void Movement()
@@ -170,6 +179,7 @@ public class BossAttack : MonoBehaviour
     {
         currentAttackCooldown = bh.phase2 ? cooldownTime * 0.8f : cooldownTime;
         GuardDown(cooldownTime);
+        Invoke(nameof(AttackSystem), currentAttackCooldown);
     }
 
     private void GuardDown(float stunnableTime = 0.4f) => stunnableTimer = stunnableTime;

@@ -56,7 +56,7 @@ public abstract class BossBase : MonoBehaviour
     [HideInInspector] public bool isFalling;
     public LayerMask terrainLayers;
     
-    protected GameObject player;
+    private GameObject player;
     protected Rigidbody2D rb;
     protected Animator animator;
     protected BossAttack ba;
@@ -78,8 +78,6 @@ public abstract class BossBase : MonoBehaviour
             if (storedObjects[i].IsDestroyed()) storedObjects.RemoveAt(i); 
         Strafe();
     }
-    
-
     
     protected void FindPlayerPosition()
     {
@@ -170,8 +168,8 @@ public abstract class BossBase : MonoBehaviour
     }
 
     protected void ApplyForce(float force) => Shenanigans.Instance.ApplyForce(new Vector2(ba.isFacingRight ? force : -force, force), obj: storedObjects[storedObjectIndex]);
-    
-    public abstract void Gamble();
+
+    public virtual void Gamble() { }
     
     public void FreezeMovement() => rb.linearVelocity = Vector2.zero;
     public void FreezeMovementX() => rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);

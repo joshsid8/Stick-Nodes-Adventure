@@ -90,15 +90,20 @@ public class MapManager : MonoBehaviour
             Instances.Remove(gameObject.scene.name);
     }
 
-    private IEnumerator OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        StartCoroutine(MapTransition(collision));
+    }
+
+    private IEnumerator MapTransition(Collider2D collision)
     {
         if (collision.CompareTag("Player") && AreaManager.Instance.titleText.text != mapName || collision.CompareTag("Player") && AreaManager.Instance.titleText.text != null)
         {
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
-            sectionObj?.SetActive(false);
+            if (mainCamera != null) mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
+            StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
             yield return new WaitForSeconds(1.1f);
             StartMap(collision.gameObject);
-            SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
         }
     }
 
@@ -107,10 +112,19 @@ public class MapManager : MonoBehaviour
         if (spawnPoint == null || spawnPoint.scene.name != gameObject.scene.name)
         {
             print($"spawnpoint isnt in the same scene as {gameObject.scene.name} ({spawnPoint?.scene.name})");
+            StartCoroutine(TryStartMapAgain(spawnPoint));
             return;
         }
-        sectionObj?.SetActive(true);
         weather.SetWeather();
+        AreaManager.Instance.animator.SetTrigger("Announce");
+    }
+
+    private IEnumerator TryStartMapAgain(GameObject spawnPoint)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Instances.TryGetValue(spawnPoint.gameObject.scene.name, out var otherMap);
+        StartCoroutine(otherMap?.MapTransition(spawnPoint.GetComponent<Collider2D>()));
+        StartCoroutine(AudioManager.Instance.FadeInMusic(0.5f));
     }
     
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
@@ -124,7 +138,6 @@ public class MapManager : MonoBehaviour
         }
         AudioManager.Instance.currentScene = gameObject.scene.name;
         GameEvents.TriggerMusic(0, false);
-        if (mainCamera != null) mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
     }
 
     private void OnTriggerExit2D(Collider2D collision)

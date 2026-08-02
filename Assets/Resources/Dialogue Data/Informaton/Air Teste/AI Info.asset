@@ -17,9 +17,10 @@ MonoBehaviour:
   - This be the Alatus Islands!
   - did u know that alatus means winged in latin?! crazy innit
   - Therein lies a multitude of minorly sized islands fit for any venture you desire.
+    (NOT RIGHT NOW)
   - Nonetheless, watch out. For there are certain civilians who do not enjoy unwanted
-    company from below..
-  - anyways, haff fun!!1
+    company from below.. (FALSE)
+  - anyways, haff fun!!1 (GONE WRONG)
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -39,12 +40,9 @@ MonoBehaviour:
   willGiveQuest: 0
   questToOffer: {fileID: 0}
   isQuestInteraction: 0
-  questActionType: 4
-  questItems: []
-  questItemAmounts: 
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 0
-  derrivedDialogue: {fileID: 0}
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

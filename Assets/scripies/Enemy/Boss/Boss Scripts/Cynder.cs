@@ -27,14 +27,21 @@ public class Cynder : BossBase
     private void BackFlip() => rb.linearVelocity = ba.isFacingRight ? new Vector2(-backflipForceX, backflipForceY) :
         new Vector2(backflipForceX, backflipForceY);
 
-    public override void Gamble()
+    public void GambleDash(float cd = 1f)
     {
         if (ba.directionToPlayer >= 8f || ba.directionToPlayer <= -8f)
         {
             var rng = Random.Range(0, 101);
-            if (rng <= 40) animator.SetTrigger("Homing"); 
+            if (rng <= 40) animator.SetTrigger("Homing");
+            else
+            {
+                print("aw dang it");
+                Invoke(nameof(CallAttackSystem), cd < 0 ? ba.currentAttackCooldown : cd);
+            }
         }
     }
+
+    private void CallAttackSystem() => ba.AttackSystem();
     
     private void OnDrawGizmosSelected()
     {

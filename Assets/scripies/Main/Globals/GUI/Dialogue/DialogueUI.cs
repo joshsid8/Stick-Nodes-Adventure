@@ -153,12 +153,24 @@ namespace scripies.Dialogue
                     GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName)
                         .GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredDialogue);
 
-                if (dialogueObject.alteredExternalDialogue != null)
-                    GameObject.Find(dialogueObject.externalInstance).GetComponent<DialogueTrigger>()
-                        .AddDialogue(dialogueObject.alteredExternalDialogue);
+                if (dialogueObject.alteredExternalDialogue != null) StartCoroutine(ChangeDialogues(dialogueObject));
             }
             GameEvents.TriggerDialogueClose(dialogueObject);
             ClearData();
+        }
+
+        private IEnumerator ChangeDialogues(DialogueObject dialogueObject)
+        {
+            GameObject externalInstance = null;
+            
+            while (externalInstance == null)
+            {
+                print("waiting for our instance");
+                externalInstance = GameObject.Find(dialogueObject.externalInstance);
+                yield return null;
+            }
+            print("found our instance, changing their dialogue");
+            externalInstance.GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredExternalDialogue);
         }
 
         private void ClearData()
