@@ -12,7 +12,9 @@ public class QuestLogManager : GUIBase
     public Quest[] questSlots;
 
     public GameObject questMenu;
-
+    
+    public AudioClip questCompleteSound;
+    
     protected override void Awake()
     {
         if (Instance != null && Instance != this)

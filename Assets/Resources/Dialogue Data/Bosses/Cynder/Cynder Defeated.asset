@@ -55,5 +55,5 @@ MonoBehaviour:
   bold: 000001
   speaker: 
   alteredDialogue: {fileID: 0}
-  externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  externalInstance: Izuno
+  alteredExternalDialogue: {fileID: 11400000, guid: 516c1cf6f9f147643a27a447b568c531, type: 2}

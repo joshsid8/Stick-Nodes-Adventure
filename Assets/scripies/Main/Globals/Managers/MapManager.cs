@@ -96,10 +96,9 @@ public class MapManager : MonoBehaviour
         {
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
             sectionObj?.SetActive(false);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.1f);
             StartMap(collision.gameObject);
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
-
         }
     }
 
@@ -133,7 +132,8 @@ public class MapManager : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             MakeDataPersistent();
-            if (!AudioManager.Instance.gameObject.IsDestroyed() && AudioManager.Instance.enabled && AudioManager.Instance.gameObject.activeInHierarchy && gameObject.activeInHierarchy) StartCoroutine(AudioManager.Instance.FadeOutMusic());
+            if (!AudioManager.Instance.gameObject.IsDestroyed() && AudioManager.Instance.enabled && AudioManager.Instance.gameObject.activeInHierarchy && gameObject.activeInHierarchy)
+                StartCoroutine(AudioManager.Instance.FadeOutMusic(1));
             weather.ClearDisasters();
         }
     }

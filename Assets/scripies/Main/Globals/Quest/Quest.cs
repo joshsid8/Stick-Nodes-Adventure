@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using scripies.Core;
 using scripies.Dialogue;
 using scripies.Enemy;
 using scripies.Player;
@@ -116,6 +117,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
         if (allMet)
         {
+            GameEvents.TriggerSound(QuestLogManager.Instance.questCompleteSound);
             OnCleared();
             GiveRewards();
             ClearUI();

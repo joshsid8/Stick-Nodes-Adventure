@@ -217,7 +217,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rangeRadius: 4.4
   isAttacking: 0
-  canAttack: 0
   isPerformingAttack: 0
   attackCooldown: 1.5
   currentAttackCooldown: 0
@@ -252,9 +251,10 @@ MonoBehaviour:
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
+  initStart: 1
   stunnable: 0
   stunnableTimer: 0
-  dialogueNo: -1
+  dialogueNo: 0
   inRange: 0
 --- !u!114 &8376931847354496412
 MonoBehaviour:
@@ -338,7 +338,7 @@ MonoBehaviour:
   indicator: {fileID: 6522456533086263551}
   npc: {fileID: 11400000, guid: 13aeb5d497c72af4488fe4d2c03bedc9, type: 2}
   dialogue:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
   pLayer:
     serializedVersion: 2
     m_Bits: 256

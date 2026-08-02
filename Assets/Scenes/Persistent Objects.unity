@@ -648,7 +648,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 943ed80b9287f074ea009d01fabefadb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jkObjImage: {fileID: 1641355996}
+  jsObjImage: {fileID: 1641355996}
+  jsImages:
+  - {fileID: -2115212937212684397, guid: 07bf5f2035b6e3c49bc75aaae2e2c743, type: 3}
+  - {fileID: -2716879634245145537, guid: df6cfd19e7a3b404f87e514b3933a2a9, type: 3}
+  - {fileID: -2328586853316653865, guid: 2f212a0105c90e94092481f3e6959251, type: 3}
+  - {fileID: 6533358136819214859, guid: 59458430644330c4694cbd09db1baf50, type: 3}
+  - {fileID: -2507730992404118973, guid: 8b2b80983f140764ba56893c27c0b46b, type: 3}
+  - {fileID: -3462183450620985132, guid: 8950f287f1d198e44b2c190b24ddb59c, type: 3}
+  - {fileID: 4314059634900795130, guid: e1110d74dc4549948b0d9fa5328bf7d4, type: 3}
+  - {fileID: -2102288498737810590, guid: 603bc14cfedf9674c842abc80bd7868b, type: 3}
+  - {fileID: -151124637258159091, guid: e92e348090416344598f403710f34958, type: 3}
+  - {fileID: 1385660264348419602, guid: 51fa463804c340846a03533841f62780, type: 3}
+  - {fileID: 6490228292276760131, guid: fceeeae6998ba1c4db66a6b4927676d8, type: 3}
   storedObj: {fileID: 0}
   freezeCamera: 0
   camObj: {fileID: 1237144381337846748}
@@ -10952,6 +10964,7 @@ MonoBehaviour:
   - {fileID: 2019099167}
   - {fileID: 708717398}
   questMenu: {fileID: 1087541070}
+  questCompleteSound: {fileID: 8300000, guid: 48379353a82642b44bca2a07e8dab2bf, type: 3}
 --- !u!1 &1641355994
 GameObject:
   m_ObjectHideFlags: 0
@@ -11009,7 +11022,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4656091862013022651, guid: a483e72a9d65a5d418b0543a118824c3, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13364,6 +13377,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1855423397912129973}
     - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: spawnOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: 'healthBars.Array.data[0]'
       value: 
       objectReference: {fileID: 3274327158704612846}
@@ -13371,21 +13388,17 @@ PrefabInstance:
       propertyPath: 'healthBars.Array.data[1]'
       value: 
       objectReference: {fileID: 1867922408}
-    - target: {fileID: 7870431470146604584, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: 'objects.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.959942
+      value: -2.5057716
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 49.868156
+      value: 2.6796608
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.00028681755
+      value: 0.00004887581
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14993,7 +15006,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.346779, y: 49.92203, z: -0.05982685}
+  m_LocalPosition: {x: -2.1189346, y: 2.7335358, z: -0.059491158}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16043,7 +16056,26 @@ MonoBehaviour:
   - 0
   - 0
   sFXMusic:
+  - {fileID: 8300000, guid: 1dd702b4d549b5a4bb8e282e1324250d, type: 3}
+  - {fileID: 8300000, guid: d09fa1fdee98e5a428444328f7162794, type: 3}
+  - {fileID: 8300000, guid: 0a518944207189746ab45d7a00f14c48, type: 3}
+  - {fileID: 8300000, guid: a8aeaf6b6d7ecb0458d430b1b23d5288, type: 3}
+  - {fileID: 8300000, guid: 39164ea2d4a2dd843921f8a9725722d8, type: 3}
+  - {fileID: 8300000, guid: f19e78ccbf0a5fc4886d1a0827b3fb15, type: 3}
+  - {fileID: 8300000, guid: db93aeae00a2e464c8d8d4841ebc7bb5, type: 3}
+  - {fileID: 8300000, guid: 89cf8e233f32f5f4ea4374cc7eb79457, type: 3}
+  - {fileID: 8300000, guid: 0c9ea7abb8979e74b9057f1c8da17229, type: 3}
+  - {fileID: 8300000, guid: d19c4a36dfc80f046941d2ce3230ddbb, type: 3}
+  - {fileID: 8300000, guid: a2760c89c2a875d42b0faf9836e08bfe, type: 3}
+  - {fileID: 8300000, guid: 8a543f4ab10741340aea9e17371d83b9, type: 3}
+  - {fileID: 8300000, guid: 360f9ffbf1a39cd4e9bfcc48af87cc79, type: 3}
+  - {fileID: 8300000, guid: 54fd543d913e0a94eb8d354ff5265f94, type: 3}
+  - {fileID: 8300000, guid: 3519acd6c7b723547bc2f22224d62b83, type: 3}
+  - {fileID: 8300000, guid: 5d0adfcdbfe1d4d4481fb22b0ded1118, type: 3}
+  - {fileID: 8300000, guid: f1a5c1e28b5acf74fa31a101585e5354, type: 3}
   - {fileID: 8300000, guid: 0e3361d1050b4944f834ee843970a8fd, type: 3}
+  - {fileID: 8300000, guid: 8b5faa6821c0ad04cb4a39a6a572e276, type: 3}
+  - {fileID: 8300000, guid: ef80d456acbcb0f4f905a31ead7f08b1, type: 3}
   gUI:
   - {fileID: 8025661200280666599}
 --- !u!114 &1623332392793932327
@@ -16318,7 +16350,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.346779, y: 49.92203, z: -0.05982685}
+  m_LocalPosition: {x: -2.1189346, y: 2.7335358, z: -0.059491158}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

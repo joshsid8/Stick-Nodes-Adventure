@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityObjSO
   abilityPrefab: {fileID: 5179120200687164443, guid: 20811f14f99480c4c9cb21db31c3e97c, type: 3}
   setProperties: 1
-  isDirectional: 0
+  isDirectional: 1
   energyRequired: 0
   proc: 0
   amount: 3
@@ -27,7 +27,9 @@ MonoBehaviour:
   potency: 1
   sizeMult: 1
   isHoldable: 0
+  trueDamage: 0
   abilityOnCollide: 0
   swapForce: 0
   speedMult: 0.8
   shockwave: 0
+  moveWithCaster: 0

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using scripies.Core;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour, IAudioStatus
 {
@@ -27,6 +29,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             return;
         }
         Instance = this;
+        
         DontDestroyOnLoad(gameObject);
         GameEvents.PlayMusic += PlayMusic;
         GameEvents.PlaySound += PlaySfx;

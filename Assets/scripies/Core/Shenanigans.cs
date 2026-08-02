@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using scripies.Core;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Shenanigans : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class Shenanigans : MonoBehaviour
     // If it cant be managed anywhere else without it being inconvenient, add it here!
 
     [Header("Jump Scare Object")] 
-    [SerializeField] private Image jkObjImage;
+    [SerializeField] private Image jsObjImage;
+    [SerializeField] private Sprite[] jsImages;
     
     [Header("Stored Object")]
     public GameObject storedObj;
@@ -52,18 +54,19 @@ public class Shenanigans : MonoBehaviour
 
     private IEnumerator StartJumpScare(Image image, float duration, float fadeMult)
     {
-        if (jkObjImage != null)
+        if (jsObjImage != null)
         {
-            if (image != null) jkObjImage.sprite = image.sprite;
-            jkObjImage.color = new Color(1,1,1,1);
-            jkObjImage.enabled = true;
+            if (image != null) jsObjImage.sprite = image.sprite;
+            else jsObjImage.sprite = jsImages[Random.Range(0, jsImages.Length)];
+            jsObjImage.color = new Color(1,1,1,1);
+            jsObjImage.enabled = true;
             yield return new WaitForSeconds(duration);
-            while (jkObjImage.color.a > 0)
+            while (jsObjImage.color.a > 0)
             {
-                jkObjImage.color -= new Color(1, 0, 0, Time.deltaTime * fadeMult);
+                jsObjImage.color -= new Color(0, 0, 0, Time.deltaTime * fadeMult);
                 yield return new WaitForFixedUpdate();
             }
-            jkObjImage.enabled = false;
+            jsObjImage.enabled = false;
         }
     }
 

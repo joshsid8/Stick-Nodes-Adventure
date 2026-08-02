@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: cf946da1cdb277b47a6863f472ee2ff1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - questMenu: {instanceID: 0}
+  - questCompleteSound: {fileID: 8300000, guid: 48379353a82642b44bca2a07e8dab2bf, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

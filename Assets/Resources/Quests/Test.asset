@@ -18,7 +18,8 @@ MonoBehaviour:
     that you're good enough in combat.
   enemiesToDefeat:
   - {fileID: 11400000, guid: b5366c7e0c601204ea43e6b6d5a409e2, type: 2}
-  noOfEnemiesToDefeat: 01000000
+  - {fileID: 11400000, guid: 06a2b4cdfbda6b54d9617395ae4fd77c, type: 2}
+  noOfEnemiesToDefeat: 0100000001000000
   objectsToInteract: []
   numberOfObjects: 
   npcToInteract: {fileID: 0}

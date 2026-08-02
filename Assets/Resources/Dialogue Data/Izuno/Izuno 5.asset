@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Izuno
   dialogue:
-  - '#Hey*, i realised you''ve encountered an angry red sign?'
-  - /H*e's such a nuisance.| #I'll find a way to deal with him ~later...
+  - '#Hey*, i found out you''ve encountered an angry red sign?'
+  - /I*t's such a nuisance.| #I'll find a way to deal with it ~later... #(NEVER)
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 1

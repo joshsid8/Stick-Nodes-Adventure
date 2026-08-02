@@ -9,5 +9,6 @@ namespace scripies.Core
         float ChatRadius { get; }
 
         void AddDialogue(UnityEngine.ScriptableObject dialogue);
+        void ClearDialogue();
     }
 }

@@ -6,7 +6,9 @@ namespace scripies.Dialogue
     public class DialogueObject : ScriptableObject
     {
         [SerializeField] private string npcName;
-        [SerializeField] [TextArea(4, 10)] private string[] dialogue;
+        [SerializeField] [TextArea(4, 10)]
+        [Tooltip("Keep in mind: # = slow down, * = speed up, |/_ = animations 1 to 3, ~ = stop animation")]
+        private string[] dialogue;
         [SerializeField] private bool pendingChoice;
         [SerializeField] [TextArea(1, 2)] private string choiceQuestion;
         [SerializeField] private bool isAnimated;

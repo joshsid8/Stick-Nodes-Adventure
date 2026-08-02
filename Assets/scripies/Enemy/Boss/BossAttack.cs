@@ -43,7 +43,7 @@ public class BossAttack : MonoBehaviour
     [Header("Stun and Dialogue")]
     public bool stunnable;
     public float stunnableTimer;
-    [SerializeField] private int dialogueNo = -1;
+    [SerializeField] private int dialogueNo;
     [SerializeField] private bool inRange;
     private bool noMercy;
     private Vector3 originalPosition;
@@ -131,8 +131,12 @@ public class BossAttack : MonoBehaviour
         
         inRange = Physics2D.OverlapCircle(dt.ChatPoint.position, dt.ChatRadius, LayerMask.GetMask("Player"));
         
-        if (inRange && dialogueNo >= bh.introDialogue.Length && !dt.Enabled && noMercy) 
-            if (!bh.isDead && !bh.deathToggle) isAttacking = true; 
+        if (inRange && dialogueNo >= bh.introDialogue.Length && noMercy) 
+            if (!bh.isDead && !bh.deathToggle)
+            {
+                noMercy = false;
+                StartFight(dt.Dialogue[^1]);
+            }
         
         if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
         stunnable = stunnableTimer > 0;
@@ -181,13 +185,22 @@ public class BossAttack : MonoBehaviour
         bh.phase2 = false;
         dt.IsForced = true;
         GameEvents.TriggerToggleDialogue(gameObject, true);
-        yield return new WaitForSeconds(1f);
-        noMercy = true;
-        /*if (dialogueNo <= bh.introDialogue.Length - 1)
+        if (dt.Dialogue[0] != bh.introDialogue[^1])
         {
-            dt.AddDialogue(bh.introDialogue[dialogueNo]);
-            dialogueNo++;
-        }*/
+            dt.ClearDialogue();
+           
+            if (dialogueNo <= bh.introDialogue.Length)
+            {
+                dt.AddDialogue(bh.introDialogue[dialogueNo]);
+                dialogueNo++;
+            }
+        }
+        else
+        {
+            dt.IsForced = false;
+            yield return new WaitForSeconds(1f);
+            noMercy = true;
+        }
     }
 
     private void Flip()

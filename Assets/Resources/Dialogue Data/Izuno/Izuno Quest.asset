@@ -15,8 +15,8 @@ MonoBehaviour:
   npcName: Izuno
   dialogue:
   - Yo, i have a task for you..
-  - Go ahead and defeat those cynderian ahead of us. There is also a fishman some
-    river area...
+  - Go ahead and defeat a cynderian  ahead of us. There is also a fishman some river
+    area...
   - Yeah, just kill em off for me. ill reward you for it.
   pendingChoice: 0
   choiceQuestion: 
@@ -39,7 +39,7 @@ MonoBehaviour:
   isQuestInteraction: 1
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 0
-  derrivedDialogue: {fileID: 0}
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

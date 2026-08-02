@@ -15,8 +15,8 @@ MonoBehaviour:
   npcName: Informaton
   dialogue:
   - '#NAH!'
-  - '#NO SECOND CHANCES'
-  - '#BEGONE!'
+  - '#NO SECOND CHANCES!'
+  - '#BEGONE!!!'
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -28,19 +28,19 @@ MonoBehaviour:
     dialogueObject: {fileID: 11400000, guid: 8a1ecdc7959551d479209fa0e6481c05, type: 2}
   nameColour: {r: 0.49056602, g: 0, b: 0, a: 1}
   appliesFloatChange: 1
-  targetFloatVariableName: 
-  newFloatValue: 0
   targetFloatVariables:
   - PlayerHealth
   newFloatValues:
   - 0
   appliesBooleanChange: 0
-  targetBooleanVariableName: 
-  newBooleanValue: 0
   targetBoolVariables: []
   newBoolValues: 
   willGiveQuest: 0
   questToOffer: {fileID: 0}
+  isQuestInteraction: 0
+  itemCheckFailureDialogue: {fileID: 0}
+  completeSpeakQuestOnClose: 0
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

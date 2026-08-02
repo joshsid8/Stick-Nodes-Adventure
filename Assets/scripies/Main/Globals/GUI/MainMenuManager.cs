@@ -37,14 +37,9 @@ public class MainMenuManager : MonoBehaviour
     private IEnumerator Start()
     {
         loadingBar.SetActive(false);
-        yield return new WaitForSeconds(0.5f); 
-        var sceneBuffer = audioManager.currentScene;
+        yield return new WaitForSeconds(0.1f); 
         SaveSystem.LoadSettings();
-        if (String.IsNullOrEmpty(audioManager.currentScene))
-        {
-            print("theres no scene name data. using buffer ._.");
-            audioManager.currentScene = sceneBuffer;
-        }
+
         DontDestroyOnLoad(gameObject.transform.root.gameObject);
         if (!vsync) QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = fps;
@@ -55,6 +50,13 @@ public class MainMenuManager : MonoBehaviour
         HideMenu();
         loadingBar.SetActive(true);
         StartCoroutine(ProgressLoading());
+    }
+
+    public void NewGame()
+    {
+        HideMenu();
+        loadingBar.SetActive(true);
+        StartCoroutine(ProgressLoading(true));
     }
     
     public void QuitGame()
@@ -71,13 +73,23 @@ public class MainMenuManager : MonoBehaviour
         //foreach (var obj in objectsToDestroy) Destroy(obj);
     }
 
-    private IEnumerator ProgressLoading()
+    private IEnumerator ProgressLoading(bool newGame = false)
     {
         // 1. Start loading the scenes first
         scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
-        scenesToLoad.Add(SceneManager.LoadSceneAsync(audioManager.currentScene, LoadSceneMode.Additive));
-        scenesToLoad.Add(SceneManager.LoadSceneAsync("Water Teste", LoadSceneMode.Additive));
+        
+        if (String.IsNullOrEmpty(audioManager.currentScene))
+        {
+            print("theres no scene name data. loading all scenes");
+            scenesToLoad.Add(SceneManager.LoadSceneAsync("Fire Teste", LoadSceneMode.Additive));
+            scenesToLoad.Add(SceneManager.LoadSceneAsync("Water Teste", LoadSceneMode.Additive));
+            scenesToLoad.Add(SceneManager.LoadSceneAsync("Earth Teste", LoadSceneMode.Additive));
+            scenesToLoad.Add(SceneManager.LoadSceneAsync("Air Teste", LoadSceneMode.Additive));
 
+        }
+        else scenesToLoad.Add(SceneManager.LoadSceneAsync(audioManager.currentScene, LoadSceneMode.Additive));
+        
+        
         // 2. Wait for all scenes in the list to finish
         var allDone = false;
         
@@ -98,7 +110,7 @@ public class MainMenuManager : MonoBehaviour
 
         // 3. Finalize
         yield return new WaitForSeconds(0.1f);
-        SaveSystem.Load();
+        if (!newGame) SaveSystem.Load();
         SceneManager.UnloadSceneAsync(gameObject.scene);
         Destroy(gameObject.transform.root.gameObject);
     }

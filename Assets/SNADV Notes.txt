@@ -11,18 +11,19 @@ SNADV Notes
         
         Instability
             Replicatable/From build bugs/problems
-                Trying to add the current scene as data, but it obviously doesnt work yet
-                    Its been saved, but loading it doesnt work and idk why, ill get junie find the error
-                When cynder loses, and you fight noxu next, noxu's dialogue goes to the last one, and the game breaks!
-                Section object is APPARENTLY missing even when its right thereeeeee
+                
                 Projectiles' knockback is for some reason dependent on its own side
+                    Maybe ill get junie to fix this...
                 
             One time occurrences/Rare bugs
                 N/A
                     
             Low Priority/Unconfirmed fixed Bugs
-                After making boss attacking more efficient, i get a USELESS missingref exception
-                    everything still works, i just need to remove this exception.    
+                Trying to add the current scene as data, but it obviously doesnt work yet
+                    Its been saved, but loading it doesnt work and idk why, ill get junie find the error
+                    Right now, i just load all scenes instead if it cant find the data, but thats resource intensive
+                Section object is APPARENTLY missing even when its right thereeeeee
+                    Pretty sure this got fixed passively??
                     
     Things to be added/changed:
         
@@ -30,6 +31,10 @@ SNADV Notes
             Cant think of any right now
         
         Post-AO
+            
+            Typewriter Logic
+                It is a bit janky, so i want to kinda make it more efficient
+                    It updates as it updates text, but i would rather it knows what settings should be implemented before to make it work well
             
             Input Logic
                 switch input systems!

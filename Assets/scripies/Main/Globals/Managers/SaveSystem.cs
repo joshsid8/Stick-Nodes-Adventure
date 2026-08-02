@@ -96,9 +96,6 @@ public class SaveSystem
         {
             var saveDataString = File.ReadAllText(path);
             saveData = JsonUtility.FromJson<SaveData>(saveDataString);
-            Debug.Log(saveData.currentScene);
-            Debug.Log(saveDataString);
-
             HandleLoadData();
             //Debug.Log($"[SaveSystem] Loaded from: {path}");
         }

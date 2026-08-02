@@ -457,7 +457,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rangeRadius: 3.91
   isAttacking: 0
-  canAttack: 0
   isPerformingAttack: 0
   attackCooldown: 5.6
   currentAttackCooldown: 0
@@ -486,10 +485,10 @@ MonoBehaviour:
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
+  initStart: 1
   stunnable: 0
   stunnableTimer: 0
-  playerIsDead: 0
-  dialogueNo: -1
+  dialogueNo: 0
   inRange: 0
 --- !u!114 &475020568822523898
 MonoBehaviour:
@@ -536,6 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c122b40f75c093942a5f94f24c5ee65b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 1
   chatRadius: 6.15
   chatPoint: {fileID: 6585315484581343833}
   isInRange: 0
@@ -543,11 +543,9 @@ MonoBehaviour:
   isForced: 1
   willTravel: 0
   indicator: {fileID: 8715122064913410510}
-  npc: {fileID: 0}
+  npc: {fileID: 11400000, guid: 8094ff95c90333f4c9b8ad50b628aa02, type: 2}
   dialogue:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
   pLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -578,6 +576,8 @@ MonoBehaviour:
   abilityDirection: 0
   isActivated: 0
   unavailable: 0
+  currentSlot: 0
+  currentBlastType: 0
 --- !u!95 &5132931245947961007
 Animator:
   serializedVersion: 7

@@ -82,7 +82,7 @@ namespace scripies.Player
             }
 
             Instance = this;
-            if (spawnOnAwake) StartCoroutine(Spawn(0, true));
+            if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             pc = GetComponent<PlayerController>();
             pd = GetComponent<PlayerDefense>();
             kb = GetComponent<Knockback>();
@@ -97,8 +97,6 @@ namespace scripies.Player
             currentStunTime = stunTime * shockMultiplier;
             originalColor = spriteRenderer.color;
             originalShockMultiplier = shockMultiplier;
-            
-            StartCoroutine(Spawn(0, false));
             
             GameEvents.OnPlayerDeath += ResetCombat;
             GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
@@ -145,11 +143,12 @@ namespace scripies.Player
             pc.animator.SetBool("isDead", isDead);
         }
 
-        public IEnumerator Spawn(float timer, bool realSpawn)
+        public IEnumerator Spawn(float timer = 0, bool realSpawn = false)
         {
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
             yield return new WaitForSeconds(timer);
-            transform.position =
-                realSpawn ? pc.currentSpawnPoint.transform.position : pc.currentCheckPoint.transform.position;
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            transform.position = realSpawn ? pc.currentSpawnPoint.transform.position : pc.currentCheckPoint.transform.position;
             Shenanigans.Instance.ToggleFreezeCamera(false);
             if (realSpawn) GameEvents.TriggerPlayerSpawn(pc.currentCheckPoint);
             StartCoroutine(SpawnPeriod());
@@ -220,7 +219,6 @@ namespace scripies.Player
                         procInterval, isTrue));
                     break;
             }
-            GameEvents.TriggerAddPlayerCombat();
             pc.currentDashTime = 0f;
             pa.isPerformingAbility = false;
         }

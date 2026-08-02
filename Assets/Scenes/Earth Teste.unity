@@ -7864,26 +7864,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4424314391457150151, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: npc
-      value: 
-      objectReference: {fileID: 11400000, guid: 8094ff95c90333f4c9b8ad50b628aa02, type: 2}
-    - target: {fileID: 4424314391457150151, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: dialogue.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4424314391457150151, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'dialogue.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
-    - target: {fileID: 4424314391457150151, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'dialogue.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: fc546ccfcc2d4514ba3eb062aa5a92af, type: 2}
-    - target: {fileID: 4424314391457150151, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'dialogue.Array.data[2]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 6cfa5a20770f557408dd62bd9a6c7ea6, type: 2}
     - target: {fileID: 9085918208820846365, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: m_Name
       value: Noxu

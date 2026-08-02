@@ -249,7 +249,7 @@ MonoBehaviour:
     m_Bits: 65728
   objects:
   - {fileID: 11400000, guid: 27de6398fc421b6459c99cb7e3019e89, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
   - {fileID: 0}
   abilityDamageMult: 1
   abilityPotency: 1
@@ -343,6 +343,7 @@ MonoBehaviour:
   - 1
   isDead: 0
   respawnTime: 3
+  justSpawned: 0
   getStunned: 0
   isStunned: 0
   stunTime: 5
