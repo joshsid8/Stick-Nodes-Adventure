@@ -42,7 +42,7 @@ public class BossAttack : MonoBehaviour
     [HideInInspector] public Transform playerTransform;
     [SerializeField] private float initStart = 1;
 
-    public float backupMoveTimer;
+    public float backupMoveTimer = 5;
     
     [Space]
     [Header("Stun and Dialogue")]
@@ -63,10 +63,7 @@ public class BossAttack : MonoBehaviour
         animator = GetComponent<Animator>();
         dt = GetComponent<IDialogueTrigger>();
         
-        if (dt == null)
-        {
-            Debug.LogError($"[BossAttack] IDialogueTrigger component not found on {gameObject.name}!");
-        }
+        if (dt == null) Debug.LogError($"[BossAttack] IDialogueTrigger component not found on {gameObject.name}!");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

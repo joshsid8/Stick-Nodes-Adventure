@@ -485,7 +485,8 @@ MonoBehaviour:
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
-  initStart: 1
+  initStart: 5
+  backupMoveTimer: 5
   stunnable: 0
   stunnableTimer: 0
   dialogueNo: 0

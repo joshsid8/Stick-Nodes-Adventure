@@ -307,6 +307,6 @@ AnimationClip:
     functionName: ActionCooldown
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0.2
+    floatParameter: 1.5
     intParameter: 0
     messageOptions: 0

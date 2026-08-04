@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using scripies.Core;
 using scripies.Player;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,7 +17,8 @@ public class WeatherManager : MonoBehaviour
     [SerializeField] private bool randomWeather;
     [SerializeField] private float weatherChance = 10;
     public Dictionary<string, float> disasters = new(4);
-    private float hurtTimer;
+    
+    [SerializeField] private float earthquakeTimer = 0.2f;
     
     [SerializeField] private GameObject thunderbolt;
     [SerializeField] private float thunderTimer = 5;
@@ -51,10 +53,12 @@ public class WeatherManager : MonoBehaviour
             case WeatherType.Hot:
                 mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
+                player.pc.movementSpeed = preValues[1] * 0.8f;
                 break;
             case WeatherType.Cold:
                 mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
+                player.pc.movementSpeed = preValues[1] * 0.8f;
                 break;
             case WeatherType.Rainy:
                 mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,
@@ -71,50 +75,44 @@ public class WeatherManager : MonoBehaviour
             else disasters[mm.mapDisasterNames[i]] = mm.mapDisasterFactors[i];
         }
         InvokeRepeating(nameof(Thunderstorm), 0, thunderTimer);
-        if (weatherType == WeatherType.Hot || weatherType == WeatherType.Cold) 
-            player.pc.movementSpeed = preValues[1] * 0.8f;
+        InvokeRepeating(nameof(EarthQuake), 0, earthquakeTimer);
     }
     
     private void Update()
     {
-        EarthQuake();
         Temperature();
         Wind(false);
-        hurtTimer -= Time.deltaTime;
-    }
-    
-    public void SlowlyHurtPlayer(float damage = 0.5f, float time = 0)
-    {
-        if (hurtTimer <= 0)
-        {
-            player.playerHealth -= damage;
-            hurtTimer = time;
-        }
     }
 
     private void PollingHurtPlayer(float damage = 0.002f) => player.playerHealth -= damage;
 
     public void ClearDisasters()  
     {
-        disasters.Clear();
         CancelInvoke(nameof(Thunderstorm));
+        CancelInvoke(nameof(EarthQuake));
+        disasters.Clear();
     }
 
     private void EarthQuake()
     {
-        if (disasters.ContainsKey("Earthquake") && disasters["Earthquake"] > 0 && player.pc.isGrounded) 
-            SlowlyHurtPlayer(1 * disasters["Earthquake"], 0.2f);
+        if (disasters.ContainsKey("Earthquake") && disasters["Earthquake"] > 0 && player.pc.isGrounded)
+        {
+            player.GetComponent<IDamageable>().Damage(0.5f * disasters["Earthquake"], false, 3, IDamageable.ElementType.Earth, 1.2f);
+        }
     }
 
     private void Temperature()
     {
-        switch (weatherType)
+        if (disasters.ContainsKey("Temperature") && disasters["Temperature"] > 0)
         {
-            case WeatherType.Hot:
-            case WeatherType.Cold:
-                PollingHurtPlayer(0.002f * Math.Abs(disasters["Temperature"]));
-                player.regenerationMultiplier = 0;
-                break;
+            switch (weatherType)
+            {
+                case WeatherType.Hot:
+                case WeatherType.Cold:
+                    PollingHurtPlayer(0.002f * Math.Abs(disasters["Temperature"]));
+                    player.regenerationMultiplier = 0;
+                    break;
+            }
         }
     }
     

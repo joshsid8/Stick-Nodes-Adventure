@@ -744,7 +744,7 @@ AnimationClip:
     floatParameter: 0.3
     intParameter: 0
     messageOptions: 0
-  - time: 1.5
+  - time: 1.55
     functionName: ActionCooldown
     data: 
     objectReferenceParameter: {fileID: 0}
