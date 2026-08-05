@@ -172,7 +172,7 @@ public class Projectile : AbilityBase
     private void Crash()
     {
         collided = true;
-        if (explodeOnImpact) Explode();
+        if (explodeOnImpact) RadiusProc();
         if (endAnim != null) animator.Play(endAnim.name);
         rb.linearVelocity = Vector2.zero;
         isDirectional = false;

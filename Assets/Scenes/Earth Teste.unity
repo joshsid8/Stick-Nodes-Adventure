@@ -2134,8 +2134,8 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: -64.7404, y: 8.563855}
-      - {x: 25.535824, y: 8.488286}
-      - {x: 25.600452, y: -15.479842}
+      - {x: 15.535824, y: 8.488286}
+      - {x: 15.600452, y: -14.479842}
       - {x: 115.71684, y: -15.127693}
       - {x: 116.03935, y: 30.228062}
       - {x: 158.62077, y: 30.280293}
@@ -7877,6 +7877,18 @@ PrefabInstance:
     - target: {fileID: 5548932522893990080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: knockbackForce
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: testing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: testAttacks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: 'testAttacks.Array.data[0]'
+      value: Decimate
       objectReference: {fileID: 0}
     - target: {fileID: 9085918208820846365, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: m_Name

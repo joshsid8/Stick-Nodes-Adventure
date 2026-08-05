@@ -145,9 +145,9 @@ public class MapManager : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             MakeDataPersistent();
-            if (!AudioManager.Instance.gameObject.IsDestroyed() && AudioManager.Instance.enabled && AudioManager.Instance.gameObject.activeInHierarchy && gameObject.activeInHierarchy)
-                StartCoroutine(AudioManager.Instance.FadeOutMusic(1));
+            StartCoroutine(AudioManager.Instance.FadeOutMusic(1));
             weather.ClearDisasters();
+            SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
         }
     }
 

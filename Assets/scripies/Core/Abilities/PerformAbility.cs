@@ -1,4 +1,5 @@
 using System.Collections;
+using NUnit.Framework.Internal.Commands;
 using scripies.Core;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -61,21 +62,18 @@ public class PerformAbility : MonoBehaviour
         for (var i = 0; i < amount; i++)
         {
             if (casterType == CasterType.Player && blastType == 0 && ability.isHoldable && !pa.IsHoldingAbility) break;
-            if (!unavailable && ability.shockwave && i != 0 || !unavailable && !ability.shockwave)
+            if (!unavailable)
             {
+                if (i == 0 && ability.shockwave) xOffset = ability.initSeparation;
+                
                 Spawn(i, blastType, xOffset, isFacingRight, casterFactor, ability);
-
+                
                 if (blastType != 0) xOffset += ability.separation;
-                if (!unavailable && ability.shockwave && i != 0 || !unavailable && !ability.shockwave)
-                    yield return new WaitForSeconds(ability.spawnInterval);
+                yield return new WaitForSeconds(ability.spawnInterval);
             }
-            else if (i == 0)
-            {
-                GameEvents.TriggerPlayerPerformAbility(false);
-                yield break;
-            }
+            else if (i == 0 && casterType == CasterType.Player) GameEvents.TriggerPlayerPerformAbility(false);
         }
-        if (casterType == CasterType.Player && blastType == 0) GameEvents.TriggerPlayerPerformAbility(false);;
+        if (casterType == CasterType.Player && blastType == 0) GameEvents.TriggerPlayerPerformAbility(false);
     }
 
     private void Spawn(int i, int blastType, float xOffset, bool isFacingRight, int casterFactor, AbilityObjSO ability)
@@ -83,11 +81,6 @@ public class PerformAbility : MonoBehaviour
         Vector3[] spawnPos = {abilityPoint.position + transform.right * xOffset, abilityPoint.position - transform.right * xOffset};
         var spawnRot = blastType == 2 ? abilityPoint.rotation : Quaternion.identity;
         GameObject[] newObjs = {Instantiate(ability.abilityPrefab, spawnPos[0], spawnRot), Instantiate(ability.abilityPrefab, spawnPos[1], spawnRot)};
-        if (newObjs[0].IsDestroyed() || newObjs[1].IsDestroyed())
-        {
-            GameEvents.TriggerPlayerPerformAbility(false);
-            return;
-        }
         if (ability.shockwave)
         {
             foreach (var obj in newObjs)
@@ -133,7 +126,6 @@ public class PerformAbility : MonoBehaviour
     private bool GetFacingRight()
     {
         if (casterType == CasterType.Player) return pa.IsFacingRight;
-        if (es != null) return es.IsFacingRight;
-        return true;
+        return es.IsFacingRight;
     }
 }

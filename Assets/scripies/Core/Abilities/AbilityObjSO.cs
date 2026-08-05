@@ -24,6 +24,7 @@ public class AbilityObjSO : ScriptableObject
      public float sizeMult = 1;
      public bool isHoldable;
      public bool trueDamage;
+     public bool radialKnockback;
      [Tooltip("Will another ability be spawned when this one collides?")]
      public bool abilityOnCollide;
      [Space] [Tooltip("Only for projectiles")]
@@ -47,6 +48,7 @@ public class AbilityObjSO : ScriptableObject
                ab.cooldown *= cooldownMult;
                ab.lifeTime *= lifetimeMult;
                ab.trueDamage = trueDamage;
+               ab.useRadialKnockback = radialKnockback;
                if (proc > 0) ab.procTime = proc;
                if (speedMult != 1) ab.gameObject.GetComponent<Projectile>().projectileSpeed *= speedMult;
                if (swapForce) ab.gameObject.GetComponent<Projectile>().swapForce = true;

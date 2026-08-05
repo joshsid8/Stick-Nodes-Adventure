@@ -28,6 +28,7 @@ MonoBehaviour:
   sizeMult: 1
   isHoldable: 0
   trueDamage: 0
+  radialKnockback: 1
   abilityOnCollide: 0
   swapForce: 0
   speedMult: 1

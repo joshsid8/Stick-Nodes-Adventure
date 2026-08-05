@@ -18,7 +18,7 @@ MonoBehaviour:
   energyRequired: 0
   proc: 0
   amount: 8
-  initSeparation: 0
+  initSeparation: 4.3
   separation: 4.3
   spawnInterval: 0.1
   cooldownMult: 1
@@ -27,7 +27,9 @@ MonoBehaviour:
   potency: 1
   sizeMult: 1
   isHoldable: 0
+  trueDamage: 0
   abilityOnCollide: 0
   swapForce: 0
   speedMult: 1
   shockwave: 1
+  moveWithCaster: 0

@@ -161,8 +161,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     
     protected virtual void HitBox()
     {
-        if (explodeOnImpact) Explode();
-        else if (inContact.Count != 0 && currentProcTimer <= 0 && activeHitbox)
+        if (useRadialKnockback) RadiusProc();
+        if (inContact.Count != 0 && currentProcTimer <= 0 && activeHitbox)
         {   
             foreach (var hit in inContact)
             {
@@ -192,11 +192,17 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (damageable != null)
         {
             damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
+            
+            Vector2 calcDirection;
+            if (useRadialKnockback)
+                calcDirection = damageable.Position - transform.position;
+            else calcDirection = knockbackDirection* transform.right;
+            
+            damageable.Shock(stunTime, calcDirection, knockbackForce, knockbackTime);
         }
     }
 
-    protected void Explode()
+    protected void RadiusProc()
     {
         var objects = inContact;
         foreach (var obj in objects)
@@ -207,10 +213,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             var damageable = obj.GetComponent<IDamageable>();
             if (damageable != null && currentProcTimer <= 0 && activeHitbox)
             {
-                Vector2 radialDir;
-                if (useRadialKnockback) radialDir = new Vector2(damageable.Position.x - transform.position.x, 
-                        (damageable.Position.y - transform.position.y) + explosionUpwardForce).normalized;
-                else radialDir = knockbackDirection * (isFacingRightDirection ? transform.right.x : -transform.right.x);
+                var radialDir = new Vector2(damageable.Position.x - transform.position.x, 
+                    (damageable.Position.y - transform.position.y) + explosionUpwardForce).normalized;
 
                 damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
                 damageable.Shock(explosionTime, radialDir, explosionForce, explosionTime);
@@ -241,7 +245,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             if (!pa.IsHoldingAbility && isHoldable && typeFactor == 1) lifeTimer = 0;
             if (lifeTimer <= 0 && endAnim != null)
             {
-                if (explodeOnImpact) Explode();
+                if (explodeOnImpact) RadiusProc();
                 if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
                 animator.Play(endAnim.name);
             }

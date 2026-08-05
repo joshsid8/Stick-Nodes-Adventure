@@ -9,6 +9,9 @@ public class BossAttack : MonoBehaviour
     [Header("Smartness")]
     private bool closeRange;
     public float rangeRadius;
+    [SerializeField] private bool testing;
+    [SerializeField] private int testIndex;
+    [SerializeField] private string[] testAttacks;
     
     [Space]
     [Header("Attack Check")]
@@ -17,6 +20,7 @@ public class BossAttack : MonoBehaviour
     public float attackCooldown;
     public float currentAttackCooldown;
     public int attackFactor;
+    
     [Space]
     [Header("Attacks")]
     public string[] defensiveAtk = new string[5];
@@ -99,13 +103,14 @@ public class BossAttack : MonoBehaviour
             GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
             GameEvents.TriggerDialogueClose();
             canFacePlayer = true;
+            BossHealthUI.Instance.Toggle(true);
             Invoke(nameof(AttackSystem), initStart);
         }
     }
     
     public void AttackSystem()
     {
-        if (!isPerformingAttack && !bh.isStunned && !bh.isDead && isAttacking)
+        if (!isPerformingAttack && !bh.isStunned && !bh.isDead && isAttacking && !testing)
         {
             stunnableTimer = 0;
             if (closeRange)
@@ -121,6 +126,12 @@ public class BossAttack : MonoBehaviour
             CancelInvoke(nameof(AttackSystem));
             backupMoveTimer = 5;
         }
+        else if (testing && isAttacking)
+        {
+            animator.SetTrigger(testAttacks[testIndex]);
+            CancelInvoke();
+            backupMoveTimer = 5;
+        }
         if (!isAttacking) CancelInvoke(nameof(AttackSystem));
     }
     
@@ -131,21 +142,25 @@ public class BossAttack : MonoBehaviour
         animator.SetBool("isGrounded", isGrounded);
         animator.SetBool("isAttacking", isAttacking);
         
-        BossHealthUI.Instance.gameObject.SetActive(isAttacking);
-        
         inRange = Physics2D.OverlapCircle(dt.ChatPoint.position, dt.ChatRadius, LayerMask.GetMask("Player"));
         
-        if (inRange && dialogueNo >= bh.introDialogue.Length && noMercy) 
+        if (inRange && dialogueNo >= bh.introDialogue.Length && noMercy)
+        {
             if (!bh.isDead && !bh.deathToggle)
             {
                 noMercy = false;
                 StartFight(dt.Dialogue[^1]);
             }
+        }
         
         if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
         stunnable = stunnableTimer > 0;
-        if (backupMoveTimer > 0) backupMoveTimer -= Time.deltaTime;
-        if (isAttacking && !isPerformingAttack && backupMoveTimer <= 0) AttackSystem();
+        if (backupMoveTimer > 0 && isAttacking) backupMoveTimer -= Time.deltaTime;
+        if (isAttacking && !isPerformingAttack && backupMoveTimer <= 0)
+        {
+            AttackSystem();
+            print("Almost handicapped bro");
+        }
     }
     
     private void Movement()

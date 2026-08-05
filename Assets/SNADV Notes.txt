@@ -6,6 +6,14 @@ SNADV Notes
     Priorities:
         Look at Instability
             I didnt see this coming, but i saw this coming D:          
+            
+        Make it so that map triggers are not next to each other:
+            Give them space to make music fading work better 
+            and logic less confused about where the player is
+            After thinking about this, i realised this way might not work either
+            Instead maybe, add a block to fade out music instead
+                A lot more manual but could be more fitting
+                If all else fails, see what Junie can do about all this
 
     Optimisations & Hotfixes:
         
@@ -13,12 +21,11 @@ SNADV Notes
             Replicatable/From build bugs/problems
                 
                 Noxu breaks in general as usual
-                    His Decimate move just doesnt work
-                        maybe cuz of the unavailable flag from performability
                     His boulder move should us followup move in case the boulder he summons gets destroyed
                     I think after beating cynder, the dialogue is frozen after speaking to him
                 
                 Projectiles' knockback is for some reason dependent on its own side
+                    Did some of my own things which works a bit, but it could be better
                     Maybe ill get junie to fix this...
                 
             One time occurrences/Rare bugs

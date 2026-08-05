@@ -11,7 +11,6 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
 {
     [Header("Health")]
     private Image healthBar;
-    private TMP_Text healthText;
     private TMP_Text bossTitle;
     public float bossMaxHealth = 500f;
     public float bossHealth = 500f;
@@ -62,7 +61,6 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     private void Awake()
     {
         healthBar = BossHealthUI.Instance.healthBar;
-        healthText = BossHealthUI.Instance.healthText;
         bossTitle = BossHealthUI.Instance.bossTitle;
         ba = GetComponent<BossAttack>();
         animator = GetComponent<Animator>();
@@ -83,8 +81,6 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         animator.SetBool("phase2", phase2);
         Tint();
         healthBar.fillAmount = bossHealth / bossMaxHealth;
-        //healthText.text = bossHealth == bossMaxHealth ? bossHealth.ToString("F0") +  " / " + bossMaxHealth.ToString("F0")
-        //    : bossHealth.ToString("F1") +  " / " + bossMaxHealth.ToString("F0");
         bossTitle.text = bossName;
         stunTime -= Time.deltaTime;
         isStunned = stunTime > 0;
@@ -99,11 +95,11 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             GetComponent<BossAttack>().isAttacking = false;
             GetComponent<BossAttack>().rangeRadius = 0;
-            BossHealthUI.Instance.gameObject.SetActive(false);
             gameObject.layer = LayerMask.NameToLayer("EDead");
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
             yield return new WaitForSeconds(3);
+            BossHealthUI.Instance.Toggle(false);
             isDead = false;
             GameEvents.TriggerAddPlayerTime("Combat", 0, false);
             animator.SetTrigger("Rise");

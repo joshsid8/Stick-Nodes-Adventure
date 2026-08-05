@@ -255,11 +255,11 @@ MonoBehaviour:
   elementFactor: 2
   damageFactor: 1
   trueDamage: 0
-  damage: 0.5
+  damage: 0.25
   damageOverTime: 1
   procDmg: 10
   procInterval: 0.05
-  knockbackDirection: {x: 0, y: 2}
+  knockbackDirection: {x: 0, y: 1}
   knockbackForce: 10
   knockbackTime: 0.1
   direction: 0
@@ -269,7 +269,7 @@ MonoBehaviour:
   energyRequired: 2
   explodeOnImpact: 0
   useRadialKnockback: 0
-  explosionUpwardForce: 0
+  explosionUpwardForce: 20
   explosionForce: 1
   explosionTime: 0
   cooldown: 1.2
