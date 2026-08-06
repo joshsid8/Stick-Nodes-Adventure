@@ -19,7 +19,10 @@ SNADV Notes
                 N/A
                     
             Low Priority/Unconfirmed fixed Bugs
-                N/A
+                I get very useless nullrefs the moment i press play
+                It does absolutely nothing, but i just want them removed
+                    It derives from some of the gui logic not being bale to find the player yet cuz it uses awake instead of start
+                    Ill prolly not mind it until i feel like getting it fixed
         
         Junie Assistant
             

@@ -129,16 +129,16 @@ namespace scripies.Player
         // Update is called once per frame
         private void Update()
         {
+            UpdateAnimation();
+            if (rb.bodyType == RigidbodyType2D.Static) return;
             CheckInput();
             CheckMovementDirection();
-            UpdateAnimation();
             CheckIfCanJump();
             if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
             {
                 Dash();
                 Jump();
             }
-
             VariableJumpHeight();
             WallSlide();
             Other();

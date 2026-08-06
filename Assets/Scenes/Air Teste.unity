@@ -840,6 +840,7 @@ MonoBehaviour:
     - 1
   randomWeather: 1
   weatherChance: 30
+  earthquakeTimer: 0.2
   thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
   thunderTimer: 0.75
   thunderChance: 50
@@ -1184,11 +1185,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 90.39463
+      value: 57.049816
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 114.604
+      value: 115.79071
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1385,9 +1386,9 @@ SpriteRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1684957087}
   - {fileID: 762519565}
   - {fileID: 1560809729}
-  - {fileID: 1684957087}
   - {fileID: 1317523871}
   - {fileID: 79575888}
   - {fileID: 522193590}

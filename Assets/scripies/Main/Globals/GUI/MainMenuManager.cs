@@ -80,7 +80,7 @@ public class MainMenuManager : MonoBehaviour
         
         if (String.IsNullOrEmpty(audioManager.currentScene))
         {
-            print("theres no scene name data. loading all scenes");
+            Debug.LogWarning("theres no scene name data. loading all scenes");
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Fire Teste", LoadSceneMode.Additive));
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Water Teste", LoadSceneMode.Additive));
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Earth Teste", LoadSceneMode.Additive));

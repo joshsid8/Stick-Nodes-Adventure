@@ -87,10 +87,9 @@ namespace scripies.Dialogue
                 if (dialogueObject.canBeBold) isBold = dialogueObject.bold[currentBoldIndex];
                 else isBold = false;
                 if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
-                animator = isAnimated
                 // pretty expensive method, maybe refactor this
-                    ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName)
-                        .GetComponent<Animator>() : null;
+                animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker
+                    ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
                 yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
                 yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
             }
@@ -112,8 +111,7 @@ namespace scripies.Dialogue
                     Debug.LogError("Quest Check: InvManager or its Index is not ready... or the quest is null.");
                 else
                 {
-                    var needs = new (CollectableSOBase id, int count)[quest.objectsToInteract
-                        .Length];
+                    var needs = new (CollectableSOBase id, int count)[quest.objectsToInteract.Length];
                     for (var i = 0; i < quest.objectsToInteract.Length; i++)
                         needs[i] = (quest.objectsToInteract[i], quest.numberOfObjects[i]);
                     var hasItems = InvManager.Instance.invIndex.MeetsAllCounts(needs);
@@ -195,8 +193,7 @@ namespace scripies.Dialogue
         {
             if (dialogueObject != null)
             {
-                npcNameLabel.text = dialogueObject.NPCName ??
-                                    dialogueObject.speaker ?? currentNpc.npcName ?? "HUH?! WHERE IS EVERYTHING?!";
+                npcNameLabel.text = dialogueObject.NPCName ?? dialogueObject.speaker ?? currentNpc.npcName ?? "HUH?! WHERE IS EVERYTHING?!";
                 yield return typeWriter.Run(dialogueObject.ChoiceQuestion, textLabel, npcNameLabel);
                 handler.ShowResponses(dialogueObject);
             }

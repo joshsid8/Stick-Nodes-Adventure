@@ -1,6 +1,5 @@
-using Unity.VisualScripting;
+using scripies.Player;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InvManager : GUIBase
@@ -25,7 +24,11 @@ public class InvManager : GUIBase
         rt = GetComponent<RectTransform>();
         playerManager = FindAnyObjectByType<PlayerManager>();
         invIndex = new InvIndex();
-        if (player == null) Debug.LogWarning("InvManager: PlayerController not found.");
+        if (player == null)
+        {
+            player = PlayerHealth.Instance.pc;
+            if (player == null) throw new MissingReferenceException("BRUUHHH");
+        }
         if (playerManager == null) Debug.LogWarning("InvManager: PlayerManager not found.");
         if (isActive) ToggleInventory();
         InitializeAllSlots();
@@ -38,11 +41,8 @@ public class InvManager : GUIBase
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        Inputs();
-    }
-
+    void Update() => Inputs();
+    
     private void Inputs()
     {
         if (Input.GetButtonDown("Inventory")) ToggleInventory();
@@ -61,9 +61,9 @@ public class InvManager : GUIBase
         if (inventoryMenu != null)
         {
             rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
+            GetActive(isActive);
             inventoryMenu.SetActive(isActive);
         }
-        GetActive(isActive);
     }
 
     public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using scripies.Core;
 using scripies.Player;
 using UnityEngine;
@@ -12,8 +13,13 @@ public abstract class GUIBase : MonoBehaviour
     protected PlayerController player;
     protected RectTransform rt;
 
-    protected virtual void Awake() => GetPlayer();
+    protected virtual void Awake() => ActiveGUICount = 0;
     
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(1f);
+        GetPlayer();
+    }
     private void Update()
     {
         if (ActiveGUICount < 0) ActiveGUICount = 0;
@@ -21,10 +27,8 @@ public abstract class GUIBase : MonoBehaviour
 
     private void GetPlayer()
     {
-        if (player == null && PlayerHealth.Instance != null)
-            player = PlayerHealth.Instance.pc;
+        if (player == null) player = PlayerHealth.Instance.pc; 
     }
-
 
     public void CloseAll()
     {
@@ -48,7 +52,6 @@ public abstract class GUIBase : MonoBehaviour
 
     private void Disable()
     {
-        //if (!isActive) return;
         isActive = false;
         ActiveGUICount = Mathf.Max(0, ActiveGUICount - 1);
         UpdatePlayerState();
@@ -66,10 +69,10 @@ public abstract class GUIBase : MonoBehaviour
     private void UpdatePlayerState()
     {
         if (player == null) GetPlayer();
-        else player.canAct = ActiveGUICount <= 0;
+        player.canAct = ActiveGUICount <= 0;
     }
     
     private void OnActivated() => GameEvents.TriggerEnableGUI();
 
-    private void OnDeactivated() =>  GameEvents.TriggerDisableGUI();
+    private void OnDeactivated() => GameEvents.TriggerDisableGUI();
 }

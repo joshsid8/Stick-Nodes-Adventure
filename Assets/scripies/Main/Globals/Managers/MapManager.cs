@@ -115,8 +115,7 @@ public class MapManager : MonoBehaviour
     {
         if (spawnPoint == null || spawnPoint.scene.name != gameObject.scene.name)
         {
-            print($"spawnpoint isnt in the same scene as {gameObject.scene.name} ({spawnPoint?.scene.name})");
-            StartCoroutine(TryStartMapAgain(spawnPoint));
+            if (spawnPoint?.scene.name != "Persistent Objects") StartCoroutine(TryStartMapAgain(spawnPoint));
             return;
         }
         weather.SetWeather();
