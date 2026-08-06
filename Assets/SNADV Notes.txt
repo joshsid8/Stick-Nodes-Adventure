@@ -4,63 +4,77 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Look at Instability
-            I didnt see this coming, but i saw this coming D:          
-            
-        Make it so that map triggers are not next to each other:
-            Give them space to make music fading work better 
-            and logic less confused about where the player is
-            After thinking about this, i realised this way might not work either
-            Instead maybe, add a block to fade out music instead
-                A lot more manual but could be more fitting
-                If all else fails, see what Junie can do about all this
-
+        Double check dialogic
+            I think when a dialogue wants to alter another person's dialogue
+            if they arent loaded, the quest logic still works, but the dialogue is the same...?
+                Investigate
+        
     Optimisations & Hotfixes:
         
         Instability
             Replicatable/From build bugs/problems
-                
-                Noxu breaks in general as usual
-                    His boulder move should us followup move in case the boulder he summons gets destroyed
-                    I think after beating cynder, the dialogue is frozen after speaking to him
-                
-                Projectiles' knockback is for some reason dependent on its own side
-                    Did some of my own things which works a bit, but it could be better
-                    Maybe ill get junie to fix this...
+                N/A
                 
             One time occurrences/Rare bugs
                 N/A
                     
             Low Priority/Unconfirmed fixed Bugs
-                Trying to add the current scene as data, but it obviously doesnt work yet
-                    Its been saved, but loading it doesnt work and idk why, ill get junie find the error
-                    Right now, i just load all scenes instead if it cant find the data, but thats resource intensive
-                    
-                Cynder when backdashing doesnt invoke the attack system
-                    Then i think it uses the backup timer to start attacking again
-                    Idk if this either true or there is just a longer cooldown before backdashing
-                
-                Music fades out sometimes, when entering areas too quickly
-                    Honestly i will probably remove fading later, probably post AO
+                N/A
+        
+        Junie Assistant
+            
+            Learn what #if UNITY_EDITOR does, it seems very useful
+            
+            Projectiles' knockback isnt too great, it needs to be more stable in terms of force
+            
+            The Typewriter updates the settings as it updates text
+                but i would rather it knows what settings should be implemented before to make it work well
+            
+            Let Junie inspect the audio fade logic
+                See what i can do to make it more efficient
+            
+            Double check Cynder's backdash, since its apparently not invoking correctly
+                If i cant find the problem, ask Junie
+            
+            Find out why currentscene doesnt get its saved data
                     
     Things to be added/changed:
         
         Pre-AO
-            Cant think of any right now
+        
+            Shop Logic
+                Start by making a portable gui shop that has items that may or may not have a limited stock
+                Should i add GAMBLING?!
+                I can see this being annoying to deal with D:
+            
+            Add basic gameplay SFX
+                Combat stuff
+                Quest notifications
+                Gui stuff
+                Spawning
+                Death (added)
+            
+            Background/Foreground Logic
+                Make backgrounds similar to Terraria in terms of appearance!
+                Even tho this is cosmetic, i would like to just get the logic done
+                    I will use placeholder bgs just to test it, then will worry about designs Post-AO
         
         Post-AO
-            
-            Typewriter Logic
-                It is a bit janky, so i want to kinda make it more efficient
-                    It updates as it updates text, but i would rather it knows what settings should be implemented before to make it work well
             
             Input Logic
                 switch input systems!
                     I have initialised the settings, but will now need to implement it programmatically
                         Watch a vid on how to do this
             
-            Mini Boss Logic
-                a normal enemy-boss hybrid
+            Boss Logic
+                Improve/Remake Noxu
+                    He is a very very boring boss fight, so i need to add more functionality to his moves
+                        e.g making the style based on the player using spatial awareness
+                        An idea would be his rocks bouncing on walls (like dung defender in hk) 
+                            to make the player worry about those and move around more
+                        I will probably ask people for more ideas
+                
+                Make a miniboss: a normal enemy-boss hybrid
                     This is basically already a thing; there are spawners that have a onetime flag
                     Tho they arent a physical thing yet
             
@@ -71,15 +85,30 @@ SNADV Notes
             Audio
                 Make it so that the music transitions smoothly
                     maybe i have to fade the music out and simultaneously fade in the new one?
-                   
-                Basic gameplay SFX
+                OSTs
+                    I need to make new boss music to fit the new map music
+                    Split Noxu's Temple into 2 song clips
+                        One for the normal map
+                        One for the intense bits/obstacle course
             
-            A special kind of scene that freezes the camera('s y position) to show that the player has died 
+            Scene Logic
+                A special kind of scene that freezes the camera('s y position) to show that the player has died
+                    So falling off would be more clear and funny
+                Somehow incorporate mini cutscenes
+                    I dont know how i can do it, but given i can animate the camera (i think), i might be able to do it
+                    If so, the game would be SO MUCH COOLERR!!!
+            
+            Make a central initial map
+                Atm, Cynder Valley is the first map
+                We need a default map that connects everything
+                    Find a name for it
+                    Make music for it
+                I think i will make it a nature based place; grassy
                 
     Animation Overhaul:
     
         This is where i will improve almost all animations, along with making some extra characters and FX
-        It be after almost all logic is completed
+        It be after almost all logic is completed, and only the cosmetic/extra logic will remain
     
         Make better/seperate animations in general
             Player
@@ -91,7 +120,7 @@ SNADV Notes
                 Spawn animation?
             Cynder/Cyderians
                 More/Improved animations
-            
+                
         Make 3 more moves for the fish folk
             Fishwoman
                 Flying bubble attack
@@ -109,7 +138,10 @@ SNADV Notes
                 the player dapping up a friendly character
                 fishfolk successfully decieving the player by fakely asking for forgiveness
                 cynder's dash attack clashing with the player
-                
+        
+        Animate HUD
+            Like how i animated the Map's title
+            Just animate anything prominent to make the game look gud                
         
 When you are done: Find the one piece.
     (This should mean the base has been completed, and I can start on designs!)

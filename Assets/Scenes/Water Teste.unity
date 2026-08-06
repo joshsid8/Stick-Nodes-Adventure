@@ -866,14 +866,16 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -30.659698, y: 43.072487}
-      - {x: -49.373936, y: 42.91826}
+    - - {x: -39.32543, y: 39.97692}
+      - {x: -49.373936, y: 39.91826}
       - {x: -49.35367, y: 31.039482}
       - {x: -49.18207, y: 7.5384483}
       - {x: -43.8096, y: 7.3779984}
-      - {x: -43.870735, y: -18.472168}
+      - {x: -43.85679, y: -9.837612}
+      - {x: -43.887108, y: -14.872639}
+      - {x: -43.818886, y: -18.52293}
       - {x: 30.726274, y: -18.501457}
-      - {x: 30.5541, y: 44.847942}
+      - {x: 30.5541, y: 41.847942}
   m_UseDelaunayMesh: 1
 --- !u!114 &289567851
 MonoBehaviour:
@@ -913,6 +915,9 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  randomWeather: 0
+  weatherChance: 10
+  earthquakeTimer: 0.2
   thunderbolt: {fileID: 0}
   thunderTimer: 5
   thunderChance: 50

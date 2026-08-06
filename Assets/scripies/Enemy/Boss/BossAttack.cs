@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using scripies.Core;
 using Unity.VisualScripting;
@@ -80,6 +81,12 @@ public class BossAttack : MonoBehaviour
         
         GameEvents.OnDialogueClose += StartFight;
         GameEvents.OnPlayerDeath += ResetBoss;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.OnDialogueClose -= StartFight;
+        GameEvents.OnPlayerDeath -= ResetBoss;
     }
 
     // Update is called once per frame

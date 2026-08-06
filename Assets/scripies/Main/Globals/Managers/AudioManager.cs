@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using scripies.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour, IAudioStatus
 {
     public static AudioManager Instance {get; private set;}
     public string currentScene;
+    public Scene previousScene;
     public IAudioStatus.MusicType musicType { get; set; }
     
     public AudioSource musicSource;

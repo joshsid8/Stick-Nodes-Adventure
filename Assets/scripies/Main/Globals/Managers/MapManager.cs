@@ -88,6 +88,7 @@ public class MapManager : MonoBehaviour
     {
         if (Instances.ContainsKey(gameObject.scene.name) && Instances[gameObject.scene.name] == this)
             Instances.Remove(gameObject.scene.name);
+        GameEvents.OnBossDefeated -= OnBossDefeated;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -97,13 +98,16 @@ public class MapManager : MonoBehaviour
 
     private IEnumerator MapTransition(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && AreaManager.Instance.titleText.text != mapName || collision.CompareTag("Player") && AreaManager.Instance.titleText.text != null)
+        if (collision.CompareTag("Player") && AreaManager.Instance.titleText.text != mapName || 
+            collision.CompareTag("Player") && AreaManager.Instance.titleText.text != null)
         {
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
-            if (mainCamera != null) mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
+            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
             StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
+            if (AudioManager.Instance.musicSource.volume == 0 && collision.gameObject.scene == AudioManager.Instance.previousScene) StartCoroutine(AudioManager.Instance.FadeInMusic(0.5f));
             yield return new WaitForSeconds(1.1f);
-            StartMap(collision.gameObject);
+            if (collision.gameObject.scene == gameObject.scene) 
+                StartMap(collision.gameObject);
         }
     }
 
@@ -147,7 +151,9 @@ public class MapManager : MonoBehaviour
             MakeDataPersistent();
             StartCoroutine(AudioManager.Instance.FadeOutMusic(1));
             weather.ClearDisasters();
+            AudioManager.Instance.previousScene = collision.gameObject.scene;
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
+            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.pc.GetComponent<Collider2D>();
         }
     }
 

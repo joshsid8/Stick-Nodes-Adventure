@@ -1248,8 +1248,8 @@ Transform:
   m_GameObject: {fileID: 169259719}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 19.657, y: 72.7266, z: -0.028428493}
-  m_LocalScale: {x: 6.5829334, y: 29.244677, z: 1}
+  m_LocalPosition: {x: 19.6747, y: 72.7266, z: -0.028428493}
+  m_LocalScale: {x: 6.6184807, y: 29.244677, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 580845221}
@@ -3843,8 +3843,10 @@ PolygonCollider2D:
       - {x: -34.481358, y: -14.870275}
       - {x: 25.50452, y: -14.701206}
       - {x: 25.440414, y: 36.67706}
-      - {x: 38.495564, y: 36.56442}
-      - {x: 38.459316, y: 45.44753}
+      - {x: 25.495564, y: 38.56442}
+      - {x: 25.474407, y: 41.748646}
+      - {x: 38.49735, y: 41.953114}
+      - {x: 38.50137, y: 44.976795}
       - {x: 38.520077, y: 59.039417}
       - {x: 25.331688, y: 59.050533}
   m_UseDelaunayMesh: 0
@@ -3937,6 +3939,7 @@ MonoBehaviour:
     - 1
   randomWeather: 0
   weatherChance: 10
+  earthquakeTimer: 0.2
   thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
   thunderTimer: 5
   thunderChance: 50
@@ -6333,8 +6336,8 @@ Transform:
   m_GameObject: {fileID: 1312736192}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -35.9483, y: 39.9, z: -0.0284}
-  m_LocalScale: {x: -2.1690662, y: -42.074444, z: 2.2241373}
+  m_LocalPosition: {x: -35.9483, y: 39.8623, z: -0.0284}
+  m_LocalScale: {x: -2.1690662, y: -41.99864, z: 2.2241373}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 580845221}

@@ -33,11 +33,7 @@ public class Cynder : BossBase
         {
             var rng = Random.Range(0, 101);
             if (rng <= 40) animator.SetTrigger("Homing");
-            else
-            {
-                print("aw dang it");
-                Invoke(nameof(CallAttackSystem), cd < 0 ? ba.currentAttackCooldown : cd);
-            }
+            else Invoke(nameof(CallAttackSystem), cd < 0 ? ba.currentAttackCooldown : cd);
         }
     }
 
