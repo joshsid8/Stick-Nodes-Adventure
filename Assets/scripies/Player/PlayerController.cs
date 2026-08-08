@@ -46,7 +46,7 @@ namespace scripies.Player
 
         private bool isTouchingWall;
         public bool isWallSliding;
-        [SerializeField] private bool isWallJumping;
+        public bool isWallJumping;
         [SerializeField] private int availableWalls;
         [SerializeField] private int availableWallsLeft;
         [SerializeField] private Transform wallCheck;

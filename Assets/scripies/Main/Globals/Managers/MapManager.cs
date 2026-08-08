@@ -93,7 +93,7 @@ public class MapManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(MapTransition(collision));
+       StartCoroutine(MapTransition(collision));
     }
 
     private IEnumerator MapTransition(Collider2D collision)
@@ -104,7 +104,7 @@ public class MapManager : MonoBehaviour
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
             mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
             StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
-            if (AudioManager.Instance.musicSource.volume == 0 && collision.gameObject.scene == AudioManager.Instance.previousScene) StartCoroutine(AudioManager.Instance.FadeInMusic(0.5f));
+            if (AudioManager.Instance.musicSource.volume == 0 && collision.gameObject.scene == AudioManager.Instance.previousScene) AudioManager.Instance.TriggerFadeIn(0.5f);
             yield return new WaitForSeconds(1.1f);
             if (collision.gameObject.scene == gameObject.scene) 
                 StartMap(collision.gameObject);
@@ -115,7 +115,7 @@ public class MapManager : MonoBehaviour
     {
         if (spawnPoint == null || spawnPoint.scene.name != gameObject.scene.name)
         {
-            if (spawnPoint?.scene.name != "Persistent Objects") StartCoroutine(TryStartMapAgain(spawnPoint));
+            if (spawnPoint != null && spawnPoint.scene.name != "Persistent Objects") StartCoroutine(TryStartMapAgain(spawnPoint));
             return;
         }
         weather.SetWeather();
@@ -127,7 +127,7 @@ public class MapManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Instances.TryGetValue(spawnPoint.gameObject.scene.name, out var otherMap);
         StartCoroutine(otherMap?.MapTransition(spawnPoint.GetComponent<Collider2D>()));
-        StartCoroutine(AudioManager.Instance.FadeInMusic(0.5f));
+        AudioManager.Instance.TriggerFadeIn(0.5f);
     }
     
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
@@ -148,7 +148,7 @@ public class MapManager : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             MakeDataPersistent();
-            StartCoroutine(AudioManager.Instance.FadeOutMusic(1));
+            AudioManager.Instance.TriggerFadeOut(1);
             weather.ClearDisasters();
             AudioManager.Instance.previousScene = collision.gameObject.scene;
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
@@ -219,11 +219,13 @@ public class MapManager : MonoBehaviour
                         break;
                     case "NPC":
                         var npcId = obj.GetComponent<Identifier>();
+                        var dTrigger = obj.GetComponent<DialogueTrigger>();
                         var newNpc = new NpcSceneData
                         {
                             activeNpcs = obj,
                             id = npcId.id,
-                            willTravel = obj.GetComponent<DialogueTrigger>().willTravel
+                            willTravel = dTrigger.willTravel,
+                            dialogue = new List<DialogueObject>(dTrigger.dialogue)
                         };
                         npcSceneData.Add(newNpc);
                         break;
@@ -314,12 +316,13 @@ public class MapManager : MonoBehaviour
 
         foreach (var nData in npcSceneData)
         {
-            if (nData.activeNpcs == null)
+            if (nData.activeNpcs != null && nData.id > 0)
             {
                 list.npcs.Add(new SceneDataManager.NpcSceneData
                 {
                     activeNpc = nData.id,
-                    willTravel = nData.willTravel
+                    willTravel = nData.willTravel,
+                    dialogue = nData.dialogue.ToArray()
                 });
             }
         }
@@ -372,7 +375,17 @@ public class MapManager : MonoBehaviour
                     var npc = npcSceneData.Find(n => n.id == npcData.activeNpc);
                     if (npc != null && npc.activeNpcs != null)
                     {
-                        Destroy(npc.activeNpcs);
+                        var dTrigger = npc.activeNpcs.GetComponent<DialogueTrigger>();
+                        if (dTrigger != null)
+                        {
+                            dTrigger.dialogue.Clear();
+                            dTrigger.dialogue.AddRange(npcData.dialogue);
+                        }
+                        
+                        if (npcData.willTravel)
+                        {
+                            Destroy(npc.activeNpcs);
+                        }
                     }
                 }
 
@@ -420,8 +433,7 @@ public class MapManager : MonoBehaviour
     }
     
     #region Door and Spawner Stuff
-
-
+    
     public void RegisterDoor(GameObject door) { if (!doorObjects.Contains(door)) doorObjects.Add(door); }
     public void UnregisterDoor(GameObject door) => doorObjects.Remove(door);
     
@@ -458,6 +470,7 @@ public class MapManager : MonoBehaviour
         public int id;
         [Tooltip("Will this NPC travel throughout scenes (areas)?")] 
         public bool willTravel;
+        public List<DialogueObject> dialogue = new List<DialogueObject>();
     }
 
     [Serializable]

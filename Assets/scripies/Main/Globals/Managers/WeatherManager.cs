@@ -43,6 +43,13 @@ public class WeatherManager : MonoBehaviour
     {
         var rng = Random.Range(0, 101);
         if (randomWeather && rng <= weatherChance) weatherType = (WeatherType) Random.Range(1, 4);
+        else if (randomWeather && rng > weatherChance)
+        {
+            weatherType = WeatherType.Clear;
+            mm.UpdateNormalAreaInfo();
+            player.regenerationMultiplier = preValues[0];
+            player.pc.movementSpeed = preValues[1];
+        }
         switch (weatherType)
         {
             case WeatherType.Clear:
@@ -63,6 +70,7 @@ public class WeatherManager : MonoBehaviour
             case WeatherType.Rainy:
                 mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,
                     weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume);
+                InvokeRepeating(nameof(Thunderstorm), 0, thunderTimer);
                 break;
             default:
                 mm.UpdateNormalAreaInfo();
@@ -74,7 +82,6 @@ public class WeatherManager : MonoBehaviour
             if (!disasters.ContainsKey(mm.mapDisasterNames[i])) disasters.TryAdd(mm.mapDisasterNames[i], mm.mapDisasterFactors[i]);
             else disasters[mm.mapDisasterNames[i]] = mm.mapDisasterFactors[i];
         }
-        InvokeRepeating(nameof(Thunderstorm), 0, thunderTimer);
         InvokeRepeating(nameof(EarthQuake), 0, earthquakeTimer);
     }
     
@@ -84,7 +91,7 @@ public class WeatherManager : MonoBehaviour
         Wind(false);
     }
 
-    private void PollingHurtPlayer(float damage = 0.002f) => player.playerHealth -= damage;
+    private void PollingHurtPlayer(float damage = 0.001f) => player.playerHealth -= damage;
 
     public void ClearDisasters()  
     {

@@ -20,7 +20,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
     public AudioClip[] sFXMusic;
     
     public GameObject[] gUI;
-    //private bool toggle;
+    private Coroutine fadeCoroutine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -38,47 +38,90 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         GameEvents.OnDisableGUI += QuietOnGUI;
         GameEvents.OnEnableGUI += QuietOnGUI;
         
-        if (backgroundMusic[1] == null && backgroundMusic[2] == null) PlayMusic(0, false);
+        if (backgroundMusic.Length > 2 && backgroundMusic[1] == null && backgroundMusic[2] == null) PlayMusic(0, false);
+        else if (backgroundMusic.Length > 0 && musicSource.clip == null) PlayMusic(0, false);
     }
 
     private void PlayMusic(int index, bool fade)
     {
-        StartCoroutine(BeginMusic(index, fade));
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(BeginMusic(index, fade));
     }
     
     private IEnumerator BeginMusic(int index, bool fade)
     {
-        //if (fade) StartCoroutine(FadeOutMusic()); else toggle = true;
-        //yield return new WaitUntil(() => toggle);
-        //toggle = false;
+        if (index < 0 || index >= backgroundMusic.Length) yield break;
+        
+        float targetVolume = backgroundMusicVolume[index];
+
+        if (fade && musicSource.isPlaying)
+        {
+            yield return StartCoroutine(FadeOutMusic(2f));
+        }
+
         if (musicSource.clip != backgroundMusic[index])
         {
             musicSource.clip = backgroundMusic[index];
-            musicSource.volume = backgroundMusicVolume[index];
             musicType = (IAudioStatus.MusicType)index;
             musicSource.Play();
         }
-        yield return null;
+
+        if (fade)
+        {
+            yield return StartCoroutine(FadeInMusic(2f));
+        }
+        else
+        {
+            musicSource.volume = targetVolume;
+        }
+        
+        fadeCoroutine = null;
     }
 
     public IEnumerator FadeInMusic(float fadeTime = 1)
     {
-        while (musicSource.volume < backgroundMusicVolume[(int)musicType])
+        float targetVolume = backgroundMusicVolume[(int)musicType];
+        while (musicSource.volume < targetVolume)
         {
-            musicSource.volume += Time.deltaTime * fadeTime;
+            musicSource.volume = Mathf.MoveTowards(musicSource.volume, targetVolume, Time.deltaTime * fadeTime);
             yield return null;
         }
-            
+        musicSource.volume = targetVolume;
     }
     
     public IEnumerator FadeOutMusic(float fadeTime = 2)
     {
         while (musicSource.volume > 0)
         {
-            musicSource.volume -= Time.deltaTime * fadeTime;
+            musicSource.volume = Mathf.MoveTowards(musicSource.volume, 0, Time.deltaTime * fadeTime);
             yield return null;
         }
-        //toggle = true;
+        musicSource.volume = 0;
+    }
+    
+    // Junie worked here, making fading work properly. TODO: find out more about these coroutines
+    public void TriggerFadeIn(float fadeTime = 1)
+    {
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(FadeInCoroutine(fadeTime));
+    }
+
+    public void TriggerFadeOut(float fadeTime = 1)
+    {
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(FadeOutCoroutine(fadeTime));
+    }
+
+    private IEnumerator FadeInCoroutine(float fadeTime)
+    {
+        yield return FadeInMusic(fadeTime);
+        fadeCoroutine = null;
+    }
+
+    private IEnumerator FadeOutCoroutine(float fadeTime)
+    {
+        yield return FadeOutMusic(fadeTime);
+        fadeCoroutine = null;
     }
 
     private void PlaySfx(AudioClip clip = null, bool randomPitch = true)

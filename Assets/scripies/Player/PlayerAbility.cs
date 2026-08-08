@@ -57,8 +57,7 @@ namespace scripies.Player
         void Fire()
         {
             // Made it so that all 3 slots can be any type of ability
-            if (canAbility && !pc.isDashing && !pc.isWallSliding && !isPerformingAbility && pc.canAct &&
-                !ability.isActivated)
+            if (canAbility && !pc.isDashing && !pc.isWallSliding && !pc.isWallJumping && !isPerformingAbility && pc.canAct && !ability.isActivated)
                 if (Input.GetButtonDown("Fire"))
                 {
                     if (ability.objects[blastIndex].abilityPrefab.GetComponent<Projectile>() != null)

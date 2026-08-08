@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using scripies.Core;
 using scripies.Player;
@@ -19,6 +18,11 @@ public abstract class GUIBase : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         GetPlayer();
+        if (player == null)
+        {
+            player = PlayerHealth.Instance.pc;
+            if (player == null) throw new MissingReferenceException("BRUUHHH");
+        }
     }
     private void Update()
     {
@@ -27,7 +31,7 @@ public abstract class GUIBase : MonoBehaviour
 
     private void GetPlayer()
     {
-        if (player == null) player = PlayerHealth.Instance.pc; 
+        if (player == null) player = FindAnyObjectByType<PlayerController>();
     }
 
     public void CloseAll()

@@ -4,42 +4,28 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        When Cynder died, he didn't do his dialogue, and I couldn't open the inventory
-            Refer to the first low priority bug, given that one also only happens in the build, i assume it causes this issue
-            Inspect the build player logs to see what cant be found
+        Get some stuff done with Junie
         
     Optimisations & Hotfixes:
         
         Instability
             Replicatable/From build bugs/problems
-                N/A                   
+                N/A
                 
             One time occurrences/Rare bugs
                 N/A
-                    
+                
             Low Priority/Unconfirmed fixed Bugs
-                I get very useless(???) nullrefs the moment i press play
-                It does absolutely nothing, but i just want them removed
-                    It derives from some of the gui logic not being able to find the player yet cuz it uses awake instead of start
-                    Ill prolly not mind it until i feel like getting it fixed
+                Dialogic and speakto questing should be fixed, but ill keep this here till im confident its true
         
         Junie Assistant
-            
-            Double check dialogic
-                I think when a dialogue wants to alter another person's dialogue
-                if they arent loaded, the quest logic still works, but the dialogue is the same
-                    I believe this might be because npc dialogue data has not been assigned to scene data yet
-                    Due to laziness, i think ill let Junie handle this
-            
-            Learn what #if UNITY_EDITOR does, it seems very useful
+           
+            Learn what #if UNITY_EDITOR does, it seems very essential
             
             Projectiles' knockback isnt too great, it needs to be more stable in terms of force
             
             The Typewriter updates the settings as it updates text
                 but i would rather have it know what settings should be implemented beforehand to make it work well
-            
-            Let Junie inspect the audio fade logic
-                See what i can do to make it more efficient
             
             Find out why currentscene doesnt get its saved data
                     

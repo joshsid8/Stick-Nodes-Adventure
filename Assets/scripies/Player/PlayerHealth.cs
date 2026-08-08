@@ -149,8 +149,12 @@ namespace scripies.Player
             yield return new WaitForSeconds(timer);
             gameObject.layer = LayerMask.NameToLayer("Player");
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            transform.position = realSpawn ? pc.currentSpawnPoint.transform.position : pc.currentCheckPoint.transform.position;
-            Shenanigans.Instance.ToggleFreezeCamera(false);
+
+            var spawnTarget = realSpawn ? pc.currentSpawnPoint : pc.currentCheckPoint;
+            if (spawnTarget != null) transform.position = spawnTarget.transform.position;
+            else Debug.LogWarning("[PlayerHealth] We cant find the right spawn object!");
+
+            if (Shenanigans.Instance != null) Shenanigans.Instance.ToggleFreezeCamera(false);
             if (realSpawn) GameEvents.TriggerPlayerSpawn(pc.currentCheckPoint);
             StartCoroutine(SpawnPeriod());
         }

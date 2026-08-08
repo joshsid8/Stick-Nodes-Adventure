@@ -163,11 +163,9 @@ namespace scripies.Dialogue
             
             while (externalInstance == null)
             {
-                print("waiting for our instance");
                 externalInstance = GameObject.Find(dialogueObject.externalInstance);
                 yield return null;
             }
-            print("found our instance, changing their dialogue");
             externalInstance.GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredExternalDialogue);
         }
 

@@ -24,11 +24,6 @@ public class InvManager : GUIBase
         rt = GetComponent<RectTransform>();
         playerManager = FindAnyObjectByType<PlayerManager>();
         invIndex = new InvIndex();
-        if (player == null)
-        {
-            player = PlayerHealth.Instance.pc;
-            if (player == null) throw new MissingReferenceException("BRUUHHH");
-        }
         if (playerManager == null) Debug.LogWarning("InvManager: PlayerManager not found.");
         if (isActive) ToggleInventory();
         InitializeAllSlots();
