@@ -12,6 +12,7 @@ namespace scripies.Core
         // Enemy events
         public static Action<GameObject> OnEnemySpawned;
         public static Action<GameObject> OnEnemyDefeated;
+        public static Action<float> OnBossHealthChanged;
         public static Action OnBossDefeated;
         
         // Player events

@@ -21,6 +21,8 @@ public class BossAttack : MonoBehaviour
     public float attackCooldown;
     public float currentAttackCooldown;
     public int attackFactor;
+    private string prevAttack;
+    private int prevRepeat;
     
     [Space]
     [Header("Attacks")]
@@ -110,7 +112,8 @@ public class BossAttack : MonoBehaviour
             GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
             GameEvents.TriggerDialogueClose();
             canFacePlayer = true;
-            BossHealthUI.Instance.Toggle(true);
+            GameHUD.Instance.ToggleBossHealth(true);
+            StartCoroutine(bh.PhaseToggle(false));
             Invoke(nameof(AttackSystem), initStart);
         }
     }
@@ -120,23 +123,48 @@ public class BossAttack : MonoBehaviour
         if (!isPerformingAttack && !bh.isStunned && !bh.isDead && isAttacking && !testing)
         {
             stunnableTimer = 0;
+            var prevPrev = prevAttack;
             if (closeRange)
             {
-                attackFactor = Random.Range(0, defensiveAtk.Length);
-                if (defensiveAtk[attackFactor] != null) animator.SetTrigger(defensiveAtk[attackFactor]);
+                var rng = 0;
+                if (prevRepeat >= 2)
+                {
+                    while (prevAttack == defensiveAtk[rng]) rng = Random.Range(0, defensiveAtk.Length);
+                }
+                else rng = Random.Range(0, activeAtk.Length);
+                attackFactor = rng;
+                if (defensiveAtk[attackFactor] != null)
+                {
+                    animator.SetTrigger(defensiveAtk[attackFactor]);
+                    prevAttack = defensiveAtk[attackFactor];
+                }
+                else throw new MissingFieldException($"defensive attack no. {attackFactor} is null!");
             }
             else if (!closeRange)
             {
-                attackFactor = Random.Range(0, activeAtk.Length);
-                if (activeAtk[attackFactor] != null) animator.SetTrigger(activeAtk[attackFactor]);
+                var rng = 0;
+                if (prevRepeat >= 2)
+                {
+                    while (prevAttack == activeAtk[rng]) rng = Random.Range(0, activeAtk.Length);
+                }
+                else rng = Random.Range(0, activeAtk.Length);
+                attackFactor = rng;
+                if (activeAtk[attackFactor] != null)
+                {
+                    animator.SetTrigger(activeAtk[attackFactor]);
+                    prevAttack = activeAtk[attackFactor];
+                }
+                else throw new MissingFieldException($"active attack no. {attackFactor} is null!");
             }
+            if (prevAttack == prevPrev) prevRepeat++;
+            else prevRepeat = 0;
             CancelInvoke(nameof(AttackSystem));
             backupMoveTimer = 5;
         }
         else if (testing && isAttacking)
         {
             animator.SetTrigger(testAttacks[testIndex]);
-            CancelInvoke();
+            CancelInvoke(nameof(AttackSystem));
             backupMoveTimer = 5;
         }
         if (!isAttacking) CancelInvoke(nameof(AttackSystem));
@@ -209,10 +237,12 @@ public class BossAttack : MonoBehaviour
         isAttacking = false;
         noMercy = false;
         yield return new WaitUntil(() => !ps.IsDead);
+        yield return new WaitForSeconds(1f);
         transform.position = originalPosition;
         bh.bossHealth = bh.bossMaxHealth;
         bh.phase2 = false;
         dt.IsForced = true;
+        GameHUD.Instance.ToggleBossHealth(false);
         GameEvents.TriggerToggleDialogue(gameObject, true);
         if (dt.Dialogue[0] != bh.introDialogue[^1])
         {

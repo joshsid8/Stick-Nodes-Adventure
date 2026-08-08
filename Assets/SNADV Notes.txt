@@ -4,47 +4,54 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Double check dialogic
-            I think when a dialogue wants to alter another person's dialogue
-            if they arent loaded, the quest logic still works, but the dialogue is the same...?
-                Investigate
+        When Cynder died, he didn't do his dialogue, and I couldn't open the inventory
+            Refer to the first low priority bug, given that one also only happens in the build, i assume it causes this issue
+            Inspect the build player logs to see what cant be found
         
     Optimisations & Hotfixes:
         
         Instability
             Replicatable/From build bugs/problems
-                N/A
+                N/A                   
                 
             One time occurrences/Rare bugs
                 N/A
                     
             Low Priority/Unconfirmed fixed Bugs
-                I get very useless nullrefs the moment i press play
+                I get very useless(???) nullrefs the moment i press play
                 It does absolutely nothing, but i just want them removed
-                    It derives from some of the gui logic not being bale to find the player yet cuz it uses awake instead of start
+                    It derives from some of the gui logic not being able to find the player yet cuz it uses awake instead of start
                     Ill prolly not mind it until i feel like getting it fixed
         
         Junie Assistant
+            
+            Double check dialogic
+                I think when a dialogue wants to alter another person's dialogue
+                if they arent loaded, the quest logic still works, but the dialogue is the same
+                    I believe this might be because npc dialogue data has not been assigned to scene data yet
+                    Due to laziness, i think ill let Junie handle this
             
             Learn what #if UNITY_EDITOR does, it seems very useful
             
             Projectiles' knockback isnt too great, it needs to be more stable in terms of force
             
             The Typewriter updates the settings as it updates text
-                but i would rather it knows what settings should be implemented before to make it work well
+                but i would rather have it know what settings should be implemented beforehand to make it work well
             
             Let Junie inspect the audio fade logic
                 See what i can do to make it more efficient
-            
-            Double check Cynder's backdash, since its apparently not invoking correctly
-                If i cant find the problem, ask Junie
             
             Find out why currentscene doesnt get its saved data
                     
     Things to be added/changed:
         
         Pre-AO
-        
+            
+            Ability Scroll Logic
+                Make a ui that allows the player to switch between abilities, also lettin them know what abilities that have equipped
+                Right now, when you equip a scroll, it replaces the first slot, removing the original
+                    Make the original turn into a scroll that can be re-equipped
+            
             Shop Logic
                 Start by making a portable gui shop that has items that may or may not have a limited stock
                 Should i add GAMBLING?!
@@ -52,7 +59,7 @@ SNADV Notes
             
             Add basic gameplay SFX
                 Combat stuff
-                Quest notifications
+                Quest notifications (kinda added)
                 Gui stuff
                 Spawning
                 Death (added)

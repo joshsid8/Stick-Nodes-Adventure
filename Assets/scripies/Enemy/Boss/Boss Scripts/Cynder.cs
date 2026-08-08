@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Cynder : BossBase
 {
@@ -35,6 +37,7 @@ public class Cynder : BossBase
             if (rng <= 40) animator.SetTrigger("Homing");
             else Invoke(nameof(CallAttackSystem), cd < 0 ? ba.currentAttackCooldown : cd);
         }
+        else Invoke(nameof(CallAttackSystem), cd < 0 ? ba.currentAttackCooldown : cd);
     }
 
     private void CallAttackSystem() => ba.AttackSystem();

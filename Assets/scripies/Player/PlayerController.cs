@@ -192,17 +192,11 @@ namespace scripies.Player
                 currentDashTime = dashTime;
                 if (isWallSliding)
                 {
+                    Flip(true);
                     isWallSliding = false;
-                    Flip();
-                    dashDirection =
-                        (int)Mathf.Sign(
-                            isFacingRight ? -Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Horizontal"));
+                    dashDirection = (int)Mathf.Sign(isFacingRight ? -Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Horizontal"));
                 }
-                else
-                    dashDirection =
-                        (int)Mathf.Sign(
-                            isFacingRight ? Input.GetAxisRaw("Horizontal") : -Input.GetAxisRaw("Horizontal"));
-
+                else dashDirection = (int)Mathf.Sign(isFacingRight ? Input.GetAxisRaw("Horizontal") : -Input.GetAxisRaw("Horizontal"));
                 dashCooldownTimer = dashCooldown;
 
                 if (!isGrounded) hasDashedInAir = true;
@@ -243,16 +237,17 @@ namespace scripies.Player
                     wallJumpForce * wallJumpDirection.y / 3);
                 var wallJumpTimer = wallJumpTime;
                 jumpBufferCounter = 0f;
-                Flip();
                 isWallSliding = false;
                 isWallJumping = true;
+                Flip(true);
                 while (wallJumpTimer > 0)
                 {
+                    canFlip = false;
                     rb.linearVelocity = availableWallsLeft > 0 ? wjForce : weakForce;
                     wallJumpTimer -= Time.deltaTime;
                     yield return new WaitForFixedUpdate();
                 }
-
+                canFlip = true;
                 availableWallsLeft--;
 
                 // lerp stuff i must learn
@@ -428,9 +423,9 @@ namespace scripies.Player
             animator.SetBool("isWallJumping", isWallJumping);
         }
 
-        private void Flip()
+        private void Flip(bool forced = false)
         {
-            if (canFlip)
+            if (canFlip && !forced || forced)
             {
                 isFacingRight = !isFacingRight;
                 transform.Rotate(0.0f, 180.0f, 0.0f);

@@ -3301,12 +3301,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: testing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: attackCooldown
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: testAttacks.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: defensiveAtk.Array.size
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: 'testAttacks.Array.data[0]'
+      value: Teleport
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: 'testAttacks.Array.data[1]'
+      value: BDash
       objectReference: {fileID: 0}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: 'defensiveAtk.Array.data[0]'
@@ -3432,6 +3448,14 @@ PrefabInstance:
       propertyPath: 'possibleItems.Array.data[2]'
       value: 
       objectReference: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
+    - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: healthColours.Array.data[1].g
+      value: 0.50716174
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: healthColours.Array.data[1].r
+      value: 0.8784314
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

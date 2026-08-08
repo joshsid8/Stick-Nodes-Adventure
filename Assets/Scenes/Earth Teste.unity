@@ -7874,6 +7874,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: phase2Health
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.data[0].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.data[0].b
+      value: 0.23834105
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.data[0].g
+      value: 0.31681103
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.data[0].r
+      value: 0.49056602
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.data[1].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.data[1].b
+      value: 0.08788716
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.data[1].g
+      value: 0.13391975
+      objectReference: {fileID: 0}
+    - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: healthColours.Array.data[1].r
+      value: 0.23584908
+      objectReference: {fileID: 0}
     - target: {fileID: 5548932522893990080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: knockbackForce
       value: 10
@@ -7884,10 +7924,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: testAttacks.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: 'testAttacks.Array.data[0]'
+      value: Boulder
+      objectReference: {fileID: 0}
+    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: 'testAttacks.Array.data[1]'
+      value: Counter
+      objectReference: {fileID: 0}
+    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: 'testAttacks.Array.data[2]'
+      value: Shield
+      objectReference: {fileID: 0}
+    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: 'testAttacks.Array.data[3]'
       value: Decimate
       objectReference: {fileID: 0}
     - target: {fileID: 9085918208820846365, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}

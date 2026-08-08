@@ -410,7 +410,7 @@ AnimationClip:
     functionName: ReplenishShield
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 50
+    floatParameter: 45
     intParameter: 0
     messageOptions: 0
   - time: 3.0666666

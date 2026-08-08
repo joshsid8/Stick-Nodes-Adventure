@@ -216,6 +216,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rangeRadius: 4.4
+  testing: 0
+  testIndex: 0
+  testAttacks: []
   isAttacking: 0
   isPerformingAttack: 0
   attackCooldown: 1.5
@@ -252,6 +255,7 @@ MonoBehaviour:
   canFacePlayer: 1
   playerTransform: {fileID: 0}
   initStart: 1
+  backupMoveTimer: 5
   stunnable: 0
   stunnableTimer: 0
   dialogueNo: 0
@@ -273,6 +277,9 @@ MonoBehaviour:
   isDead: 0
   deathToggle: 0
   bossName: Cynder, The Keeper of Flames
+  healthColours:
+  - {r: 0.735849, g: 0.23949803, b: 0.23949803, a: 1}
+  - {r: 0.8773585, g: 0.574228, b: 0, a: 1}
   phase2: 0
   phase2Health: 300
   introDialogue:

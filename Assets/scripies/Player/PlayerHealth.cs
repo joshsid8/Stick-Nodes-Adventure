@@ -82,7 +82,6 @@ namespace scripies.Player
             }
 
             Instance = this;
-            if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             pc = GetComponent<PlayerController>();
             pd = GetComponent<PlayerDefense>();
             kb = GetComponent<Knockback>();
@@ -97,6 +96,7 @@ namespace scripies.Player
             currentStunTime = stunTime * shockMultiplier;
             originalColor = spriteRenderer.color;
             originalShockMultiplier = shockMultiplier;
+            if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             
             GameEvents.OnPlayerDeath += ResetCombat;
             GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
@@ -147,6 +147,7 @@ namespace scripies.Player
         {
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
             yield return new WaitForSeconds(timer);
+            gameObject.layer = LayerMask.NameToLayer("Player");
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             transform.position = realSpawn ? pc.currentSpawnPoint.transform.position : pc.currentCheckPoint.transform.position;
             Shenanigans.Instance.ToggleFreezeCamera(false);
@@ -176,7 +177,6 @@ namespace scripies.Player
                 playerHealth = playerMaxHealth * 0.25f;
                 deathToggle = false;
                 isDead = false;
-                gameObject.layer = LayerMask.NameToLayer("Player");
                 pc.canAct = true;
                 ResetCombat();
             }

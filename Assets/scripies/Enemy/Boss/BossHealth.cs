@@ -17,6 +17,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     public bool isDead; 
     [HideInInspector] public bool deathToggle;
     public string bossName;
+    [SerializeField] private Color[] healthColours = new Color[2];
     
     [Header("Phases and Dialogue")]
     public bool phase2;
@@ -60,8 +61,8 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     // Start is called before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        healthBar = BossHealthUI.Instance.healthBar;
-        bossTitle = BossHealthUI.Instance.bossTitle;
+        healthBar = GameHUD.Instance.bossHealthBar;
+        bossTitle = GameHUD.Instance.bossTitleText;
         ba = GetComponent<BossAttack>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -80,10 +81,13 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         animator.SetBool("isDead", isDead);
         animator.SetBool("phase2", phase2);
         Tint();
-        healthBar.fillAmount = bossHealth / bossMaxHealth;
-        bossTitle.text = bossName;
-        stunTime -= Time.deltaTime;
-        isStunned = stunTime > 0;
+        if (ba.isAttacking)
+        {
+            healthBar.fillAmount = bossHealth / bossMaxHealth;
+            bossTitle.text = bossName;
+            stunTime -= Time.deltaTime;
+            isStunned = stunTime > 0;
+        }
     }
     
     private IEnumerator Defeat()
@@ -99,7 +103,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
             yield return new WaitForSeconds(3);
-            BossHealthUI.Instance.Toggle(false);
+            GameHUD.Instance.ToggleBossHealth(false);
             isDead = false;
             GameEvents.TriggerAddPlayerTime("Combat", 0, false);
             animator.SetTrigger("Rise");
@@ -111,36 +115,35 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         IDamageable.ElementType elementType = 0, float elementFactor = 1f, bool isTrue = false,
         bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
     {
-        if (isBlocking && shieldHealth > 0 && damageFactor < 1)
+        switch (isBlocking, shieldHealth > 0, isTrue, damageFactor, isCountering) // where '_' means null/ignore
         {
-            bossHealth -= damageAmount * dmgRes;
-            shieldHealth -= damageAmount;
-            spriteRenderer.color = damageTint / 2;
-            isTinting = true;
-        }
-        else if (isBlocking && shieldHealth <= 0 && !isTrue && damageFactor < 1)
-        {
-            animator.Play("Damaged");
-            bossHealth -= damageAmount * 1.2f;
-            spriteRenderer.color = damageTint;
-            isTinting = true;
-        }
-        else if (isCountering && !isTrue && damageFactor < 2)
-        {
-            animator.Play("CSuccess");
-            isCountering = false;
-        }
-        else
-        {
-            bossHealth -= damageAmount;
-            if (ba.stunnable && movable)
-            {
-                var rng = Random.Range(0, 3);
-                animator.SetInteger("dmgrng", rng);
+            case (true, true, _, < 1, _):
+                bossHealth -= damageAmount * dmgRes;
+                shieldHealth -= damageAmount;
+                spriteRenderer.color = damageTint / 2;
+                isTinting = true;
+                break;
+            case (true, false, false, < 1, _):
                 animator.SetTrigger("Damaged");
-            }
-            spriteRenderer.color = damageTint;
-            isTinting = true;
+                bossHealth -= damageAmount * 1.2f;
+                spriteRenderer.color = damageTint;
+                isTinting = true;
+                break;
+            case (_, _, _, < 2, true):
+                animator.SetTrigger("CSuccess");
+                isCountering = false;
+                break;
+            default:
+                bossHealth -= damageAmount;
+                if (ba.stunnable && movable)
+                {
+                    var rng = Random.Range(0, 3);
+                    animator.SetInteger("dmgrng", rng);
+                    animator.SetTrigger("Damaged");
+                }
+                spriteRenderer.color = damageTint;
+                isTinting = true;
+                break;
         }
         if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
 
@@ -172,7 +175,25 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             GameEvents.TriggerBossDefeated();
             StartCoroutine(Defeat());
         }
-        else if (bossHealth <= phase2Health) phase2 = true;
+        else if (bossHealth <= phase2Health) StartCoroutine(PhaseToggle(true));
+    }
+
+    public IEnumerator PhaseToggle(bool toggle)
+    {
+        phase2 = toggle;
+        switch (phase2)
+        {
+            case true:
+                while (healthBar.color != healthColours[1])
+                {
+                    healthBar.color = Color.Lerp(healthBar.color, healthColours[1], Time.deltaTime);
+                    yield return new WaitForFixedUpdate();
+                }
+                break;
+            case false:
+                healthBar.color = healthColours[0];
+                break;
+        }
     }
     
     private void Tint()
