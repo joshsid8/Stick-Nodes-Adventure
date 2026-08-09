@@ -63,9 +63,6 @@ public class GameMenuManager : MonoBehaviour
         {
             SaveSystem.Save();
             Application.Quit();
-            /*Destroy(GameObject.Find("Canvas"));
-            SceneManager.UnloadSceneAsync("Persistent Objects");
-            SceneManager.LoadScene("Main Menu");*/
         }
         else OnMenuToggle(false);
     }

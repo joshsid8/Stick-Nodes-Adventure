@@ -48,7 +48,7 @@ public class EntitySpawner : MonoBehaviour
                         if (targetScene.IsValid() && targetScene.isLoaded)
                         {
                             SceneManager.MoveGameObjectToScene(instance, targetScene);
-                            instance.GetComponent<Identifier>().AutomateID(targetScene);
+                            instance.GetComponent<scripies.Core.Identifier>().AutomateID(targetScene);
                             if (spawn.settings != null) instance.GetComponent<EnemyController>().enemy = spawn.settings;
                         }
                     }

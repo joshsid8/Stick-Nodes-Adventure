@@ -37,6 +37,11 @@ public class SaveSystem
 
     public static void HandleSaveData()
     {
+        foreach (var map in MapManager.Instances.Values)
+        {
+            map.SaveSceneData();
+            map.MakeDataPersistent();
+        }
         SceneDataManager.Instance.Save(ref saveData.sceneData);
         PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);
         PlayerManager.Instance.Save(ref saveData.playerStats);
@@ -81,7 +86,23 @@ public class SaveSystem
     }
     
     public static void SaveSettings() => HandleSettingsSaveData();
-    public static void LoadSettings() => HandleSettingsLoadData();
+    public static void LoadSettings()
+    {
+        var path = SaveFileName();
+        if (File.Exists(path))
+        {
+            try
+            {
+                var json = File.ReadAllText(path);
+                saveData = JsonUtility.FromJson<SaveData>(json);
+            }
+            catch (IOException ex)
+            {
+                Debug.LogError($"[SaveSystem] Failed to load settings: {ex.Message}");
+            }
+        }
+        HandleSettingsLoadData();
+    }
 
     public static void Load()
     {

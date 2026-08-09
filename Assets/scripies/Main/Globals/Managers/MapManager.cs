@@ -53,8 +53,8 @@ public class MapManager : MonoBehaviour
         sceneName = gameObject.scene.name;
         mainCamera = SceneDataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
         weather = GetComponent<WeatherManager>();
-        yield return new WaitForSeconds(0.05f);
         SaveSceneData();
+        yield return new WaitForSeconds(0.3f);
         if (SceneDataManager.Instance.sceneData.Count > 0) LoadSceneData();
         
         GameEvents.OnBossDefeated += OnBossDefeated;
@@ -203,7 +203,7 @@ public class MapManager : MonoBehaviour
                 switch (obj.tag)
                 {
                     case "Enemy":
-                        var enemyId = obj.GetComponent<Identifier>();
+                        var enemyId = obj.GetComponent<scripies.Core.Identifier>();
                         var newEnemy = new EnemySceneData
                         {
                             activeEnemies = obj,
@@ -218,7 +218,7 @@ public class MapManager : MonoBehaviour
                         bossSceneData.activeBoss = obj.name;
                         break;
                     case "NPC":
-                        var npcId = obj.GetComponent<Identifier>();
+                        var npcId = obj.GetComponent<scripies.Core.Identifier>();
                         var dTrigger = obj.GetComponent<DialogueTrigger>();
                         var newNpc = new NpcSceneData
                         {
@@ -245,7 +245,7 @@ public class MapManager : MonoBehaviour
         }
         foreach (var door in doorObjects)
         {
-            var doorId = door.GetComponent<Identifier>();
+            var doorId = door.GetComponent<scripies.Core.Identifier>();
             var doorObjective = door.GetComponent<DoorObjective>();
             var newDoor = new DoorSceneData
             {
@@ -258,7 +258,7 @@ public class MapManager : MonoBehaviour
         }
         foreach (var spawner in spawnerObjects)
         {
-            var spawnerId = spawner.GetComponent<Identifier>();
+            var spawnerId = spawner.GetComponent<scripies.Core.Identifier>();
             var itemSpawner = spawner.GetComponent<ItemSpawner>();
             var entitySpawner = spawner.GetComponent<EntitySpawner>();
             var newSpawner = new SpawnerSceneData
@@ -353,7 +353,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    private void LoadSceneData()
+    public void LoadSceneData()
     {
         var manager = SceneDataManager.Instance;
 

@@ -484,6 +484,12 @@ namespace scripies.Player
             data.health = PlayerHealth.Instance.playerHealth;
             data.energy = pab.energy;
             data.money = pm.nodeBucks;
+            
+            if (currentCheckPoint != null)
+            {
+                var ident = currentCheckPoint.GetComponent<scripies.Core.Identifier>();
+                if (ident != null) data.currentCheckPointId = ident.id;
+            }
         }
 
         public void Load(PlayerSaveCurrentData data)
@@ -492,6 +498,19 @@ namespace scripies.Player
             PlayerHealth.Instance.playerHealth = data.health;
             pab.energy = data.energy;
             pm.nodeBucks = data.money;
+
+            if (data.currentCheckPointId != 0)
+            {
+                var identifiers = FindObjectsByType<scripies.Core.Identifier>(FindObjectsSortMode.None);
+                foreach (var ident in identifiers)
+                {
+                    if (ident.typeOfObject == scripies.Core.Identifier.ObjectType.Checkpoint && ident.id == data.currentCheckPointId)
+                    {
+                        currentCheckPoint = ident.gameObject;
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -502,5 +521,6 @@ namespace scripies.Player
         public float health;
         public float energy;
         public float money;
+        public int currentCheckPointId;
     }
 }

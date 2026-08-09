@@ -66,7 +66,7 @@ public class ItemSpawner : MonoBehaviour
                 if (targetScene.IsValid() && targetScene.isLoaded)
                 {
                     SceneManager.MoveGameObjectToScene(instance, targetScene);
-                    instance.GetComponent<Identifier>().AutomateID(targetScene);
+                    instance.GetComponent<scripies.Core.Identifier>().AutomateID(targetScene);
                     spawnedObjects.Add(instance);
                 }
             }

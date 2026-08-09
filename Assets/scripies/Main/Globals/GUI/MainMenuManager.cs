@@ -78,7 +78,7 @@ public class MainMenuManager : MonoBehaviour
         // 1. Start loading the scenes first
         scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
         
-        if (String.IsNullOrEmpty(audioManager.currentScene))
+        if (String.IsNullOrEmpty(audioManager.currentScene) && !newGame)
         {
             Debug.LogWarning("theres no scene name data. loading all scenes");
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Fire Teste", LoadSceneMode.Additive));
@@ -87,8 +87,8 @@ public class MainMenuManager : MonoBehaviour
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Air Teste", LoadSceneMode.Additive));
 
         }
+        else if (newGame) scenesToLoad.Add(SceneManager.LoadSceneAsync("Fire Teste", LoadSceneMode.Additive));
         else scenesToLoad.Add(SceneManager.LoadSceneAsync(audioManager.currentScene, LoadSceneMode.Additive));
-        
         
         // 2. Wait for all scenes in the list to finish
         var allDone = false;

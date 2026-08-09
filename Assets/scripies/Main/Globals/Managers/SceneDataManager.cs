@@ -19,14 +19,14 @@ public class SceneDataManager : MonoBehaviour
         public List<NpcSceneData> npcs = new List<NpcSceneData>();
         public List<DoorSceneData> doors = new List<DoorSceneData>();
         public List<SpawnerSceneData> spawners = new List<SpawnerSceneData>();
-        
+
         public GameObject ItemToStore => GameObject.Find("persistentItem");
-        
+
         public string activeBoss;
         public bool isBossDead;
         public bool willBeNpc;
     }
-    
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -37,7 +37,7 @@ public class SceneDataManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    
+
     #region Scene data classes
 
     [Serializable]
@@ -46,7 +46,7 @@ public class SceneDataManager : MonoBehaviour
         public int activeEnemyID;
         public bool isOneTime;
     }
-    
+
     [Serializable]
     public class NpcSceneData
     {
@@ -80,31 +80,8 @@ public class SceneDataManager : MonoBehaviour
 
     #endregion
 
-    public void Save(ref SceneData data)
-    {
-        data.realSceneData.Clear();
-        data.realSceneData ??= new List<SceneList>();
-        data.realSceneData.AddRange(sceneData);
-    }
-
-    public void Load(SceneData data)
-    {
-        sceneData.Clear();
-        sceneData = data.realSceneData;
-        foreach (var list in sceneData)
-        {
-            var scene = SceneManager.GetSceneByName(list.sceneName);
-            var sceneObjects = scene.GetRootGameObjects();
-            foreach (var obj in sceneObjects)
-            {
-                if (obj.name == "Map")
-                {
-                    //obj.GetComponent<MapManager>().LoadSceneData();
-                    return;
-                }
-            }
-        }
-    }
+    public void Save(ref SceneData data) => data.realSceneData = new List<SceneList>(sceneData);
+    public void Load(SceneData data) => sceneData = new List<SceneList>(data.realSceneData);
 }
 
 [Serializable]
