@@ -5,9 +5,9 @@ using UnityEngine;
 
 public abstract class GUIBase : MonoBehaviour
 {
-    [Tooltip("lets get active?")]
+    [Tooltip("get active?")]
     public bool isActive;
-
+    [Tooltip("lets... get... AA-")]
     protected static int ActiveGUICount;
     protected PlayerController player;
     protected RectTransform rt;
@@ -63,7 +63,7 @@ public abstract class GUIBase : MonoBehaviour
     }
     
     /// <summary>
-    ///  lets get actiiiiiiivvee-
+    ///  get actiiiiiiivvee-
     /// </summary>
     protected void GetActive(bool active)
     {

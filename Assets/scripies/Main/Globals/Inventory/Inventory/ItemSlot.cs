@@ -177,7 +177,14 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     private void ItemTypeAction()
     {
         if (itemType != null && itemType == "Aspect") EquipAspect();
-        else if (itemType != null && itemType == "Ability") invManager.EquipAbility(abilityStats);
+        else if (itemType != null && itemType == "Ability")
+        {
+            foreach (var slotButton in invManager.slotButtons) slotButton.onClick.RemoveAllListeners();
+            invManager.slotButtons[0].onClick.AddListener(() => SwapAbility());
+            invManager.slotButtons[1].onClick.AddListener(() => SwapAbility(1));
+            invManager.slotButtons[2].onClick.AddListener(() => SwapAbility(2));
+            print("Choose an ability to swap!");
+        }
         else if (itemType != "Key") UseItem();
     }
 
@@ -221,6 +228,13 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     }
 
     public void ItemSelect() => OnLeftClick();
+
+    private void SwapAbility(int slot = 0)
+    {
+        print("Ok uhh switching abilities");
+        invManager.EquipAbility(abilityStats, slot);
+        foreach (var slotButton in invManager.slotButtons) slotButton.onClick.RemoveAllListeners();
+    }
     
     private IEnumerator DestroyItem()
     {

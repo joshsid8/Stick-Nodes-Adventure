@@ -68,7 +68,8 @@ namespace scripies.Player
         public bool IsHoldingAbility => pa != null && pa.isHolding;
         public bool IsPerformingAbility => pa != null && pa.isPerformingAbility;
         public float CurrentEnergy => pa != null ? pa.energy : 0f;
-        public float CurrentAbilityCooldown => pa != null ? pa.currentAbilityCooldown : 0f;
+        public float[] CurrentAbilityCooldown => pa.currentAbilityCooldowns;
+        public float[] MaxAbilityCooldown => pa.maxAbilityCooldowns;
         public int AggressiveEnemies => aggressiveEnemies.Count;
         public float NodeBucks => GetComponent<PlayerCurrency>().nodeBucks;
         #endregion
@@ -80,7 +81,7 @@ namespace scripies.Player
                 Destroy(gameObject);
                 return;
             }
-
+            
             Instance = this;
             pc = GetComponent<PlayerController>();
             pd = GetComponent<PlayerDefense>();
@@ -96,6 +97,10 @@ namespace scripies.Player
             currentStunTime = stunTime * shockMultiplier;
             originalColor = spriteRenderer.color;
             originalShockMultiplier = shockMultiplier;
+            
+            #if UNITY_EDITOR 
+            spawnOnAwake = false;
+            #endif
             if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             
             GameEvents.OnPlayerDeath += ResetCombat;

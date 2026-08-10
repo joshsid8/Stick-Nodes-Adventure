@@ -876,7 +876,7 @@ MonoBehaviour:
   mapDisasterFactors:
   - 0
   - 0
-  - 0
+  - 1
   - 1
   sectionObj: {fileID: 0}
   sceneObjects: []
@@ -1010,8 +1010,9 @@ MonoBehaviour:
     - 1
   randomWeather: 0
   weatherChance: 10
+  earthquakeTimer: 0.2
   thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
-  thunderTimer: 1
+  thunderTimer: 0.75
   thunderChance: 50
 --- !u!1001 &1002234505
 PrefabInstance:

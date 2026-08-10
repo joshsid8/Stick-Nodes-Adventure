@@ -45,12 +45,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 109414120128023590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 75b7e38a4a6ef5648a4b683dee9da0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Identifier
   id: 0
   spawnId: 0
-  typeOfObject: 4
+  typeOfObject: 0
   mapManager: {fileID: 0}
 --- !u!114 &9223160534816086470
 MonoBehaviour:

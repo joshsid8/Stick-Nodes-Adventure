@@ -134,10 +134,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2846562907364595286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 75b7e38a4a6ef5648a4b683dee9da0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 6
+  id: 0
   spawnId: 0
   typeOfObject: 0
   mapManager: {fileID: 0}
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c122b40f75c093942a5f94f24c5ee65b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 1
   chatRadius: 2.05
   chatPoint: {fileID: 6671282002503159600}
   isInRange: 0
@@ -223,10 +224,17 @@ MonoBehaviour:
   modPassiveModeRadius: 0
   stunTime: 0
   damageAmount: 0
-  knockbackForce: {x: 0, y: 0}
+  elementType: 0
+  knockbackDirection: {x: 0, y: 0}
+  knockbackForce: 20
+  knockbackTime: 0.2
+  isTrue: 0
+  damageOverTime: 0
+  procDmg: 0
+  procInterval: 0
   attackRange: 0
   attackTransform: {fileID: 8605561022708171600}
-  damageType: 0
+  damageFactor: 0
   pLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -350,6 +358,7 @@ MonoBehaviour:
   enemyState: 0
   enemy: {fileID: 0}
   isFacingRight: 1
+  vegetable: 0
 --- !u!61 &2710689748645888265
 BoxCollider2D:
   m_ObjectHideFlags: 0

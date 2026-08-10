@@ -15,7 +15,7 @@ public class Beam : AbilityBase
     protected override void Update()
     {
         base.Update();
-        if (pa != null && typeFactor == 1) GameEvents.TriggerAddPlayerTime("Ability", cooldown);
+        if (pa != null && typeFactor == 1) GameEvents.TriggerAddPlayerTime("Ability", 0);
         if (isFacingRightDirection) transform.eulerAngles = Vector3.zero;
         else transform.eulerAngles = new Vector3(0, 180, 0);
         transform.localEulerAngles = new Vector3(0, 0, 0);

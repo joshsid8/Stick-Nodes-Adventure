@@ -20,7 +20,8 @@ namespace scripies.Core
         bool IsHoldingAbility { get; }
         bool IsPerformingAbility { get; }
         float CurrentEnergy { get; }
-        float CurrentAbilityCooldown { get; }
+        float[] CurrentAbilityCooldown { get; }
+        float[] MaxAbilityCooldown { get; }
         
         // Defense
         bool IsCountering { get; }

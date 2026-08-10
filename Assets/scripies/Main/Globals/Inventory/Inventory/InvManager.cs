@@ -14,6 +14,7 @@ public class InvManager : GUIBase
 
     public Button useButton;
     public Button destroyButton;
+    public Button[] slotButtons;
 
     public PlayerManager playerManager;
     protected override void Awake()
@@ -24,7 +25,7 @@ public class InvManager : GUIBase
         rt = GetComponent<RectTransform>();
         playerManager = FindAnyObjectByType<PlayerManager>();
         invIndex = new InvIndex();
-        if (playerManager == null) Debug.LogWarning("InvManager: PlayerManager not found.");
+        if (playerManager == null) Debug.LogWarning("InvManager: We cant find the player manager D:");
         if (isActive) ToggleInventory();
         InitializeAllSlots();
     }
@@ -47,7 +48,9 @@ public class InvManager : GUIBase
             ToggleInventory();
         }
         if (Input.GetKeyDown("o")) SaveSystem.Save();
+        #if UNITY_EDITOR
         if (Input.GetKeyDown("p")) SaveSystem.Load();
+        #endif
     }
 
     public void ToggleInventory()
@@ -61,7 +64,7 @@ public class InvManager : GUIBase
         }
     }
 
-    public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)
+    public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount = 1, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)
     {
         for (var i = 0; i < itemSlots.Length; i++)
         {
@@ -109,7 +112,7 @@ public class InvManager : GUIBase
             if (aspectSlots[i].itemName == itemName)
             {
                 //Debug.Log($"Seems like there is already a {itemName} in your slots");
-                AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null ,aspect, null, 0);
+                AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null, aspect);
                 break;
             }
         }
@@ -119,12 +122,12 @@ public class InvManager : GUIBase
     public void UnequipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
     {
         if (aspect != null && playerManager != null) playerManager.RemoveAspectModifiers(aspect);
-        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null ,aspect, null, 0);
+        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null ,aspect);
     }
 
-    public void EquipAbility(AbilitySO ability)
+    public void EquipAbility(AbilitySO ability, int slot = 0)
     {
-        if (abilitySlot != null) abilitySlot.AddAbility(ability); 
+        if (abilitySlot != null) abilitySlot.AddAbility(ability, slot); 
     }
 
     public void SelectSlot()
@@ -162,11 +165,11 @@ public class InvManager : GUIBase
             
             if (data.storedItems[i] is ItemSO) 
                 AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, 
-                    item.itemType, item, null, null, 0);
+                    item.itemType, item, null);
             
             else if (data.storedItems[i] is AspectSO)
                 AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 1, "Aspect", null,
-                    aspect, null, 0);
+                    aspect);
             
             else if (data.storedItems[i] is AbilitySO)
                 AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, 

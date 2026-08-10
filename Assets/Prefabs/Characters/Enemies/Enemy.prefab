@@ -185,7 +185,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6953562033605771950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 75b7e38a4a6ef5648a4b683dee9da0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
@@ -248,6 +248,7 @@ MonoBehaviour:
   enemyState: 0
   enemy: {fileID: 11400000, guid: a161aa52adcdc644a9eed13f4858ca8a, type: 2}
   isFacingRight: 1
+  vegetable: 0
 --- !u!114 &9002268324909943343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,10 +338,17 @@ MonoBehaviour:
   modPassiveModeRadius: 25
   stunTime: 0.5
   damageAmount: 10
-  knockbackForce: {x: 1, y: 0}
+  elementType: 0
+  knockbackDirection: {x: 1, y: 0}
+  knockbackForce: 20
+  knockbackTime: 0.2
+  isTrue: 0
+  damageOverTime: 0
+  procDmg: 0
+  procInterval: 0
   attackRange: 1.8
   attackTransform: {fileID: 1463641665037281832}
-  damageType: 0
+  damageFactor: 0
   pLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -417,7 +425,6 @@ MonoBehaviour:
   currentZonePeriod: 0
   isZoning: 0
   zoneTime: 1
-  activeZoneTime: 0
   zoneSpeed: 6
   zoneInterval: 0.5
   intervalTimer: 0
@@ -501,6 +508,8 @@ MonoBehaviour:
   abilityDirection: 0
   isActivated: 0
   unavailable: 0
+  currentSlot: 0
+  currentBlastType: 0
 --- !u!212 &7115054256094536775
 SpriteRenderer:
   serializedVersion: 2

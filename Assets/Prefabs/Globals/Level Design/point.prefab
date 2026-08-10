@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8774341393383474498}
   - component: {fileID: 6268105301424822268}
   - component: {fileID: 1043682906074359370}
+  - component: {fileID: 1154066909178485593}
   m_Layer: 0
   m_Name: point
   m_TagString: Untagged
@@ -91,3 +92,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780dd4f0b1f5dc44b8e5910317c1091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: 0
+  oneTime: 0
+--- !u!114 &1154066909178485593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550122312589149946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b7e38a4a6ef5648a4b683dee9da0a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: scripies.Core::scripies.Core.Identifier
+  id: 0
+  spawnId: 0
+  typeOfObject: 5
+  mapManager: {fileID: 0}

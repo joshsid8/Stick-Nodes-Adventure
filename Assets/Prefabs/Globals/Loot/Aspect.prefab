@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 6782227859726589844}
   - component: {fileID: 3587633842423100324}
   - component: {fileID: 2158844802716763069}
-  - component: {fileID: 4403891972653555725}
   m_Layer: 19
   m_Name: Aspect
   m_TagString: Item
@@ -142,12 +141,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3490253027308570714}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 75b7e38a4a6ef5648a4b683dee9da0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Identifier
   id: 0
   spawnId: 0
-  typeOfObject: 1
+  typeOfObject: 0
   mapManager: {fileID: 0}
 --- !u!50 &6782227859726589844
 Rigidbody2D:
@@ -206,19 +205,3 @@ MonoBehaviour:
   edgeCheckRay: 1
   playerFinderHitbox: 5
   flySpeed: 10
---- !u!114 &4403891972653555725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3490253027308570714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c244f43a809904a80deb7f7356cc9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Identifier
-  id: 0
-  spawnId: 0
-  typeOfObject: 0
-  mapManager: {fileID: 0}

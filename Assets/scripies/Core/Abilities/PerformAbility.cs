@@ -40,7 +40,7 @@ public class PerformAbility : MonoBehaviour
     {
         unavailable = Physics2D.OverlapCircle(new Vector2(abilityPoint.position.x, abilityPoint.position.y), 1f, terrainLayers);
         if (casterType == CasterType.Player)
-            if (isActivated && pa.CurrentAbilityCooldown <= 0) isActivated = false;
+            if (isActivated && pa.CurrentAbilityCooldown[0] >= pa.MaxAbilityCooldown[0]) isActivated = false;
     }
     
     public void Perform(AbilityObjSO ability) => StartCoroutine(SpawnRoutine(ability, casterType == CasterType.Player ? currentBlastType : -1));
@@ -97,7 +97,7 @@ public class PerformAbility : MonoBehaviour
                     if (casterType == CasterType.Player)
                     {
                         GameEvents.TriggerAddPlayerEnergy(-abScript.energyRequired / 2);
-                        GameEvents.TriggerAddPlayerTime("Ability", abScript.cooldown);
+                        GameEvents.TriggerAddPlayerTime("Ability", 0);
                     }
                 }
             }
@@ -117,7 +117,7 @@ public class PerformAbility : MonoBehaviour
                 if (casterType == CasterType.Player)
                 {
                     GameEvents.AddPlayerEnergy(-abScript.energyRequired);
-                    GameEvents.TriggerAddPlayerTime("Ability", abScript.cooldown);
+                    GameEvents.TriggerAddPlayerTime("Ability", 0);
                 }
             }
         }

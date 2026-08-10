@@ -12,8 +12,9 @@ namespace scripies.Player
         public float energyRefill;
         public float abilityCooldownMult = 1;
 
-        public bool canAbility;
-        public float currentAbilityCooldown;
+        public bool[] canAbility = new bool[3];
+        public float[] currentAbilityCooldowns = new float[3];
+        public float[] maxAbilityCooldowns = new float[3];
         public bool isPerformingAbility;
         public bool isHolding;
         [SerializeField] private int maxBlastIndex;
@@ -45,7 +46,8 @@ namespace scripies.Player
             if (Input.GetButtonDown("FireSwap"))
             {
                 blastIndex++;
-                if (blastIndex > maxBlastIndex || blastIndex == maxBlastIndex && ability.objects[maxBlastIndex] == null || blastIndex == 1 && ability.objects[1] == null) blastIndex = 0;
+                if (blastIndex > maxBlastIndex || blastIndex == maxBlastIndex && ability.objects[maxBlastIndex] == null || blastIndex == 1 && ability.objects[1] == null) 
+                    blastIndex = 0;
             }
 
             Fire();
@@ -57,23 +59,31 @@ namespace scripies.Player
         void Fire()
         {
             // Made it so that all 3 slots can be any type of ability
-            if (canAbility && !pc.isDashing && !pc.isWallSliding && !pc.isWallJumping && !isPerformingAbility && pc.canAct && !ability.isActivated)
+            if (!pc.isDashing && !pc.isWallSliding && !pc.isWallJumping && !isPerformingAbility && pc.canAct && !ability.isActivated && canAbility[blastIndex])
+            {
                 if (Input.GetButtonDown("Fire"))
                 {
-                    if (ability.objects[blastIndex].abilityPrefab.GetComponent<Projectile>() != null)
+                    if (ability.objects[blastIndex].abilityPrefab.GetComponent<Projectile>() != null) 
                         Execute();
                     else if (ability.objects[blastIndex].abilityPrefab.GetComponentInChildren<Pillar>() != null)
                         Execute(1);
                     else if (ability.objects[blastIndex].abilityPrefab.GetComponentInChildren<Beam>() != null)
                         Execute(2);
                 }
-
+            }
             if (!pc.isDashing && !pc.isWallSliding && pc.canAct)
                 isHolding = Input.GetButton("Fire") ? isHolding = true : isHolding = false;
 
-            if (currentAbilityCooldown > 0) currentAbilityCooldown -= Time.deltaTime;
-            if (currentAbilityCooldown <= 0) canAbility = true;
-            else canAbility = false;
+            for (var i = 0; i < canAbility.Length; i++)
+            {
+                if (currentAbilityCooldowns[i] < maxAbilityCooldowns[i]) currentAbilityCooldowns[i] += Time.deltaTime;
+                if (currentAbilityCooldowns[i] >= maxAbilityCooldowns[i])
+                {
+                    canAbility[i] = true;
+                    currentAbilityCooldowns[i] = maxAbilityCooldowns[i];
+                }
+                else canAbility[i] = false;
+            }
         }
 
         private void Execute(int slot = 0)
@@ -92,6 +102,8 @@ namespace scripies.Player
             var totalAmount = Mathf.Round(abilitySo.amount * ability.abilityAmountMult[slot]);
             var energyReq = abilitySo.energyRequired == 0 ? prefabBase.energyRequired : abilitySo.energyRequired;
 
+            maxAbilityCooldowns[slot] = prefabBase.cooldown;
+            
             var hasEnoughEnergy = energy >= energyReq * totalAmount;
             if (hasEnoughEnergy && !ability.unavailable)
             {

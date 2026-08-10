@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
 using scripies.Player;
@@ -43,12 +44,10 @@ public class WeatherManager : MonoBehaviour
     {
         var rng = Random.Range(0, 101);
         if (randomWeather && rng <= weatherChance) weatherType = (WeatherType) Random.Range(1, 4);
-        else if (randomWeather && rng > weatherChance)
+        else if (randomWeather && weatherType != WeatherType.Clear)
         {
-            weatherType = WeatherType.Clear;
-            mm.UpdateNormalAreaInfo();
-            player.regenerationMultiplier = preValues[0];
-            player.pc.movementSpeed = preValues[1];
+            var rng2 = Random.Range(0, 101);
+            if (rng2 <= 50) weatherType = weatherType = WeatherType.Clear;
         }
         switch (weatherType)
         {
@@ -83,12 +82,8 @@ public class WeatherManager : MonoBehaviour
             else disasters[mm.mapDisasterNames[i]] = mm.mapDisasterFactors[i];
         }
         InvokeRepeating(nameof(EarthQuake), 0, earthquakeTimer);
-    }
-    
-    private void Update()
-    {
-        Temperature();
-        Wind(false);
+        InvokeRepeating(nameof(Temperature), 0, 0.001f);
+        StartCoroutine(Wind());
     }
 
     private void PollingHurtPlayer(float damage = 0.001f) => player.playerHealth -= damage;
@@ -97,6 +92,8 @@ public class WeatherManager : MonoBehaviour
     {
         CancelInvoke(nameof(Thunderstorm));
         CancelInvoke(nameof(EarthQuake));
+        CancelInvoke(nameof(Temperature));
+        StopCoroutine(Wind());
         disasters.Clear();
     }
 
@@ -136,11 +133,17 @@ public class WeatherManager : MonoBehaviour
             }
         }
     }
-
-    public void Wind(bool isRight)
+    
+    public IEnumerator Wind()
     {
-        if (disasters.ContainsKey("Wind") && disasters["Wind"] > 0) 
-            player.pc.rb.AddForce(new Vector2(isRight ? 1 : -1, 0) * 50 * disasters["Wind"]);
+        var rng = Random.Range(0, 2);
+        var windDirection = rng == 0;
+        while (disasters.ContainsKey("Wind") && disasters["Wind"] > 0)
+        {
+            player.pc.rb.AddForce(new Vector2(windDirection ? 1 : -1, 0) * 50 * disasters["Wind"]);
+            yield return new WaitForFixedUpdate();
+        }
+        yield return null;
     }
 }
 

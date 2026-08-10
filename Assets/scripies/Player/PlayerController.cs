@@ -441,7 +441,7 @@ namespace scripies.Player
                     dashCooldown = additive ? dashCooldown + cooldown : cooldown;
                     break;
                 case "Ability":
-                    pab.currentAbilityCooldown = additive ? pab.currentAbilityCooldown + cooldown : cooldown;
+                    pab.currentAbilityCooldowns[pab.ability.currentSlot] = additive ? pab.currentAbilityCooldowns[pab.ability.currentSlot] + cooldown : cooldown;
                     break;
                 case "Combat":
                     PlayerHealth.Instance.ApplyCombat(cooldown, additive);
@@ -485,10 +485,10 @@ namespace scripies.Player
             data.energy = pab.energy;
             data.money = pm.nodeBucks;
             
-            if (currentCheckPoint != null)
+            if (currentSpawnPoint != null)
             {
-                var ident = currentCheckPoint.GetComponent<scripies.Core.Identifier>();
-                if (ident != null) data.currentCheckPointId = ident.id;
+                var ident = currentSpawnPoint.GetComponent<Identifier>();
+                if (ident != null) data.currentSpawnPointId = ident.id;
             }
         }
 
@@ -499,14 +499,14 @@ namespace scripies.Player
             pab.energy = data.energy;
             pm.nodeBucks = data.money;
 
-            if (data.currentCheckPointId != 0)
+            if (data.currentSpawnPointId != 0)
             {
-                var identifiers = FindObjectsByType<scripies.Core.Identifier>(FindObjectsSortMode.None);
+                var identifiers = FindObjectsByType<Identifier>(FindObjectsSortMode.None);
                 foreach (var ident in identifiers)
                 {
-                    if (ident.typeOfObject == scripies.Core.Identifier.ObjectType.Checkpoint && ident.id == data.currentCheckPointId)
+                    if (ident.typeOfObject == Identifier.ObjectType.Checkpoint && ident.id == data.currentSpawnPointId)
                     {
-                        currentCheckPoint = ident.gameObject;
+                        currentSpawnPoint = ident.gameObject;
                         break;
                     }
                 }
@@ -521,6 +521,6 @@ namespace scripies.Player
         public float health;
         public float energy;
         public float money;
-        public int currentCheckPointId;
+        public int currentSpawnPointId;
     }
 }

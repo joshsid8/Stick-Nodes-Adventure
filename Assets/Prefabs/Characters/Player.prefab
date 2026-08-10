@@ -277,8 +277,15 @@ MonoBehaviour:
   energy: 75
   energyRefill: 5
   abilityCooldownMult: 1
-  canAbility: 1
-  currentAbilityCooldown: 0
+  canAbility: 000000
+  currentAbilityCooldowns:
+  - 0
+  - 0
+  - 0
+  maxAbilityCooldowns:
+  - 0
+  - 0
+  - 0
   isPerformingAbility: 0
   isHolding: 0
   maxBlastIndex: 2

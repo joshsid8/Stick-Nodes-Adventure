@@ -23,6 +23,7 @@ public class MapManager : MonoBehaviour
     public float[] mapDisasterFactors = new float[4];
 
     private WeatherManager weather;
+    private AudioManager audioManager;
     [SerializeField] private GameObject sectionObj;
     #endregion
 
@@ -53,20 +54,20 @@ public class MapManager : MonoBehaviour
         sceneName = gameObject.scene.name;
         mainCamera = SceneDataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
         weather = GetComponent<WeatherManager>();
+        audioManager = AudioManager.Instance;
         SaveSceneData();
         yield return new WaitForSeconds(0.3f);
         if (SceneDataManager.Instance.sceneData.Count > 0) LoadSceneData();
-        
-        GameEvents.OnBossDefeated += OnBossDefeated;
-        GameEvents.OnPlayerSpawned += StartMap;
         yield return null;
     }
 
     private void Update()
     {
+        #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F1)) SaveSceneData();
         if (Input.GetKeyDown(KeyCode.F2)) MakeDataPersistent();
         if (Input.GetKeyDown(KeyCode.F3)) LoadSceneData();
+        #endif
     }
     
     private void OnBossDefeated() => bossSceneData.isDead = true;
@@ -82,6 +83,8 @@ public class MapManager : MonoBehaviour
         if (!Instances.ContainsKey(gameObject.scene.name))
             Instances.Add(gameObject.scene.name, this);
         if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
+        GameEvents.OnPlayerSpawned += StartMap;
+        GameEvents.OnBossDefeated += OnBossDefeated;
     }
 
     private void OnDisable()
@@ -89,33 +92,33 @@ public class MapManager : MonoBehaviour
         if (Instances.ContainsKey(gameObject.scene.name) && Instances[gameObject.scene.name] == this)
             Instances.Remove(gameObject.scene.name);
         GameEvents.OnBossDefeated -= OnBossDefeated;
+        GameEvents.OnPlayerSpawned -= StartMap;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       StartCoroutine(MapTransition(collision));
+       if (collision.CompareTag("Player")) StartCoroutine(MapTransition(collision));
     }
 
     private IEnumerator MapTransition(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && AreaManager.Instance.titleText.text != mapName || 
-            collision.CompareTag("Player") && AreaManager.Instance.titleText.text != null)
+        if (AreaManager.Instance.titleText.text != mapName || AreaManager.Instance.titleText.text != null)
         {
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
             mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
             StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
-            if (AudioManager.Instance.musicSource.volume == 0 && collision.gameObject.scene == AudioManager.Instance.previousScene) AudioManager.Instance.TriggerFadeIn(0.5f);
-            yield return new WaitForSeconds(1.1f);
+            if (audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene) audioManager.TriggerFadeIn(0.5f);
+            yield return new WaitForSeconds(0.8f);
             if (collision.gameObject.scene == gameObject.scene) 
                 StartMap(collision.gameObject);
         }
     }
 
-    private void StartMap(GameObject spawnPoint = null)
+    private void StartMap(GameObject objectRef = null)
     {
-        if (spawnPoint == null || spawnPoint.scene.name != gameObject.scene.name)
+        if (objectRef == null || objectRef.scene.name != gameObject.scene.name)
         {
-            if (spawnPoint != null && spawnPoint.scene.name != "Persistent Objects") StartCoroutine(TryStartMapAgain(spawnPoint));
+            if (objectRef != null && objectRef.scene.name != "Persistent Objects") StartCoroutine(TryStartMapAgain(objectRef));
             return;
         }
         weather.SetWeather();
@@ -127,19 +130,19 @@ public class MapManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Instances.TryGetValue(spawnPoint.gameObject.scene.name, out var otherMap);
         StartCoroutine(otherMap?.MapTransition(spawnPoint.GetComponent<Collider2D>()));
-        AudioManager.Instance.TriggerFadeIn(0.5f);
+        audioManager.TriggerFadeIn(0.5f);
     }
     
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
     public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume)
     {
         AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor);
-        for (var i = 0; i < AudioManager.Instance.backgroundMusic.Length; i++)
+        for (var i = 0; i < audioManager.backgroundMusic.Length; i++)
         {
-            AudioManager.Instance.backgroundMusic[i] = mOst[i];
-            AudioManager.Instance.backgroundMusicVolume[i] = mOstVolume[i];
+            audioManager.backgroundMusic[i] = mOst[i];
+            audioManager.backgroundMusicVolume[i] = mOstVolume[i];
         }
-        AudioManager.Instance.currentScene = gameObject.scene.name;
+        audioManager.currentScene = gameObject.scene.name;
         GameEvents.TriggerMusic(0, false);
     }
 
@@ -148,9 +151,9 @@ public class MapManager : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             MakeDataPersistent();
-            AudioManager.Instance.TriggerFadeOut(1);
+            audioManager.TriggerFadeOut();
             weather.ClearDisasters();
-            AudioManager.Instance.previousScene = collision.gameObject.scene;
+            audioManager.previousScene = collision.gameObject.scene;
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
             mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.pc.GetComponent<Collider2D>();
         }
@@ -203,7 +206,7 @@ public class MapManager : MonoBehaviour
                 switch (obj.tag)
                 {
                     case "Enemy":
-                        var enemyId = obj.GetComponent<scripies.Core.Identifier>();
+                        var enemyId = obj.GetComponent<Identifier>();
                         var newEnemy = new EnemySceneData
                         {
                             activeEnemies = obj,
@@ -218,7 +221,7 @@ public class MapManager : MonoBehaviour
                         bossSceneData.activeBoss = obj.name;
                         break;
                     case "NPC":
-                        var npcId = obj.GetComponent<scripies.Core.Identifier>();
+                        var npcId = obj.GetComponent<Identifier>();
                         var dTrigger = obj.GetComponent<DialogueTrigger>();
                         var newNpc = new NpcSceneData
                         {
@@ -245,7 +248,7 @@ public class MapManager : MonoBehaviour
         }
         foreach (var door in doorObjects)
         {
-            var doorId = door.GetComponent<scripies.Core.Identifier>();
+            var doorId = door.GetComponent<Identifier>();
             var doorObjective = door.GetComponent<DoorObjective>();
             var newDoor = new DoorSceneData
             {
@@ -258,7 +261,7 @@ public class MapManager : MonoBehaviour
         }
         foreach (var spawner in spawnerObjects)
         {
-            var spawnerId = spawner.GetComponent<scripies.Core.Identifier>();
+            var spawnerId = spawner.GetComponent<Identifier>();
             var itemSpawner = spawner.GetComponent<ItemSpawner>();
             var entitySpawner = spawner.GetComponent<EntitySpawner>();
             var newSpawner = new SpawnerSceneData

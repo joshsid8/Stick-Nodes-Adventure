@@ -4,15 +4,12 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Find out why currentscene doesnt get its saved data
-            Just vibecoded a potential fix
-                Test and see if it works
-                Give spawnpoints Identifier components
                     
         Ability Scroll Logic
             Make a ui that allows the player to switch between abilities, also lettin them know what abilities that have equipped
-            Right now, when you equip a scroll, it replaces the first slot, removing the original
-                Make the original turn into a scroll that can be re-equipped
+            This is nearly complete, just one small flaw
+                If you have 2 abilities, and you get a 3rd, the index will execute the 1st ability.
+                    The blast index flag correctly goes to the 3rd ability, but it doesnt execute it for some reason
         
     Optimisations & Hotfixes:
         
@@ -24,8 +21,9 @@ SNADV Notes
                 N/A
                 
             Low Priority/Unconfirmed fixed Bugs
-                Dialogic and speakto questing should be fixed, but ill keep this here till im confident its true
-                
+                Got Junie to vibecode some scene data logic, and everything SEEMS to be working
+                    Ill leave it be till a bug is found
+                                
                 I still get nullrefs on spawn, but only after losing to a boss
                     I think it doesnt do anything, and it might just be because of something in the editor
                     See if i can replicate this in the editor
