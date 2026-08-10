@@ -876,7 +876,7 @@ MonoBehaviour:
   mapDisasterFactors:
   - 0
   - 0
-  - 1
+  - 0
   - 1
   sectionObj: {fileID: 0}
   sceneObjects: []

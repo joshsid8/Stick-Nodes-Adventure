@@ -83,7 +83,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             {
                 amountText.enabled = true;
                 amountText.text = itemAmount == 1 && itemType != "Aspect" ? "" : itemAmount.ToString();
-                if (itemType == "Aspect") amountText.text = "";
+                if (itemType == "Aspect" || itemType == "Ability") amountText.text = "";
             }
         }
         else if (!usedSlot) ClearSlotVisuals();

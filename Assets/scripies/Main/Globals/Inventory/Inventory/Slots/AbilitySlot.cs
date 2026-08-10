@@ -8,41 +8,54 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
     // Ability Scroll Data
     public AbilitySO abilityStats;
     public int slotIndex;
-    
+
     public Button abilitySlotButton;
+    public Image abilitySlotShader;
     [SerializeField] private Image playerAbilitySlotImage;
 
     protected override void Awake()
     {
         base.Awake();
+        if (abilitySlotButton != null) abilitySlotShader.fillAmount = 1;
 
-        if (abilitySlotButton != null)
-        {
-            var img = abilitySlotButton.gameObject.GetComponent<Image>();
-            if (img != null) img.fillAmount = 1;
-        }
     }
 
     private void Update()
     {
-        var currentCooldown = PlayerHealth.Instance.pa.currentAbilityCooldowns[slotIndex];
-        var maxCooldown = PlayerHealth.Instance.pa.maxAbilityCooldowns[slotIndex];
+        if (PlayerHealth.Instance == null || PlayerHealth.Instance.pa == null) return;
 
-        var pab = PlayerHealth.Instance.pa.ability;
-        SpriteRenderer sr = null;
-        if (pab.objects[slotIndex] != null)
+        if (abilityStats == null && PlayerHealth.Instance.pa.ability.objects[slotIndex] != null)
         {
-            if (pab.objects[slotIndex].abilityPrefab.GetComponent<Projectile>())
-                sr = pab.objects[slotIndex].abilityPrefab.GetComponent<SpriteRenderer>();
-            else sr = pab.objects[slotIndex].abilityPrefab.GetComponentInChildren<SpriteRenderer>();
+            var autoItem = ItemDatabase.Instance.GetItemByName(PlayerHealth.Instance.pa.ability.objects[slotIndex]?.abilityPrefab.name) as AbilitySO;
+            if (autoItem == null)
+            {
+                Debug.LogError($"[AbilitySlot.Update] Dayum, we cant find {PlayerHealth.Instance.pa.ability.objects[slotIndex].name} as an abilitySO");
+                return;
+            }
+            
+            abilityStats = autoItem;
+            itemName = autoItem.itemName;
+            itemSprite = autoItem.itemSprite;
+            itemDescription = autoItem.itemDescription;
+            usedSlot = true;
+            UpdateSlotUI();
         }
 
-        abilitySlotButton.GetComponentInParent<Image>().sprite = sr?.sprite;
-        playerAbilitySlotImage.sprite = sr?.sprite;
+        var currentCooldown = PlayerHealth.Instance.pa.currentAbilityCooldowns[slotIndex];
+        var maxCooldown = PlayerHealth.Instance.pa.maxAbilityCooldowns[slotIndex];
+        
+        if (abilitySlotShader != null)
+            abilitySlotShader.fillAmount = maxCooldown > 0 ? currentCooldown / maxCooldown : 0;
 
-        var img = abilitySlotButton.GetComponent<Image>();
-        if (img != null) img.fillAmount = maxCooldown > 0 ? currentCooldown / maxCooldown : 0;
-
+        if (playerAbilitySlotImage != null && PlayerHealth.Instance.pa.ability.objects[slotIndex] != null)
+        {
+            // No! I am NNNOT using a ternary expression!!!
+            if (PlayerHealth.Instance.pa.ability.objects[slotIndex].abilityPrefab.TryGetComponent<SpriteRenderer>(out var s))
+                playerAbilitySlotImage.sprite = s.sprite;
+            else
+                playerAbilitySlotImage.sprite = PlayerHealth.Instance.pa.ability.objects[slotIndex]?.abilityPrefab
+                    ?.GetComponentInChildren<SpriteRenderer>()?.sprite;
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -53,32 +66,68 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
     protected override void OnLeftClick()
     {
         base.OnLeftClick();
+        if (useButtonText != null) useButtonText.text = "Unequip";
         if (!string.IsNullOrEmpty(itemName))
-        {
             invManager.useButton.onClick.AddListener(() => UnequipAbility(slotIndex));
+    }
+
+    protected override void UpdateSlotUI()
+    {
+        base.UpdateSlotUI();
+        if (usedSlot && abilityStats != null && abilityStats.abilityObject != null &&
+            abilityStats.abilityObject.abilityPrefab != null)
+        {
+            var prefab = abilityStats.abilityObject.abilityPrefab;
+            var sr = prefab.GetComponent<Projectile>() ? prefab.GetComponent<SpriteRenderer>() 
+                : prefab.GetComponentInChildren<SpriteRenderer>();
+
+            if (sr != null)
+            {
+                if (abilitySlotButton != null)
+                {
+                    var parentImg = abilitySlotButton.GetComponent<Image>();
+                    if (parentImg != null) parentImg.sprite = sr.sprite;
+                }
+            }
+        }
+        else
+        {
+            if (abilitySlotButton != null)
+            {
+                var img = abilitySlotButton.GetComponent<Image>();
+                if (img != null) img.sprite = null;
+            }
+
+            if (playerAbilitySlotImage != null) playerAbilitySlotImage.sprite = null;
         }
     }
-    
+
     public void AddAbility(string item, Sprite sprite, string itemDesc, AbilitySO ability, int slot = 0)
     {
-        if (slotIndex != slot) { Debug.LogWarning($"Slot mismatch! {slotIndex} != {slot}"); return; }
-        
+        if (slotIndex != slot)
+        {
+            Debug.LogWarning($"Slot mismatch! {slotIndex} != {slot}");
+            return;
+        }
+
         itemName = item;
         itemSprite = sprite;
         itemDescription = itemDesc;
         abilityStats = ability;
         usedSlot = true;
         UpdateSlotUI();
-        
+
         var playerAbility = PlayerHealth.Instance.pa;
         playerAbility.ability.objects[slot] = ability.abilityObject;
 
         if (ability.abilityObject != null && ability.abilityObject.abilityPrefab != null)
         {
-            var prefabBase = ability.abilityObject.abilityPrefab.GetComponent<AbilityBase>() ?? ability.abilityObject.abilityPrefab.GetComponentInChildren<AbilityBase>();
+            var prefabBase = ability.abilityObject.abilityPrefab.GetComponent<AbilityBase>() ??
+                             ability.abilityObject.abilityPrefab.GetComponentInChildren<AbilityBase>();
             if (prefabBase != null) playerAbility.maxAbilityCooldowns[slot] = prefabBase.cooldown;
         }
     }
+
     public void UnequipAbility(int slot = 0)
     {
         if (slotIndex != slot)
@@ -86,11 +135,12 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
             Debug.LogWarning($"Slot mismatch! {slotIndex} != {slot}");
             return;
         }
+
         invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Ability", null, null, abilityStats);
         abilityStats = null;
         var playerAbility = PlayerHealth.Instance.pa;
         playerAbility.ability.objects[slot] = null;
-        
+
         ClearSlot();
     }
 }

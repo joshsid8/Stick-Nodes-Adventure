@@ -50,8 +50,7 @@ public class SlotBase : MonoBehaviour
             invManager.useButton.gameObject.SetActive(false);
         }
     }
-
-
+    
     protected virtual void UpdateSlotUI()
     {
         if (itemDescTitle != null) itemDescTitle.text = itemName;

@@ -60,7 +60,7 @@ public class InvManager : GUIBase
         {
             rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
             GetActive(isActive);
-            inventoryMenu.SetActive(isActive);
+            //inventoryMenu.SetActive(isActive);
         }
     }
 

@@ -41,6 +41,11 @@ public class ItemDatabase : MonoBehaviour
     
     public CollectableSOBase GetItemByName(string itemName)
     {
+        if (string.IsNullOrEmpty(itemName))
+        {
+            Debug.LogWarning("[ItemDatabase] Attempted to get item with empty name.");
+            return null;
+        }
         itemDatabase.TryGetValue(itemName, out var item);
         return item;
     }

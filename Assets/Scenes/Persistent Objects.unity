@@ -405,14 +405,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1293072719}
-  m_Father: {fileID: 1502055684}
+  m_Children: []
+  m_Father: {fileID: 1293072719}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -79.112595, y: 61.483948}
-  m_SizeDelta: {x: -158.24, y: -122.95999}
+  m_AnchoredPosition: {x: 0.000015258789, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &43115961
 CanvasRenderer:
@@ -553,6 +552,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 912160301369994794}
     - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
+      propertyPath: abilityStats
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
       propertyPath: itemDescInfo
       value: 
       objectReference: {fileID: 1683467808037845248}
@@ -568,6 +571,10 @@ PrefabInstance:
       propertyPath: abilitySlotButton
       value: 
       objectReference: {fileID: 1851824281}
+    - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
+      propertyPath: abilitySlotShader
+      value: 
+      objectReference: {fileID: 1049778183}
     - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
       propertyPath: playerAbilitySlotImage
       value: 
@@ -2151,14 +2158,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1318858895}
-  m_Father: {fileID: 1502055684}
+  m_Children: []
+  m_Father: {fileID: 1318858895}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0027008057, y: -94.34741}
-  m_SizeDelta: {x: -0.0077, y: -188.69}
+  m_AnchoredPosition: {x: 0.000015258789, y: -0.000030517578}
+  m_SizeDelta: {x: -0.000009570271, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &254198719
 PrefabInstance:
@@ -3063,7 +3069,11 @@ PrefabInstance:
     - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
       propertyPath: abilitySlotButton
       value: 
-      objectReference: {fileID: 1851824281}
+      objectReference: {fileID: 1318858898}
+    - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
+      propertyPath: abilitySlotShader
+      value: 
+      objectReference: {fileID: 253177491}
     - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
       propertyPath: playerAbilitySlotImage
       value: 
@@ -7483,14 +7493,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1851824278}
-  m_Father: {fileID: 1502055684}
+  m_Children: []
+  m_Father: {fileID: 1851824278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 76.88881, y: 61.484283}
-  m_SizeDelta: {x: -153.78, y: -122.95999}
+  m_AnchoredPosition: {x: 0.000015258789, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1049778182
 CanvasRenderer:
@@ -8797,13 +8806,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 43115960}
+  m_Children:
+  - {fileID: 43115960}
+  m_Father: {fileID: 1502055684}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000015258789, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -79.112595, y: 61.483948}
+  m_SizeDelta: {x: -158.24, y: -122.95999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1293072720
 MonoBehaviour:
@@ -8934,13 +8944,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 253177493}
+  m_Children:
+  - {fileID: 253177493}
+  m_Father: {fileID: 1502055684}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000015258789, y: 0}
-  m_SizeDelta: {x: -0.000009570271, y: 0}
+  m_AnchoredPosition: {x: 0.0027008057, y: -94.34738}
+  m_SizeDelta: {x: -0.0076904297, y: -188.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1318858896
 MonoBehaviour:
@@ -10090,9 +10101,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 43115960}
-  - {fileID: 1049778181}
-  - {fileID: 253177493}
+  - {fileID: 1293072719}
+  - {fileID: 1851824278}
+  - {fileID: 1318858895}
   m_Father: {fileID: 1982910206}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -11988,13 +11999,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1049778181}
+  m_Children:
+  - {fileID: 1049778181}
+  m_Father: {fileID: 1502055684}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000015258789, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 76.88881, y: 61.484283}
+  m_SizeDelta: {x: -153.78, y: -122.95999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1851824279
 MonoBehaviour:
@@ -17785,6 +17797,10 @@ PrefabInstance:
       propertyPath: abilitySlotButton
       value: 
       objectReference: {fileID: 1293072722}
+    - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
+      propertyPath: abilitySlotShader
+      value: 
+      objectReference: {fileID: 43115962}
     - target: {fileID: 8567358771702803198, guid: b2a414008d9c7fa4282c6bcb147520cb, type: 3}
       propertyPath: playerAbilitySlotImage
       value: 

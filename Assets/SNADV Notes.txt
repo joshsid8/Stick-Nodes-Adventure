@@ -6,9 +6,8 @@ SNADV Notes
     Priorities:
         
         Finalise Ability Slot Logic
-            It is almost done, but i can already smell the nullrefs a mile away (thats if i change anything else)
-            The image data kinda not work as it should, it doesnt move around unless i click on its button
-            Probably get Junie to have a look at all this
+            The image data kinda not work as it should, it doesnt move around correctly, but the logic all seems fine
+                Once this issue is fixed, i can move on
         
         Add basic gameplay SFX
             Combat stuff

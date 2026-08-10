@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9f75e7dda161d94d838d198adbe2f0d, type: 3}
-  m_Name: FirePillar
+  m_Name: Fire Ball
   m_EditorClassIdentifier: 
-  itemName: Fire Pillar
+  itemName: Fire Ball
   itemDescription: 
-  itemSprite: {fileID: 21300000, guid: 387e4ed28331bfc4880bb2451c19eb37, type: 3}
-  abilityObject: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
+  itemSprite: {fileID: 21300000, guid: 10dfbb59757f33544b410b620c1a1986, type: 3}
+  abilityObject: {fileID: 11400000, guid: 27de6398fc421b6459c99cb7e3019e89, type: 2}
