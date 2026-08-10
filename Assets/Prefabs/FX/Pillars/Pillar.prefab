@@ -118,7 +118,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 28e6f487a9e953344a2194705bd4ca06, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,7 +126,7 @@ SpriteRenderer:
   m_Size: {x: 12.8, y: 7.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!114 &1245427979406649877
 MonoBehaviour:
@@ -175,22 +175,23 @@ MonoBehaviour:
   isFacingRightDirection: 0
   stunTime: 0
   energyRequired: 2
+  explodeOnImpact: 0
+  useRadialKnockback: 0
+  explosionUpwardForce: 2
+  explosionForce: 20
+  explosionTime: 0.2
   cooldown: 1.2
-  proc: 0.2
-  procTimer: 0
+  procTime: 0.2
+  currentProcTimer: 0
   activeHitbox: 1
-  energyProc: 0
-  procTimes: 0
   lifeTime: 1
   lifeTimer: 0
   isHoldable: 0
   abilityOnCollide: 0
   subAbilities: []
-  playerTransform: {fileID: 0}
   animator: {fileID: 0}
   parentObject: {fileID: 0}
   coll: {fileID: 6437316070702605537}
-  pa: {fileID: 0}
   anim: {fileID: 0}
   endAnim: {fileID: 0}
   shockwave: 0
@@ -231,10 +232,10 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.5140481}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 12.8, y: 7.2}
+    newSize: {x: 12.8, y: 7.2}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0

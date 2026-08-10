@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1d2e55ff8a0f21042a4060dbe504e6a5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,7 +93,7 @@ SpriteRenderer:
   m_Size: {x: 12.8, y: 7.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!114 &3638805060968187661
 MonoBehaviour:
@@ -109,32 +109,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeFactor: 0
   elementType: 0
+  elementFactor: 1
+  damageFactor: 0
+  trueDamage: 0
   damage: 1.8
-  knockbackForce: {x: 0.7, y: 0}
+  damageOverTime: 0
+  procDmg: 0
+  procInterval: 0
+  knockbackDirection: {x: 0.7, y: 0}
+  knockbackForce: 20
+  knockbackTime: 0.2
   direction: 0
   isDirectional: 0
+  isFacingRightDirection: 0
   stunTime: 0.5
   energyRequired: 10
+  explodeOnImpact: 0
+  useRadialKnockback: 0
+  explosionUpwardForce: 2
+  explosionForce: 20
+  explosionTime: 0.2
   cooldown: 1.5
-  proc: 0.1
-  procTimer: 0
+  procTime: 0.1
+  currentProcTimer: 0
+  activeHitbox: 0
   lifeTime: 90001
   lifeTimer: 0
   isHoldable: 1
   abilityOnCollide: 0
   subAbilities: []
-  playerTransform: {fileID: 0}
   animator: {fileID: 0}
   parentObject: {fileID: 8069515426526680348}
   coll: {fileID: 0}
-  pa: {fileID: 0}
   anim: {fileID: 7400000, guid: f94e97e8d06b438479d642a19ff7ee93, type: 2}
   endAnim: {fileID: 7400000, guid: efdc82e03212c5a44bd9d7c5e3405911, type: 2}
-  activeHitbox: 0
-  energyProc: 0
-  procTimes: 0
-  inContact: []
-  beamCollider: {fileID: 6705325376911770587}
 --- !u!61 &6705325376911770587
 BoxCollider2D:
   m_ObjectHideFlags: 0

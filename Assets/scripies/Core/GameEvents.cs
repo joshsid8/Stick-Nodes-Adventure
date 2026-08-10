@@ -25,6 +25,7 @@ namespace scripies.Core
         public static Action<bool> PlayerPerformAbility;
         public static Action<string, float, bool> AddPlayerTime;
         public static Action<float, bool, string> AddPlayerCombat;
+        //public static Action<ScriptableObject> AddPlayerAbility;
         public static Action<ITarget, bool> OnAggressiveStatusChanged;
         
         // GUI events
@@ -51,6 +52,7 @@ namespace scripies.Core
         public static void TriggerPlayerCounter() => OnPlayerCounter?.Invoke();
         public static void TriggerAddPlayerEnergy(float energy) => AddPlayerEnergy?.Invoke(energy);
         public static void TriggerPlayerPerformAbility(bool ability) => PlayerPerformAbility?.Invoke(ability);
+        //public static void TriggerAddPlayerAbility(ScriptableObject ability) => AddPlayerAbility?.Invoke(ability);
         public static void TriggerAddPlayerTime(string variable = "Ability", float cooldown = 1f, bool additive = false) => AddPlayerTime?.Invoke(variable, cooldown, additive);
         public static void TriggerAddPlayerCombat(float time = 5, bool additive = true, string type = "") => AddPlayerCombat?.Invoke(time, additive, type);
         public static void TriggerAggressiveStatusChanged(ITarget target, bool isAggressive) => OnAggressiveStatusChanged?.Invoke(target, isAggressive);

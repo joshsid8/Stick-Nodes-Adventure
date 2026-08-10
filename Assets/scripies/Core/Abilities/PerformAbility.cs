@@ -40,7 +40,12 @@ public class PerformAbility : MonoBehaviour
     {
         unavailable = Physics2D.OverlapCircle(new Vector2(abilityPoint.position.x, abilityPoint.position.y), 1f, terrainLayers);
         if (casterType == CasterType.Player)
-            if (isActivated && pa.CurrentAbilityCooldown[0] >= pa.MaxAbilityCooldown[0]) isActivated = false;
+        {
+            if (isActivated && pa.CurrentAbilityCooldown[currentSlot] >= pa.MaxAbilityCooldown[currentSlot])
+                isActivated = false;
+            
+            
+        }
     }
     
     public void Perform(AbilityObjSO ability) => StartCoroutine(SpawnRoutine(ability, casterType == CasterType.Player ? currentBlastType : -1));

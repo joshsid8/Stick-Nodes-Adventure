@@ -9,7 +9,7 @@ public class InvManager : GUIBase
     public GameObject inventoryMenu;
     public ItemSlot[] itemSlots;
     public AspectSlot[] aspectSlots;
-    public AbilitySlot abilitySlot;
+    public AbilitySlot[] abilitySlots;
     public InvIndex invIndex;
 
     public Button useButton;
@@ -122,12 +122,12 @@ public class InvManager : GUIBase
     public void UnequipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
     {
         if (aspect != null && playerManager != null) playerManager.RemoveAspectModifiers(aspect);
-        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null ,aspect);
+        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null, aspect);
     }
 
-    public void EquipAbility(AbilitySO ability, int slot = 0)
+    public void EquipAbility(string itemName, Sprite itemSprite, string itemDescription, AbilitySO ability, int slot = 0)
     {
-        if (abilitySlot != null) abilitySlot.AddAbility(ability, slot); 
+        if (abilitySlots != null) abilitySlots[slot].AddAbility(itemName, itemSprite, itemDescription, ability, slot);
     }
 
     public void SelectSlot()

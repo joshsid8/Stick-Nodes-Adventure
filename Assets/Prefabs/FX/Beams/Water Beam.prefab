@@ -40,6 +40,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water Beam
       objectReference: {fileID: 0}
+    - target: {fileID: 8380665313085432124, guid: 4bb41d0eb7202d04cad5cb515bf12a94, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 929a86e650ae88b47bd8e9165805bf81, type: 3}
+    - target: {fileID: 8380665313085432124, guid: 4bb41d0eb7202d04cad5cb515bf12a94, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9194340350730778715, guid: 4bb41d0eb7202d04cad5cb515bf12a94, type: 3}
       propertyPath: m_LocalPosition.x
       value: -26.32816

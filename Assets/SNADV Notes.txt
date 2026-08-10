@@ -4,12 +4,18 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-                    
-        Ability Scroll Logic
-            Make a ui that allows the player to switch between abilities, also lettin them know what abilities that have equipped
-            This is nearly complete, just one small flaw
-                If you have 2 abilities, and you get a 3rd, the index will execute the 1st ability.
-                    The blast index flag correctly goes to the 3rd ability, but it doesnt execute it for some reason
+        
+        Finalise Ability Slot Logic
+            It is almost done, but i can already smell the nullrefs a mile away (thats if i change anything else)
+            The image data kinda not work as it should, it doesnt move around unless i click on its button
+            Probably get Junie to have a look at all this
+        
+        Add basic gameplay SFX
+            Combat stuff
+            Quest notifications (kinda added)
+            Gui stuff
+            Spawning
+            Death (added)
         
     Optimisations & Hotfixes:
         
@@ -23,19 +29,17 @@ SNADV Notes
             Low Priority/Unconfirmed fixed Bugs
                 Got Junie to vibecode some scene data logic, and everything SEEMS to be working
                     Ill leave it be till a bug is found
-                                
-                I still get nullrefs on spawn, but only after losing to a boss
-                    I think it doesnt do anything, and it might just be because of something in the editor
-                    See if i can replicate this in the editor
-        
+                
+                Ive confirmed that it is after fighting Cynder, something was wrong with the referencing in some way
+                    I think i got it fixed, it was cuz a different map was trying to call a method even when it was unloaded
+
         Junie Assistant
            
             Projectiles' knockback isnt too great, it needs to be more stable in terms of force
             
             The Typewriter updates the settings as it updates text
                 but i would rather have it know what settings should be implemented beforehand to make it work well
-            
-                    
+                                    
     Things to be added/changed:
         
         Pre-AO
@@ -44,13 +48,6 @@ SNADV Notes
                 Start by making a portable gui shop that has items that may or may not have a limited stock
                 Should i add GAMBLING?!
                 I can see this being annoying to deal with D:
-            
-            Add basic gameplay SFX
-                Combat stuff
-                Quest notifications (kinda added)
-                Gui stuff
-                Spawning
-                Death (added)
             
             Background/Foreground Logic
                 Make backgrounds similar to Terraria in terms of appearance!

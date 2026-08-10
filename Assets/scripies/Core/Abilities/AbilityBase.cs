@@ -118,11 +118,15 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         currentProcTimer = 0;
         pa = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>(); 
         parentObject = transform.parent.gameObject;
+        
+        if (anim != null) GetComponent<SpriteRenderer>().sprite = null;
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         if (anim != null) animator.Play(anim.name);
+        
         lifeTimer = lifeTime;
         procTimes = lifeTime / procTime;
         procTimes = energyRequired / procTimes;
-                
+        
         if (animator.runtimeAnimatorController == null) 
             Destroy(parentObject.gameObject ?? gameObject, lifeTime);
     }

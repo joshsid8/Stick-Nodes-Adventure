@@ -46,33 +46,33 @@ namespace scripies.Player
             if (Input.GetButtonDown("FireSwap"))
             {
                 blastIndex++;
-                if (blastIndex > maxBlastIndex || blastIndex == maxBlastIndex && ability.objects[maxBlastIndex] == null || blastIndex == 1 && ability.objects[1] == null) 
-                    blastIndex = 0;
+                if (blastIndex >= 3) blastIndex = 0;
+                
+                // If the slot is empty, keep skipping until we find one or return to 0
+                var start = blastIndex;
+                while (ability.objects[blastIndex] == null)
+                {
+                    blastIndex++;
+                    if (blastIndex >= 3) blastIndex = 0;
+                    if (blastIndex == start) break;
+                }
             }
 
-            Fire();
+            if (pc.canAct && !pc.isDashing && !pc.isWallSliding) Fire();
             Energy();
             animator.SetBool("isPerformingAbility", isPerformingAbility);
             animator.SetBool("isHolding", isHolding);
         }
 
-        void Fire()
+        private void Fire()
         {
             // Made it so that all 3 slots can be any type of ability
-            if (!pc.isDashing && !pc.isWallSliding && !pc.isWallJumping && !isPerformingAbility && pc.canAct && !ability.isActivated && canAbility[blastIndex])
+            if (!pc.isWallJumping && !isPerformingAbility && !ability.isActivated && canAbility[blastIndex])
             {
-                if (Input.GetButtonDown("Fire"))
-                {
-                    if (ability.objects[blastIndex].abilityPrefab.GetComponent<Projectile>() != null) 
-                        Execute();
-                    else if (ability.objects[blastIndex].abilityPrefab.GetComponentInChildren<Pillar>() != null)
-                        Execute(1);
-                    else if (ability.objects[blastIndex].abilityPrefab.GetComponentInChildren<Beam>() != null)
-                        Execute(2);
-                }
+                if (Input.GetButtonDown("Fire") && ability.objects[blastIndex] != null) 
+                    Execute(blastIndex);
             }
-            if (!pc.isDashing && !pc.isWallSliding && pc.canAct)
-                isHolding = Input.GetButton("Fire") ? isHolding = true : isHolding = false;
+            isHolding = Input.GetButton("Fire") ? isHolding = true : isHolding = false;
 
             for (var i = 0; i < canAbility.Length; i++)
             {
@@ -86,6 +86,12 @@ namespace scripies.Player
             }
         }
 
+        public void FireButtonPress(int index)
+        {
+            if (pc.canAct && !pc.isDashing && !pc.isWallSliding && !pc.isWallJumping && !isPerformingAbility && !ability.isActivated && canAbility[index]) 
+                Execute(index);
+        }
+        
         private void Execute(int slot = 0)
         {
             if (ability == null) return;
@@ -128,6 +134,7 @@ namespace scripies.Player
             if (ab.abilityPrefab.GetComponent<Projectile>() != null) return 0;
             if (ab.abilityPrefab.GetComponentInChildren<Pillar>() != null) return 1;
             if (ab.abilityPrefab.GetComponentInChildren<Beam>() != null) return 2;
+            print("we cant find a type.");
             return 0;
         }
 

@@ -13,6 +13,7 @@ public class SetPosition : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         var initHit = Physics2D.Raycast(bottomPoint.position, Vector2.down, rayDistance, surfaceLayers);
 
         if (initHit.collider != null) FoundSurface(initHit.point);
@@ -24,6 +25,7 @@ public class SetPosition : MonoBehaviour
         bottomPoint.transform.position = new Vector3(transform.position.x, hitPoint.y, transform.position.z);
         hit = Physics2D.CircleCast(new Vector2(bottomPoint.position.x, transform.position.y), 0.2f, Vector2.down,
             0f, LayerMask.GetMask("Ground", "Platform", "Wall"));
+        
         if (hit.collider == null) ActivateScript();
         else CancelScript();
     }
