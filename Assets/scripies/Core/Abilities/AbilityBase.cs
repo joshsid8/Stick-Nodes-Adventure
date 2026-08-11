@@ -250,8 +250,13 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             if (lifeTimer <= 0 && endAnim != null)
             {
                 if (explodeOnImpact) RadiusProc();
-                if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
                 animator.Play(endAnim.name);
+            }
+            else if (lifeTimer <= 0)
+            {
+                if (explodeOnImpact) RadiusProc();
+                if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
+                Destroy(parentObject);
             }
         }
     }

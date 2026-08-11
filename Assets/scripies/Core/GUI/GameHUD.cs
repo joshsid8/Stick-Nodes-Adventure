@@ -9,6 +9,7 @@ public class GameHUD : MonoBehaviour
     
     private IPlayerStatus player;
     [SerializeField] private TMP_Text currencyText;
+    [SerializeField] private GameObject abilityArsenal;
 
     private IEnemyStatus boss;
     public Image bossHealthBar;
@@ -30,6 +31,7 @@ public class GameHUD : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
+        abilityArsenal.SetActive(true);
     }
 
     private void Update()

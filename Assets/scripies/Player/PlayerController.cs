@@ -8,6 +8,7 @@ namespace scripies.Player
     {
         #region Variables
 
+        [SerializeField] private bool debugMode;
         [Header("Settings")] public bool canAct = true;
         public bool canFlip = true;
         public bool isFrozen;
@@ -121,7 +122,19 @@ namespace scripies.Player
             originalMovementSpeed = movementSpeed;
             originalJumpForce = jumpForce;
             availableWallsLeft = availableWalls;
-
+            
+            
+            #if UNITY_EDITOR
+            if (debugMode)
+            {
+                PlayerHealth.Instance.playerMaxHealth = 1000;
+                PlayerHealth.Instance.playerHealth = 1000;
+                pab.energyRefill = 50;
+                canWallJump = true;
+                canDoubleJump = true;
+            }
+            #endif
+            
             GameEvents.PlayerAction += OnPlayerAction;
             GameEvents.AddPlayerTime += AddCooldown;
         }
@@ -421,6 +434,8 @@ namespace scripies.Player
             animator.SetBool("isWallSliding", isWallSliding);
             animator.SetBool("isDashing", isDashing);
             animator.SetBool("isWallJumping", isWallJumping);
+            animator.SetBool("isPerformingAbility", pab.isPerformingAbility);
+            animator.SetBool("isHolding", pab.isHolding);
         }
 
         private void Flip(bool forced = false)

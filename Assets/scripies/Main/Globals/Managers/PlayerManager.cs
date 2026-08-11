@@ -85,7 +85,8 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["CounterDamageResistance"] = basePlayerStats.CounterDamageResistance;
         currentFloatStats["CounterDamage"] = basePlayerStats.CounterDamage;
         //currentFloatStats["AvailableWalls"] = basePlayerStats.AvailableWalls;
-
+        
+        currentBooleanStats["WallJumpAbility"] = basePlayerStats.WallJumpAbility;
         currentBooleanStats["CounterAbility"] = basePlayerStats.CounterAbility;
         currentBooleanStats["M1Ability"] = basePlayerStats.M1Ability;
 
@@ -265,7 +266,10 @@ public class PlayerManager : MonoBehaviour
                 }
                 else Debug.LogWarning($"PlayerController not found to set PlayerCanAct.");
                 break;
-            // To be added later
+           case "PlayerCanWallJump":
+               pc.canWallJump = value;
+               if (value) print("You can wall jump now!");
+               break;
             default:
                 if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"zlawg whats a '{variableName}'??");
                 else Debug.LogWarning("BRO THERE IS NOTHING HERE TO CHAAANGE >:(");

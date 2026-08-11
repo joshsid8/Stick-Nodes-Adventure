@@ -279,7 +279,11 @@ namespace scripies.Player
             {
                 currentStunTime = stunTime * shockMultiplier;
                 getStunned = false;
-                if (stunTime > 0) isStunned = true;
+                if (stunTime > 0)
+                {
+                    isStunned = true;
+                    GameEvents.TriggerPlayerPerformAbility(false);
+                }
             }
 
             if (isStunned)

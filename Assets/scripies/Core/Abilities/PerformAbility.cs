@@ -74,9 +74,8 @@ public class PerformAbility : MonoBehaviour
                 if (blastType != 0) xOffset += ability.separation;
                 yield return new WaitForSeconds(ability.spawnInterval);
             }
-            else if (i == 0 && casterType == CasterType.Player) GameEvents.TriggerPlayerPerformAbility(false);
         }
-        if (casterType == CasterType.Player && blastType == 0) GameEvents.TriggerPlayerPerformAbility(false);
+        if (casterType == CasterType.Player) GameEvents.TriggerPlayerPerformAbility(false);
     }
 
     private void Spawn(int i, int blastType, float xOffset, bool isFacingRight, int casterFactor, AbilityObjSO ability)

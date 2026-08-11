@@ -14,7 +14,6 @@ namespace scripies.Player
         public float abilityCooldownMult = 1;
 
         [SerializeField] private float timeBetweenCast;
-        [SerializeField] private float spamPeriod;
         [SerializeField] private int spamAmount;
 
         public bool[] canAbility = new bool[3];
@@ -64,11 +63,8 @@ namespace scripies.Player
 
             if (pc.canAct && !pc.isDashing && !pc.isWallSliding) Fire();
             Energy();
+            
             timeBetweenCast += Time.deltaTime;
-            
-            animator.SetBool("isPerformingAbility", isPerformingAbility);
-            animator.SetBool("isHolding", isHolding);
-            
             if (timeBetweenCast >= 1.5f) spamAmount = 0;
         }
 
@@ -129,21 +125,16 @@ namespace scripies.Player
                 };
                 GameEvents.TriggerPlayerAction(animName, true);
                 
-                if (timeBetweenCast <= 1.5f)
-                {
-                    spamAmount++;
-                    if (spamAmount == 3) StartCoroutine(AntiSpam());
-                }
+                if (timeBetweenCast <= 1.5f) spamAmount++; else spamAmount = 0;
                 timeBetweenCast = 0;
             }
         }
 
         private static int GetType(AbilityObjSO ab)
         {
-            if (ab.abilityPrefab.GetComponent<Projectile>() != null) return 0;
-            if (ab.abilityPrefab.GetComponentInChildren<Pillar>() != null) return 1;
-            if (ab.abilityPrefab.GetComponentInChildren<Beam>() != null) return 2;
-            return 0;
+            return ab.abilityPrefab.GetComponent<Projectile>() != null ? 0 :
+                   ab.abilityPrefab.GetComponentInChildren<Pillar>() != null ? 1 :
+                   ab.abilityPrefab.GetComponentInChildren<Beam>() != null ? 2 : 0;
         }
 
         private void AddEnergy(float amount)
@@ -152,33 +143,29 @@ namespace scripies.Player
             if (energy > maxEnergy) energy = maxEnergy;
         }
 
-        private void TogglePa(bool state) => isPerformingAbility = state;
-
-        private IEnumerator AntiSpam()
+        private void TogglePa(bool state)
         {
-            //TODO: Think about if when spamming cooldown should be nerfed or energy should decrement
-            //var prevCooldownMult = abilityCooldownMult;
-            
-            while (spamAmount >= 3)
-            {
-                spamPeriod += Time.deltaTime;
-                /*if (spamPeriod % spamPeriod > 0.5f && abilityCooldownMult < 3)
-                {
-                    spamPeriod = 0;
-                    abilityCooldownMult += 0.2f;
-                    print($"nerfing cooldown to {abilityCooldownMult}");
-                }*/
-                yield return null;
-            } 
-            spamPeriod = 0;
-            //abilityCooldownMult = prevCooldownMult;
+            isPerformingAbility = state;
+            if (!state) StopAllCoroutines(); // Stop any pending safety resets if we manually release
+            else StartCoroutine(AbilitySafetyReset());
         }
+
+        private IEnumerator AbilitySafetyReset()
+        {
+            yield return new WaitForSeconds(5f); // 5 second safety net
+            if (isPerformingAbility)
+            {
+                Debug.LogWarning("Ability safety reset triggered!");
+                isPerformingAbility = false;
+            }
+        }
+        
         private void Energy()
         {
             if (!isPerformingAbility)
             {
                 if (PlayerHealth.Instance.inCombat) energy += Time.deltaTime * 2 * energyRefill;
-                else if (spamPeriod > 0) energy -= Time.deltaTime;
+                else if (spamAmount >= 3) energy -= Time.deltaTime * 3f;
                 else energy += Time.deltaTime * 5 * energyRefill;
             }
 

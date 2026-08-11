@@ -49,6 +49,10 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float dashEnergyCost = 5f;
     public float DashEnergyCost => dashEnergyCost;
     
+    [Tooltip("If the player can Wall Jump")]
+    [SerializeField] private bool wallJumpAbility;
+    public bool WallJumpAbility => wallJumpAbility;
+    
     [Header("Ability")]
     [Tooltip("maximum energy for bros abilities")]
     [SerializeField] private float maxEnergy = 50f;

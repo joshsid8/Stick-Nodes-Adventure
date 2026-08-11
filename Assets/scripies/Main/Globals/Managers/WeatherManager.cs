@@ -95,6 +95,8 @@ public class WeatherManager : MonoBehaviour
         CancelInvoke(nameof(Temperature));
         StopCoroutine(Wind());
         disasters.Clear();
+        player.regenerationMultiplier = preValues[0];
+        player.pc.movementSpeed = preValues[1];
     }
 
     private void EarthQuake()

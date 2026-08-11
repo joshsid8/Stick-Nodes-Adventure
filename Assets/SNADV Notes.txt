@@ -5,16 +5,11 @@ SNADV Notes
     
     Priorities:
         
-        Ensure Origo's map collider doesnt mix with Alatus Island's one
-        
         The camera when no map is active is kind of incorrect
             I want it to be offsetted upward a bit so you wont have to see below the floor
         
-        ABILITY LOGIC
-            ITS ALWAYS ABILITY LOGIC JEEZ
-            isPerformingAbility is very inefficient, and doesnt get the job done right when it comes to projectiles
-                Either refactor the flag use or get Junie to see what i can do to make it better
-        
+        Enemies dont spare anymore, inspect dat
+                
         Add basic gameplay SFX
             Combat stuff
             Door opening

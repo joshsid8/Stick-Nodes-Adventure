@@ -32,9 +32,10 @@ MonoBehaviour:
   appliesFloatChange: 0
   targetFloatVariables: []
   newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  appliesBooleanChange: 1
+  targetBoolVariables:
+  - PlayerCanWallJump
+  newBoolValues: 01
   willGiveQuest: 0
   questToOffer: {fileID: 0}
   isQuestInteraction: 0
