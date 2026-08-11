@@ -34,6 +34,7 @@ public class InvManager : GUIBase
     {
         foreach (var slot in itemSlots) if (slot != null) slot.ClearSlot(); 
         foreach (var slot in aspectSlots) if (slot != null) slot.ClearSlot();
+        foreach (var slot in abilitySlots) if (slot != null) slot.ClearSlot();
     }
 
     // Update is called once per frame
@@ -71,7 +72,7 @@ public class InvManager : GUIBase
             if (itemSlots[i] != null && itemSlots[i].usedSlot && itemSlots[i].itemName == itemName && itemSlots[i].itemAmount < itemSlots[i].maxItemAmount)
             {
                 var amountToAdd = Mathf.Min(itemAmount, itemSlots[i].maxItemAmount - itemSlots[i].itemAmount);
-                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, itemSo,aspect, ability, abilitype);
+                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, itemSo,aspect, ability);
                 itemAmount -= amountToAdd;
                 if (itemAmount <= 0)
                 {
@@ -85,7 +86,7 @@ public class InvManager : GUIBase
             if (itemSlots[i] != null && !itemSlots[i].usedSlot)
             {
                 int amountToAdd = Mathf.Min(itemAmount, maxItemAmount);
-                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, itemSo, aspect, ability, abilitype);
+                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, itemSo, aspect, ability);
                 itemAmount -= amountToAdd;
 
                 if (itemAmount <= 0)

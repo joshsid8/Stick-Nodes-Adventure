@@ -1,3 +1,4 @@
+using System.Collections;
 using scripies.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,10 @@ namespace scripies.Player
         public float energy;
         public float energyRefill;
         public float abilityCooldownMult = 1;
+
+        [SerializeField] private float timeBetweenCast;
+        [SerializeField] private float spamPeriod;
+        [SerializeField] private int spamAmount;
 
         public bool[] canAbility = new bool[3];
         public float[] currentAbilityCooldowns = new float[3];
@@ -42,8 +47,7 @@ namespace scripies.Player
         // Update is called once per frame
         void Update()
         {
-
-            if (Input.GetButtonDown("FireSwap"))
+            if (Input.GetButtonDown("FireSwap") && !isPerformingAbility)
             {
                 blastIndex++;
                 if (blastIndex >= 3) blastIndex = 0;
@@ -60,8 +64,12 @@ namespace scripies.Player
 
             if (pc.canAct && !pc.isDashing && !pc.isWallSliding) Fire();
             Energy();
+            timeBetweenCast += Time.deltaTime;
+            
             animator.SetBool("isPerformingAbility", isPerformingAbility);
             animator.SetBool("isHolding", isHolding);
+            
+            if (timeBetweenCast >= 1.5f) spamAmount = 0;
         }
 
         private void Fire()
@@ -86,12 +94,6 @@ namespace scripies.Player
             }
         }
 
-        public void FireButtonPress(int index)
-        {
-            if (pc.canAct && !pc.isDashing && !pc.isWallSliding && !pc.isWallJumping && !isPerformingAbility && !ability.isActivated && canAbility[index]) 
-                Execute(index);
-        }
-        
         private void Execute(int slot = 0)
         {
             if (ability == null) return;
@@ -126,15 +128,21 @@ namespace scripies.Player
                     _ => "Fire"
                 };
                 GameEvents.TriggerPlayerAction(animName, true);
+                
+                if (timeBetweenCast <= 1.5f)
+                {
+                    spamAmount++;
+                    if (spamAmount == 3) StartCoroutine(AntiSpam());
+                }
+                timeBetweenCast = 0;
             }
         }
 
-        int GetType(AbilityObjSO ab)
+        private static int GetType(AbilityObjSO ab)
         {
             if (ab.abilityPrefab.GetComponent<Projectile>() != null) return 0;
             if (ab.abilityPrefab.GetComponentInChildren<Pillar>() != null) return 1;
             if (ab.abilityPrefab.GetComponentInChildren<Beam>() != null) return 2;
-            print("we cant find a type.");
             return 0;
         }
 
@@ -146,11 +154,31 @@ namespace scripies.Player
 
         private void TogglePa(bool state) => isPerformingAbility = state;
 
+        private IEnumerator AntiSpam()
+        {
+            //TODO: Think about if when spamming cooldown should be nerfed or energy should decrement
+            //var prevCooldownMult = abilityCooldownMult;
+            
+            while (spamAmount >= 3)
+            {
+                spamPeriod += Time.deltaTime;
+                /*if (spamPeriod % spamPeriod > 0.5f && abilityCooldownMult < 3)
+                {
+                    spamPeriod = 0;
+                    abilityCooldownMult += 0.2f;
+                    print($"nerfing cooldown to {abilityCooldownMult}");
+                }*/
+                yield return null;
+            } 
+            spamPeriod = 0;
+            //abilityCooldownMult = prevCooldownMult;
+        }
         private void Energy()
         {
             if (!isPerformingAbility)
             {
                 if (PlayerHealth.Instance.inCombat) energy += Time.deltaTime * 2 * energyRefill;
+                else if (spamPeriod > 0) energy -= Time.deltaTime;
                 else energy += Time.deltaTime * 5 * energyRefill;
             }
 

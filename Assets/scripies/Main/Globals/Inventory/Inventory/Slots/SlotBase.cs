@@ -21,7 +21,7 @@ public class SlotBase : MonoBehaviour
     [SerializeField] protected InvManager invManager;
     protected PlayerManager playerManager;
 
-    private bool switchFrom;
+    //private bool switchFrom;
 
     protected virtual void Awake()
     {
@@ -73,12 +73,12 @@ public class SlotBase : MonoBehaviour
         itemDescription = string.Empty;
         itemSprite = null;
         usedSlot = false;
-        
-        if (!switchFrom)
+        ClearSlotVisuals();
+        /*if (!switchFrom)
         {
             switchFrom = true;
             ClearSlotVisuals();
-        }
+        }*/
     }
 
     protected virtual void ClearSlotVisuals()

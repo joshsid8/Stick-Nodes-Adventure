@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Fire Pillar
   itemDescription: 
-  itemSprite: {fileID: 21300000, guid: 387e4ed28331bfc4880bb2451c19eb37, type: 3}
+  itemSprite: {fileID: 21300000, guid: 937228273f22f40409982e1b120721fa, type: 3}
   abilityObject: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}

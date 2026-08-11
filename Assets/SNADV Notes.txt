@@ -5,12 +5,19 @@ SNADV Notes
     
     Priorities:
         
-        Finalise Ability Slot Logic
-            The image data kinda not work as it should, it doesnt move around correctly, but the logic all seems fine
-                Once this issue is fixed, i can move on
+        Ensure Origo's map collider doesnt mix with Alatus Island's one
+        
+        The camera when no map is active is kind of incorrect
+            I want it to be offsetted upward a bit so you wont have to see below the floor
+        
+        ABILITY LOGIC
+            ITS ALWAYS ABILITY LOGIC JEEZ
+            isPerformingAbility is very inefficient, and doesnt get the job done right when it comes to projectiles
+                Either refactor the flag use or get Junie to see what i can do to make it better
         
         Add basic gameplay SFX
             Combat stuff
+            Door opening
             Quest notifications (kinda added)
             Gui stuff
             Spawning
@@ -26,16 +33,10 @@ SNADV Notes
                 N/A
                 
             Low Priority/Unconfirmed fixed Bugs
-                Got Junie to vibecode some scene data logic, and everything SEEMS to be working
-                    Ill leave it be till a bug is found
-                
-                Ive confirmed that it is after fighting Cynder, something was wrong with the referencing in some way
-                    I think i got it fixed, it was cuz a different map was trying to call a method even when it was unloaded
+                Projectiles' knockback isnt too great, it needs to be more stable in terms of force
 
         Junie Assistant
            
-            Projectiles' knockback isnt too great, it needs to be more stable in terms of force
-            
             The Typewriter updates the settings as it updates text
                 but i would rather have it know what settings should be implemented beforehand to make it work well
                                     

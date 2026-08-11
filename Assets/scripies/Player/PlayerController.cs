@@ -441,7 +441,7 @@ namespace scripies.Player
                     dashCooldown = additive ? dashCooldown + cooldown : cooldown;
                     break;
                 case "Ability":
-                    pab.currentAbilityCooldowns[pab.ability.currentSlot] = additive ? pab.currentAbilityCooldowns[pab.ability.currentSlot] + cooldown : cooldown;
+                    pab.currentAbilityCooldowns[pab.ability.currentSlot] = additive ? pab.currentAbilityCooldowns[pab.ability.currentSlot] + cooldown * pab.abilityCooldownMult : cooldown * pab.abilityCooldownMult;
                     break;
                 case "Combat":
                     PlayerHealth.Instance.ApplyCombat(cooldown, additive);

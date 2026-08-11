@@ -43,8 +43,6 @@ public class PerformAbility : MonoBehaviour
         {
             if (isActivated && pa.CurrentAbilityCooldown[currentSlot] >= pa.MaxAbilityCooldown[currentSlot])
                 isActivated = false;
-            
-            
         }
     }
     

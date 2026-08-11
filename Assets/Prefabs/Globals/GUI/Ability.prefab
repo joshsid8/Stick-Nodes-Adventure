@@ -174,11 +174,12 @@ MonoBehaviour:
   itemDescInfo: {fileID: 0}
   useButtonText: {fileID: 0}
   itemImage: {fileID: 5926515796260870601}
-  selectedShader: {fileID: 1165384965479155561}
+  selectedShader: {fileID: 0}
   invManager: {fileID: 0}
   abilityStats: {fileID: 0}
   slotIndex: 0
   abilitySlotButton: {fileID: 0}
+  abilitySlotShader: {fileID: 0}
   playerAbilitySlotImage: {fileID: 0}
 --- !u!114 &6544157837799329527
 MonoBehaviour:

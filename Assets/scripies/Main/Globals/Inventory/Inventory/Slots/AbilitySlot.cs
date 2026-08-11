@@ -13,13 +13,6 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
     public Image abilitySlotShader;
     [SerializeField] private Image playerAbilitySlotImage;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        if (abilitySlotButton != null) abilitySlotShader.fillAmount = 1;
-
-    }
-
     private void Update()
     {
         if (PlayerHealth.Instance == null || PlayerHealth.Instance.pa == null) return;
@@ -46,6 +39,7 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
         
         if (abilitySlotShader != null)
             abilitySlotShader.fillAmount = maxCooldown > 0 ? currentCooldown / maxCooldown : 0;
+        else if (maxCooldown <= 0) abilitySlotShader.fillAmount = 1;
 
         if (playerAbilitySlotImage != null && PlayerHealth.Instance.pa.ability.objects[slotIndex] != null)
         {
@@ -66,7 +60,11 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
     protected override void OnLeftClick()
     {
         base.OnLeftClick();
-        if (useButtonText != null) useButtonText.text = "Unequip";
+        if (useButtonText != null)
+        {
+            useButtonText.text = "Unequip";
+            invManager.destroyButton.gameObject.SetActive(false);
+        }
         if (!string.IsNullOrEmpty(itemName))
             invManager.useButton.onClick.AddListener(() => UnequipAbility(slotIndex));
     }
@@ -140,7 +138,12 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
         abilityStats = null;
         var playerAbility = PlayerHealth.Instance.pa;
         playerAbility.ability.objects[slot] = null;
-
         ClearSlot();
+    }
+
+    protected override void ClearSlotVisuals()
+    {
+        base.ClearSlotVisuals();
+        if (playerAbilitySlotImage != null) playerAbilitySlotImage.sprite = null;
     }
 }

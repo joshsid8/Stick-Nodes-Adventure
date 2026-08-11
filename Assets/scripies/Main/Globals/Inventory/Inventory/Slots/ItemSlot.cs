@@ -23,7 +23,6 @@ public class ItemSlot : SlotBase, IPointerClickHandler
     [SerializeField] private AspectSlot[] equippedAspectSlots;
     
     public AbilitySO abilityStats;
-    [SerializeField] private int abilitySlotType;
 
     [HideInInspector] public CollectableSOBase itemScriptableObject;
     
@@ -35,7 +34,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             Debug.LogWarning($"ItemSlot {gameObject.name}: No equippedAspectSlots assigned. Aspects cannot be equipped from this slot.");
     }
 
-    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, ItemSO itemSo, AspectSO aspect, AbilitySO ability, int abilityType)
+    public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, ItemSO itemSo, AspectSO aspect, AbilitySO ability)
     {
         itemName = item;
         maxItemAmount = maxAmount;
@@ -57,7 +56,6 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             abilityStats = ability;
         }
         itemType = type;
-        abilitySlotType = abilityType;
         itemAmount += amount;
 
         if (invManager.invIndex != null && itemScriptableObject != null) invManager.invIndex.AddItem(itemScriptableObject, amount);
@@ -95,7 +93,6 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         maxItemAmount = 0;
         itemType = string.Empty;
         restoreValue = 0f;
-        abilitySlotType = 0;
         aspectStats = null;
         abilityStats = null;
         itemScriptableObject = null;
@@ -194,9 +191,14 @@ public class ItemSlot : SlotBase, IPointerClickHandler
     private void SwapAbility(int slot = 0)
     {
         print("Ok uhh switching abilities");
+        var ability = invManager.abilitySlots[slot].abilityStats;
+        if (ability != null) 
+            invManager.AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, "Ability", null, null, ability);
+        
         invManager.EquipAbility(abilityStats.itemName, abilityStats.itemSprite, abilityStats.itemDescription, abilityStats, slot);
         foreach (var slotButton in invManager.slotButtons) slotButton.onClick.RemoveAllListeners();
         if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
+
         ClearSlot();
         UpdateSlotUI();
     }
