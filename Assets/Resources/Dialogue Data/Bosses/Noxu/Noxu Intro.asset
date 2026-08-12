@@ -20,11 +20,12 @@ MonoBehaviour:
 
     No?'
   - 'Ah, yes. You aren''t like everyone else: you are here to achieve greater power!'
-  - 'That''s great, but in order for you to gain further power, you come across obstacles
-    you must face.
+  - 'That''s great, but in order for you to gain further power, you will come across
+    obstacles you must face.
 
 
-    Right now, I am going to be one of those obstacles for you.'
+    Right now, I am going to be one of those obstacles
+    for you.'
   - '*Come now, show me who you truly are.'
   pendingChoice: 0
   choiceQuestion: 

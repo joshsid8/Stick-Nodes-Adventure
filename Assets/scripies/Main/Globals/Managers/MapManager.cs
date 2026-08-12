@@ -13,6 +13,7 @@ public class MapManager : MonoBehaviour
 {
     #region Map Info and Ost
 
+    public bool activeMap;
     [SerializeField] private string mapName;
     [SerializeField] [TextArea] private string mapDescription;
     [SerializeField] private Color mapTextColor = Color.white;
@@ -97,13 +98,22 @@ public class MapManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (collision.CompareTag("Player")) StartCoroutine(MapTransition(collision));
+       if (collision.CompareTag("Player"))
+       {
+           if (activeMap)
+           {
+               activeMap = false;
+               return;
+           }
+           StartCoroutine(MapTransition(collision));
+       }
     }
 
     private IEnumerator MapTransition(Collider2D collision)
     {
         if (AreaManager.Instance.titleText.text != mapName || AreaManager.Instance.titleText.text != null)
         {
+            activeMap = true;
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
             mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
             StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
@@ -150,12 +160,18 @@ public class MapManager : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            if (!activeMap)
+            {
+                activeMap = true;
+                return;
+            }
             MakeDataPersistent();
             audioManager.TriggerFadeOut();
             weather.ClearDisasters();
             audioManager.previousScene = collision.gameObject.scene;
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
-            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.pc.GetComponent<Collider2D>();
+            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
+            activeMap = false;
         }
     }
 

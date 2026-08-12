@@ -20,9 +20,10 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public bool damageOverTime;
     public float procDmg;
     public float procInterval;
-    [FormerlySerializedAs("knockbackForce")]
+    public float sizeMult = 1;
     [Space]
     [Header("Properties")]
+    [FormerlySerializedAs("knockbackForce")]
     [FormerlySerializedAs("beamKnockbackForce")]
     [FormerlySerializedAs("projectileKnockbackForce")]
     [FormerlySerializedAs("knockbackForce")]
@@ -126,7 +127,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         lifeTimer = lifeTime;
         procTimes = lifeTime / procTime;
         procTimes = energyRequired / procTimes;
-        
+        transform.localScale = new Vector3(sizeMult, sizeMult, 1);
         if (animator.runtimeAnimatorController == null) 
             Destroy(parentObject.gameObject ?? gameObject, lifeTime);
     }
@@ -148,10 +149,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            if (!inContact.Contains(collision.gameObject) && GetHealth(collision.gameObject) > 0)
-            {
+            if (!inContact.Contains(collision.gameObject) && GetHealth(collision.gameObject) > 0) 
                 inContact.Add(collision.gameObject);
-            }
         }
         
         if (collision.gameObject.layer == LayerMask.NameToLayer("Dead") || collision.gameObject.layer == LayerMask.NameToLayer("EDead")) 

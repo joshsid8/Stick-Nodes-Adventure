@@ -59,12 +59,12 @@ public class WeatherManager : MonoBehaviour
             case WeatherType.Hot:
                 mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
-                player.pc.movementSpeed = preValues[1] * 0.8f;
+                //player.pc.movementSpeed = preValues[1] * 0.8f;
                 break;
             case WeatherType.Cold:
                 mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
-                player.pc.movementSpeed = preValues[1] * 0.8f;
+                //player.pc.movementSpeed = preValues[1] * 0.8f;
                 break;
             case WeatherType.Rainy:
                 mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,

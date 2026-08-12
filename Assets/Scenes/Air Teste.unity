@@ -815,9 +815,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1317523871}
-  - component: {fileID: 1317523870}
   - component: {fileID: 1317523869}
   - component: {fileID: 1317523873}
+  - component: {fileID: 1317523875}
+  - component: {fileID: 1317523874}
+  - component: {fileID: 1317523870}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -837,6 +839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10278912ab7c89740bc6e1f56bb45438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeMap: 0
   mapName: Alatus Islands
   mapDescription: A plethora of islands flying above the ground.
   mapTextColor: {r: 0.90196085, g: 0.93725497, b: 0.95294124, a: 1}
@@ -918,7 +921,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 107.51446, y: 22.090446}
+  m_Size: {x: 95.51446, y: 22.090446}
   m_EdgeRadius: 0
 --- !u!4 &1317523871
 Transform:
@@ -1001,6 +1004,78 @@ MonoBehaviour:
   thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
   thunderTimer: 0.75
   thunderChance: 50
+--- !u!66 &1317523874
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317523868}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 1
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
+  m_UseDelaunayMesh: 0
+  m_CompositeGameObject: {fileID: 1317523868}
+--- !u!50 &1317523875
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317523868}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1484945551
 GameObject:
   m_ObjectHideFlags: 0

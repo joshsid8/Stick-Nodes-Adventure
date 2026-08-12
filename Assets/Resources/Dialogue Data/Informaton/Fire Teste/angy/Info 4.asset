@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Informaton...
   dialogue:
-  - Thats what i thought! Go on somewhere dawg
+  - Thats what i thought! Get outta my face
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0

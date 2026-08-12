@@ -15,9 +15,9 @@ MonoBehaviour:
   npcName: Izuno
   dialogue:
   - Yo, i have a task for you..
-  - Go ahead and defeat a cynderian  ahead of us. There is also a fishman some river
-    area...
-  - Yeah, just kill em off for me. ill reward you for it.
+  - Go ahead and defeat a cynderian for me. There is also a fishman some river area
+    you can beat too
+  - This is just to test your combat capabilities. ill reward you for it.
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0

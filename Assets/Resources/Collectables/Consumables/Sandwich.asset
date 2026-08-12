@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Sandwich
   m_EditorClassIdentifier: 
   itemName: Sandwich
-  itemAmount: 20
-  maxItemAmount: 99
   itemDescription: 'sanwich?
 
 
@@ -23,5 +21,7 @@ MonoBehaviour:
 
     Health +20'
   itemSprite: {fileID: 7482667652216324306, guid: 8782da715bf2bd644bc258ba4619dda8, type: 3}
+  itemAmount: 1
+  maxItemAmount: 99
   itemType: PlayerHealth
-  restoreValue: 20
+  restoreValue: 1

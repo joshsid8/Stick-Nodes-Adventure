@@ -108,10 +108,11 @@ public class BossAttack : MonoBehaviour
         if (dialogueToDerive == dt.Dialogue[^1])
         {
             isAttacking = true;
+            canFacePlayer = true;
             GameEvents.TriggerToggleDialogue(gameObject, false);
             GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
             GameEvents.TriggerDialogueClose();
-            canFacePlayer = true;
+            InvokeRepeating(nameof(Movement), 0, 1.5f);
             GameHUD.Instance.ToggleBossHealth(true);
             StartCoroutine(bh.PhaseToggle(false));
             Invoke(nameof(AttackSystem), initStart);
@@ -201,12 +202,18 @@ public class BossAttack : MonoBehaviour
     private void Movement()
     {
         var rng = Random.Range(0, 101);
-        if (rng <= 70 && isAttacking)
+        var moveF = Random.Range(0, 2);
+        var distanceToPlayer = playerTransform.position.x - transform.position.x;
+        moveF = distanceToPlayer switch
         {
-            var mf = Random.Range(0, 2);
-            animator.SetInteger("moveFactor", mf == 0 ? 0 : 1);
+            >= 8 => 0,
+            <= -8 => 0,
+            _ => moveF
+        };
+        animator.SetInteger("moveFactor", moveF == 0 ? 0 : 1);
+        
+        if (rng <= 75 && isAttacking && !isPerformingAttack) 
             animator.SetTrigger("Strafe");
-        }
     }
     
     private void FacePlayer()

@@ -50,11 +50,14 @@ public class AbilityObjSO : ScriptableObject
                ab.trueDamage = trueDamage;
                ab.useRadialKnockback = radialKnockback;
                if (proc > 0) ab.procTime = proc;
-               if (speedMult != 1) ab.gameObject.GetComponent<Projectile>().projectileSpeed *= speedMult;
-               if (swapForce) ab.gameObject.GetComponent<Projectile>().swapForce = true;
+               if (ab.gameObject.TryGetComponent<Projectile>(out var proj))
+               {
+                    if (speedMult != 1) proj.projectileSpeed *= speedMult;
+                    if (swapForce) proj.swapForce = true;
+               }
+               ab.sizeMult = sizeMult;
                ab.isHoldable = isHoldable;
                ab.abilityOnCollide = abilityOnCollide;
-               ab.transform.localScale *= sizeMult;
           }
      }
 }

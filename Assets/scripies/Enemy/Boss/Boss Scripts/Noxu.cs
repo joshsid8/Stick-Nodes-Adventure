@@ -15,7 +15,7 @@ public class Noxu : BossBase
     public override void Gamble()
     {
         if (storedObjects.Count == 0 || storedObjects[0] == null || storedObjects[0].IsDestroyed()) return;
-        var rng = Random.Range(0, 3);
+        var rng = Random.Range(0, 2);
         animator.SetInteger("factor", rng);
         animator.SetTrigger("Boulder");
     }

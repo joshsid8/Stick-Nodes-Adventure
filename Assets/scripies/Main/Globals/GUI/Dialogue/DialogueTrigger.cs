@@ -53,7 +53,7 @@ namespace scripies.Dialogue
                 if (isInRange && !isTriggered)
                 {
                     if (canTurn) FacePlayer();
-                    indicator.SetActive(true);
+                    indicator?.SetActive(true);
                     if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
                     {
                         isTriggered = true;
@@ -67,7 +67,7 @@ namespace scripies.Dialogue
                         }
                     }
                 }
-                else indicator.SetActive(false);
+                else indicator?.SetActive(false);
 
                 if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
             }

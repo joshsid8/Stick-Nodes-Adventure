@@ -5,11 +5,17 @@ SNADV Notes
     
     Priorities:
         
-        The camera when no map is active is kind of incorrect
-            I want it to be offsetted upward a bit so you wont have to see below the floor
+        Mystic Rivers' map didnt wanna announce itself one time after entering the interlude between that and Cynder Valley
+            I found out that it was because of dying (in the build version): i teleported back to Cynder Valley and i got an arguement exception
+            
+        Fix Stats display/GUI
+            Right now it is very unorganised and shows data incorrectly
+                Such as 'Firmness' states the lower the number, the less knockback you take this should be the opposite
+                The scroll bar can be scrolled downward a bit too much aswell   
+                             
+        I want Knockback logic to have a certain type to send the person to a specified spot
+            That way i can make moves pull victims inward: counters for example
         
-        Enemies dont spare anymore, inspect dat
-                
         Add basic gameplay SFX
             Combat stuff
             Door opening
@@ -22,16 +28,16 @@ SNADV Notes
         
         Instability
             Replicatable/From build bugs/problems
-                N/A
                 
             One time occurrences/Rare bugs
-                N/A
-                
+
             Low Priority/Unconfirmed fixed Bugs
-                Projectiles' knockback isnt too great, it needs to be more stable in terms of force
+            
 
         Junie Assistant
            
+            Projectiles' knockback isnt too great, it needs to be more stable in terms of force
+            
             The Typewriter updates the settings as it updates text
                 but i would rather have it know what settings should be implemented beforehand to make it work well
                                     

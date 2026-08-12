@@ -123,22 +123,20 @@ MonoBehaviour:
   moneyLoot: {fileID: 3237700672439869688, guid: f25228cf8dffce34ca1924c8f5226326, type: 3}
   currencyType: {fileID: 11400000, guid: 3caca639c8826094ea6293f1f4ecd3e2, type: 2}
   minMoneyAmount: 5
-  maxMoneyAmount: 10
-  itemLoot:
-  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-  - {fileID: 5073680930954534561, guid: 9c51c0f4f10752c428f5b0b6803d5dc4, type: 3}
-  possibleItems:
-  - {fileID: 11400000, guid: 619807cf4a3de5745a10a564311b843e, type: 2}
-  - {fileID: 11400000, guid: 7b8c055e63be5cd419517bba08b8b673, type: 2}
-  - {fileID: 11400000, guid: 78eb7255c5578d043b060d338de00e1b, type: 2}
-  - {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
-  itemChance:
-  - 100
-  - 100
-  - 100
-  - 100
+  maxMoneyAmount: 6
+  lootItems:
+  - obj: {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
+    item: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
+    amount: 1
+    chance: 100
+  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+    item: {fileID: 11400000, guid: 7b8c055e63be5cd419517bba08b8b673, type: 2}
+    amount: 1
+    chance: 100
+  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+    item: {fileID: 11400000, guid: 619807cf4a3de5745a10a564311b843e, type: 2}
+    amount: 1
+    chance: 100
   minPopX: -20
   maxPopX: 20
   minPopY: 10

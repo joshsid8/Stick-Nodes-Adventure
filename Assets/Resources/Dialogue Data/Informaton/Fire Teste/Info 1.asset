@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
   m_Name: Info 1
   m_EditorClassIdentifier: 
-  npcName: Informaton.
+  npcName: Informaton!
   dialogue:
-  - 'The Next Enemy is a boss! They''re patterns are muh different compared to enemies.
+  - '#The Next Enemy is a boss! Their patterns are much different compared to enemies.
 
     Learn
     when to block or dodge attacks in order to stay intact!'
+  - '#You can enter through the block ahead, but you won''t be able to leave until
+    you beat the boss!'
   - '#Good luck!
 
 
@@ -33,19 +35,19 @@ MonoBehaviour:
     dialogueObject: {fileID: 0}
   nameColour: {r: 0, g: 0, b: 0, a: 1}
   appliesFloatChange: 1
-  targetFloatVariableName: 
-  newFloatValue: 0
   targetFloatVariables:
   - PlayerHealth
   newFloatValues:
   - 200
   appliesBooleanChange: 0
-  targetBooleanVariableName: 
-  newBooleanValue: 0
   targetBoolVariables: []
   newBoolValues: 
   willGiveQuest: 0
   questToOffer: {fileID: 0}
+  isQuestInteraction: 0
+  itemCheckFailureDialogue: {fileID: 0}
+  completeSpeakQuestOnClose: 0
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

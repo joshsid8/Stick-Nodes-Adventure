@@ -25,6 +25,10 @@ PrefabInstance:
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
+      propertyPath: procTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: eruptAnim
       value: 
       objectReference: {fileID: 7400000, guid: 3e80794bfbf0d0a4a85a04f5b1be7fc6, type: 2}
@@ -46,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: procInterval
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1010433018989780878, guid: 33ebae16b079790438712e3440394eaf, type: 3}
       propertyPath: damageOverTime

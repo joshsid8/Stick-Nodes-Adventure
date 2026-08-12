@@ -16,7 +16,7 @@ MonoBehaviour:
   dialogue:
   - Yo, i have another task for you.
   - A friend of mine needs some fish scales...
-  - No idea why, but it would be nice  if you got it for me
+  - No idea why, but it would be nice if you got it for me
   - Ill give you something in return, of course. Preciate it
   pendingChoice: 0
   choiceQuestion: 

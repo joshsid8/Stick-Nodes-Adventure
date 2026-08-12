@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Izuno
   dialogue:
-  - Bet. These Boxing Gloves are yours. They look great on anyone who wears them,
+  - Bet. These Boxing Gloves are yours. They look great on anyone who wears them
     trust.
   pendingChoice: 0
   choiceQuestion: Hey man. You need anything?

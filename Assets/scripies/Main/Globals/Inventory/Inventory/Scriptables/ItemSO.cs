@@ -12,7 +12,7 @@ public class ItemSO : CollectableSOBase
     public override void Collect(GameObject objectCollected)
     {
         if (InvManager.Instance != null)
-            InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, this,null, null, 0);
+            InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, this);
         else 
             Debug.LogWarning("InvManager not found in scene! Cannot add item.");
     }

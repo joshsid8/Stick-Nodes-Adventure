@@ -367,20 +367,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moneyLoot: {fileID: 3237700672439869688, guid: f25228cf8dffce34ca1924c8f5226326, type: 3}
   currencyType: {fileID: 11400000, guid: 3caca639c8826094ea6293f1f4ecd3e2, type: 2}
-  minMoneyAmount: 5
-  maxMoneyAmount: 10
-  itemLoot:
-  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-  - {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-  possibleItems:
-  - {fileID: 11400000, guid: 92488ff0344de8e4595b3aa66e4bc8cd, type: 2}
-  - {fileID: 11400000, guid: 8814e11701b4d164081e4c5904f0cb79, type: 2}
-  - {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
-  itemChance:
-  - 100
-  - 100
-  - 100
+  minMoneyAmount: 6
+  maxMoneyAmount: 8
+  lootItems:
+  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+    item: {fileID: 11400000, guid: 8814e11701b4d164081e4c5904f0cb79, type: 2}
+    amount: 1
+    chance: 100
+  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+    item: {fileID: 11400000, guid: 92488ff0344de8e4595b3aa66e4bc8cd, type: 2}
+    amount: 1
+    chance: 100
+  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+    item: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
+    amount: 1
+    chance: 100
   minPopX: -5
   maxPopX: 5
   minPopY: 0
@@ -456,6 +457,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rangeRadius: 3.91
+  testing: 0
+  testIndex: 0
+  testAttacks: []
   isAttacking: 0
   isPerformingAttack: 0
   attackCooldown: 5.6
@@ -508,6 +512,9 @@ MonoBehaviour:
   isDead: 0
   deathToggle: 0
   bossName: Noxu, the Keeper of Earth
+  healthColours:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
   phase2: 0
   phase2Health: 0
   introDialogue:

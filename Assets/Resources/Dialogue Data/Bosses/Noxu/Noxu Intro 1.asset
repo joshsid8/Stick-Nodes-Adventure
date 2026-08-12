@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Noxu
   dialogue:
-  - You've failed to prove you are enough for the orb of Earth, but that's ok!
-  - You were defeated, but you got back up. How impressive!
+  - You've failed to prove you are enough for the orb of Earth, but it's not over
+    yet!
+  - For you took the decision of coming back to confront me again. Admirable resilience
+    you have!
   - Let's start again. Don't hold back this time.
   pendingChoice: 0
   choiceQuestion: 

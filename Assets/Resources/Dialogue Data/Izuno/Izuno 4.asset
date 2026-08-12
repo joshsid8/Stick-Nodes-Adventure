@@ -16,8 +16,8 @@ MonoBehaviour:
   dialogue:
   - 'I hope you''re happy with the Aspect you chose.
 
-    Check your inventory to
-    see it.'
+    Check your inventory (Tab) 
+    to see it.'
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0

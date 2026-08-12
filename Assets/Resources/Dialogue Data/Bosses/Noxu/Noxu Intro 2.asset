@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Noxu
   dialogue:
-  - You've come back, again!
-  - I see you won't to stop until you beat me.
-  - Such resilience! I'll be quiet from now. Let us get started right away.
+  - You've come back again!
+  - I see you won't to stop until you win against me.
+  - I'll be quiet from now. Let us get started right away.
   - Good luck!
   pendingChoice: 0
   choiceQuestion: 

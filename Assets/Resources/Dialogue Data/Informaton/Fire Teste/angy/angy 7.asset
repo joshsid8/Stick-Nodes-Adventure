@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Informaton
   dialogue:
-  - '#NAH!'
-  - '#NO SECOND CHANCES!'
+  - '#NO!'
   - '#BEGONE!!!'
   pendingChoice: 0
   choiceQuestion: 
