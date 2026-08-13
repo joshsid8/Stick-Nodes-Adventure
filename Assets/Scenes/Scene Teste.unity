@@ -856,6 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10278912ab7c89740bc6e1f56bb45438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeMap: 0
   mapName: Building Stimulation
   mapDescription: A place for testing, cuz where are we tho
   mapTextColor: {r: 0.95294124, g: 0.9960785, b: 0.854902, a: 1}
@@ -970,7 +971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a851b4b95a4a5240abb79aa3392fb79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
-  weatherType: 1
+  weatherType: 2
   weatherProperties:
   - weatherMapName: Heat Place
     weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(

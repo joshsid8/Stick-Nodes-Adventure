@@ -15,8 +15,12 @@ namespace scripies.Enemy
             Evasive
         }
 
+        [SerializeField] private bool testing;
+        [SerializeField] private string[] testMoves;
+        [SerializeField] private int testIndex;
+        
         public StyleMode styleMode;
-
+        
         [Header("Fly stuff")] public bool canFly;
         public bool isFlying;
         public int movesBeforeFlyingCount;
@@ -49,14 +53,18 @@ namespace scripies.Enemy
         public float passiveModeRadius;
         public float modPassiveModeRadius;
         private float originalPassiveModeRadius;
+        
         [Space] [Header("Melee Attack")]
         public float stunTime;
         public float damageAmount;
         public int elementType;
         [FormerlySerializedAs("knockbackForce")] 
-        public Vector2 knockbackDirection = new Vector2(1, 0);
+        public Vector2 knockbackDirection = new(1, 0);
         public float knockbackForce = 20f;
         public float knockbackTime = 0.2f;
+        public bool positionKnockback;
+        public Transform knockbackTransform;
+        
         public bool isTrue;
         public bool damageOverTime;
         public float procDmg;
@@ -68,6 +76,7 @@ namespace scripies.Enemy
 
         public LayerMask pLayer;
         [HideInInspector] public Transform playerTransform;
+        
         [Space] [Header("Combat Checks")] 
         public bool canAttack;
         public bool isAttacking;
@@ -126,27 +135,38 @@ namespace scripies.Enemy
 
             if (ec.enemyState == EnemyController.EnemyState.Attacking)
             {
-                switch (styleMode)
+                if (testing)
                 {
-                    case StyleMode.Active:
-                        passiveModeRadius = originalDefensiveModeRadius;
-                        defensiveModeRadius = originalDefensiveModeRadius;
-                        ActiveLogic();
-                        break;
-                    case StyleMode.Passive:
-                        defensiveModeRadius = modDefensiveModeRadius;
-                        passiveModeRadius = originalPassiveModeRadius;
-                        PassiveLogic();
-                        break;
-                    case StyleMode.Evasive:
-                        passiveModeRadius = modPassiveModeRadius;
-                        defensiveModeRadius = 8f;
-                        EvasiveLogic();
-                        break;
-                    default:
-                        passiveModeRadius = originalDefensiveModeRadius;
-                        defensiveModeRadius = originalDefensiveModeRadius;
-                        break;
+                    if (canAttack && !isAttacking && !eh.isStunned)
+                    {
+                        em.FreezeX();
+                        animator.Play(testMoves[testIndex] ?? testMoves[0] ?? passiveMoves[Random.Range(0, passiveMoves.Length)]);
+                    }
+                }
+                else
+                {
+                    switch (styleMode)
+                    {
+                        case StyleMode.Active:
+                            passiveModeRadius = originalDefensiveModeRadius;
+                            defensiveModeRadius = originalDefensiveModeRadius;
+                            ActiveLogic();
+                            break;
+                        case StyleMode.Passive:
+                            defensiveModeRadius = modDefensiveModeRadius;
+                            passiveModeRadius = originalPassiveModeRadius;
+                            PassiveLogic();
+                            break;
+                        case StyleMode.Evasive:
+                            passiveModeRadius = modPassiveModeRadius;
+                            defensiveModeRadius = 8f;
+                            EvasiveLogic();
+                            break;
+                        default:
+                            passiveModeRadius = originalDefensiveModeRadius;
+                            defensiveModeRadius = originalDefensiveModeRadius;
+                            break;
+                    }
                 }
             }
 
@@ -186,15 +206,13 @@ namespace scripies.Enemy
                 if (!defensiveCheck)
                 {
                     em.FreezeX();
-                    animator.Play(!isFlying
-                        ? activeMoves[Random.Range(0, activeMoves.Length)]
+                    animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)]
                         : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
                 }
                 else
                 {
                     em.FreezeX();
-                    animator.Play(!isFlying
-                        ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
+                    animator.Play(!isFlying ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
                         : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
                 }
             }
@@ -250,9 +268,8 @@ namespace scripies.Enemy
                 var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.Damage(damageAmount, ec.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, 1, isTrue, damageOverTime, procDmg, procInterval);
-                    damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
-                    GameEvents.TriggerAddPlayerTime("Combat", 5, true);
+                    damageable.Damage(damageAmount, ec.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, 1, isTrue, damageOverTime, procDmg, procInterval, "Enemy");
+                    damageable.Shock(stunTime, knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
                 }
             }
         }

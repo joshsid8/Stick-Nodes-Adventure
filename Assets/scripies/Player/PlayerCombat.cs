@@ -97,13 +97,10 @@ namespace scripies.Player
                 if (eDamageable != null)
                 {
                     eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
-                        (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg,
-                        procInterval);
+                        (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
                     eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right,
                         knockbackForces[0], knockbackTimes[0] * attackPotency);
                     GetComponent<PlayerAbility>().energy += attackEnergy;
-                    if (PlayerHealth.Instance.currentCombatTimer < 20)
-                        PlayerHealth.Instance.ApplyCombat(additive: true);
                 }
             }
 
@@ -126,26 +123,11 @@ namespace scripies.Player
                 if (eDamageable != null)
                 {
                     eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
-                        (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg,
-                        procInterval);
-                    eDamageable.Shock(stunTime * attackPotency, Vector2.zero);
-                    GetComponent<PlayerAbility>().energy += attackEnergy;
-                    if (PlayerHealth.Instance.currentCombatTimer < 20)
-                        PlayerHealth.Instance.ApplyCombat(additive: true);
-                    /*if (hits[i].collider.CompareTag("Enemy") && hits[i].collider.gameObject.GetComponent<EnemyHealth>().isLight && airComboAmount > 0)
-                    {
-                        StartCoroutine(AirCombo(hits[i].collider.gameObject));
-                        pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, knockbackDirections[1].y);
-                        eDamageable.Shock(stunTime * 1.25f, new Vector2(knockbackDirections[1].x * 1.5f, -knockbackDirections[1].y) * transform.right, knockbackForces[1], knockbackTimes[1] * 1.25f);
-                    }
-                    else
-                    {
-                        eDamageable.Shock(0, new Vector2(knockbackDirections[1].x * attackPotency,
-                            knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], knockbackTimes[1] * attackPotency);
-                    }*/
-                    eDamageable.Shock(0, new Vector2(knockbackDirections[1].x * attackPotency,
-                            knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1],
+                        (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval); 
+                    eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[1].x * attackPotency,
+                            knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], 
                         knockbackTimes[1] * attackPotency);
+                    GetComponent<PlayerAbility>().energy += attackEnergy;
                     airComboAmount--;
                 }
             }

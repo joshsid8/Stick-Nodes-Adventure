@@ -11,8 +11,8 @@ namespace scripies.Core
         Vector3 Position { get; }
 
         void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
-            ElementType elementType = ElementType.Normal, float elementFactor = 1, bool isTrue = false, bool damageOverTime = false, float procDmg = 0f, float procInterval = 0);
-        void Shock(float stunDuration = 0, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f);
+            ElementType elementType = ElementType.Normal, float elementFactor = 1, bool isTrue = false, bool damageOverTime = false, float procDmg = 0f, float procInterval = 0, string aggressor = "");
+        void Shock(float stunDuration = 0, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f, bool targetPosition = false);
         void Heal(float amount);
     }
 }

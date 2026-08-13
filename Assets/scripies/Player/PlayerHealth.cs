@@ -192,8 +192,8 @@ namespace scripies.Player
         }
 
         public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
-            IDamageable.ElementType elementType = 0, float elementFactor = 1f, bool isTrue = false,
-            bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
+            IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
+            bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F, string aggressor = "")
         {
             var calcDamage = damageAmount * elementFactor;
             if (elementType != 0)
@@ -217,9 +217,9 @@ namespace scripies.Player
                     // perfect blocking / counter
                     pc.animator.SetTrigger("Counter");
                     pd.counterWindow = false;
-                    GameEvents.TriggerStopTime(0.5f);
                     StartCoroutine(ApplyDamage(calcDamage * pd.counterDamageResistance, false, damageOverTime, procDmg * pd.counterDamageResistance,
                         procInterval, isTrue));
+                    GameEvents.TriggerStopTime(0.5f);
                     break;
                 case true:
                 case false:
@@ -228,6 +228,10 @@ namespace scripies.Player
                         procInterval, isTrue));
                     break;
             }
+            
+            if (aggressor.Contains("Enemy")) ApplyCombat(30, false, aggressor);
+            else if (aggressor.Contains("End")) ResetCombat();
+            
             pc.currentDashTime = 0f;
             pa.isPerformingAbility = false;
         }
@@ -257,15 +261,14 @@ namespace scripies.Player
             }
         }
 
-        public void Shock(float stunDuration = 0f, Vector2 knockbackDirection = default, float knockbackForce = 20f,
-            float knockbackTime = 0.2f)
+        public void Shock(float stunDuration = 0f, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f, bool targetPosition = false)
         {
             var force = knockbackForce * shockMultiplier;
             if (pd.isBlocking) force = knockbackForce * pd.blockDamageResistance;
             else if (pd.counterWindow) force = knockbackForce * pd.counterDamageResistance;
             stunTime = stunDuration * shockMultiplier;
             if (stunTime > 0 && !pd.isBlocking) getStunned = true;
-            kb.CallKnockback(knockbackDirection, force, knockbackTime * shockMultiplier);
+            kb.CallKnockback(knockbackDirection, force, knockbackTime * shockMultiplier, targetPosition);
             if (!pd.isBlocking)
             {
                 pc.animator.SetTrigger("Damaged");
@@ -301,34 +304,37 @@ namespace scripies.Player
             }
         }
         
-        public void ApplyCombat(float combatDuration = 5, bool additive = false, string aggressor = null)
+        public void ApplyCombat(float combatDuration = 5, bool additive = false, string aggressor = "")
         {
-            if (combatDuration <= 0)
+            if (combatDuration <= 0 || aggressor.Contains("End"))
             {
                 ResetCombat();
                 return;
             }
-            inCombat = true;
             currentCombatTimer = additive ? currentCombatTimer + combatDuration : combatDuration;
             pc.combatIndicator.SetActive(true);
-            if (GameObject.Find("AudioManager").GetComponent<IAudioStatus>().musicType != IAudioStatus.MusicType.Combat && aggressor != "Boss") 
+            var am = GameObject.Find("AudioManager").GetComponent<IAudioStatus>();
+            if (am.musicType == IAudioStatus.MusicType.Area && aggressor.Contains("Enemy")) 
                 GameEvents.TriggerMusic(1, false);
-            else if (aggressor == "Boss") 
+            else if (aggressor.Contains("Boss"))
                 GameEvents.TriggerMusic(2, false);
-            StartCoroutine(CombatTimer());
+                
+            if (!inCombat) StartCoroutine(CombatTimer());
         }
 
         private IEnumerator CombatTimer()
         {
             while (currentCombatTimer > 0)
             {
+                inCombat = true;
                 currentCombatTimer -= Time.deltaTime;
                 yield return null;
             }
+            inCombat = false;
             ResetCombat();
         }
         
-        private void ResetCombat() 
+        private void ResetCombat()
         {
             inCombat = false;
             currentCombatTimer = 0;

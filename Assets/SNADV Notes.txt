@@ -4,9 +4,9 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-                 
-        I want Knockback logic to have a certain type to send the person to a specified spot
-            That way i can make moves pull victims inward: counters for example
+        
+        Player seems to no longer take upward knockback
+            Idk if it is especially from pillar attacks, but radial knockback for pillars seem to be fine
         
         Add basic gameplay SFX
             Combat stuff
@@ -20,13 +20,7 @@ SNADV Notes
         
         Instability
             Replicatable or From-Build bugs/problems
-                ApplyCombat is inefficient/It needs to be extended
-                    Maybe add a property to players takeDamage method that checks what hit the player
-                        if done, i think i can control the music better, and combat can be set/reset properly
-                        
-                Player seems to no longer take upward knockback
-                    Idk if it is especially from pillar attacks, and idek if its just the player but thats what im seeing yet
-                
+                                        
                 Quest logic data gives a nullref, making the ENTIRE GAME UNPLAYABLE on load
                     apparently this derives from trying to get an npc from its resources database
                         either the variable tries to find the npc before the database is loaded
@@ -35,21 +29,21 @@ SNADV Notes
                         
             One time occurrences or Rare/Intimidating bugs
                 Improve entity spawning logic
-                    One time when i had set fishmen spawner's amount to 2, it spawned 4 fishmen in 2 spots
+                    One time when i had set fishmen spawner's amount to 2, it spawned 2 fishmen in 2 each spots
                     then once i beat 2 out of 4, i got spammed argument exceptions
                     I think it was because it was trying to activate something it already had done, or maybe an index issue
                         Kinda in the dark here, but try replicate
 
             Low Priority/Unconfirmed fixed Bugs
-                Mystic Rivers' map didnt wanna announce itself one time after entering the interlude between that and Cynder Valley
-                    I think i got the issue fixed by adding a checkpoint near the entrance.
-                    Ill consider this a makeshift fix, cuz in the future this might happen again
+                Updated boss melee attack data - just so that the music doesnt change to normal combat when fighting the boss
+                    I havent tested this yet but ive done a few tweaks regarding this
+                    Just see what happens once you fight the boss (keep an eye out on the music and the abilities the boss casts)
 
         Junie Assistant
            
             Projectiles' knockback isnt too great, it needs to be more stable in terms of force
             
-            The Typewriter updates the settings as it updates text
+            The Typewriter updates the settings as it displays text
                 but i would rather have it know what settings should be implemented beforehand to make it work well
                                     
     Things to be added/changed:

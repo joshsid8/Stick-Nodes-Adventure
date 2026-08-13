@@ -124,6 +124,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 113191802042553342}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6839874471306577744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2123373806418928623}
+  m_Layer: 0
+  m_Name: KnockbackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2123373806418928623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6839874471306577744}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.41, y: -0.14, z: 0}
+  m_LocalScale: {x: 0.9900991, y: 0.9900991, z: 0.9900991}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 113191802042553342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7454736676121744046
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,9 +320,10 @@ Transform:
   - {fileID: 178288124548165457}
   - {fileID: 6585315484581343833}
   - {fileID: 4087044972204703627}
+  - {fileID: 2309042343713983920}
   - {fileID: 7664445667877575837}
   - {fileID: 5574741311073989549}
-  - {fileID: 2309042343713983920}
+  - {fileID: 2123373806418928623}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7150794731425283942
@@ -367,7 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moneyLoot: {fileID: 3237700672439869688, guid: f25228cf8dffce34ca1924c8f5226326, type: 3}
   currencyType: {fileID: 11400000, guid: 3caca639c8826094ea6293f1f4ecd3e2, type: 2}
-  minMoneyAmount: 6
+  minMoneyAmount: 7
   maxMoneyAmount: 8
   lootItems:
   - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
@@ -423,6 +455,8 @@ MonoBehaviour:
   knockbackDirection: {x: 1, y: 0}
   knockbackForce: 10
   knockbackTime: 0.5
+  positionKnockback: 0
+  knockbackTransform: {fileID: 2123373806418928623}
   isTrue: 0
   damageOverTime: 0
   procDmg: 0
@@ -459,7 +493,11 @@ MonoBehaviour:
   rangeRadius: 3.91
   testing: 0
   testIndex: 0
-  testAttacks: []
+  testAttacks:
+  - Boulder
+  - Counter
+  - Shield
+  - Decimate
   isAttacking: 0
   isPerformingAttack: 0
   attackCooldown: 5.6

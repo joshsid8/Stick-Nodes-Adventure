@@ -26,6 +26,9 @@ public abstract class BossBase : MonoBehaviour
     public Vector2 knockbackDirection;
     public float knockbackForce;
     public float knockbackTime;
+    public bool positionKnockback;
+    public Transform knockbackTransform;
+    
     public bool isTrue;
     public bool damageOverTime;
     public float procDmg;
@@ -152,8 +155,8 @@ public abstract class BossBase : MonoBehaviour
             var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
-                damageable.Shock(stunTime, knockbackDirection * transform.right, knockbackForce, knockbackTime);
+                damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Boss");
+                damageable.Shock(stunTime,  knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
             }
         }
     }

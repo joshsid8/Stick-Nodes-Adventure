@@ -8436,7 +8436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: bossHealth
-      value: 400
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: phase2Health
@@ -8444,7 +8444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: bossMaxHealth
-      value: 400
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: healthColours.Array.size
@@ -8456,15 +8456,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: healthColours.Array.data[0].b
-      value: 0.23834105
+      value: 0.15686187
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: healthColours.Array.data[0].g
-      value: 0.31681103
+      value: 0.24640387
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: healthColours.Array.data[0].r
-      value: 0.49056602
+      value: 0.4433962
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: healthColours.Array.data[1].a
@@ -8472,47 +8472,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: healthColours.Array.data[1].b
-      value: 0.08788716
+      value: 0.16402636
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: healthColours.Array.data[1].g
-      value: 0.13391975
+      value: 0.2216454
       objectReference: {fileID: 0}
     - target: {fileID: 475020568822523898, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: healthColours.Array.data[1].r
-      value: 0.23584908
+      value: 0.3584906
       objectReference: {fileID: 0}
     - target: {fileID: 5548932522893990080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: knockbackForce
-      value: 0.1
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: testing
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: testAttacks.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'testAttacks.Array.data[0]'
-      value: Boulder
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'testAttacks.Array.data[1]'
-      value: Counter
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'testAttacks.Array.data[2]'
-      value: Shield
-      objectReference: {fileID: 0}
-    - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: 'testAttacks.Array.data[3]'
-      value: Decimate
-      objectReference: {fileID: 0}
-    - target: {fileID: 7263965724418642259, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
-      propertyPath: minMoneyAmount
-      value: 7
+      propertyPath: testIndex
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9085918208820846365, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: m_Name

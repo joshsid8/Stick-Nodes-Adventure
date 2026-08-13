@@ -121,15 +121,14 @@ namespace scripies.Enemy
                     spriteRenderer.enabled = true;
                     yield return new WaitForSeconds(0.025f);
                 }
-
                 Destroy(gameObject);
             }
         }
 
 
-        public void Damage(float damageAmount, bool facingRight = true, int damageFactor = 0,
-            IDamageable.ElementType elementType = 0, float elementFactor = 1f, bool isTrue = false,
-            bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
+        public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
+            IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
+            bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F, string aggressor = "")
         {
             var calcDamage = damageAmount * elementFactor;
             if (elementType != IDamageable.ElementType.Normal)
@@ -158,10 +157,12 @@ namespace scripies.Enemy
                 isDead = true;
                 StartCoroutine(Death());
             }
+            else if (aggressor == "Player") GameEvents.TriggerAddPlayerCombat(30, false);
 
             Flash();
             if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
             if (GetComponent<EnemyPatrol>().enabled) ec.ChangeState(EnemyController.EnemyState.Attacking);
+            
         }
 
         private IEnumerator DamageOverTime(float procDmg, float procInterval)
@@ -178,13 +179,13 @@ namespace scripies.Enemy
         }
 
         public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 20f,
-            float knockbackTime = 0.2f)
+            float knockbackTime = 0.2f, bool targetPosition = false)
         {
             stunTime = stunDuration * stunMultiplier;
             if (stunTime > 0) getStunned = true;
             if (movable)
                 kb.CallKnockback(knockbackDirection * (isBlocking ? blockResistance : 1f), knockbackForce,
-                    knockbackTime);
+                    knockbackTime, targetPosition);
         }
 
         public void Heal(float amount) => enemyHealth += amount;

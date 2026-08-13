@@ -97,7 +97,7 @@ namespace scripies.Enemy
             rb.linearVelocity = Vector2.zero;
             isPatrolling = false;
             isWalking = false;
-            GameEvents.TriggerAddPlayerTime("Combat", 5, true);
+            GameEvents.TriggerAddPlayerCombat(20, false, "EnemySpotted");
 
             yield return new WaitForSeconds(0.5f);
             if (TryGetComponent<EnemyController>(out var ec)) ec.ChangeState(EnemyController.EnemyState.Zoning);

@@ -127,7 +127,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         lifeTimer = lifeTime;
         procTimes = lifeTime / procTime;
         procTimes = energyRequired / procTimes;
-        transform.localScale = new Vector3(sizeMult, sizeMult, 1);
+        transform.localScale = new Vector3(transform.localScale.x * sizeMult,transform.localScale.y * sizeMult, 1);
         if (animator.runtimeAnimatorController == null) 
             Destroy(parentObject.gameObject ?? gameObject, lifeTime);
     }
@@ -194,8 +194,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         if (damageable != null)
         {
-            damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
-            
+            damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType,
+                elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "Ability", 1 => "PlayerAbility", 2 => "EnemyAbility", _ => "Ability" });
             Vector2 calcDirection;
             if (useRadialKnockback)
                 calcDirection = damageable.Position - transform.position;
@@ -219,7 +219,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
                 var radialDir = new Vector2(damageable.Position.x - transform.position.x, 
                     (damageable.Position.y - transform.position.y) + explosionUpwardForce).normalized;
 
-                damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+                damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "", 1 => "Player", 2 => "Enemy", _ => "" });
                 damageable.Shock(explosionTime, radialDir, explosionForce, explosionTime);
                 currentProcTimer = procTime;
             }

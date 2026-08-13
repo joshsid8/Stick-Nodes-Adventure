@@ -105,15 +105,15 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             yield return new WaitForSeconds(3);
             GameHUD.Instance.ToggleBossHealth(false);
             isDead = false;
-            GameEvents.TriggerAddPlayerTime("Combat", 0, false);
+            GameEvents.TriggerAddPlayerTime("Combat", 0);
             animator.SetTrigger("Rise");
             GameEvents.TriggerShowDialogue(deathDialogue);
         }
     }
 
     public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
-        IDamageable.ElementType elementType = 0, float elementFactor = 1f, bool isTrue = false,
-        bool damageOverTime = false, float procDmg = 0f, float procInterval = 0f)
+        IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
+        bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F, string aggressor = "")
     {
         switch (isBlocking, shieldHealth > 0, isTrue, damageFactor, isCountering) // where '_' means null/ignore
         {
@@ -204,14 +204,14 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             if (spriteRenderer.color == originalColor) isTinting = false;
         }
     }
-    public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 0, float knockbackTime = 0)
+    public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 0, float knockbackTime = 0, bool targetPosition = false)
     {
         stunTime = ba.stunnable ? stunDuration : 0;
         if (stunTime >= 69) print("jump yourself");
         if (movable)
         {
-            if (isBlocking && shieldHealth > 0) kb.CallKnockback(knockbackDirection, knockbackForce / 4, knockbackTime);
-            else kb.CallKnockback(knockbackDirection, knockbackForce / 2 , knockbackTime);
+            if (isBlocking && shieldHealth > 0) kb.CallKnockback(knockbackDirection, knockbackForce / 4, knockbackTime, targetPosition);
+            else kb.CallKnockback(knockbackDirection, knockbackForce / 2 , knockbackTime, targetPosition);
         }
     }
     public void Heal(float amount) => bossHealth += amount;
