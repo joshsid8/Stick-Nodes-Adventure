@@ -45,7 +45,7 @@ namespace scripies.Core
         public static Action<Image, float, float> JumpScare;
         
         // Methods to trigger events
-        public static void TriggerPlayerSpawn(GameObject spawnPoint = null) => OnPlayerSpawned?.Invoke(spawnPoint);
+        public static void TriggerPlayerSpawn(GameObject objectRef = null) =>OnPlayerSpawned?.Invoke(objectRef);
         public static void TriggerPlayerHealthChanged(float currentHealth) => OnPlayerHealthChanged?.Invoke(currentHealth);
         public static void TriggerPlayerDeath() => OnPlayerDeath?.Invoke();
         public static void TriggerPlayerAction(string action, bool play = false) => PlayerAction?.Invoke(action, play);

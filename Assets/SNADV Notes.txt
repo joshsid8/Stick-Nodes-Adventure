@@ -4,15 +4,7 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        
-        Mystic Rivers' map didnt wanna announce itself one time after entering the interlude between that and Cynder Valley
-            I found out that it was because of dying (in the build version): i teleported back to Cynder Valley and i got an arguement exception
-            
-        Fix Stats display/GUI
-            Right now it is very unorganised and shows data incorrectly
-                Such as 'Firmness' states the lower the number, the less knockback you take this should be the opposite
-                The scroll bar can be scrolled downward a bit too much aswell   
-                             
+                 
         I want Knockback logic to have a certain type to send the person to a specified spot
             That way i can make moves pull victims inward: counters for example
         
@@ -27,12 +19,31 @@ SNADV Notes
     Optimisations & Hotfixes:
         
         Instability
-            Replicatable/From build bugs/problems
+            Replicatable or From-Build bugs/problems
+                ApplyCombat is inefficient/It needs to be extended
+                    Maybe add a property to players takeDamage method that checks what hit the player
+                        if done, i think i can control the music better, and combat can be set/reset properly
+                        
+                Player seems to no longer take upward knockback
+                    Idk if it is especially from pillar attacks, and idek if its just the player but thats what im seeing yet
                 
-            One time occurrences/Rare bugs
+                Quest logic data gives a nullref, making the ENTIRE GAME UNPLAYABLE on load
+                    apparently this derives from trying to get an npc from its resources database
+                        either the variable tries to find the npc before the database is loaded
+                        or there isnt an npc to begin with??
+                    Anyways i added a debug log to see if the quest data even has the targeted npc name
+                        
+            One time occurrences or Rare/Intimidating bugs
+                Improve entity spawning logic
+                    One time when i had set fishmen spawner's amount to 2, it spawned 4 fishmen in 2 spots
+                    then once i beat 2 out of 4, i got spammed argument exceptions
+                    I think it was because it was trying to activate something it already had done, or maybe an index issue
+                        Kinda in the dark here, but try replicate
 
             Low Priority/Unconfirmed fixed Bugs
-            
+                Mystic Rivers' map didnt wanna announce itself one time after entering the interlude between that and Cynder Valley
+                    I think i got the issue fixed by adding a checkpoint near the entrance.
+                    Ill consider this a makeshift fix, cuz in the future this might happen again
 
         Junie Assistant
            
@@ -93,13 +104,6 @@ SNADV Notes
                 Somehow incorporate mini cutscenes
                     I dont know how i can do it, but given i can animate the camera (i think), i might be able to do it
                     If so, the game would be SO MUCH COOLERR!!!
-            
-            Make a central initial map
-                Atm, Cynder Valley is the first map
-                We need a default map that connects everything
-                    Find a name for it
-                    Make music for it
-                I think i will make it a nature based place; grassy
                 
     Animation Overhaul:
     

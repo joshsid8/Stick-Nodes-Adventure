@@ -160,7 +160,7 @@ namespace scripies.Player
             else Debug.LogWarning("[PlayerHealth] We cant find the right spawn object!");
 
             if (Shenanigans.Instance != null) Shenanigans.Instance.ToggleFreezeCamera(false);
-            if (realSpawn) GameEvents.TriggerPlayerSpawn(pc.currentCheckPoint);
+            if (realSpawn) GameEvents.TriggerPlayerSpawn(gameObject);
             StartCoroutine(SpawnPeriod());
         }
 

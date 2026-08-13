@@ -135,11 +135,11 @@ public class MapManager : MonoBehaviour
         AreaManager.Instance.animator.SetTrigger("Announce");
     }
 
-    private IEnumerator TryStartMapAgain(GameObject spawnPoint)
+    private IEnumerator TryStartMapAgain(GameObject objectRef)
     {
         yield return new WaitForSeconds(0.5f);
-        Instances.TryGetValue(spawnPoint.gameObject.scene.name, out var otherMap);
-        StartCoroutine(otherMap?.MapTransition(spawnPoint.GetComponent<Collider2D>()));
+        Instances.TryGetValue(objectRef.gameObject.scene.name, out var otherMap);
+        StartCoroutine(otherMap?.MapTransition(objectRef.GetComponent<Collider2D>()));
         audioManager.TriggerFadeIn(0.5f);
     }
     

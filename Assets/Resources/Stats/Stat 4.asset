@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statName: ShockMultiplier
   statDescription: How long you get stunned for, as well as how much further you
-    get knocked back. The smaller the number, the firmer you are.
+    get knocked back. You wont get knocked back by anything if you are 100% FERM

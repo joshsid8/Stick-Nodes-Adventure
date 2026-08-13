@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: Stat 6
   m_EditorClassIdentifier: 
   statName: RawDamageResistance
-  statDescription: How vulnerable you are to attacks without blocking. The larger
-    the number, the more damage you take.
+  statDescription: How vulnerable you are to attacks without blocking.

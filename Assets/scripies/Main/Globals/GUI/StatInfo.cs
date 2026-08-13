@@ -44,8 +44,8 @@ public class StatInfo : GUIBase, IPointerClickHandler
             case "RegenerationMultiplier": DisplayPercent("Health REG", ph.regenerationMultiplier); break;
             case "MovementSpeedMultiplier": DisplayFloat("Walk SPD", pc.movementSpeedMult); break;
             case "JumpForceMultiplier": DisplayFloat("Jump Height", pc.jumpForceMult); break;
-            case "ShockMultiplier": DisplayFloat("Firmness", ph.shockMultiplier); break;
-            case "RawDamageResistance": DisplayPercent("Toughness", ph.rawDamageResistance); break;
+            case "ShockMultiplier": DisplayPercent("Firmness", ph.shockMultiplier, true); break;
+            case "RawDamageResistance": DisplayPercent("Toughness", ph.rawDamageResistance, true); break;
             
             case "DashSpeed": DisplayFloat("Dash SPD", pc.dashSpeed); break;
             case "DashCooldown": DisplayFloat("Dash CD", pc.dashCooldown); break;
@@ -59,13 +59,13 @@ public class StatInfo : GUIBase, IPointerClickHandler
             case "AbilityLifetimeMultiplier": DisplayPercent("Ability Longevity", pp.abilityLifetimeMult); break;
             
             case "AttackDamageMultiplier": DisplayPercent("ATK Strength", pf.attackDamageMult); break;
-            case "AttackCooldownMultiplier": DisplayPercent("Ground ATK Efficiency", pf.attackCooldownMult); break;
+            case "AttackCooldownMultiplier": DisplayPercent("ATK Efficiency", pf.attackCooldownMult); break;
             case "AttackPotency": DisplayPercent("Attack Potency", pf.attackPotency); break;
             
-            case "BlockDamageResistance": DisplayPercent("Block Resistance", pd.blockDamageResistance); break;
+            case "BlockDamageResistance": DisplayPercent("Block Resistance", pd.blockDamageResistance, true); break;
             case "CounterTime": DisplayFloat("Counter Window", pd.counterTime); break;
             case "CounterDamage": DisplayFloat("Counter DMG", pd.counterDamage); break;
-            case "CounterDamageResistance": DisplayPercent("Counter Resistance", pd.counterDamageResistance); break;
+            case "CounterDamageResistance": DisplayPercent("Counter Resistance", pd.counterDamageResistance, true); break;
             
             default: statName.text = ""; Debug.LogWarning("Clueless."); break;
         }
@@ -78,10 +78,10 @@ public class StatInfo : GUIBase, IPointerClickHandler
         // well that was eashy
     }
 
-    private void DisplayPercent(string title, float value)
+    private void DisplayPercent(string title, float value, bool reverse = false)
     { 
         var percent = value * 100 - 100;
-        if (title != "BlockDamageResistance" && title != "RawDamageResistance" && title == "CounterDamageResistance")
+        if (!reverse)
         {
             if (value != 1) statName.text = title + ": " + percent.ToString("F0") + "%";
             else statName.text = $"{title}: 0%";
@@ -93,7 +93,7 @@ public class StatInfo : GUIBase, IPointerClickHandler
         }
 
         // man im so smat >:D
-
+        // are u tho?
     }
     
     public void OnPointerClick(PointerEventData eventData)
