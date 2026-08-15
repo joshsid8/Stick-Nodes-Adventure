@@ -528,7 +528,8 @@ MonoBehaviour:
   canFacePlayer: 1
   playerTransform: {fileID: 0}
   initStart: 5
-  backupMoveTimer: 5
+  backupMoveTime: 10
+  currentBackupMoveTimer: 15
   stunnable: 0
   stunnableTimer: 0
   dialogueNo: 0

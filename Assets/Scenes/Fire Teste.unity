@@ -11335,22 +11335,40 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9223160534816086470, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
-      propertyPath: spawnTime
-      value: 40
+      propertyPath: spawnPoints.Array.size
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 9223160534816086470, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
+      propertyPath: 'spawnPoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5175301615923193769}
+    - target: {fileID: 9223160534816086470, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
+      propertyPath: 'spawnPoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 5175301615923193768}
     - target: {fileID: 9223160534816086470, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: eSpawn.Array.data[0].settings
       value: 
       objectReference: {fileID: 11400000, guid: b5366c7e0c601204ea43e6b6d5a409e2, type: 2}
     - target: {fileID: 9223160534816086470, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: eSpawn.Array.data[0].spawnAmount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
+--- !u!1 &5175301615923193768 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8045737864159387737, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
+  m_PrefabInstance: {fileID: 5175301615923193767}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5175301615923193769 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 934838064383561076, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
+  m_PrefabInstance: {fileID: 5175301615923193767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9075578306459573741
 PrefabInstance:
   m_ObjectHideFlags: 0

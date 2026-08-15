@@ -5,15 +5,7 @@ SNADV Notes
     
     Priorities:
         
-        Noxu one time after the player losing once couldnt use any moves for around half a minute before trying to spam everything
-            I got debug logs saying that the backup timers were used, but im unsure why it took him to long to start using moves
-            Ill have to try replicate this in the Editor and see why
-        
-        Improve entity spawning logic
-            One time when i had set fishmen spawner's amount to 2, it spawned 2 sets of 2 fishmen in 2 spots
-            then once i beat 2 out of 4, i got spammed argument exceptions
-            I think it was because it was trying to activate something it already had done, or maybe an index issue
-                Kinda in the dark here, but try replicate
+        Look into the couple of todos in the quest scripts
         
         Add basic gameplay SFX
             Combat stuff
@@ -33,11 +25,8 @@ SNADV Notes
             Low Priority/Unconfirmed fixed Bugs
 
         Junie Assistant
-           
-            Projectiles' knockback isnt too great, it needs to be more stable in terms of force
+           N/A
             
-            The Typewriter updates the settings as it displays text
-                but i would rather have it know what settings should be implemented beforehand to make it work well
                                     
     Things to be added/changed:
         
@@ -64,6 +53,10 @@ SNADV Notes
                     If so, the game would be SO MUCH COOLERR!!!
         
         Post-AO
+            
+            Improved Typewriter Logic
+                The Typewriter updates the settings as it displays text
+                    but i would rather have it know what settings should be implemented beforehand to make it work well
             
             Input Logic
                 switch input systems!

@@ -121,6 +121,7 @@ namespace scripies.Enemy
                     spriteRenderer.enabled = true;
                     yield return new WaitForSeconds(0.025f);
                 }
+                GameEvents.TriggerAddPlayerCombat(0, false, "EnemyFightEnd");
                 Destroy(gameObject);
             }
         }
@@ -157,7 +158,8 @@ namespace scripies.Enemy
                 isDead = true;
                 StartCoroutine(Death());
             }
-            else if (aggressor == "Player") GameEvents.TriggerAddPlayerCombat(30, false);
+            else if (aggressor.Contains("Player")) GameEvents.TriggerAddPlayerCombat(30, false);
+            else print($"aggressor doesnt contain player: {aggressor}");
 
             Flash();
             if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));

@@ -48,8 +48,9 @@ public class BossAttack : MonoBehaviour
     private IPlayerStatus ps;
     [HideInInspector] public Transform playerTransform;
     [SerializeField] private float initStart = 1;
-
-    public float backupMoveTimer = 5;
+    
+    [SerializeField] private float backupMoveTime = 5;
+    [SerializeField] float currentBackupMoveTimer;
     
     [Space]
     [Header("Stun and Dialogue")]
@@ -123,6 +124,7 @@ public class BossAttack : MonoBehaviour
     {
         if (!isPerformingAttack && !bh.isStunned && !bh.isDead && isAttacking && !testing)
         {
+            animator.Play("Idle");
             stunnableTimer = 0;
             var prevPrev = prevAttack;
             if (closeRange)
@@ -160,13 +162,13 @@ public class BossAttack : MonoBehaviour
             if (prevAttack == prevPrev) prevRepeat++;
             else prevRepeat = 0;
             CancelInvoke(nameof(AttackSystem));
-            backupMoveTimer = 5;
+            currentBackupMoveTimer = backupMoveTime;
         }
         else if (testing && isAttacking)
         {
             animator.SetTrigger(testAttacks[testIndex]);
             CancelInvoke(nameof(AttackSystem));
-            backupMoveTimer = 5;
+            currentBackupMoveTimer = backupMoveTime;
         }
         if (!isAttacking) CancelInvoke(nameof(AttackSystem));
     }
@@ -191,8 +193,8 @@ public class BossAttack : MonoBehaviour
         
         if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
         stunnable = stunnableTimer > 0;
-        if (backupMoveTimer > 0 && isAttacking) backupMoveTimer -= Time.deltaTime;
-        if (isAttacking && !isPerformingAttack && backupMoveTimer <= 0)
+        if (currentBackupMoveTimer > 0 && isAttacking) currentBackupMoveTimer -= Time.deltaTime;
+        if (isAttacking && !isPerformingAttack && currentBackupMoveTimer <= 0)
         {
             AttackSystem();
             print("Almost handicapped bro");
@@ -231,6 +233,7 @@ public class BossAttack : MonoBehaviour
 
     public void ActionCooldown(float cooldownTime)
     {
+        CancelInvoke(nameof(ActionCooldown));
         currentAttackCooldown = bh.phase2 ? cooldownTime * 0.8f : cooldownTime;
         GuardDown(cooldownTime);
         Invoke(nameof(AttackSystem), currentAttackCooldown);

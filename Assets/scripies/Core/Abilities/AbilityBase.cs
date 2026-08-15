@@ -197,9 +197,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType,
                 elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "Ability", 1 => "PlayerAbility", 2 => "EnemyAbility", _ => "Ability" });
             Vector2 calcDirection;
-            if (useRadialKnockback)
-                calcDirection = damageable.Position - transform.position;
-            else calcDirection = new Vector2(knockbackDirection.x, knockbackDirection.y).normalized;
+            if (useRadialKnockback) calcDirection = damageable.Position - transform.position;
+            else calcDirection = new Vector2(isFacingRightDirection ? knockbackDirection.x : -knockbackDirection.x, knockbackDirection.y).normalized;
             
             damageable.Shock(stunTime, calcDirection, knockbackForce, knockbackTime);
         }

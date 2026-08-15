@@ -65,17 +65,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOneTime: 0
+  currentEnemies: []
   eSpawn:
   - objectToSpawn: {fileID: 3938795057032240365, guid: e20865639346b7740a0545167afb8c2c, type: 3}
     spawnAmount: 1
     settings: {fileID: 0}
   spawnAbility: 1
   spawnPoints:
-  - {fileID: 934838064383561076}
-  - {fileID: 8045737864159387737}
-  spawnTime: 20
+  - {fileID: 0}
+  respawnTime: 20
+  spawnTime: 10
   spawnOnStart: 1
   canSpawn: 1
+  playerIsClose: 0
 --- !u!61 &5190355191559164575
 BoxCollider2D:
   m_ObjectHideFlags: 0

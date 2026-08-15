@@ -12,9 +12,13 @@ public class Noxu : BossBase
 
     private void ReplenishShield(float shieldHp) => bh.shieldHealth = shieldHp;
 
-    public override void Gamble()
+    private void Gamble()
     {
-        if (storedObjects.Count == 0 || storedObjects[0] == null || storedObjects[0].IsDestroyed()) return;
+        if (storedObjects.Count == 0 || storedObjects[0] == null || storedObjects[0].IsDestroyed())
+        {
+            ba.ActionCooldown(0.5f);
+            return;
+        }
         var rng = Random.Range(0, 2);
         animator.SetInteger("factor", rng);
         animator.SetTrigger("Boulder");

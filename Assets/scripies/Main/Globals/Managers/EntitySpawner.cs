@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using scripies.Enemy;
 using UnityEngine.SceneManagement;
 using scripies.Core;
@@ -9,15 +10,19 @@ using Random = UnityEngine.Random;
 public class EntitySpawner : MonoBehaviour
 {
     public bool isOneTime;
+    [SerializeField] private List<GameObject> currentEnemies = new();
     [SerializeField] private EnemySpawn[] eSpawn;
     private string scene;
 
     public bool spawnAbility = true;
     
     public GameObject[] spawnPoints;
-    public float spawnTime;
+    [SerializeField] private float respawnTime = 20;
+    [SerializeField] private float spawnTime = 10;
     public bool spawnOnStart = true;
     public bool canSpawn = true;
+
+    [SerializeField] private bool playerIsClose;
 
     private void OnEnable()
     {
@@ -39,17 +44,28 @@ public class EntitySpawner : MonoBehaviour
         {
             foreach (var spawn in eSpawn)
             {
+                var prevPoint = 0;
                 for (var i = 0; i < spawn.spawnAmount; i++)
                 {
                     if (spawnOnStart)
                     {
-                        var instance = Instantiate(spawn.objectToSpawn, spawnPoints[0].transform.position, Quaternion.identity);
+                        var rng = 0;
+                        while (rng == prevPoint)
+                        {
+                            if (spawnPoints.Length == 1) break;
+                            rng = Random.Range(0, spawnPoints.Length);
+                            yield return null;
+                        }
+                        if (i == 0) rng = 0;
+                        prevPoint = rng;
+                        var instance = Instantiate(spawn.objectToSpawn, spawnPoints[rng].transform.position, Quaternion.identity);
                         var targetScene = SceneManager.GetSceneByName(scene);
                         if (targetScene.IsValid() && targetScene.isLoaded)
                         {
                             SceneManager.MoveGameObjectToScene(instance, targetScene);
                             instance.GetComponent<Identifier>().AutomateID(targetScene);
                             if (spawn.settings != null) instance.GetComponent<EnemyController>().enemy = spawn.settings;
+                            currentEnemies.Add(instance);
                         }
                     }
                     yield return new WaitForSeconds(spawnTime);
@@ -64,12 +80,29 @@ public class EntitySpawner : MonoBehaviour
         {
             foreach (var spawn in eSpawn)
             {
+                var prevPoint = 0;
                 for (var i = 0; i < spawn.spawnAmount; i++)
                 {
-                    yield return new WaitForSeconds(spawnTime);
-                    var instance = Instantiate(spawn.objectToSpawn, spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity);
-                    var targetScene = SceneManager.GetSceneByName(scene);
-                    if (targetScene.IsValid() && targetScene.isLoaded) SceneManager.MoveGameObjectToScene(instance, targetScene);
+                    if (currentEnemies.Count >= spawn.spawnAmount) break;
+                    if (!playerIsClose)
+                    {
+                        var rng = 0;
+                        while (rng == prevPoint)
+                        {
+                            rng = Random.Range(0, spawnPoints.Length);
+                            yield return null;
+                        }
+                        prevPoint = rng;
+                        var instance = Instantiate(spawn.objectToSpawn, spawnPoints[rng].transform.position, Quaternion.identity);
+                        var targetScene = SceneManager.GetSceneByName(scene);
+                        if (targetScene.IsValid() && targetScene.isLoaded)
+                        {
+                            SceneManager.MoveGameObjectToScene(instance, targetScene);
+                            instance.GetComponent<Identifier>().AutomateID(targetScene);
+                            if (spawn.settings != null) instance.GetComponent<EnemyController>().enemy = spawn.settings;
+                            currentEnemies.Add(instance);
+                        }
+                    }
                 }
             }
         }
@@ -77,14 +110,22 @@ public class EntitySpawner : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy")) canSpawn = false;
+        if (collision.CompareTag("Enemy"))
+        {
+            if (!currentEnemies.Contains(collision.gameObject))
+                currentEnemies.Add(collision.gameObject);
+        }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) playerIsClose = true;
     }
     
-    private void OnTriggerExit2D(Collider2D collision)
+    private IEnumerator OnTriggerExit2D(Collider2D collision)
     {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) playerIsClose = false;
         if (collision.gameObject.layer == LayerMask.NameToLayer("EDead") || collision.CompareTag("Enemy") && isActiveAndEnabled)
         {
             canSpawn = true;
+            currentEnemies.Remove(collision.gameObject);
+            yield return new WaitForSeconds(respawnTime);
             StartCoroutine(Spawn());
         }
     }
@@ -92,12 +133,12 @@ public class EntitySpawner : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        foreach (var spawn in spawnPoints)
-        {
+        foreach (var spawn in spawnPoints) 
             Gizmos.DrawWireSphere(spawn.transform.position, 1f);
-        }
     }
 
+    private void OnDestroy() => currentEnemies.Clear();
+    
     [Serializable]
     private class EnemySpawn
     {

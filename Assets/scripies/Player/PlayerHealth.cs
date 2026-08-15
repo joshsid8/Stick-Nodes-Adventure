@@ -341,7 +341,11 @@ namespace scripies.Player
             pc.combatIndicator.SetActive(false);
             GameEvents.TriggerMusic(0, false);
         }
-        private void ResetCombatViaEnemy(GameObject enemy) => ResetCombat();
+        private void ResetCombatViaEnemy(GameObject enemy)
+        {
+            if (aggressiveEnemies.Count > 1) return;
+            ResetCombat();
+        }
         
         private void Tint()
         {

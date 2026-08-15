@@ -170,9 +170,13 @@ public abstract class BossBase : MonoBehaviour
         if (projHit.collider != null) storedObjects.Add(projHit.collider.gameObject);
     }
 
-    protected void ApplyForce(float force) => Shenanigans.Instance.ApplyForce(new Vector2(ba.isFacingRight ? force : -force, force), obj: storedObjects[storedObjectIndex]);
-
-    public virtual void Gamble() { }
+    protected void ApplyForce(float force)
+    {
+        if (storedObjects.Count > 0 || storedObjects[storedObjectIndex] == null) return;
+        
+        Shenanigans.Instance.ApplyForce(new Vector2(ba.isFacingRight ? force : -force, force),
+            obj: storedObjects[storedObjectIndex]?.gameObject);
+    }
     
     public void FreezeMovement() => rb.linearVelocity = Vector2.zero;
     public void FreezeMovementX() => rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
