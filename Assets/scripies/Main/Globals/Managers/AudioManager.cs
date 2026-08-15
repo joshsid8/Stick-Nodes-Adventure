@@ -99,7 +99,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         musicSource.volume = 0;
     }
     
-    // Junie worked here, making fading work properly. TODO: find out more about these coroutines
+    // Junie worked here, making fading work properly. learn how all this works passively once you improve your coding skills!
     public void TriggerFadeIn(float fadeTime = 1)
     {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);

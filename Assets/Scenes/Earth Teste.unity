@@ -2387,7 +2387,7 @@ MonoBehaviour:
   mapTextColor: {r: 0.6792453, g: 0.42402905, b: 0.28515485, a: 1}
   mapBgColor: {r: 0.2264151, g: 0.06941973, b: 0.06941973, a: 1}
   newOst:
-  - {fileID: 8300000, guid: c702acffab3d7cd43a0069cacbbf30db, type: 3}
+  - {fileID: 8300000, guid: d1ab5be2139a2884a815408309a675d2, type: 3}
   - {fileID: 8300000, guid: e42854986eb948b498ef8f381ffbedc1, type: 3}
   - {fileID: 8300000, guid: e42854986eb948b498ef8f381ffbedc1, type: 3}
   ostVolume:
@@ -2405,6 +2405,7 @@ MonoBehaviour:
   - 0
   - 0
   sectionObj: {fileID: 341918498}
+  mainSpawnPoint: {fileID: 0}
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -4148,6 +4149,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: 0
   oneTime: 0
+  spawnScene:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
 --- !u!61 &999634350
 BoxCollider2D:
   m_ObjectHideFlags: 0

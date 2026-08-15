@@ -37,9 +37,9 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     public GameObject rewardObj;
     public CollectableSOBase[] questRewards;
     
-    //TODO: i was thinking of making the other quest types have to speak to the npc before the rewards are given. have a think about this
-    //public GameObject questGiver;
-    //public DialogueObject appreciationDialogue;
+    //TODO: I think i will make it so that you have to speak to the quest giver if you want your quest completed now, it makes more sense, albeit more annoying for players
+    public GameObject questGiver;
+    public DialogueObject appreciationDialogue;
     
     private void Start()
     { 

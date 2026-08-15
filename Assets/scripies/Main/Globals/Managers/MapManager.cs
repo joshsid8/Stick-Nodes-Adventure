@@ -22,10 +22,12 @@ public class MapManager : MonoBehaviour
     public float[] ostVolume = {0.5f,0.5f,0.5f};
     public string[] mapDisasterNames = { "Temperature", "Earthquake", "Wind", "Thunderstorm" };
     public float[] mapDisasterFactors = new float[4];
-
+    
+    [SerializeField] private GameObject sectionObj;
+    public GameObject mainSpawnPoint;
+    
     private WeatherManager weather;
     private AudioManager audioManager;
-    [SerializeField] private GameObject sectionObj;
     #endregion
 
     #region Scene Data

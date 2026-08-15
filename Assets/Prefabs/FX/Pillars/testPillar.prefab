@@ -118,7 +118,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: de09eee6159ca9249b4c2620de09423a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,7 +126,7 @@ SpriteRenderer:
   m_Size: {x: 12.8, y: 7.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!114 &1245427979406649877
 MonoBehaviour:
@@ -145,11 +145,7 @@ MonoBehaviour:
     m_Bits: 65728
   bottomPoint: {fileID: 8569537563959189878}
   rayDistance: 100
-  raySpeed: 1
   scriptToWake: {fileID: 1010433018989780878}
-  masks:
-    serializedVersion: 2
-    m_Bits: 542464
 --- !u!114 &1010433018989780878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,18 +159,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeFactor: 0
-  pillarDamage: 0.75
-  pillarStunTime: 0
-  pillarLifeTime: 69999
+  elementType: 0
+  elementFactor: 1
+  damageFactor: 0
+  trueDamage: 0
+  damage: 0.75
+  damageOverTime: 0
+  procDmg: 0
+  procInterval: 0
+  sizeMult: 1
+  knockbackDirection: {x: 0, y: 1}
+  knockbackForce: 20
+  knockbackTime: 0.2
+  direction: 0
+  isDirectional: 0
+  isFacingRightDirection: 0
+  stunTime: 0
   energyRequired: 20
-  abilityCooldown: 1.2
-  knockbackForce: {x: 0, y: 0}
-  pillarProc: 0.2
-  pillarProcTimer: 0
-  isErupting: 1
-  pillarCollider: {fileID: 6437316070702605537}
-  eruptAnim: {fileID: 7400000, guid: 3e80794bfbf0d0a4a85a04f5b1be7fc6, type: 2}
-  finishAnim: {fileID: 7400000, guid: 3e964e419455b9e4c937b5409ee5f1e7, type: 2}
+  explodeOnImpact: 0
+  useRadialKnockback: 0
+  explosionUpwardForce: 2
+  explosionForce: 20
+  explosionTime: 0.2
+  cooldown: 1.2
+  procTime: 0.2
+  currentProcTimer: 0
+  activeHitbox: 1
+  lifeTime: 69999
+  lifeTimer: 0
+  isHoldable: 0
+  abilityOnCollide: 0
+  subAbilities: []
+  animator: {fileID: 0}
+  parentObject: {fileID: 0}
+  coll: {fileID: 6437316070702605537}
+  anim: {fileID: 7400000, guid: 3e80794bfbf0d0a4a85a04f5b1be7fc6, type: 2}
+  endAnim: {fileID: 7400000, guid: 3e964e419455b9e4c937b5409ee5f1e7, type: 2}
+  shockwave: 0
 --- !u!61 &6437316070702605537
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -212,10 +233,10 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.5140481}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 12.8, y: 7.2}
+    newSize: {x: 12.8, y: 7.2}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0

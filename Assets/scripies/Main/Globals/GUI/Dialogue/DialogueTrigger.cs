@@ -38,7 +38,7 @@ namespace scripies.Dialogue
         public Transform ChatPoint => chatPoint;
         public float ChatRadius => chatRadius;
         
-        private void Awake()
+        private void Start()
         {
             var playerObject = PlayerHealth.Instance.gameObject;
             if (playerObject != null) playerTransform = playerObject.transform;
@@ -53,7 +53,7 @@ namespace scripies.Dialogue
                 if (isInRange && !isTriggered)
                 {
                     if (canTurn) FacePlayer();
-                    indicator?.SetActive(true);
+                    if (indicator != null) indicator.SetActive(true);
                     if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
                     {
                         isTriggered = true;
@@ -67,7 +67,7 @@ namespace scripies.Dialogue
                         }
                     }
                 }
-                else indicator?.SetActive(false);
+                else if (indicator != null) indicator.SetActive(false);
 
                 if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
             }

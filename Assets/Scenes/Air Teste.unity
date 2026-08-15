@@ -657,7 +657,7 @@ GameObject:
   - component: {fileID: 870999332}
   - component: {fileID: 870999331}
   m_Layer: 0
-  m_Name: Death! (4)
+  m_Name: Teleporter
   m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -672,11 +672,11 @@ Transform:
   m_GameObject: {fileID: 870999329}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -75.5, y: 38.57058, z: -0.028428493}
+  m_LocalPosition: {x: 89.653, y: 110.40058, z: -0.028428493}
   m_LocalScale: {x: -17.49702, y: -0.85313827, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1317523871}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &870999331
 MonoBehaviour:
@@ -863,6 +863,7 @@ MonoBehaviour:
   - 0
   - 1
   sectionObj: {fileID: 0}
+  mainSpawnPoint: {fileID: 0}
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -940,7 +941,6 @@ Transform:
   - {fileID: 1484945552}
   - {fileID: 420032923}
   - {fileID: 2085355165}
-  - {fileID: 870999330}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1317523872 stripped
@@ -1470,5 +1470,6 @@ SceneRoots:
   - {fileID: 762519565}
   - {fileID: 1560809729}
   - {fileID: 1317523871}
+  - {fileID: 870999330}
   - {fileID: 79575888}
   - {fileID: 522193590}

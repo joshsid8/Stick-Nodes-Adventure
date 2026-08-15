@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questType: 3
   questName: Say hi to Imo for Izuno
-  questDescription: Izuno hadnt noticed imo arrived in cinder valley till you told
-    him. send his greetings for him
+  questDescription: Izuno hadnt noticed imo was around till you told him. send his
+    greetings for him
   enemiesToDefeat: []
   noOfEnemiesToDefeat: 
   objectsToInteract: []

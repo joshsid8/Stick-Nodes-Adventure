@@ -31,7 +31,6 @@ public class GameMenuManager : MonoBehaviour
 
     private void OnMenuToggle(bool toggle)
     {
-        //TODO: add button listeners and make this stop time
         pausedGame = toggle;
         Time.timeScale = pausedGame ? 0 : 1;
         gameMenu.SetActive(toggle);

@@ -199,7 +199,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             Vector2 calcDirection;
             if (useRadialKnockback)
                 calcDirection = damageable.Position - transform.position;
-            else calcDirection = knockbackDirection* transform.right;
+            else calcDirection = new Vector2(knockbackDirection.x, knockbackDirection.y).normalized;
             
             damageable.Shock(stunTime, calcDirection, knockbackForce, knockbackTime);
         }

@@ -244,7 +244,7 @@ public class BossAttack : MonoBehaviour
         isAttacking = false;
         noMercy = false;
         yield return new WaitUntil(() => !ps.IsDead);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         transform.position = originalPosition;
         bh.bossHealth = bh.bossMaxHealth;
         bh.phase2 = false;

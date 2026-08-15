@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using scripies.Player;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class QuestLogManager : GUIBase
 {
@@ -13,6 +11,8 @@ public class QuestLogManager : GUIBase
 
     public GameObject questMenu;
     
+    // TODO: add this variable into the data file for future use (e.g checking if the player has already done a quest)
+    public Quest[] completedQuests;
     public AudioClip questCompleteSound;
     
     protected override void Awake()
@@ -37,8 +37,7 @@ public class QuestLogManager : GUIBase
             if (questSlots[i] != null && questSlots[i].questType == Quest.QuestType.NullQuest)
             {
                 questSlots[i].LogQuest(quest.questType, quest.questName, quest.questDescription, quest.enemiesToDefeat,
-                    quest.noOfEnemiesToDefeat, quest.objectsToInteract, quest.numberOfObjects, quest.npcToInteract,
-                    quest.rewards);
+                    quest.noOfEnemiesToDefeat, quest.objectsToInteract, quest.numberOfObjects, quest.npcToInteract, quest.rewards);
                 return;
             }
         }
@@ -103,8 +102,7 @@ public class QuestLogManager : GUIBase
             var qData = data.activeQuests[i];
             var enemies = Array.ConvertAll(qData.enemiesToDefeat, n => EnemyDatabase.Instance.GetEnemyByName(n));
             var objects = Array.ConvertAll(qData.objectsToInteract, id => ItemDatabase.Instance.GetItemByName(id));
-            print(qData.npcToInteract);
-            var npc = NPCDatabase.Instance.GetNpcByName(qData.npcToInteract);
+            var npc = qData.questType == Quest.QuestType.SpeakTo || qData.questType == Quest.QuestType.GiveTo ? NPCDatabase.Instance.GetNpcByName(qData.npcToInteract) : null;
             var rewards = Array.ConvertAll(qData.rewards, id => ItemDatabase.Instance.GetItemByName(id));
             
             questSlots[i].LogQuest(qData.questType, qData.questTitle, qData.questDescription, enemies, 

@@ -205,6 +205,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1756532dbb0c340b9ff0c1a323815b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testing: 0
+  testMoves: []
+  testIndex: 0
   styleMode: 0
   canFly: 0
   isFlying: 0
@@ -228,6 +231,8 @@ MonoBehaviour:
   knockbackDirection: {x: 0, y: 0}
   knockbackForce: 20
   knockbackTime: 0.2
+  positionKnockback: 0
+  knockbackTransform: {fileID: 0}
   isTrue: 0
   damageOverTime: 0
   procDmg: 0
@@ -358,7 +363,7 @@ MonoBehaviour:
   enemyState: 0
   enemy: {fileID: 0}
   isFacingRight: 1
-  vegetable: 0
+  vegetable: 1
 --- !u!61 &2710689748645888265
 BoxCollider2D:
   m_ObjectHideFlags: 0

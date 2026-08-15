@@ -4786,6 +4786,14 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneName
+      value: Fire Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
       value: 2
@@ -4808,11 +4816,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.199993
+      value: -3.1999931
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7531,6 +7539,14 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneName
+      value: Earth Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
       value: 4
@@ -7988,6 +8004,14 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneName
+      value: Air Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 0aa6d8d28337fc84781eeca2a6d3f87e, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
       value: 6
@@ -8624,6 +8648,14 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneName
+      value: Default Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: af137e695d9fbfd4887972feca53a00d, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
       value: 0
@@ -12201,6 +12233,7 @@ MonoBehaviour:
   - {fileID: 2019099167}
   - {fileID: 708717398}
   questMenu: {fileID: 1087541070}
+  completedQuests: []
   questCompleteSound: {fileID: 8300000, guid: 48379353a82642b44bca2a07e8dab2bf, type: 3}
 --- !u!1 &1641355994
 GameObject:
@@ -12430,6 +12463,14 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneName
+      value: Default Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: af137e695d9fbfd4887972feca53a00d, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
       value: 1
@@ -12452,11 +12493,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -65.6
+      value: -45.6
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.199997
+      value: 16.8
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12815,21 +12856,29 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneName
+      value: Water Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Size.x
-      value: 20
+      value: 14.110611
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Size.y
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Offset.x
-      value: -3.5
+      value: 0.83348846
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Offset.y
@@ -12837,11 +12886,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: 52.000008
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 57.88
+      value: -3.119999
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13961,6 +14010,14 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneName
+      value: Earth Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 44a1e5d2de27bc043af5c7643b618a93, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
       value: 3
@@ -14566,15 +14623,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -29.620537
+      value: 67.93558
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -30.695377
+      value: 99.58737
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.001152426
+      value: -0.0001373291
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16158,7 +16215,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -29.2337, y: -30.641502, z: -0.060691833}
+  m_LocalPosition: {x: 68.32242, y: 99.64125, z: -0.059677124}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17451,7 +17508,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -27.253384, y: -26.417427, z: -0.060691833}
+  m_LocalPosition: {x: 70.302734, y: 103.865326, z: -0.059677124}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30423,6 +30480,7 @@ GameObject:
   - component: {fileID: 4028153189740531409}
   - component: {fileID: 8751292640724400740}
   - component: {fileID: 8751292640724400741}
+  - component: {fileID: 8751292640724400742}
   m_Layer: 0
   m_Name: Databases
   m_TagString: Untagged
@@ -30454,6 +30512,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc3f78a434c46e1b9b16849e01a4b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDatabase
+--- !u!114 &8751292640724400742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8751292640724400739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8ecec6f1945f642a8bd0a025006bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: scripies::NPCDatabase
 --- !u!114 &8754919029274191491
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,8 +5,15 @@ SNADV Notes
     
     Priorities:
         
-        Player seems to no longer take upward knockback
-            Idk if it is especially from pillar attacks, but radial knockback for pillars seem to be fine
+        Noxu one time after the player losing once couldnt use any moves for around half a minute before trying to spam everything
+            I got debug logs saying that the backup timers were used, but im unsure why it took him to long to start using moves
+            Ill have to try replicate this in the Editor and see why
+        
+        Improve entity spawning logic
+            One time when i had set fishmen spawner's amount to 2, it spawned 2 sets of 2 fishmen in 2 spots
+            then once i beat 2 out of 4, i got spammed argument exceptions
+            I think it was because it was trying to activate something it already had done, or maybe an index issue
+                Kinda in the dark here, but try replicate
         
         Add basic gameplay SFX
             Combat stuff
@@ -20,24 +27,10 @@ SNADV Notes
         
         Instability
             Replicatable or From-Build bugs/problems
-                                        
-                Quest logic data gives a nullref, making the ENTIRE GAME UNPLAYABLE on load
-                    apparently this derives from trying to get an npc from its resources database
-                        either the variable tries to find the npc before the database is loaded
-                        or there isnt an npc to begin with??
-                    Anyways i added a debug log to see if the quest data even has the targeted npc name
                         
             One time occurrences or Rare/Intimidating bugs
-                Improve entity spawning logic
-                    One time when i had set fishmen spawner's amount to 2, it spawned 2 fishmen in 2 each spots
-                    then once i beat 2 out of 4, i got spammed argument exceptions
-                    I think it was because it was trying to activate something it already had done, or maybe an index issue
-                        Kinda in the dark here, but try replicate
-
+                
             Low Priority/Unconfirmed fixed Bugs
-                Updated boss melee attack data - just so that the music doesnt change to normal combat when fighting the boss
-                    I havent tested this yet but ive done a few tweaks regarding this
-                    Just see what happens once you fight the boss (keep an eye out on the music and the abilities the boss casts)
 
         Junie Assistant
            
@@ -50,15 +43,25 @@ SNADV Notes
         
         Pre-AO
             
+            Add a shader to fade in and out whenever the player loads in the game, teleports or spawns.
+            
+            Game Pausing Logic
+                There is a video i have in mind to watch so i can learn how to pause everything but GUI or maybe just entities for example
+                It's one thing for me to make the game's menu pause the game
+                but i also want certain stuff to pause the game a small amount too for more impact
+                    Countering for example
+            
             Shop Logic
                 Start by making a portable gui shop that has items that may or may not have a limited stock
                 Should i add GAMBLING?!
                 I can see this being annoying to deal with D:
-            
-            Background/Foreground Logic
-                Make backgrounds similar to Terraria in terms of appearance!
-                Even tho this is cosmetic, i would like to just get the logic done
-                    I will use placeholder bgs just to test it, then will worry about designs Post-AO
+                
+            Scene Logic
+                A special kind of scene that freezes the camera('s y position) to show that the player has died
+                    So falling off would be more clear and funny
+                Somehow incorporate mini cutscenes
+                    I dont know how i can do it, but given i can animate the camera (i think), i might be able to do it
+                    If so, the game would be SO MUCH COOLERR!!!
         
         Post-AO
             
@@ -70,34 +73,45 @@ SNADV Notes
             Boss Logic
                 Improve/Remake Noxu
                     He is a very very boring boss fight, so i need to add more functionality to his moves
-                        e.g making the style based on the player using spatial awareness
-                        An idea would be his rocks bouncing on walls (like dung defender in hk) 
-                            to make the player worry about those and move around more
+                        I want his style to be based on the player using spatial awareness
+                            An idea would be his rocks bouncing on surfaces (like dung defender in hk) 
+                                to make the player worry about those and move around more
+                            Maybe add a digging underground move (also like dung defender) just for mobility and more caution
+                            MAYBE add area manipulation if possible
+                                He can probably resize the area to make it easier/harder for the player to do certain things while fighting him
+                            Make him deathly parry any projectiles that come in contact if he uses the baseball bat
+                                This will mean baseball bat will need some sort of counter variant
+                                The projectiles will be deflected at a near inescapable speed, but this will happen before the freeze/impace frames
+                                It will be very funny if done aha
                         I will probably ask people for more ideas
                 
-                Make a miniboss: a normal enemy-boss hybrid
+                Make minibosses: a normal-enemy/boss hybrid
                     This is basically already a thing; there are spawners that have a onetime flag
                     Tho they arent a physical thing yet
             
-            Sira & TJ Boss Logic
-                I will do Sira last, as it is the most unique boss out of all of them
-                TJ is basically will be split into 2 bosses
+                Sira & TJ
+                    I THHHHIIIIINNNKK i will do Sira last, as it is the most unique boss out of all of them
+                        Still thinking how her moves will be implemented, but i have an idea on what she'd do
+                            She will be intangible for the initial few moments, before summoning a lot of pawns
+                            This ultimately leaves her very vulnerable
+                    TJ is basically will be split into 2 bosses
+                        He will play similarly to Noxu on his first phase, but Cynder on his second
             
             Audio
                 Make it so that the music transitions smoothly
                     maybe i have to fade the music out and simultaneously fade in the new one?
+                    To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
+                        so it can easily switch between or merge together
                 OSTs
                     I need to make new boss music to fit the new map music
                     Split Noxu's Temple into 2 song clips
-                        One for the normal map
+                        One for the normal map - Done
                         One for the intense bits/obstacle course
             
-            Scene Logic
-                A special kind of scene that freezes the camera('s y position) to show that the player has died
-                    So falling off would be more clear and funny
-                Somehow incorporate mini cutscenes
-                    I dont know how i can do it, but given i can animate the camera (i think), i might be able to do it
-                    If so, the game would be SO MUCH COOLERR!!!
+            Background/Foreground Logic
+                Make backgrounds similar to Terraria in terms of appearance!
+                Even tho this is cosmetic, i would like to just get the logic done
+                    I will use placeholder bgs just to test it, then will worry about designs Post-AO
                 
     Animation Overhaul:
     
@@ -111,6 +125,7 @@ SNADV Notes
                 Wall jumping/climbing
                 Better dashing
                 Walk blocking
+                Idle (for a long time, thus secret) animations
                 Spawn animation?
             Cynder/Cyderians
                 More/Improved animations

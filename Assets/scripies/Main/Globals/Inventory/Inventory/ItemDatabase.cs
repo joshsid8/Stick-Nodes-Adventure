@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -43,10 +42,11 @@ public class ItemDatabase : MonoBehaviour
     {
         if (string.IsNullOrEmpty(itemName))
         {
-            Debug.LogWarning("[ItemDatabase] Attempted to get item with empty name.");
+            Debug.LogError("[ItemDatabase] ain nun here dawg");
             return null;
         }
         itemDatabase.TryGetValue(itemName, out var item);
+        if (item == null) Debug.LogError($"[ItemDatabase] We couldnt find {itemName} in our resources D:");
         return item;
     }
 }

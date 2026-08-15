@@ -1,6 +1,7 @@
 using System.Collections;
 using scripies.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace scripies.Player
 {
@@ -478,8 +479,7 @@ namespace scripies.Player
         private void CheckEnvironment()
         {
             isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckCircle, whatIsGround);
-            isTouchingWall = Physics2D.Raycast(wallCheck.position, Vector2.up * transform.localScale.y, wallCheckRay,
-                whatIsWall);
+            isTouchingWall = Physics2D.Raycast(wallCheck.position, Vector2.up * transform.localScale.y, wallCheckRay, whatIsWall);
         }
 
         private void OnDrawGizmosSelected()
@@ -522,6 +522,8 @@ namespace scripies.Player
                     if (ident.typeOfObject == Identifier.ObjectType.Checkpoint && ident.id == data.currentSpawnPointId)
                     {
                         currentSpawnPoint = ident.gameObject;
+                        if (!SceneManager.GetSceneByName(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded) SceneManager.LoadScene(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName, LoadSceneMode.Additive);
+                        //else print($"Scene {SceneManager.GetSceneByName(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName)} already loaded");
                         break;
                     }
                 }
