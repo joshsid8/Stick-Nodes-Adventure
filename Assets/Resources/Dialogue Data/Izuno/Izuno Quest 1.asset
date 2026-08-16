@@ -16,8 +16,8 @@ MonoBehaviour:
   dialogue:
   - Yo, i have another task for you.
   - A friend of mine needs some fish scales...
-  - No idea why, but it would be nice if you got it for me
-  - Ill give you something in return, of course. Preciate it
+  - No idea why, but try get some for me
+  - You get something in return, of course. Preciate it
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -38,7 +38,6 @@ MonoBehaviour:
   questToOffer: {fileID: 11400000, guid: 08eab099a7c0289439727471c3bf8b03, type: 2}
   isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
   derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []

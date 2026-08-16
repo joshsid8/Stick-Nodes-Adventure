@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace scripies.Core
 {
     public interface IDialogueTrigger
@@ -8,7 +10,7 @@ namespace scripies.Core
         UnityEngine.Transform ChatPoint { get; }
         float ChatRadius { get; }
 
-        void AddDialogue(UnityEngine.ScriptableObject dialogue);
+        void AddDialogue(ScriptableObject dialogue, GameObject speaker = null);
         void ClearDialogue();
     }
 }

@@ -1257,6 +1257,18 @@ PrefabInstance:
       propertyPath: vegetable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
+      propertyPath: 'dialogue.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bc21a44d25d1d3459fa8753ea4a1945, type: 2}
+    - target: {fileID: 2258819688666097509, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
+      propertyPath: 'dialogue.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ac8ea9b7cbf891046b04b0fb5b623b2c, type: 2}
     - target: {fileID: 2846562907364595286, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_Name
       value: Imo

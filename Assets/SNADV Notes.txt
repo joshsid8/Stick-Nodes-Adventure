@@ -4,17 +4,13 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
+        Add a shader to fade in and out whenever the player loads in the game, teleports or spawns.
         
-        Look into the couple of todos in the quest scripts
-        
-        Add basic gameplay SFX
-            Combat stuff
-            Door opening
-            Quest notifications (kinda added)
-            Gui stuff
-            Spawning
-            Death (added)
-        
+        Scene Logic
+            Somehow incorporate mini cutscenes
+                I dont know how i can do it, but given i can animate the camera (i think), i might be able to do it
+                If so, the game would be SO MUCH COOLERR!!!
+
     Optimisations & Hotfixes:
         
         Instability
@@ -27,12 +23,17 @@ SNADV Notes
         Junie Assistant
            N/A
             
-                                    
     Things to be added/changed:
         
         Pre-AO
             
-            Add a shader to fade in and out whenever the player loads in the game, teleports or spawns.
+            Add basic gameplay SFX
+                Combat stuff
+                Door opening
+                Quest notifications (kinda added)
+                Gui stuff
+                Spawning
+                Death (added)
             
             Game Pausing Logic
                 There is a video i have in mind to watch so i can learn how to pause everything but GUI or maybe just entities for example
@@ -44,14 +45,7 @@ SNADV Notes
                 Start by making a portable gui shop that has items that may or may not have a limited stock
                 Should i add GAMBLING?!
                 I can see this being annoying to deal with D:
-                
-            Scene Logic
-                A special kind of scene that freezes the camera('s y position) to show that the player has died
-                    So falling off would be more clear and funny
-                Somehow incorporate mini cutscenes
-                    I dont know how i can do it, but given i can animate the camera (i think), i might be able to do it
-                    If so, the game would be SO MUCH COOLERR!!!
-        
+                        
         Post-AO
             
             Improved Typewriter Logic
@@ -97,14 +91,14 @@ SNADV Notes
                         so it can easily switch between or merge together
                 OSTs
                     I need to make new boss music to fit the new map music
-                    Split Noxu's Temple into 2 song clips
-                        One for the normal map - Done
-                        One for the intense bits/obstacle course
             
             Background/Foreground Logic
                 Make backgrounds similar to Terraria in terms of appearance!
                 Even tho this is cosmetic, i would like to just get the logic done
                     I will use placeholder bgs just to test it, then will worry about designs Post-AO
+            
+            Switch to Tilemaps
+                Instead of just loose shapes everywhere to form maps, maybe use tilemaps for easier layouting
                 
     Animation Overhaul:
     

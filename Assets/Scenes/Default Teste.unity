@@ -2453,6 +2453,7 @@ MonoBehaviour:
   - 0
   - 0
   sectionObj: {fileID: 1162324168}
+  mainSpawnPoint: {fileID: 0}
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []

@@ -47,37 +47,51 @@ namespace scripies.Dialogue
         private void Update()
         {
             var inputDirection = Input.GetAxisRaw("Vertical");
-            if (isActive)
+            
+            if (!isActive) return;
+            isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
+            if (isInRange && !isTriggered)
             {
-                isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
-                if (isInRange && !isTriggered)
+                if (canTurn) FacePlayer();
+                if (indicator != null) indicator.SetActive(true);
+                if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
                 {
-                    if (canTurn) FacePlayer();
-                    if (indicator != null) indicator.SetActive(true);
-                    if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
+                    isTriggered = true;
+                    isForced = false;
+                    if (dialogue != null)
                     {
-                        isTriggered = true;
-                        isForced = false;
-                        if (dialogue != null)
-                        {
-                            // '^' means "from the end of a list datatype" WHICH IS SO COOL
-                            var priorityDialogue = dialogue[^1];
-                            DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
-                            if (dialogue.Count > 1) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
-                        }
+                        // '^' means "from the end of a list datatype" WHICH IS SO COOL
+                        var priorityDialogue = dialogue[^1];
+                        DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                        if (dialogue.Count > 1) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
                     }
                 }
-                else if (indicator != null) indicator.SetActive(false);
-
-                if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
             }
+            else if (indicator != null) indicator.SetActive(false);
+
+            if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
         }
         
-        public void AddDialogue(ScriptableObject dialogueObject) => dialogue.Add(dialogueObject as DialogueObject);
+        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
+        {
+            if (speaker != gameObject) return;
+            
+            if (!dialogue.Contains(dialogueObject as DialogueObject)) dialogue.Add(dialogueObject as DialogueObject);
+            else Debug.LogWarning($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
+        }
+
         public void ClearDialogue() => dialogue.Clear();
         
-        private void OnEnable() => GameEvents.OnToggleDialogueTrigger += ToggleDialogueTrigger;
-        private void OnDisable() => GameEvents.OnToggleDialogueTrigger -= ToggleDialogueTrigger;
+        private void OnEnable()
+        {
+            GameEvents.OnToggleDialogueTrigger += ToggleDialogueTrigger;
+            GameEvents.AddDialogue += AddDialogue;
+        }
+        private void OnDisable()
+        {
+            GameEvents.OnToggleDialogueTrigger -= ToggleDialogueTrigger;
+            GameEvents.AddDialogue -= AddDialogue;
+        }
         
         private void ToggleDialogueTrigger(GameObject obj, bool state)
         {

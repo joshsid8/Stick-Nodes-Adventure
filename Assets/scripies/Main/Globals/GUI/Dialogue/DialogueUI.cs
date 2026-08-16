@@ -16,7 +16,7 @@ namespace scripies.Dialogue
         [SerializeField] private TMP_Text npcNameLabel;
         private TypeWriterFX typeWriter;
         private DialogueResponseHandler handler;
-        public GameObject playerBars;
+        public GameObject gameHUD;
         public bool isAnimated;
         public Animator animator;
         private NPC currentNpc;
@@ -58,10 +58,15 @@ namespace scripies.Dialogue
         public void ShowDialogue(ScriptableObject dO, NPC npc = null)
         {
             var dialogueObject = dO as DialogueObject;
-            if (dialogueObject == null) return;
+            if (dialogueObject == null)
+            {
+                Debug.LogError("There isnt a dialogue object to show!");
+                CloseDialogue();
+                return;
+            }
             if (npc != null) currentNpc = npc;
             CloseAll();
-            playerBars.SetActive(false);
+            gameHUD.SetActive(false);
             isAnimated = dialogueObject.IsAnimated;
             dialogueBox.SetActive(true);
             gameObject.SetActive(true);
@@ -69,8 +74,8 @@ namespace scripies.Dialogue
             textIndex = dialogueObject.colourIndex;
             currentColourIndex = 0;
             currentBoldIndex = 0;
-            QuestHandling(dialogueObject);
 
+            QuestHandling(dialogueObject);
             StartCoroutine(StepThroughDialogue(dialogueObject));
         }
 
@@ -80,16 +85,20 @@ namespace scripies.Dialogue
             {
                 npcNameLabel.text = dialogueObject.NPCName;
                 npcNameLabel.color = dialogueObject.nameColour;
+                
                 if (dialogueObject.canBeColoured && currentColourIndex <= textIndex)
                     textLabel.color = dialogueObject.colour[currentColourIndex];
                 else if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
                 if (dialogueObject.canBeColoured) currentColourIndex++;
+                
+                // (simplified version of the if statement below, but the ide suggests it to be further simplified)
+                //isBold = dialogueObject.canBeBold ? dialogueObject.bold[currentBoldIndex] : false;
                 if (dialogueObject.canBeBold) isBold = dialogueObject.bold[currentBoldIndex];
                 else isBold = false;
                 if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
+                
                 // pretty expensive method, maybe refactor this
-                animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker
-                    ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
+                animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
                 yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
                 yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
             }
@@ -104,36 +113,46 @@ namespace scripies.Dialogue
 
         private void QuestHandling(DialogueObject dialogueObject)
         {
-            if (dialogueObject.isQuestInteraction && dialogueObject.questToOffer != null)
+            if (dialogueObject.questToOffer == null) return;
+            
+            var quest = dialogueObject.questToOffer as QuestSO;
+            if (InvManager.Instance == null || InvManager.Instance.invIndex == null || quest == null)
+                Debug.LogError("[Quest Check] InvManager or its Index is not ready... or the quest is null.");
+            else
             {
-                var quest = dialogueObject.questToOffer as QuestSO;
-                if (InvManager.Instance == null || InvManager.Instance.invIndex == null || quest == null)
-                    Debug.LogError("Quest Check: InvManager or its Index is not ready... or the quest is null.");
-                else
+                switch (quest.questType)
                 {
-                    var needs = new (CollectableSOBase id, int count)[quest.objectsToInteract.Length];
-                    for (var i = 0; i < quest.objectsToInteract.Length; i++)
-                        needs[i] = (quest.objectsToInteract[i], quest.numberOfObjects[i]);
-                    var hasItems = InvManager.Instance.invIndex.MeetsAllCounts(needs);
-                    if (!hasItems)
-                    {
-                        if (dialogueObject.itemCheckFailureDialogue != null)
-                            StartCoroutine(StepThroughDialogue(dialogueObject.itemCheckFailureDialogue));
+                    case Quest.QuestType.GiveTo:
+                        var needs = new (CollectableSOBase id, int count)[quest.objectsToInteract.Length];
+                        for (var i = 0; i < quest.objectsToInteract.Length; i++) needs[i] = (quest.objectsToInteract[i], quest.numberOfObjects[i]);
+                        var hasItems = InvManager.Instance.invIndex.MeetsAllCounts(needs);
+                        if (!hasItems)
+                        {
+                            if (dialogueObject.itemCheckFailureDialogue != null)
+                                StartCoroutine(StepThroughDialogue(dialogueObject.itemCheckFailureDialogue));
+                            else
+                            {
+                                Debug.LogWarning("Player failed item check, but no failure dialogue is set.");
+                                CloseDialogue();
+                            }
+                        }
                         else
                         {
-                            Debug.LogWarning("Player failed item check, but no failure dialogue is set.");
-                            CloseDialogue();
+                            var slots = QuestLogManager.Instance.questSlots;
+                            foreach (var slot in slots)
+                            {
+                                if (slot != null && slot.nTi == currentNpc)
+                                {
+                                    slot.questCompleted = true;
+                                    //StartCoroutine(StepThroughDialogue(dialogueObject));
+                                    // Where dialogueObject is the quest completion dialogue
+                                }
+                            }
                         }
-                    }
-                    else
-                    {
-                        var slots = QuestLogManager.Instance.questSlots;
-                        foreach (var slot in slots)
-                        {
-                            if (slot != null && slot.questType == Quest.QuestType.GiveTo && slot.nTi == currentNpc)
-                                slot.questCompleted = true;
-                        }
-                    }
+                        break;
+                    default:
+                        //Debug.LogWarning($"[Quest Check] type {quest.questType} from {quest.questName} cant work here");
+                        break;
                 }
             }
         }
@@ -157,7 +176,7 @@ namespace scripies.Dialogue
             ClearData();
         }
 
-        private IEnumerator ChangeDialogues(DialogueObject dialogueObject)
+        private static IEnumerator ChangeDialogues(DialogueObject dialogueObject)
         {
             GameObject externalInstance = null;
             
@@ -166,7 +185,9 @@ namespace scripies.Dialogue
                 externalInstance = GameObject.Find(dialogueObject.externalInstance);
                 yield return null;
             }
-            externalInstance.GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredExternalDialogue);
+            print("found our instance");
+            yield return new WaitForSeconds(1);
+            GameEvents.TriggerAddDialogue(dialogueObject.alteredExternalDialogue, externalInstance);
         }
 
         private void ClearData()
@@ -180,8 +201,8 @@ namespace scripies.Dialogue
             typeWriter.actionFactor = 0;
             dialogueBox.SetActive(false);
             GetActive(false);
-            textLabel.text = String.Empty;
-            playerBars.SetActive(true);
+            textLabel.text = string.Empty;
+            gameHUD.SetActive(true);
             textLabel.color = Color.black;
             npcNameLabel.color = Color.black;
             currentNpc = null;

@@ -37,10 +37,6 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     public GameObject rewardObj;
     public CollectableSOBase[] questRewards;
     
-    //TODO: I think i will make it so that you have to speak to the quest giver if you want your quest completed now, it makes more sense, albeit more annoying for players
-    public GameObject questGiver;
-    public DialogueObject appreciationDialogue;
-    
     private void Start()
     { 
         foreach (var text in titleTexts) text.text = questTitle;
@@ -87,23 +83,15 @@ public class Quest : MonoBehaviour, IPointerClickHandler
             case QuestType.DefeatEnemy:
                 foreach (var enemy in requiredByEnemy)
                 {
-                    var current = currentKillsByEnemy.ContainsKey(enemy.Key) ? currentKillsByEnemy[enemy.Key] : 0;
-                    if (current < enemy.Value)
-                    {
-                        allMet = false;
-                        break;
-                    }
+                    var currentKills = currentKillsByEnemy.GetValueOrDefault(enemy.Key, 0);
+                    if (currentKills < enemy.Value) allMet = false;
                 }
                 break;
             case QuestType.HaveInInventory:
                 if (InvManager.Instance == null || InvManager.Instance.invIndex == null) return;
                 for (var i = 0; i < oTi.Length; i++)
                 {
-                    if (!InvManager.Instance.invIndex.HasAtLeast(oTi[i], noOfO[i]))
-                    {
-                        allMet = false;
-                        break;
-                    }
+                    if (!InvManager.Instance.invIndex.HasAtLeast(oTi[i], noOfO[i])) allMet = false;
                 }
                 break;
             case QuestType.GiveTo:
@@ -114,14 +102,16 @@ public class Quest : MonoBehaviour, IPointerClickHandler
             default:
                 break;
         }
+        if (!allMet) return;
+        CompleteQuest();
+    }
 
-        if (allMet)
-        {
-            GameEvents.TriggerSound(QuestLogManager.Instance.questCompleteSound);
-            OnCleared();
-            GiveRewards();
-            ClearUI();
-        }
+    public void CompleteQuest()
+    {
+        GameEvents.TriggerSound(QuestLogManager.Instance.questCompleteSound);
+        OnCleared();
+        GiveRewards();
+        ClearUI();
     }
     
     private void OnAssigned()
@@ -186,6 +176,8 @@ public class Quest : MonoBehaviour, IPointerClickHandler
                 var enemy = eTd[i];
                 if (enemy == null) continue;
                 var count = noOfE[i];
+                
+                //requiredByEnemy.TryAdd(enemy, count); (this is supposedly the same as the line below. give it a try)
                 if (requiredByEnemy.ContainsKey(enemy)) requiredByEnemy[enemy] += count;
                 else requiredByEnemy[enemy] = count;
             }

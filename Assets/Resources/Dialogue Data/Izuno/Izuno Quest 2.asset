@@ -15,7 +15,7 @@ MonoBehaviour:
   npcName: Izuno
   dialogue:
   - Yo, i have yet, another task for you.
-  - 'I saw my dawg imo standing around somewhere above us.
+  - 'I saw my dawg Imo standing around somewhere above us.
 
     Tell him i said hey.'
   - Thats literally it this time. expect a small reward
@@ -39,7 +39,6 @@ MonoBehaviour:
   questToOffer: {fileID: 11400000, guid: 7fd6bfc11f16dc143a55b080b3593a97, type: 2}
   isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
   derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
