@@ -33,7 +33,7 @@ public class MapManager : MonoBehaviour
     #region Scene Data
     
     private string sceneName; 
-    [SerializeField] private GameObject[] sceneObjects;
+    public GameObject[] sceneObjects;
     [SerializeField] private List<GameObject> doorObjects = new List<GameObject>();
     [SerializeField] private List<GameObject> spawnerObjects = new List<GameObject>();
     

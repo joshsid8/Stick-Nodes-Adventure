@@ -30,7 +30,11 @@ public class AreaManager : MonoBehaviour
         titleText.text = title;
         descriptionText.text = description;
         titleText.color = textColor;
-        if (actualCamera.backgroundColor != bgColor) StartCoroutine(LerpColours(bgColor));
+        if (actualCamera.backgroundColor != bgColor)
+        {
+            //TODO: Maybe change background logic into an active sprite/image behind the player, and use CrossFadeColor to efficiently change it
+            StartCoroutine(LerpColours(bgColor));
+        }
     }
 
     public IEnumerator LerpColours(Color bgColor)

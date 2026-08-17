@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace scripies.Player
@@ -161,6 +162,7 @@ namespace scripies.Player
 
             if (Shenanigans.Instance != null) Shenanigans.Instance.ToggleFreezeCamera(false);
             if (realSpawn) GameEvents.TriggerPlayerSpawn(gameObject);
+            GameHUD.Instance.ActivateShader(0.5f, 1);
             StartCoroutine(SpawnPeriod());
         }
 
@@ -178,10 +180,19 @@ namespace scripies.Player
                 deathToggle = true;
                 isDead = true;
                 GameEvents.TriggerPlayerDeath();
+                //#if UNITY_EDITOR
                 GameEvents.TriggerJumpScare();
                 GameEvents.TriggerSound();
+                //#endif
                 Shenanigans.Instance.ToggleFreezeCamera();
+                GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
+
+                if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded) 
+                    SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName, LoadSceneMode.Additive);
+                else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
+                
                 yield return new WaitForSeconds(respawnTime);
+                
                 StartCoroutine(Spawn(0, true));
                 playerHealth = playerMaxHealth * 0.25f;
                 deathToggle = false;

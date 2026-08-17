@@ -4,22 +4,25 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Add a shader to fade in and out whenever the player loads in the game, teleports or spawns.
-        
-        Scene Logic
-            Somehow incorporate mini cutscenes
-                I dont know how i can do it, but given i can animate the camera (i think), i might be able to do it
-                If so, the game would be SO MUCH COOLERR!!!
+            
+        Incorporate mini cutscenes
+            It is possible to make this happen so thats nice
+            
+        Make sections have its own backgrounds
+            I was also thinking of making a script that makes the background colour fade between 2 maps (for example, Origo and Cynder Valley)
+            If i can find a way to get the data of the sides of the section, this will be an easy task to do
+                If this isnt the best way, make it so that there are points the scripts needs to make the fade possible
 
     Optimisations & Hotfixes:
         
         Instability
             Replicatable or From-Build bugs/problems
-                        
+                Noxu's boulder kick doesnt work anymore!!!
+                
             One time occurrences or Rare/Intimidating bugs
                 
             Low Priority/Unconfirmed fixed Bugs
-
+                    
         Junie Assistant
            N/A
             

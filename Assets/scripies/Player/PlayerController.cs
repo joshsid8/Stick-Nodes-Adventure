@@ -128,6 +128,7 @@ namespace scripies.Player
             #if UNITY_EDITOR
             if (debugMode)
             {
+                GameHUD.Instance.ActivateShader();
                 PlayerHealth.Instance.playerMaxHealth = 1000;
                 PlayerHealth.Instance.playerHealth = 1000;
                 pab.energyRefill = 50;
@@ -499,6 +500,8 @@ namespace scripies.Player
             data.health = PlayerHealth.Instance.playerHealth;
             data.energy = pab.energy;
             data.money = pm.nodeBucks;
+            data.wallJumpAbility = canWallJump;
+            data.doubleJumpAbility = canDoubleJump;
             
             if (currentSpawnPoint != null)
             {
@@ -513,6 +516,8 @@ namespace scripies.Player
             PlayerHealth.Instance.playerHealth = data.health;
             pab.energy = data.energy;
             pm.nodeBucks = data.money;
+            canWallJump = data.wallJumpAbility;
+            canDoubleJump = data.doubleJumpAbility;
 
             if (data.currentSpawnPointId != 0)
             {
@@ -539,5 +544,8 @@ namespace scripies.Player
         public float energy;
         public float money;
         public int currentSpawnPointId;
+
+        public bool wallJumpAbility;
+        public bool doubleJumpAbility;
     }
 }

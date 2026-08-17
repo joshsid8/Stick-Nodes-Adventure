@@ -1,3 +1,4 @@
+using System.Collections;
 using scripies.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,12 @@ public class GameHUD : MonoBehaviour
     [SerializeField] private TMP_Text currencyText;
     [SerializeField] private GameObject abilityArsenal;
 
+    [SerializeField] private Image screenShader;
+    [SerializeField] private Color screenShaderColour;
+    
+    [SerializeField] private Camera animatedCamera;
+    [SerializeField] private GameObject cameraTarget;
+    
     private IEnemyStatus boss;
     public Image bossHealthBar;
     [SerializeField] private Image bossHealthBackBar;
@@ -26,12 +33,13 @@ public class GameHUD : MonoBehaviour
         Instance = this;
         
         ToggleBossHealth(false);
+        ToggleShader(true);
+        SetShaderColour(screenShaderColour, 0.75f);
     }
     
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
-        abilityArsenal.SetActive(true);
     }
 
     private void Update()
@@ -39,6 +47,42 @@ public class GameHUD : MonoBehaviour
         currencyText.text = "₦odeBucks: " + player.NodeBucks.ToString("F0");
         bossHealthBackBar.color = new Color(bossHealthBar.color.r * 0.4f, bossHealthBar.color.g * 0.4f, bossHealthBar.color.b * 0.4f, 1);
     }
+    
+    #region Shader Stuff
+    private void ToggleShader(bool state) => screenShader.enabled = state;
+    public void ActivateShader(float holdTime = 1, float fadeTime = 1.5f, bool fadeInAndOut = false, float fadeOutTime = 1.5f)
+    {
+        StartCoroutine(fadeTime <= 0
+            ? FadeInShader(holdTime, fadeTime, fadeInAndOut, fadeOutTime)
+            : FadeOutShader(holdTime, fadeTime));
+    }
+    
+    private IEnumerator FadeOutShader(float holdTime, float fadeTime)
+    {
+        if (!screenShader.enabled) screenShader.enabled = true;
+        yield return new WaitForSeconds(holdTime);
+        screenShader.CrossFadeAlpha(0, Mathf.Abs(fadeTime), false);
+    }
+    
+    private IEnumerator FadeInShader(float holdTime, float fadeTime, bool fadeInAndOut = false, float fadeOutTime = 1.5f)
+    {
+        if (!screenShader.enabled) screenShader.enabled = true;
+        yield return new WaitForSeconds(holdTime);
+        screenShader.CrossFadeAlpha(1, Mathf.Abs(fadeTime), false);
+        if (!fadeInAndOut) yield break;
+        yield return new WaitForSeconds(fadeTime);
+        StartCoroutine(FadeOutShader(holdTime, fadeOutTime));
+    }
+    
+    private void SetShaderColour(Color colour, float fadeTime = 1) => screenShader.CrossFadeColor(colour, fadeTime, false, false);
+    
+    #endregion
+
+    #region Camera Movement
+    private void MoveCameraToPoint(Vector3 point, float time = 1) => animatedCamera.transform.position = Vector3.Lerp(animatedCamera.transform.position, point, time);
+    private void ZoomCamera(float zoom, float time = 1) => animatedCamera.orthographicSize = Mathf.Lerp(animatedCamera.orthographicSize, zoom, time);
+
+    #endregion
     
     public void ToggleBossHealth(bool state)
     {

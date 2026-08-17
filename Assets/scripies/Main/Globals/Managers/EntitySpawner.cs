@@ -28,12 +28,16 @@ public class EntitySpawner : MonoBehaviour
     {
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.RegisterSpawner(gameObject);
+        
+        GetComponent<Collider2D>().enabled = true;
     }
 
     private void OnDisable()
     {
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.UnregisterSpawner(gameObject);
+        
+        GetComponent<Collider2D>().enabled = false;
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created

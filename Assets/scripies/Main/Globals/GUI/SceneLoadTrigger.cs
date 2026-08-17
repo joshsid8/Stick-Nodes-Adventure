@@ -59,6 +59,17 @@ public class SceneLoadTrigger : MonoBehaviour
                         mapManager.SaveSceneData();
                         yield return new WaitForSeconds(0.1f);
                         mapManager.MakeDataPersistent();
+                        foreach (var obj in mapManager.sceneObjects)
+                        {
+                            if (obj.GetComponentsInChildren<EntitySpawner>() != null)
+                            {
+                                foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>()) 
+                                    spawner.enabled = false;
+                            }
+                            
+                            obj.gameObject.SetActive(false);
+                        }
+                        yield return new WaitForSeconds(0.1f);
                     }
                     SceneManager.UnloadSceneAsync(scene);
                 }
