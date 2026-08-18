@@ -18,8 +18,10 @@ public class MapManager : MonoBehaviour
     [SerializeField] [TextArea] private string mapDescription;
     [SerializeField] private Color mapTextColor = Color.white;
     [SerializeField] private Color mapBgColor = Color.white;
+    
     [SerializeField] private AudioClip[] newOst;
     public float[] ostVolume = {0.5f,0.5f,0.5f};
+    
     public string[] mapDisasterNames = { "Temperature", "Earthquake", "Wind", "Thunderstorm" };
     public float[] mapDisasterFactors = new float[4];
     
@@ -113,12 +115,13 @@ public class MapManager : MonoBehaviour
 
     private IEnumerator MapTransition(Collider2D collision)
     {
+        // No! I am NNNNOT going to inverse the if statement!!!
         if (AreaManager.Instance.titleText.text != mapName || AreaManager.Instance.titleText.text != null)
         {
             activeMap = true;
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
             mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
-            StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
+            //StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
             if (audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene) audioManager.TriggerFadeIn(0.5f);
             yield return new WaitForSeconds(0.8f);
             if (collision.gameObject.scene == gameObject.scene) 
@@ -134,7 +137,6 @@ public class MapManager : MonoBehaviour
             return;
         }
         weather.SetWeather();
-        AreaManager.Instance.animator.SetTrigger("Announce");
     }
 
     private IEnumerator TryStartMapAgain(GameObject objectRef)

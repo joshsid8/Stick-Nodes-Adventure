@@ -4,14 +4,14 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-            
-        Incorporate mini cutscenes
-            It is possible to make this happen so thats nice
-            
-        Make sections have its own backgrounds
+                    
+        Make sections have its own settings (similar to maps)
             I was also thinking of making a script that makes the background colour fade between 2 maps (for example, Origo and Cynder Valley)
             If i can find a way to get the data of the sides of the section, this will be an easy task to do
                 If this isnt the best way, make it so that there are points the scripts needs to make the fade possible
+        
+        Make dialogueobject use classes for better formatting
+            Ensure not to remove the original data so u can transfer it thereto
 
     Optimisations & Hotfixes:
         
@@ -29,6 +29,9 @@ SNADV Notes
     Things to be added/changed:
         
         Pre-AO
+            
+            Incorporate mini cutscenes
+                It is possible to make this happen so thats nice
             
             Add basic gameplay SFX
                 Combat stuff

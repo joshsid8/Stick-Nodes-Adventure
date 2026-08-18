@@ -1,5 +1,4 @@
 using System.Collections;
-using scripies.Core;
 using UnityEngine;
 using TMPro;
 
@@ -10,6 +9,8 @@ public class AreaManager : MonoBehaviour
     public TMP_Text titleText;
     public TMP_Text descriptionText;
     [SerializeField] private Camera actualCamera;
+
+    public TMP_Text sectionTitle;
     
     public Animator animator;
     
@@ -25,11 +26,22 @@ public class AreaManager : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     
-    public void Announce(string title, string description, Color textColor, Color bgColor)
+    public void Announce(string title = "", string description = "", Color textColor = default, Color bgColor = default)
     {
-        titleText.text = title;
-        descriptionText.text = description;
+        if (!string.IsNullOrEmpty(description))
+        {
+            titleText.text = title;
+            descriptionText.text = description;
+            animator.SetTrigger("Announce");
+        }
+        else
+        {
+            sectionTitle.text = title;
+            sectionTitle.color = textColor;
+            animator.SetTrigger("SectionAnnounce");
+        }
         titleText.color = textColor;
+        
         if (actualCamera.backgroundColor != bgColor)
         {
             //TODO: Maybe change background logic into an active sprite/image behind the player, and use CrossFadeColor to efficiently change it

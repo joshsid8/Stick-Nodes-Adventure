@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace scripies.Dialogue
@@ -9,6 +10,7 @@ namespace scripies.Dialogue
         [SerializeField] [TextArea(4, 10)]
         [Tooltip("Keep in mind: # = slow down, * = speed up, |/_ = animations 1 to 3, ~ = stop animation")]
         private string[] dialogue;
+        public DialogueThread[] dialogueThread;
         [SerializeField] private bool pendingChoice;
         [SerializeField] [TextArea(1, 2)] private string choiceQuestion;
         [SerializeField] private bool isAnimated;
@@ -17,6 +19,7 @@ namespace scripies.Dialogue
         public DialogueResponse noResponse;
 
         public string[] Dialogue => dialogue;
+        public DialogueThread[] DialogueThread => dialogueThread;
         public string NPCName => npcName;
         public Color nameColour = Color.black;
         public bool PendingChoice => pendingChoice;
@@ -39,8 +42,7 @@ namespace scripies.Dialogue
         [Space(10)] [Tooltip("Check if this response should change a global boolean variable.")]
         public bool appliesBooleanChange;
 
-        [Tooltip(
-            "The exact names of the boolean variables in GameManager to change  (mostly from the Shenanigans script) ")]
+        [Tooltip("The exact names of the boolean variables in GameManager to change (mostly from the Shenanigans/PlayerManager script) ")]
         public string[] targetBoolVariables;
 
         public bool[] newBoolValues;
@@ -81,5 +83,14 @@ namespace scripies.Dialogue
         [Tooltip("Adds this dialogue to another npc. Ensure this is filled if the quest type SpeakTo/GiveTo")]
         public DialogueObject alteredExternalDialogue;
 
+    }
+
+    [Serializable]
+    public class DialogueThread
+    {
+        // TODO: Implement!
+        public string dialogue;
+        public Color dialogueColour = Color.black;
+        public bool isBold;
     }
 }

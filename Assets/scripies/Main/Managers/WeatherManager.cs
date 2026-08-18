@@ -14,6 +14,7 @@ public class WeatherManager : MonoBehaviour
     [FormerlySerializedAs("wp")]
     public WeatherProperties[] weatherProperties = new WeatherProperties[3];
     private MapManager mm;
+    [SerializeField] private SectionManager sm;
 
     [SerializeField] private bool randomWeather;
     [SerializeField] private float weatherChance = 10;
@@ -30,16 +31,22 @@ public class WeatherManager : MonoBehaviour
     
     private void Awake()
     {
-        mm = GetComponent<MapManager>();
-        player = PlayerHealth.Instance;
-        preValues[0] = player.regenerationMultiplier;
-        preValues[1] = player.pc.movementSpeed;
+        mm ??= GetComponent<MapManager>();
+        if (mm == null) sm ??= GetComponent<SectionManager>();
 
         disasters.Add("Temperature", 0);
         disasters.Add("Thunderstorm", 0);
         disasters.Add("Wind", 0);
         disasters.Add("Earthquake", 0);
     }
+
+    private void Start()
+    {
+        player = PlayerHealth.Instance;
+        preValues[0] = player.regenerationMultiplier;
+        preValues[1] = player.pc.movementSpeed;
+    }
+
     public void SetWeather()
     {
         var rng = Random.Range(0, 101);
@@ -52,34 +59,56 @@ public class WeatherManager : MonoBehaviour
         switch (weatherType)
         {
             case WeatherType.Clear:
-                mm.UpdateNormalAreaInfo();
+                if (mm != null) mm.UpdateNormalAreaInfo();
+                else sm.UpdateNormalAreaInfo();
                 player.regenerationMultiplier = preValues[0];
                 player.pc.movementSpeed = preValues[1];
                 break;
             case WeatherType.Hot:
-                mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
+                if (mm != null) mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
+                    weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
+                else sm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
                 //player.pc.movementSpeed = preValues[1] * 0.8f;
                 break;
             case WeatherType.Cold:
-                mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
+                if (mm != null) mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
+                    weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
+                else sm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
                 //player.pc.movementSpeed = preValues[1] * 0.8f;
                 break;
             case WeatherType.Rainy:
-                mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,
+                if (mm != null) mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,
+                    weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume);
+                else sm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherTextColor,
                     weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume);
                 InvokeRepeating(nameof(Thunderstorm), 0, thunderTimer);
                 break;
             default:
-                mm.UpdateNormalAreaInfo();
+                if (mm != null) mm.UpdateNormalAreaInfo();
+                else sm.UpdateNormalAreaInfo();
+                player.regenerationMultiplier = preValues[0];
+                player.pc.movementSpeed = preValues[1];
                 break;
         }
-
-        for (var i = 0; i < mm.mapDisasterNames.Length; i++)
+        if (mm != null)
         {
-            if (!disasters.ContainsKey(mm.mapDisasterNames[i])) disasters.TryAdd(mm.mapDisasterNames[i], mm.mapDisasterFactors[i]);
-            else disasters[mm.mapDisasterNames[i]] = mm.mapDisasterFactors[i];
+            for (var i = 0; i < mm.mapDisasterNames.Length; i++)
+            {
+                if (!disasters.ContainsKey(mm.mapDisasterNames[i]))
+                    disasters.TryAdd(mm.mapDisasterNames[i], mm.mapDisasterFactors[i]);
+                else disasters[mm.mapDisasterNames[i]] = mm.mapDisasterFactors[i];
+            }
+        }
+        else
+        {
+            for (var i = 0; i < sm.mapDisasterNames.Length; i++)
+            {
+                if (!disasters.ContainsKey(sm.mapDisasterNames[i]))
+                    disasters.TryAdd(sm.mapDisasterNames[i], sm.mapDisasterFactors[i]);
+                else disasters[sm.mapDisasterNames[i]] = sm.mapDisasterFactors[i];
+            }
         }
         InvokeRepeating(nameof(EarthQuake), 0, earthquakeTimer);
         InvokeRepeating(nameof(Temperature), 0, 0.001f);
@@ -88,7 +117,7 @@ public class WeatherManager : MonoBehaviour
 
     private void PollingHurtPlayer(float damage = 0.001f) => player.playerHealth -= damage;
 
-    public void ClearDisasters()  
+    public void ClearDisasters()
     {
         CancelInvoke(nameof(Thunderstorm));
         CancelInvoke(nameof(EarthQuake));
@@ -101,10 +130,8 @@ public class WeatherManager : MonoBehaviour
 
     private void EarthQuake()
     {
-        if (disasters.ContainsKey("Earthquake") && disasters["Earthquake"] > 0 && player.pc.isGrounded)
-        {
+        if (disasters.ContainsKey("Earthquake") && disasters["Earthquake"] > 0 && player.pc.isGrounded) 
             player.GetComponent<IDamageable>().Damage(0.5f * disasters["Earthquake"], false, 3, IDamageable.ElementType.Earth, 1.2f);
-        }
     }
 
     private void Temperature()

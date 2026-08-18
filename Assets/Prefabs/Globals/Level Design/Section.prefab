@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2511440761741511710, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: randomWeather
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4524482998962597035, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: 'doorObj.Array.data[0]'
       value: 

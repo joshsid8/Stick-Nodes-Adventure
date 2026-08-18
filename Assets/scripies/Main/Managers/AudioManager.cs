@@ -80,7 +80,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
     public IEnumerator FadeInMusic(float fadeTime = 1)
     {
-        float targetVolume = backgroundMusicVolume[(int)musicType];
+        var targetVolume = backgroundMusicVolume[(int)musicType];
         while (musicSource.volume < targetVolume)
         {
             musicSource.volume = Mathf.MoveTowards(musicSource.volume, targetVolume, Time.deltaTime * fadeTime);
@@ -99,7 +99,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         musicSource.volume = 0;
     }
     
-    // Junie worked here, making fading work properly. learn how all this works passively once you improve your coding skills!
+    // Junie worked here, making fading work properly. learn how all this works passively once you learn more about coroutines
     public void TriggerFadeIn(float fadeTime = 1)
     {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);

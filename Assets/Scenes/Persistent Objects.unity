@@ -959,7 +959,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 627, y: -430.41998}
+  m_AnchoredPosition: {x: -666.26855, y: -430.41998}
   m_SizeDelta: {x: 466, y: 45.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &172274499
@@ -1255,6 +1255,8 @@ MonoBehaviour:
   abilityArsenal: {fileID: 1982910205}
   screenShader: {fileID: 1774821750}
   screenShaderColour: {r: 0, g: 0, b: 0, a: 1}
+  animatedCamera: {fileID: 0}
+  cameraTarget: {fileID: 0}
   bossHealthBar: {fileID: 6464437088897952011}
   bossHealthBackBar: {fileID: 3449268023825408440}
   bossTitleText: {fileID: 1068503996809264592}
@@ -1365,7 +1367,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1666,7 +1668,7 @@ GameObject:
   - component: {fileID: 227101032}
   - component: {fileID: 227101033}
   m_Layer: 0
-  m_Name: Title
+  m_Name: Map Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1882,7 +1884,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2517,7 +2519,7 @@ GameObject:
   - component: {fileID: 310729314}
   - component: {fileID: 310729313}
   m_Layer: 0
-  m_Name: Description
+  m_Name: Map Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3401,6 +3403,7 @@ RectTransform:
   m_Children:
   - {fileID: 227101031}
   - {fileID: 310729315}
+  - {fileID: 1177921408}
   m_Father: {fileID: 4626761995785531250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3423,7 +3426,8 @@ MonoBehaviour:
   titleText: {fileID: 227101033}
   descriptionText: {fileID: 310729313}
   actualCamera: {fileID: 4624440029649430630}
-  animator: {fileID: 0}
+  sectionTitle: {fileID: 1177921409}
+  animator: {fileID: 434518638}
   lerpTime: 5
 --- !u!95 &434518638
 Animator:
@@ -6408,6 +6412,7 @@ GameObject:
   - component: {fileID: 911366085}
   - component: {fileID: 911366084}
   - component: {fileID: 911366083}
+  - component: {fileID: 911366086}
   m_Layer: 12
   m_Name: Section (1)
   m_TagString: Section
@@ -6444,6 +6449,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac1586a9667c1d4999b649ffb531ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  announceDetails: 1
+  sectionName: Tunnel?
+  sectionTextColor: {r: 0.9622642, g: 0.79432184, b: 0.79432184, a: 1}
+  sectionBgColor: {r: 0.5660378, g: 0.36044857, b: 0.36044857, a: 1}
+  newOst: []
+  ostVolume:
+  - 0.5
+  - 0.5
+  - 0.5
+  mapDisasterNames:
+  - Temperature
+  - Earthquake
+  - Wind
+  - Thunderstorm
+  mapDisasterFactors:
+  - 0
+  - 0
+  - 0
+  - 0
   cameraObject: {fileID: 395559665}
 --- !u!61 &911366084
 BoxCollider2D:
@@ -6550,6 +6574,63 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &911366086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911366081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a851b4b95a4a5240abb79aa3392fb79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
+  weatherType: 0
+  weatherProperties:
+  - weatherMapName: Heat Place
+    weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
+    weatherTextColor: {r: 0.9528302, g: 0.72387344, b: 0.50787646, a: 1}
+    weatherBgColor: {r: 0.7254902, g: 0.5176471, b: 0.31764707, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    weatherOstVolume:
+    - 0.7
+    - 1
+    - 0.7
+  - weatherMapName: Cold Place
+    weatherMapDesc: '*Freeze gun mk!! sound effect*'
+    weatherTextColor: {r: 0.50980395, g: 0.9529412, b: 0.93078697, a: 1}
+    weatherBgColor: {r: 0.31764707, g: 0.65114826, b: 0.7254902, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: 9372da2ef9ae09b498736978538319dc, type: 3}
+    - {fileID: 8300000, guid: b6d66485b7d3c8544a332508e91cdd88, type: 3}
+    - {fileID: 8300000, guid: b6d66485b7d3c8544a332508e91cdd88, type: 3}
+    weatherOstVolume:
+    - 1
+    - 1
+    - 1
+  - weatherMapName: Thunder strom
+    weatherMapDesc: ah!
+    weatherTextColor: {r: 0.36863655, g: 0.7169812, b: 0.698485, a: 1}
+    weatherBgColor: {r: 0, g: 0.34697014, b: 0.4245283, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    weatherOstVolume:
+    - 1
+    - 1
+    - 1
+  sm: {fileID: 0}
+  randomWeather: 1
+  weatherChance: 10
+  earthquakeTimer: 0.2
+  thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
+  thunderTimer: 0.75
+  thunderChance: 50
 --- !u!1001 &944182771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9026,6 +9107,143 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51d572b8eeca0394ab90c170c98dea25, type: 3}
+--- !u!1 &1177921407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1177921408}
+  - component: {fileID: 1177921410}
+  - component: {fileID: 1177921409}
+  m_Layer: 0
+  m_Name: Section TItle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1177921408
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177921407}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 434518636}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 609.40894, y: -1116.3865}
+  m_SizeDelta: {x: 587.02, y: 210.8598}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1177921409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177921407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: The Place?
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 80
+  m_fontSizeBase: 80
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 2
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1177921410
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177921407}
+  m_CullTransparentMesh: 1
 --- !u!1 &1196190975
 GameObject:
   m_ObjectHideFlags: 0
@@ -12663,7 +12881,7 @@ GameObject:
   - component: {fileID: 1774821751}
   - component: {fileID: 1774821750}
   m_Layer: 0
-  m_Name: Transitioner
+  m_Name: Shader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17693,7 +17911,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.367159, y: 5.753965, z: -0.05932808}
+  m_LocalPosition: {x: 2.3671584, y: 5.753965, z: -0.05932808}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
