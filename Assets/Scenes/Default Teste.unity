@@ -210,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: 'dialogue.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 39b6a0102b17491438d8ddaf59c22f49, type: 2}
+      objectReference: {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: 'dialogue.Array.data[1]'
       value: 
@@ -905,6 +905,7 @@ GameObject:
   - component: {fileID: 227789833}
   - component: {fileID: 227789832}
   - component: {fileID: 227789834}
+  - component: {fileID: 227789835}
   m_Layer: 12
   m_Name: Section (1)
   m_TagString: Section
@@ -1066,6 +1067,63 @@ MonoBehaviour:
   - 0
   - 0
   cameraObject: {fileID: 1570814978}
+--- !u!114 &227789835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227789829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a851b4b95a4a5240abb79aa3392fb79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
+  weatherType: 0
+  weatherProperties:
+  - weatherMapName: Heat Place
+    weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
+    weatherTextColor: {r: 0.9528302, g: 0.72387344, b: 0.50787646, a: 1}
+    weatherBgColor: {r: 0.7254902, g: 0.5176471, b: 0.31764707, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    weatherOstVolume:
+    - 0.7
+    - 1
+    - 0.7
+  - weatherMapName: Cold Place
+    weatherMapDesc: '*Freeze gun mk!! sound effect*'
+    weatherTextColor: {r: 0.50980395, g: 0.9529412, b: 0.93078697, a: 1}
+    weatherBgColor: {r: 0.31764707, g: 0.65114826, b: 0.7254902, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: 9372da2ef9ae09b498736978538319dc, type: 3}
+    - {fileID: 8300000, guid: b6d66485b7d3c8544a332508e91cdd88, type: 3}
+    - {fileID: 8300000, guid: b6d66485b7d3c8544a332508e91cdd88, type: 3}
+    weatherOstVolume:
+    - 1
+    - 1
+    - 1
+  - weatherMapName: Thunder strom
+    weatherMapDesc: ah!
+    weatherTextColor: {r: 0.36863655, g: 0.7169812, b: 0.698485, a: 1}
+    weatherBgColor: {r: 0, g: 0.34697014, b: 0.4245283, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    weatherOstVolume:
+    - 1
+    - 1
+    - 1
+  sm: {fileID: 0}
+  randomWeather: 0
+  weatherChance: 10
+  earthquakeTimer: 0.2
+  thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
+  thunderTimer: 0.75
+  thunderChance: 50
 --- !u!1 &349712153
 GameObject:
   m_ObjectHideFlags: 0

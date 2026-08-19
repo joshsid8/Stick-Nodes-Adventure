@@ -17,6 +17,16 @@ MonoBehaviour:
   - Hey, my name is Imo!
   - I'm an immortal guy, meaning you can attack me for testing wtv you have
   - If you need me to do anything repeetitively (WIP), lemme know
+  dialogueThread:
+  - thread: Hey, my name's Imo!
+    dialogueColour: {r: 0.13725491, g: 0.227451, b: 0.32156864, a: 1}
+    isBold: 0
+  - thread: I'm an immortal guy, meaning you can attack me for testing wtv you have
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: If you need me to do anything repeetitively (WIP), lemme know
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0

@@ -13,22 +13,32 @@ MonoBehaviour:
   m_Name: Noxu Intro
   m_EditorClassIdentifier: 
   npcName: Noxu
-  dialogue:
-  - Welcome to my temple.
-  - 'It appears you have come in peace, right?
+  dialogueThread:
+  - thread: Welcome to my temple.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: 'It appears you have come in peace, right?
 
 
-    No?'
-  - 'Ah, yes. You aren''t like everyone else: you are here to achieve greater power!'
-  - 'That''s great, but in order for you to gain further power, you will come across
-    obstacles you must face.
+      No?'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: 'Ah, yes. You aren''t like everyone else: you are here to achieve greater
+      power!'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: 'That''s great, but in order for you to gain further power, you will
+      come across obstacles you must face.
 
 
-    Right now, I am going to be one of those obstacles
-    for you.'
-  - '*Come now, show me who you truly are.'
+      Right now, I am going to be one
+      of those obstacles for you.'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '*Come now, show me who you truly are.'
+    dialogueColour: {r: 0.30980393, g: 0.16078432, b: 0.09411765, a: 1}
+    isBold: 1
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -37,32 +47,16 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.2735849, g: 0.1509879, b: 0.1509879, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables:
-  - BossAttack
-  newBoolValues: 01
+  applyBools:
+  - boolName: BossAttack
+    value: 1
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 1
-  colour:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.31132078, g: 0.16160543, b: 0.09545213, a: 1}
-  colourIndex: 2
   canBeBold: 1
-  bold: 0000000001
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

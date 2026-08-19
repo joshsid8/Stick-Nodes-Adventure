@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using scripies.Core;
 using scripies.Player;
 
@@ -201,46 +202,45 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void SetGlobalFloat(string variableName, float value)
+    public void SetGlobalFloat(string variableName, float value, bool additive = false)
     {
         switch (variableName)
         {
             case "PlayerMaxHealth":
-                ph.playerMaxHealth = value;
+                ph.playerMaxHealth = additive ? ph.playerMaxHealth + value : value;
                 break;
             case "PlayerHealth":
-                ph.playerHealth = value;
-                ph.playerHealth = Mathf.Clamp(ph.playerHealth, 0, ph.playerMaxHealth);
+                ph.playerHealth = additive ? ph.playerHealth + value : value;
                 break;
             case "PlayerRegen":
-                if (ph != null) ph.regenerationMultiplier = value;
+                if (ph != null) ph.regenerationMultiplier = additive ? ph.regenerationMultiplier + value : value;
                 break;
             case "ShockMultiplier":
-                if (ph != null) ph.shockMultiplier = value;
+                if (ph != null) ph.shockMultiplier = additive ? ph.shockMultiplier + value : value;
                 break;
             case "PlayerMaxEnergy":
-                if (pa != null) pa.maxEnergy = value;
+                if (pa != null) pa.maxEnergy = additive ? pa.maxEnergy + value : value;
                 break;
             case "PlayerEnergy":
-                if (pa != null) pa.energy = value;
+                if (pa != null) pa.energy = additive ? pa.energy + value : value;
                 break;
             case "PlayerEnergyRefill":
-                if (pa != null) pa.energyRefill = value;
+                if (pa != null) pa.energyRefill = additive ? pa.energyRefill + value : value;
                 break;
             case "PlayerMovementSpeed":
-                if (pc != null) pc.movementSpeed = value;
+                if (pc != null) pc.movementSpeed = additive ? pc.movementSpeed + value : value;
                 break;
             case "PlayerJumpForce":
-                if (pc != null) pc.jumpForce = value;
+                if (pc != null) pc.jumpForce = additive ? pc.jumpForce + value : value;
                 break;
             case "DamageResistance":
-                if (pd != null) pd.blockDamageResistance = value;
+                if (pd != null) pd.blockDamageResistance = additive ? pd.blockDamageResistance + value : value;
                 break;
             case "CounterWindow":
-                if (pd != null) pd.counterTime = value;
+                if (pd != null) pd.counterTime = additive ? pd.counterTime + value : value;
                 break;
             case "CombatTimer":
-                if (pc != null) ph.currentCombatTimer = value;
+                if (pc != null) ph.currentCombatTimer = additive ? ph.currentCombatTimer + value : value;
                 break;
             case "Money":
                 if (pm != null) pm.nodeBucks += value;
@@ -360,7 +360,6 @@ public class PlayerManager : MonoBehaviour
         ph.playerHealth = data.playerHealth;
         ph.playerMaxHealth = data.playerMaxHealth;
     }
-    
 }
 [System.Serializable]
 public struct PlayerSaveStats

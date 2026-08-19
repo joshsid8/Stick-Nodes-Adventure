@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Izuno 2
   m_EditorClassIdentifier: 
   npcName: Izuno
-  dialogue:
-  - Bet. This Gem of Life is yours. Keep in mind it weakens your base attack damage.
+  dialogueThread:
+  - thread: Bet. This Gem of Life is yours. Keep in mind it weakens your base attack
+      damage.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: Hey man. You need anything?
   isAnimated: 1
   yesResponse:
     responseText: Yes. Do you have any spare aspects?
@@ -25,29 +27,16 @@ MonoBehaviour:
     responseText: Nothing, thanks.
     dialogueObject: {fileID: 11400000, guid: 598f319cd7a6e8d479fd235469b7304c, type: 2}
   nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 1
-  itemDrop:
-  - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
   itemType:
   - {fileID: 11400000, guid: cb8962a33a8c630488f8c1305482dbc0, type: 2}
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
-  speaker: 
-  alteredDialogue: {fileID: 0}
+  speaker: Izuno
+  alteredDialogue: {fileID: 11400000, guid: 39b6a0102b17491438d8ddaf59c22f49, type: 2}
   externalInstance: 
   alteredExternalDialogue: {fileID: 0}

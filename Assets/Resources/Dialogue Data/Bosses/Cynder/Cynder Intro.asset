@@ -13,14 +13,20 @@ MonoBehaviour:
   m_Name: Cynder Intro
   m_EditorClassIdentifier: 
   npcName: Cynder
-  dialogue:
-  - "This ends here. I\u2019ve watched you all around this valley; no one ever comes
-    here, but you... You are the only one foolish enough to trespass into my territory. "
-  - 'I see you are after the orb of flames: you definitely aren''t taking it without
-    getting pass me. '
-  - '*This will be your final blunder...'
+  dialogueThread:
+  - thread: "This ends here. I\u2019ve watched you all around this valley; no one
+      ever comes here, but you... You are the only one foolish enough to trespass
+      into my territory. "
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: 'I see you are after the orb of flames: you definitely aren''t taking
+      it without getting pass me. '
+    dialogueColour: {r: 0.29411766, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '*This will be your final blunder...'
+    dialogueColour: {r: 0.6603774, g: 0, b: 0, a: 1}
+    isBold: 1
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -29,30 +35,16 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.3773585, g: 0.076539695, b: 0.076539695, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables:
-  - BossAttack
-  newBoolValues: 01
+  applyBools:
+  - boolName: BossAttack
+    value: 1
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 1
-  colour:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.4339623, g: 0, b: 0, a: 1}
-  - {r: 0.8773585, g: 0, b: 0, a: 1}
-  colourIndex: 2
   canBeBold: 1
-  bold: 000001
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

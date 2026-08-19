@@ -13,13 +13,20 @@ MonoBehaviour:
   m_Name: MR Info
   m_EditorClassIdentifier: 
   npcName: Informaton
-  dialogue:
-  - '*A sign with text written poorly in english*'
-  - ...Mystic River
-  - No human... Welcome
-  - Go! Go..!
+  dialogueThread:
+  - thread: '*A sign with text written poorly in english*'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: ...Mystic River
+    dialogueColour: {r: 0.036445353, g: 0.30206767, b: 0.3679245, a: 1}
+    isBold: 0
+  - thread: No human... Welcome
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Go! Go..!
+    dialogueColour: {r: 0.06666667, g: 0.5411765, b: 0.65882355, a: 1}
+    isBold: 1
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -27,30 +34,15 @@ MonoBehaviour:
   noResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-  nameColour: {r: 0, g: 0, b: 0, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  nameColour: {r: 0.06541474, g: 0.54025584, b: 0.6603774, a: 1}
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
-  questActionType: 4
-  questItems: []
-  questItemAmounts: 
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derrivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 1
-  bold: 01000000
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

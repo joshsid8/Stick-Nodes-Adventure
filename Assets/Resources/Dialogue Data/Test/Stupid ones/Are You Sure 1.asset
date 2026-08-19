@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Are You Sure 1
   m_EditorClassIdentifier: 
   npcName: Omniman
-  dialogue: []
+  dialogueThread:
+  - thread: Are you sure?
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 1
-  choiceQuestion: Are you sure?
   isAnimated: 0
   yesResponse:
     responseText: Pretty sure.
@@ -24,26 +26,14 @@ MonoBehaviour:
     responseText: Yes/No/Anything Else
     dialogueObject: {fileID: 11400000}
   nameColour: {r: 0.39732757, g: 0.8867924, b: 0, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariableName: 
-  newFloatValue: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBooleanVariableName: 
-  newBooleanValue: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
+  itemCheckFailureDialogue: {fileID: 0}
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

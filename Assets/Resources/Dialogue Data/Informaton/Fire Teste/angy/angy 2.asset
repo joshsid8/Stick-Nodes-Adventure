@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: angy 2
   m_EditorClassIdentifier: 
   npcName: Informaton...
-  dialogue:
-  - Why are you stiill here?
-  - In my face?!
-  - Didnt i tell you to leave me be?! Damn!
+  dialogueThread:
+  - thread: Why are you stiill here?
+    dialogueColour: {r: 0.24705882, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: In my face?!
+    dialogueColour: {r: 0.56078434, g: 0, b: 0, a: 1}
+    isBold: 1
+  - thread: Didnt i tell you to leave me be?! Damn!
+    dialogueColour: {r: 0.5176471, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -27,29 +32,14 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.49056602, g: 0, b: 0, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 1
-  colour:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.6509434, g: 0, b: 0, a: 1}
-  - {r: 0.4716981, g: 0, b: 0, a: 1}
-  colourIndex: 2
   canBeBold: 0
-  bold: 
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

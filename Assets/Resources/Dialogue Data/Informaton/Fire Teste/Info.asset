@@ -13,14 +13,17 @@ MonoBehaviour:
   m_Name: Info
   m_EditorClassIdentifier: 
   npcName: Informaton.
-  dialogue:
-  - 'There is another enemy above the previous one.
+  dialogueThread:
+  - thread: 'There is another enemy above the previous one.
 
-    it will be difficult since
-    they cannot be stunned in any way.'
-  - Good luck.
+      it will be difficult
+      since they cannot be stunned in any way.'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Good luck.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -29,26 +32,14 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0, g: 0, b: 0, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariableName: PlayerHealth
-  newFloatValue: 200
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBooleanVariableName: 
-  newBooleanValue: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
+  itemCheckFailureDialogue: {fileID: 0}
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

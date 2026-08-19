@@ -13,16 +13,25 @@ MonoBehaviour:
   m_Name: AI Info
   m_EditorClassIdentifier: Assembly-CSharp::DialogueObject
   npcName: Informaton
-  dialogue:
-  - This be the Alatus Islands!
-  - did u know that alatus means winged in latin?! crazy innit
-  - Therein lies a multitude of minorly sized islands fit for any venture you desire.
-    (NOT RIGHT NOW)
-  - Nonetheless, watch out. For there are certain civilians who do not enjoy unwanted
-    company from below.. (FALSE)
-  - anyways, haff fun!!1 (GONE WRONG)
+  dialogueThread:
+  - thread: This be the Alatus Islands!
+    dialogueColour: {r: 0.03137255, g: 0.43137255, b: 0.48235294, a: 1}
+    isBold: 1
+  - thread: did u know that alatus means winged in latin?! crazy innit
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Therein lies a multitude of minorly sized islands fit for any venture
+      you desire. (NOT RIGHT NOW)
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Nonetheless, watch out. For there are certain civilians who do not enjoy
+      unwanted company from below.. (FALSE)
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: anyways, haff fun!!1 (GONE WRONG)
+    dialogueColour: {r: 0, g: 0.24265783, b: 0.2735849, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -31,28 +40,14 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.03737985, g: 0.343835, b: 0.3773585, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 1
-  colour:
-  - {r: 0.029503396, g: 0.43062612, b: 0.4811321, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
-  colourIndex: 1
   canBeBold: 1
-  bold: 0100000000
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: angy
   m_EditorClassIdentifier: 
   npcName: Informaton...
-  dialogue: []
+  dialogueThread:
+  - thread: What do u want bruh?!
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 1
-  choiceQuestion: What do u want bruh?!
   isAnimated: 0
   yesResponse:
     responseText: I beat the Boss!
@@ -24,26 +26,14 @@ MonoBehaviour:
     responseText: Dont worry...
     dialogueObject: {fileID: 11400000, guid: fa39d40147a02b94a862cf1b2bb78d4a, type: 2}
   nameColour: {r: 0.49056602, g: 0, b: 0, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 00
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

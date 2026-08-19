@@ -13,14 +13,21 @@ MonoBehaviour:
   m_Name: Izuno Quest 3
   m_EditorClassIdentifier: 
   npcName: Izuno
-  dialogue:
-  - Yo, you need something?
-  - Oh, you have something for me instead?
-  - A gem of Life, from Imo? Preciate it, but i dont need it rn. I actually got the
-    hat version.
-  - if you havent yet, speak to me again if you want it
+  dialogueThread:
+  - thread: Yo, you need something?
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Oh, you have something for me instead?
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: A gem of Life, from Imo? Preciate it, but i dont need it rn. I actually
+      got the hat version.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: if you havent yet, speak to me again if you want it
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: Yes, I'm Ready!
@@ -29,26 +36,14 @@ MonoBehaviour:
     responseText: No, i'm not ready
     dialogueObject: {fileID: 11400000, guid: 598f319cd7a6e8d479fd235469b7304c, type: 2}
   nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 1
   itemCheckFailureDialogue: {fileID: 11400000, guid: 6744f2fa5266bfa4ea200d474a3d5e49, type: 2}
-  completeSpeakQuestOnClose: 1
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

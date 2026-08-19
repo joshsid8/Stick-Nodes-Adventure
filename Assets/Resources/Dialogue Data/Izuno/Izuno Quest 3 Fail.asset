@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: Izuno Quest 3 Fail
   m_EditorClassIdentifier: 
   npcName: Izuno
-  dialogue:
-  - Yo, need something?
-  - If anything, hit me up.
+  dialogueThread:
+  - thread: Yo, need something?
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: If anything, hit me up.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: Yes, I'm Ready!
@@ -26,26 +29,14 @@ MonoBehaviour:
     responseText: No, i'm not ready
     dialogueObject: {fileID: 11400000, guid: 598f319cd7a6e8d479fd235469b7304c, type: 2}
   nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

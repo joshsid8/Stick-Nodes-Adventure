@@ -20,10 +20,9 @@ namespace scripies.Dialogue
         public bool isAnimated;
         public Animator animator;
         private NPC currentNpc;
-        [SerializeField] private int textIndex;
-        [SerializeField] private int currentColourIndex;
         private bool isBold;
-        [SerializeField] private int currentBoldIndex;
+
+        private GameObject persistentItem;
 
         protected override void Awake()
         {
@@ -40,6 +39,8 @@ namespace scripies.Dialogue
             handler = GetComponent<DialogueResponseHandler>();
             rt = GetComponent<RectTransform>();
             CloseDialogue();
+            
+            persistentItem = GameObject.Find("persistentItem");
         }
 
         private void OnEnable()
@@ -71,9 +72,6 @@ namespace scripies.Dialogue
             dialogueBox.SetActive(true);
             gameObject.SetActive(true);
             GetActive(true);
-            textIndex = dialogueObject.colourIndex;
-            currentColourIndex = 0;
-            currentBoldIndex = 0;
 
             QuestHandling(dialogueObject);
             StartCoroutine(StepThroughDialogue(dialogueObject));
@@ -81,34 +79,35 @@ namespace scripies.Dialogue
 
         private IEnumerator StepThroughDialogue(DialogueObject dialogueObject)
         {
-            foreach (var dialogue in dialogueObject.Dialogue)
+            npcNameLabel.text = dialogueObject.NPCName;
+            npcNameLabel.color = dialogueObject.nameColour;
+            animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
+                
+            if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
+            if (!dialogueObject.canBeBold) isBold = false;
+            
+            for (var i = 0; i < dialogueObject.DialogueThread.Length; i++)
             {
+                var dialogue = dialogueObject.DialogueThread[i];
                 npcNameLabel.text = dialogueObject.NPCName;
                 npcNameLabel.color = dialogueObject.nameColour;
-                
-                if (dialogueObject.canBeColoured && currentColourIndex <= textIndex)
-                    textLabel.color = dialogueObject.colour[currentColourIndex];
-                else if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
-                if (dialogueObject.canBeColoured) currentColourIndex++;
-                
-                // (simplified version of the if statement below, but the ide suggests it to be further simplified)
-                //isBold = dialogueObject.canBeBold ? dialogueObject.bold[currentBoldIndex] : false;
-                if (dialogueObject.canBeBold) isBold = dialogueObject.bold[currentBoldIndex];
-                else isBold = false;
-                if (currentBoldIndex < textIndex || dialogueObject.canBeBold) currentBoldIndex++;
-                
-                // pretty expensive method, maybe refactor this
-                animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
-                yield return typeWriter.Run(dialogue, textLabel, npcNameLabel);
-                yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
-            }
 
-            if (dialogueObject.PendingChoice) StartCoroutine(ChoiceDialogue(dialogueObject));
-            else
-            {
-                ApplyCustomEffect(dialogueObject);
-                CloseDialogue(dialogueObject);
+                if (dialogueObject.canBeColoured) textLabel.color = dialogue.dialogueColour;
+                if (dialogueObject.canBeBold) isBold = dialogue.isBold;
+                
+                yield return typeWriter.Run(dialogue.thread, textLabel, npcNameLabel);
+                if (dialogueObject.PendingChoice)
+                {
+                    var lastDialogue = dialogueObject.DialogueThread[^1];
+                    if (dialogue != lastDialogue) yield break; 
+                    print("This is the last dialogue, so we should wait for a response.");
+                    StartCoroutine(ChoiceDialogue(dialogueObject));
+                    yield return new WaitUntil(() => !handler.responseBox.gameObject.activeInHierarchy);
+                }
+                else yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
             }
+            ApplyCustomEffect(dialogueObject);
+            CloseDialogue(dialogueObject);
         }
 
         private void QuestHandling(DialogueObject dialogueObject)
@@ -150,9 +149,6 @@ namespace scripies.Dialogue
                             }
                         }
                         break;
-                    default:
-                        //Debug.LogWarning($"[Quest Check] type {quest.questType} from {quest.questName} cant work here");
-                        break;
                 }
             }
         }
@@ -185,7 +181,7 @@ namespace scripies.Dialogue
                 externalInstance = GameObject.Find(dialogueObject.externalInstance);
                 yield return null;
             }
-            print("found our instance");
+            //print("found our instance");
             yield return new WaitForSeconds(1);
             GameEvents.TriggerAddDialogue(dialogueObject.alteredExternalDialogue, externalInstance);
         }
@@ -212,11 +208,12 @@ namespace scripies.Dialogue
         {
             if (dialogueObject != null)
             {
-                npcNameLabel.text = dialogueObject.NPCName ?? dialogueObject.speaker ?? currentNpc.npcName ?? "HUH?! WHERE IS EVERYTHING?!";
-                yield return typeWriter.Run(dialogueObject.ChoiceQuestion, textLabel, npcNameLabel);
+                //npcNameLabel.text = dialogueObject.NPCName ?? dialogueObject.speaker ?? currentNpc.npcName ?? "HUH?! WHERE IS EVERYTHING?!";
+                //yield return typeWriter.Run(dialogueObject.DialogueThread[^1].thread, textLabel, npcNameLabel);
                 handler.ShowResponses(dialogueObject);
             }
             else CloseDialogue(dialogueObject);
+            yield return null;
         }
 
         private void ApplyCustomEffect(DialogueObject dialogueObject)
@@ -227,30 +224,36 @@ namespace scripies.Dialogue
                 return;
             }
 
-            if (dialogueObject.appliesFloatChange)
+            if (dialogueObject.applyFloats.Count > 0)
             {
-                for (var i = 0; i < dialogueObject.targetFloatVariables.Length; i++)
+                /*for (var i = 0; i < dialogueObject.targetFloatVariables.Length; i++)
                     PlayerManager.Instance.SetGlobalFloat(dialogueObject.targetFloatVariables[i],
-                        dialogueObject.newFloatValues[i]);
+                        dialogueObject.newFloatValues[i]);*/
+                
+                foreach (var floatToChange in dialogueObject.applyFloats) 
+                    PlayerManager.Instance.SetGlobalFloat(floatToChange.floatName, floatToChange.value, floatToChange.additive);
             }
 
-            if (dialogueObject.appliesBooleanChange)
+            if (dialogueObject.applyBools.Count > 0)
             {
-                for (var i = 0; i < dialogueObject.targetBoolVariables.Length; i++)
+                /*for (var i = 0; i < dialogueObject.targetBoolVariables.Length; i++)
                 {
                     PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i],
                         dialogueObject.newBoolValues[i]);
-                }
+                }*/
+                
+                foreach (var boolToChange in dialogueObject.applyBools) 
+                    PlayerManager.Instance.SetGlobalBool(boolToChange.boolName, boolToChange.value);
             }
 
             if (dialogueObject.willGiveQuest) QuestLogManager.Instance.AssignQuest(dialogueObject.questToOffer as QuestSO);
 
-            if (dialogueObject.canDropItem)
+            if (dialogueObject.itemType.Length > 0)
             {
-                for (var i = 0; i < dialogueObject.itemDrop.Length; i++)
+                foreach (var type in dialogueObject.itemType)
                 {
-                    dialogueObject.itemDrop[i].GetComponent<Collectable>().collectable = dialogueObject.itemType[i];
-                    Instantiate(dialogueObject.itemDrop[i], player.transform.position, Quaternion.identity);
+                    var item = Instantiate(persistentItem, player.transform.position, Quaternion.identity);
+                    item.GetComponent<Collectable>().collectable = type;
                     //print($"Dropped {dialogueObject.itemDrop[i]}, with the type of {dialogueObject.itemType[i]}.");
                 }
             }

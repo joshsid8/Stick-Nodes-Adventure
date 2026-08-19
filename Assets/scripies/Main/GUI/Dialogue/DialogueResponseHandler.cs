@@ -6,7 +6,7 @@ namespace scripies.Dialogue
 {
     public class DialogueResponseHandler : MonoBehaviour
     {
-        [SerializeField] private RectTransform responseBox;
+        public RectTransform responseBox;
         [SerializeField] private GameObject responseButtonsParent;
 
         public Button yesButton;

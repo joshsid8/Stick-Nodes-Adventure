@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: Izuno 5
   m_EditorClassIdentifier: 
   npcName: Izuno
-  dialogue:
-  - '#Hey*, i found out you''ve encountered an angry red sign?'
-  - /I*t's such a nuisance.| #I'll find a way to deal with it ~later... #(NEVER)
+  dialogueThread:
+  - thread: '#Hey*, i found out you''ve encountered an angry red sign?'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: /I*t's such a nuisance.| #I'll find a way to deal with it ~later... #(NEVER)
+    dialogueColour: {r: 0, g: 0.3910438, b: 0.4716981, a: 1}
+    isBold: 1
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 1
   yesResponse:
     responseText: Yes, I'm Ready!
@@ -26,28 +29,14 @@ MonoBehaviour:
     responseText: No, i'm not ready
     dialogueObject: {fileID: 11400000, guid: 598f319cd7a6e8d479fd235469b7304c, type: 2}
   nameColour: {r: 0.25490198, g: 0.7176471, b: 0.9960785, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 1
-  colour:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.18039216, g: 0.3395348, b: 0.58431375, a: 1}
-  colourIndex: 2
   canBeBold: 1
-  bold: 0001
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

@@ -13,19 +13,37 @@ MonoBehaviour:
   m_Name: angy 4
   m_EditorClassIdentifier: 
   npcName: Informaton
-  dialogue:
-  - '#LEAVE ME ALONE'
-  - '#LOOK AT YOU'
-  - '#WHERE DID YOUR HAIR GO?!'
-  - '#YOU LOOK DISGUSTING'
-  - '#NO ONE EVER THINKS OF YOU UNLESS THEY HAVE ABSOLUTELY NO CHOICE BUT TO'
-  - '#HOW MANY MIRROS HAVE YOU BROKEN DUE TO THE DISFIGURATION YOU CALL A FACE?!'
-  - '#YOU DONT EVEN HAVE A DAYUM FACE'
-  - '#LEAVE ME ALONE, ITS THE LAST TIME IM TELLING YOU'
+  dialogueThread:
+  - thread: '#LEAVE ME ALONE'
+    dialogueColour: {r: 1, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#LOOK AT YOU'
+    dialogueColour: {r: 1, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#WHERE DID YOUR HAIR GO?!'
+    dialogueColour: {r: 1, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#YOU LOOK DISGUSTING'
+    dialogueColour: {r: 1, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#NO ONE EVER THINKS OF YOU UNLESS THEY HAVE ABSOLUTELY NO CHOICE BUT
+      TO'
+    dialogueColour: {r: 1, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#HOW MANY MIRROS HAVE YOU BROKEN DUE TO THE DISFIGURATION YOU CALL A
+      FACE?!'
+    dialogueColour: {r: 1, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#YOU DONT EVEN HAVE A DAYUM FACE'
+    dialogueColour: {r: 1, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#LEAVE ME ALONE, ITS THE LAST TIME IM TELLING YOU'
+    dialogueColour: {r: 1, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Will you leave bro alone?
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 1
-  choiceQuestion: '
-
-    Will you leave bro alone?'
   isAnimated: 0
   yesResponse:
     responseText: Yes...
@@ -34,27 +52,14 @@ MonoBehaviour:
     responseText: No!
     dialogueObject: {fileID: 11400000, guid: 8a1ecdc7959551d479209fa0e6481c05, type: 2}
   nameColour: {r: 0.49056602, g: 0, b: 0, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 1
-  colour:
-  - {r: 1, g: 0, b: 0, a: 1}
-  colourIndex: 0
   canBeBold: 0
-  bold: 00
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

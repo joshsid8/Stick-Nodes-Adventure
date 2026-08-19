@@ -18,6 +18,19 @@ MonoBehaviour:
   - Oh, Izuno said hi?
   - Thank you man, i thought he didnt notice me standing around!
   - Tell him i said hi back!
+  dialogueThread:
+  - thread: Hey! What's up?
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Oh, Izuno said hi?
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Thank you man, i thought he didnt notice me standing around!
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Tell him i said hi back!
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -37,12 +50,9 @@ MonoBehaviour:
   willGiveQuest: 0
   questToOffer: {fileID: 0}
   isQuestInteraction: 1
-  questActionType: 3
-  questItems: []
-  questItemAmounts: 
   itemCheckFailureDialogue: {fileID: 0}
   completeSpeakQuestOnClose: 1
-  derrivedDialogue: {fileID: 0}
+  derivedDialogue: {fileID: 0}
   canDropItem: 0
   itemDrop: []
   itemType: []

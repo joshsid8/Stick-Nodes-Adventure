@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: Noxu Defeated
   m_EditorClassIdentifier: 
   npcName: Noxu
-  dialogue:
-  - 'Splendid! I''ve never had fight so challenging before in a while!
+  dialogue: []
+  dialogueThread:
+  - thread: 'Splendid! I''ve never had fight so challenging before in a while!
 
-    I thank
-    you for this spar.'
-  - Go on. The orb of earth is waiting. (IT'S NOT!!!)
+      I
+      thank you for this spar.'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Go on. The orb of earth is waiting. (IT'S NOT!!!)
+    dialogueColour: {r: 0.27450982, g: 0.15294118, b: 0.15294118, a: 1}
+    isBold: 0
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0

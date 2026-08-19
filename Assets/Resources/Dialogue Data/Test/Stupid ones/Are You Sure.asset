@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Are You Sure
   m_EditorClassIdentifier: 
   npcName: Omniman
-  dialogue:
-  - '"Guess who finally got their powers...!"'
+  dialogueThread:
+  - thread: '"Guess who finally got their powers...!"'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 1
-  choiceQuestion: Are you sure?
   isAnimated: 0
   yesResponse:
     responseText: Yes
@@ -25,26 +26,14 @@ MonoBehaviour:
     responseText: No/Anything Else
     dialogueObject: {fileID: 11400000, guid: 3cbc88dc9d75305418db041c1d76afdf, type: 2}
   nameColour: {r: 0.39732757, g: 0.8867924, b: 0, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariableName: 
-  newFloatValue: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBooleanVariableName: 
-  newBooleanValue: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
+  itemCheckFailureDialogue: {fileID: 0}
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

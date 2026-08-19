@@ -13,19 +13,24 @@ MonoBehaviour:
   m_Name: Info 1
   m_EditorClassIdentifier: 
   npcName: Informaton!
-  dialogue:
-  - '#The Next Enemy is a boss! Their patterns are much different compared to enemies.
+  dialogueThread:
+  - thread: '#The Next Enemy is a boss! Their patterns are much different compared
+      to enemies.
 
-    Learn
-    when to block or dodge attacks in order to stay intact!'
-  - '#You can enter through the block ahead, but you won''t be able to leave until
-    you beat the boss!'
-  - '#Good luck!
+      Learn when to block or dodge attacks in order to stay intact!'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#You can enter through the block ahead, but you won''t be able to leave
+      until you beat the boss!'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '#Good luck!
 
 
-    (You have been healed!)'
+      (You have been healed!)'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -34,30 +39,17 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0, g: 0, b: 0, a: 1}
-  appliesFloatChange: 1
-  targetFloatVariables:
-  - PlayerHealth
-  newFloatValues:
-  - 200
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats:
+  - floatName: PlayerHealth
+    value: 100
+    additive: 1
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 0
-  colour:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.6745098, g: 0.9960785, b: 0.3254902, a: 1}
-  colourIndex: 1
   canBeBold: 0
-  bold: 
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

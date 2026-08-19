@@ -13,10 +13,17 @@ MonoBehaviour:
   m_Name: Cynder Defeated
   m_EditorClassIdentifier: 
   npcName: Cynder
-  dialogue:
-  - 'Heh, it seems you are more stupid than I thought. '
-  - You think this is the end?
-  - '*I will come back. Just you wait... '
+  dialogue: []
+  dialogueThread:
+  - thread: 'Heh, it seems you are more stupid than I thought. '
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: You think this is the end?
+    dialogueColour: {r: 0.29411766, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: '*I will come back. Just you wait... '
+    dialogueColour: {r: 0.6603774, g: 0, b: 0, a: 1}
+    isBold: 1
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0
@@ -28,14 +35,11 @@ MonoBehaviour:
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.3773585, g: 0.076539695, b: 0.076539695, a: 1}
   appliesFloatChange: 0
-  targetFloatVariables:
-  - CombatTimer
-  newFloatValues:
-  - 0
+  targetFloatVariables: []
+  newFloatValues: []
   appliesBooleanChange: 0
-  targetBoolVariables:
-  - BossAttack
-  newBoolValues: 00
+  targetBoolVariables: []
+  newBoolValues: 
   willGiveQuest: 0
   questToOffer: {fileID: 0}
   isQuestInteraction: 0

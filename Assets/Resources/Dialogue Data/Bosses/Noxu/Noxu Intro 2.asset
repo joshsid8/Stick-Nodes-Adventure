@@ -13,13 +13,22 @@ MonoBehaviour:
   m_Name: Noxu Intro 2
   m_EditorClassIdentifier: 
   npcName: Noxu
-  dialogue:
-  - You've come back again!
-  - I see you won't to stop until you win against me.
-  - I'll be quiet from now. Let us get started right away.
-  - Good luck!
+  dialogueThread:
+  - thread: You've come back again!
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: I see you won't to stop until you win against me.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: I'll be quiet from now. Let us get started right away.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: 'Good luck!
+
+'
+    dialogueColour: {r: 0.30980393, g: 0.16078432, b: 0.09411765, a: 1}
+    isBold: 1
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -28,33 +37,16 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.2735849, g: 0.1509879, b: 0.1509879, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables:
-  - CombatTimer
-  newFloatValues:
-  - 3600
-  appliesBooleanChange: 0
-  targetBoolVariables:
-  - BossAttack
-  newBoolValues: 01
+  applyBools:
+  - boolName: BossAttack
+    value: 1
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 1
-  colour:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.31132078, g: 0.16160543, b: 0.09545213, a: 1}
-  colourIndex: 2
   canBeBold: 1
-  bold: 00000001
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

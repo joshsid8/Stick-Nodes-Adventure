@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: angy 5
   m_EditorClassIdentifier: 
   npcName: Informaton...
-  dialogue:
-  - alright thats it.
+  dialogueThread:
+  - thread: alright thats it.
+    dialogueColour: {r: 0.4901961, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: Yes...
@@ -25,29 +26,17 @@ MonoBehaviour:
     responseText: No!
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.49056602, g: 0, b: 0, a: 1}
-  appliesFloatChange: 1
-  targetFloatVariables:
-  - PlayerHealth
-  newFloatValues:
-  - 0
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats:
+  - floatName: PlayerHealth
+    value: 0
+    additive: 0
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 1
-  colour:
-  - {r: 0.7264151, g: 0, b: 0, a: 1}
-  colourIndex: 0
   canBeBold: 1
-  bold: 01
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

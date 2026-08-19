@@ -19,6 +19,18 @@ MonoBehaviour:
   - I only can conveniently nullify any attack, but i'm not invincible to age and
     time.
   - Basically, dont worry bout me in any way. ill always be here for ya!
+  dialogueThread:
+  - thread: If you're wondering if i get hurt, i dont at all, really. however, i
+      do feel it.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: I only can conveniently nullify any attack, but i'm not invincible to
+      age and time.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Basically, dont worry bout me in any way. ill always be here for ya!
+    dialogueColour: {r: 0.13333334, g: 0.22352943, b: 0.3137255, a: 1}
+    isBold: 0
   pendingChoice: 0
   choiceQuestion: 
   isAnimated: 0

@@ -5,13 +5,15 @@ SNADV Notes
     
     Priorities:
                     
+        Fix data response handling
+            It is very broken, maybe get Junie to fix it?
+            but everything else dialogue based, including the new variables have been fixed and transfered
+            
         Make sections have its own settings (similar to maps)
             I was also thinking of making a script that makes the background colour fade between 2 maps (for example, Origo and Cynder Valley)
             If i can find a way to get the data of the sides of the section, this will be an easy task to do
                 If this isnt the best way, make it so that there are points the scripts needs to make the fade possible
         
-        Make dialogueobject use classes for better formatting
-            Ensure not to remove the original data so u can transfer it thereto
 
     Optimisations & Hotfixes:
         

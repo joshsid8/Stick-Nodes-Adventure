@@ -10,27 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
-  m_Name: Info 5
+  m_Name: SN Info
   m_EditorClassIdentifier: 
   npcName: Informaton.
-  dialogue:
-  - 'Welcome to Stick Nodes: Adventure!'
-  - This is a test map, showcasing the many different things you, as the player,
-    will be able to do.
-  - 'You can press M1 to attack,
+  dialogueThread:
+  - thread: 'Welcome to Stick Nodes: Adventure!'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 1
+  - thread: This is a test map, showcasing the many different things you, as the
+      player, will be able to do.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: 'You can press M1 to attack,
 
-    M2 to use your chosen ability
+      M2 to use your chosen ability
 
-    (R to switch
-    between 2-3 abilities)
+      (R
+      to switch between 2-3 abilities)
 
-    Shift to dash, F to block'
-  - 'Go ahead and explore the game!
+      Shift to dash, F to block'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: 'Go ahead and explore the game!
 
-    There will be a lot more coming soon.'
-  - Have fun!
+      There will be a lot more coming
+      soon.'
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+  - thread: Have fun!
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -39,10 +49,10 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0, g: 0, b: 0, a: 1}
-  appliesFloatChange: 0
+  applyBools: []
+  applyFloats: []
   targetFloatVariables: []
   newFloatValues: []
-  appliesBooleanChange: 0
   targetBoolVariables: []
   newBoolValues: 
   willGiveQuest: 0
@@ -55,10 +65,7 @@ MonoBehaviour:
   itemDrop: []
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 4
   canBeBold: 0
-  bold: 
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 
