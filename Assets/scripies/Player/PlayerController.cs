@@ -9,7 +9,7 @@ namespace scripies.Player
     {
         #region Variables
 
-        [SerializeField] private bool debugMode;
+        public bool debugMode;
         [Header("Settings")] public bool canAct = true;
         public bool canFlip = true;
         public bool isFrozen;

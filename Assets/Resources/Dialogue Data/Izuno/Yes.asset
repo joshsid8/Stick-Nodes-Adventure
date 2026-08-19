@@ -17,6 +17,9 @@ MonoBehaviour:
   - thread: Yeah, i do, actually.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+  - thread: Would you like an aspect based on extra strength or health?
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
   pendingChoice: 1
   isAnimated: 1
   yesResponse:

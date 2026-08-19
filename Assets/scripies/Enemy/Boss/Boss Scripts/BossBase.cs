@@ -41,6 +41,7 @@ public abstract class BossBase : MonoBehaviour
     public List<GameObject> storedObjects = new List<GameObject>();
     public int storedObjectIndex;
     public Transform fireTransform;
+    private RaycastHit2D projHit;
     [Space]
     [Header("Jumping")]
     public bool isRandomised;
@@ -77,6 +78,9 @@ public abstract class BossBase : MonoBehaviour
 
     protected virtual void Update()
     {
+        projHit = Physics2D.CircleCast(fireTransform.position, 10f,
+            new Vector2(fireTransform.transform.right.x, fireTransform.transform.up.y), 0f, 
+            LayerMask.GetMask("FX", "EVFX", "PVFX"));
         for (var i = storedObjects.Count - 1; i >= 0; i--) 
             if (storedObjects[i].IsDestroyed()) storedObjects.RemoveAt(i); 
         Strafe();
@@ -124,55 +128,46 @@ public abstract class BossBase : MonoBehaviour
         if (isFlyDashing)
         {
             rb.linearVelocity = bh.phase2 ? dashDirection * strafeSpeed * 1.2f : dashDirection * strafeSpeed;
-            if (isInRange)
-            {
-                isFlyDashing = false;
-                animator.SetTrigger(inRangeAnim);
-            }
+            if (!isInRange) return;
+            isFlyDashing = false;
+            animator.SetTrigger(inRangeAnim);
         }
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
     
     protected void Jump()
     {
-        if (ba.isGrounded)
+        if (!ba.isGrounded) return;
+        if (isRandomised)
         {
-            if (isRandomised)
-            {
-                jumpForceX = Random.Range(-16, 16);
-                jumpForceY = Random.Range(20, 31);
-            }
-
-            rb.linearVelocity = new Vector2(jumpForceX, jumpForceY);
+            jumpForceX = Random.Range(-16, 16);
+            jumpForceY = Random.Range(20, 31);
         }
+
+        rb.linearVelocity = new Vector2(jumpForceX, jumpForceY);
     }
     
     protected void MeleeAttack()
     {
         hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
-        if (hit.collider != null)
-        {
-            var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Boss");
-                damageable.Shock(stunTime,  knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
-            }
-        }
+        if (hit.collider == null) return;
+        var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
+        if (damageable == null) return;
+        damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Boss");
+        damageable.Shock(stunTime,  knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
     }
     protected void FollowupMove(string move) => animator.SetTrigger(move);
 
-    protected void StoreObject(GameObject obj)
+    protected void StoreObject(string target)
     {
-        var projHit = Physics2D.CircleCast(fireTransform.position, 10f,
-            new Vector2(fireTransform.transform.right.x, fireTransform.transform.up.y), 0f, 
-            LayerMask.GetMask("FX", "EVFX", "PVFX"));
-        if (projHit.collider != null) storedObjects.Add(projHit.collider.gameObject);
+        if (projHit.collider == null) return;
+        if (projHit.collider.gameObject.name.Contains(target) || string.IsNullOrEmpty(target)) 
+            storedObjects.Add(projHit.collider.gameObject);
     }
 
     protected void ApplyForce(float force)
     {
-        if (storedObjects.Count > 0 || storedObjects[storedObjectIndex] == null) return;
+        if (storedObjects.Count <= 0 || storedObjects[storedObjectIndex] == null) return;
         
         Shenanigans.Instance.ApplyForce(new Vector2(ba.isFacingRight ? force : -force, force),
             obj: storedObjects[storedObjectIndex]?.gameObject);

@@ -100,7 +100,6 @@ namespace scripies.Dialogue
                 {
                     var lastDialogue = dialogueObject.DialogueThread[^1];
                     if (dialogue != lastDialogue) yield break; 
-                    print("This is the last dialogue, so we should wait for a response.");
                     StartCoroutine(ChoiceDialogue(dialogueObject));
                     yield return new WaitUntil(() => !handler.responseBox.gameObject.activeInHierarchy);
                 }
@@ -163,9 +162,10 @@ namespace scripies.Dialogue
             if (dialogueObject != null)
             {
                 if (dialogueObject.alteredDialogue != null)
-                    GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName)
-                        .GetComponent<DialogueTrigger>().AddDialogue(dialogueObject.alteredDialogue);
-
+                {
+                    var instance = GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName);
+                    if (instance != null) GameEvents.TriggerAddDialogue(dialogueObject.alteredDialogue, instance);
+                }
                 if (dialogueObject.alteredExternalDialogue != null) StartCoroutine(ChangeDialogues(dialogueObject));
             }
             GameEvents.TriggerDialogueClose(dialogueObject);

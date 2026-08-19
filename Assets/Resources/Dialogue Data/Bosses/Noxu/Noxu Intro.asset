@@ -47,9 +47,7 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.2735849, g: 0.1509879, b: 0.1509879, a: 1}
-  applyBools:
-  - boolName: BossAttack
-    value: 1
+  applyBools: []
   applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}

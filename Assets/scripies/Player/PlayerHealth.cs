@@ -100,7 +100,7 @@ namespace scripies.Player
             originalShockMultiplier = shockMultiplier;
             
             #if UNITY_EDITOR 
-            spawnOnAwake = false;
+            if (pc.debugMode) spawnOnAwake = false;
             #endif
             if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             
@@ -155,7 +155,15 @@ namespace scripies.Player
             yield return new WaitForSeconds(timer);
             gameObject.layer = LayerMask.NameToLayer("Player");
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-
+            
+            if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded)
+            {
+                SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName,
+                    LoadSceneMode.Additive);
+                print($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} loaded");
+            }
+            else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
+            
             var spawnTarget = realSpawn ? pc.currentSpawnPoint : pc.currentCheckPoint;
             if (spawnTarget != null) transform.position = spawnTarget.transform.position;
             else Debug.LogWarning("[PlayerHealth] We cant find the right spawn object!");
@@ -168,6 +176,8 @@ namespace scripies.Player
 
         private IEnumerator SpawnPeriod()
         {
+            
+            
             justSpawned = true;
             yield return new WaitForSeconds(1f);
             justSpawned = false;
@@ -187,8 +197,11 @@ namespace scripies.Player
                 Shenanigans.Instance.ToggleFreezeCamera();
                 GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
 
-                if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded) 
-                    SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName, LoadSceneMode.Additive);
+                if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded)
+                {
+                    SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName,
+                        LoadSceneMode.Additive);
+                }
                 else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
                 
                 yield return new WaitForSeconds(respawnTime);

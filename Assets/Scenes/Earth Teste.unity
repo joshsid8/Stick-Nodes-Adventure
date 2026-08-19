@@ -2462,6 +2462,7 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  sm: {fileID: 0}
   randomWeather: 0
   weatherChance: 10
   earthquakeTimer: 0.2
@@ -3566,6 +3567,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac1586a9667c1d4999b649ffb531ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  announceDetails: 0
+  sectionName: 
+  sectionTextColor: {r: 1, g: 1, b: 1, a: 1}
+  sectionBgColor: {r: 0.1843137, g: 0.3098039, b: 0.3098039, a: 1}
+  newOst: []
+  ostVolume:
+  - 0.5
+  - 0.5
+  - 0.5
+  mapDisasterNames:
+  - Temperature
+  - Earthquake
+  - Wind
+  - Thunderstorm
+  mapDisasterFactors:
+  - 0
+  - 0
+  - 0
+  - 0
   cameraObject: {fileID: 1678750812}
 --- !u!61 &811889218
 BoxCollider2D:
@@ -8383,7 +8403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: testing
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7193090168418514080, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: initStart
