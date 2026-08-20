@@ -5,9 +5,13 @@ SNADV Notes
     
     Priorities:
         
-        Incorporate mini cutscenes/camera events during dialogue
-            Ive made most of the logic
-            Now to just test it all out
+        Add gameplay SFX files
+        
+        Game Pausing Logic
+            There is a video i have in mind to watch so i can learn how to pause everything but GUI or maybe just entities for example
+            It's one thing for me to make the game's menu pause the game
+            but i also want certain stuff to pause the game a small amount too for more impact
+                Countering for example
                    
     Optimisations & Hotfixes:
         
@@ -15,33 +19,26 @@ SNADV Notes
             Replicatable or From-Build bugs/problems
                 
             One time occurrences or Rare/Intimidating bugs
+                In the current save state, izuno has no dialogue
+                It seems like it loaded an empty dialogue list
+                We needa find out why                
                 
             Low Priority/Unconfirmed fixed Bugs
                 i still get nullrefs based on unknown coroutines!!!
-                    someone help!     
+                    someone help! 
+                    
+                The new Camera event logic is very untested, so im going to leave this here
+                    Right now, it all seems ok, but there might be some small errors to fix later    
+                    
         Junie Assistant
            N/A
             
     Things to be added/changed:
         
         Pre-AO
-                        
-            Add basic gameplay SFX
-                Combat stuff
-                Door opening
-                Quest notifications (kinda added)
-                Gui stuff
-                Spawning
-                Death (added)
-            
-            Game Pausing Logic
-                There is a video i have in mind to watch so i can learn how to pause everything but GUI or maybe just entities for example
-                It's one thing for me to make the game's menu pause the game
-                but i also want certain stuff to pause the game a small amount too for more impact
-                    Countering for example
-            
+
             Shop Logic
-                Start by making a portable gui shop that has items that may or may not have a limited stock
+                I forgot i made a few random npc anims, so we can use those yet for shop stalls!
                 Should i add GAMBLING?!
                 I can see this being annoying to deal with D:
                         
@@ -59,17 +56,22 @@ SNADV Notes
             Boss Logic
                 Improve/Remake Noxu
                     He is a very very boring boss fight, so i need to add more functionality to his moves
-                        I want his style to be based on the player using spatial awareness
-                            An idea would be his rocks bouncing on surfaces (like dung defender in hk) 
-                                to make the player worry about those and move around more
-                            Maybe add a digging underground move (also like dung defender) just for mobility and more caution
-                            MAYBE add area manipulation if possible
-                                He can probably resize the area to make it easier/harder for the player to do certain things while fighting him
-                            Make him deathly parry any projectiles that come in contact if he uses the baseball bat
-                                This will mean baseball bat will need some sort of counter variant
-                                The projectiles will be deflected at a near inescapable speed, but this will happen before the freeze/impace frames
-                                It will be very funny if done aha
-                        I will probably ask people for more ideas
+                    I want his style to be based on the player using spatial awareness
+                        An idea would be his rocks bouncing on surfaces (like dung defender in hk) 
+                            to make the player worry about those and move around more
+                        Maybe add a digging underground move (also like dung defender) just for mobility and more caution
+                        MAYBE add area manipulation if possible
+                            He can probably resize the area to make it easier/harder for the player to do certain things while fighting him
+                        Make him deathly parry any projectiles that come in contact if he uses the baseball bat
+                            This will mean baseball bat will need some sort of counter variant
+                            The projectiles will be deflected at a near inescapable speed, but this will happen before the freeze/impace frames
+                            It will be very funny if done aha
+                    I will probably ask people for more ideas
+                Improve Cynder
+                    As a boss, he isnt that bad, but i would like to add some extra stuff to make him even more engaging and difficult
+                    I want his style to be based on being hard to predict, making the player hyperaware and intimidated
+                        He needs to be faster, in a sensible manner
+                        Maybe add more teleporting based moves                        
                 
                 Make minibosses: a normal-enemy/boss hybrid
                     This is basically already a thing; there are spawners that have a onetime flag

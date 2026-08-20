@@ -38,8 +38,8 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         GameEvents.OnDisableGUI += QuietOnGUI;
         GameEvents.OnEnableGUI += QuietOnGUI;
         
-        if (backgroundMusic.Length > 2 && backgroundMusic[1] == null && backgroundMusic[2] == null) PlayMusic(0, false);
-        else if (backgroundMusic.Length > 0 && musicSource.clip == null) PlayMusic(0, false);
+        if (backgroundMusic.Length > 2 && backgroundMusic[1] == null && backgroundMusic[2] == null || backgroundMusic.Length > 0 && musicSource.clip == null) 
+            PlayMusic(0, false);
     }
 
     private void PlayMusic(int index, bool fade)
@@ -52,13 +52,10 @@ public class AudioManager : MonoBehaviour, IAudioStatus
     {
         if (index < 0 || index >= backgroundMusic.Length) yield break;
         
-        float targetVolume = backgroundMusicVolume[index];
+        var targetVolume = backgroundMusicVolume[index];
 
-        if (fade && musicSource.isPlaying)
-        {
-            yield return StartCoroutine(FadeOutMusic(2f));
-        }
-
+        if (fade && musicSource.isPlaying) yield return StartCoroutine(FadeOutMusic(2f));
+        
         if (musicSource.clip != backgroundMusic[index])
         {
             musicSource.clip = backgroundMusic[index];
@@ -66,14 +63,8 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             musicSource.Play();
         }
 
-        if (fade)
-        {
-            yield return StartCoroutine(FadeInMusic(2f));
-        }
-        else
-        {
-            musicSource.volume = targetVolume;
-        }
+        if (fade) yield return StartCoroutine(FadeInMusic(2f));
+        else musicSource.volume = targetVolume;
         
         fadeCoroutine = null;
     }
@@ -124,11 +115,14 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         fadeCoroutine = null;
     }
 
-    private void PlaySfx(AudioClip clip = null, bool randomPitch = true)
+    private void PlaySfx(AudioClip clip = null, bool randomPitch = true, GameObject source = null)
     {
         if (randomPitch) sfxSource.pitch = Random.Range(0.9f, 1.1f);
-        sfxSource.PlayOneShot(clip ?? sFXMusic[Random.Range(0, sFXMusic.Length)]);
+        
+        if (source == null) sfxSource.PlayOneShot(clip ?? sFXMusic[Random.Range(0, sFXMusic.Length)]);
+        else AudioSource.PlayClipAtPoint(clip ?? sFXMusic[Random.Range(0, sFXMusic.Length)], source.transform.position);
     }
+    
     
     private void QuietOnGUI()
     {

@@ -64,6 +64,7 @@ namespace scripies.Enemy
         public float knockbackTime = 0.2f;
         public bool positionKnockback;
         public Transform knockbackTransform;
+        [SerializeField] private AudioClip[] combatSfx = new AudioClip[2];
         
         public bool isTrue;
         public bool damageOverTime;
@@ -259,21 +260,20 @@ namespace scripies.Enemy
         }
 
 
-        private void Attack()
+        private void Attack(AudioClip sfx = null)
         {
             hit = Physics2D.CircleCast(attackTransform.position, attackRange,
                 new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
-            if (hit.collider != null)
-            {
-                var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
-                if (damageable != null)
-                {
-                    damageable.Damage(damageAmount, ec.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, 1, isTrue, damageOverTime, procDmg, procInterval, "Enemy");
-                    damageable.Shock(stunTime, knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
-                }
-            }
+            if (hit.collider == null) return;
+            var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
+            if (damageable == null) return;
+            damageable.Damage(damageAmount, ec.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, 1, isTrue, damageOverTime, procDmg, procInterval, "Enemy");
+            damageable.Shock(stunTime, knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
+            PlaySound(sfx);
         }
 
+        private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? combatSfx[Random.Range(0, combatSfx.Length)], true,gameObject);
+        
         private void FollowupAttack(string attack)
         {
             var rng = Random.Range(0, 101);

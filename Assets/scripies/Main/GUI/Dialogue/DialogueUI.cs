@@ -21,7 +21,8 @@ namespace scripies.Dialogue
         public Animator animator;
         private NPC currentNpc;
         private bool isBold;
-
+        
+        [SerializeField] private AudioClip[] dialoguePings;
         private GameObject persistentItem;
 
         protected override void Awake()
@@ -82,7 +83,7 @@ namespace scripies.Dialogue
             npcNameLabel.text = dialogueObject.NPCName;
             npcNameLabel.color = dialogueObject.nameColour;
             animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
-                
+            GameEvents.TriggerPlaySound(dialoguePings[0], false);
             if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
             if (!dialogueObject.canBeBold) isBold = false;
             
@@ -94,7 +95,7 @@ namespace scripies.Dialogue
                 if (dialogueObject.canBeColoured) textLabel.color = dialogue.dialogueColour;
                 if (dialogueObject.canBeBold) isBold = dialogue.isBold;
 
-                if (dialogueObject.useCameraEvents)
+                if (dialogue.useCameraEvents)
                 {
                     CameraEventManager.Instance.ZoomCamera(dialogue.cameraDistance, dialogue.zoomSpeed);
                     GameObject target = null;
@@ -133,6 +134,7 @@ namespace scripies.Dialogue
                     }
                     CameraEventManager.Instance.ChangeTarget(target);
                 }
+                else if (dialogue.disablePreviousEvents) CameraEventManager.Instance.ResetCamera();
                 
                 yield return typeWriter.Run(dialogue.thread, textLabel, npcNameLabel);
                 if (dialogueObject.PendingChoice)
@@ -206,8 +208,11 @@ namespace scripies.Dialogue
                     if (instance != null) GameEvents.TriggerAddDialogue(dialogueObject.alteredDialogue, instance);
                 }
                 if (dialogueObject.alteredExternalDialogue != null) StartCoroutine(ChangeDialogues(dialogueObject));
+                
+                CameraEventManager.Instance.ResetCamera();
             }
             GameEvents.TriggerDialogueClose(dialogueObject);
+            GameEvents.TriggerPlaySound(dialoguePings[1], false);
             ClearData();
         }
 

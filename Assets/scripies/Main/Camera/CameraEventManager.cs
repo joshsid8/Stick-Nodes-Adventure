@@ -24,9 +24,9 @@ public class CameraEventManager : MonoBehaviour
 			Destroy(gameObject);
 			return;
 		}
+		Instance = this;
 		
-		cam = GetComponent<CinemachineCamera>();
-		composer = GetComponent<CinemachinePositionComposer>();
+		composer = cam.GetComponent<CinemachinePositionComposer>();
 		originalSize = composer.CameraDistance;
 	}
 
@@ -34,11 +34,20 @@ public class CameraEventManager : MonoBehaviour
 	{
 
 	}
-	
+
+	public void ToggleCamera(bool toggle = true) => cam.gameObject.SetActive(toggle);
 	//private void MoveCameraToPoint(Vector3 point, float time = 1) => cam.transform.position = Vector3.Lerp(cam.transform.position, point, time);
-	public void ZoomCamera(float zoom, float time = 1) => composer.CameraDistance = Mathf.Lerp(composer.CameraDistance, zoom, time);
+	public void ZoomCamera(float zoom, float time = 1) 
+	{
+		if (zoom <= 0) return;
+		ToggleCamera();
+		composer.CameraDistance = Mathf.Lerp(composer.CameraDistance, zoom, time);
+	}
+
 	public void ChangeTarget(GameObject target)
 	{
+		if (target == null) return;
+		ToggleCamera();
 		cam.Follow = target.transform;
 		cameraTarget = target;
 	}
@@ -70,10 +79,10 @@ public class CameraEventManager : MonoBehaviour
 		// For we yet lack the knowledge of fulfilling the duty of this method.
 	}
 
-	private void ResetCamera()
+	public void ResetCamera()
 	{
 		composer.CameraDistance = originalSize;
 		cam.Follow = null;
-		enabled = false;
+		ToggleCamera(false);
 	}
 }

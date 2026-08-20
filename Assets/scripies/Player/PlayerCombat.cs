@@ -45,7 +45,10 @@ namespace scripies.Player
         public bool damageOverTime;
         public float procDmg;
         public float procInterval;
-
+        
+        [SerializeField] private AudioClip[] hitSfx = new AudioClip[2];
+        [SerializeField] private AudioClip[] whooshSfx = new AudioClip[2];
+        
         // Components
         private RaycastHit2D[] hits;
         private Animator animator;
@@ -90,18 +93,18 @@ namespace scripies.Player
             hits = Physics2D.CircleCastAll(attackTransform.position, attackRange,
                 new Vector2(transform.right.x, transform.up.y), 0f, enemyLayer);
 
-            for (var i = 0; i < hits.Length; i++)
+            foreach (var hit in hits)
             {
-                var eDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
+                var eDamageable = hit.collider.gameObject.GetComponent<IDamageable>();
 
-                if (eDamageable != null)
-                {
-                    eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
-                        (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
-                    eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right,
-                        knockbackForces[0], knockbackTimes[0] * attackPotency);
-                    GetComponent<PlayerAbility>().energy += attackEnergy;
-                }
+                if (eDamageable == null) return;
+                eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
+                    (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
+                eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right,
+                    knockbackForces[0], knockbackTimes[0] * attackPotency);
+                
+                GetComponent<PlayerAbility>().energy += attackEnergy;
+                GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)]);
             }
 
             comboInterval[0]++;
@@ -116,20 +119,19 @@ namespace scripies.Player
             hits = Physics2D.CircleCastAll(airAttackTransform.position, airAttackRange,
                 new Vector2(transform.right.x, transform.up.y), 0f, enemyLayer);
 
-            for (var i = 0; i < hits.Length; i++)
+            foreach (var hit in hits)
             {
-                var eDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
+                var eDamageable = hit.collider.gameObject.GetComponent<IDamageable>();
 
-                if (eDamageable != null)
-                {
-                    eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
-                        (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval); 
-                    eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[1].x * attackPotency,
-                            knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], 
-                        knockbackTimes[1] * attackPotency);
-                    GetComponent<PlayerAbility>().energy += attackEnergy;
-                    airComboAmount--;
-                }
+                if (eDamageable == null) return;
+                eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
+                    (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval); 
+                eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[1].x * attackPotency,
+                        knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], knockbackTimes[1] * attackPotency);
+                
+                GetComponent<PlayerAbility>().energy += attackEnergy;
+                airComboAmount--;
+                GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)]);
             }
 
             hasAirBoosted = true;
@@ -152,9 +154,11 @@ namespace scripies.Player
 
         private void Attack()
         {
-            if (Input.GetMouseButtonDown(0) && currentAttackCooldown <= 0 && m1Ability && !pc.isPerformingAction &&
-                canAttack)
+            if (Input.GetMouseButtonDown(0) && currentAttackCooldown <= 0 && m1Ability && !pc.isPerformingAction && canAttack)
+            {
                 animator.SetTrigger("Attack");
+                GameEvents.TriggerPlaySound(whooshSfx[Random.Range(0, whooshSfx.Length)]);
+            }
             currentAttackCooldown -= Time.deltaTime * 0.5f;
             if (currentAttackCooldown <= 0) canAttack = true;
         }

@@ -66,7 +66,6 @@ namespace scripies.Dialogue
         
         [Header("Item Drops & Camera Events")]
         public CollectableSOBase[] itemType;
-        public bool useCameraEvents;
 
         [Header("Colouring & Font Changes")]
         public bool canBeColoured;
@@ -92,6 +91,9 @@ namespace scripies.Dialogue
         public Color dialogueColour = Color.black;
         public bool isBold;
 
+        public bool useCameraEvents;
+        public bool disablePreviousEvents;
+        
         public float cameraDistance;
         public float zoomSpeed;
         

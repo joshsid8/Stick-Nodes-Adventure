@@ -46,6 +46,8 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     public bool movable = true;
     
     [Header("References")]
+    [SerializeField] private AudioClip deathClip;
+
     private BossAttack ba;
     private Animator animator;
     
@@ -92,23 +94,22 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     
     private IEnumerator Defeat()
     {
-        if (isDead)
-        {
-            spriteRenderer.color = Color.white;
-            GameEvents.TriggerDropLoot(gameObject);
-            GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-            GetComponent<BossAttack>().isAttacking = false;
-            GetComponent<BossAttack>().rangeRadius = 0;
-            gameObject.layer = LayerMask.NameToLayer("EDead");
-            gameObject.tag = "Dead";
-            spriteRenderer.enabled = true;
-            yield return new WaitForSeconds(3);
-            GameHUD.Instance.ToggleBossHealth(false);
-            isDead = false;
-            GameEvents.TriggerAddPlayerTime("Combat", 0);
-            animator.SetTrigger("Rise");
-            GameEvents.TriggerShowDialogue(deathDialogue);
-        }
+        if (!isDead) yield break;
+        spriteRenderer.color = Color.white;
+        GameEvents.TriggerDropLoot(gameObject);
+        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+        GetComponent<BossAttack>().isAttacking = false;
+        GetComponent<BossAttack>().rangeRadius = 0;
+        gameObject.layer = LayerMask.NameToLayer("EDead");
+        gameObject.tag = "Dead";
+        spriteRenderer.enabled = true;
+        GameEvents.TriggerPlaySound(deathClip, false);
+        yield return new WaitForSeconds(3);
+        GameHUD.Instance.ToggleBossHealth(false);
+        isDead = false;
+        GameEvents.TriggerAddPlayerTime("Combat", 0);
+        animator.SetTrigger("Rise");
+        GameEvents.TriggerShowDialogue(deathDialogue);
     }
 
     public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,

@@ -36,7 +36,8 @@ public class DoorObjective : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!isOpen) switch (objective)
+        if (isOpen)  return;
+        switch (objective)
         {
             case Objectives.DefeatEnemy:
                 if (collision.gameObject.CompareTag("Enemy"))
@@ -46,9 +47,9 @@ public class DoorObjective : MonoBehaviour
                 }
                 break;
             case Objectives.FindKeys:
-                if (collision.gameObject.CompareTag("Player")) playerDetected = true; else playerDetected = false;
+                playerDetected = collision.gameObject.CompareTag("Player");
                 break;
-            case Objectives.DefeatBoss: 
+            case Objectives.DefeatBoss:
                 if (collision.gameObject.CompareTag("Boss")) boss = collision.gameObject;
                 break;
             default:

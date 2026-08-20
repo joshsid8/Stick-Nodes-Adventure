@@ -38,7 +38,7 @@ namespace scripies.Core
         public static Action<ScriptableObject> OnDialogueClose;
         
         // Misc events
-        public static Action<AudioClip, bool> PlaySound;
+        public static Action<AudioClip, bool, GameObject> PlaySound;
         public static Action<int, bool> PlayMusic;
         
         public static Action<GameObject> DropLoot;
@@ -69,7 +69,7 @@ namespace scripies.Core
         public static void TriggerDialogueClose() => CloseDialogue?.Invoke();
         public static void TriggerDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
         
-        public static void TriggerSound(AudioClip clip = null, bool randomPitch = true) => PlaySound?.Invoke(clip, randomPitch);
+        public static void TriggerPlaySound(AudioClip clip = null, bool randomPitch = true, GameObject source = null) => PlaySound?.Invoke(clip, randomPitch, source);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
         
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);

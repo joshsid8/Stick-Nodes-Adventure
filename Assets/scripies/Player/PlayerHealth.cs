@@ -46,7 +46,9 @@ namespace scripies.Player
         private List<ITarget> aggressiveEnemies = new();
         public int aggressiveEnemyID;
         public float jumpRotationTimer;
-
+    
+        [SerializeField] private AudioClip deathClip;
+        
         // Components
         private Knockback kb;
         [HideInInspector] public PlayerController pc;
@@ -176,8 +178,6 @@ namespace scripies.Player
 
         private IEnumerator SpawnPeriod()
         {
-            
-            
             justSpawned = true;
             yield return new WaitForSeconds(1f);
             justSpawned = false;
@@ -192,8 +192,8 @@ namespace scripies.Player
                 GameEvents.TriggerPlayerDeath();
                 //#if UNITY_EDITOR
                 GameEvents.TriggerJumpScare();
-                GameEvents.TriggerSound();
                 //#endif
+                GameEvents.TriggerPlaySound(deathClip, false);
                 Shenanigans.Instance.ToggleFreezeCamera();
                 GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
 

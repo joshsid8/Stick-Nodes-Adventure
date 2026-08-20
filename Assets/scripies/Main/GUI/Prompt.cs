@@ -55,7 +55,7 @@ public class Prompt : GUIBase
         positiveButton.onClick.AddListener(() => Positive());
         negativeButton.onClick.AddListener(() => Negative());
         
-        GameEvents.TriggerSound(promptSound);
+        GameEvents.TriggerPlaySound(promptSound);
     }
 
     private void Positive() => Finish(2);

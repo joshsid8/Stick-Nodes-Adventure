@@ -34,6 +34,9 @@ namespace scripies.Enemy
         [SerializeField] private Transform edgeCheck;
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private float edgeCheckRay = 2f;
+        
+        [SerializeField] private AudioClip[] footstepClips;
+        [SerializeField] private AudioClip foundPlayerClip;
 
         [HideInInspector] public Rigidbody2D rb;
         private Animator animator;
@@ -98,10 +101,9 @@ namespace scripies.Enemy
             isPatrolling = false;
             isWalking = false;
             GameEvents.TriggerAddPlayerCombat(20, false, "EnemySpotted");
-
+            AudioSource.PlayClipAtPoint(foundPlayerClip, transform.position);
             yield return new WaitForSeconds(0.5f);
-            if (TryGetComponent<EnemyController>(out var ec)) ec.ChangeState(EnemyController.EnemyState.Zoning);
-            else print("uhhhh, no controller");
+            ec?.ChangeState(EnemyController.EnemyState.Zoning);
         }
 
         private IEnumerator Pause()
@@ -115,24 +117,23 @@ namespace scripies.Enemy
             if (rng >= chance) Flip();
             randomPause = 3;
         }
+        
+        private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? footstepClips[Random.Range(0, footstepClips.Length)], true, gameObject);
 
         private void Flip() => ec.Flip();
 
         private void OnDrawGizmosSelected()
         {
-            if (!GetComponent<EnemyAttack>())
-            {
-                Gizmos.color = Color.grey;
-                Vector3 rayDirection =
-                    ec.isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x * eyeSight;
-                Gizmos.DrawLine(playerCheck.position, playerCheck.position + rayDirection);
-                Gizmos.color = Color.red;
-                Vector3 rayDirection2 = Vector2.down * transform.localScale.y * wallCheckRay;
-                Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection2);
-                Gizmos.color = Color.green;
-                Vector3 rayDirection3 = Vector2.down * transform.localScale.y * edgeCheckRay;
-                Gizmos.DrawLine(edgeCheck.position, edgeCheck.position + rayDirection3);
-            }
+            if (!GetComponent<EnemyAttack>()) return;
+            Gizmos.color = Color.grey;
+            Vector3 rayDirection = ec.isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x * eyeSight;
+            Gizmos.DrawLine(playerCheck.position, playerCheck.position + rayDirection);
+            Gizmos.color = Color.red;
+            Vector3 rayDirection2 = Vector2.down * transform.localScale.y * wallCheckRay;
+            Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection2);
+            Gizmos.color = Color.green;
+            Vector3 rayDirection3 = Vector2.down * transform.localScale.y * edgeCheckRay;
+            Gizmos.DrawLine(edgeCheck.position, edgeCheck.position + rayDirection3);
         }
     }
 }

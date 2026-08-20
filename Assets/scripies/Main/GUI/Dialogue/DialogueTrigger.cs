@@ -64,6 +64,8 @@ namespace scripies.Dialogue
                         var priorityDialogue = dialogue[^1];
                         DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
                         if (dialogue.Count > 1) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
+                        CameraEventManager.Instance.ResetCamera();
+                        CameraEventManager.Instance.ChangeTarget(gameObject);
                     }
                 }
             }

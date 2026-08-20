@@ -48,6 +48,7 @@ namespace scripies.Enemy
         private EnemyPatrol ep;
         public bool isLight;
         public bool isOneTime;
+        [SerializeField] private AudioClip deathClip;
 
         [Header("Getters & Setters")] 
         public float CurrentHealth => enemyHealth;
@@ -113,7 +114,8 @@ namespace scripies.Enemy
                 gameObject.layer = LayerMask.NameToLayer("EDead");
                 gameObject.tag = "Dead";
                 spriteRenderer.enabled = true;
-                yield return new WaitForSeconds(3f);
+                AudioSource.PlayClipAtPoint(deathClip, transform.position);
+                yield return new WaitForSeconds(2f);
                 for (var i = 0; i < 25; i++)
                 {
                     spriteRenderer.enabled = false;
@@ -158,7 +160,11 @@ namespace scripies.Enemy
                 isDead = true;
                 StartCoroutine(Death());
             }
-            else if (aggressor.Contains("Player")) GameEvents.TriggerAddPlayerCombat(30, false);
+            else if (aggressor.Contains("Player"))
+            {
+                if (!ea.isAttacking) StartCoroutine(ep.FoundPlayer());
+                GameEvents.TriggerAddPlayerCombat(30, false);
+            }
             else print($"aggressor doesnt contain player: {aggressor}");
 
             Flash();

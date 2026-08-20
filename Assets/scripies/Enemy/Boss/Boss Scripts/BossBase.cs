@@ -29,6 +29,8 @@ public abstract class BossBase : MonoBehaviour
     public bool positionKnockback;
     public Transform knockbackTransform;
     
+    [SerializeField] private AudioClip[] combatSfx = new AudioClip[2];
+    
     public bool isTrue;
     public bool damageOverTime;
     public float procDmg;
@@ -147,7 +149,7 @@ public abstract class BossBase : MonoBehaviour
         rb.linearVelocity = new Vector2(jumpForceX, jumpForceY);
     }
     
-    protected void MeleeAttack()
+    protected void MeleeAttack(AudioClip sfx = null)
     {
         hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
         if (hit.collider == null) return;
@@ -155,7 +157,11 @@ public abstract class BossBase : MonoBehaviour
         if (damageable == null) return;
         damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Boss");
         damageable.Shock(stunTime,  knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
+        PlaySound(sfx);
     }
+    
+    private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? combatSfx[Random.Range(0, combatSfx.Length)], true, gameObject);
+    
     protected void FollowupMove(string move) => animator.SetTrigger(move);
 
     protected void StoreObject(string target)

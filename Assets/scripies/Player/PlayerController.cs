@@ -91,7 +91,13 @@ namespace scripies.Player
 
         public bool isFacingRight = true;
 
-        [Space] [Header("Extra Components")] 
+        [Space] [Header("Audio & Extra Components")] 
+        
+        [SerializeField] private AudioClip[] jumpClips;
+        [SerializeField] private AudioClip[] footstepClips;
+        [SerializeField] private AudioClip[] wallClips;
+        [SerializeField] private AudioClip[] dashClips;
+
         private PlayerCombat pco;
         private PlayerDefense pdf;
         private PlayerAbility pab;
@@ -483,6 +489,20 @@ namespace scripies.Player
             isTouchingWall = Physics2D.Raycast(wallCheck.position, Vector2.up * transform.localScale.y, wallCheckRay, whatIsWall);
         }
 
+        private void PlaySound(string fx)
+        {
+            switch (fx)
+            {
+                case "Footstep":
+                    AudioSource.PlayClipAtPoint(footstepClips[Random.Range(0, footstepClips.Length)], transform.position);
+                    break;
+                case "Dash":
+                    AudioSource.PlayClipAtPoint(dashClips[Random.Range(0, dashClips.Length)], transform.position);
+                    break;
+            }
+        }
+        
+        #endregion
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
@@ -491,8 +511,6 @@ namespace scripies.Player
             Vector3 rayDirection = Vector2.up * transform.localScale.y * wallCheckRay;
             Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection);
         }
-
-        #endregion
 
         public void Save(ref PlayerSaveCurrentData data)
         {
