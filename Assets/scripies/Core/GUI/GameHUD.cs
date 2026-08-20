@@ -15,9 +15,6 @@ public class GameHUD : MonoBehaviour
     [SerializeField] private Image screenShader;
     [SerializeField] private Color screenShaderColour;
     
-    [SerializeField] private Camera animatedCamera;
-    [SerializeField] private GameObject cameraTarget;
-    
     private IEnemyStatus boss;
     public Image bossHealthBar;
     [SerializeField] private Image bossHealthBackBar;
@@ -76,12 +73,6 @@ public class GameHUD : MonoBehaviour
     
     private void SetShaderColour(Color colour, float fadeTime = 1) => screenShader.CrossFadeColor(colour, fadeTime, false, false);
     
-    #endregion
-
-    #region Camera Movement
-    private void MoveCameraToPoint(Vector3 point, float time = 1) => animatedCamera.transform.position = Vector3.Lerp(animatedCamera.transform.position, point, time);
-    private void ZoomCamera(float zoom, float time = 1) => animatedCamera.orthographicSize = Mathf.Lerp(animatedCamera.orthographicSize, zoom, time);
-
     #endregion
     
     public void ToggleBossHealth(bool state)

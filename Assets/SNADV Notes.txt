@@ -4,14 +4,10 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-    
-        i still get nullrefs based on unknown coroutines!!!
-            someone help!        
         
         Incorporate mini cutscenes/camera events during dialogue
-            Targeting certain enemies/objects/characters
-            An easy thing to incorporate!
-                I hope...
+            Ive made most of the logic
+            Now to just test it all out
                    
     Optimisations & Hotfixes:
         
@@ -21,7 +17,8 @@ SNADV Notes
             One time occurrences or Rare/Intimidating bugs
                 
             Low Priority/Unconfirmed fixed Bugs
-                    
+                i still get nullrefs based on unknown coroutines!!!
+                    someone help!     
         Junie Assistant
            N/A
             

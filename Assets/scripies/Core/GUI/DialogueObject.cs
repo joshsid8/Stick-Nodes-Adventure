@@ -58,19 +58,21 @@ namespace scripies.Dialogue
         public List<ApplyBool> applyBools = new();
         public List<ApplyFloat> applyFloats = new();
 
-        [Space(10)] [Header("Questing")] [Tooltip("Will this NPC assign a quest for the player?")]
+        [Space(10)] [Header("Questing")]
         public bool willGiveQuest;
         public ScriptableObject questToOffer;
         [Tooltip("If the player has a GiveTo quest, but doesnt have the right items, this dialogue will be shown instead")]
         public DialogueObject itemCheckFailureDialogue;
-
+        
+        [Header("Item Drops & Camera Events")]
         public CollectableSOBase[] itemType;
+        public bool useCameraEvents;
 
-        [Header("Colouring & Font Changes")] [Tooltip("The colour of each text")]
+        [Header("Colouring & Font Changes")]
         public bool canBeColoured;
         public bool canBeBold;
-
-        [Header("NPC Control")] [Tooltip("Who is speaking?")]
+        
+        [Header("NPC Control")] 
         public string speaker;
         [Tooltip("Adds this dialogue to the current speaker. Ensure this is filled if this dialogue is quest based")]
         public DialogueObject alteredDialogue;
@@ -89,6 +91,13 @@ namespace scripies.Dialogue
         public string thread;
         public Color dialogueColour = Color.black;
         public bool isBold;
+
+        public float cameraDistance;
+        public float zoomSpeed;
+        
+        public string cameraTarget;
+        public enum LookupType {RawName, Tag, Section, Spawner}
+        public LookupType cameraLookupType;
     }
     [Serializable]
     public class ApplyFloat

@@ -86,14 +86,53 @@ namespace scripies.Dialogue
             if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
             if (!dialogueObject.canBeBold) isBold = false;
             
-            for (var i = 0; i < dialogueObject.DialogueThread.Length; i++)
+            foreach (var dialogue in dialogueObject.DialogueThread)
             {
-                var dialogue = dialogueObject.DialogueThread[i];
                 npcNameLabel.text = dialogueObject.NPCName;
                 npcNameLabel.color = dialogueObject.nameColour;
 
                 if (dialogueObject.canBeColoured) textLabel.color = dialogue.dialogueColour;
                 if (dialogueObject.canBeBold) isBold = dialogue.isBold;
+
+                if (dialogueObject.useCameraEvents)
+                {
+                    CameraEventManager.Instance.ZoomCamera(dialogue.cameraDistance, dialogue.zoomSpeed);
+                    GameObject target = null;
+                    switch (dialogue.cameraLookupType)
+                    {
+                        case DialogueThread.LookupType.RawName:
+                            target = GameObject.Find(dialogue.cameraTarget ?? dialogue.cameraTarget + "(Clone)");
+                            break;
+                        case DialogueThread.LookupType.Tag:
+                            target = GameObject.FindGameObjectWithTag(dialogue.cameraTarget);
+                            break;
+                        case DialogueThread.LookupType.Section:
+                            var allSects = GameObject.FindGameObjectsWithTag("Section");
+                            foreach (var sect in allSects)
+                            {
+                                if (sect.name == dialogue.cameraTarget)
+                                {
+                                    target = sect;
+                                    break;
+                                }
+                            }
+                            break;
+                        case DialogueThread.LookupType.Spawner:
+                            var spawners = GameObject.FindGameObjectsWithTag("Spawner");
+                            foreach (var spawner in spawners)
+                            {
+                                if (spawner.name == dialogue.cameraTarget)
+                                {
+                                    target = spawner;
+                                    break;
+                                }
+                            }
+                            break;
+                        default:
+                            throw new ArgumentException($"[DialogueUI Camera Event] How did u even make the type as {dialogue.cameraLookupType}??");
+                    }
+                    CameraEventManager.Instance.ChangeTarget(target);
+                }
                 
                 yield return typeWriter.Run(dialogue.thread, textLabel, npcNameLabel);
                 if (dialogueObject.PendingChoice)
