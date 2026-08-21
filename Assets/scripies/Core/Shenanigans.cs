@@ -5,10 +5,12 @@ using scripies.Core;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+/// <summary>
+///  This script is meant to manage literally every small function that occurs in this game, similar to the player manager.
+///  If it cant be managed anywhere else without it being inconvenient, add it here!
+/// </summary>
 public class Shenanigans : MonoBehaviour
 {
-    // This script is meant to manage literally every small function that occurs in this game, similar to the player manager.
-    // If it cant be managed anywhere else without it being inconvenient, add it here!
 
     [Header("Jump Scare Object")] 
     [SerializeField] private Image jsObjImage;
@@ -38,16 +40,17 @@ public class Shenanigans : MonoBehaviour
 
     private void Update()
     {
-        camObj.SetActive(!freezeCamera);
+        //camObj.SetActive(!freezeCamera);
+        Time.timeScale = freezeCamera ? 0 : 1;
     }
 
     private void StopTime(float time = 0.2f) => StartCoroutine(StopTimeC(time));
     
-    private static IEnumerator StopTimeC(float time = 0.2f)
+    private IEnumerator StopTimeC(float time = 0.2f)
     {
-        Time.timeScale = 0;
+        freezeCamera = true;
         yield return new WaitForSecondsRealtime(time);
-        Time.timeScale = 1;
+        freezeCamera = false;
     }
 
     private void JumpScare(Image image, float duration, float fadeMult) => StartCoroutine(StartJumpScare(image, duration, fadeMult)); 
@@ -56,8 +59,7 @@ public class Shenanigans : MonoBehaviour
     {
         if (jsObjImage != null)
         {
-            if (image != null) jsObjImage.sprite = image.sprite;
-            else jsObjImage.sprite = jsImages[Random.Range(0, jsImages.Length)];
+            jsObjImage.sprite = image == null ? jsImages[Random.Range(0, jsImages.Length)] : image.sprite;
             jsObjImage.color = new Color(1,1,1,1);
             jsObjImage.enabled = true;
             yield return new WaitForSeconds(duration);

@@ -32,7 +32,7 @@ public class GameMenuManager : MonoBehaviour
     private void OnMenuToggle(bool toggle)
     {
         pausedGame = toggle;
-        Time.timeScale = pausedGame ? 0 : 1;
+        Shenanigans.Instance.ToggleFreezeCamera(toggle);
         gameMenu.SetActive(toggle);
         if (!toggle) foreach (var button in menuButtons) button.onClick.RemoveAllListeners();
         else

@@ -212,7 +212,7 @@ namespace scripies.Dialogue
                 CameraEventManager.Instance.ResetCamera();
             }
             GameEvents.TriggerDialogueClose(dialogueObject);
-            GameEvents.TriggerPlaySound(dialoguePings[1], false);
+            //GameEvents.TriggerPlaySound(dialoguePings[1], false);
             ClearData();
         }
 

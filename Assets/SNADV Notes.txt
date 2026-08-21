@@ -6,12 +6,14 @@ SNADV Notes
     Priorities:
         
         Add gameplay SFX files
-        
-        Game Pausing Logic
-            There is a video i have in mind to watch so i can learn how to pause everything but GUI or maybe just entities for example
-            It's one thing for me to make the game's menu pause the game
-            but i also want certain stuff to pause the game a small amount too for more impact
-                Countering for example
+            We need to make the sfx ourselves!!!
+            This is lowk urgent because im getting annoying errors left and right
+            Dont build yet!
+
+        Shop Logic
+            I forgot i made a few random npc anims, so we can use those yet for shop stalls!
+            Should i add GAMBLING?!
+            I can see this being annoying to deal with D:
                    
     Optimisations & Hotfixes:
         
@@ -36,22 +38,22 @@ SNADV Notes
     Things to be added/changed:
         
         Pre-AO
-
-            Shop Logic
-                I forgot i made a few random npc anims, so we can use those yet for shop stalls!
-                Should i add GAMBLING?!
-                I can see this being annoying to deal with D:
+            We are nearing the end of Pre-AO!
+            Im excited to start the next phase, but very scared at the same time
+            Once im done completely with this phase, ill publish the game so i can get it tested by people
                         
         Post-AO
             
             Improve Typewriter Logic
                 The Typewriter updates the settings as it displays text
-                    but i would rather have it know what settings should be implemented beforehand to make it work well
+                    but i would rather have it know what settings should be implemented beforehand to make it work well          
             
             Input Logic
-                switch input systems!
+                Switch input systems!
                     I have initialised the settings, but will now need to implement it programmatically
                         Watch a vid on how to do this
+                    Game Pausing Logic
+                        Ive watched that video on game pausing, and it seems i need to use the new input system to make pausing work in my favour    
             
             Boss Logic
                 Improve/Remake Noxu
@@ -78,12 +80,15 @@ SNADV Notes
                     Tho they arent a physical thing yet
             
                 Sira & TJ
-                    I THHHHIIIIINNNKK i will do Sira last, as it is the most unique boss out of all of them
+                    I THHHHIIIIINNNKK i will do Sira last, as it is the most unique boss out of all of them (that isnt the last boss)
                         Still thinking how her moves will be implemented, but i have an idea on what she'd do
                             She will be intangible for the initial few moments, before summoning a lot of pawns
                             This ultimately leaves her very vulnerable
                     TJ is basically will be split into 2 bosses
                         He will play similarly to Noxu on his first phase, but Cynder on his second
+                SN Demon
+                    Tbh i completely forgot about this one, even tho it is the main antagonist!
+                    I think i might just potentially probably perhaps use Machine Learning to make a very difficult boss
             
             Audio
                 Make it so that the music transitions smoothly
@@ -138,7 +143,8 @@ SNADV Notes
         
         Animate HUD
             Like how i animated the Map's title
-            Just animate anything prominent to make the game look gud                
+            Just animate anything prominent to make the game look gud
+            I got a plugin to help with this!        
         
 When you are done: Find the one piece.
     (This should mean the base has been completed, and I can start on designs!)

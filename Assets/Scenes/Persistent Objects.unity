@@ -986,7 +986,7 @@ MonoBehaviour:
   - {fileID: 230217031}
   - {fileID: 198827336}
   cluelessIndex: 0
-  alterTime: 1
+  alterTime: 0
   timeScale: 1
 --- !u!1001 &175885674
 PrefabInstance:
@@ -18745,6 +18745,7 @@ MonoBehaviour:
   gameHUD: {fileID: 7197909694779672934}
   isAnimated: 0
   animator: {fileID: 0}
+  dialoguePings: []
 --- !u!1 &2081685047811090893
 GameObject:
   m_ObjectHideFlags: 0
@@ -30675,6 +30676,7 @@ MonoBehaviour:
   punctuationPause: 0.1
   textSpeedMultiplier: 2
   actionFactor: 0
+  typingSfx: []
 --- !u!222 &8493896909510830099
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -30,6 +30,7 @@ namespace scripies.Core
         // GUI events
         public static Action OnEnableGUI;
         public static Action OnDisableGUI;
+        
         // Dialogue events
         public static Action<GameObject, bool> OnToggleDialogueTrigger;
         public static Action<ScriptableObject, NPC> ShowDialogue;
