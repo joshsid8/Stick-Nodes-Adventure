@@ -5,15 +5,15 @@ SNADV Notes
     
     Priorities:
         
+        Shop Logic
+            Ive made a good start, but it might need to be very similar to the inventory system
+            I also added a simple GAMBLING method, which ill leave alone for now
+            
         Add gameplay SFX files
             We need to make the sfx ourselves!!!
             This is lowk urgent because im getting annoying errors left and right
             Dont build yet!
 
-        Shop Logic
-            I forgot i made a few random npc anims, so we can use those yet for shop stalls!
-            Should i add GAMBLING?!
-            I can see this being annoying to deal with D:
                    
     Optimisations & Hotfixes:
         

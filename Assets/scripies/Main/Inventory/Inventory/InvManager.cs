@@ -57,12 +57,10 @@ public class InvManager : GUIBase
     public void ToggleInventory()
     {
         isActive = !isActive;
-        if (inventoryMenu != null)
-        {
-            rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
-            GetActive(isActive);
-            //inventoryMenu.SetActive(isActive);
-        }
+        if (inventoryMenu == null) return;
+        rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
+        GetActive(isActive);
+        //inventoryMenu.SetActive(isActive);
     }
 
     public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount = 1, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)
@@ -81,11 +79,11 @@ public class InvManager : GUIBase
             }
         }
         
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (var i = 0; i < itemSlots.Length; i++)
         {
             if (itemSlots[i] != null && !itemSlots[i].usedSlot)
             {
-                int amountToAdd = Mathf.Min(itemAmount, maxItemAmount);
+                var amountToAdd = Mathf.Min(itemAmount, maxItemAmount);
                 itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, itemSo, aspect, ability);
                 itemAmount -= amountToAdd;
 

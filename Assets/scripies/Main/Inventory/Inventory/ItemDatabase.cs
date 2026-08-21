@@ -37,6 +37,11 @@ public class ItemDatabase : MonoBehaviour
         
         //Debug.Log($"[ItemDatabase] Database built with {itemDatabase.Count} items.");
     }
+
+    public CollectableSOBase GetRandomItem(List<CollectableSOBase> items)
+    {
+        return items[Random.Range(0, items.Count)];
+    }
     
     public CollectableSOBase GetItemByName(string itemName)
     {
