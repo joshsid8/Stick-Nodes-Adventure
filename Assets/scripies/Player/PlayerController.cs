@@ -310,6 +310,7 @@ namespace scripies.Player
             if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && !isDashing && !isWallSliding)
             {
                 isJumping = true;
+                if (jumpClips.Length > 0) AudioSource.PlayClipAtPoint(jumpClips[0], transform.position);
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
@@ -337,6 +338,7 @@ namespace scripies.Player
                 isJumping = true;
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
                 doubleJump = false;
+                if (jumpClips.Length > 0) AudioSource.PlayClipAtPoint(jumpClips[1] ?? jumpClips[0], transform.position);
             }
         }
 

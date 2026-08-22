@@ -61,9 +61,17 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: startSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: eaee35d8e6f4e0f4da18827866bc7c7f, type: 3}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: direction
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
+      propertyPath: contactSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: eaee35d8e6f4e0f4da18827866bc7c7f, type: 3}
     - target: {fileID: 3695484897592374479, guid: 2e29f7c30c5b6434daa6ad9389b45228, type: 3}
       propertyPath: upwardOnly
       value: 1

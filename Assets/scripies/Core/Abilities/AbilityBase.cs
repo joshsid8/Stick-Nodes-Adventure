@@ -101,6 +101,11 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     [FormerlySerializedAs("collideAnim")]
     [FormerlySerializedAs("finishAnim")]
     public AnimationClip endAnim;
+    
+    public AudioClip startSfx;
+    public AudioClip loopingSfx;
+    public AudioClip endSfx;
+    public AudioClip contactSfx;
 
     public virtual void SetValues(int factor, bool facingRight)
     {
@@ -130,6 +135,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         transform.localScale = new Vector3(transform.localScale.x * sizeMult,transform.localScale.y * sizeMult, 1);
         if (animator.runtimeAnimatorController == null) 
             Destroy(parentObject.gameObject ?? gameObject, lifeTime);
+        
+        if (startSfx != null) GameEvents.TriggerPlaySound(startSfx, true, gameObject);
     }
 
     protected virtual void Update()
@@ -192,16 +199,14 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
 
     protected void Damageable(IDamageable damageable = null)
     {
-        if (damageable != null)
-        {
-            damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType,
-                elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "Ability", 1 => "PlayerAbility", 2 => "EnemyAbility", _ => "Ability" });
-            Vector2 calcDirection;
-            if (useRadialKnockback) calcDirection = damageable.Position - transform.position;
-            else calcDirection = new Vector2(isFacingRightDirection ? knockbackDirection.x : -knockbackDirection.x, knockbackDirection.y).normalized;
-            
-            damageable.Shock(stunTime, calcDirection, knockbackForce, knockbackTime);
-        }
+        if (damageable == null) return;
+        damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType,
+            elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "Ability", 1 => "PlayerAbility", 2 => "EnemyAbility", _ => "Ability" });
+        Vector2 calcDirection;
+        if (useRadialKnockback) calcDirection = damageable.Position - transform.position;
+        else calcDirection = new Vector2(isFacingRightDirection ? knockbackDirection.x : -knockbackDirection.x, knockbackDirection.y).normalized;
+        damageable.Shock(stunTime, calcDirection, knockbackForce, knockbackTime);
+        if (contactSfx != null) GameEvents.TriggerPlaySound(contactSfx, true, gameObject);
     }
 
     protected void RadiusProc()

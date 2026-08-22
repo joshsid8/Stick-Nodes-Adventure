@@ -99,12 +99,12 @@ namespace scripies.Player
 
                 if (eDamageable == null) return;
                 eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
-                    (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
+                    (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Player");
                 eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right,
                     knockbackForces[0], knockbackTimes[0] * attackPotency);
                 
                 GetComponent<PlayerAbility>().energy += attackEnergy;
-                GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)]);
+                GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)], hit.collider.gameObject);
             }
 
             comboInterval[0]++;
@@ -125,13 +125,13 @@ namespace scripies.Player
 
                 if (eDamageable == null) return;
                 eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
-                    (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval); 
+                    (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Player"); 
                 eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[1].x * attackPotency,
                         knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], knockbackTimes[1] * attackPotency);
                 
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 airComboAmount--;
-                GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)]);
+                GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)], hit.collider.gameObject);
             }
 
             hasAirBoosted = true;
@@ -157,7 +157,7 @@ namespace scripies.Player
             if (Input.GetMouseButtonDown(0) && currentAttackCooldown <= 0 && m1Ability && !pc.isPerformingAction && canAttack)
             {
                 animator.SetTrigger("Attack");
-                GameEvents.TriggerPlaySound(whooshSfx[Random.Range(0, whooshSfx.Length)]);
+                GameEvents.TriggerPlaySound(whooshSfx[Random.Range(0, whooshSfx.Length)], true, gameObject);
             }
             currentAttackCooldown -= Time.deltaTime * 0.5f;
             if (currentAttackCooldown <= 0) canAttack = true;

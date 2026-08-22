@@ -457,6 +457,9 @@ MonoBehaviour:
   knockbackTime: 0.5
   positionKnockback: 0
   knockbackTransform: {fileID: 2123373806418928623}
+  combatSfx:
+  - {fileID: 0}
+  - {fileID: 0}
   isTrue: 0
   damageOverTime: 0
   procDmg: 0
@@ -570,6 +573,7 @@ MonoBehaviour:
   isCountering: 0
   isStunned: 0
   movable: 1
+  deathClip: {fileID: 8300000, guid: ab0a943f4e5d0954fab71e3e0c9249f0, type: 3}
 --- !u!114 &4424314391457150151
 MonoBehaviour:
   m_ObjectHideFlags: 0

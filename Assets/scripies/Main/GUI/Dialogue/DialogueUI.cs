@@ -83,7 +83,7 @@ namespace scripies.Dialogue
             npcNameLabel.text = dialogueObject.NPCName;
             npcNameLabel.color = dialogueObject.nameColour;
             animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
-            GameEvents.TriggerPlaySound(dialoguePings[0], false);
+            if (dialoguePings.Length > 0) GameEvents.TriggerPlaySound(dialoguePings?[0], false);
             if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
             if (!dialogueObject.canBeBold) isBold = false;
             

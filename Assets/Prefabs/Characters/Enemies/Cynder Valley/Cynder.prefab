@@ -180,6 +180,9 @@ MonoBehaviour:
   knockbackTime: 0
   positionKnockback: 0
   knockbackTransform: {fileID: 1052973516199733126}
+  combatSfx:
+  - {fileID: 0}
+  - {fileID: 0}
   isTrue: 0
   damageOverTime: 0
   procDmg: 0
@@ -255,7 +258,8 @@ MonoBehaviour:
   canFacePlayer: 1
   playerTransform: {fileID: 0}
   initStart: 1
-  backupMoveTimer: 5
+  backupMoveTime: 5
+  currentBackupMoveTimer: 0
   stunnable: 0
   stunnableTimer: 0
   dialogueNo: 0
@@ -296,6 +300,7 @@ MonoBehaviour:
   isCountering: 0
   isStunned: 0
   movable: 1
+  deathClip: {fileID: 8300000, guid: c1660015102c89149b5ede2a5e11efb0, type: 3}
 --- !u!114 &5109050645649171322
 MonoBehaviour:
   m_ObjectHideFlags: 0

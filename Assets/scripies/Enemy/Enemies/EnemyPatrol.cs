@@ -101,7 +101,7 @@ namespace scripies.Enemy
             isPatrolling = false;
             isWalking = false;
             GameEvents.TriggerAddPlayerCombat(20, false, "EnemySpotted");
-            AudioSource.PlayClipAtPoint(foundPlayerClip, transform.position);
+            //AudioSource.PlayClipAtPoint(foundPlayerClip, transform.position);
             yield return new WaitForSeconds(0.5f);
             ec?.ChangeState(EnemyController.EnemyState.Zoning);
         }

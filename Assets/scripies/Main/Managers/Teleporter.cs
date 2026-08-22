@@ -23,7 +23,7 @@ public class Teleporter : MonoBehaviour
                 if (!forcePlayerTeleport) PlayerHealth.Instance.StartCoroutine(PlayerHealth.Instance.Spawn());
                 else collision.transform.position = teleportTarget.position;
                 if (doesDamage) collision.GetComponent<PlayerHealth>().playerHealth -= damage;
-                AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
+                if (teleportSfx != null) AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
                 break;
             }
             case "Enemy":
@@ -38,14 +38,14 @@ public class Teleporter : MonoBehaviour
                     if (e != null) collision.GetComponent<EnemyHealth>().enemyHealth -= damage;
                     if (b != null) collision.GetComponent<BossHealth>().bossHealth -= damage;
                 }
-                AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
+                if (teleportSfx != null) AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
                 break;
             }
             case "Terrain": case "Door": case "Untagged": case "Spawner": case "MainCamera": case "NPC": case "Section": case "camera":
                 break;
             default:
                 collision.transform.position = teleportTarget.position;
-                AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
+                if (teleportSfx != null) AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
                 break;
             
         }

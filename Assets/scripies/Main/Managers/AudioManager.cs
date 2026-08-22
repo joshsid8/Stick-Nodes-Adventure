@@ -117,12 +117,24 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
     private void PlaySfx(AudioClip clip = null, bool randomPitch = true, GameObject source = null)
     {
-        if (randomPitch) sfxSource.pitch = Random.Range(0.9f, 1.1f);
-        
-        if (source == null) sfxSource.PlayOneShot(clip ?? sFXMusic[Random.Range(0, sFXMusic.Length)]);
-        else AudioSource.PlayClipAtPoint(clip ?? sFXMusic[Random.Range(0, sFXMusic.Length)], source.transform.position);
+        if (randomPitch) sfxSource.pitch = Random.Range(0.85f, 1.15f);
+
+        switch (source != null)
+        {
+            case true when clip == null:
+                AudioSource.PlayClipAtPoint(sFXMusic[Random.Range(0, sFXMusic.Length)], source.transform.position);
+                break;
+            case false when clip == null:
+                sfxSource.PlayOneShot(sFXMusic[Random.Range(0, sFXMusic.Length)]);
+                break;
+            case true:
+                AudioSource.PlayClipAtPoint(clip, source.transform.position);
+                break;
+            case false:
+                sfxSource.PlayOneShot(clip);
+                break;
+        }
     }
-    
     
     private void QuietOnGUI()
     {

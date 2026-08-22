@@ -344,6 +344,8 @@ MonoBehaviour:
   knockbackTime: 0.2
   positionKnockback: 0
   knockbackTransform: {fileID: 4703496504529199128}
+  combatSfx:
+  - {fileID: 8300000, guid: 50265413b4730c94b91ebfe57b35c66f, type: 3}
   isTrue: 0
   damageOverTime: 0
   procDmg: 0
@@ -410,8 +412,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65664
   edgeCheckRay: 0.45
+  footstepClips: []
+  foundPlayerClip: {fileID: 0}
   rb: {fileID: 0}
-  ec: {fileID: 0}
+  ec: {fileID: -2052741742867292352}
 --- !u!114 &4126844800543476695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,6 +489,7 @@ MonoBehaviour:
   phase2Style: 0
   isLight: 0
   isOneTime: 0
+  deathClip: {fileID: 8300000, guid: c1660015102c89149b5ede2a5e11efb0, type: 3}
 --- !u!114 &1920835200029510645
 MonoBehaviour:
   m_ObjectHideFlags: 0

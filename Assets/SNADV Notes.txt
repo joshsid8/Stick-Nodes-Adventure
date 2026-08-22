@@ -9,28 +9,30 @@ SNADV Notes
             Ive made a good start, but it might need to be very similar to the inventory system
             I also added a simple GAMBLING method, which ill leave alone for now
             
-        Add gameplay SFX files
-            We need to make the sfx ourselves!!!
-            This is lowk urgent because im getting annoying errors left and right
-            Dont build yet!
-
+        SFX
+            Barely anything is done yet, but no errors are spamming at me
+            I do need more files in general
+            Also, find out why one shot sounds are very very quiet
                    
     Optimisations & Hotfixes:
         
         Instability
             Replicatable or From-Build bugs/problems
+                Seems like dialogue trigger doesnt work for bosses (when confronting a second+ time) anymore, even tho i didnt even touch the code
+                    I get an ArgumentOutOfRangeException when trying to trigger dialogue
+                    in the dark here
+                
+                For cynder, and possibly other bosses, im getting warnings from the animator talking about missing states
+                    I think it might be cuz i changed some of the names the code tries to use
                 
             One time occurrences or Rare/Intimidating bugs
                 In the current save state, izuno has no dialogue
                 It seems like it loaded an empty dialogue list
-                We needa find out why                
+                We needa find out why
                 
             Low Priority/Unconfirmed fixed Bugs
                 i still get nullrefs based on unknown coroutines!!!
                     someone help! 
-                    
-                The new Camera event logic is very untested, so im going to leave this here
-                    Right now, it all seems ok, but there might be some small errors to fix later    
                     
         Junie Assistant
            N/A

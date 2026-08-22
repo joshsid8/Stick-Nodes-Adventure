@@ -162,13 +162,12 @@ namespace scripies.Player
             {
                 SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName,
                     LoadSceneMode.Additive);
-                print($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} loaded");
             }
-            else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
+            //else print($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name).name} already loaded");
             
             var spawnTarget = realSpawn ? pc.currentSpawnPoint : pc.currentCheckPoint;
             if (spawnTarget != null) transform.position = spawnTarget.transform.position;
-            else Debug.LogWarning("[PlayerHealth] We cant find the right spawn object!");
+            else Debug.LogError("[PlayerHealth] We cant find the right spawn object!");
 
             if (Shenanigans.Instance != null) Shenanigans.Instance.ToggleFreezeCamera(false);
             if (realSpawn) GameEvents.TriggerPlayerSpawn(gameObject);
@@ -194,7 +193,7 @@ namespace scripies.Player
                 GameEvents.TriggerJumpScare();
                 //#endif
                 GameEvents.TriggerPlaySound(deathClip, false);
-                Shenanigans.Instance.ToggleFreezeCamera();
+                //Shenanigans.Instance.ToggleFreezeCamera();
                 GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
 
                 if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded)
@@ -202,7 +201,7 @@ namespace scripies.Player
                     SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName,
                         LoadSceneMode.Additive);
                 }
-                else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
+                //else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
                 
                 yield return new WaitForSeconds(respawnTime);
                 
