@@ -102,7 +102,11 @@ namespace scripies.Player
             originalShockMultiplier = shockMultiplier;
             
             #if UNITY_EDITOR 
-            if (pc.debugMode) spawnOnAwake = false;
+            if (pc.debugMode)
+            {
+                spawnOnAwake = false;
+                deathClip = null;
+            }
             #endif
             if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             
@@ -252,7 +256,7 @@ namespace scripies.Player
                     break;
             }
             
-            if (aggressor.Contains("Enemy")) ApplyCombat(30, false, aggressor);
+            if (aggressor.Contains("Enemy")) ApplyCombat(30, true, aggressor);
             else if (aggressor.Contains("End")) ResetCombat();
             
             pc.currentDashTime = 0f;

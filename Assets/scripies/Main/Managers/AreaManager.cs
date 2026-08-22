@@ -8,7 +8,7 @@ public class AreaManager : MonoBehaviour
     
     public TMP_Text titleText;
     public TMP_Text descriptionText;
-    [SerializeField] private Camera actualCamera;
+    public Camera actualCamera;
 
     public TMP_Text sectionTitle;
     
@@ -28,21 +28,24 @@ public class AreaManager : MonoBehaviour
     
     public void Announce(string title = "", string description = "", Color textColor = default, Color bgColor = default)
     {
-        if (!string.IsNullOrEmpty(description))
+        switch (string.IsNullOrEmpty(title), string.IsNullOrEmpty(description))
         {
-            titleText.text = title;
-            descriptionText.text = description;
-            animator.SetTrigger("Announce");
+            case (false, false):
+                titleText.text = title;
+                titleText.color = textColor;
+                descriptionText.text = description;
+                animator.SetTrigger("Announce");
+                break;
+            case (true, false):
+                sectionTitle.text = title;
+                sectionTitle.color = textColor;
+                animator.SetTrigger("SectionAnnounce");
+                break;
+            case (true, true):
+                break;
         }
-        else
-        {
-            sectionTitle.text = title;
-            sectionTitle.color = textColor;
-            animator.SetTrigger("SectionAnnounce");
-        }
-        titleText.color = textColor;
         
-        if (actualCamera.backgroundColor != bgColor)
+        if (actualCamera.backgroundColor != bgColor && bgColor != default)
         {
             //TODO: Maybe change background logic into an active sprite/image behind the player, and use CrossFadeColor to efficiently change it
             StartCoroutine(LerpColours(bgColor));

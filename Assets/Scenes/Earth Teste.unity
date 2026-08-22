@@ -863,6 +863,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveComplete: 0
   finishTime: 5
+  openSfx: {fileID: 0}
 --- !u!251 &132701379
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -2715,6 +2716,7 @@ MonoBehaviour:
   tagsToIgnore: []
   forcePlayerTeleport: 0
   teleportTarget: {fileID: 361743893}
+  teleportSfx: {fileID: 0}
   doesDamage: 1
   damage: 20
 --- !u!61 &626954134
@@ -8032,6 +8034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveComplete: 0
   finishTime: 5
+  openSfx: {fileID: 0}
 --- !u!61 &2048072640
 BoxCollider2D:
   m_ObjectHideFlags: 0

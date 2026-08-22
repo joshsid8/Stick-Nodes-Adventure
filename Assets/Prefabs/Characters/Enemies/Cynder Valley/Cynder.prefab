@@ -222,6 +222,7 @@ MonoBehaviour:
   testing: 0
   testIndex: 0
   testAttacks: []
+  useMovement: 0
   isAttacking: 0
   isPerformingAttack: 0
   attackCooldown: 1.5
@@ -259,7 +260,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   initStart: 1
   backupMoveTime: 5
-  currentBackupMoveTimer: 0
+  currentBackupMoveTimer: 5
   stunnable: 0
   stunnableTimer: 0
   dialogueNo: 0
@@ -286,9 +287,6 @@ MonoBehaviour:
   - {r: 0.8773585, g: 0.574228, b: 0, a: 1}
   phase2: 0
   phase2Health: 300
-  introDialogue:
-  - {fileID: 11400000, guid: 5e9fa701ed7cb5c4bb0087e02cab4e09, type: 2}
-  - {fileID: 11400000, guid: 280a30c3225a86940b8114d7af080f05, type: 2}
   deathDialogue: {fileID: 11400000, guid: 0b22e34c35f938b44ac0a55b5b4d5013, type: 2}
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintDuration: 0.5
@@ -356,6 +354,8 @@ MonoBehaviour:
     m_Bits: 256
   canTurn: 0
   isFacingRight: 1
+  moveCamToNpc: 0
+  canHaveNullList: 1
 --- !u!95 &769820852523672261
 Animator:
   serializedVersion: 7

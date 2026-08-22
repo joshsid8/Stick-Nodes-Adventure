@@ -22,7 +22,6 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     [Header("Phases and Dialogue")]
     public bool phase2;
     public float phase2Health;
-    public DialogueObject[] introDialogue;
     public DialogueObject deathDialogue;
     
     [Header("Damage Tinting")]

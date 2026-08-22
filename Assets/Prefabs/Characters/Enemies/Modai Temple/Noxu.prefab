@@ -501,6 +501,7 @@ MonoBehaviour:
   - Counter
   - Shield
   - Decimate
+  useMovement: 1
   isAttacking: 0
   isPerformingAttack: 0
   attackCooldown: 5.6
@@ -559,9 +560,6 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 0, a: 0}
   phase2: 0
   phase2Health: 0
-  introDialogue:
-  - {fileID: 11400000, guid: fc546ccfcc2d4514ba3eb062aa5a92af, type: 2}
-  - {fileID: 11400000, guid: 6cfa5a20770f557408dd62bd9a6c7ea6, type: 2}
   deathDialogue: {fileID: 11400000, guid: 25a0ddcace9378b41b6a5761bf1f6919, type: 2}
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintDuration: 0.5
@@ -596,12 +594,16 @@ MonoBehaviour:
   indicator: {fileID: 8715122064913410510}
   npc: {fileID: 11400000, guid: 8094ff95c90333f4c9b8ad50b628aa02, type: 2}
   dialogue:
+  - {fileID: 11400000, guid: 6cfa5a20770f557408dd62bd9a6c7ea6, type: 2}
+  - {fileID: 11400000, guid: fc546ccfcc2d4514ba3eb062aa5a92af, type: 2}
   - {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
   pLayer:
     serializedVersion: 2
     m_Bits: 256
   canTurn: 0
   isFacingRight: 1
+  moveCamToNpc: 0
+  canHaveNullList: 1
 --- !u!114 &6578614805006208656
 MonoBehaviour:
   m_ObjectHideFlags: 0

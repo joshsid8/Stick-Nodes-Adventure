@@ -103,31 +103,30 @@ namespace scripies.Enemy
 
         private IEnumerator Death()
         {
-            if (isDead)
-            {
-                OnEnemyKilled?.Invoke(ec.enemy);
-                GameEvents.TriggerDropLoot(gameObject);
-                GameEvents.TriggerEnemyDefeated(gameObject);
-                ec.ChangeState(EnemyController.EnemyState.Dead);
-                GetComponent<Rigidbody2D>().gravityScale = 8;
-                spriteRenderer.color = Color.white;
-                gameObject.layer = LayerMask.NameToLayer("EDead");
-                gameObject.tag = "Dead";
-                spriteRenderer.enabled = true;
-                AudioSource.PlayClipAtPoint(deathClip, transform.position);
-                yield return new WaitForSeconds(2f);
-                for (var i = 0; i < 25; i++)
-                {
-                    spriteRenderer.enabled = false;
-                    yield return new WaitForSeconds(0.025f);
-                    spriteRenderer.enabled = true;
-                    yield return new WaitForSeconds(0.025f);
-                }
-                GameEvents.TriggerAddPlayerCombat(0, false, "EnemyFightEnd");
-                Destroy(gameObject);
-            }
-        }
+            if (!isDead) yield break;
 
+            OnEnemyKilled?.Invoke(ec.enemy);
+            GameEvents.TriggerDropLoot(gameObject);
+            GameEvents.TriggerEnemyDefeated(gameObject);
+            ec.ChangeState(EnemyController.EnemyState.Dead);
+            GetComponent<Rigidbody2D>().gravityScale = 8;
+            spriteRenderer.color = Color.white;
+            gameObject.layer = LayerMask.NameToLayer("EDead");
+            gameObject.tag = "Dead";
+            spriteRenderer.enabled = true;
+            AudioSource.PlayClipAtPoint(deathClip, transform.position);
+            yield return new WaitForSeconds(2f);
+            for (var i = 0; i < 25; i++)
+            {
+                spriteRenderer.enabled = false;
+                yield return new WaitForSeconds(0.025f);
+                spriteRenderer.enabled = true;
+                yield return new WaitForSeconds(0.025f);
+            }
+
+            GameEvents.TriggerAddPlayerCombat(0, false, "EnemyFightEnd");
+            Destroy(gameObject);
+        }
 
         public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
             IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
@@ -153,19 +152,15 @@ namespace scripies.Enemy
                 enemyHealth -= calcDamage;
                 if (ea.stunnable) ea.currentAttackCooldown = 0.1f;
             }
-
-            if (enemyHealth <= 0)
-            {
-                enemyHealth = 0;
-                isDead = true;
-                StartCoroutine(Death());
-            }
-            else if (aggressor.Contains("Player"))
+            
+            CheckStatus();
+            
+            if (aggressor.Contains("Player") && !isDead)
             {
                 if (!ea.isAttacking) StartCoroutine(ep.FoundPlayer());
                 GameEvents.TriggerAddPlayerCombat(30, false);
             }
-            else print($"aggressor doesnt contain player: {aggressor}");
+            //else print($"aggressor doesnt contain player: {aggressor}");
 
             Flash();
             if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
@@ -182,9 +177,11 @@ namespace scripies.Enemy
                 enemyHealth -= procAmount;
                 Flash();
                 procTaken -= procAmount;
+                CheckStatus();
                 yield return new WaitForSeconds(procInterval);
             }
         }
+
 
         public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 20f,
             float knockbackTime = 0.2f, bool targetPosition = false)
@@ -192,10 +189,17 @@ namespace scripies.Enemy
             stunTime = stunDuration * stunMultiplier;
             if (stunTime > 0) getStunned = true;
             if (movable)
-                kb.CallKnockback(knockbackDirection * (isBlocking ? blockResistance : 1f), knockbackForce,
-                    knockbackTime, targetPosition);
+                kb.CallKnockback(knockbackDirection * (isBlocking ? blockResistance : 1f), knockbackForce, knockbackTime, targetPosition);
         }
 
+        private void CheckStatus()
+        {
+            if (enemyHealth > 0) return;
+            enemyHealth = 0;
+            isDead = true;
+            StartCoroutine(Death());
+        }
+        
         public void Heal(float amount) => enemyHealth += amount;
 
         private void Flash()
@@ -206,11 +210,9 @@ namespace scripies.Enemy
 
         private void Tint()
         {
-            if (isTinting)
-            {
-                spriteRenderer.color = Color.Lerp(spriteRenderer.color, originalColor, tintSpeed * Time.deltaTime);
-                if (spriteRenderer.color == originalColor) isTinting = false;
-            }
+            if (!isTinting) return;
+            spriteRenderer.color = Color.Lerp(spriteRenderer.color, originalColor, tintSpeed * Time.deltaTime);
+            if (spriteRenderer.color == originalColor) isTinting = false;
         }
     }
 }

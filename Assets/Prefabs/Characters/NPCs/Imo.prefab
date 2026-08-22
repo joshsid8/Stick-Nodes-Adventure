@@ -171,6 +171,7 @@ MonoBehaviour:
     m_Bits: 256
   canTurn: 0
   isFacingRight: 1
+  moveCamToNpc: 1
 --- !u!114 &443793689555385365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +234,9 @@ MonoBehaviour:
   knockbackTime: 0.2
   positionKnockback: 0
   knockbackTransform: {fileID: 0}
+  combatSfx:
+  - {fileID: 0}
+  - {fileID: 0}
   isTrue: 0
   damageOverTime: 0
   procDmg: 0
@@ -299,6 +303,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   edgeCheckRay: 2
+  footstepClips: []
+  foundPlayerClip: {fileID: 0}
   rb: {fileID: 0}
   ec: {fileID: 0}
 --- !u!114 &5970463740093113175
@@ -336,6 +342,7 @@ MonoBehaviour:
   phase2Style: 3
   isLight: 0
   isOneTime: 0
+  deathClip: {fileID: 0}
 --- !u!114 &3824992177583557412
 MonoBehaviour:
   m_ObjectHideFlags: 0

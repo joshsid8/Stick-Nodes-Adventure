@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 13393105}
   - component: {fileID: 13393107}
   - component: {fileID: 13393108}
+  - component: {fileID: 13393110}
   m_Layer: 12
   m_Name: Section (2)
   m_TagString: Section
@@ -276,6 +277,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac1586a9667c1d4999b649ffb531ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  announceDetails: 1
+  sectionName: Cynder Lair!
+  sectionTextColor: {r: 1, g: 0.6462264, b: 0.6462264, a: 1}
+  sectionBgColor: {r: 0.20754719, g: 0.166779, b: 0.15566039, a: 1}
+  newOst: []
+  ostVolume:
+  - 0.5
+  - 0.5
+  - 0.5
+  mapDisasterNames:
+  - Temperature
+  - Earthquake
+  - Wind
+  - Thunderstorm
+  mapDisasterFactors:
+  - 0
+  - 0
+  - 0
+  - 0
   cameraObject: {fileID: 888920556}
 --- !u!114 &13393108
 MonoBehaviour:
@@ -313,6 +333,63 @@ MonoBehaviour:
   spawnId: 0
   typeOfObject: 0
   mapManager: {fileID: 0}
+--- !u!114 &13393110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13393102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a851b4b95a4a5240abb79aa3392fb79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
+  weatherType: 0
+  weatherProperties:
+  - weatherMapName: Heat Place
+    weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
+    weatherTextColor: {r: 0.9528302, g: 0.72387344, b: 0.50787646, a: 1}
+    weatherBgColor: {r: 0.7254902, g: 0.5176471, b: 0.31764707, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    - {fileID: 8300000, guid: fa878411df7c0144085654215ab72f7a, type: 3}
+    weatherOstVolume:
+    - 0.7
+    - 1
+    - 0.7
+  - weatherMapName: Cold Place
+    weatherMapDesc: '*Freeze gun mk!! sound effect*'
+    weatherTextColor: {r: 0.50980395, g: 0.9529412, b: 0.93078697, a: 1}
+    weatherBgColor: {r: 0.31764707, g: 0.65114826, b: 0.7254902, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: 9372da2ef9ae09b498736978538319dc, type: 3}
+    - {fileID: 8300000, guid: b6d66485b7d3c8544a332508e91cdd88, type: 3}
+    - {fileID: 8300000, guid: b6d66485b7d3c8544a332508e91cdd88, type: 3}
+    weatherOstVolume:
+    - 1
+    - 1
+    - 1
+  - weatherMapName: Thunder strom
+    weatherMapDesc: ah!
+    weatherTextColor: {r: 0.36863655, g: 0.7169812, b: 0.698485, a: 1}
+    weatherBgColor: {r: 0, g: 0.34697014, b: 0.4245283, a: 1}
+    weatherOst:
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    - {fileID: 8300000, guid: ffbc9f0d30e2a2246bf87a6d453b4b61, type: 3}
+    weatherOstVolume:
+    - 1
+    - 1
+    - 1
+  sm: {fileID: 0}
+  randomWeather: 0
+  weatherChance: 10
+  earthquakeTimer: 0.2
+  thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
+  thunderTimer: 0.75
+  thunderChance: 50
 --- !u!1 &20875671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1467,6 +1544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveComplete: 0
   finishTime: 1
+  openSfx: {fileID: 0}
 --- !u!1 &181286255
 GameObject:
   m_ObjectHideFlags: 0
@@ -2971,31 +3049,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: dialogue.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: 'dialogue.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
+      objectReference: {fileID: 11400000, guid: 280a30c3225a86940b8114d7af080f05, type: 2}
     - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: 'dialogue.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
+      objectReference: {fileID: 11400000, guid: 5e9fa701ed7cb5c4bb0087e02cab4e09, type: 2}
     - target: {fileID: 1670248596730534493, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: 'dialogue.Array.data[2]'
       value: 
       objectReference: {fileID: 11400000, guid: feeb839dc4aabca4798afbe9727eb124, type: 2}
-    - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
-      propertyPath: testing
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: attackCooldown
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: testAttacks.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: defensiveAtk.Array.size
@@ -3003,10 +3077,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: 'testAttacks.Array.data[0]'
-      value: Teleport
+      value: Shuriken
       objectReference: {fileID: 0}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: 'testAttacks.Array.data[1]'
+      value: Teleport
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: 'testAttacks.Array.data[2]'
       value: BDash
       objectReference: {fileID: 0}
     - target: {fileID: 3680011792468434858, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
@@ -3157,6 +3235,18 @@ PrefabInstance:
       propertyPath: lootItems.Array.data[2].item
       value: 
       objectReference: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
+    - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: healthColours.Array.data[0].b
+      value: 0.15895337
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: healthColours.Array.data[0].g
+      value: 0.2269722
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: healthColours.Array.data[0].r
+      value: 0.7169812
+      objectReference: {fileID: 0}
     - target: {fileID: 8376931847354496412, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: healthColours.Array.data[1].g
       value: 0.50716174
@@ -3904,6 +3994,7 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  sm: {fileID: 0}
   randomWeather: 0
   weatherChance: 10
   earthquakeTimer: 0.2
@@ -4532,6 +4623,7 @@ MonoBehaviour:
   tagsToIgnore: []
   forcePlayerTeleport: 0
   teleportTarget: {fileID: 361743893}
+  teleportSfx: {fileID: 0}
   doesDamage: 1
   damage: 20
 --- !u!61 &626954134
@@ -5065,7 +5157,7 @@ Transform:
   m_GameObject: {fileID: 688631263}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.029, y: -0.2, z: 0}
+  m_LocalPosition: {x: 0.029, y: -0.10256429, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7327,6 +7419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveComplete: 0
   finishTime: 1
+  openSfx: {fileID: 0}
 --- !u!1 &1312736192
 GameObject:
   m_ObjectHideFlags: 0
@@ -9981,6 +10074,7 @@ MonoBehaviour:
   tagsToIgnore: []
   forcePlayerTeleport: 0
   teleportTarget: {fileID: 361743893}
+  teleportSfx: {fileID: 0}
   doesDamage: 1
   damage: 20
 --- !u!4 &1908944725 stripped
@@ -10174,6 +10268,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac1586a9667c1d4999b649ffb531ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  announceDetails: 1
+  sectionName: 
+  sectionTextColor: {r: 1, g: 1, b: 1, a: 1}
+  sectionBgColor: {r: 0.1843137, g: 0.3098039, b: 0.3098039, a: 1}
+  newOst: []
+  ostVolume:
+  - 0.5
+  - 0.5
+  - 0.5
+  mapDisasterNames:
+  - Temperature
+  - Earthquake
+  - Wind
+  - Thunderstorm
+  mapDisasterFactors:
+  - 0
+  - 0
+  - 0
+  - 0
   cameraObject: {fileID: 1176211100}
 --- !u!61 &1969304538
 BoxCollider2D:

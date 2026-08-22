@@ -116,4 +116,13 @@ public class Shenanigans : MonoBehaviour
                 break;
         }
     }
+    
+    /// <summary>
+    /// A Global method as an alternative to using coroutines! But we have to make sure it has no parameters unfortunately
+    /// </summary>
+    public void TimeInvoke(string method, float time = 1f, bool repeating = false, float interval = 0)
+    {
+        if (!repeating) Invoke(method, time);
+        else InvokeRepeating(method, time, interval);
+    }
 }

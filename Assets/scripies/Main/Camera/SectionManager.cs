@@ -23,7 +23,7 @@ public class SectionManager : MonoBehaviour
     #endregion
     
     [SerializeField] private GameObject cameraObject;
-    
+    private Color prevMapBgColor;
     private void Start()
     {
         cameraObject.SetActive(false);
@@ -53,10 +53,13 @@ public class SectionManager : MonoBehaviour
         if (!collision.CompareTag("Player")) return;
         if (weather != null) weather.SetWeather();
         if (cameraObject != null) cameraObject.SetActive(true);
-        
+        prevMapBgColor = AreaManager.Instance.actualCamera.backgroundColor;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && cameraObject != null) cameraObject.SetActive(false);
+        if (!collision.CompareTag("Player")) return;
+        if (cameraObject != null) cameraObject.SetActive(false);
+        // Below is inefficient.
+        //AreaManager.Instance.Announce(bgColor: prevMapBgColor);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
 using scripies.Player;
@@ -30,6 +31,10 @@ namespace scripies.Dialogue
         [SerializeField] private bool canTurn;
         [SerializeField] private bool isFacingRight;
         private Transform playerTransform;
+
+        [SerializeField] private bool moveCamToNpc;
+        private float chatInterval = 0.2f;
+        [SerializeField] private bool canHaveNullList;
         
         // Getters and Setters
         public bool Enabled { get => enabled; set => enabled = value; }
@@ -47,9 +52,11 @@ namespace scripies.Dialogue
         private void Update()
         {
             var inputDirection = Input.GetAxisRaw("Vertical");
+            if (chatInterval <= 0) isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
+            if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
+            chatInterval -= Time.deltaTime;
             
             if (!isActive) return;
-            isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
             if (isInRange && !isTriggered)
             {
                 if (canTurn) FacePlayer();
@@ -58,20 +65,15 @@ namespace scripies.Dialogue
                 {
                     isTriggered = true;
                     isForced = false;
-                    if (dialogue != null)
-                    {
-                        // '^' means "from the end of a list datatype" WHICH IS SO COOL
-                        var priorityDialogue = dialogue[^1];
-                        DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
-                        if (dialogue.Count > 1) dialogue.RemoveAt(dialogue.IndexOf(priorityDialogue));
-                        CameraEventManager.Instance.ResetCamera();
-                        CameraEventManager.Instance.ChangeTarget(gameObject);
-                    }
+                    if (dialogue == null) return;
+                    // '^' means "from the end of a list datatype" WHICH IS SO COOL
+                    var priorityDialogue = dialogue[^1];
+                    DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                    CameraEventManager.Instance.ResetCamera();
+                    if (moveCamToNpc) CameraEventManager.Instance.ChangeTarget(gameObject);
                 }
             }
             else if (indicator != null) indicator.SetActive(false);
-
-            if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
         }
         
         public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
@@ -79,7 +81,7 @@ namespace scripies.Dialogue
             if (speaker != gameObject) return;
             
             if (!dialogue.Contains(dialogueObject as DialogueObject)) dialogue.Add(dialogueObject as DialogueObject);
-            else Debug.LogWarning($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
+            else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
         }
 
         public void ClearDialogue() => dialogue.Clear();
@@ -88,16 +90,33 @@ namespace scripies.Dialogue
         {
             GameEvents.OnToggleDialogueTrigger += ToggleDialogueTrigger;
             GameEvents.AddDialogue += AddDialogue;
+            GameEvents.OnDialogueClose += RemoveSpokenDialogue;
         }
         private void OnDisable()
         {
             GameEvents.OnToggleDialogueTrigger -= ToggleDialogueTrigger;
             GameEvents.AddDialogue -= AddDialogue;
+            GameEvents.OnDialogueClose -= RemoveSpokenDialogue;
         }
         
         private void ToggleDialogueTrigger(GameObject obj, bool state)
         {
             if (obj == gameObject) isActive = state;
+        }
+
+        private void RemoveSpokenDialogue(ScriptableObject dialogueToRemove)
+        {
+            var dto = dialogueToRemove as DialogueObject;
+            
+            if (dialogue.Count <= 1 && !canHaveNullList || !dialogue.Contains(dto)) return;
+            StartCoroutine(RemoveDialogue(dto));
+            chatInterval = 0.2f;
+        }
+
+        private IEnumerator RemoveDialogue(DialogueObject dto)
+        {
+            yield return new WaitForSeconds(0.01f);
+            dialogue.RemoveAt(dialogue.IndexOf(dto));
         }
         
         private void OnDrawGizmosSelected()

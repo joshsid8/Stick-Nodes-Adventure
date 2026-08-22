@@ -13,6 +13,7 @@ public class BossAttack : MonoBehaviour
     [SerializeField] private bool testing;
     [SerializeField] private int testIndex;
     [SerializeField] private string[] testAttacks;
+    [SerializeField] private bool useMovement = true;
     
     [Space]
     [Header("Attack Check")]
@@ -50,7 +51,7 @@ public class BossAttack : MonoBehaviour
     [SerializeField] private float initStart = 1;
     
     [SerializeField] private float backupMoveTime = 5;
-    [SerializeField] float currentBackupMoveTimer;
+    [SerializeField] private float currentBackupMoveTimer;
     
     [Space]
     [Header("Stun and Dialogue")]
@@ -58,7 +59,7 @@ public class BossAttack : MonoBehaviour
     public float stunnableTimer;
     [SerializeField] private int dialogueNo;
     [SerializeField] private bool inRange;
-    private bool noMercy;
+    private bool forceStart;
     private Vector3 originalPosition;
     
     private IDialogueTrigger dt;
@@ -71,24 +72,32 @@ public class BossAttack : MonoBehaviour
         animator = GetComponent<Animator>();
         dt = GetComponent<IDialogueTrigger>();
         
-        if (dt == null) Debug.LogError($"[BossAttack] IDialogueTrigger component not found on {gameObject.name}!");
+        if (dt == null)
+        {
+            Debug.LogError($"[BossAttack] IDialogueTrigger component not found on {gameObject.name}!");
+            return;
+        }
+        GameEvents.TriggerToggleDialogue(gameObject, false);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    private IEnumerator Start()
     {
         currentAttackCooldown = attackCooldown;
         ps = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         originalPosition = transform.position;
         
-        GameEvents.OnDialogueClose += StartFight;
+        GameEvents.OnDialogueClose += StartFightOnDialogueClose;
         GameEvents.OnPlayerDeath += ResetBoss;
+
+        yield return new WaitForSeconds(1f);
+        GameEvents.TriggerToggleDialogue(gameObject, true);
     }
 
     private void OnDestroy()
     {
-        GameEvents.OnDialogueClose -= StartFight;
+        GameEvents.OnDialogueClose -= StartFightOnDialogueClose;
         GameEvents.OnPlayerDeath -= ResetBoss;
     }
 
@@ -101,74 +110,73 @@ public class BossAttack : MonoBehaviour
     }
 
     private void FactorCheck() => closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
-    
-    private void StartFight(ScriptableObject dialogueToDerive)
+
+    private void StartFightOnDialogueClose(ScriptableObject dialogueToDerive)
     {
-        if (dt == null) return;
-        
-        if (dialogueToDerive == dt.Dialogue[^1])
-        {
-            isAttacking = true;
-            canFacePlayer = true;
-            GameEvents.TriggerToggleDialogue(gameObject, false);
-            GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
-            GameEvents.TriggerDialogueClose();
-            InvokeRepeating(nameof(Movement), 0, 1.5f);
-            GameHUD.Instance.ToggleBossHealth(true);
-            StartCoroutine(bh.PhaseToggle(false));
-            Invoke(nameof(AttackSystem), initStart);
-        }
+        if (dialogueToDerive != dt.Dialogue[^1] || dt == null) return;
+        StartFight();
+    }
+    
+    private void StartFight()
+    {
+        isAttacking = true;
+        canFacePlayer = true;
+        GameEvents.TriggerToggleDialogue(gameObject, false);
+        GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
+        GameEvents.TriggerDialogueClose();
+        if (useMovement) InvokeRepeating(nameof(Movement), 0, 1.5f);
+        GameHUD.Instance.ToggleBossHealth(true);
+        StartCoroutine(bh.PhaseToggle(false));
+        Invoke(nameof(AttackSystem), initStart);
     }
     
     public void AttackSystem()
     {
         if (!isPerformingAttack && !bh.isStunned && !bh.isDead && isAttacking && !testing)
         {
-            animator.Play("Idle");
+            if (isGrounded) animator.Play("Idle");
             stunnableTimer = 0;
             var prevPrev = prevAttack;
-            if (closeRange)
+            var rng = 0;
+            switch (closeRange)
             {
-                var rng = 0;
-                if (prevRepeat >= 2)
-                {
-                    while (prevAttack == defensiveAtk[rng]) rng = Random.Range(0, defensiveAtk.Length);
-                }
-                else rng = Random.Range(0, activeAtk.Length);
-                attackFactor = rng;
-                if (defensiveAtk[attackFactor] != null)
-                {
-                    animator.SetTrigger(defensiveAtk[attackFactor]);
-                    prevAttack = defensiveAtk[attackFactor];
-                }
-                else throw new MissingFieldException($"defensive attack no. {attackFactor} is null!");
-            }
-            else if (!closeRange)
-            {
-                var rng = 0;
-                if (prevRepeat >= 2)
-                {
-                    while (prevAttack == activeAtk[rng]) rng = Random.Range(0, activeAtk.Length);
-                }
-                else rng = Random.Range(0, activeAtk.Length);
-                attackFactor = rng;
-                if (activeAtk[attackFactor] != null)
-                {
-                    animator.SetTrigger(activeAtk[attackFactor]);
-                    prevAttack = activeAtk[attackFactor];
-                }
-                else throw new MissingFieldException($"active attack no. {attackFactor} is null!");
+                case true:
+                    if (prevRepeat > 2)
+                    {
+                        while (prevAttack == defensiveAtk[rng]) rng = Random.Range(0, defensiveAtk.Length);
+                    }
+                    else rng = Random.Range(0, activeAtk.Length);
+                    attackFactor = rng;
+                    if (defensiveAtk[attackFactor] != null)
+                    {
+                        animator.SetTrigger(defensiveAtk[attackFactor]);
+                        prevAttack = defensiveAtk[attackFactor];
+                    }
+                    else throw new MissingFieldException($"defensive attack no. {attackFactor} is null!");
+                    break;
+                case false:
+                    if (prevRepeat > 2)
+                    {
+                        while (prevAttack == activeAtk[rng]) rng = Random.Range(0, activeAtk.Length);
+                    }
+                    else rng = Random.Range(0, activeAtk.Length);
+                    attackFactor = rng;
+                    if (activeAtk[attackFactor] != null)
+                    {
+                        animator.SetTrigger(activeAtk[attackFactor]);
+                        prevAttack = activeAtk[attackFactor];
+                    }
+                    else throw new MissingFieldException($"active attack no. {attackFactor} is null!");
+                    break;
             }
             if (prevAttack == prevPrev) prevRepeat++;
             else prevRepeat = 0;
             CancelInvoke(nameof(AttackSystem));
-            currentBackupMoveTimer = backupMoveTime;
         }
         else if (testing && isAttacking)
         {
             animator.SetTrigger(testAttacks[testIndex]);
             CancelInvoke(nameof(AttackSystem));
-            currentBackupMoveTimer = backupMoveTime;
         }
         if (!isAttacking) CancelInvoke(nameof(AttackSystem));
     }
@@ -181,24 +189,23 @@ public class BossAttack : MonoBehaviour
         animator.SetBool("isAttacking", isAttacking);
         
         inRange = Physics2D.OverlapCircle(dt.ChatPoint.position, dt.ChatRadius, LayerMask.GetMask("Player"));
-        
-        if (inRange && dialogueNo >= bh.introDialogue.Length && noMercy)
+
+        if (inRange && dt.Dialogue.Length == 0 && forceStart && !bh.isDead && !bh.deathToggle)
         {
-            if (!bh.isDead && !bh.deathToggle)
-            {
-                noMercy = false;
-                StartFight(dt.Dialogue[^1]);
-            }
+            forceStart = false;
+            StartFight();
         }
-        
-        if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
-        stunnable = stunnableTimer > 0;
-        if (currentBackupMoveTimer > 0 && isAttacking) currentBackupMoveTimer -= Time.deltaTime;
+
         if (isAttacking && !isPerformingAttack && currentBackupMoveTimer <= 0)
         {
             AttackSystem();
             print("Almost handicapped bro");
         }
+        
+        if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
+        stunnable = stunnableTimer > 0;
+        if (isPerformingAttack) currentBackupMoveTimer = backupMoveTime;
+        if (currentBackupMoveTimer > 0 && isAttacking && !isPerformingAttack) currentBackupMoveTimer -= Time.deltaTime;
     }
     
     private void Movement()
@@ -220,15 +227,12 @@ public class BossAttack : MonoBehaviour
     
     private void FacePlayer()
     {
-        if (canFacePlayer)
-        {
-            if (playerTransform == null) return;
+        if (playerTransform == null || !canFacePlayer) return;
 
-            // Determine direction to player
-            directionToPlayer = playerTransform.position.x - transform.position.x;
-            if (directionToPlayer > 0 && !isFacingRight) Flip();
-            else if (directionToPlayer < 0 && isFacingRight) Flip();
-        }
+        // Determine direction to player
+        directionToPlayer = playerTransform.position.x - transform.position.x;
+        if (directionToPlayer > 0 && !isFacingRight) Flip();
+        else if (directionToPlayer < 0 && isFacingRight) Flip();
     }
 
     public void ActionCooldown(float cooldownTime)
@@ -245,31 +249,21 @@ public class BossAttack : MonoBehaviour
     private IEnumerator Restart()
     {
         isAttacking = false;
-        noMercy = false;
+        forceStart = false;
         yield return new WaitUntil(() => !ps.IsDead);
         yield return new WaitForSeconds(0.2f);
+        
         transform.position = originalPosition;
         bh.bossHealth = bh.bossMaxHealth;
         bh.phase2 = false;
-        dt.IsForced = true;
         GameHUD.Instance.ToggleBossHealth(false);
+        yield return new WaitForSeconds(0.5f);
         GameEvents.TriggerToggleDialogue(gameObject, true);
-        if (dt.Dialogue[0] != bh.introDialogue[^1])
-        {
-            dt.ClearDialogue();
-           
-            if (dialogueNo <= bh.introDialogue.Length)
-            {
-                dt.AddDialogue(bh.introDialogue[dialogueNo]);
-                dialogueNo++;
-            }
-        }
-        else
-        {
-            dt.IsForced = false;
-            yield return new WaitForSeconds(1f);
-            noMercy = true;
-        }
+        dt.IsForced = true;
+        
+        if (dt.Dialogue.Length >= 1) yield break;
+        dt.IsForced = false;
+        forceStart = true;
     }
 
     private void Flip()

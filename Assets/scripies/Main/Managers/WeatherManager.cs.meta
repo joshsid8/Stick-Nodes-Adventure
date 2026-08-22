@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 1a851b4b95a4a5240abb79aa3392fb79
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - sm: {instanceID: 0}
+  - thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
