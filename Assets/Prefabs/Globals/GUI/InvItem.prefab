@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 6572693807377859556}
   - component: {fileID: 6567493981076246998}
   m_Layer: 0
-  m_Name: Item
+  m_Name: InvItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
