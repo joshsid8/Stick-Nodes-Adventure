@@ -6,8 +6,11 @@ SNADV Notes
     Priorities:
         
         Shop Logic
-            Ive made a good start, but it might need to be very similar to the inventory system
-            I also added a simple GAMBLING method, which ill leave alone for now
+            I already knew this was going to be so annoying!!!
+            It indeed is very similar to the inventory system, but ive made a bit of progress in general
+            The way the shop scripts communicate with each other doesnt seem efficient at all
+                I wish to use the add function from lists, but that doesnt wanna work, so i had to use for loops
+                Ill definitely get Junie to fix my errors
                                
     Optimisations & Hotfixes:
         

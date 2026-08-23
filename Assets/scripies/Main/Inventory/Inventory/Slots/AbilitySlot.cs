@@ -43,7 +43,6 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
 
         if (playerAbilitySlotImage != null && PlayerHealth.Instance.pa.ability.objects[slotIndex] != null)
         {
-            // No! I am NNNOT using a ternary expression!!!
             if (PlayerHealth.Instance.pa.ability.objects[slotIndex].abilityPrefab.TryGetComponent<SpriteRenderer>(out var s))
                 playerAbilitySlotImage.sprite = s.sprite;
             else
@@ -134,7 +133,7 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
             return;
         }
 
-        invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Ability", null, null, abilityStats);
+        invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Ability", abilityStats);
         abilityStats = null;
         var playerAbility = PlayerHealth.Instance.pa;
         playerAbility.ability.objects[slot] = null;

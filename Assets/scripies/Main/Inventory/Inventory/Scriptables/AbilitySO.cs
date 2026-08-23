@@ -9,8 +9,8 @@ public class AbilitySO : CollectableSOBase
     public override void Collect(GameObject objectCollected)
     {
         if (InvManager.Instance != null)
-            InvManager.Instance.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Ability", null, null,this);
+            InvManager.Instance.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Ability", this);
         else 
-            Debug.LogWarning("InvManager not found in scene! Cannot add ability.");
+            Debug.LogError("InvManager not found in scene! Cannot add ability.");
     }
 }

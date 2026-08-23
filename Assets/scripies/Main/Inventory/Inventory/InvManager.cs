@@ -63,14 +63,14 @@ public class InvManager : GUIBase
         //inventoryMenu.SetActive(isActive);
     }
 
-    public void AddItem(string itemName, int itemAmount, Sprite itemSprite, string itemDescription, int maxItemAmount = 1, string itemType = null, ItemSO itemSo = null,AspectSO aspect = null, AbilitySO ability = null, int abilitype = 0)
+    public void AddItem(string itemName , int itemAmount = 1, Sprite itemSprite = null, string itemDescription = "", int maxItemAmount = 1, string itemType = null, CollectableSOBase collectable = null)
     {
         for (var i = 0; i < itemSlots.Length; i++)
         {
             if (itemSlots[i] != null && itemSlots[i].usedSlot && itemSlots[i].itemName == itemName && itemSlots[i].itemAmount < itemSlots[i].maxItemAmount)
             {
                 var amountToAdd = Mathf.Min(itemAmount, itemSlots[i].maxItemAmount - itemSlots[i].itemAmount);
-                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, itemSo,aspect, ability);
+                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, collectable);
                 itemAmount -= amountToAdd;
                 if (itemAmount <= 0)
                 {
@@ -84,7 +84,7 @@ public class InvManager : GUIBase
             if (itemSlots[i] != null && !itemSlots[i].usedSlot)
             {
                 var amountToAdd = Mathf.Min(itemAmount, maxItemAmount);
-                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, itemSo, aspect, ability);
+                itemSlots[i].AddItem(itemName, amountToAdd, itemSprite, itemDescription, maxItemAmount, itemType, collectable);
                 itemAmount -= amountToAdd;
 
                 if (itemAmount <= 0)
@@ -99,7 +99,7 @@ public class InvManager : GUIBase
     
     public void EquipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
     {
-        for (int i = 0; i < aspectSlots.Length; i++)
+        for (var i = 0; i < aspectSlots.Length; i++)
         {
             if (aspectSlots[i] != null && !aspectSlots[i].usedSlot && aspectSlots[i].itemName != itemName)
             {
@@ -111,7 +111,7 @@ public class InvManager : GUIBase
             if (aspectSlots[i].itemName == itemName)
             {
                 //Debug.Log($"Seems like there is already a {itemName} in your slots");
-                AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null, aspect);
+                AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", aspect);
                 break;
             }
         }
@@ -121,12 +121,12 @@ public class InvManager : GUIBase
     public void UnequipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
     {
         if (aspect != null && playerManager != null) playerManager.RemoveAspectModifiers(aspect);
-        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", null, aspect);
+        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", aspect);
     }
 
     public void EquipAbility(string itemName, Sprite itemSprite, string itemDescription, AbilitySO ability, int slot = 0)
     {
-        if (abilitySlots != null) abilitySlots[slot].AddAbility(itemName, itemSprite, itemDescription, ability, slot);
+        if (abilitySlots.Length > 0) abilitySlots[slot].AddAbility(itemName, itemSprite, itemDescription, ability, slot);
     }
 
     public void SelectSlot()
@@ -164,15 +164,13 @@ public class InvManager : GUIBase
             
             if (data.storedItems[i] is ItemSO) 
                 AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, 
-                    item.itemType, item, null);
+                    item.itemType, item);
             
             else if (data.storedItems[i] is AspectSO)
-                AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 1, "Aspect", null,
-                    aspect);
+                AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 1, "Aspect", aspect);
             
             else if (data.storedItems[i] is AbilitySO)
-                AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, 
-                    "Ability", null, null, ability);
+                AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, "Ability", ability);
         }
     }
     

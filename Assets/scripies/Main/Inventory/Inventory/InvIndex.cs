@@ -14,7 +14,7 @@ public sealed class InvIndex
     }
     public void AddItem(CollectableSOBase id, int amount = 1)
     {
-        if (id == null) throw new ArgumentException("id is null/empty. KILL YOURSELF!");
+        if (id == null) throw new ArgumentException("id is null/empty!");
         if (amount <= 0) return;
 
         if (counts.TryGetValue(id, out var current)) counts[id] = current + amount;
