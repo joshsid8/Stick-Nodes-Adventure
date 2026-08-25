@@ -6,8 +6,11 @@ SNADV Notes
     Priorities:
         
         Shop Logic
-            Just press the play button, and reveal all the nullrefs and errors the broken state of a system is
-                I presume the ui isnt working, but most of the logic will work ok
+            I was right, all logic seems to be all working
+            But GUI is significantly broken
+                I cant click an item in the shop
+                    Thus, I can only buy the first item, which gets initially clicked automatically
+                All items other than the first doesnt get shown, but the data is there
                                
     Optimisations & Hotfixes:
         
@@ -28,7 +31,12 @@ SNADV Notes
                 SFX
                     Barely anything is done yet, but no errors are spamming at me
                     I do need more files in general
-                    Also, find out why one shot sounds are very very quiet             
+                    Also, find out why one shot sounds are very very quiet
+                
+                You can now click out of a gui menu to exit it
+                    It does seem to work, but its not too efficient
+                        as in if there are layering menus, clicking out exits all of them instead of the topmost one
+                        Ill prolly add a variable to detect which one is the topmost one, and make a base method to exit that one only        
                     
         Junie Help
             See how to fix the individual exit bugs i get

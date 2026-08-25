@@ -55,6 +55,7 @@ namespace scripies.Player
         [HideInInspector] public PlayerDefense pd;
         [HideInInspector] public PlayerAbility pa;
         [HideInInspector] public PlayerCombat pf;
+        [HideInInspector] public PlayerCurrency pm;
 
         #region Getters and Setters
         [Header("Getters and Setters")] 
@@ -74,7 +75,7 @@ namespace scripies.Player
         public float[] CurrentAbilityCooldown => pa.currentAbilityCooldowns;
         public float[] MaxAbilityCooldown => pa.maxAbilityCooldowns;
         public int AggressiveEnemies => aggressiveEnemies.Count;
-        public float NodeBucks => GetComponent<PlayerCurrency>().nodeBucks;
+        public float NodeBucks => pm.nodeBucks;
         #endregion
 
         private void Awake()
@@ -91,6 +92,7 @@ namespace scripies.Player
             kb = GetComponent<Knockback>();
             pa = GetComponent<PlayerAbility>();
             pf = GetComponent<PlayerCombat>();
+            pm = GetComponent<PlayerCurrency>();
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 

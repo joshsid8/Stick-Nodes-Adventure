@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// A persistent Singleton that loads all CollectableSOBase assets from Resources
@@ -51,7 +53,7 @@ public class ItemDatabase : MonoBehaviour
             return null;
         }
         itemDatabase.TryGetValue(itemName, out var item);
-        if (item == null) Debug.LogError($"[ItemDatabase] We couldnt find {itemName} in our resources D:");
+        if (item == null) throw new MissingFieldException($"[ItemDatabase] We couldnt find {itemName} in our resources D:");
         return item;
     }
 }

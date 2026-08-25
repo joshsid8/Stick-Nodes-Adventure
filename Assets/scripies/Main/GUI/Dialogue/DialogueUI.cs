@@ -38,7 +38,6 @@ namespace scripies.Dialogue
 
             typeWriter = GetComponent<TypeWriterFX>();
             handler = GetComponent<DialogueResponseHandler>();
-            rt = GetComponent<RectTransform>();
             CloseDialogue();
             
             persistentItem = GameObject.Find("persistentItem");

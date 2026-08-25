@@ -1,10 +1,9 @@
-using System;
 using scripies.Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StatInfo : GUIBase, IPointerClickHandler
+public class StatInfo : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TMP_Text statName;
     [SerializeField] private GameObject shader;
@@ -22,20 +21,20 @@ public class StatInfo : GUIBase, IPointerClickHandler
     private StatsManager statsManager;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
         statDescription.text = string.Empty;
         isClicked = false;
-        pc = PlayerHealth.Instance.pc;
         ph = PlayerHealth.Instance;
+        pc = ph.pc ?? PlayerHealth.Instance.GetComponent<PlayerController>() ?? FindAnyObjectByType<PlayerController>();
         pa = PlayerHealth.Instance.GetComponent<PlayerAbility>();
         pp = PlayerHealth.Instance.GetComponent<PerformAbility>();
         pd = PlayerHealth.Instance.GetComponent<PlayerDefense>();
         pf = PlayerHealth.Instance.GetComponent<PlayerCombat>();
-        statsManager = FindAnyObjectByType<StatsManager>();
+        statsManager = StatsManager.Instance;
         ClearInfo();
     }
+    
     private void Update()
     {
         switch (stat.StatName)
@@ -103,7 +102,7 @@ public class StatInfo : GUIBase, IPointerClickHandler
 
     private void OnLeftClick()
     {
-        statsManager.ClearShaders();
+        statsManager.ClearStatShaders();
         isClicked = true;
         statName.text = stat.StatName;
         statDescription.text = stat.StatDescription;

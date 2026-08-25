@@ -1,13 +1,45 @@
 using System;
 using System.Collections.Generic;
+using scripies.Core;
+using scripies.Dialogue;
 using UnityEngine;
 
 public class ShopKeeper : MonoBehaviour
 {
     public List<ShopItem> shopItems = new();
     
+    [SerializeField] private DialogueObject inStockDialogue;
+    [SerializeField] private DialogueObject soldOutDialogue;
+    
+    public bool canRestock = true;
+    private readonly List<ShopItem> backroomItems = new();
+
+    private void Start()
+    {
+        backroomItems.AddRange(shopItems);
+    }
+
+    private void OnEnable()
+    {
+        throw new NotImplementedException();
+    }
+    
+    private void OnDisable()
+    {
+        throw new NotImplementedException();
+    }
+    
+    /// <summary>
+    /// me when "Can you check the back?"
+    /// </summary>
     public void StartShop()
     {
+        if (shopItems.Count == 0)
+        {
+            GameEvents.TriggerShowDialogue(soldOutDialogue, GetComponent<NPChat>().npc);
+            if (canRestock) Invoke(nameof(Restock), 3);
+            return;
+        }
         ShopManager.Instance.LoadShopItems(shopItems.ToArray(), this);
     }
 
@@ -21,7 +53,25 @@ public class ShopKeeper : MonoBehaviour
             shopItems[i].itemDescription = items[i].itemDescription;
             shopItems[i].itemSprite = items[i].itemSprite;
             shopItems[i].itemCollectable = items[i].collectableSo;
+            shopItems[i].itemPrice = items[i].itemPrice;
+            shopItems[i].itemAmount = items[i].itemAmount;
         }
+    }
+
+    public void AddShopItem(ShopItem item,bool inNextRestock = false, GameObject keeper = null)
+    {
+        if (keeper != gameObject) return;
+        if (inNextRestock) backroomItems.Add(item);
+        else shopItems.Add(item);
+    }
+    
+    /// <summary>
+    /// me when "FIIINNNNEEEE ILL GO THEN >:("
+    /// </summary>
+    private void Restock()
+    {
+        shopItems.AddRange(backroomItems);
+        GameEvents.TriggerAddDialogue(inStockDialogue, gameObject);
     }
 }
 
@@ -33,5 +83,9 @@ public class ShopItem
     public Sprite itemSprite;
     public float itemPrice;
     public CollectableSOBase itemCollectable;
+    public int itemAmount = 1;
+    // TODO: When i implement the requirement system, uncomment below
+    // public Badge badgeRequired;
+    // public QuestSO questRequired;
 }
 

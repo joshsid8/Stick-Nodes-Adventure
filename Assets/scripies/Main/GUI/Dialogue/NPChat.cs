@@ -51,9 +51,11 @@ namespace scripies.Dialogue
             var playerObject = PlayerHealth.Instance.gameObject;
             if (playerObject != null) playerTransform = playerObject.transform;
             if (isShopkeeper) shopKeeper = GetComponent<ShopKeeper>();
+            
+            if (dialogue.Count == 0 && !canHaveNullList) throw new ArgumentNullException($"[NPChat] WWHHHAT?! {gameObject.name} HAS NO DIALOGUE!!! HOWWW");
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             var inputDirection = Input.GetAxisRaw("Vertical");
             if (chatInterval <= 0) isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
@@ -69,10 +71,12 @@ namespace scripies.Dialogue
                 {
                     isTriggered = true;
                     isForced = false;
-                    if (dialogue == null) return;
                     // '^' means "from the end of a list datatype" WHICH IS SO COOL
-                    var priorityDialogue = dialogue[^1];
-                    if (priorityDialogue != null) DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                    if (dialogue.Count >= 1)
+                    {
+                        var priorityDialogue = dialogue[^1];
+                        if (priorityDialogue != null) DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                    }
                     else if (isShopkeeper) shopKeeper.StartShop();
                     CameraEventManager.Instance.ResetCamera();
                     if (moveCamToNpc) CameraEventManager.Instance.ChangeTarget(gameObject);

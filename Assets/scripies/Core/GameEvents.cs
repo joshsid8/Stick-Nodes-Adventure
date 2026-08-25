@@ -6,6 +6,7 @@ namespace scripies.Core
 {
     /// <summary>
     /// A central hub for global game events to facilitate decoupling between assemblies.
+    /// Ensure, when calling methods, it starts with "Trigger"; otherwise you will be calling a static Action.
     /// </summary>
     public static class GameEvents
     {
@@ -31,7 +32,7 @@ namespace scripies.Core
         public static Action OnEnableGUI;
         public static Action OnDisableGUI;
         
-        // Dialogue events
+        // Dialogue/NPC events
         public static Action<GameObject, bool> OnToggleDialogueTrigger;
         public static Action<ScriptableObject, NPC> ShowDialogue;
         public static Action<ScriptableObject, GameObject> AddDialogue;

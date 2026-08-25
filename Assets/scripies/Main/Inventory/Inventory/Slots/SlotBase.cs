@@ -18,16 +18,18 @@ public class SlotBase : MonoBehaviour
     public GameObject selectedShader;
 
     [Header("Manager References")]
-    [SerializeField] protected InvManager invManager;
+    protected InvManager invManager;
     protected PlayerManager playerManager;
 
     //private bool switchFrom;
 
     protected virtual void Awake()
     {
-        if (invManager == null) invManager = InvManager.Instance;
         playerManager = FindAnyObjectByType<PlayerManager>();
+        invManager = InvManager.Instance ?? FindAnyObjectByType<InvManager>();
     }
+    
+    public void ItemSelect() => OnLeftClick();
 
     protected virtual void OnLeftClick()
     {

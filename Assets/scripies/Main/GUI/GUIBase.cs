@@ -2,6 +2,7 @@ using System.Collections;
 using scripies.Core;
 using scripies.Player;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class GUIBase : MonoBehaviour
 {
@@ -11,8 +12,13 @@ public abstract class GUIBase : MonoBehaviour
     protected static int ActiveGUICount;
     protected PlayerController player;
     protected RectTransform rt;
+    public Button closeShader;
 
-    protected virtual void Awake() => ActiveGUICount = 0;
+    protected virtual void Awake()
+    {
+        ActiveGUICount = 0;
+        rt = GetComponent<RectTransform>();
+    }
     
     private IEnumerator Start()
     {
@@ -26,7 +32,11 @@ public abstract class GUIBase : MonoBehaviour
     }
     private void Update()
     {
-        if (ActiveGUICount < 0) ActiveGUICount = 0;
+        if (ActiveGUICount < 0)
+        {
+            ActiveGUICount = 0;
+            closeShader.onClick.RemoveAllListeners();
+        }
     }
 
     private void GetPlayer()
@@ -38,12 +48,13 @@ public abstract class GUIBase : MonoBehaviour
     {
         var allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
         foreach (var gui in allGuis){
-            if (gui.isActive && gui != this)
-            {
-                if (gui.TryGetComponent<InvManager>(out var inv)) inv.ToggleInventory();
-                else if (gui.TryGetComponent<QuestLogManager>(out var quest)) quest.ToggleQuestLog();
-                else gui.GetActive(false);
-            }
+            if (!gui.isActive || gui == this) return;
+            
+            if (gui.TryGetComponent<InvManager>(out var inv)) inv.ToggleInventory();
+            else if (gui.TryGetComponent<QuestLogManager>(out var quest)) quest.ToggleQuestLog();
+            else if (gui.TryGetComponent<StatsManager>(out var stats)) stats.ToggleStats();
+            else if (gui.TryGetComponent<ShopManager>(out var shop)) shop.ToggleShop(false);
+            else gui.GetActive(false);
         }
     }
     private void Enable()
@@ -60,6 +71,7 @@ public abstract class GUIBase : MonoBehaviour
         ActiveGUICount = Mathf.Max(0, ActiveGUICount - 1);
         UpdatePlayerState();
         OnDeactivated();
+        if (closeShader != null) closeShader.onClick.RemoveAllListeners();
     }
     
     /// <summary>

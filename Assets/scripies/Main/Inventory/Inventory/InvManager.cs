@@ -22,7 +22,6 @@ public class InvManager : GUIBase
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         base.Awake();
-        rt = GetComponent<RectTransform>();
         playerManager = FindAnyObjectByType<PlayerManager>();
         invIndex = new InvIndex();
         if (playerManager == null) Debug.LogWarning("InvManager: We cant find the player manager D:");
@@ -60,7 +59,11 @@ public class InvManager : GUIBase
         if (inventoryMenu == null) return;
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
         GetActive(isActive);
-        //inventoryMenu.SetActive(isActive);
+        if (isActive)
+        {
+            closeShader.onClick.RemoveAllListeners();
+            closeShader.onClick.AddListener(ToggleInventory);
+        }
     }
 
     public void AddItem(string itemName , int itemAmount = 1, Sprite itemSprite = null, string itemDescription = "", int maxItemAmount = 1, string itemType = null, CollectableSOBase collectable = null)
@@ -74,7 +77,8 @@ public class InvManager : GUIBase
                 itemAmount -= amountToAdd;
                 if (itemAmount <= 0)
                 {
-                    itemSlots[i].ItemSelect(); return;
+                    itemSlots[i].ItemSelect(); 
+                    return;
                 }
             }
         }
@@ -95,6 +99,16 @@ public class InvManager : GUIBase
             }
         }
         if (itemAmount > 0) Debug.LogWarning($"Inventory is full! Could not add {itemAmount} of {itemName}.");
+    }
+
+    public void PresetAddItem(CollectableSOBase collectable)
+    {
+        switch (collectable)
+        {
+            case ItemSO item: AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, item.itemType, item); break;
+            case AspectSO aspect: AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 1, "Aspect", aspect); break;
+            case AbilitySO ability: AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, "Ability", ability); break;
+        }
     }
     
     public void EquipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)

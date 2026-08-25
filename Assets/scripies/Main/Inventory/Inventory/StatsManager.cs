@@ -1,44 +1,44 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatsManager : MonoBehaviour
+public class StatsManager : GUIBase
 {
-    public Button statsButton;
-    public GameObject statsGO;
-    public bool isEnabled;
+    public static StatsManager Instance { get; private set; }
     
     public StatInfo[] stats;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    protected override void Awake()
     {
-        isEnabled = false;
-        statsGO.SetActive(false);
-        statsButton.onClick.AddListener(ToggleStats);
-        ClearShaders();
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
+        base.Awake();
+    }
+
+    private void Start()
+    {
+        if (isActive) ToggleStats();
+        ClearStatShaders();
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Inventory") && isEnabled) ToggleStats();
-        else if (Input.GetButtonDown("Cancel"))
-        {
-            isEnabled = false;
-            statsGO.SetActive(isEnabled);
-        }
+        if (Input.GetButtonDown("Inventory") && isActive || Input.GetButtonDown("Cancel") && isActive) ToggleStats();
     }
 
-    private void ToggleStats()
+    public void ToggleStats()
     {
-        isEnabled = !isEnabled;
-        statsGO.SetActive(isEnabled);
+        isActive = !isActive;
+        rt.anchoredPosition = new Vector2(0, isActive ? 0 : 1200);
+        GetActive(isActive);
+        if (closeShader == null || !isActive) return;
+        //closeShader.onClick.RemoveAllListeners();
+        closeShader.onClick.AddListener(ToggleStats);
     }
 
-    public void ClearShaders()
+    public void ClearStatShaders()
     {
-        for (int i = 0; i < stats.Length; i++)
-        {
-            stats[i].ClearInfo();
-        }
+        foreach (var stat in stats) 
+            stat.ClearInfo();
     }
 }

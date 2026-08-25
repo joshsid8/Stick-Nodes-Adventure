@@ -191,7 +191,6 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         if (!equipped) Debug.LogWarning("All equipped Aspect slots are full! Cannot equip " + itemName);
     }
 
-    public void ItemSelect() => OnLeftClick();
 
     private void SwapAbility(int slot = 0)
     {

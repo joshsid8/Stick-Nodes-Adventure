@@ -16,6 +16,7 @@ public class ShopManager : GUIBase
     public List<ShopItemSlot> shopItems = new();
     
     public Button buyButton;
+    public Image displayImage;
 
     protected override void Awake()
     {
@@ -28,17 +29,15 @@ public class ShopManager : GUIBase
         base.Awake();
     }
 
-    private void LateUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape)) CloseShop();
-    }
-
     public void ToggleShop(bool toggle)
     {
         if (shopMenu == null) return;
         isActive = toggle;
         rt.anchoredPosition = new Vector2(isActive ? 0 : 2000, 0);
         GetActive(isActive);
+        if (!isActive) return;
+        //closeShader.onClick.RemoveAllListeners(); 
+        closeShader.onClick.AddListener(CloseShop);
     }
 
     public void LoadShopItems(ShopItem[] items, ShopKeeper shopKeeper)
@@ -51,9 +50,12 @@ public class ShopManager : GUIBase
             shopItems[i].itemPrice = items[i].itemPrice;
             shopItems[i].itemSprite = items[i].itemSprite;
             shopItems[i].collectableSo = items[i].itemCollectable;
+            shopItems[i].itemAmount = items[i].itemAmount;
+            shopItems[i].usedSlot = true;
+            print($"Added {items[i].itemName} to shop.");
         }
+        shopItems[0].ItemSelect();
         ToggleShop(true);
-        UpdateShopUI();
     }
 
     public void CloseShop()
@@ -63,12 +65,6 @@ public class ShopManager : GUIBase
         shopItems.Clear();
         currentShopKeeper = null;
         ToggleShop(false);
-    }
-
-
-    public void UpdateShopUI()
-    {
-        
     }
 
     public void SelectSlot()

@@ -137,6 +137,8 @@ namespace scripies.Player
                 GameHUD.Instance.ActivateShader();
                 PlayerHealth.Instance.playerMaxHealth = 1000;
                 PlayerHealth.Instance.playerHealth = 1000;
+                PlayerHealth.Instance.respawnTime = 2;
+                PlayerHealth.Instance.pm.nodeBucks = 1000;
                 pab.energyRefill = 50;
                 canWallJump = true;
                 canDoubleJump = true;

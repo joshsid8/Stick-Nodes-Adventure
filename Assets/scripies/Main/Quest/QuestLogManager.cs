@@ -25,7 +25,6 @@ public class QuestLogManager : GUIBase
         Instance = this;
         base.Awake();
         player = FindAnyObjectByType<PlayerController>();
-        rt = GetComponent<RectTransform>();
         
         if (isActive) ToggleQuestLog();
     }
@@ -56,12 +55,12 @@ public class QuestLogManager : GUIBase
     public void ToggleQuestLog()
     {
         isActive = !isActive;
-        if (questMenu != null)
-        {
-            rt.anchoredPosition = new Vector2(0, isActive ? 0 : 1000);
-            questMenu.SetActive(isActive);
-        }
+        if (questMenu != null) 
+            rt.anchoredPosition = new Vector2(isActive ? 0 : -2000, 0);
         GetActive(isActive);
+        if (!isActive) return;
+        //closeShader.onClick.RemoveAllListeners();
+        closeShader.onClick.AddListener(ToggleQuestLog);
     }
 
     public void Save(ref PlayerSaveQuests data)
