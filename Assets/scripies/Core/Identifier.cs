@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// TODO: Junie went all out with this script. I need to figure out how this works lol
 namespace scripies.Core
 {
     public class Identifier : MonoBehaviour
@@ -16,7 +17,7 @@ namespace scripies.Core
         
         [HideInInspector] public MonoBehaviour mapManager;
 
-        [ContextMenu("Automate ID")]
+        [ContextMenu("Automate ID")] // never used this before
         public void AutomateID() => AutomateID(gameObject.scene);
         
         public void AutomateID(Scene targetScene)
@@ -26,9 +27,6 @@ namespace scripies.Core
                 var rootObjects = targetScene.GetRootGameObjects();
                 foreach (var obj in rootObjects)
                 {
-                    // Using reflection to avoid direct reference in base assembly if needed, 
-                    // but since Identifier is now in scripies.csproj, it SHOULD see MapManager.
-                    // If it doesn't, we can use a more generic approach.
                     var components = obj.GetComponentsInChildren<MonoBehaviour>(true);
                     foreach (var c in components)
                     {

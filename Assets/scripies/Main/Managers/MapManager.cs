@@ -242,7 +242,7 @@ public class MapManager : MonoBehaviour
                         break;
                     case "NPC":
                         var npcId = obj.GetComponent<Identifier>();
-                        var dTrigger = obj.GetComponent<DialogueTrigger>();
+                        var dTrigger = obj.GetComponent<NPChat>();
                         var newNpc = new NpcSceneData
                         {
                             activeNpcs = obj,
@@ -398,7 +398,7 @@ public class MapManager : MonoBehaviour
                     var npc = npcSceneData.Find(n => n.id == npcData.activeNpc);
                     if (npc != null && npc.activeNpcs != null)
                     {
-                        var dTrigger = npc.activeNpcs.GetComponent<DialogueTrigger>();
+                        var dTrigger = npc.activeNpcs.GetComponent<NPChat>();
                         if (dTrigger != null)
                         {
                             dTrigger.dialogue.Clear();

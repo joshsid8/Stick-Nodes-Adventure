@@ -188,34 +188,32 @@ namespace scripies.Player
 
         private IEnumerator Death()
         {
-            if (playerHealth <= 0 && !deathToggle)
-            {
-                deathToggle = true;
-                isDead = true;
-                GameEvents.TriggerPlayerDeath();
-                //#if UNITY_EDITOR
-                GameEvents.TriggerJumpScare();
-                //#endif
-                GameEvents.TriggerPlaySound(deathClip, false);
-                //Shenanigans.Instance.ToggleFreezeCamera();
-                GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
+            if (playerHealth > 0 || deathToggle) yield break;
+            deathToggle = true;
+            isDead = true;
+            GameEvents.TriggerPlayerDeath();
+            #if UNITY_EDITOR
+            GameEvents.TriggerJumpScare();
+            #endif
+            GameEvents.TriggerPlaySound(deathClip, !pc.debugMode);
+            //Shenanigans.Instance.ToggleFreezeCamera();
+            GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
 
-                if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded)
-                {
-                    SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName,
-                        LoadSceneMode.Additive);
-                }
-                //else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
-                
-                yield return new WaitForSeconds(respawnTime);
-                
-                StartCoroutine(Spawn(0, true));
-                playerHealth = playerMaxHealth * 0.25f;
-                deathToggle = false;
-                isDead = false;
-                pc.canAct = true;
-                ResetCombat();
+            if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded)
+            {
+                SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName,
+                    LoadSceneMode.Additive);
             }
+            //else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
+            
+            yield return new WaitForSeconds(respawnTime);
+            
+            StartCoroutine(Spawn(0, true));
+            playerHealth = playerMaxHealth * 0.25f;
+            deathToggle = false;
+            isDead = false;
+            pc.canAct = true;
+            ResetCombat();
         }
 
         public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,

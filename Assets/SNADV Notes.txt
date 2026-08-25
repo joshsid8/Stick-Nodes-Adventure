@@ -6,11 +6,8 @@ SNADV Notes
     Priorities:
         
         Shop Logic
-            I already knew this was going to be so annoying!!!
-            It indeed is very similar to the inventory system, but ive made a bit of progress in general
-            The way the shop scripts communicate with each other doesnt seem efficient at all
-                I wish to use the add function from lists, but that doesnt wanna work, so i had to use for loops
-                Ill definitely get Junie to fix my errors
+            Just press the play button, and reveal all the nullrefs and errors the broken state of a system is
+                I presume the ui isnt working, but most of the logic will work ok
                                
     Optimisations & Hotfixes:
         

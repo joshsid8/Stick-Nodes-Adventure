@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace scripies.Dialogue
 {
-    public class DialogueTrigger : MonoBehaviour, IDialogueTrigger
+    public class NPChat : MonoBehaviour, IDialogueTrigger
     {
         public bool isActive = true;
         public float chatRadius;
@@ -17,7 +17,7 @@ namespace scripies.Dialogue
         [Tooltip("This is turned on when the dialogue ui has been activated")]
         public bool isTriggered;
 
-        [Tooltip("Usually for bosses only: the dialogue will activate without the player pressing the talk button")]
+        [Tooltip("Usually for bosses only: the dialogue will activate without the player pressing the interact button")]
         public bool isForced;
 
         [Tooltip("Will this npc move somewhere else at a certain point?")]
@@ -36,6 +36,9 @@ namespace scripies.Dialogue
         private float chatInterval = 0.2f;
         [SerializeField] private bool canHaveNullList;
         
+        public bool isShopkeeper;
+        private ShopKeeper shopKeeper;
+        
         // Getters and Setters
         public bool Enabled { get => enabled; set => enabled = value; }
         public DialogueObject[] Dialogue => dialogue.ToArray();
@@ -47,6 +50,7 @@ namespace scripies.Dialogue
         {
             var playerObject = PlayerHealth.Instance.gameObject;
             if (playerObject != null) playerTransform = playerObject.transform;
+            if (isShopkeeper) shopKeeper = GetComponent<ShopKeeper>();
         }
 
         private void Update()
@@ -68,7 +72,8 @@ namespace scripies.Dialogue
                     if (dialogue == null) return;
                     // '^' means "from the end of a list datatype" WHICH IS SO COOL
                     var priorityDialogue = dialogue[^1];
-                    DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                    if (priorityDialogue != null) DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                    else if (isShopkeeper) shopKeeper.StartShop();
                     CameraEventManager.Instance.ResetCamera();
                     if (moveCamToNpc) CameraEventManager.Instance.ChangeTarget(gameObject);
                 }
@@ -117,6 +122,7 @@ namespace scripies.Dialogue
         {
             yield return new WaitForSeconds(0.01f);
             dialogue.RemoveAt(dialogue.IndexOf(dto));
+            if (isShopkeeper) shopKeeper.StartShop(); 
         }
         
         private void OnDrawGizmosSelected()

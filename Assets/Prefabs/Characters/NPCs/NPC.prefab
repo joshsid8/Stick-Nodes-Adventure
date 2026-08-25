@@ -255,6 +255,7 @@ MonoBehaviour:
   canTurn: 1
   isFacingRight: 0
   moveCamToNpc: 0
+  canHaveNullList: 0
 --- !u!50 &3862350855981196277
 Rigidbody2D:
   serializedVersion: 5

@@ -117,7 +117,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
     private void PlaySfx(AudioClip clip = null, bool randomPitch = true, GameObject source = null)
     {
-        if (randomPitch) sfxSource.pitch = Random.Range(0.85f, 1.15f);
+        sfxSource.pitch = randomPitch ? Random.Range(0.85f, 1.15f) : 1;
 
         switch (source != null)
         {

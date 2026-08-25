@@ -6,7 +6,7 @@ public class ShopKeeper : MonoBehaviour
 {
     public List<ShopItem> shopItems = new();
     
-    private void LoadShopItems()
+    public void StartShop()
     {
         ShopManager.Instance.LoadShopItems(shopItems.ToArray(), this);
     }

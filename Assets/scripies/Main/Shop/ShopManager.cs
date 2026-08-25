@@ -28,11 +28,16 @@ public class ShopManager : GUIBase
         base.Awake();
     }
 
-    public void ToggleShop()
+    private void LateUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) CloseShop();
+    }
+
+    public void ToggleShop(bool toggle)
     {
         if (shopMenu == null) return;
-        isActive = !isActive;
-        rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
+        isActive = toggle;
+        rt.anchoredPosition = new Vector2(isActive ? 0 : 2000, 0);
         GetActive(isActive);
     }
 
@@ -47,14 +52,19 @@ public class ShopManager : GUIBase
             shopItems[i].itemSprite = items[i].itemSprite;
             shopItems[i].collectableSo = items[i].itemCollectable;
         }
+        ToggleShop(true);
+        UpdateShopUI();
     }
 
     public void CloseShop()
     {
         currentShopKeeper.SaveShopItems(shopItems.ToArray());
-        isActive = false;
-        GetActive(isActive);
+        buyButton.onClick.RemoveAllListeners();
+        shopItems.Clear();
+        currentShopKeeper = null;
+        ToggleShop(false);
     }
+
 
     public void UpdateShopUI()
     {
