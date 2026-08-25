@@ -24,11 +24,9 @@ public abstract class GUIBase : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         GetPlayer();
-        if (player == null)
-        {
-            player = PlayerHealth.Instance.pc;
-            if (player == null) throw new MissingReferenceException("BRUUHHH");
-        }
+        if (player != null) yield break;
+        player = PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
+        if (player == null) throw new MissingReferenceException("BRUUHHH");
     }
     private void Update()
     {
@@ -37,17 +35,19 @@ public abstract class GUIBase : MonoBehaviour
             ActiveGUICount = 0;
             closeShader.onClick.RemoveAllListeners();
         }
+        Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
     }
 
     private void GetPlayer()
     {
-        if (player == null) player = FindAnyObjectByType<PlayerController>();
+        player ??= PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
     }
 
     public void CloseAll()
     {
         var allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
-        foreach (var gui in allGuis){
+        foreach (var gui in allGuis)
+        {
             if (!gui.isActive || gui == this) return;
             
             if (gui.TryGetComponent<InvManager>(out var inv)) inv.ToggleInventory();
@@ -57,6 +57,21 @@ public abstract class GUIBase : MonoBehaviour
             else gui.GetActive(false);
         }
     }
+
+    public void CloseCurrentMenus()
+    {
+        var allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
+        foreach (var gui in allGuis)
+        {
+            if (!gui.isActive || gui == this) return;
+            
+            if (gui.TryGetComponent<InvManager>(out var inv)) inv.ToggleInventory();
+            else if (gui.TryGetComponent<QuestLogManager>(out var quest)) quest.ToggleQuestLog();
+            else if (gui.TryGetComponent<StatsManager>(out var stats)) stats.ToggleStats();
+            else if (gui.TryGetComponent<ShopManager>(out var shop)) shop.ToggleShop(false);
+        }
+    }
+    
     private void Enable()
     {
         isActive = true;

@@ -47,7 +47,7 @@ public class AreaManager : MonoBehaviour
         
         if (actualCamera.backgroundColor != bgColor && bgColor != default)
         {
-            //TODO: Maybe change background logic into an active sprite/image behind the player, and use CrossFadeColor to efficiently change it
+            //Maybe change background logic into an active sprite/image behind the player, and use CrossFadeColor to efficiently change it
             StartCoroutine(LerpColours(bgColor));
         }
     }

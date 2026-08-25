@@ -186,6 +186,7 @@ namespace scripies.Player
             justSpawned = true;
             yield return new WaitForSeconds(1f);
             justSpawned = false;
+            GameHUD.Instance.SetShaderColour(Color.black);
         }
 
         private IEnumerator Death()
@@ -208,7 +209,9 @@ namespace scripies.Player
             }
             //else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
             
-            yield return new WaitForSeconds(respawnTime);
+            yield return new WaitForSeconds(respawnTime / 2);
+            GameHUD.Instance.SetShaderColour(Color.white, 1.5f);
+            yield return new WaitForSeconds(respawnTime / 2);
             
             StartCoroutine(Spawn(0, true));
             playerHealth = playerMaxHealth * 0.25f;

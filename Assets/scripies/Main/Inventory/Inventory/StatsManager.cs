@@ -32,7 +32,7 @@ public class StatsManager : GUIBase
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : 1200);
         GetActive(isActive);
         if (closeShader == null || !isActive) return;
-        //closeShader.onClick.RemoveAllListeners();
+        CloseCurrentMenus();
         closeShader.onClick.AddListener(ToggleStats);
     }
 

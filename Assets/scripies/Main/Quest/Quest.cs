@@ -109,6 +109,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     public void CompleteQuest()
     {
         GameEvents.TriggerPlaySound(QuestLogManager.Instance.questCompleteSound);
+        QuestLogManager.Instance.completedQuests.Add(this);
         OnCleared();
         GiveRewards();
         ClearUI();

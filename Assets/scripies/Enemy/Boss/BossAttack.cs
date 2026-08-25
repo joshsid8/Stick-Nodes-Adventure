@@ -198,8 +198,8 @@ public class BossAttack : MonoBehaviour
 
         if (isAttacking && !isPerformingAttack && currentBackupMoveTimer <= 0)
         {
+            Debug.LogError($"Almost handicapped {gameObject.name}. attack system being invoked = {IsInvoking(nameof(AttackSystem))}"); 
             AttackSystem();
-            print("Almost handicapped bro");
         }
         
         if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;

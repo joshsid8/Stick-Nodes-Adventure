@@ -21,12 +21,10 @@ public class ShopKeeper : MonoBehaviour
 
     private void OnEnable()
     {
-        throw new NotImplementedException();
     }
     
     private void OnDisable()
     {
-        throw new NotImplementedException();
     }
     
     /// <summary>
@@ -48,13 +46,17 @@ public class ShopKeeper : MonoBehaviour
         shopItems.Clear();
         for (var i = 0; i < items.Length; i++)
         {
-            shopItems.Add(new ShopItem());
-            shopItems[i].itemName = items[i].itemName;
-            shopItems[i].itemDescription = items[i].itemDescription;
-            shopItems[i].itemSprite = items[i].itemSprite;
-            shopItems[i].itemCollectable = items[i].collectableSo;
-            shopItems[i].itemPrice = items[i].itemPrice;
-            shopItems[i].itemAmount = items[i].itemAmount;
+            if (!items[i].usedSlot) continue;
+            
+            shopItems.Add(new ShopItem
+            {
+                itemName = items[i].itemName,
+                itemDescription = items[i].itemDescription,
+                itemSprite = items[i].itemSprite ?? items[i].collectableSo.itemSprite,
+                itemCollectable = items[i].collectableSo,
+                itemPrice = items[i].itemPrice,
+                itemAmount = items[i].itemAmount
+            });
         }
     }
 

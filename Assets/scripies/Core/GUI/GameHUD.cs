@@ -70,8 +70,8 @@ public class GameHUD : MonoBehaviour
         yield return new WaitForSeconds(fadeTime);
         StartCoroutine(FadeOutShader(holdTime, fadeOutTime));
     }
-    
-    private void SetShaderColour(Color colour, float fadeTime = 1) => screenShader.CrossFadeColor(colour, fadeTime, false, false);
+
+    public void SetShaderColour(Color colour, float fadeTime = 1) => screenShader.CrossFadeColor(colour, fadeTime, false, false);
     
     #endregion
     

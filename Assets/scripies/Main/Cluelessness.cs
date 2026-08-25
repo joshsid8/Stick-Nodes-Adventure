@@ -3,6 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+    
+/// <summary>
+/// Displays the value of a variable as gui text. '=' Gets added for ya
+/// </summary>
 public class Cluelessness : MonoBehaviour
 {
     public static Cluelessness Instance {get; private set;}

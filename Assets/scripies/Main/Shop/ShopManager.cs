@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,7 +11,8 @@ public class ShopManager : GUIBase
     
     public ShopKeeper currentShopKeeper;
 
-    public TMP_Text itemPriceText;
+    public TMP_Text selectedPriceText;
+    public TMP_Text selectedAmountText;
     public List<ShopItemSlot> shopItems = new();
     
     public Button buyButton;
@@ -36,33 +36,43 @@ public class ShopManager : GUIBase
         rt.anchoredPosition = new Vector2(isActive ? 0 : 2000, 0);
         GetActive(isActive);
         if (!isActive) return;
-        //closeShader.onClick.RemoveAllListeners(); 
+        CloseCurrentMenus();
         closeShader.onClick.AddListener(CloseShop);
     }
 
     public void LoadShopItems(ShopItem[] items, ShopKeeper shopKeeper)
     {
         currentShopKeeper = shopKeeper;
-        for (var i = 0; i < items.Length; i++)
+        for (var i = 0; i < shopItems.Count; i++)
         {
-            shopItems[i].itemName = items[i].itemName;
-            shopItems[i].itemDescription = items[i].itemDescription;
-            shopItems[i].itemPrice = items[i].itemPrice;
-            shopItems[i].itemSprite = items[i].itemSprite;
-            shopItems[i].collectableSo = items[i].itemCollectable;
-            shopItems[i].itemAmount = items[i].itemAmount;
-            shopItems[i].usedSlot = true;
-            print($"Added {items[i].itemName} to shop.");
+            if (i < items.Length)
+            {
+                shopItems[i].itemName = items[i].itemName;
+                shopItems[i].itemDescription = items[i].itemDescription;
+                shopItems[i].itemPrice = items[i].itemPrice;
+                shopItems[i].itemSprite = items[i].itemSprite ?? items[i].itemCollectable.itemSprite;
+                shopItems[i].collectableSo = items[i].itemCollectable;
+                shopItems[i].itemAmount = items[i].itemAmount;
+                shopItems[i].usedSlot = true;
+                shopItems[i].ItemUpdate();
+            }
+            else
+            {
+                shopItems[i].ClearSlot();
+            }
         }
-        shopItems[0].ItemSelect();
+        
+        if (items.Length > 0) shopItems[0].ItemSelect();
         ToggleShop(true);
     }
 
     public void CloseShop()
     {
-        currentShopKeeper.SaveShopItems(shopItems.ToArray());
+        if (currentShopKeeper != null)
+        {
+            currentShopKeeper.SaveShopItems(shopItems.ToArray());
+        }
         buyButton.onClick.RemoveAllListeners();
-        shopItems.Clear();
         currentShopKeeper = null;
         ToggleShop(false);
     }
@@ -76,6 +86,13 @@ public class ShopManager : GUIBase
     public void DeselectAllSlots()
     {
         foreach (var slot in shopItems) slot.Deselect();
+    }
+    
+    public void ClearDisplay()
+    {
+        selectedPriceText.text = "";
+        selectedAmountText.text = "";
+        displayImage.sprite = null;
     }
 }
 

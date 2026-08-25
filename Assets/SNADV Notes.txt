@@ -4,28 +4,35 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        
-        Shop Logic
-            I was right, all logic seems to be all working
-            But GUI is significantly broken
-                I cant click an item in the shop
-                    Thus, I can only buy the first item, which gets initially clicked automatically
-                All items other than the first doesnt get shown, but the data is there
-                               
+        Clear instability
+        Then get badges done
+                
     Optimisations & Hotfixes:
         
         Instability
             Replicatable or From-Build bugs/problems
                 
             One time occurrences or Rare/Intimidating bugs
+                GUI in general when exiting is inefficient
+                    One time the player's canMove flag got permanently turned off
+                        Likely cuz the active gui count was somehow more than 0
+                        Ill likely get junie to make the exiting logic more efficient
+                        
                 I was fighting 2 fishmen. when the first died, the 2nd couldnt use any moves
                     They were stuck in waiting for the 1st one to finish their turn, but theyre dead!
                     I need to look into jump logic and find a means to prevent this bug
                         If i cant find a good fix, ill make a makeshift backup timer to ensure they can just fight again if they wait too long
                         
                 One time, izuno had no dialogue on load
-                It seems like it loaded an empty dialogue list
+                It seems like it saved, thus loaded an empty dialogue list
                     We needa find out why
+                
+                Noxu sometimes doesnt attack and just walks around for a very long time before slowly using moves
+                    These moves are called due to the backup timer, meaning something is stopping him from attacking normally
+                After beating noxu, i get the most unique error of all time (in the build):
+                    "Curl error 60: Cert verify failed. Certificate Common Name(CN) does not match with the expected CN. UnityTls error code: 7"
+                    WHAT THE HELL ARE CURL ERRORS?!
+                    this happened right when the wifi stopped so it might just be that, but its still crazy
                 
             Low Priority Tasks / Unconfirmed fixed Bugs
                 SFX
@@ -36,7 +43,10 @@ SNADV Notes
                 You can now click out of a gui menu to exit it
                     It does seem to work, but its not too efficient
                         as in if there are layering menus, clicking out exits all of them instead of the topmost one
-                        Ill prolly add a variable to detect which one is the topmost one, and make a base method to exit that one only        
+                        Ill prolly add a variable to detect which one is the topmost one, and make a base method to exit that one only
+                
+                After losing to Noxu 3 times, and you try again, i get an IndexOutOfRange error, but the fight still happens
+                    This might be because possibly Cynder gets the game event signal, or Noxu's dialogue is null
                     
         Junie Help
             See how to fix the individual exit bugs i get
@@ -46,9 +56,27 @@ SNADV Notes
     Things to be added/changed:
         
         Pre-AO
+        
+            Badges System
+                Whenever a certain task is done, you can get a badge
+                    These badges allow certain stuff unlocked 
+                        Items from the shop
+                        Certain dialogue from NPCs
+                        Minibosses for more badges
+                To do this, we will need
+                    a scriptable object for the raw badge data
+                    (and maybe?) a monobehaviour to store the objects to other things
+                        This will contain a list of these SOs and have a 'isCollected' flag
+                        If not, then the player should just have a list of said SOs which already shows that it has been collected
+                    Life will be good if we then make a database for the badges for easier lookup
+                        We can make this contain a "HasBadge" function to be called on whatever needs it
+            
             We are nearing the end of Pre-AO!
             Im excited to start the next phase, but very scared at the same time
             Once im done completely with this phase, ill publish the game so i can get it tested by people
+                I'm gonna estimate that it will take around a month to get absolutely all bugs and content done
+                It'd be great if i got this done before uni starts (October 5th)
+                Then ill be taking some sort of hiatus when it comes to unity, and get the animations and music done on the side slowly
                         
         Post-AO
             

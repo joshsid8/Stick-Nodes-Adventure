@@ -11,8 +11,8 @@ public class QuestLogManager : GUIBase
 
     public GameObject questMenu;
     
-    // TODO: add this variable into the data file for future use (e.g checking if the player has already done a quest)
-    public Quest[] completedQuests;
+    // add this variable into the data file for future use (e.g checking if the player has already done a quest)
+    public List<Quest> completedQuests = new();
     public AudioClip questCompleteSound;
     
     protected override void Awake()
@@ -42,7 +42,7 @@ public class QuestLogManager : GUIBase
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetButtonDown("Quest")) ToggleQuestLog();
         else if (Input.GetButtonDown("Cancel") && isActive)
@@ -59,7 +59,7 @@ public class QuestLogManager : GUIBase
             rt.anchoredPosition = new Vector2(isActive ? 0 : -2000, 0);
         GetActive(isActive);
         if (!isActive) return;
-        //closeShader.onClick.RemoveAllListeners();
+        CloseCurrentMenus();
         closeShader.onClick.AddListener(ToggleQuestLog);
     }
 

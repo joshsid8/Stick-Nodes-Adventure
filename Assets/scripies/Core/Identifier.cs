@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// TODO: Junie went all out with this script. I need to figure out how this works lol
+// Junie went all out with this script. I need to figure out how this works lol
 namespace scripies.Core
 {
     public class Identifier : MonoBehaviour

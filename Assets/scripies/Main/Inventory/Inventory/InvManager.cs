@@ -61,6 +61,7 @@ public class InvManager : GUIBase
         GetActive(isActive);
         if (isActive)
         {
+            CloseCurrentMenus();
             closeShader.onClick.RemoveAllListeners();
             closeShader.onClick.AddListener(ToggleInventory);
         }

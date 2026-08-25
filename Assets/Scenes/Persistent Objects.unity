@@ -4214,7 +4214,8 @@ MonoBehaviour:
   closeShader: {fileID: 1549222214}
   shopMenu: {fileID: 1822921606}
   currentShopKeeper: {fileID: 0}
-  itemPriceText: {fileID: 1488727972}
+  selectedPriceText: {fileID: 1488727972}
+  selectedAmountText: {fileID: 626353064}
   shopItems:
   - {fileID: 9189909958094841014}
   - {fileID: 141753886}
@@ -18010,11 +18011,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 179.87196
+      value: 181.76169
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 84.72344
+      value: 84.47147
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -19603,7 +19604,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 180.2588, y: 84.77731, z: -0.060051918}
+  m_LocalPosition: {x: 182.14853, y: 84.525345, z: -0.060051918}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20908,7 +20909,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 182.23912, y: 89.00139, z: -0.060051918}
+  m_LocalPosition: {x: 184.12885, y: 88.74942, z: -0.060051918}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -34731,6 +34732,18 @@ PrefabInstance:
     - target: {fileID: 7526990368552829090, guid: ec8fa921e34a8974080f93c5859ab4cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402916513234643257, guid: ec8fa921e34a8974080f93c5859ab4cd, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402916513234643257, guid: ec8fa921e34a8974080f93c5859ab4cd, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402916513234643257, guid: ec8fa921e34a8974080f93c5859ab4cd, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
