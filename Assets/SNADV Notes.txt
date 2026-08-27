@@ -4,49 +4,24 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Clear instability
-        Then get badges done
+        get badges done
                 
     Optimisations & Hotfixes:
         
         Instability
             Replicatable or From-Build bugs/problems
                 
-            One time occurrences or Rare/Intimidating bugs
-                GUI in general when exiting is inefficient
-                    One time the player's canMove flag got permanently turned off
-                        Likely cuz the active gui count was somehow more than 0
-                        Ill likely get junie to make the exiting logic more efficient
-                        
-                I was fighting 2 fishmen. when the first died, the 2nd couldnt use any moves
-                    They were stuck in waiting for the 1st one to finish their turn, but theyre dead!
-                    I need to look into jump logic and find a means to prevent this bug
-                        If i cant find a good fix, ill make a makeshift backup timer to ensure they can just fight again if they wait too long
-                        
-                One time, izuno had no dialogue on load
-                It seems like it saved, thus loaded an empty dialogue list
-                    We needa find out why
-                
-                Noxu sometimes doesnt attack and just walks around for a very long time before slowly using moves
-                    These moves are called due to the backup timer, meaning something is stopping him from attacking normally
-                After beating noxu, i get the most unique error of all time (in the build):
-                    "Curl error 60: Cert verify failed. Certificate Common Name(CN) does not match with the expected CN. UnityTls error code: 7"
-                    WHAT THE HELL ARE CURL ERRORS?!
-                    this happened right when the wifi stopped so it might just be that, but its still crazy
-                
+            One time occurrences or Rare/Intimidating bugs               
+
             Low Priority Tasks / Unconfirmed fixed Bugs
                 SFX
                     Barely anything is done yet, but no errors are spamming at me
                     I do need more files in general
                     Also, find out why one shot sounds are very very quiet
-                
-                You can now click out of a gui menu to exit it
-                    It does seem to work, but its not too efficient
-                        as in if there are layering menus, clicking out exits all of them instead of the topmost one
-                        Ill prolly add a variable to detect which one is the topmost one, and make a base method to exit that one only
-                
-                After losing to Noxu 3 times, and you try again, i get an IndexOutOfRange error, but the fight still happens
-                    This might be because possibly Cynder gets the game event signal, or Noxu's dialogue is null
+                    
+                One time, izuno had no dialogue on load
+                    It seems like it saved, thus loaded an empty dialogue list
+                        We needa find out why
                     
         Junie Help
             See how to fix the individual exit bugs i get

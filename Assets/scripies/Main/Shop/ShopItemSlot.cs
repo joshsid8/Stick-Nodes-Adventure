@@ -11,7 +11,6 @@ public class ShopItemSlot : SlotBase
     public CollectableSOBase collectableSo;
     
 	public TMP_Text amountText;
-	public TMP_Text priceText;
 	
 	public ShopManager shopManager;
 
@@ -38,29 +37,52 @@ public class ShopItemSlot : SlotBase
 		    ClearSlot();
 		    shopManager.ClearDisplay();
 	    }
-	    else UpdateSlotUI();
+	    else
+	    {
+		    UpdateGlobalDetails();
+		    UpdateSlotUI();
+	    }
     }
 
     protected override void OnLeftClick()
     {
 	    //print("Selected " + (collectableSo != null ? collectableSo.itemName : itemName));
 	    if (!usedSlot) return;
-	    //if (!isBuyable) return;
 	    if (selectedShader != null) selectedShader.SetActive(true);
 	    shopManager.DeselectAllSlots();
 	    shopManager.SelectSlot();
-	    shopManager.buyButton.onClick.AddListener(BuyItem);
-	    shopManager.selectedAmountText.text = itemAmount.ToString();
-	    shopManager.selectedPriceText.text = "N" + itemPrice.ToString("F0");
+	    UpdateGlobalDetails();
 	    UpdateSlotUI();
     }
+
+    private void CheckLiquidity()
+    {
+		shopManager.buyButton.onClick.RemoveAllListeners();
+	    var enoughMoney = PlayerHealth.Instance.pm.Liquidity(itemPrice);
+	    if (enoughMoney)
+	    {
+		    shopManager.buyButton.onClick.AddListener(BuyItem);
+		    shopManager.buyButton.interactable = true;
+	    }
+	    else shopManager.buyButton.interactable = false;
+    }
+
+    private void UpdateGlobalDetails()
+    {
+	    if (shopManager == null) return;
+	    shopManager.selectedAmountText.text = itemAmount.ToString();
+	    shopManager.selectedPriceText.text = "N" + itemPrice.ToString("F0");
+	    shopManager.currentlySelectedItem = this;
+    }
+    
     protected override void UpdateSlotUI()
     {
         base.UpdateSlotUI();
-        if (amountText != null) amountText.text = usedSlot ? itemAmount.ToString() : "";
-        if (priceText != null) priceText.text = usedSlot ? "N" + itemPrice.ToString("F0") : "";
+        UpdateGlobalDetails();
 	    if (usedSlot && shopManager != null && shopManager.displayImage != null) 
 		    shopManager.displayImage.sprite = itemSprite ?? (collectableSo != null ? collectableSo.itemSprite : null);
+	    if (amountText != null) amountText.text = usedSlot ? itemAmount.ToString() : "";
+	    CheckLiquidity();
     }
 
     public override void ClearSlot()

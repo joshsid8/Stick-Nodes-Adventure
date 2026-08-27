@@ -59,12 +59,7 @@ public class InvManager : GUIBase
         if (inventoryMenu == null) return;
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
         GetActive(isActive);
-        if (isActive)
-        {
-            CloseCurrentMenus();
-            closeShader.onClick.RemoveAllListeners();
-            closeShader.onClick.AddListener(ToggleInventory);
-        }
+        if (isActive) CloseCurrentMenus();
     }
 
     public void AddItem(string itemName , int itemAmount = 1, Sprite itemSprite = null, string itemDescription = "", int maxItemAmount = 1, string itemType = null, CollectableSOBase collectable = null)

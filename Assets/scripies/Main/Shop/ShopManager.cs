@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class ShopManager : GUIBase
     public TMP_Text selectedPriceText;
     public TMP_Text selectedAmountText;
     public List<ShopItemSlot> shopItems = new();
+    
+    public ShopItemSlot currentlySelectedItem;
     
     public Button buyButton;
     public Image displayImage;
@@ -35,9 +38,12 @@ public class ShopManager : GUIBase
         isActive = toggle;
         rt.anchoredPosition = new Vector2(isActive ? 0 : 2000, 0);
         GetActive(isActive);
-        if (!isActive) return;
+        if (!isActive)
+        {
+            CloseShop();
+            return;
+        }
         CloseCurrentMenus();
-        closeShader.onClick.AddListener(CloseShop);
     }
 
     public void LoadShopItems(ShopItem[] items, ShopKeeper shopKeeper)
@@ -55,26 +61,26 @@ public class ShopManager : GUIBase
                 shopItems[i].itemAmount = items[i].itemAmount;
                 shopItems[i].usedSlot = true;
                 shopItems[i].ItemUpdate();
+                shopItems[i].gameObject.SetActive(true);
             }
             else
             {
                 shopItems[i].ClearSlot();
+                shopItems[i].gameObject.SetActive(false);
             }
         }
-        
         if (items.Length > 0) shopItems[0].ItemSelect();
+        
         ToggleShop(true);
     }
 
-    public void CloseShop()
+    private void CloseShop()
     {
-        if (currentShopKeeper != null)
-        {
+        if (currentShopKeeper != null) 
             currentShopKeeper.SaveShopItems(shopItems.ToArray());
-        }
         buyButton.onClick.RemoveAllListeners();
         currentShopKeeper = null;
-        ToggleShop(false);
+        if (isActive) ToggleShop(false);
     }
 
     public void SelectSlot()
@@ -93,6 +99,21 @@ public class ShopManager : GUIBase
         selectedPriceText.text = "";
         selectedAmountText.text = "";
         displayImage.sprite = null;
+    }
+    
+    public bool CheckStock()
+    {
+        foreach (var item in shopItems)
+        {
+            if (item.usedSlot) 
+                return true;
+            if (item == shopItems[^1] && !item.usedSlot)
+            {
+                CloseShop();
+                return false;
+            }
+        }
+        return true;
     }
 }
 

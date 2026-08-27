@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using scripies.Core;
 using scripies.Player;
 using UnityEngine;
@@ -10,19 +11,21 @@ public abstract class GUIBase : MonoBehaviour
     public bool isActive;
     [Tooltip("lets... get... AA-")]
     protected static int ActiveGUICount;
+    protected static List<GUIBase> ActiveGuis = new();
     protected PlayerController player;
     protected RectTransform rt;
-    public Button closeShader;
-
+    private GUIBase[] allGuis;
+    
     protected virtual void Awake()
     {
         ActiveGUICount = 0;
         rt = GetComponent<RectTransform>();
+        allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
     }
     
     private IEnumerator Start()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         GetPlayer();
         if (player != null) yield break;
         player = PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
@@ -33,19 +36,24 @@ public abstract class GUIBase : MonoBehaviour
         if (ActiveGUICount < 0)
         {
             ActiveGUICount = 0;
-            closeShader.onClick.RemoveAllListeners();
         }
+
+        foreach (var gui in allGuis)
+        {
+            if (gui.isActive) break;
+            if (gui != allGuis[^1] || gui.isActive || ActiveGUICount <= 0) return;
+            Debug.LogError($"All gui's are inactive, but the count was {ActiveGUICount}. Resetting Count. You may be frozen, mb");
+            ActiveGUICount = 0;
+            UpdatePlayerState();
+        }
+        
         Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
     }
 
-    private void GetPlayer()
-    {
-        player ??= PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
-    }
+    private void GetPlayer() => player = PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
 
     public void CloseAll()
     {
-        var allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
         foreach (var gui in allGuis)
         {
             if (!gui.isActive || gui == this) return;
@@ -71,11 +79,26 @@ public abstract class GUIBase : MonoBehaviour
             else if (gui.TryGetComponent<ShopManager>(out var shop)) shop.ToggleShop(false);
         }
     }
+
+    public void CloseTopMost()
+    {
+        if (ActiveGUICount == 0 || ActiveGuis.Count == 0) return;
+        var topMostGui = ActiveGuis[^1];
+        switch (topMostGui)
+        {
+            case InvManager inv: inv.ToggleInventory(); break;
+            case QuestLogManager quest: quest.ToggleQuestLog(); break;
+            case StatsManager stats: stats.ToggleStats(); break;
+            case ShopManager shop: shop.ToggleShop(false); break;
+            default: topMostGui.GetActive(false); break;
+        }
+    }
     
     private void Enable()
     {
         isActive = true;
         ActiveGUICount++;
+        ActiveGuis.Add(this);
         UpdatePlayerState();
         OnActivated();
     }
@@ -84,9 +107,9 @@ public abstract class GUIBase : MonoBehaviour
     {
         isActive = false;
         ActiveGUICount = Mathf.Max(0, ActiveGUICount - 1);
+        ActiveGuis.Remove(this);
         UpdatePlayerState();
         OnDeactivated();
-        if (closeShader != null) closeShader.onClick.RemoveAllListeners();
     }
     
     /// <summary>

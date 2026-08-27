@@ -74,7 +74,7 @@ public class GameHUD : MonoBehaviour
     public void SetShaderColour(Color colour, float fadeTime = 1) => screenShader.CrossFadeColor(colour, fadeTime, false, false);
     
     #endregion
-    
+
     public void ToggleBossHealth(bool state)
     {
         bossHealthBar.GetComponent<RectTransform>().parent.gameObject.SetActive(state);

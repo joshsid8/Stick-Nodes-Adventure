@@ -8,17 +8,17 @@ public class SceneDataManager : MonoBehaviour
 {
     public static SceneDataManager Instance { get; private set; }
     public GameObject mainCamera;
-    public List<SceneList> sceneData = new List<SceneList>();
+    public List<SceneList> sceneData = new();
 
     [Serializable]
     public class SceneList
     {
         public string sceneName;
-        public List<EnemySceneData> enemies = new List<EnemySceneData>();
-        public List<CollectableSceneData> collectables = new List<CollectableSceneData>();
-        public List<NpcSceneData> npcs = new List<NpcSceneData>();
-        public List<DoorSceneData> doors = new List<DoorSceneData>();
-        public List<SpawnerSceneData> spawners = new List<SpawnerSceneData>();
+        public List<EnemySceneData> enemies = new();
+        public List<CollectableSceneData> collectables = new();
+        public List<NpcSceneData> npcs = new();
+        public List<DoorSceneData> doors = new();
+        public List<SpawnerSceneData> spawners = new();
 
         public GameObject ItemToStore => GameObject.Find("persistentItem");
 

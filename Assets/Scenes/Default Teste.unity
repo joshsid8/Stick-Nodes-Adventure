@@ -1834,6 +1834,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &550305585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 550122312589149946, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+  m_PrefabInstance: {fileID: 1511517148}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &630097487
 GameObject:
   m_ObjectHideFlags: 0
@@ -2425,7 +2430,7 @@ MonoBehaviour:
   - 0
   - 0.5
   sectionObj: {fileID: 1162324168}
-  mainSpawnPoint: {fileID: 0}
+  mainSpawnPoint: {fileID: 550305585}
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []

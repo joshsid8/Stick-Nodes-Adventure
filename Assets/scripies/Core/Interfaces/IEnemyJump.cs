@@ -7,6 +7,6 @@ namespace scripies.Core
         bool MyTurn { get; set; }
         float TurnTime { get; }
         void SetState(string state, float? duration = null);
-        void SetAttackStyleFromJump();
+        void SetPrevStyle();
     }
 }

@@ -90,7 +90,9 @@ public class MapManager : MonoBehaviour
         if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
         GameEvents.OnPlayerSpawned += StartMap;
         GameEvents.OnBossDefeated += OnBossDefeated;
+        GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
     }
+    
 
     private void OnDisable()
     {
@@ -98,19 +100,18 @@ public class MapManager : MonoBehaviour
             Instances.Remove(gameObject.scene.name);
         GameEvents.OnBossDefeated -= OnBossDefeated;
         GameEvents.OnPlayerSpawned -= StartMap;
+        GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (collision.CompareTag("Player"))
-       {
-           if (activeMap)
-           {
-               activeMap = false;
-               return;
-           }
-           StartCoroutine(MapTransition(collision));
-       }
+        if (!collision.CompareTag("Player")) return;
+        if (activeMap)
+        {
+            activeMap = false;
+            return;
+        }
+        StartCoroutine(MapTransition(collision));
     }
 
     private IEnumerator MapTransition(Collider2D collision)
@@ -162,21 +163,19 @@ public class MapManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (!collision.CompareTag("Player")) return;
+        if (!activeMap)
         {
-            if (!activeMap)
-            {
-                activeMap = true;
-                return;
-            }
-            MakeDataPersistent();
-            audioManager.TriggerFadeOut();
-            weather.ClearDisasters();
-            audioManager.previousScene = collision.gameObject.scene;
-            SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
-            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
-            activeMap = false;
+            activeMap = true;
+            return;
         }
+        MakeDataPersistent();
+        audioManager.TriggerFadeOut();
+        weather.ClearDisasters();
+        audioManager.previousScene = collision.gameObject.scene;
+         if (collision != null) SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
+        mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
+        activeMap = false;
     }
 
     private void CollateObjects()
@@ -214,6 +213,12 @@ public class MapManager : MonoBehaviour
         collectableSceneData.Clear();
         doorSceneData.Clear();
         spawnerSceneData.Clear();
+    }
+    
+    private void SaveDataOnDialogueClose(ScriptableObject dialogue = null) 
+    {
+        SaveSceneData();
+        Invoke(nameof(MakeDataPersistent), 0.1f);
     }
     
     public void SaveSceneData()

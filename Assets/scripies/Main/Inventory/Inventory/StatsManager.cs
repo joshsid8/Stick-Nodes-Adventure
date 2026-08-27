@@ -31,9 +31,8 @@ public class StatsManager : GUIBase
         isActive = !isActive;
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : 1200);
         GetActive(isActive);
-        if (closeShader == null || !isActive) return;
+        if (!isActive) return;
         CloseCurrentMenus();
-        closeShader.onClick.AddListener(ToggleStats);
     }
 
     public void ClearStatShaders()

@@ -22,8 +22,8 @@ public class BossAttack : MonoBehaviour
     public float attackCooldown;
     public float currentAttackCooldown;
     public int attackFactor;
-    private string prevAttack;
-    private int prevRepeat;
+    [SerializeField] private string prevAttack;
+    [SerializeField] private int prevRepeat;
     
     [Space]
     [Header("Attacks")]
@@ -113,6 +113,7 @@ public class BossAttack : MonoBehaviour
 
     private void StartFightOnDialogueClose(ScriptableObject dialogueToDerive)
     {
+        if (dialogueToDerive == null || dt.Dialogue.Length == 0) return; 
         if (dialogueToDerive != dt.Dialogue[^1] || dt == null) return;
         StartFight();
     }
@@ -141,8 +142,9 @@ public class BossAttack : MonoBehaviour
             switch (closeRange)
             {
                 case true:
-                    if (prevRepeat > 2)
+                    if (prevRepeat >= 1)
                     {
+                        //print("Spamming the saem moves!");
                         while (prevAttack == defensiveAtk[rng]) rng = Random.Range(0, defensiveAtk.Length);
                     }
                     else rng = Random.Range(0, activeAtk.Length);
@@ -155,8 +157,9 @@ public class BossAttack : MonoBehaviour
                     else throw new MissingFieldException($"defensive attack no. {attackFactor} is null!");
                     break;
                 case false:
-                    if (prevRepeat > 2)
+                    if (prevRepeat >= 1)
                     {
+                        //print("Spamming the saem moves!!");
                         while (prevAttack == activeAtk[rng]) rng = Random.Range(0, activeAtk.Length);
                     }
                     else rng = Random.Range(0, activeAtk.Length);
@@ -206,6 +209,12 @@ public class BossAttack : MonoBehaviour
         stunnable = stunnableTimer > 0;
         if (isPerformingAttack) currentBackupMoveTimer = backupMoveTime;
         if (currentBackupMoveTimer > 0 && isAttacking && !isPerformingAttack) currentBackupMoveTimer -= Time.deltaTime;
+    }
+
+    public void ResetTriggers()
+    {
+        foreach (var anim in activeAtk) animator.ResetTrigger(anim);
+        foreach (var anim in defensiveAtk) animator.ResetTrigger(anim);
     }
     
     private void Movement()

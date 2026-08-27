@@ -77,7 +77,10 @@ namespace scripies.Dialogue
                         var priorityDialogue = dialogue[^1];
                         if (priorityDialogue != null) DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
                     }
-                    else if (isShopkeeper) shopKeeper.StartShop();
+                    else if (isShopkeeper && !ShopManager.Instance.isActive)
+                    {
+                        shopKeeper.StartShop();
+                    }
                     CameraEventManager.Instance.ResetCamera();
                     if (moveCamToNpc) CameraEventManager.Instance.ChangeTarget(gameObject);
                 }

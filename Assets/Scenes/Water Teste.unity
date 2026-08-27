@@ -2431,6 +2431,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1337813847}
     m_Modifications:
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: itemSpawner.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: spawnPoints.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnPoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1942535142}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnPoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1041742246}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnPoints.Array.data[2]'
+      value: 
+      objectReference: {fileID: 441747041}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnPoints.Array.data[3]'
+      value: 
+      objectReference: {fileID: 441747041}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: spawnedObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnedObjects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3463261996892548931, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
     - target: {fileID: 109414120128023590, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: m_Name
       value: Fishman
@@ -2517,38 +2549,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9223160534816086470, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: eSpawn.Array.data[0].objectToSpawn
-      value: 
-      objectReference: {fileID: 3463261996892548931, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: itemSpawner.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: spawnPoints.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnPoints.Array.data[0]'
-      value: 
-      objectReference: {fileID: 1942535142}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnPoints.Array.data[1]'
-      value: 
-      objectReference: {fileID: 1041742246}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnPoints.Array.data[2]'
-      value: 
-      objectReference: {fileID: 441747041}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnPoints.Array.data[3]'
-      value: 
-      objectReference: {fileID: 441747041}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: spawnedObjects.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnedObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 3463261996892548931, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
     m_RemovedComponents: []
@@ -5661,7 +5661,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: da39fe38aa5ae124bad360df7d822a5e, type: 2}
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.data[0].itemName
@@ -5672,8 +5672,16 @@ PrefabInstance:
       value: Earth Rock Scroll
       objectReference: {fileID: 0}
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].itemName
+      value: Sandwich
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.data[1].itemPrice
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].itemPrice
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.data[0].itemAmount
@@ -5681,11 +5689,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.data[1].itemAmount
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.data[1].itemSprite
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].itemAmount
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.data[1].itemCollectable
@@ -5694,6 +5706,14 @@ PrefabInstance:
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.data[1].itemDescription
       value: A scroll you can get from a  "down to earth" guy somewhere below
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].itemCollectable
+      value: 
+      objectReference: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].itemDescription
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3050323684904965024, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: m_IsActive

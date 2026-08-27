@@ -60,7 +60,6 @@ public class QuestLogManager : GUIBase
         GetActive(isActive);
         if (!isActive) return;
         CloseCurrentMenus();
-        closeShader.onClick.AddListener(ToggleQuestLog);
     }
 
     public void Save(ref PlayerSaveQuests data)

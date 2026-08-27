@@ -18,6 +18,8 @@ namespace scripies.Enemy
         private EnemyAttack ea;
 
         public EnemyAttack.StyleMode prevState = EnemyAttack.StyleMode.Passive;
+        
+        public float backupTimer;
 
         private void Awake()
         {
@@ -41,7 +43,7 @@ namespace scripies.Enemy
             }
         }
 
-        public void SetAttackStyleFromJump()
+        public void SetPrevStyle()
         {
             if (ea != null) ea.styleMode = prevState;
         }
@@ -60,6 +62,12 @@ namespace scripies.Enemy
                     turnTimer = turnTime;
                     if (ea != null) ea.styleMode = EnemyAttack.StyleMode.Passive;
                     if (ec != null) ec.ChangeState(EnemyController.EnemyState.Zoning);
+                }
+                backupTimer -= Time.deltaTime;
+                if (!myTurn && backupTimer <= 0)
+                {
+                    myTurn = true;
+                    backupTimer = 10;
                 }
             }
         }

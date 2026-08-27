@@ -82,18 +82,24 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         animator.SetBool("isDead", isDead);
         animator.SetBool("phase2", phase2);
         Tint();
-        if (ba.isAttacking)
-        {
-            healthBar.fillAmount = bossHealth / bossMaxHealth;
-            bossTitle.text = bossName;
-            stunTime -= Time.deltaTime;
-            isStunned = stunTime > 0;
-        }
+        
+        if (!ba.isAttacking) return;
+        healthBar.fillAmount = bossHealth / bossMaxHealth;
+        bossTitle.text = bossName;
+        stunTime -= Time.deltaTime;
+        isStunned = stunTime > 0;
     }
-    
+
+    private void OnValidate()
+    {
+        if (!isDead) CheckStatus();
+    }
+
     private IEnumerator Defeat()
     {
         if (!isDead) yield break;
+        ba.isAttacking = false;
+        ba.ResetTriggers();
         spriteRenderer.color = Color.white;
         GameEvents.TriggerDropLoot(gameObject);
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;

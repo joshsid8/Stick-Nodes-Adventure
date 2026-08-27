@@ -35,7 +35,7 @@ public class ShopKeeper : MonoBehaviour
         if (shopItems.Count == 0)
         {
             GameEvents.TriggerShowDialogue(soldOutDialogue, GetComponent<NPChat>().npc);
-            if (canRestock) Invoke(nameof(Restock), 3);
+            if (canRestock && !IsInvoking(nameof(Restock))) Invoke(nameof(Restock), 3);
             return;
         }
         ShopManager.Instance.LoadShopItems(shopItems.ToArray(), this);

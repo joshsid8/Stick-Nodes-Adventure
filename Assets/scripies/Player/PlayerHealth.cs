@@ -406,20 +406,18 @@ namespace scripies.Player
                 var aggTarget = aggressiveEnemies[aggressiveEnemyID];
                 foreach (var target in aggressiveEnemies)
                 {
-                    if (target.Transform.TryGetComponent<IEnemyJump>(out var jump))
+                    if (!target.Transform.TryGetComponent<IEnemyJump>(out var jump)) return;
+                    if (target != aggTarget)
                     {
-                        if (target != aggTarget)
-                        {
-                            jump.MyTurn = false;
-                            jump.SetState("Zoning", jumpRotationTimer);
-                        }
-                        else
-                        {
-                            jump.MyTurn = true;
-                            jump.SetState("Attacking");
-                            jump.SetAttackStyleFromJump();
-                            jumpRotationTimer = jump.TurnTime;
-                        }
+                        jump.MyTurn = false;
+                        jump.SetState("Zoning", jumpRotationTimer);
+                    }
+                    else
+                    {
+                        jump.MyTurn = true;
+                        jump.SetState("Attacking");
+                        jump.SetPrevStyle();
+                        jumpRotationTimer = jump.TurnTime;
                     }
                 }
 

@@ -38,7 +38,7 @@ namespace scripies.Dialogue
 
             typeWriter = GetComponent<TypeWriterFX>();
             handler = GetComponent<DialogueResponseHandler>();
-            CloseDialogue();
+            if (isActive) CloseDialogue();
             
             persistentItem = GameObject.Find("persistentItem");
         }
@@ -194,7 +194,10 @@ namespace scripies.Dialogue
 
         public void DecrementActiveGUICount() => ActiveGUICount--;
         
-        private void ForceCloseDialogue() => CloseDialogue();
+        private void ForceCloseDialogue()
+        {
+            if (isActive) CloseDialogue();
+        }
         
         private void CloseDialogue(DialogueObject dialogueObject = null)
         {

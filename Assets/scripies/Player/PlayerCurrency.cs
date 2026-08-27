@@ -11,7 +11,11 @@ namespace scripies.Player
         {
             if (nodeBucks <= 0) nodeBucks = 0;
         }
-
+        
+        
+        /// <summary>
+        /// Call this to manage cash flow, whether it be trade of assets or reserving funds
+        /// </summary>
         public bool CashFlow(float amount, bool outflow)
         {
             switch (outflow)
@@ -28,6 +32,14 @@ namespace scripies.Player
                     nodeBucks += amount;
                     return true;
             }
-        } 
+        }
+        
+        /// <summary>
+        /// Call this to check your financial eligibility for a purchase
+        /// </summary>
+        public bool Liquidity(float targetedPurchase)
+        {
+            return targetedPurchase <= nodeBucks;
+        }
     }
 }
