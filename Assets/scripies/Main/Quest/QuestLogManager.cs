@@ -12,7 +12,7 @@ public class QuestLogManager : GUIBase
     public GameObject questMenu;
     
     // add this variable into the data file for future use (e.g checking if the player has already done a quest)
-    public List<Quest> completedQuests = new();
+    public List<QuestSO> completedQuests = new();
     public AudioClip questCompleteSound;
     
     protected override void Awake()
@@ -31,6 +31,7 @@ public class QuestLogManager : GUIBase
 
     public void AssignQuest(QuestSO quest)
     {
+        if (quest == null || completedQuests.Contains(quest)) return;
         for (var i = 0; i < questSlots.Length; i++)
         {
             if (questSlots[i] != null && questSlots[i].questType == Quest.QuestType.NullQuest)
@@ -98,10 +99,10 @@ public class QuestLogManager : GUIBase
         for (int i = 0; i < Math.Min(data.activeQuests.Count, questSlots.Length); i++)
         {
             var qData = data.activeQuests[i];
-            var enemies = Array.ConvertAll(qData.enemiesToDefeat, n => EnemyDatabase.Instance.GetEnemyByName(n));
-            var objects = Array.ConvertAll(qData.objectsToInteract, id => ItemDatabase.Instance.GetItemByName(id));
-            var npc = qData.questType == Quest.QuestType.SpeakTo || qData.questType == Quest.QuestType.GiveTo ? NPCDatabase.Instance.GetNpcByName(qData.npcToInteract) : null;
-            var rewards = Array.ConvertAll(qData.rewards, id => ItemDatabase.Instance.GetItemByName(id));
+            var enemies = Array.ConvertAll(qData.enemiesToDefeat, n => ResourceDatabase.Instance.GetEnemyByName(n));
+            var objects = Array.ConvertAll(qData.objectsToInteract, id => ResourceDatabase.Instance.GetItemByName(id));
+            var npc = qData.questType == Quest.QuestType.SpeakTo || qData.questType == Quest.QuestType.GiveTo ? ResourceDatabase.Instance.GetNpcByName(qData.npcToInteract) : null;
+            var rewards = Array.ConvertAll(qData.rewards, id => ResourceDatabase.Instance.GetItemByName(id));
             
             questSlots[i].LogQuest(qData.questType, qData.questTitle, qData.questDescription, enemies, 
                 qData.noOfEnemiesToDefeat, objects, qData.numberOfObjects, npc, rewards);

@@ -4,16 +4,46 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        get badges done
-                
+        
+        Instability strikes again!!!
+            Once THOSE issues are resolved, the game should be publishable
+        
+        Pre-AO
+            This stage has been basically completed; all content has been added as planned!
+            Now we can publish the game, as well as move onto AO
+                The Animation Overhaul phase will mean that ill slowly improve the game's logic, while adding more sprites and animations
+                    This will be long, but maybe not as long as Pre-AO
+
     Optimisations & Hotfixes:
         
         Instability
+        
+            Issues from Testers
+                After beating noxu, i didnt gain walljump
+                Idk if this was intentional, but a sandwich gained me very little health when eaten
+                When shooting a movable beam, it doesnt hold the animation, and i can move freely with it
+                Cynder's Fire slash is way too fast lol
+                    Just reduce the anim speed
+                Cynder got handicapped once hit in the air
+                    Ill ensure the ActivateCooldown method is called when hurt, otherwise ill make it programmatic
+                Noxu gets handicapped often too
+                    He also sometimes tries to use the bat move, then instantly counter
+                        Its because ive made the animation triggers derive from 'any state', so i need to rework it
+                Make Jerome have better shop items
+                    Stuff to make him necessary for progression
+                When dying, the shader doesnt activate, and the death music's pitch gets randomised
+                    I think debug mode is on even when the app is playing in release mode
+                In dialogue, i can still move!
+                After leaving a place with extreme weather, i dont regain my health regen SOMETIMES
+                    This must mean the way properties are being set is inefficient
+                I need to find out a way to mathematically inverse cynder's downward shuriken throw
+                Player's dash cooldown is too small, blox fruits all over again                
+
             Replicatable or From-Build bugs/problems
                 
-            One time occurrences or Rare/Intimidating bugs               
-
-            Low Priority Tasks / Unconfirmed fixed Bugs
+            One time occurrences or Rare/Intimidating bugs
+                
+            Low Priority/Passive Tasks / Unconfirmed fixed Bugs
                 SFX
                     Barely anything is done yet, but no errors are spamming at me
                     I do need more files in general
@@ -30,31 +60,7 @@ SNADV Notes
             
     Things to be added/changed:
         
-        Pre-AO
-        
-            Badges System
-                Whenever a certain task is done, you can get a badge
-                    These badges allow certain stuff unlocked 
-                        Items from the shop
-                        Certain dialogue from NPCs
-                        Minibosses for more badges
-                To do this, we will need
-                    a scriptable object for the raw badge data
-                    (and maybe?) a monobehaviour to store the objects to other things
-                        This will contain a list of these SOs and have a 'isCollected' flag
-                        If not, then the player should just have a list of said SOs which already shows that it has been collected
-                    Life will be good if we then make a database for the badges for easier lookup
-                        We can make this contain a "HasBadge" function to be called on whatever needs it
-            
-            We are nearing the end of Pre-AO!
-            Im excited to start the next phase, but very scared at the same time
-            Once im done completely with this phase, ill publish the game so i can get it tested by people
-                I'm gonna estimate that it will take around a month to get absolutely all bugs and content done
-                It'd be great if i got this done before uni starts (October 5th)
-                Then ill be taking some sort of hiatus when it comes to unity, and get the animations and music done on the side slowly
-                        
-        Post-AO
-            
+        AO
             Improve Typewriter Logic
                 The Typewriter updates the settings as it displays text
                     but i would rather have it know what settings should be implemented beforehand to make it work well          
@@ -64,8 +70,27 @@ SNADV Notes
                     I have initialised the settings, but will now need to implement it programmatically
                         Watch a vid on how to do this
                     Game Pausing Logic
-                        Ive watched that video on game pausing, and it seems i need to use the new input system to make pausing work in my favour    
+                        Ive watched that video on game pausing, and it seems i need to use the new input system to make pausing work in my favour
             
+            Make minibosses: a normal-enemy/boss hybrid
+                This is basically already a thing; there are spawners that have a onetime flag
+                Tho they arent a physical thing yet
+                        
+            Background/Foreground Logic
+                Make backgrounds similar to Terraria in terms of appearance!
+                Even tho this is cosmetic, i would like to just get the logic done
+                    I will use placeholder bgs just to test it, then will worry about designs Post-AO 
+                               
+            Audio
+                Make it so that the music transitions smoothly
+                    maybe i have to fade the music out and simultaneously fade in the new one?
+                    To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
+                        so it can easily switch between or merge together
+                OSTs
+                    I need to make new boss music to fit the new map music
+        
+        Post-AO           
+  
             Boss Logic
                 Improve/Remake Noxu
                     He is a very very boring boss fight, so i need to add more functionality to his moves
@@ -84,12 +109,8 @@ SNADV Notes
                     As a boss, he isnt that bad, but i would like to add some extra stuff to make him even more engaging and difficult
                     I want his style to be based on being hard to predict, making the player hyperaware and intimidated
                         He needs to be faster, in a sensible manner
-                        Maybe add more teleporting based moves                        
-                
-                Make minibosses: a normal-enemy/boss hybrid
-                    This is basically already a thing; there are spawners that have a onetime flag
-                    Tho they arent a physical thing yet
-            
+                        Maybe add more teleporting based moves
+                        
                 Sira & TJ
                     I THHHHIIIIINNNKK i will do Sira last, as it is the most unique boss out of all of them (that isnt the last boss)
                         Still thinking how her moves will be implemented, but i have an idea on what she'd do
@@ -100,22 +121,9 @@ SNADV Notes
                 SN Demon
                     Tbh i completely forgot about this one, even tho it is the main antagonist!
                     I think i might just potentially probably perhaps use Machine Learning to make a very difficult boss
-            
-            Audio
-                Make it so that the music transitions smoothly
-                    maybe i have to fade the music out and simultaneously fade in the new one?
-                    To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
-                        so it can easily switch between or merge together
-                OSTs
-                    I need to make new boss music to fit the new map music
-            
-            Background/Foreground Logic
-                Make backgrounds similar to Terraria in terms of appearance!
-                Even tho this is cosmetic, i would like to just get the logic done
-                    I will use placeholder bgs just to test it, then will worry about designs Post-AO
-            
+
             Switch to Tilemaps
-                Instead of just loose shapes everywhere to form maps, maybe use tilemaps for easier layouting
+                Instead of just loose shapes everywhere to form maps, maybe use tilemaps for level design
                 
     Animation Overhaul:
     
@@ -158,4 +166,4 @@ SNADV Notes
             I got a plugin to help with this!        
         
 When you are done: Find the one piece.
-    (This should mean the base has been completed, and I can start on designs!)
+    (This should mean the base has been completed, and I can start on designing everything! [Post-Post-AO])

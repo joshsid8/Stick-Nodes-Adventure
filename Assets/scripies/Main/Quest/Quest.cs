@@ -36,7 +36,6 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     public GameObject rewardObj;
     public CollectableSOBase[] questRewards;
-    
     private void Start()
     { 
         foreach (var text in titleTexts) text.text = questTitle;
@@ -109,7 +108,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
     public void CompleteQuest()
     {
         GameEvents.TriggerPlaySound(QuestLogManager.Instance.questCompleteSound);
-        QuestLogManager.Instance.completedQuests.Add(this);
+        QuestLogManager.Instance.completedQuests.Add(ResourceDatabase.Instance.GetQuestByName(questTitle));
         OnCleared();
         GiveRewards();
         ClearUI();
@@ -165,6 +164,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         oTi = objects != null ? (CollectableSOBase[])objects.Clone() : Array.Empty<CollectableSOBase>();
         noOfO = noOfObj != null ? (int[])noOfObj.Clone() : Array.Empty<int>();
         questRewards = rewards != null ? (CollectableSOBase[])rewards.Clone() : Array.Empty<CollectableSOBase>();
+        
         
         requiredByEnemy.Clear();
         currentKillsByEnemy.Clear();

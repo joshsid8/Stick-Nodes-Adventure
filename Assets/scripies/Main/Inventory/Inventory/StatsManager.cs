@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,8 @@ public class StatsManager : GUIBase
     public static StatsManager Instance { get; private set; }
     
     public StatInfo[] stats;
-
+    public List<Badge> badges = new();
+    public List<BadgeSlot> badgeSlots = new();
     protected override void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -19,6 +21,7 @@ public class StatsManager : GUIBase
     {
         if (isActive) ToggleStats();
         ClearStatShaders();
+        UpdateBadgeSlotList();
     }
 
     private void Update()
@@ -31,6 +34,7 @@ public class StatsManager : GUIBase
         isActive = !isActive;
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : 1200);
         GetActive(isActive);
+        UpdateBadgeSlotList();
         if (!isActive) return;
         CloseCurrentMenus();
     }
@@ -39,5 +43,22 @@ public class StatsManager : GUIBase
     {
         foreach (var stat in stats) 
             stat.ClearInfo();
+    }
+    
+    public void AddBadge(Badge badge)
+    {
+        if (badges.Contains(badge)) return;
+        badges.Add(badge);
+        UpdateBadgeSlotList();
+    }
+    public bool HasBadge(Badge badge) => badges.Contains(badge);
+
+    private void UpdateBadgeSlotList()
+    {
+        for (var i = 0; i < badges.Count; i++)
+        {
+            badgeSlots[i].gameObject.SetActive(true);
+            badgeSlots[i].SetBadge(badges[i]);
+        }
     }
 }

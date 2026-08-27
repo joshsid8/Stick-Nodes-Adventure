@@ -21,10 +21,10 @@ public class PlayerManager : MonoBehaviour
     private PlayerCombat pf;
     private PerformAbility pp;
     
-    private Dictionary<string, float> currentFloatStats = new Dictionary<string, float>();
-    private Dictionary<string, bool> currentBooleanStats = new Dictionary<string, bool>();
+    private Dictionary<string, float> currentFloatStats = new();
+    private Dictionary<string, bool> currentBooleanStats = new();
     
-    private List<AspectSO> activeAspects = new List<AspectSO>();
+    private List<AspectSO> activeAspects = new();
     
     private void Awake()
     {

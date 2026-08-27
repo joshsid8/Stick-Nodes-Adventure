@@ -58,20 +58,42 @@ public class GameHUD : MonoBehaviour
     {
         if (!screenShader.enabled) screenShader.enabled = true;
         yield return new WaitForSeconds(holdTime);
-        screenShader.CrossFadeAlpha(0, Mathf.Abs(fadeTime), false);
+        // Had to use a while loop instead of CrossFadeAlpha because it was not working properly, cant have anything nice round ere
+        while (screenShader.color.a > 0)
+        {
+            screenShader.color -= new Color(0, 0, 0, Time.deltaTime * fadeTime);
+            yield return null;
+        }
     }
     
     private IEnumerator FadeInShader(float holdTime, float fadeTime, bool fadeInAndOut = false, float fadeOutTime = 1.5f)
     {
         if (!screenShader.enabled) screenShader.enabled = true;
         yield return new WaitForSeconds(holdTime);
-        screenShader.CrossFadeAlpha(1, Mathf.Abs(fadeTime), false);
+        while (screenShader.color.a < 1)
+        {
+            screenShader.color += new Color(0, 0, 0, Time.deltaTime * fadeTime);
+            yield return null;
+        }
         if (!fadeInAndOut) yield break;
         yield return new WaitForSeconds(fadeTime);
         StartCoroutine(FadeOutShader(holdTime, fadeOutTime));
     }
 
-    public void SetShaderColour(Color colour, float fadeTime = 1) => screenShader.CrossFadeColor(colour, fadeTime, false, false);
+    public void SetShaderColour(Color colour = default, float fadeTime = 1)
+    {
+        //This wont work properly
+        //StartCoroutine(ShaderColour(colour, fadeTime));
+    }
+
+    private IEnumerator ShaderColour(Color colour, float fadeTime = 1)
+    {
+        while (screenShader.color != new Color(colour.r, colour.g, colour.b))
+        {
+            screenShader.color = Color.Lerp(screenShader.color, new Color(colour.r, colour.g, colour.b), Time.deltaTime * fadeTime * 2);
+            yield return null;
+        }
+    }
     
     #endregion
 

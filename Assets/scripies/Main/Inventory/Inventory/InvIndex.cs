@@ -59,7 +59,7 @@ public sealed class InvIndex
         }
         foreach (var item in data.items)
         {
-            var so = ItemDatabase.Instance.GetItemByName(item.itemID);
+            var so = ResourceDatabase.Instance.GetItemByName(item.itemID);
             if (so != null) AddItem(so, item.count);
             else Debug.LogWarning($"[InvIndex.Load] Failed to find item with ID: {item.itemID}");
         }

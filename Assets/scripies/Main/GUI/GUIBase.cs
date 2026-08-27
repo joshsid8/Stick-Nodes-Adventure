@@ -47,7 +47,7 @@ public abstract class GUIBase : MonoBehaviour
             UpdatePlayerState();
         }
         
-        Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
+        //Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
     }
 
     private void GetPlayer() => player = PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();

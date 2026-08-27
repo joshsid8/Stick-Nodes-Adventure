@@ -59,6 +59,7 @@ public class ShopManager : GUIBase
                 shopItems[i].itemSprite = items[i].itemSprite ?? items[i].itemCollectable.itemSprite;
                 shopItems[i].collectableSo = items[i].itemCollectable;
                 shopItems[i].itemAmount = items[i].itemAmount;
+                shopItems[i].badgeRequired = items[i].badgeRequired;
                 shopItems[i].usedSlot = true;
                 shopItems[i].ItemUpdate();
                 shopItems[i].gameObject.SetActive(true);

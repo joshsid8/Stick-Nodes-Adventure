@@ -19,7 +19,7 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
 
         if (abilityStats == null && PlayerHealth.Instance.pa.ability.objects[slotIndex] != null)
         {
-            var autoItem = ItemDatabase.Instance.GetItemByName(PlayerHealth.Instance.pa.ability.objects[slotIndex]?.abilityPrefab.name) as AbilitySO;
+            var autoItem = ResourceDatabase.Instance.GetItemByName(PlayerHealth.Instance.pa.ability.objects[slotIndex]?.abilityPrefab.name) as AbilitySO;
             if (autoItem == null)
             {
                 Debug.LogError($"[AbilitySlot.Update] Dayum, we cant find {PlayerHealth.Instance.pa.ability.objects[slotIndex].name} as an abilitySO");

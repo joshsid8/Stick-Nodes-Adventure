@@ -4,11 +4,10 @@ using UnityEngine.UI;
 
 public class SlotBase : MonoBehaviour
 {
-    [Header("Slot Data")]
-    public string itemName;
-    public Sprite itemSprite;
-    public string itemDescription;
-    public bool usedSlot;
+    [HideInInspector] public string itemName;
+    [HideInInspector] public Sprite itemSprite;
+    [HideInInspector] public string itemDescription;
+    [HideInInspector] public bool usedSlot;
     
     [Header("UI References")]
     public TMP_Text itemDescTitle;
@@ -17,7 +16,7 @@ public class SlotBase : MonoBehaviour
     public Image itemImage;
     public GameObject selectedShader;
 
-    [Header("Manager References")]
+    // Manager References
     protected InvManager invManager;
     protected PlayerManager playerManager;
 

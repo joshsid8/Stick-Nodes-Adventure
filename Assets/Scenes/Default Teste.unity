@@ -5294,6 +5294,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Izuno
       objectReference: {fileID: 0}
+    - target: {fileID: 3896614092649104574, guid: edac96a8e0e3a0840af04ac529cefdfb, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3896614092649104574, guid: edac96a8e0e3a0840af04ac529cefdfb, type: 3}
+      propertyPath: 'dialogue.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 516c1cf6f9f147643a27a447b568c531, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

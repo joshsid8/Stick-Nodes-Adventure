@@ -1,10 +1,11 @@
+using JetBrains.Annotations;
 using scripies.Player;
 using UnityEngine.UI;
 using TMPro;
 
 public class ShopItemSlot : SlotBase
 {
-	public bool isBuyable;
+	[CanBeNull] public Badge badgeRequired;
 
 	public float itemPrice;
     public int itemAmount;
@@ -29,7 +30,7 @@ public class ShopItemSlot : SlotBase
 	    if (!bought) return;
 	    //print("Bought " + collectableSo.itemName);
 	    
-	    var itemToGet = ItemDatabase.Instance.GetItemByName(collectableSo.itemName);
+	    var itemToGet = ResourceDatabase.Instance.GetItemByName(collectableSo.itemName);
 	    invManager.PresetAddItem(itemToGet);
 	    itemAmount--;
 	    if (itemAmount <= 0)
@@ -73,16 +74,17 @@ public class ShopItemSlot : SlotBase
 	    shopManager.selectedAmountText.text = itemAmount.ToString();
 	    shopManager.selectedPriceText.text = "N" + itemPrice.ToString("F0");
 	    shopManager.currentlySelectedItem = this;
+	    if (badgeRequired != null) shopManager.buyButton.interactable = StatsManager.Instance.HasBadge(badgeRequired);
     }
     
     protected override void UpdateSlotUI()
     {
         base.UpdateSlotUI();
-        UpdateGlobalDetails();
 	    if (usedSlot && shopManager != null && shopManager.displayImage != null) 
 		    shopManager.displayImage.sprite = itemSprite ?? (collectableSo != null ? collectableSo.itemSprite : null);
 	    if (amountText != null) amountText.text = usedSlot ? itemAmount.ToString() : "";
 	    CheckLiquidity();
+        UpdateGlobalDetails();
     }
 
     public override void ClearSlot()

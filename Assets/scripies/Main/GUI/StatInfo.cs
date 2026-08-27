@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using scripies.Player;
 using TMPro;
 using UnityEngine;
@@ -5,9 +6,9 @@ using UnityEngine.EventSystems;
 
 public class StatInfo : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private TMP_Text statName;
-    [SerializeField] private GameObject shader;
-    [SerializeField] private TMP_Text statDescription;
+    [SerializeField] protected TMP_Text statName;
+    [SerializeField] protected GameObject shader;
+    [SerializeField] protected TMP_Text statDescription;
     [SerializeField] public StatSO stat;
     
     public bool isClicked;
@@ -18,7 +19,7 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
     private PerformAbility pp;
     private PlayerDefense pd;
     private PlayerCombat pf;
-    private StatsManager statsManager;
+    protected StatsManager statsManager;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -35,7 +36,7 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
         ClearInfo();
     }
     
-    private void Update()
+    protected virtual void Update()
     {
         switch (stat.StatName)
         {
@@ -100,7 +101,7 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
         if (eventData.button == PointerEventData.InputButton.Left) OnLeftClick();
     }
 
-    private void OnLeftClick()
+    protected virtual void OnLeftClick()
     {
         statsManager.ClearStatShaders();
         isClicked = true;
@@ -108,7 +109,7 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
         statDescription.text = stat.StatDescription;
     }
     
-    public void ClearInfo()
+    public virtual void ClearInfo()
     {
         isClicked = false;
         statDescription.text = string.Empty;

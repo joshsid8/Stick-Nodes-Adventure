@@ -55,7 +55,8 @@ public class ShopKeeper : MonoBehaviour
                 itemSprite = items[i].itemSprite ?? items[i].collectableSo.itemSprite,
                 itemCollectable = items[i].collectableSo,
                 itemPrice = items[i].itemPrice,
-                itemAmount = items[i].itemAmount
+                itemAmount = items[i].itemAmount,
+                badgeRequired = items[i].badgeRequired
             });
         }
     }
@@ -86,8 +87,6 @@ public class ShopItem
     public float itemPrice;
     public CollectableSOBase itemCollectable;
     public int itemAmount = 1;
-    // TODO: When i implement the requirement system, uncomment below
-    // public Badge badgeRequired;
-    // public QuestSO questRequired;
+    public Badge badgeRequired;
 }
 
