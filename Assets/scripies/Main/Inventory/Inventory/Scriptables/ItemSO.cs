@@ -7,7 +7,6 @@ public class ItemSO : CollectableSOBase
     public int maxItemAmount = 99;
     
     public string itemType;
-    public float restoreValue;
     
     public override void Collect(GameObject objectCollected)
     {

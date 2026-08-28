@@ -139,6 +139,8 @@ namespace scripies.Player
                 PlayerHealth.Instance.playerHealth = 1000;
                 PlayerHealth.Instance.respawnTime = 2;
                 PlayerHealth.Instance.pm.nodeBucks = 1000;
+                PlayerHealth.Instance.spawnOnAwake = false;
+                PlayerHealth.Instance.deathClip = null;
                 pab.energyRefill = 50;
                 canWallJump = true;
                 canDoubleJump = true;
@@ -159,11 +161,9 @@ namespace scripies.Player
             CheckIfCanJump();
             if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
             {
-                Dash();
+                DashSettings();
                 Jump();
             }
-            VariableJumpHeight();
-            WallSlide();
             Other();
         }
 
@@ -175,25 +175,10 @@ namespace scripies.Player
 
         private void FixedUpdate()
         {
-            ApplyMovement();
             CheckEnvironment();
-            if (isDashing)
-            {
-                rb.gravityScale = 0;
-                rb.linearVelocity = transform.right * dashDirection * dashSpeed;
-                currentDashTime -= Time.deltaTime * 1.75f;
-                if (currentDashTime <= 0)
-                {
-                    isDashing = false;
-                    isMoving = true;
-                    if (isMoving)
-                    {
-                        rb.gravityScale = defaultGravity;
-                        isMoving = false;
-                        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                    }
-                }
-            }
+            ApplyMovement();
+            WallSlide();
+            VariableJumpHeight();
         }
 
         private void CheckInput()
@@ -204,25 +189,42 @@ namespace scripies.Player
             else jumpBufferCounter -= Time.deltaTime;
         }
 
-        private void Dash()
+        #region Dashing
+        private IEnumerator Dash()
         {
-            if (Input.GetButtonDown("Dash") && canDash && dashAbility && !pco.isAttacking && !pco.isAirAttacking &&
-                pab.energy >= dashEnergyCost)
+            rb.gravityScale = 0;
+            isDashing = true;
+            var currentDashSpeed = dashSpeed;
+            while (currentDashTime > 0)
+            {
+                rb.linearVelocity = new Vector2(currentDashSpeed, 0) * transform.right;
+                currentDashTime -= Time.deltaTime * 1.75f;
+                if (currentDashTime <= dashTime * 0.25f) currentDashSpeed -= Time.deltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+            isDashing = false;
+            rb.gravityScale = defaultGravity;
+            if (!isRunning) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
+
+        private void DashSettings()
+        {
+            if (Input.GetButtonDown("Dash") && canDash && dashAbility && !isPerformingAction && pab.energy >= dashEnergyCost)
             {
                 canDash = false;
-                isDashing = true;
                 pab.energy -= dashEnergyCost;
                 currentDashTime = dashTime;
                 if (isWallSliding)
                 {
                     Flip(true);
                     isWallSliding = false;
-                    dashDirection = (int)Mathf.Sign(isFacingRight ? -Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Horizontal"));
+                    //dashDirection = isFacingRight ? -1 : 1;
                 }
-                else dashDirection = (int)Mathf.Sign(isFacingRight ? Input.GetAxisRaw("Horizontal") : -Input.GetAxisRaw("Horizontal"));
+                //else dashDirection = isFacingRight ? 1 : -1;
                 dashCooldownTimer = dashCooldown;
 
                 if (!isGrounded) hasDashedInAir = true;
+                StartCoroutine(Dash());
             }
 
             if (hasDashedInAir) canDash = false;
@@ -235,7 +237,9 @@ namespace scripies.Player
             else if (dashCooldownTimer <= 0 && hasDashedInAir) canDash = false;
             else canDash = dashAbility;
         }
+        
 
+        #endregion
         private void WallSlide()
         {
             if (isTouchingWall && !isGrounded && rb.linearVelocity.y < 0 && canWallJump) isWallSliding = true;
@@ -346,7 +350,7 @@ namespace scripies.Player
 
         private void ApplyMovement()
         {
-            if (canMove && !isFrozen && !kb.IsBeingKnocked && !isWallJumping)
+            if (canMove && !isFrozen && !kb.IsBeingKnocked && !isWallJumping && !isDashing)
             {
                 if (inputDirection != 0)
                 {
@@ -382,7 +386,7 @@ namespace scripies.Player
             {
                 isJumping = false;
                 isWallJumping = false;
-                rb.gravityScale = defaultGravity - 1f;
+                if (!isDashing) rb.gravityScale = defaultGravity - 1f;
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -maxFallSpeed));
             }
 
@@ -505,7 +509,8 @@ namespace scripies.Player
                     break;
             }
         }
-        
+
+
         #endregion
         private void OnDrawGizmosSelected()
         {

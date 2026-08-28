@@ -54,7 +54,9 @@ public class PlayerManager : MonoBehaviour
         if (basePlayerStats != null) InitializeBaseStats();
         else Debug.LogError("PlayerManager: basePlayerStats ScriptableObject is not assigned! Player stats will not be correctly initialized.");
     }
-
+    /// <summary>
+    /// This method initialises the base stats of the player. Used for aspects (not save data)
+    /// </summary>
     private void InitializeBaseStats()
     {
         currentFloatStats["MaxHealth"] = basePlayerStats.MaxHealth;
@@ -87,9 +89,9 @@ public class PlayerManager : MonoBehaviour
         currentFloatStats["CounterDamage"] = basePlayerStats.CounterDamage;
         //currentFloatStats["AvailableWalls"] = basePlayerStats.AvailableWalls;
         
-        currentBooleanStats["WallJumpAbility"] = basePlayerStats.WallJumpAbility;
+        //currentBooleanStats["WallJumpAbility"] = basePlayerStats.WallJumpAbility;
         currentBooleanStats["CounterAbility"] = basePlayerStats.CounterAbility;
-        currentBooleanStats["M1Ability"] = basePlayerStats.M1Ability;
+        //currentBooleanStats["M1Ability"] = basePlayerStats.M1Ability;
 
         ApplyAllStatsToComponents();
     }
@@ -161,14 +163,14 @@ public class PlayerManager : MonoBehaviour
 
     private void ApplyAllStatsToComponents()
     {
-        if (ph != null) //health
+        if (ph != null) // health
         {
             ph.playerMaxHealth = GetCurrentFloat("MaxHealth");
             ph.regenerationMultiplier = GetCurrentFloat("RegenerationMultiplier");
             ph.shockMultiplier = GetCurrentFloat("ShockMultiplier");
             ph.rawDamageResistance = GetCurrentFloat("RawDamageResistance");
         }
-        if (pc != null) //movement
+        if (pc != null) // movement
         {
             pc.movementSpeedMult = GetCurrentFloat("MovementSpeedMultiplier");
             pc.jumpForceMult = GetCurrentFloat("JumpForceMultiplier");
@@ -177,7 +179,7 @@ public class PlayerManager : MonoBehaviour
             pc.dashCooldown = GetCurrentFloat("DashCooldown");
             pc.dashEnergyCost = GetCurrentFloat("DashEnergyCost");
         }
-        if (pa != null && pp != null) //ability
+        if (pa != null && pp != null) // ability
         {
             pa.maxEnergy = GetCurrentFloat("MaxEnergy");
             pa.energyRefill = GetCurrentFloat("EnergyRefill");
@@ -186,14 +188,14 @@ public class PlayerManager : MonoBehaviour
             pp.abilityLifetimeMult = GetCurrentFloat("AbilityLifetimeMultiplier");
             pp.abilityPotency =  GetCurrentFloat("AbilityPotency");
         }
-        if (pd != null) //defense
+        if (pd != null) // defense
         {
             pd.blockDamageResistance = GetCurrentFloat("BlockDamageResistance");
             pd.counterTime = GetCurrentFloat("CounterTime");
             pd.counterDamageResistance = GetCurrentFloat("CounterDamageResistance");
             pd.counterDamage = GetCurrentFloat("CounterDamage");
         }
-        if (pf != null) //combat
+        if (pf != null) // combat
         {
             pf.attackDamageMult = GetCurrentFloat("AttackDamageMultiplier");
             pf.attackCooldownMult = GetCurrentFloat("AttackCooldownMultiplier");
@@ -246,8 +248,7 @@ public class PlayerManager : MonoBehaviour
                 if (pm != null) pm.nodeBucks += value;
                 break;
             default:
-                if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"dawg ion know what a '{variableName}' is bruh");
-                else Debug.LogWarning("BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
+                Debug.LogWarning(!string.IsNullOrEmpty(variableName) ? $"dawg ion know what a '{variableName}' is bruh" : "BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
                 break;
         }
     }

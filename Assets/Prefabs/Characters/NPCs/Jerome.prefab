@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: typeOfObject
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2479902616594427839, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -20,21 +28,41 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: b71f5c6a47c2b3941a0a09e26dd98c1e, type: 2}
+    - target: {fileID: 6515920182420657771, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: m_Size.y
+      value: 3.887085
+      objectReference: {fileID: 0}
+    - target: {fileID: 6515920182420657771, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 6515920182420657771, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.04928589
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762484542507918593, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: m_Color.g
+      value: 0.83051455
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762484542507918593, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8066038
+      objectReference: {fileID: 0}
     - target: {fileID: 6933650919939323103, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_Name
       value: Jerome
       objectReference: {fileID: 0}
     - target: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 193.25383
+      value: 193.65628
       objectReference: {fileID: 0}
     - target: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 84.07861
+      value: 64.078224
       objectReference: {fileID: 0}
     - target: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.00000026344787
       objectReference: {fileID: 0}
     - target: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_LocalRotation.w
@@ -73,6 +101,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: canHaveNullList
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: 'dialogue.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: da39fe38aa5ae124bad360df7d822a5e, type: 2}
@@ -102,9 +134,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: scripies::ShopKeeper
   shopItems:
-  - itemName: Fire Ball
-    itemDescription: Just a simple scroll of something you likely already got from
-      the fishfolk around here
-    itemSprite: {fileID: -2413806693520163455, guid: 22fd7f117f33bb94db5158af6c91dea5, type: 3}
+  - itemName: Sandwich
+    itemDescription: 
+    itemSprite: {fileID: 0}
+    itemPrice: 50
+    itemCollectable: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
+    itemAmount: 10
+    badgeRequired: {fileID: 0}
+  - itemName: Bubble Blower
+    itemDescription: This comes from a fish woman, it apparently increases your attack
+      efficiency.
+    itemSprite: {fileID: 0}
+    itemPrice: 400
+    itemCollectable: {fileID: 11400000, guid: 3d6a83f08d4c48c419380fa337444060, type: 2}
+    itemAmount: 2
+    badgeRequired: {fileID: 0}
+  - itemName: Shuriken Scroll
+    itemDescription: Three lil shurikens. It's prolly an upgrade compared to the
+      fireball script
+    itemSprite: {fileID: 0}
+    itemPrice: 300
+    itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
+    itemAmount: 1
+    badgeRequired: {fileID: 0}
+  - itemName: Earth Rock Scroll
+    itemDescription: A scroll you can get from a  "down to earth" guy somewhere below
+    itemSprite: {fileID: 0}
+    itemPrice: 700
+    itemCollectable: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
+    itemAmount: 1
+    badgeRequired: {fileID: 0}
+  - itemName: SuperKey
+    itemDescription: A spare one, but as long as youve defeaten Cynder, Ill give
+      it to ya
+    itemSprite: {fileID: 0}
     itemPrice: 100
-    itemCollectable: {fileID: 11400000, guid: 14224e523a6d9cd4db3e60559408a07b, type: 2}
+    itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
+    itemAmount: 1
+    badgeRequired: {fileID: 11400000, guid: c0afdfb270d3b6147b48712b0a7469dc, type: 2}
+  inStockDialogue: {fileID: 11400000, guid: da39fe38aa5ae124bad360df7d822a5e, type: 2}
+  soldOutDialogue: {fileID: 11400000, guid: 765665ee72c63764cbea02546ecacb26, type: 2}
+  canRestock: 1

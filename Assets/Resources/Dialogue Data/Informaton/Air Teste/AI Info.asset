@@ -17,20 +17,50 @@ MonoBehaviour:
   - thread: This be the Alatus Islands!
     dialogueColour: {r: 0.03137255, g: 0.43137255, b: 0.48235294, a: 1}
     isBold: 1
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: did u know that alatus means winged in latin?! crazy innit
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Therein lies a multitude of minorly sized islands fit for any venture
       you desire. (NOT RIGHT NOW)
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
-  - thread: Nonetheless, watch out. For there are certain civilians who do not enjoy
-      unwanted company from below.. (FALSE)
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
+  - thread: Nonetheless, stand ready. For there are certain civilians who do not
+      enjoy unwanted company from below.. (FALSE)
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: anyways, haff fun!!1 (GONE WRONG)
     dialogueColour: {r: 0, g: 0.24265783, b: 0.2735849, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
   isAnimated: 0
   yesResponse:
@@ -48,6 +78,7 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 1
+  openShopOnClose: 0
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

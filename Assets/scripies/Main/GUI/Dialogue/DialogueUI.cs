@@ -204,13 +204,20 @@ namespace scripies.Dialogue
             OnDialogueClose?.Invoke(currentNpc);
             if (dialogueObject != null)
             {
+                if (dialogueObject.openShopOnClose)
+                {
+                    var instance = GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName);
+                    if (instance != null && instance.TryGetComponent(out ShopKeeper shopKeeper))
+                        shopKeeper.StartShop();
+                }
+
                 if (dialogueObject.alteredDialogue != null)
                 {
                     var instance = GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName);
                     if (instance != null) GameEvents.TriggerAddDialogue(dialogueObject.alteredDialogue, instance);
                 }
                 if (dialogueObject.alteredExternalDialogue != null) StartCoroutine(ChangeDialogues(dialogueObject));
-                
+
                 CameraEventManager.Instance.ResetCamera();
             }
             GameEvents.TriggerDialogueClose(dialogueObject);

@@ -194,6 +194,7 @@ namespace scripies.Enemy
 
         private void CheckStatus()
         {
+            if (!Application.isPlaying) return;
             if (enemyHealth > 0) return;
             enemyHealth = 0;
             isDead = true;

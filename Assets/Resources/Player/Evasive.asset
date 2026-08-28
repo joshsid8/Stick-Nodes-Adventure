@@ -20,7 +20,7 @@ MonoBehaviour:
   jumpForceMultiplier: 1
   dashSpeed: 30
   dashTime: 0.65
-  dashCooldown: 0.5
+  dashCooldown: 1
   dashEnergyCost: 5
   maxEnergy: 100
   energyRefillMultiplier: 1.5
@@ -28,8 +28,6 @@ MonoBehaviour:
   abilityCooldownMultiplier: 0.8
   abilityPotency: 1.2
   abilityLifetimeMultiplier: 1.5
-  m1Ability: 1
-  airAttackForce: 5
   attackDamageMultiplier: 0.6
   attackPotency: 0.8
   attackCooldownMultiplier: 1

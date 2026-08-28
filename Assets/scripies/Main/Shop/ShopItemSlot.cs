@@ -30,7 +30,7 @@ public class ShopItemSlot : SlotBase
 	    if (!bought) return;
 	    //print("Bought " + collectableSo.itemName);
 	    
-	    var itemToGet = ResourceDatabase.Instance.GetItemByName(collectableSo.itemName);
+	    var itemToGet = ResourceDatabase.Instance.GetItemByName(collectableSo.name);
 	    invManager.PresetAddItem(itemToGet);
 	    itemAmount--;
 	    if (itemAmount <= 0)

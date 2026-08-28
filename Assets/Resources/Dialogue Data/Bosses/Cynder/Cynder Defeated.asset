@@ -13,19 +13,35 @@ MonoBehaviour:
   m_Name: Cynder Defeated
   m_EditorClassIdentifier: 
   npcName: Cynder
-  dialogue: []
   dialogueThread:
   - thread: 'Heh, it seems you are more stupid than I thought. '
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: You think this is the end?
     dialogueColour: {r: 0.29411766, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '*I will come back. Just you wait... '
     dialogueColour: {r: 0.6603774, g: 0, b: 0, a: 1}
     isBold: 1
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -34,29 +50,16 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.3773585, g: 0.076539695, b: 0.076539695, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
-  itemType: []
+  itemType:
+  - {fileID: 11400000, guid: c0afdfb270d3b6147b48712b0a7469dc, type: 2}
   canBeColoured: 1
-  colour:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.2924528, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  colourIndex: 2
   canBeBold: 1
-  bold: 000001
+  openShopOnClose: 0
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: Izuno

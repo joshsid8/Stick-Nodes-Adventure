@@ -92,6 +92,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
 
     private void OnValidate()
     {
+        if (ba == null) return;
         if (!isDead) CheckStatus();
     }
 
@@ -173,6 +174,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
 
     private void CheckStatus()
     {
+        if (!Application.isPlaying || !ba.isAttacking) return;
         if (bossHealth <= 0 && !deathToggle)
         {
             deathToggle = true;
@@ -182,6 +184,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             StartCoroutine(Defeat());
         }
         else if (bossHealth <= phase2Health) StartCoroutine(PhaseToggle(true));
+        if (ba.currentAttackCooldown == 0) ba.ActionCooldown(1f);
     }
 
     public IEnumerator PhaseToggle(bool toggle)

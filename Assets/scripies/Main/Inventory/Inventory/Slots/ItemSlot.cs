@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -11,7 +12,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
     public int itemAmount;
     public int maxItemAmount;
     public string itemType;
-    public float restoreValue;
+    public List<RestoreAttribute> restoreAttributes;
     [Space]
     [SerializeField] private TMP_Text amountText;
 
@@ -47,7 +48,10 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             {
                 case ItemSO itemSo:
                     itemScriptableObject = itemSo;
-                    restoreValue = itemSo.restoreValue;
+                    break;
+                case ConsumableSO consumable:
+                    itemScriptableObject = consumable;
+                    restoreAttributes.AddRange(consumable.restoreAttributes);
                     break;
                 case AspectSO aspect:
                     itemScriptableObject = aspect;
@@ -85,8 +89,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             if (amountText != null)
             {
                 amountText.enabled = true;
-                amountText.text = itemAmount == 1 && itemType != "Aspect" ? "" : itemAmount.ToString();
-                if (itemType == "Aspect" || itemType == "Ability") amountText.text = "";
+                amountText.text = itemAmount == 1 ? "" : itemAmount.ToString();
             }
         }
         else if (!usedSlot) ClearSlotVisuals();
@@ -97,7 +100,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         itemAmount = 0;
         maxItemAmount = 0;
         itemType = string.Empty;
-        restoreValue = 0f;
+        restoreAttributes.Clear();
         aspectStats = null;
         abilityStats = null;
         itemScriptableObject = null;
@@ -149,12 +152,16 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             invManager.slotButtons[2].onClick.AddListener(() => SwapAbility(2));
             print("Choose an ability to swap!");
         }
-        else if (itemType != "Key") UseItem();
+        else if (itemType != "Key") DecrementItem();
     }
 
-    public void UseItem()
+    public void DecrementItem()
     {
-        if (invManager.playerManager != null && itemType != "Key") invManager.playerManager.AlterGlobalFloat(itemType, restoreValue);
+        if (invManager.playerManager != null && restoreAttributes.Count > 0)
+        {
+            foreach (var restoreAttribute in restoreAttributes) 
+                invManager.playerManager.AlterGlobalFloat(restoreAttribute.attributeName, restoreAttribute.restoreValue);
+        }
         else if (invManager.playerManager == null) Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
         if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
         
@@ -176,14 +183,15 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             {
                 if (slot != null && !slot.usedSlot)
                 {
-                    string iName = itemName;
-                    Sprite iSprite = itemSprite; string iDescription = itemDescription; AspectSO aStats = aspectStats;
+                    var iName = itemName;
+                    var iSprite = itemSprite; var iDescription = itemDescription; var aStats = aspectStats;
                     if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
-                    ClearSlot();
+                    
                     invManager.EquipAspect(iName, iSprite, iDescription, aStats);
                     
                     equipped = true;
-                    if (!usedSlot) itemImage.enabled = false;
+                    DecrementItem();
+                    //if (!usedSlot) itemImage.enabled = false;
                     break;
                 }
             }
@@ -197,14 +205,13 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         print("Ok uhh switching abilities");
         var ability = invManager.abilitySlots[slot].abilityStats;
         if (ability != null) 
-            invManager.AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, "Ability", ability);
+            invManager.AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
         
         invManager.EquipAbility(abilityStats.itemName, abilityStats.itemSprite, abilityStats.itemDescription, abilityStats, slot);
         foreach (var slotButton in invManager.slotButtons) slotButton.onClick.RemoveAllListeners();
         if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
-
-        ClearSlot();
-        UpdateSlotUI();
+        
+        DecrementItem();
     }
     
     private IEnumerator DestroyItem()

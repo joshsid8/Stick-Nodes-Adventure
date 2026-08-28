@@ -61,22 +61,18 @@ public class WeatherManager : MonoBehaviour
             case WeatherType.Clear:
                 if (mm != null) mm.UpdateNormalAreaInfo();
                 else sm.UpdateNormalAreaInfo();
-                player.regenerationMultiplier = preValues[0];
-                player.pc.movementSpeed = preValues[1];
                 break;
             case WeatherType.Hot:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
                 else sm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
-                //player.pc.movementSpeed = preValues[1] * 0.8f;
                 break;
             case WeatherType.Cold:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
                 else sm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
-                //player.pc.movementSpeed = preValues[1] * 0.8f;
                 break;
             case WeatherType.Rainy:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,
@@ -113,6 +109,25 @@ public class WeatherManager : MonoBehaviour
         InvokeRepeating(nameof(EarthQuake), 0, earthquakeTimer);
         InvokeRepeating(nameof(Temperature), 0, 0.001f);
         StartCoroutine(Wind());
+        Invoke(nameof(SetProperties), 1f);
+    }
+
+    private void SetProperties()
+    {
+        switch (weatherType)
+        {
+            case WeatherType.Hot:
+            case WeatherType.Cold:
+                player.regenerationMultiplier = 0.5f;
+                player.pc.movementSpeed = preValues[1] * 0.9f;
+                break;
+            case WeatherType.Clear:
+            case WeatherType.Rainy:
+            default:
+                player.regenerationMultiplier = preValues[0];
+                player.pc.movementSpeed = preValues[1];
+                break;
+        }
     }
 
     private void PollingHurtPlayer(float damage = 0.001f) => player.playerHealth -= damage;

@@ -33,21 +33,15 @@ public abstract class GUIBase : MonoBehaviour
     }
     private void Update()
     {
-        if (ActiveGUICount < 0)
-        {
-            ActiveGUICount = 0;
-        }
-
+        //Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
+        if (ActiveGUICount < 0) ActiveGUICount = 0;
         foreach (var gui in allGuis)
         {
             if (gui.isActive) break;
             if (gui != allGuis[^1] || gui.isActive || ActiveGUICount <= 0) return;
             Debug.LogError($"All gui's are inactive, but the count was {ActiveGUICount}. Resetting Count. You may be frozen, mb");
             ActiveGUICount = 0;
-            UpdatePlayerState();
         }
-        
-        //Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
     }
 
     private void GetPlayer() => player = PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
@@ -90,7 +84,7 @@ public abstract class GUIBase : MonoBehaviour
             case QuestLogManager quest: quest.ToggleQuestLog(); break;
             case StatsManager stats: stats.ToggleStats(); break;
             case ShopManager shop: shop.ToggleShop(false); break;
-            default: topMostGui.GetActive(false); break;
+            //default: topMostGui.GetActive(false); break;
         }
     }
     
@@ -99,7 +93,6 @@ public abstract class GUIBase : MonoBehaviour
         isActive = true;
         ActiveGUICount++;
         ActiveGuis.Add(this);
-        UpdatePlayerState();
         OnActivated();
     }
 
@@ -108,7 +101,6 @@ public abstract class GUIBase : MonoBehaviour
         isActive = false;
         ActiveGUICount = Mathf.Max(0, ActiveGUICount - 1);
         ActiveGuis.Remove(this);
-        UpdatePlayerState();
         OnDeactivated();
     }
     
@@ -119,11 +111,13 @@ public abstract class GUIBase : MonoBehaviour
     {
         if (active) Enable();
         else Disable();
+        UpdatePlayerState();
     }
     private void UpdatePlayerState()
     {
         if (player == null) GetPlayer();
         player.canAct = ActiveGUICount <= 0;
+        //print($"Player can act: {player.canAct} | ActiveGUICount: {ActiveGUICount}");
     }
     
     private void OnActivated() => GameEvents.TriggerEnableGUI();

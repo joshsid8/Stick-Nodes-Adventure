@@ -5,9 +5,6 @@ SNADV Notes
     
     Priorities:
         
-        Instability strikes again!!!
-            Once THOSE issues are resolved, the game should be publishable
-        
         Pre-AO
             This stage has been basically completed; all content has been added as planned!
             Now we can publish the game, as well as move onto AO
@@ -18,32 +15,18 @@ SNADV Notes
         
         Instability
         
-            Issues from Testers
-                After beating noxu, i didnt gain walljump
-                Idk if this was intentional, but a sandwich gained me very little health when eaten
-                When shooting a movable beam, it doesnt hold the animation, and i can move freely with it
-                Cynder's Fire slash is way too fast lol
-                    Just reduce the anim speed
-                Cynder got handicapped once hit in the air
-                    Ill ensure the ActivateCooldown method is called when hurt, otherwise ill make it programmatic
-                Noxu gets handicapped often too
-                    He also sometimes tries to use the bat move, then instantly counter
-                        Its because ive made the animation triggers derive from 'any state', so i need to rework it
-                Make Jerome have better shop items
-                    Stuff to make him necessary for progression
-                When dying, the shader doesnt activate, and the death music's pitch gets randomised
-                    I think debug mode is on even when the app is playing in release mode
-                In dialogue, i can still move!
-                After leaving a place with extreme weather, i dont regain my health regen SOMETIMES
-                    This must mean the way properties are being set is inefficient
-                I need to find out a way to mathematically inverse cynder's downward shuriken throw
-                Player's dash cooldown is too small, blox fruits all over again                
-
+            Issues from Testing
+                
             Replicatable or From-Build bugs/problems
                 
             One time occurrences or Rare/Intimidating bugs
                 
             Low Priority/Passive Tasks / Unconfirmed fixed Bugs
+                Items with default sprites dont (always) get shown in the shop manager
+                    I need to ensure the default sprite is used (if there is one), and is consistent
+                        One time in the shop, it actually did work for an ability scroll
+                        Just in case, i need a global placeholder sprite for items withouth their own
+                        
                 SFX
                     Barely anything is done yet, but no errors are spamming at me
                     I do need more files in general

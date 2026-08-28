@@ -282,6 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeBucks: 0
+  bucksMult: 1
 --- !u!114 &7870431470146604584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +404,8 @@ MonoBehaviour:
   - 1
   - 1
   isDead: 0
-  respawnTime: 3
+  deathClip: {fileID: 0}
+  respawnTime: 5
   justSpawned: 0
   getStunned: 0
   isStunned: 0
@@ -423,6 +425,7 @@ MonoBehaviour:
   pd: {fileID: 0}
   pa: {fileID: 0}
   pf: {fileID: 0}
+  pm: {fileID: 0}
 --- !u!114 &114786552731468920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +479,12 @@ MonoBehaviour:
   damageOverTime: 0
   procDmg: 0
   procInterval: 0
+  hitSfx:
+  - {fileID: 0}
+  - {fileID: 0}
+  whooshSfx:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &261623171632948894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,7 +539,7 @@ MonoBehaviour:
   isGrounded: 0
   dashSpeed: 25
   dashTime: 0
-  dashCooldown: 0.5
+  dashCooldown: 0.8
   dashAbility: 1
   currentDashTime: 0
   isDashing: 0
@@ -547,6 +556,10 @@ MonoBehaviour:
   currentCheckPoint: {fileID: 0}
   currentSpawnPoint: {fileID: 0}
   isFacingRight: 1
+  jumpClips: []
+  footstepClips: []
+  wallClips: []
+  dashClips: []
   combatIndicator: {fileID: 0}
 --- !u!61 &3190464570260204841
 BoxCollider2D:

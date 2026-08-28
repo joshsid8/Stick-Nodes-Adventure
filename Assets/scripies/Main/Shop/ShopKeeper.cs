@@ -82,7 +82,7 @@ public class ShopKeeper : MonoBehaviour
 public class ShopItem
 {
     public string itemName;
-    public string itemDescription;
+    [TextArea(1, 2)] public string itemDescription;
     public Sprite itemSprite;
     public float itemPrice;
     public CollectableSOBase itemCollectable;

@@ -23,26 +23,6 @@ namespace scripies.Dialogue
 
         [Header("Responses")] public DialogueResponse yesResponse;
         public DialogueResponse noResponse;
-
-        // Legacy variables to be removed
-        // private string[] dialogue;
-        // [SerializeField] [TextArea(4, 10)] private string choiceQuestion;
-        // public string[] Dialogue => dialogue;
-        // public string ChoiceQuestion => choiceQuestion;
-        // public Color[] colour = { Color.black };
-        // public int colourIndex;
-        // public bool[] bold;
-        // public string[] targetFloatVariables;
-        // public float[] newFloatValues;
-        // public string[] targetBoolVariables;
-        // public bool[] newBoolValues;
-        //public bool isQuestInteraction;
-        //public bool completeSpeakQuestOnClose;
-        //[Tooltip("If the player has already completed this quest, this dialogue will be shown instead")]
-        //public DialogueObject derivedDialogue;
-        //[Space(10)] [Header("Item Drops")] [Tooltip("How many of x items the speaker should give")]
-        //public bool canDropItem;
-        //public GameObject[] itemDrop;
         
         public DialogueThread[] DialogueThread => dialogueThread;
         public string NPCName => npcName;
@@ -70,8 +50,10 @@ namespace scripies.Dialogue
         [Header("Colouring & Font Changes")]
         public bool canBeColoured;
         public bool canBeBold;
+
+        [Header("NPC Control")]
+        public bool openShopOnClose;
         
-        [Header("NPC Control")] 
         public string speaker;
         [Tooltip("Adds this dialogue to the current speaker. Ensure this is filled if this dialogue is quest based")]
         public DialogueObject alteredDialogue;

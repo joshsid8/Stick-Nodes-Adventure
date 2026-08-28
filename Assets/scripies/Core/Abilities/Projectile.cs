@@ -138,7 +138,8 @@ public class Projectile : AbilityBase
         {
             transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, direction);
             var angleRad = direction * Mathf.Deg2Rad;
-            rb.linearVelocity = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * projectileSpeed;
+            
+            rb.linearVelocity = new Vector2(Mathf.Cos(angleRad) * (isFacingRightDirection ? 1 : -1), Mathf.Sin(angleRad)) * projectileSpeed;
         }
     }
         

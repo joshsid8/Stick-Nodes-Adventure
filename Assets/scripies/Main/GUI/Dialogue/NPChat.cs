@@ -129,7 +129,7 @@ namespace scripies.Dialogue
         {
             yield return new WaitForSeconds(0.01f);
             dialogue.RemoveAt(dialogue.IndexOf(dto));
-            if (isShopkeeper) shopKeeper.StartShop(); 
+            //if (isShopkeeper) shopKeeper.StartShop(); 
         }
         
         private void OnDrawGizmosSelected()

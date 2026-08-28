@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using scripies.Core;
 using scripies.Enemy;
 using scripies.Player;
 using UnityEngine;
@@ -22,7 +23,11 @@ public class Teleporter : MonoBehaviour
                 if (tagsToIgnore.Contains(collision.tag)) return;
                 if (!forcePlayerTeleport) PlayerHealth.Instance.StartCoroutine(PlayerHealth.Instance.Spawn());
                 else collision.transform.position = teleportTarget.position;
-                if (doesDamage) collision.GetComponent<PlayerHealth>().playerHealth -= damage;
+                if (doesDamage)
+                {
+                    collision.GetComponent<PlayerHealth>().playerHealth -= damage;
+                    GameEvents.TriggerPlayerHealthChanged(damage);
+                }
                 if (teleportSfx != null) AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
                 break;
             }

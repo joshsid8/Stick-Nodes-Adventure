@@ -173,7 +173,7 @@ public class MapManager : MonoBehaviour
         audioManager.TriggerFadeOut();
         weather.ClearDisasters();
         audioManager.previousScene = collision.gameObject.scene;
-         if (collision != null) SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
+         if (collision != null && SceneManager.GetSceneByName("Persistent Objects").isLoaded) SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
         mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
         activeMap = false;
     }

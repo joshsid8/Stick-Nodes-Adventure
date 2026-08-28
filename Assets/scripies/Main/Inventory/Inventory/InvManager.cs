@@ -58,8 +58,8 @@ public class InvManager : GUIBase
         isActive = !isActive;
         if (inventoryMenu == null) return;
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
+        if (isActive) CloseTopMost();
         GetActive(isActive);
-        if (isActive) CloseCurrentMenus();
     }
 
     public void AddItem(string itemName , int itemAmount = 1, Sprite itemSprite = null, string itemDescription = "", int maxItemAmount = 1, string itemType = null, CollectableSOBase collectable = null)
@@ -102,8 +102,8 @@ public class InvManager : GUIBase
         switch (collectable)
         {
             case ItemSO item: AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, item.itemType, item); break;
-            case AspectSO aspect: AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 1, "Aspect", aspect); break;
-            case AbilitySO ability: AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, "Ability", ability); break;
+            case AspectSO aspect: AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect); break;
+            case AbilitySO ability: AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability); break;
         }
     }
     
@@ -121,7 +121,7 @@ public class InvManager : GUIBase
             if (aspectSlots[i].itemName == itemName)
             {
                 //Debug.Log($"Seems like there is already a {itemName} in your slots");
-                AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", aspect);
+                AddItem(itemName, 1, itemSprite, itemDescription, 16, "Aspect", aspect);
                 break;
             }
         }
@@ -131,7 +131,7 @@ public class InvManager : GUIBase
     public void UnequipAspect(string itemName, Sprite itemSprite, string itemDescription, AspectSO aspect)
     {
         if (aspect != null && playerManager != null) playerManager.RemoveAspectModifiers(aspect);
-        AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", aspect);
+        AddItem(itemName, 1, itemSprite, itemDescription, 16, "Aspect", aspect);
     }
 
     public void EquipAbility(string itemName, Sprite itemSprite, string itemDescription, AbilitySO ability, int slot = 0)
@@ -177,10 +177,10 @@ public class InvManager : GUIBase
                     item.itemType, item);
             
             else if (data.storedItems[i] is AspectSO)
-                AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 1, "Aspect", aspect);
+                AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect);
             
             else if (data.storedItems[i] is AbilitySO)
-                AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 1, "Ability", ability);
+                AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
         }
     }
     

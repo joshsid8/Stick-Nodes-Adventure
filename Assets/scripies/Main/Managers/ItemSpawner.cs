@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using scripies.Core;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -67,6 +68,7 @@ public class ItemSpawner : MonoBehaviour
                 {
                     SceneManager.MoveGameObjectToScene(instance, targetScene);
                     instance.GetComponent<scripies.Core.Identifier>().AutomateID(targetScene);
+                    instance.GetComponent<scripies.Core.Identifier>().typeOfObject = Identifier.ObjectType.Item;
                     spawnedObjects.Add(instance);
                 }
             }

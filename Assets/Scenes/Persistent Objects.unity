@@ -1630,7 +1630,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &198827335
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2147,7 +2147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &230217030
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16406,7 +16406,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774821748}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -19804,7 +19804,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: e87773534996ab542ba773fd0724383a, type: 3}
     - target: {fileID: 261623171632948894, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: debugMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 261623171632948894, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: canWallJump
@@ -19851,10 +19851,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 687ddc14d5e2127469665811ac54cf47, type: 3}
     - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
-      propertyPath: respawnTime
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2904327954621765790, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: spawnOnAwake
       value: 1
       objectReference: {fileID: 0}
@@ -19875,20 +19871,24 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7870431470146604584, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: 'objects.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870431470146604584, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: 'objects.Array.data[2]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 50.268955
+      value: 43.99234
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 69.956665
+      value: 2.9499779
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.001539911
+      value: -0.002278383
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -21325,7 +21325,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 50.655792, y: 70.010544, z: -0.06107998}
+  m_LocalPosition: {x: 44.379177, y: 3.0038528, z: -0.061818123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22501,7 +22501,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 52.636105, y: 74.23462, z: -0.06107998}
+  m_LocalPosition: {x: 46.359493, y: 7.227932, z: -0.061818123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -34473,7 +34473,7 @@ GameObject:
   - component: {fileID: 4028153189740531409}
   - component: {fileID: 8751292640724400740}
   m_Layer: 0
-  m_Name: Databases
+  m_Name: PlayerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

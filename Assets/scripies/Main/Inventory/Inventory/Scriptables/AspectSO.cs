@@ -8,9 +8,9 @@ public class AspectSO : CollectableSOBase
     
     public override void Collect(GameObject objectCollected)
     {
-        InvManager invManager = FindAnyObjectByType<InvManager>();
+        var invManager = FindAnyObjectByType<InvManager>();
         if (invManager != null)
-            invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Aspect", this);
+            invManager.AddItem(itemName, 1, itemSprite, itemDescription, 16, "Aspect", this);
         else
             Debug.LogWarning("InvManager not found in scene! Cannot add item.");
     }

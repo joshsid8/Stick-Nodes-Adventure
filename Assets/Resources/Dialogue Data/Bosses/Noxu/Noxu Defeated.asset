@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Noxu Defeated
   m_EditorClassIdentifier: 
   npcName: Noxu
-  dialogue: []
   dialogueThread:
   - thread: 'Splendid! I''ve never had fight so challenging before in a while!
 
@@ -21,11 +20,22 @@ MonoBehaviour:
       thank you for this spar.'
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Go on. The orb of earth is waiting. (IT'S NOT!!!)
     dialogueColour: {r: 0.27450982, g: 0.15294118, b: 0.15294118, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -34,29 +44,18 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.2735849, g: 0.1509879, b: 0.1509879, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 1
-  targetBoolVariables:
-  - PlayerCanWallJump
-  newBoolValues: 01
+  applyBools:
+  - boolName: PlayerCanWallJump
+    value: 1
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
-  itemType: []
+  itemType:
+  - {fileID: 11400000, guid: 42fc952e064a1b445a0382282774002e, type: 2}
   canBeColoured: 1
-  colour:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.33962262, g: 0.12655748, b: 0.12655748, a: 1}
-  colourIndex: 2
   canBeBold: 1
-  bold: 0001
+  openShopOnClose: 0
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

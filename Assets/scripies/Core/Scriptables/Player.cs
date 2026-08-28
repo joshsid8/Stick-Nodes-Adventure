@@ -49,9 +49,9 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float dashEnergyCost = 5f;
     public float DashEnergyCost => dashEnergyCost;
     
-    [Tooltip("If the player can Wall Jump")]
-    [SerializeField] private bool wallJumpAbility;
-    public bool WallJumpAbility => wallJumpAbility;
+    //[Tooltip("If the player can Wall Jump")]
+    //[SerializeField] private bool wallJumpAbility;
+    //public bool WallJumpAbility => wallJumpAbility;
     
     [Header("Ability")]
     [Tooltip("maximum energy for bros abilities")]
@@ -79,9 +79,9 @@ public class PlayerStats : ScriptableObject
     public float AbilityLifetimeMultiplier => abilityLifetimeMultiplier;
 
     [Header("Strength")]
-    [Tooltip("Can dawg even m1??!")]
-    [SerializeField] private bool m1Ability = true;
-    public bool M1Ability => m1Ability;
+    //[Tooltip("Can dawg even m1??!")]
+    //[SerializeField] private bool m1Ability = true;
+    // bool M1Ability => m1Ability;
 
     //[Tooltip("ARE WE TAILS?! NO I DONT THINK SOOOOOOO")]
     //[SerializeField] private float airAttackForce = 20f;

@@ -40,6 +40,7 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
+  openShopOnClose: 1
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

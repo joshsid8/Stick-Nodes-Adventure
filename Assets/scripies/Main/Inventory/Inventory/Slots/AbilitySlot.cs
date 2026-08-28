@@ -133,7 +133,7 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
             return;
         }
 
-        invManager.AddItem(itemName, 1, itemSprite, itemDescription, 1, "Ability", abilityStats);
+        invManager.AddItem(itemName, 1, itemSprite, itemDescription, 16, "Ability", abilityStats);
         abilityStats = null;
         var playerAbility = PlayerHealth.Instance.pa;
         playerAbility.ability.objects[slot] = null;

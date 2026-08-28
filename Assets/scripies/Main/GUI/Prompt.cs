@@ -38,6 +38,7 @@ public class Prompt : GUIBase
 
     private void Start()
     {
+        if (!isActive) return;
         choice = 0;
         prompt.SetActive(false);
         GetActive(false);

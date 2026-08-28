@@ -19,7 +19,6 @@ public class BossAttack : MonoBehaviour
     [Header("Attack Check")]
     public bool isAttacking;
     public bool isPerformingAttack;
-    public float attackCooldown;
     public float currentAttackCooldown;
     public int attackFactor;
     [SerializeField] private string prevAttack;
@@ -83,7 +82,6 @@ public class BossAttack : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private IEnumerator Start()
     {
-        currentAttackCooldown = attackCooldown;
         ps = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         originalPosition = transform.position;
@@ -204,10 +202,14 @@ public class BossAttack : MonoBehaviour
             Debug.LogError($"Almost handicapped {gameObject.name}. attack system being invoked = {IsInvoking(nameof(AttackSystem))}"); 
             AttackSystem();
         }
-        
+        currentAttackCooldown -= Time.deltaTime;
         if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
         stunnable = stunnableTimer > 0;
-        if (isPerformingAttack) currentBackupMoveTimer = backupMoveTime;
+        if (isPerformingAttack)
+        {
+            currentBackupMoveTimer = backupMoveTime;
+            currentAttackCooldown = 1f;
+        }
         if (currentBackupMoveTimer > 0 && isAttacking && !isPerformingAttack) currentBackupMoveTimer -= Time.deltaTime;
     }
 
@@ -244,7 +246,7 @@ public class BossAttack : MonoBehaviour
         else if (directionToPlayer < 0 && isFacingRight) Flip();
     }
 
-    public void ActionCooldown(float cooldownTime)
+    public void ActionCooldown(float cooldownTime = 0)
     {
         CancelInvoke(nameof(ActionCooldown));
         currentAttackCooldown = bh.phase2 ? cooldownTime * 0.8f : cooldownTime;

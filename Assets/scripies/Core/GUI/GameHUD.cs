@@ -48,11 +48,9 @@ public class GameHUD : MonoBehaviour
     #region Shader Stuff
     private void ToggleShader(bool state) => screenShader.enabled = state;
     public void ActivateShader(float holdTime = 1, float fadeTime = 1.5f, bool fadeInAndOut = false, float fadeOutTime = 1.5f)
-    {
-        StartCoroutine(fadeTime <= 0
-            ? FadeInShader(holdTime, fadeTime, fadeInAndOut, fadeOutTime)
+        => StartCoroutine(fadeTime <= 0 
+            ? FadeInShader(holdTime, Mathf.Abs(fadeTime), fadeInAndOut, fadeOutTime) 
             : FadeOutShader(holdTime, fadeTime));
-    }
     
     private IEnumerator FadeOutShader(float holdTime, float fadeTime)
     {
@@ -64,6 +62,8 @@ public class GameHUD : MonoBehaviour
             screenShader.color -= new Color(0, 0, 0, Time.deltaTime * fadeTime);
             yield return null;
         }
+        screenShader.enabled = false;
+        //print("finished fading out");
     }
     
     private IEnumerator FadeInShader(float holdTime, float fadeTime, bool fadeInAndOut = false, float fadeOutTime = 1.5f)
@@ -76,6 +76,8 @@ public class GameHUD : MonoBehaviour
             yield return null;
         }
         if (!fadeInAndOut) yield break;
+        //print("finished fading in");
+        
         yield return new WaitForSeconds(fadeTime);
         StartCoroutine(FadeOutShader(holdTime, fadeOutTime));
     }
@@ -84,6 +86,8 @@ public class GameHUD : MonoBehaviour
     {
         //This wont work properly
         //StartCoroutine(ShaderColour(colour, fadeTime));
+        
+        screenShader.CrossFadeColor(colour, fadeTime, true, false, true);
     }
 
     private IEnumerator ShaderColour(Color colour, float fadeTime = 1)

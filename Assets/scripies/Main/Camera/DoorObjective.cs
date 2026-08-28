@@ -100,7 +100,7 @@ public class DoorObjective : MonoBehaviour
                         foreach (var item in InvManager.Instance.itemSlots)
                             if (item != null && item.itemScriptableObject == key)
                             {
-                                item.UseItem(); 
+                                item.DecrementItem(); 
                                 break;
                             }
                     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
@@ -22,7 +23,7 @@ namespace scripies.Player
         public List<float> defElementFactors = new(5) { 1, 1, 1, 1, 1 };
 
         [Header("Death!")] public bool isDead;
-        private bool deathToggle;
+        public AudioClip deathClip;
         public float respawnTime;
         public bool justSpawned;
 
@@ -38,7 +39,7 @@ namespace scripies.Player
         private Color originalColor;
         [SerializeField] private bool isTinting;
         private SpriteRenderer spriteRenderer;
-        [SerializeField] private bool spawnOnAwake = true;
+        public bool spawnOnAwake = true;
 
         [Header("Combat & Jumping")] public bool inCombat;
         public float combatTimer;
@@ -47,7 +48,6 @@ namespace scripies.Player
         public int aggressiveEnemyID;
         public float jumpRotationTimer;
     
-        [SerializeField] private AudioClip deathClip;
         
         // Components
         private Knockback kb;
@@ -102,20 +102,14 @@ namespace scripies.Player
             currentStunTime = stunTime * shockMultiplier;
             originalColor = spriteRenderer.color;
             originalShockMultiplier = shockMultiplier;
-            
-            #if UNITY_EDITOR 
-            if (pc.debugMode)
-            {
-                spawnOnAwake = false;
-                deathClip = null;
-            }
-            #endif
+
             if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             
             GameEvents.OnPlayerDeath += ResetCombat;
             GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
             GameEvents.OnAggressiveStatusChanged += UpdateAggressiveEnemies;
             GameEvents.AddPlayerCombat += ApplyCombat;
+            GameEvents.OnPlayerHealthChanged += CheckStatus;
         }
 
         private void UpdateAggressiveEnemies(ITarget target, bool isAggressive)
@@ -134,7 +128,6 @@ namespace scripies.Player
         private void Update()
         {
             Animation();
-            StartCoroutine(Death());
             Stunned();
             Tint();
             Regeneration();
@@ -149,6 +142,11 @@ namespace scripies.Player
                 gameObject.layer = LayerMask.NameToLayer("Dead");
                 spriteRenderer.color = Color.white;
             }
+        }
+
+        private void OnValidate()
+        {
+            if (!isDead && Application.isPlaying) CheckStatus();
         }
 
         private void Animation()
@@ -176,9 +174,18 @@ namespace scripies.Player
             else Debug.LogError("[PlayerHealth] We cant find the right spawn object!");
 
             if (Shenanigans.Instance != null) Shenanigans.Instance.ToggleFreezeCamera(false);
-            if (realSpawn) GameEvents.TriggerPlayerSpawn(gameObject);
-            GameHUD.Instance.ActivateShader(0.5f, 1);
+            if (realSpawn)
+            {
+                GameEvents.TriggerPlayerSpawn(gameObject);
+                GameHUD.Instance.ActivateShader(0.5f, 1);
+            }
             StartCoroutine(SpawnPeriod());
+        }
+
+        private void CheckStatus(float damage = 0)
+        {
+            if (playerHealth > 0 || isDead) return;
+            StartCoroutine(Death());
         }
 
         private IEnumerator SpawnPeriod()
@@ -191,14 +198,17 @@ namespace scripies.Player
 
         private IEnumerator Death()
         {
-            if (playerHealth > 0 || deathToggle) yield break;
-            deathToggle = true;
             isDead = true;
             GameEvents.TriggerPlayerDeath();
+            (AudioClip, bool) deathSound = (deathClip, true);
             #if UNITY_EDITOR
-            GameEvents.TriggerJumpScare();
+            if (pc.debugMode)
+            {
+                GameEvents.TriggerJumpScare();
+                deathSound = (null, false);
+            }
             #endif
-            GameEvents.TriggerPlaySound(deathClip, !pc.debugMode);
+            GameEvents.TriggerPlaySound(deathSound.Item1, deathSound.Item2);
             //Shenanigans.Instance.ToggleFreezeCamera();
             GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
 
@@ -210,12 +220,11 @@ namespace scripies.Player
             //else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
             
             yield return new WaitForSeconds(respawnTime / 2);
-            GameHUD.Instance.SetShaderColour(Color.white, 1.5f);
+            //GameHUD.Instance.SetShaderColour(Color.white, 1.5f);
             yield return new WaitForSeconds(respawnTime / 2);
             
             StartCoroutine(Spawn(0, true));
             playerHealth = playerMaxHealth * 0.25f;
-            deathToggle = false;
             isDead = false;
             pc.canAct = true;
             ResetCombat();
