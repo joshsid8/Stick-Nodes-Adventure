@@ -181,8 +181,8 @@ MonoBehaviour:
   positionKnockback: 0
   knockbackTransform: {fileID: 1052973516199733126}
   combatSfx:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: fd7dc21280c81c741b63b332a8604d1e, type: 3}
+  - {fileID: 8300000, guid: e3f9099c563a0e74bbc585f4d965ef10, type: 3}
   isTrue: 0
   damageOverTime: 0
   procDmg: 0
@@ -225,9 +225,10 @@ MonoBehaviour:
   useMovement: 0
   isAttacking: 0
   isPerformingAttack: 0
-  attackCooldown: 1.5
   currentAttackCooldown: 0
   attackFactor: 0
+  prevAttack: 
+  prevRepeat: 0
   defensiveAtk:
   - Jump
   - Shuriken
@@ -356,6 +357,7 @@ MonoBehaviour:
   isFacingRight: 1
   moveCamToNpc: 0
   canHaveNullList: 1
+  isShopkeeper: 0
 --- !u!95 &769820852523672261
 Animator:
   serializedVersion: 7

@@ -256,7 +256,8 @@ namespace scripies.Player
 
         private IEnumerator WallJump()
         {
-            if (isWallSliding && jumpBufferCounter > 0 && canWallJump && !isDashing)
+            yield return new WaitForSeconds(0.05f);
+            if (isWallSliding && jumpBufferCounter >= 0 && canWallJump && !isDashing)
             {
                 var wjForce = new Vector2(wallJumpForce * wallJumpDirection.x * (isFacingRight ? -1 : 1),
                     wallJumpForce * wallJumpDirection.y);
@@ -445,6 +446,8 @@ namespace scripies.Player
         private void UpdateAnimation()
         {
             animator.SetBool("isRunning", isRunning);
+            animator.SetFloat("movementSpeed", Mathf.Abs(rb.linearVelocity.x));
+            animator.SetFloat("verticalVelocity", rb.linearVelocity.y);
             animator.SetBool("isJumping", isJumping);
             animator.SetBool("isGrounded", isGrounded);
             animator.SetBool("isWallSliding", isWallSliding);

@@ -504,9 +504,10 @@ MonoBehaviour:
   useMovement: 1
   isAttacking: 0
   isPerformingAttack: 0
-  attackCooldown: 5.6
   currentAttackCooldown: 0
   attackFactor: 0
+  prevAttack: 
+  prevRepeat: 0
   defensiveAtk:
   - Bat
   - Counter
@@ -571,7 +572,7 @@ MonoBehaviour:
   isCountering: 0
   isStunned: 0
   movable: 1
-  deathClip: {fileID: 8300000, guid: ab0a943f4e5d0954fab71e3e0c9249f0, type: 3}
+  deathClip: {fileID: 8300000, guid: c1660015102c89149b5ede2a5e11efb0, type: 3}
 --- !u!114 &4424314391457150151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,6 +605,7 @@ MonoBehaviour:
   isFacingRight: 1
   moveCamToNpc: 0
   canHaveNullList: 1
+  isShopkeeper: 0
 --- !u!114 &6578614805006208656
 MonoBehaviour:
   m_ObjectHideFlags: 0

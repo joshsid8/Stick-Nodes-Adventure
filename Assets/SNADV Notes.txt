@@ -4,12 +4,11 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        
-        Pre-AO
-            This stage has been basically completed; all content has been added as planned!
-            Now we can publish the game, as well as move onto AO
-                The Animation Overhaul phase will mean that ill slowly improve the game's logic, while adding more sprites and animations
-                    This will be long, but maybe not as long as Pre-AO
+        I think i can move onto remaking some of the boss/enemy animator controllers for further efficiency
+        Otherwise, we can start tackling the big 3:
+            Typewriter Logic Improvements
+            Input System Switching
+            Background/Foreground Logic Rewriting
 
     Optimisations & Hotfixes:
         
@@ -25,7 +24,7 @@ SNADV Notes
                 Items with default sprites dont (always) get shown in the shop manager
                     I need to ensure the default sprite is used (if there is one), and is consistent
                         One time in the shop, it actually did work for an ability scroll
-                        Just in case, i need a global placeholder sprite for items withouth their own
+                        Just in case, i need a global placeholder sprite for items without their own
                         
                 SFX
                     Barely anything is done yet, but no errors are spamming at me
@@ -35,6 +34,11 @@ SNADV Notes
                 One time, izuno had no dialogue on load
                     It seems like it saved, thus loaded an empty dialogue list
                         We needa find out why
+                
+                Ive successfully remade the player animator controller!
+                    Tho i need to allow attacking when wall jumping specifically
+                    Also, sometimes the run animation blends in after a wall jump, and plays again when walking off a platform before playing the fall anim
+                    Small issues that i need to optimise
                     
         Junie Help
             See how to fix the individual exit bugs i get
@@ -55,14 +59,14 @@ SNADV Notes
                     Game Pausing Logic
                         Ive watched that video on game pausing, and it seems i need to use the new input system to make pausing work in my favour
             
-            Make minibosses: a normal-enemy/boss hybrid
-                This is basically already a thing; there are spawners that have a onetime flag
-                Tho they arent a physical thing yet
-                        
             Background/Foreground Logic
                 Make backgrounds similar to Terraria in terms of appearance!
                 Even tho this is cosmetic, i would like to just get the logic done
                     I will use placeholder bgs just to test it, then will worry about designs Post-AO 
+            Make minibosses: a normal-enemy/boss hybrid
+                This is basically already a thing; there are spawners that have a onetime flag
+                Tho they arent a physical thing yet
+                        
                                
             Audio
                 Make it so that the music transitions smoothly
@@ -131,10 +135,6 @@ SNADV Notes
                 Flying dash attack
                 Feinted dash counter
                 Decieving attack
-        
-        Remake the player animation controller
-            At the moment, it is too tangled
-            Using layers can help make the controller more efficient and look good
         
         Fused Animations
             anims that fuse the 2 entities together for a joint animation
