@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using scripies.Core;
+using UnityEngine.Search;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -14,6 +15,8 @@ public class Shenanigans : MonoBehaviour
 
     [Header("Jump Scare Object")] 
     [SerializeField] private Image jsObjImage;
+    
+    [SearchContext("dir:Sprites/unn", "t:Sprite")] 
     [SerializeField] private Sprite[] jsImages;
     
     [Header("Stored Object")]

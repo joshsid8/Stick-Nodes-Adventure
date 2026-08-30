@@ -14,6 +14,7 @@ public class SectionManager : MonoBehaviour
     
     [SerializeField] private AudioClip[] newOst;
     public float[] ostVolume = {0.5f,0.5f,0.5f};
+    [SerializeField] private bool muteMusic;
     
     public string[] mapDisasterNames = { "Temperature", "Earthquake", "Wind", "Thunderstorm" };
     public float[] mapDisasterFactors = new float[4];
@@ -36,16 +37,15 @@ public class SectionManager : MonoBehaviour
     {
         if (!announceDetails) return;
         AreaManager.Instance.Announce(mName, "", mTextColor, mBgColor);
-
-        // Below is from map manager, and i dont think its needed here
         
-        /*for (var i = 0; i < audioManager.backgroundMusic.Length; i++)
+        if (mOst == null || mOstVolume == null || muteMusic) return;
+        if (mOst.Length == 0) return;
+        for (var i = 0; i < audioManager.backgroundMusic.Length; i++)
         {
             audioManager.backgroundMusic[i] = mOst[i];
             audioManager.backgroundMusicVolume[i] = mOstVolume[i];
         }
-        audioManager.currentScene = gameObject.scene.name;
-        GameEvents.TriggerMusic(0, false);*/
+        GameEvents.TriggerMusic(0, false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -54,11 +54,13 @@ public class SectionManager : MonoBehaviour
         if (weather != null) weather.SetWeather();
         if (cameraObject != null) cameraObject.SetActive(true);
         prevMapBgColor = AreaManager.Instance.actualCamera.backgroundColor;
+        if (muteMusic) audioManager.ToggleMuteMusic();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
         if (cameraObject != null) cameraObject.SetActive(false);
+        if (muteMusic) audioManager.ToggleMuteMusic(false);
         // Below is inefficient.
         //AreaManager.Instance.Announce(bgColor: prevMapBgColor);
     }

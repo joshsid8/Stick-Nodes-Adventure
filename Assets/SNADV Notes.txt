@@ -5,8 +5,10 @@ SNADV Notes
     
     Priorities:
         I think i can move onto remaking some of the boss/enemy animator controllers for further efficiency
+            Just finished remaking Cynder
+            Noxu next
         Otherwise, we can start tackling the big 3:
-            Typewriter Logic Improvements
+            Typewriter Logic Rewriting
             Input System Switching
             Background/Foreground Logic Rewriting
 

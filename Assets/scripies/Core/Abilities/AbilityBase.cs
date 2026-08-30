@@ -13,9 +13,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public int elementFactor = 1;
     public int damageFactor;
     public bool trueDamage;
-    [FormerlySerializedAs("beamDamage")]
-    [FormerlySerializedAs("projectileDamage")]
-    [FormerlySerializedAs("pillarDamage")]
+    
     public float damage;
     public bool damageOverTime;
     public float procDmg;
@@ -23,23 +21,14 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public float sizeMult = 1;
     [Space]
     [Header("Properties")]
-    [FormerlySerializedAs("knockbackForce")]
-    [FormerlySerializedAs("beamKnockbackForce")]
-    [FormerlySerializedAs("projectileKnockbackForce")]
-    [FormerlySerializedAs("knockbackForce")]
     public Vector2 knockbackDirection;
     public float knockbackForce = 20f;
     public float knockbackTime = 0.2f;
-    
-    [FormerlySerializedAs("beamDirection")]
-    [FormerlySerializedAs("projectileDirection")]
+
     public float direction;
     public bool isDirectional;
     public bool isFacingRightDirection;
     
-    [FormerlySerializedAs("beamStunTime")]
-    [FormerlySerializedAs("projectileStunTime")]
-    [FormerlySerializedAs("pillarStunTime")]
     public float stunTime;
     
     public float energyRequired;
@@ -51,34 +40,21 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public float explosionForce = 20f;
     public float explosionTime = 0.2f;
     
-    [FormerlySerializedAs("abilityCooldown")]
     public float cooldown;
     [Space]
     [Header("Proccing")]
-    [FormerlySerializedAs("proc")]
-    [FormerlySerializedAs("beamProc")]
-    [FormerlySerializedAs("pillarProc")]
     public float procTime;
 
-    [FormerlySerializedAs("procTimer")]
-    [FormerlySerializedAs("beamProcTimer")]
-    [FormerlySerializedAs("pillarProcTimer")]
     public float currentProcTimer;
     
-    [FormerlySerializedAs("isErupting")]
     public bool activeHitbox;
     
     private float energyProc;
     private float procTimes;
     [Space]
     [Header("Lifetime")]
-    [FormerlySerializedAs("beamLifetime")]
-    [FormerlySerializedAs("projectileLifeTime")]
-    [FormerlySerializedAs("pillarLifeTime")]
     public float lifeTime;
     
-    [FormerlySerializedAs("beamTimer")]
-    [FormerlySerializedAs("pillarTimer")]
     public float lifeTimer;
     public bool isHoldable;
     public bool abilityOnCollide;
@@ -90,16 +66,11 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public Animator animator;
     
     public GameObject parentObject;
-    [FormerlySerializedAs("pillarCollider")]
-    [FormerlySerializedAs("beamCollider")]
     public Collider2D coll;
     protected IPlayerStatus pa;
     
-    [FormerlySerializedAs("eruptAnim")]
     public AnimationClip anim;
     
-    [FormerlySerializedAs("collideAnim")]
-    [FormerlySerializedAs("finishAnim")]
     public AnimationClip endAnim;
     
     public AudioClip startSfx;

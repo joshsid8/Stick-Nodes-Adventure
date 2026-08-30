@@ -19,7 +19,7 @@ namespace scripies.Enemy
         [SerializeField] private string[] testMoves;
         [SerializeField] private int testIndex;
         
-        public StyleMode styleMode;
+        [EnumButtons] public StyleMode styleMode;
         
         [Header("Fly stuff")] public bool canFly;
         public bool isFlying;

@@ -44,6 +44,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
     private void PlayMusic(int index, bool fade)
     {
+        ToggleMuteMusic(false);
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
         fadeCoroutine = StartCoroutine(BeginMusic(index, fade));
     }
@@ -114,6 +115,8 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         yield return FadeOutMusic(fadeTime);
         fadeCoroutine = null;
     }
+    
+    public void ToggleMuteMusic(bool toggle = true) => musicSource.mute = toggle;
 
     private void PlaySfx(AudioClip clip = null, bool randomPitch = true, GameObject source = null)
     {

@@ -6,6 +6,7 @@ namespace scripies.Enemy
 {
     public class EnemyController : MonoBehaviour, ITarget
     {
+        
         public enum EnemyState
         {
             Idle,
@@ -16,7 +17,7 @@ namespace scripies.Enemy
             Dead
         }
 
-        public EnemyState enemyState;
+        [EnumButtons] public EnemyState enemyState;
 
         public Enemy enemy;
         private bool canFacePlayer;
