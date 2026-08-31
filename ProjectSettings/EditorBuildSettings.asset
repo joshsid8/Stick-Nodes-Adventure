@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Air Teste.unity
     guid: 0aa6d8d28337fc84781eeca2a6d3f87e
+  - enabled: 1
+    path: Assets/Scenes/Shop Teste.unity
+    guid: c0ac1c593b49dfb4495b3dbf8c85b3c1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

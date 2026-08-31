@@ -1,3 +1,4 @@
+using System;
 using scripies.Player;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class Checkpoint : MonoBehaviour
     public bool oneTime;
     
     public SceneField spawnScene;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

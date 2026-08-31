@@ -5,22 +5,28 @@ SNADV Notes
     
     Priorities:
         
-        Ive extended the teleporter script
-            Now the player should be able to enter specific areas, such as a shop
-            This type will also unload all the other scenes, so transitions are seamless
-            Test this out by making a small shop the player can enter
+        We should start tackling the big 3 (AFTER instabilty gets fixed):
+            Typewriter Logic Rewriting
+            Input System Switching
+            Background/Foreground Logic Rewriting
             
     Optimisations & Hotfixes:
         
         Instability
         
             Issues from Testing
-                
+                The player's abilities arent saved                
+                When saving and quitting inside the shop scene and playing again, i get spawned at the default spawn point instead of the shop's one
+                    This might be because the shop scene is new, and i havent added all the right stuff to it yet
+                Mystic River's map trigger is a bit off at the top
+                Shaders arent working when teleporting to and from the shop scene (or just teleporting per se)
+
+                                
             Replicatable or From-Build bugs/problems
                 
             One time occurrences or Rare/Intimidating bugs
                 
-            Low Priority/Passive Tasks / Unconfirmed fixed Bugs
+            Low Priority or Passive Tasks / Unconfirmed fixed Bugs
                 Items with default sprites dont (always) get shown in the shop manager
                     I need to ensure the default sprite is used (if there is one), and is consistent
                         One time in the shop, it actually did work for an ability scroll
@@ -35,10 +41,13 @@ SNADV Notes
                     It seems like it saved, thus loaded an empty dialogue list
                         We needa find out why
                 
-                Ive successfully remade the player animator controller!
-                    Tho i need to allow attacking when wall jumping specifically
-                    Also, sometimes the run animation blends in after a wall jump, and plays again when walking off a platform before playing the fall anim
-                    Small issues that i need to optimise
+                Ive successfully remade the player animator controller, but i have a few things to look at
+                    I need to allow attacking when wall jumping specifically
+                    Sometimes the run animation blends in after a wall jump, and plays again when walking off a platform before playing the fall anim
+                    I can indefinitely hold the ability button, freezing the animation at inconvenient times
+                    
+                Not really an issue, but when the player spawns for the very first time, there is a chance Origo's weather gets changed
+                    The weather ideally should be clear at the very start of the game, then can be changed once the player reenters
                     
         Junie Help
             See how to fix the individual exit bugs i get
@@ -48,11 +57,6 @@ SNADV Notes
     Things to be added/changed:
         
         AO
-        
-            We should start tackling the big 3:
-                Typewriter Logic Rewriting
-                Input System Switching
-                Background/Foreground Logic Rewriting
         
             Improve Typewriter Logic
                 The Typewriter updates the settings as it displays text
@@ -81,6 +85,9 @@ SNADV Notes
                         so it can easily switch between or merge together
                 OSTs
                     I need to make new boss music to fit the new map music
+                    Ive made shop music, but i want to make variants of it
+                        One for each major element place
+                        For example, Cynder Valley's version of this piece will have its signature shamisen, shifting the genre a bit
         
         Post-AO           
   

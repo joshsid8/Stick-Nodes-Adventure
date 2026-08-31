@@ -195,10 +195,11 @@ namespace scripies.Player
             justSpawned = false;
             GameHUD.Instance.SetShaderColour(Color.black);
         }
-
+        [ContextMenu("End the Player's Life!")] public void Kill() => StartCoroutine(Death());
         private IEnumerator Death()
         {
             isDead = true;
+            playerHealth = 0;
             GameEvents.TriggerPlayerDeath();
             (AudioClip, bool) deathSound = (deathClip, true);
             #if UNITY_EDITOR

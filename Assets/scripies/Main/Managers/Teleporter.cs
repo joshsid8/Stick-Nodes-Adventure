@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
@@ -10,19 +11,29 @@ public class Teleporter : MonoBehaviour
 {
     [SerializeField] private List<string> tagsToIgnore = new();
     [SerializeField] [Tooltip("Will teleport the player to said position instead of taking them to their most recent checkpoint")] 
-    private bool forcePlayerTeleport;
     public Transform teleportTarget;
-    
+    [Space]
+    [Header("Player Teleporting Properties")]
+    private bool forcePlayerTeleport;
     [SerializeField] private bool isSceneTeleport;
     public SceneField sceneToTeleport;
     [SerializeField] private GameObject enterIndicator;
     [SerializeField] private bool inRange;
-     
+    [SerializeField] private Vector2 teleporterSize;
+    [Space]
     [SerializeField] private AudioClip teleportSfx;
     
     public bool doesDamage;
     public float damage = 20;
-    
+
+    private void Update()
+    {
+        if (sceneToTeleport == null || !isSceneTeleport) return;
+        inRange = Physics2D.OverlapBox(transform.position, teleporterSize, 0, LayerMask.GetMask("Player"));
+        enterIndicator.SetActive(inRange);
+        if (Input.GetButtonDown("Interact") && inRange) StartCoroutine(TeleportPlayerToScene());
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         switch (collision.tag)
@@ -39,11 +50,6 @@ public class Teleporter : MonoBehaviour
                 }
                 break;
             }
-            case "Player" when isSceneTeleport:
-                inRange = true;
-                enterIndicator.SetActive(inRange);
-                StartCoroutine(PlayerByTeleporter());
-                break;
             case "Enemy":
             case "Boss":
             {
@@ -58,7 +64,7 @@ public class Teleporter : MonoBehaviour
                 }
                 break;
             }
-            case "Terrain": case "Door": case "Untagged": case "Spawner": case "MainCamera": case "NPC": case "Section": case "camera":
+            case "Terrain": case "Door": case "Untagged": case "Spawner": case "MainCamera": case "NPC": case "Section": case "camera": case "Player" when isSceneTeleport:
                 return;
             default:
                 collision.transform.position = teleportTarget.position;
@@ -67,52 +73,46 @@ public class Teleporter : MonoBehaviour
         if (teleportSfx != null) AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.CompareTag("Player")) return;
-        enterIndicator.SetActive(false);
-        inRange = false;
-    }
-
-    private IEnumerator PlayerByTeleporter()
-    {
-        var teleported = false;
-        while (inRange && !teleported)
-        {   //TODO: Add an Interact button in the Editor, then remove the second condition
-            if (Input.GetButtonDown("Interact") || Input.GetKeyDown(KeyCode.W))
-            {
-                GameHUD.Instance.ActivateShader(1f, 0.5f, true, 0.5f);
-                SceneManager.LoadSceneAsync(sceneToTeleport.SceneName,LoadSceneMode.Additive);
-                UnloadCurrentScenes();
-                TeleportPlayerToScene();
-                teleported = true;
-            }
-            yield return null;
-        }
-    }
-
-    private static void UnloadCurrentScenes()
+    private void UnloadCurrentScenes()
     {
         for (var i = 0; i < SceneManager.sceneCount; i++)
         {
             var scene = SceneManager.GetSceneAt(i);
-            if (scene.isLoaded && !scene.name.Contains("Persistent")) 
+            if (scene.isLoaded && scene.name != gameObject.scene.name && scene.name != sceneToTeleport.SceneName && scene.name != "Persistent Objects") 
                 SceneManager.UnloadSceneAsync(scene.name);
         }
     }
     
-    private void TeleportPlayerToScene()
+    private IEnumerator TeleportPlayerToScene()
     {
+        GameHUD.Instance.ActivateShader(1f, 15f, true, 1f);
+        yield return new WaitForSeconds(0.5f);
+        if (!SceneManager.GetSceneByName(sceneToTeleport.SceneName).isLoaded) SceneManager.LoadSceneAsync(sceneToTeleport.SceneName, LoadSceneMode.Additive);
+        UnloadCurrentScenes();
+        
         var player = PlayerHealth.Instance.gameObject;
         var scene = SceneManager.GetSceneByName(sceneToTeleport.SceneName);
+       
         GameObject teleportPoint = null;
         foreach (var obj in scene.GetRootGameObjects())
         {
-            if (obj.TryGetComponent<MapManager>(out var mm)) continue;
-            teleportPoint = mm.mainSpawnPoint;
-            break;
+            if (obj.TryGetComponent<MapManager>(out var mm))
+            {
+                teleportPoint = mm.mainSpawnPoint;
+                break;
+            }
         }
-        if (teleportPoint == null) return;
+        yield return new WaitForSeconds(0.5f);
+        if (teleportPoint == null)
+        {
+            yield break;
+        }
         player.transform.position = teleportPoint.transform.position;
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.dodgerBlue;
+        Gizmos.DrawWireCube(transform.position, teleporterSize);
     }
 }

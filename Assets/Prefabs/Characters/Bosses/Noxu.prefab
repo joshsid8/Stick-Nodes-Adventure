@@ -515,7 +515,7 @@ MonoBehaviour:
   - Decimate
   activeAtk:
   - Decimate
-  - Boulder
+  - BoulderRise
   playerLayer:
     serializedVersion: 2
     m_Bits: 49408
@@ -643,7 +643,7 @@ Animator:
   m_GameObject: {fileID: 9085918208820846365}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 919e231ca2a9a3a42b01476b4f335276, type: 2}
+  m_Controller: {fileID: 9100000, guid: 71734ab4ce7289646bc541de50271d1f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

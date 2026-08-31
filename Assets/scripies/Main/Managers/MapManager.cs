@@ -103,14 +103,11 @@ public class MapManager : MonoBehaviour
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
-        if (activeMap)
-        {
-            activeMap = false;
-            return;
-        }
+        if (activeMap) return;
+        activeMap = true;
         StartCoroutine(MapTransition(collision));
     }
 
@@ -119,7 +116,6 @@ public class MapManager : MonoBehaviour
         // No! I am NNNNOT going to inverse the if statement!!!
         if (AreaManager.Instance.titleText.text != mapName || AreaManager.Instance.titleText.text != null)
         {
-            activeMap = true;
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
             mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
             //StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
@@ -164,18 +160,14 @@ public class MapManager : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
-        if (!activeMap)
-        {
-            activeMap = true;
-            return;
-        }
+        if (!activeMap) return;
+        activeMap = false;
         MakeDataPersistent();
         audioManager.TriggerFadeOut();
         weather.ClearDisasters();
         audioManager.previousScene = collision.gameObject.scene;
          if (collision != null && SceneManager.GetSceneByName("Persistent Objects").isLoaded) SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
         mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
-        activeMap = false;
     }
 
     private void CollateObjects()
