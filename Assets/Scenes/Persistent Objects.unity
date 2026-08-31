@@ -1325,7 +1325,7 @@ MonoBehaviour:
   - {fileID: 198827336}
   cluelessIndex: 0
   alterTime: 0
-  timeScale: 1
+  timeScale: 0.4
 --- !u!1001 &175885674
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,14 +4,12 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        I think i can move onto remaking some of the boss/enemy animator controllers for further efficiency
-            Just finished remaking Cynder
-            Noxu next
-        Otherwise, we can start tackling the big 3:
-            Typewriter Logic Rewriting
-            Input System Switching
-            Background/Foreground Logic Rewriting
-
+        
+        Ive extended the teleporter script
+            Now the player should be able to enter specific areas, such as a shop
+            This type will also unload all the other scenes, so transitions are seamless
+            Test this out by making a small shop the player can enter
+            
     Optimisations & Hotfixes:
         
         Instability
@@ -50,6 +48,12 @@ SNADV Notes
     Things to be added/changed:
         
         AO
+        
+            We should start tackling the big 3:
+                Typewriter Logic Rewriting
+                Input System Switching
+                Background/Foreground Logic Rewriting
+        
             Improve Typewriter Logic
                 The Typewriter updates the settings as it displays text
                     but i would rather have it know what settings should be implemented beforehand to make it work well          
