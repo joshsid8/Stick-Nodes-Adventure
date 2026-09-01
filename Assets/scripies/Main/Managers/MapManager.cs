@@ -206,6 +206,19 @@ public class MapManager : MonoBehaviour
         doorSceneData.Clear();
         spawnerSceneData.Clear();
     }
+
+    public void DisableSpawners()
+    {
+        foreach (var obj in sceneObjects)
+        {
+            if (obj.GetComponentsInChildren<EntitySpawner>() != null)
+            {
+                foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>()) 
+                    spawner.enabled = false;
+            }
+            obj.gameObject.SetActive(false);
+        }
+    }
     
     private void SaveDataOnDialogueClose(ScriptableObject dialogue = null) 
     {

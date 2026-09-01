@@ -76,6 +76,7 @@ namespace scripies.Player
         public float[] MaxAbilityCooldown => pa.maxAbilityCooldowns;
         public int AggressiveEnemies => aggressiveEnemies.Count;
         public float NodeBucks => pm.nodeBucks;
+        public AbilityObjSO[] CurrentAbilities => pa.ability.objects; 
         #endregion
 
         private void Awake()

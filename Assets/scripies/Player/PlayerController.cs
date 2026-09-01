@@ -530,6 +530,7 @@ namespace scripies.Player
             data.health = PlayerHealth.Instance.playerHealth;
             data.energy = pab.energy;
             data.money = pm.nodeBucks;
+            data.abilities = PlayerHealth.Instance.CurrentAbilities;
             data.wallJumpAbility = canWallJump;
             data.doubleJumpAbility = canDoubleJump;
             
@@ -546,6 +547,7 @@ namespace scripies.Player
             PlayerHealth.Instance.playerHealth = data.health;
             pab.energy = data.energy;
             pm.nodeBucks = data.money;
+            pab.ability.objects = data.abilities;
             canWallJump = data.wallJumpAbility;
             canDoubleJump = data.doubleJumpAbility;
 
@@ -574,6 +576,8 @@ namespace scripies.Player
         public float energy;
         public float money;
         public int currentSpawnPointId;
+        
+        public AbilityObjSO[] abilities;
 
         public bool wallJumpAbility;
         public bool doubleJumpAbility;

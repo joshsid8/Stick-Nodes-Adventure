@@ -15,27 +15,15 @@ SNADV Notes
         Instability
         
             Issues from Testing
-                The player's abilities arent saved                
-                When saving and quitting inside the shop scene and playing again, i get spawned at the default spawn point instead of the shop's one
-                    This might be because the shop scene is new, and i havent added all the right stuff to it yet
-                Mystic River's map trigger is a bit off at the top
                 Shaders arent working when teleporting to and from the shop scene (or just teleporting per se)
-
-                                
+                
             Replicatable or From-Build bugs/problems
                 
             One time occurrences or Rare/Intimidating bugs
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
-                Items with default sprites dont (always) get shown in the shop manager
-                    I need to ensure the default sprite is used (if there is one), and is consistent
-                        One time in the shop, it actually did work for an ability scroll
-                        Just in case, i need a global placeholder sprite for items without their own
                         
-                SFX
-                    Barely anything is done yet, but no errors are spamming at me
-                    I do need more files in general
-                    Also, find out why one shot sounds are very very quiet
+                Find out why one shot sfx are very very quiet
                     
                 One time, izuno had no dialogue on load
                     It seems like it saved, thus loaded an empty dialogue list

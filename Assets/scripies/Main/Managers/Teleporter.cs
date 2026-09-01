@@ -17,9 +17,10 @@ public class Teleporter : MonoBehaviour
     private bool forcePlayerTeleport;
     [SerializeField] private bool isSceneTeleport;
     public SceneField sceneToTeleport;
-    [SerializeField] private GameObject enterIndicator;
     [SerializeField] private bool inRange;
     [SerializeField] private Vector2 teleporterSize;
+    [SerializeField] private GameObject enterIndicator;
+    [SerializeField] private string connectingDoor;
     [Space]
     [SerializeField] private AudioClip teleportSfx;
     
@@ -78,8 +79,12 @@ public class Teleporter : MonoBehaviour
         for (var i = 0; i < SceneManager.sceneCount; i++)
         {
             var scene = SceneManager.GetSceneAt(i);
-            if (scene.isLoaded && scene.name != gameObject.scene.name && scene.name != sceneToTeleport.SceneName && scene.name != "Persistent Objects") 
+            if (scene.isLoaded && scene.name != gameObject.scene.name && scene.name != sceneToTeleport.SceneName && scene.name != "Persistent Objects")
+            {
+                MapManager.Instances.TryGetValue(scene.name, out var mapManager);
+                mapManager?.DisableSpawners();
                 SceneManager.UnloadSceneAsync(scene.name);
+            }
         }
     }
     
@@ -94,19 +99,31 @@ public class Teleporter : MonoBehaviour
         var scene = SceneManager.GetSceneByName(sceneToTeleport.SceneName);
        
         GameObject teleportPoint = null;
-        foreach (var obj in scene.GetRootGameObjects())
+        if (string.IsNullOrEmpty(connectingDoor))
         {
-            if (obj.TryGetComponent<MapManager>(out var mm))
+            foreach (var obj in scene.GetRootGameObjects())
             {
-                teleportPoint = mm.mainSpawnPoint;
-                break;
+                if (obj.TryGetComponent<MapManager>(out var mm))
+                {
+                    teleportPoint = mm.mainSpawnPoint;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            var allDoors = FindObjectsByType<DoorIdentifier>(FindObjectsSortMode.None);
+            foreach (var door in allDoors)
+            {
+                if (door.doorNameID.Contains(connectingDoor))
+                {
+                    teleportPoint = door.gameObject;
+                    break;
+                }
             }
         }
         yield return new WaitForSeconds(0.5f);
-        if (teleportPoint == null)
-        {
-            yield break;
-        }
+        if (teleportPoint == null) throw new NullReferenceException($"[Teleporter {gameObject.name}] Not a teleport point in sight from the looks of it...");
         player.transform.position = teleportPoint.transform.position;
     }
     

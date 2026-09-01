@@ -52,23 +52,14 @@ public class SceneLoadTrigger : MonoBehaviour
             for (var j = 0; j < SceneManager.sceneCount; j++)
             {
                 var loadedScene = SceneManager.GetSceneAt(j);
-                if (loadedScene.name == scene.SceneName)
+                if (loadedScene.name == scene.SceneName && loadedScene.isLoaded)
                 {
                     if (MapManager.Instances.TryGetValue(scene.SceneName, out var mapManager))
                     {
                         mapManager.SaveSceneData();
                         yield return new WaitForSeconds(0.1f);
                         mapManager.MakeDataPersistent();
-                        foreach (var obj in mapManager.sceneObjects)
-                        {
-                            if (obj.GetComponentsInChildren<EntitySpawner>() != null)
-                            {
-                                foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>()) 
-                                    spawner.enabled = false;
-                            }
-                            
-                            obj.gameObject.SetActive(false);
-                        }
+                        mapManager.DisableSpawners();
                         yield return new WaitForSeconds(0.1f);
                     }
                     SceneManager.UnloadSceneAsync(scene);
