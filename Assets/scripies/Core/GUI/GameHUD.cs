@@ -36,58 +36,90 @@ public class GameHUD : MonoBehaviour
     
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            player = playerObj.GetComponent<IPlayerStatus>();
+        }
     }
 
     private void Update()
     {
-        currencyText.text = "₦odeBucks: " + player.NodeBucks.ToString("F0");
+        if (player != null)
+        {
+            currencyText.text = "₦odeBucks: " + player.NodeBucks.ToString("F0");
+        }
         bossHealthBackBar.color = new Color(bossHealthBar.color.r * 0.4f, bossHealthBar.color.g * 0.4f, bossHealthBar.color.b * 0.4f, 1);
     }
     
     #region Shader Stuff
     private void ToggleShader(bool state) => screenShader.enabled = state;
     public void ActivateShader(float holdTime = 1, float fadeTime = 1.5f, bool fadeInAndOut = false, float fadeOutTime = 1.5f)
-        => StartCoroutine(fadeTime <= 0 
-            ? FadeInShader(holdTime, Mathf.Abs(fadeTime), fadeInAndOut, fadeOutTime) 
-            : FadeOutShader(holdTime, fadeTime));
-    
-    private IEnumerator FadeOutShader(float holdTime, float fadeTime)
+    {
+        if (fadeTime <= 0)
+        {
+            StartCoroutine(FadeInShader(holdTime, Mathf.Abs(fadeTime), fadeInAndOut, fadeOutTime));
+        }
+        else
+        {
+            StartCoroutine(FadeOutShader(holdTime, fadeTime));
+        }
+    }
+
+    public IEnumerator FadeInShader(float holdTime, float fadeTime, bool fadeInAndOut = false, float fadeOutTime = 1.5f)
+    {
+        if (!screenShader.enabled) screenShader.enabled = true;
+        
+        Color targetColor = screenShader.color;
+        targetColor.a = 0;
+        screenShader.color = targetColor;
+        
+        yield return new WaitForSeconds(holdTime);
+        
+        float progress = 0;
+        while (progress < 1)
+        {
+            progress = Mathf.MoveTowards(progress, 1f, Time.deltaTime * fadeTime);
+            Color c = screenShader.color;
+            c.a = progress;
+            screenShader.color = c;
+            yield return null;
+        }
+        
+        if (fadeInAndOut)
+        {
+            yield return new WaitForSeconds(fadeOutTime); // use fadeOutTime as hold time before fading out
+            StartCoroutine(FadeOutShader(0, fadeOutTime));
+        }
+    }
+
+    public IEnumerator FadeOutShader(float holdTime, float fadeTime)
     {
         if (!screenShader.enabled) screenShader.enabled = true;
         yield return new WaitForSeconds(holdTime);
-        // Had to use a while loop instead of CrossFadeAlpha because it was not working properly, cant have anything nice round ere
-        while (screenShader.color.a > 0)
+        
+        float progress = screenShader.color.a;
+        while (progress > 0)
         {
-            screenShader.color -= new Color(0, 0, 0, Time.deltaTime * fadeTime);
+            progress = Mathf.MoveTowards(progress, 0f, Time.deltaTime * fadeTime);
+            Color c = screenShader.color;
+            c.a = progress;
+            screenShader.color = c;
             yield return null;
         }
         screenShader.enabled = false;
-        //print("finished fading out");
-    }
-    
-    private IEnumerator FadeInShader(float holdTime, float fadeTime, bool fadeInAndOut = false, float fadeOutTime = 1.5f)
-    {
-        if (!screenShader.enabled) screenShader.enabled = true;
-        yield return new WaitForSeconds(holdTime);
-        while (screenShader.color.a < 1)
-        {
-            screenShader.color += new Color(0, 0, 0, Time.deltaTime * fadeTime);
-            yield return null;
-        }
-        if (!fadeInAndOut) yield break;
-        //print("finished fading in");
-        
-        yield return new WaitForSeconds(fadeTime);
-        StartCoroutine(FadeOutShader(holdTime, fadeOutTime));
     }
 
     public void SetShaderColour(Color colour = default, float fadeTime = 1)
     {
-        //This wont work properly
-        //StartCoroutine(ShaderColour(colour, fadeTime));
-        
-        screenShader.CrossFadeColor(colour, fadeTime, true, false, true);
+        if (fadeTime <= 0)
+        {
+            screenShader.color = colour;
+        }
+        else
+        {
+            screenShader.CrossFadeColor(colour, fadeTime, true, false, true);
+        }
     }
 
     private IEnumerator ShaderColour(Color colour, float fadeTime = 1)

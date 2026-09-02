@@ -169,7 +169,7 @@ namespace scripies.Player
             #endif
         }
         
-        [ContextMenu("Teleport Player a lil bit lol")] public void TeleportToSpot() => transform.position = new Vector2(groundCheck.transform.position.x, groundCheck.position.y + 1);
+        [ContextMenu("Teleport Player a lil bit lol")] public void TeleportToSpot() => rb.MovePosition(new Vector2(transform.position.x + 5, transform.position.y + 5));
         
         // Update is called once per frame
         private void Update()
@@ -367,22 +367,22 @@ namespace scripies.Player
 
         private void ApplyMovement()
         {
-            if (canMove && !isFrozen && !kb.IsBeingKnocked && !isWallJumping && !isDashing)
-            {
-                if (moveInputDir != 0)
-                {
-                    isMoving = true;
-                    rb.linearVelocity = new Vector2(movementSpeed * movementSpeedMult * moveInputDir,
-                        rb.linearVelocity.y);
-                }
+            if (!canMove || isFrozen || kb.IsBeingKnocked || isWallJumping || isDashing || rb.bodyType == RigidbodyType2D.Static) return;
 
-                if (moveInputDir == 0 && isMoving)
-                {
-                    isMoving = false;
-                    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                }
+            if (moveInputDir != 0)
+            {
+                isMoving = true;
+                rb.linearVelocity = new Vector2(movementSpeed * movementSpeedMult * moveInputDir,
+                    rb.linearVelocity.y);
+            }
+
+            if (moveInputDir == 0 && isMoving)
+            {
+                isMoving = false;
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             }
         }
+
 
         private void CheckMovementDirection()
         {

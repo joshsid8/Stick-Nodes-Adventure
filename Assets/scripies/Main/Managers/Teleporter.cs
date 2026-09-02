@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class Teleporter : MonoBehaviour
 {
+    public bool canTeleport;
+    
     [SerializeField] private List<string> tagsToIgnore = new();
     [SerializeField] [Tooltip("Will teleport the player to said position instead of taking them to their most recent checkpoint")] 
     public Transform teleportTarget;
@@ -23,24 +25,25 @@ public class Teleporter : MonoBehaviour
     [SerializeField] private string connectingDoor;
     [Space]
     [SerializeField] private AudioClip teleportSfx;
+    private PlayerInput input;
     
     public bool doesDamage;
     public float damage = 20;
+
+    private void Start()
+    {
+        input = PlayerHealth.Instance.pc.input ?? new PlayerInput();
+        StartCoroutine(JustTeleported());
+    }
 
     private void Update()
     {
         if (sceneToTeleport == null || !isSceneTeleport) return;
         inRange = Physics2D.OverlapBox(transform.position, teleporterSize, 0, LayerMask.GetMask("Player"));
         enterIndicator.SetActive(inRange);
+        if (input.Player.Interact.IsPressed() && inRange && canTeleport) StartCoroutine(TeleportPlayerToScene());
     }
-
-    private void OnEnable()
-    {
-        PlayerHealth.Instance.pc.input.Player.Interact.performed += _ =>
-        {
-            if (inRange) StartCoroutine(TeleportPlayerToScene());
-        };
-    }
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -97,14 +100,20 @@ public class Teleporter : MonoBehaviour
     
     private IEnumerator TeleportPlayerToScene()
     {
-        GameHUD.Instance.ActivateShader(1f, 15f, true, 1f);
+        if (!canTeleport) yield break;
+        canTeleport = false;
+        input.Player.Disable();
+        GameHUD.Instance.SetShaderColour(Color.black, 0); 
+        GameHUD.Instance.ActivateShader(0f, -2f);
+        
         yield return new WaitForSeconds(0.5f);
-        if (!SceneManager.GetSceneByName(sceneToTeleport.SceneName).isLoaded) SceneManager.LoadSceneAsync(sceneToTeleport.SceneName, LoadSceneMode.Additive);
+        
         UnloadCurrentScenes();
         
         var player = PlayerHealth.Instance.gameObject;
         var scene = SceneManager.GetSceneByName(sceneToTeleport.SceneName);
-       
+        if (!scene.isLoaded) SceneManager.LoadScene(sceneToTeleport.SceneName, LoadSceneMode.Additive);
+        yield return new WaitForSeconds(0.1f);
         GameObject teleportPoint = null;
         if (string.IsNullOrEmpty(connectingDoor))
         {
@@ -130,8 +139,27 @@ public class Teleporter : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(0.5f);
-        if (teleportPoint == null) throw new NullReferenceException($"[Teleporter {gameObject.name}] Not a teleport point in sight from the looks of it...");
+        if (teleportPoint == null)
+        {
+            GameHUD.Instance.ActivateShader(0.5f, 1f);
+            GameEvents.TriggerPlaySound();
+            throw new NullReferenceException($"[Teleporter {gameObject.name}] Not a teleport point in sight from the looks of it...");
+        }
         player.transform.position = teleportPoint.transform.position;
+        if (!input.UI.enabled) input.Player.Enable();
+        StartCoroutine(JustTeleported());
+        GameHUD.Instance.ActivateShader(0.5f, 2f);
+    }
+
+    private static IEnumerator JustTeleported()
+    {
+        var allTeleporters = FindObjectsByType<Teleporter>(FindObjectsSortMode.None);
+        foreach (var teleporter in allTeleporters)
+        {
+            teleporter.canTeleport = false;
+            yield return new WaitForSeconds(0.5f);
+            teleporter.canTeleport = true;
+        }
     }
     
     private void OnDrawGizmos()

@@ -4,7 +4,7 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        One of the big 3 has been done! Now to do the other 2:
+        One of the big 3 has been done! Now to do the other 2 (Once instability is fixed):
             Typewriter Logic
             Background/Foreground Logic
         
@@ -13,16 +13,15 @@ SNADV Notes
         Instability
         
             Issues from Testing
-                Shaders arent working when teleporting to and from the shop scene (or just teleporting per se)
-                Seems like the cinemachine confiner isnt working for Alatus islands and the Tester place
-                Casting abilities doenst work on build only
-                    Like cuz of the input system switch
+                In the player logs, Apparently, leaks will happen if certain Input maps are toggled, which in itself causes random issues
+                Also, when exiting i ofc get a nullref talking about the ui input map doesnt exist, cuz why would it???!?!?!?!
+                Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map
+                Teleporting ANYWHERE takes me to the first spawn point unless i walk into a checkpoint trigger
+                I need to make CloseCurrentMenus work properly in GUIBase, just to make things more clear
+                When teleporting to the shop, THE PLAYER GETS DESTROYED!!!                
                 
             Replicatable or From-Build bugs/problems
-                Teleporting in general "exits" the current map (calling the triggerexit method), and reenters the map
-                    I need to change the way teleporting works
-                        Maybe use Translate, or MovePosition instead of just setting their position to the target
-                
+
             One time occurrences or Rare/Intimidating bugs
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs

@@ -63,7 +63,7 @@ public class MapManager : MonoBehaviour
         SaveSceneData();
         yield return new WaitForSeconds(0.3f);
         if (SceneDataManager.Instance.sceneData.Count > 0) LoadSceneData();
-        yield return null;
+        
     }
 
     private void Update()
@@ -73,6 +73,10 @@ public class MapManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F2)) MakeDataPersistent();
         if (Input.GetKeyDown(KeyCode.F3)) LoadSceneData();
         #endif
+
+        if (!activeMap) return;
+        var player = PlayerHealth.Instance;
+        var playerCol = player.GetComponent<Collider2D>();
     }
     
     private void OnBossDefeated() => bossSceneData.isDead = true;
@@ -159,14 +163,22 @@ public class MapManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player")  || !Application.isPlaying) return;
+        if (!collision.CompareTag("Player")) return;
+        if (GetComponent<Collider2D>().OverlapPoint(collision.transform.position)) return;
+        //print($"Map {sceneName} LLIIIEEED to you! youre still in the map!"); }
+        HandleMapExit(collision.gameObject);
+    }
+
+    private void HandleMapExit(GameObject playerObject)
+    {
         if (!activeMap) return;
         activeMap = false;
         MakeDataPersistent();
         audioManager.TriggerFadeOut();
         weather.ClearDisasters();
-        audioManager.previousScene = collision.gameObject.scene;
-         if (collision != null && SceneManager.GetSceneByName("Persistent Objects").isLoaded) SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName("Persistent Objects"));
+        audioManager.previousScene = playerObject.scene;
+        if (playerObject != null && SceneManager.GetSceneByName("Persistent Objects").isLoaded) 
+            SceneManager.MoveGameObjectToScene(playerObject, SceneManager.GetSceneByName("Persistent Objects"));
         mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
     }
 

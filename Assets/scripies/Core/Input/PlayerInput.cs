@@ -118,7 +118,7 @@ namespace scripies.Core
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -207,8 +207,8 @@ namespace scripies.Core
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""e2062cb9-1b15-46a2-838c-2f8d72a0bdd9"",
+                    ""name"": ""Up"",
+                    ""id"": ""a60c9f90-948b-400b-85d6-dc1d3250efbf"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -218,8 +218,8 @@ namespace scripies.Core
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""8180e8bd-4097-4f4e-ab88-4523101a6ce9"",
+                    ""name"": ""Up"",
+                    ""id"": ""91fa7e9c-ca8a-4bf6-8557-e242cf17cc2c"",
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -351,6 +351,17 @@ namespace scripies.Core
                 },
                 {
                     ""name"": """",
+                    ""id"": ""22271f82-4af2-4cb6-80ae-25b154975182"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""450eddb7-5507-40f9-8333-24aedd79e86e"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -459,6 +470,15 @@ namespace scripies.Core
                     ""type"": ""PassThrough"",
                     ""id"": ""c95b2375-e6d9-4b88-9c4c-c5e76515df4b"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CloseTopMost"",
+                    ""type"": ""Button"",
+                    ""id"": ""f2c8caa5-c667-455f-893f-80ed01c274a8"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -794,6 +814,17 @@ namespace scripies.Core
                 },
                 {
                     ""name"": """",
+                    ""id"": ""3a4e7e8c-b985-4f1d-bf19-53d78a1da18a"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""CloseTopMost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""9e92bb26-7e3b-4ec4-b06b-3c8f8e498ddc"",
                     ""path"": ""*/{Submit}"",
                     ""interactions"": """",
@@ -1006,6 +1037,7 @@ namespace scripies.Core
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
+            m_UI_CloseTopMost = m_UI.FindAction("CloseTopMost", throwIfNotFound: true);
             m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
             m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
             m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -1301,6 +1333,7 @@ namespace scripies.Core
         private readonly InputActionMap m_UI;
         private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
         private readonly InputAction m_UI_Navigate;
+        private readonly InputAction m_UI_CloseTopMost;
         private readonly InputAction m_UI_Submit;
         private readonly InputAction m_UI_Cancel;
         private readonly InputAction m_UI_Point;
@@ -1323,6 +1356,10 @@ namespace scripies.Core
             /// Provides access to the underlying input action "UI/Navigate".
             /// </summary>
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
+            /// <summary>
+            /// Provides access to the underlying input action "UI/CloseTopMost".
+            /// </summary>
+            public InputAction @CloseTopMost => m_Wrapper.m_UI_CloseTopMost;
             /// <summary>
             /// Provides access to the underlying input action "UI/Submit".
             /// </summary>
@@ -1380,6 +1417,9 @@ namespace scripies.Core
                 @Navigate.started += instance.OnNavigate;
                 @Navigate.performed += instance.OnNavigate;
                 @Navigate.canceled += instance.OnNavigate;
+                @CloseTopMost.started += instance.OnCloseTopMost;
+                @CloseTopMost.performed += instance.OnCloseTopMost;
+                @CloseTopMost.canceled += instance.OnCloseTopMost;
                 @Submit.started += instance.OnSubmit;
                 @Submit.performed += instance.OnSubmit;
                 @Submit.canceled += instance.OnSubmit;
@@ -1415,6 +1455,9 @@ namespace scripies.Core
                 @Navigate.started -= instance.OnNavigate;
                 @Navigate.performed -= instance.OnNavigate;
                 @Navigate.canceled -= instance.OnNavigate;
+                @CloseTopMost.started -= instance.OnCloseTopMost;
+                @CloseTopMost.performed -= instance.OnCloseTopMost;
+                @CloseTopMost.canceled -= instance.OnCloseTopMost;
                 @Submit.started -= instance.OnSubmit;
                 @Submit.performed -= instance.OnSubmit;
                 @Submit.canceled -= instance.OnSubmit;
@@ -1633,6 +1676,13 @@ namespace scripies.Core
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnNavigate(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "CloseTopMost" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnCloseTopMost(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>

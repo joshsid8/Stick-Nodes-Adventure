@@ -35,8 +35,6 @@ public class StatsManager : GUIBase
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : 1200);
         GetActive(isActive);
         UpdateBadgeSlotList();
-        if (!isActive) return;
-        CloseCurrentMenus();
     }
 
     public void ClearStatShaders()

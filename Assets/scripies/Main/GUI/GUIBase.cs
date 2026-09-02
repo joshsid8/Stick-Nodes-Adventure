@@ -23,13 +23,13 @@ public abstract class GUIBase : MonoBehaviour
         ActiveGUICount = 0;
         rt = GetComponent<RectTransform>();
         allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
-        input = new PlayerInput();
     }
     
     private void Start()
     {
+        input = PlayerHealth.Instance.pc.input;
+        input.UI.CloseTopMost.performed += _ => CloseTopMost();
         UpdatePlayerState();
-        input.UI.Cancel.performed += _ => CloseTopMost();
         if (player != null) return;
         player = PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
         if (player == null) throw new MissingReferenceException("BRUUHHH");
@@ -94,6 +94,7 @@ public abstract class GUIBase : MonoBehaviour
         isActive = true;
         ActiveGUICount++;
         ActiveGuis.Add(this);
+        CloseCurrentMenus();
         OnActivated();
     }
 

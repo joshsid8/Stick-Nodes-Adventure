@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using scripies.Player;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,11 +24,22 @@ public class InvManager : GUIBase
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         base.Awake();
-        playerManager = FindAnyObjectByType<PlayerManager>();
         invIndex = new InvIndex();
-        if (playerManager == null) Debug.LogWarning("InvManager: We cant find the player manager D:");
+        playerManager = FindAnyObjectByType<PlayerManager>();
+        if (playerManager == null) Debug.LogError("InvManager: We cant find the player manager D:");
         if (isActive) ToggleInventory();
         InitializeAllSlots();
+    }
+
+    private void Start()
+    {
+        if (input == null)
+        {
+            input = PlayerHealth.Instance.pc.input;
+            if (input == null)
+                throw new NullReferenceException("InvManager: After trying TTTWWIIICCEEE, we still couldnt find input.");
+        }
+        input.Player.Inventory.performed += _ => ToggleInventory();
     }
 
     private void InitializeAllSlots()
@@ -37,10 +50,8 @@ public class InvManager : GUIBase
     }
 
 
-    private void OnEnable()
+    private void Update()
     {
-        input.Player.Inventory.performed += _ => ToggleInventory();
-
         #if UNITY_EDITOR
         if (Input.GetKeyDown("o")) SaveSystem.Save();
         if (Input.GetKeyDown("p")) SaveSystem.Load();
@@ -52,7 +63,6 @@ public class InvManager : GUIBase
         isActive = !isActive;
         if (inventoryMenu == null) return;
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
-        if (isActive) CloseTopMost();
         GetActive(isActive);
     }
 

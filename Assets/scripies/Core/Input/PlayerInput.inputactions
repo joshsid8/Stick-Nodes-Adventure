@@ -30,7 +30,7 @@
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -119,8 +119,8 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "e2062cb9-1b15-46a2-838c-2f8d72a0bdd9",
+                    "name": "Up",
+                    "id": "a60c9f90-948b-400b-85d6-dc1d3250efbf",
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
@@ -130,8 +130,8 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "up",
-                    "id": "8180e8bd-4097-4f4e-ab88-4523101a6ce9",
+                    "name": "Up",
+                    "id": "91fa7e9c-ca8a-4bf6-8557-e242cf17cc2c",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
@@ -263,6 +263,17 @@
                 },
                 {
                     "name": "",
+                    "id": "22271f82-4af2-4cb6-80ae-25b154975182",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "450eddb7-5507-40f9-8333-24aedd79e86e",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -371,6 +382,15 @@
                     "type": "PassThrough",
                     "id": "c95b2375-e6d9-4b88-9c4c-c5e76515df4b",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CloseTopMost",
+                    "type": "Button",
+                    "id": "f2c8caa5-c667-455f-893f-80ed01c274a8",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -703,6 +723,17 @@
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "3a4e7e8c-b985-4f1d-bf19-53d78a1da18a",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CloseTopMost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

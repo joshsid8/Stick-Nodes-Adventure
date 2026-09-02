@@ -232,7 +232,7 @@ GameObject:
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -347,7 +347,6 @@ MonoBehaviour:
   blastIndex: 0
   blastType: 0
   ability: {fileID: 7870431470146604584}
-  animator: {fileID: 0}
 --- !u!114 &3132542422178999997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,7 +547,7 @@ MonoBehaviour:
   defaultGravity: 0
   rb: {fileID: 0}
   animator: {fileID: 0}
-  inputDirection: 0
+  moveInputDir: 0
   oneWayPlatformLayer:
     serializedVersion: 2
     m_Bits: 65536
