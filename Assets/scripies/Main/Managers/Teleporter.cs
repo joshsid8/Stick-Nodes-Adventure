@@ -14,7 +14,7 @@ public class Teleporter : MonoBehaviour
     public Transform teleportTarget;
     [Space]
     [Header("Player Teleporting Properties")]
-    private bool forcePlayerTeleport;
+    [SerializeField] private bool forcePlayerTeleport;
     [SerializeField] private bool isSceneTeleport;
     public SceneField sceneToTeleport;
     [SerializeField] private bool inRange;
@@ -32,7 +32,14 @@ public class Teleporter : MonoBehaviour
         if (sceneToTeleport == null || !isSceneTeleport) return;
         inRange = Physics2D.OverlapBox(transform.position, teleporterSize, 0, LayerMask.GetMask("Player"));
         enterIndicator.SetActive(inRange);
-        if (Input.GetButtonDown("Interact") && inRange) StartCoroutine(TeleportPlayerToScene());
+    }
+
+    private void OnEnable()
+    {
+        PlayerHealth.Instance.pc.input.Player.Interact.performed += _ =>
+        {
+            if (inRange) StartCoroutine(TeleportPlayerToScene());
+        };
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -43,7 +50,7 @@ public class Teleporter : MonoBehaviour
             {
                 if (tagsToIgnore.Contains(collision.tag)) return;
                 if (!forcePlayerTeleport) StartCoroutine(PlayerHealth.Instance.Spawn());
-                else collision.transform.position = teleportTarget.position;
+                else /*collision.GetComponent<Rigidbody2D>().MovePosition(teleportTarget.position);*/ collision.transform.position = teleportTarget.position;
                 if (doesDamage)
                 {
                     collision.GetComponent<PlayerHealth>().playerHealth -= damage;

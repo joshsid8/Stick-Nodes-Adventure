@@ -2,7 +2,8 @@
     "name": "scripies.Player",
     "rootNamespace": "",
     "references": [
-        "GUID:a12f187f4332af14fb15d3b05d7b9674"
+        "GUID:a12f187f4332af14fb15d3b05d7b9674",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

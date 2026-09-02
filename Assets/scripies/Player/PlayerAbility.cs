@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using scripies.Core;
 using UnityEngine;
@@ -28,68 +29,41 @@ namespace scripies.Player
         public PerformAbility ability;
         private PlayerController pc;
         private PlayerDefense pd;
-
-        [HideInInspector] public Animator animator;
-
+        
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
-            animator = GetComponent<Animator>();
             pc = GetComponent<PlayerController>();
             pd = GetComponent<PlayerDefense>();
             ability = GetComponent<PerformAbility>();
+
             maxEnergy = energy;
             GameEvents.AddPlayerEnergy += AddEnergy;
             GameEvents.PlayerPerformAbility += TogglePa;
+            
+            if (pc.input == null) throw new Exception("PlayerController missing InputManager!");
+            pc.input.Player.Ability.started += _ =>
+            {
+                if (ability.objects[blastIndex] != null && !isPerformingAbility && canAbility[blastIndex])
+                {
+                    Execute(blastIndex);
+                    isHolding = true;
+                }
+            };
+            pc.input.Player.Ability.canceled += _ => isHolding = false;
+            pc.input.Player.AbilitySwap.performed += _ => AbilitySwap();
         }
 
-        // Update is called once per frame
-        void Update()
+        // Update is called once per frame!!!
+        private void Update()
         {
-            if (Input.GetButtonDown("FireSwap") && !isPerformingAbility)
-            {
-                blastIndex++;
-                if (blastIndex >= 3) blastIndex = 0;
-                
-                // If the slot is empty, keep skipping until we find one or return to 0
-                var start = blastIndex;
-                while (ability.objects[blastIndex] == null)
-                {
-                    blastIndex++;
-                    if (blastIndex >= 3) blastIndex = 0;
-                    if (blastIndex == start) break;
-                }
-            }
-
-            if (pc.canAct && !pc.isDashing && !pc.isWallSliding) Fire();
+            if (pc.canAct && !pc.isDashing && !pc.isWallSliding) AbilityCooldowns();
             Energy();
             
             timeBetweenCast += Time.deltaTime;
             if (timeBetweenCast >= 1.5f) spamAmount = 0;
         }
-
-        private void Fire()
-        {
-            // Made it so that all 3 slots can be any type of ability
-            if (!pc.isWallJumping && !isPerformingAbility && !ability.isActivated && canAbility[blastIndex])
-            {
-                if (Input.GetButtonDown("Fire") && ability.objects[blastIndex] != null) 
-                    Execute(blastIndex);
-            }
-            isHolding = Input.GetButton("Fire") ? isHolding = true : isHolding = false;
-
-            for (var i = 0; i < canAbility.Length; i++)
-            {
-                if (currentAbilityCooldowns[i] < maxAbilityCooldowns[i]) currentAbilityCooldowns[i] += Time.deltaTime;
-                if (currentAbilityCooldowns[i] >= maxAbilityCooldowns[i])
-                {
-                    canAbility[i] = true;
-                    currentAbilityCooldowns[i] = maxAbilityCooldowns[i];
-                }
-                else canAbility[i] = false;
-            }
-        }
-
+        
         private void Execute(int slot = 0)
         {
             if (ability == null) return;
@@ -130,6 +104,36 @@ namespace scripies.Player
             }
         }
 
+        private void AbilitySwap()
+        {
+            if (isPerformingAbility) return;
+            blastIndex++;
+            if (blastIndex >= 3) blastIndex = 0;
+            
+            // If the slot is empty, keep skipping until we find one or return to 0
+            var start = blastIndex;
+            while (ability.objects[blastIndex] == null)
+            {
+                blastIndex++;
+                if (blastIndex >= 3) blastIndex = 0;
+                if (blastIndex == start) break;
+            }
+        }
+        
+        private void AbilityCooldowns()
+        {
+            for (var i = 0; i < canAbility.Length; i++)
+            {
+                if (currentAbilityCooldowns[i] < maxAbilityCooldowns[i]) currentAbilityCooldowns[i] += Time.deltaTime;
+                if (currentAbilityCooldowns[i] >= maxAbilityCooldowns[i])
+                {
+                    canAbility[i] = true;
+                    currentAbilityCooldowns[i] = maxAbilityCooldowns[i];
+                }
+                else canAbility[i] = false;
+            }
+        }
+        
         private static int GetType(AbilityObjSO ab)
         {
             return ab.abilityPrefab.GetComponent<Projectile>() != null ? 0 :
@@ -157,6 +161,7 @@ namespace scripies.Player
             {
                 Debug.LogWarning("Ability safety reset triggered!");
                 isPerformingAbility = false;
+                isHolding = false;
             }
         }
         

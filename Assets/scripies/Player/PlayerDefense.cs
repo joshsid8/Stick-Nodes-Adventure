@@ -45,12 +45,18 @@ namespace scripies.Player
             canCounter = true;
             canBlock = true;
             GameEvents.OnPlayerCounter += StopBlocking;
+            pc.input.Player.Block.started += _ =>
+            {
+                if (!pc.isWallSliding && pc.canAct && !pc.isPerformingAction)
+                    isBlocking = true;
+            };
+            pc.input.Player.Block.canceled += _ => StopBlocking();
+
         }
 
         // Update is called once per frame
         private void Update()
         {
-            if (Input.GetButton("Block") && !pc.isWallSliding && pc.canAct) isBlocking = true;
             Block();
             animator.SetBool("isBlocking", isBlocking);
         }
@@ -59,8 +65,7 @@ namespace scripies.Player
         {
             if (isBlocking)
             {
-                if (canBlock && !pc.isDashing && !pc.isWallSliding && !pa.isPerformingAbility && !pf.isAirAttacking &&
-                    !pf.isAttacking)
+                if (canBlock && !pc.isDashing && !pc.isWallSliding && !pa.isPerformingAbility && !pf.isAirAttacking && !pf.isAttacking)
                 {
                     pc.movementSpeed = blockMoveSpeed;
                     pc.jumpForce = 0f;
@@ -74,7 +79,7 @@ namespace scripies.Player
                 }
                 else StopBlocking();
 
-                if (Input.GetButtonUp("Block") || !pc.canAct || pc.isWallSliding || pc.isDashing || hp.isStunned)
+                if (!pc.canAct || pc.isWallSliding || pc.isDashing || hp.isStunned)
                     StopBlocking();
             }
 

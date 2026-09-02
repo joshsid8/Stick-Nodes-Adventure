@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using scripies.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,12 +23,13 @@ public class GameMenuManager : MonoBehaviour
             return;
         }
         Instance = this;
-        OnMenuToggle(false);
     }
 
-    private void Update()
+    private void Start()
     {
-        if (Input.GetButtonDown("Cancel")) OnMenuToggle(!pausedGame);
+        OnMenuToggle(false);
+        PlayerHealth.Instance.pc.input.Player.Menu.performed += _ => OnMenuToggle(true);
+        PlayerHealth.Instance.pc.input.UI.Cancel.performed += _ => OnMenuToggle(false);
     }
 
     private void OnMenuToggle(bool toggle)
@@ -34,7 +37,12 @@ public class GameMenuManager : MonoBehaviour
         pausedGame = toggle;
         Shenanigans.Instance.ToggleFreezeCamera(toggle);
         gameMenu.SetActive(toggle);
-        if (!toggle) foreach (var button in menuButtons) button.onClick.RemoveAllListeners();
+        if (!toggle)
+        {
+            PlayerHealth.Instance.pc.input.Player.Enable();
+            PlayerHealth.Instance.pc.input.UI.Disable();
+            foreach (var button in menuButtons) button.onClick.RemoveAllListeners();
+        }
         else
         {
             foreach(var button in menuButtons)
@@ -49,6 +57,8 @@ public class GameMenuManager : MonoBehaviour
                         break;
                 }
             }
+            PlayerHealth.Instance.pc.input.Player.Disable();
+            PlayerHealth.Instance.pc.input.UI.Enable();
         }
     }
     

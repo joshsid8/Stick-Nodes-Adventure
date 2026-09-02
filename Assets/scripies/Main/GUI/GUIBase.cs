@@ -11,42 +11,45 @@ public abstract class GUIBase : MonoBehaviour
     public bool isActive;
     [Tooltip("lets... get... AA-")]
     protected static int ActiveGUICount;
-    protected static List<GUIBase> ActiveGuis = new();
+    private static List<GUIBase> ActiveGuis = new();
     protected PlayerController player;
     protected RectTransform rt;
     private GUIBase[] allGuis;
+    
+    protected PlayerInput input;
     
     protected virtual void Awake()
     {
         ActiveGUICount = 0;
         rt = GetComponent<RectTransform>();
         allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
+        input = new PlayerInput();
     }
     
-    private IEnumerator Start()
+    private void Start()
     {
-        yield return new WaitForSeconds(0.5f);
-        GetPlayer();
-        if (player != null) yield break;
+        UpdatePlayerState();
+        input.UI.Cancel.performed += _ => CloseTopMost();
+        if (player != null) return;
         player = PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
         if (player == null) throw new MissingReferenceException("BRUUHHH");
     }
     private void Update()
     {
-        //Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
         if (ActiveGUICount < 0) ActiveGUICount = 0;
         foreach (var gui in allGuis)
         {
             if (gui.isActive) break;
             if (gui != allGuis[^1] || gui.isActive || ActiveGUICount <= 0) return;
-            Debug.LogError($"All gui's are inactive, but the count was {ActiveGUICount}. Resetting Count. You may be frozen, mb");
+            Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
+            Debug.LogError($"All guis are inactive, but the count was {ActiveGUICount}. \nResetting Count. You may be frozen mb");
             ActiveGUICount = 0;
         }
     }
 
     private void GetPlayer() => player = PlayerHealth.Instance.pc ?? FindAnyObjectByType<PlayerController>();
 
-    public void CloseAll()
+    protected void CloseAll()
     {
         foreach (var gui in allGuis)
         {
@@ -60,9 +63,8 @@ public abstract class GUIBase : MonoBehaviour
         }
     }
 
-    public void CloseCurrentMenus()
+    protected void CloseCurrentMenus()
     {
-        var allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
         foreach (var gui in allGuis)
         {
             if (!gui.isActive || gui == this) return;
@@ -84,7 +86,6 @@ public abstract class GUIBase : MonoBehaviour
             case QuestLogManager quest: quest.ToggleQuestLog(); break;
             case StatsManager stats: stats.ToggleStats(); break;
             case ShopManager shop: shop.ToggleShop(false); break;
-            //default: topMostGui.GetActive(false); break;
         }
     }
     
@@ -117,10 +118,18 @@ public abstract class GUIBase : MonoBehaviour
     {
         if (player == null) GetPlayer();
         player.canAct = ActiveGUICount <= 0;
-        //print($"Player can act: {player.canAct} | ActiveGUICount: {ActiveGUICount}");
+        if (ActiveGUICount > 0)
+        {
+            input.UI.Enable();
+            input.Player.Disable();
+        }
+        else
+        {
+            input.UI.Disable();
+            input.Player.Enable();
+        }
     }
     
-    private void OnActivated() => GameEvents.TriggerEnableGUI();
-
-    private void OnDeactivated() => GameEvents.TriggerDisableGUI();
+    private static void OnActivated() => GameEvents.TriggerEnableGUI();
+    private static void OnDeactivated() => GameEvents.TriggerDisableGUI();
 }

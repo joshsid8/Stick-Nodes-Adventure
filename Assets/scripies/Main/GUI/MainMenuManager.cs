@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using scripies.Core;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class MainMenuManager : MonoBehaviour
     private readonly List<AsyncOperation> scenesToLoad = new List<AsyncOperation>();
     [SerializeField] private AudioManager audioManager;
 
+    private PlayerInput input;
+    
     [Header("Settings")] 
     private int fps = 60;
     private bool vsync;
@@ -32,6 +35,7 @@ public class MainMenuManager : MonoBehaviour
             return; 
         }
         Instance = this;
+        input = new PlayerInput();
     }
 
     private IEnumerator Start()
@@ -43,6 +47,10 @@ public class MainMenuManager : MonoBehaviour
         DontDestroyOnLoad(gameObject.transform.root.gameObject);
         if (!vsync) QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = fps;
+        
+        input.Enable();
+        input.UI.Enable();
+        input.Player.Disable();
     }
 
     public void StartGame()

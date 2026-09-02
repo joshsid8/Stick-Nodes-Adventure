@@ -4,20 +4,24 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
+        One of the big 3 has been done! Now to do the other 2:
+            Typewriter Logic
+            Background/Foreground Logic
         
-        We should start tackling the big 3 (AFTER instabilty gets fixed):
-            Typewriter Logic Rewriting
-            Input System Switching
-            Background/Foreground Logic Rewriting
-            
     Optimisations & Hotfixes:
         
         Instability
         
             Issues from Testing
                 Shaders arent working when teleporting to and from the shop scene (or just teleporting per se)
+                Seems like the cinemachine confiner isnt working for Alatus islands and the Tester place
+                Casting abilities doenst work on build only
+                    Like cuz of the input system switch
                 
             Replicatable or From-Build bugs/problems
+                Teleporting in general "exits" the current map (calling the triggerexit method), and reenters the map
+                    I need to change the way teleporting works
+                        Maybe use Translate, or MovePosition instead of just setting their position to the target
                 
             One time occurrences or Rare/Intimidating bugs
                 
@@ -44,28 +48,20 @@ SNADV Notes
             
     Things to be added/changed:
         
-        AO
-        
+        AO        
             Improve Typewriter Logic
                 The Typewriter updates the settings as it displays text
                     but i would rather have it know what settings should be implemented beforehand to make it work well          
-            
-            Input Logic
-                Switch input systems!
-                    I have initialised the settings, but will now need to implement it programmatically
-                        Watch a vid on how to do this
-                    Game Pausing Logic
-                        Ive watched that video on game pausing, and it seems i need to use the new input system to make pausing work in my favour
             
             Background/Foreground Logic
                 Make backgrounds similar to Terraria in terms of appearance!
                 Even tho this is cosmetic, i would like to just get the logic done
                     I will use placeholder bgs just to test it, then will worry about designs Post-AO 
+                    
             Make minibosses: a normal-enemy/boss hybrid
                 This is basically already a thing; there are spawners that have a onetime flag
                 Tho they arent a physical thing yet
                         
-                               
             Audio
                 Make it so that the music transitions smoothly
                     maybe i have to fade the music out and simultaneously fade in the new one?

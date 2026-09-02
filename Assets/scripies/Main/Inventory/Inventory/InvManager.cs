@@ -36,19 +36,13 @@ public class InvManager : GUIBase
         foreach (var slot in abilitySlots) if (slot != null) slot.ClearSlot();
     }
 
-    // Update is called once per frame
-    void Update() => Inputs();
-    
-    private void Inputs()
+
+    private void OnEnable()
     {
-        if (Input.GetButtonDown("Inventory")) ToggleInventory();
-        if (Input.GetButtonDown("Cancel") && isActive)
-        {
-            isActive = true;
-            ToggleInventory();
-        }
-        if (Input.GetKeyDown("o")) SaveSystem.Save();
+        input.Player.Inventory.performed += _ => ToggleInventory();
+
         #if UNITY_EDITOR
+        if (Input.GetKeyDown("o")) SaveSystem.Save();
         if (Input.GetKeyDown("p")) SaveSystem.Load();
         #endif
     }

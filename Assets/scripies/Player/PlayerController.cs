@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using scripies.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 namespace scripies.Player
 {
@@ -79,7 +81,8 @@ namespace scripies.Player
 
         [HideInInspector] public Rigidbody2D rb;
         [HideInInspector] public Animator animator;
-        public float inputDirection;
+        public PlayerInput input;
+        public float moveInputDir;
 
         public LayerMask oneWayPlatformLayer;
         public float dropThroughDuration = 0.3f;
@@ -118,6 +121,24 @@ namespace scripies.Player
             kb = GetComponent<Knockback>();
             pdf = GetComponent<PlayerDefense>();
             pm = GetComponent<PlayerCurrency>();
+            input = new PlayerInput();
+        }
+
+        private void OnEnable()
+        {
+            GameEvents.PlayerAction += OnPlayerAction;
+            GameEvents.AddPlayerTime += AddCooldown;
+            input.Enable();
+            input.Player.Enable();
+            input.Player.Jump.performed += _ => jumpBufferCounter = jumpBufferTime;
+            input.Player.Dash.performed += _ => StartCoroutine(Dash());
+        }
+        private void OnDisable() 
+        {
+            GameEvents.PlayerAction -= OnPlayerAction;
+            GameEvents.AddPlayerTime -= AddCooldown;
+            input.Disable(); 
+            //input.Player.RemoveCallbacks();
         }
 
         // Start is called before the first frame update
@@ -146,11 +167,10 @@ namespace scripies.Player
                 canDoubleJump = true;
             }
             #endif
-            
-            GameEvents.PlayerAction += OnPlayerAction;
-            GameEvents.AddPlayerTime += AddCooldown;
         }
-
+        
+        [ContextMenu("Teleport Player a lil bit lol")] public void TeleportToSpot() => transform.position = new Vector2(groundCheck.transform.position.x, groundCheck.position.y + 1);
+        
         // Update is called once per frame
         private void Update()
         {
@@ -159,12 +179,13 @@ namespace scripies.Player
             CheckInput();
             CheckMovementDirection();
             CheckIfCanJump();
-            if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
+            if (!kb.IsBeingKnocked && !isPerformingAction && !isFrozen)
             {
-                DashSettings();
                 Jump();
+                DashSettings();
             }
             Other();
+            //print($"P: {input.Player.enabled}, UI: {input.UI.enabled}");
         }
 
         private void OnPlayerAction(string action, bool play)
@@ -183,15 +204,28 @@ namespace scripies.Player
 
         private void CheckInput()
         {
-            inputDirection = Input.GetAxisRaw("Horizontal");
+            moveInputDir = input.Player.Move.ReadValue<Vector2>().x;
 
-            if (Input.GetButtonDown("Jump")) jumpBufferCounter = jumpBufferTime;
-            else jumpBufferCounter -= Time.deltaTime;
+            if (jumpBufferCounter > -0.5) jumpBufferCounter -= Time.deltaTime;
         }
 
         #region Dashing
         private IEnumerator Dash()
         {
+            if (!canDash || !dashAbility || isPerformingAction || pab.energy < dashEnergyCost) yield break;
+            canDash = false;
+            pab.energy -= dashEnergyCost;
+            currentDashTime = dashTime;
+            if (isWallSliding)
+            {
+                Flip(true);
+                isWallSliding = false;
+                //dashDirection = isFacingRight ? -1 : 1;
+            }
+            //else dashDirection = isFacingRight ? 1 : -1;
+            dashCooldownTimer = dashCooldown;
+
+            if (!isGrounded) hasDashedInAir = true;
             rb.gravityScale = 0;
             isDashing = true;
             var currentDashSpeed = dashSpeed;
@@ -209,24 +243,6 @@ namespace scripies.Player
 
         private void DashSettings()
         {
-            if (Input.GetButtonDown("Dash") && canDash && dashAbility && !isPerformingAction && pab.energy >= dashEnergyCost)
-            {
-                canDash = false;
-                pab.energy -= dashEnergyCost;
-                currentDashTime = dashTime;
-                if (isWallSliding)
-                {
-                    Flip(true);
-                    isWallSliding = false;
-                    //dashDirection = isFacingRight ? -1 : 1;
-                }
-                //else dashDirection = isFacingRight ? 1 : -1;
-                dashCooldownTimer = dashCooldown;
-
-                if (!isGrounded) hasDashedInAir = true;
-                StartCoroutine(Dash());
-            }
-
             if (hasDashedInAir) canDash = false;
 
             if (dashCooldownTimer >= 0)
@@ -282,7 +298,7 @@ namespace scripies.Player
                 const float easeDuration = 0.1f;
                 var elapsed = 0f;
                 var velocityAtEnd = rb.linearVelocity;
-                while (elapsed < easeDuration && inputDirection == 0 && !isGrounded)
+                while (elapsed < easeDuration && moveInputDir == 0 && !isGrounded)
                 {
                     elapsed += Time.fixedDeltaTime;
                     var t = elapsed / easeDuration;
@@ -291,7 +307,7 @@ namespace scripies.Player
                     yield return new WaitForFixedUpdate();
                 }
 
-                if (inputDirection == 0) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                if (moveInputDir == 0) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
                 isWallJumping = false;
             }
         }
@@ -353,14 +369,14 @@ namespace scripies.Player
         {
             if (canMove && !isFrozen && !kb.IsBeingKnocked && !isWallJumping && !isDashing)
             {
-                if (inputDirection != 0)
+                if (moveInputDir != 0)
                 {
                     isMoving = true;
-                    rb.linearVelocity = new Vector2(movementSpeed * movementSpeedMult * inputDirection,
+                    rb.linearVelocity = new Vector2(movementSpeed * movementSpeedMult * moveInputDir,
                         rb.linearVelocity.y);
                 }
 
-                if (inputDirection == 0 && isMoving)
+                if (moveInputDir == 0 && isMoving)
                 {
                     isMoving = false;
                     rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
@@ -370,10 +386,10 @@ namespace scripies.Player
 
         private void CheckMovementDirection()
         {
-            if (isFacingRight && inputDirection < 0) Flip();
-            else if (!isFacingRight && inputDirection > 0) Flip();
+            if (isFacingRight && moveInputDir < 0) Flip();
+            else if (!isFacingRight && moveInputDir > 0) Flip();
 
-            if (rb.linearVelocity.x <= -0.5f && inputDirection < 0 || rb.linearVelocity.x >= 0.5f && inputDirection > 0) isRunning = true;
+            if (rb.linearVelocity.x <= -0.5f && moveInputDir < 0 || rb.linearVelocity.x >= 0.5f && moveInputDir > 0) isRunning = true;
             else isRunning = false;
         }
 
@@ -433,7 +449,7 @@ namespace scripies.Player
             }
 
             if (isFrozen) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            if (inputDirection == 0 && !isDashing && !isWallJumping && !GetComponent<Knockback>().IsBeingKnocked &&
+            if (moveInputDir == 0 && !isDashing && !isWallJumping && !GetComponent<Knockback>().IsBeingKnocked &&
                 rb.linearVelocity.x != 0)
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 

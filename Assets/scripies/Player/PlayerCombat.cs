@@ -54,7 +54,6 @@ namespace scripies.Player
         private Animator animator;
         private PlayerController pc;
         private PlayerAbility pa;
-        //public PlayerInput playerInput;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
@@ -63,7 +62,11 @@ namespace scripies.Player
             pa = GetComponent<PlayerAbility>();
             animator = GetComponent<Animator>();
             canAttack = true;
-            //playerInput = new PlayerInput();
+            pc.input.Player.Attack.performed += _ =>
+            {
+                if (currentAttackCooldown <= 0 && m1Ability && !pc.isPerformingAction && canAttack) 
+                    Attack();
+            };
         }
 
         // Update is called once per frame
@@ -80,12 +83,18 @@ namespace scripies.Player
                 hasAirBoosted = false;
                 airComboAmount = 3;
             }
-
-            if (currentAttackCooldown > 0) canAttack = false;
-            Attack();
-
+            
             if (comboInterval[0] > maxComboInterval[0]) comboInterval[0] = 0;
             if (comboInterval[1] > maxComboInterval[1]) comboInterval[1] = 0;
+            
+            currentAttackCooldown -= Time.deltaTime * 0.5f;
+            if (currentAttackCooldown <= 0) canAttack = true;
+        }
+        
+        private void Attack()
+        {
+            animator.SetTrigger("Attack");
+            GameEvents.TriggerPlaySound(whooshSfx[Random.Range(0, whooshSfx.Length)], true, gameObject);
         }
 
         private void GroundAttack()
@@ -150,17 +159,6 @@ namespace scripies.Player
             }
 
             isAirComboing = false;
-        }
-
-        private void Attack()
-        {
-            if (Input.GetMouseButtonDown(0) && currentAttackCooldown <= 0 && m1Ability && !pc.isPerformingAction && canAttack)
-            {
-                animator.SetTrigger("Attack");
-                GameEvents.TriggerPlaySound(whooshSfx[Random.Range(0, whooshSfx.Length)], true, gameObject);
-            }
-            currentAttackCooldown -= Time.deltaTime * 0.5f;
-            if (currentAttackCooldown <= 0) canAttack = true;
         }
 
         private void OnDrawGizmosSelected()
