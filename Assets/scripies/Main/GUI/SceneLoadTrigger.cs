@@ -9,7 +9,7 @@ public class SceneLoadTrigger : MonoBehaviour
     [SerializeField] private SceneField[] scenesToUnload;
     
     private GameObject player;
-    private void Awake() => player = PlayerHealth.Instance.gameObject;
+    private void Start() => player = PlayerHealth.Instance.gameObject;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

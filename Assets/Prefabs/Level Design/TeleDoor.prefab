@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3128955811597120186}
   m_Layer: 7
   m_Name: TeleDoor
-  m_TagString: Terrain
+  m_TagString: TeleDoor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,8 +106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 885c523ccec4c224c98b4d10111dd1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTeleport: 0
   tagsToIgnore: []
   teleportTarget: {fileID: 0}
+  forcePlayerTeleport: 0
+  isTeledoor: 1
   isSceneTeleport: 1
   sceneToTeleport:
     m_SceneAsset: {fileID: 102900000, guid: af137e695d9fbfd4887972feca53a00d, type: 3}

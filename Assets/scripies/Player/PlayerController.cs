@@ -43,10 +43,10 @@ namespace scripies.Player
         private float jumpBufferCounter;
 
         [Space] [Header("Wall Jumping")] public float wallSlideSpeed;
+        public bool canWallJump;
         public float wallJumpForce;
         public Vector2 wallJumpDirection;
         public float wallJumpTime;
-        public bool canWallJump;
 
         private bool isTouchingWall;
         public bool isWallSliding;
@@ -359,7 +359,7 @@ namespace scripies.Player
             if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding)
             {
                 isJumping = true;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult * 0.75f);
                 doubleJump = false;
                 if (jumpClips.Length > 0) AudioSource.PlayClipAtPoint(jumpClips[1] ?? jumpClips[0], transform.position);
             }

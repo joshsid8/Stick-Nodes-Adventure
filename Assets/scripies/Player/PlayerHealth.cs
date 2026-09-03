@@ -47,7 +47,6 @@ namespace scripies.Player
         private List<ITarget> aggressiveEnemies = new();
         public int aggressiveEnemyID;
         public float jumpRotationTimer;
-    
         
         // Components
         private Knockback kb;
@@ -113,18 +112,6 @@ namespace scripies.Player
             GameEvents.OnPlayerHealthChanged += CheckStatus;
         }
 
-        private void UpdateAggressiveEnemies(ITarget target, bool isAggressive)
-        {
-            if (isAggressive)
-            {
-                if (!aggressiveEnemies.Contains(target)) aggressiveEnemies.Add(target);
-            }
-            else
-            {
-                if (aggressiveEnemies.Contains(target)) aggressiveEnemies.Remove(target);
-            }
-        }
-
         // Update is called once per frame
         private void Update()
         {
@@ -133,21 +120,36 @@ namespace scripies.Player
             Tint();
             Regeneration();
             JumpRotate();
-            healthBars[0].fillAmount = playerHealth / playerMaxHealth;
-            healthBars[1].fillAmount = playerExtraHealth / playerMaxHealth;
-            if (playerHealth < 0) playerHealth = 0;
-            if (playerHealth > playerMaxHealth) playerExtraHealth = playerHealth - playerMaxHealth;
+            playerHealth = Mathf.Clamp(playerHealth, 0, playerMaxHealth);
             if (isDead)
             {
                 pc.canAct = false;
                 gameObject.layer = LayerMask.NameToLayer("Dead");
                 spriteRenderer.color = Color.white;
             }
+            healthBars[0].fillAmount = playerHealth / playerMaxHealth;
+            healthBars[1].fillAmount = playerExtraHealth / playerMaxHealth;
         }
 
         private void OnValidate()
         {
             if (!isDead && Application.isPlaying) CheckStatus();
+        }
+
+        private void OnDestroy()
+        {
+           if (!Application.isEditor)
+           {
+               GameEvents.TriggerJumpScare();
+               throw new MissingMemberException("THE PLAYER GOT DESTROYED?! WHAT THE HAIL HAPPENED!?");
+           }
+        }
+        private void OnDisable()
+        {
+            if (!Application.isEditor) throw new NullReferenceException("Wth? why is player disabled??");
+            // gameObject.SetActive(true);
+            // GameEvents.TriggerJumpScare();
+            // Debug.LogError("no!");
         }
 
         private void Animation()
@@ -406,6 +408,18 @@ namespace scripies.Player
             }
 
             if (playerHealth > playerMaxHealth) playerHealth = playerMaxHealth;
+        }
+        
+        private void UpdateAggressiveEnemies(ITarget target, bool isAggressive)
+        {
+            if (isAggressive)
+            {
+                if (!aggressiveEnemies.Contains(target)) aggressiveEnemies.Add(target);
+            }
+            else
+            {
+                if (aggressiveEnemies.Contains(target)) aggressiveEnemies.Remove(target);
+            }
         }
 
         private void JumpRotate()

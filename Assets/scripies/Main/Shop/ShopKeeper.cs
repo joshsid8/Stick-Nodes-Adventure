@@ -18,14 +18,6 @@ public class ShopKeeper : MonoBehaviour
     {
         backroomItems.AddRange(shopItems);
     }
-
-    private void OnEnable()
-    {
-    }
-    
-    private void OnDisable()
-    {
-    }
     
     /// <summary>
     /// me when "Can you check the back?"

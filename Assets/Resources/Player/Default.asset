@@ -20,7 +20,7 @@ MonoBehaviour:
   jumpForceMultiplier: 1
   dashSpeed: 25
   dashTime: 0.65
-  dashCooldown: 0.8
+  dashCooldown: 0.6
   dashEnergyCost: 5
   maxEnergy: 75
   energyRefillMultiplier: 1

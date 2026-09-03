@@ -4,6 +4,11 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
+        
+        Now that npc data has been moved out of the scene list, I need to make it so that the data manager finds the right npc, and insert the data
+            I moved the npc list data because they will move between scenes
+            Jerome, for example, is in both shops, so his data needs to be synced between shops
+        
         One of the big 3 has been done! Now to do the other 2 (Once instability is fixed):
             Typewriter Logic
             Background/Foreground Logic
@@ -13,25 +18,23 @@ SNADV Notes
         Instability
         
             Issues from Testing
-                In the player logs, Apparently, leaks will happen if certain Input maps are toggled, which in itself causes random issues
-                Also, when exiting i ofc get a nullref talking about the ui input map doesnt exist, cuz why would it???!?!?!?!
+                I keep spawning at the first spawn point instead of wherever the others are
+                    Teleporting ANYWHERE takes me to the first spawn point unless i walk into a checkpoint trigger
+                Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
+                    Casting abilities may have caused this, or maybe just jumping in general?
                 Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map
-                Teleporting ANYWHERE takes me to the first spawn point unless i walk into a checkpoint trigger
                 I need to make CloseCurrentMenus work properly in GUIBase, just to make things more clear
-                When teleporting to the shop, THE PLAYER GETS DESTROYED!!!                
-                
+                                
             Replicatable or From-Build bugs/problems
 
             One time occurrences or Rare/Intimidating bugs
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
-                        
+                
+                In the player logs, Apparently, leaks will happen if certain Input maps are toggled, which in itself causes VERY random and erratic issues
+                
                 Find out why one shot sfx are very very quiet
                     
-                One time, izuno had no dialogue on load
-                    It seems like it saved, thus loaded an empty dialogue list
-                        We needa find out why
-                
                 Ive successfully remade the player animator controller, but i have a few things to look at
                     I need to allow attacking when wall jumping specifically
                     Sometimes the run animation blends in after a wall jump, and plays again when walking off a platform before playing the fall anim

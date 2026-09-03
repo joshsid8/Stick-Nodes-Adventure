@@ -302,7 +302,7 @@ MonoBehaviour:
     m_Bits: 65728
   objects:
   - {fileID: 11400000, guid: 27de6398fc421b6459c99cb7e3019e89, type: 2}
-  - {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
+  - {fileID: 0}
   - {fileID: 0}
   abilityDamageMult: 1
   abilityPotency: 1
@@ -517,10 +517,10 @@ MonoBehaviour:
   coyoteTime: 0.1
   jumpBufferTime: 0.15
   wallSlideSpeed: 1.5
+  canWallJump: 1
   wallJumpForce: 22
   wallJumpDirection: {x: 0.5, y: 0.8}
   wallJumpTime: 0.15
-  canWallJump: 1
   isWallSliding: 0
   isWallJumping: 0
   availableWalls: 3
@@ -538,7 +538,7 @@ MonoBehaviour:
   isGrounded: 0
   dashSpeed: 25
   dashTime: 0
-  dashCooldown: 0.8
+  dashCooldown: 0.6
   dashAbility: 1
   currentDashTime: 0
   isDashing: 0

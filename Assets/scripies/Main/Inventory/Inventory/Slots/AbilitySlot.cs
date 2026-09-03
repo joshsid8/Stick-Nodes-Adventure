@@ -1,3 +1,4 @@
+using System;
 using scripies.Player;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -49,6 +50,8 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
                 playerAbilitySlotImage.sprite = PlayerHealth.Instance.pa.ability.objects[slotIndex]?.abilityPrefab
                     ?.GetComponentInChildren<SpriteRenderer>()?.sprite;
         }
+        else if (PlayerHealth.Instance.pa.ability.objects[slotIndex] == null && abilityStats != null) 
+            PlayerHealth.Instance.pa.ability.objects[slotIndex] = abilityStats.abilityObject;
     }
 
     public void OnPointerClick(PointerEventData eventData)

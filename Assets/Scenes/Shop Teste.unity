@@ -244,6 +244,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+--- !u!1 &123635839 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 550122312589149946, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+  m_PrefabInstance: {fileID: 123635838}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &174642969
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +832,7 @@ MonoBehaviour:
   - 0
   - 1
   sectionObj: {fileID: 1162324168}
-  mainSpawnPoint: {fileID: 0}
+  mainSpawnPoint: {fileID: 123635839}
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -1341,7 +1346,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1174324686601108272, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_Name
-      value: MR Door
+      value: O Door
       objectReference: {fileID: 0}
     - target: {fileID: 1174324686601108272, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_Layer
@@ -1349,16 +1354,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: connectingDoor
-      value: MRS Door
+      value: OS Door 1
       objectReference: {fileID: 0}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: sceneToTeleport.m_SceneName
-      value: Water Teste
+      value: Default Teste
       objectReference: {fileID: 0}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: sceneToTeleport.m_SceneAsset
       value: 
-      objectReference: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
+      objectReference: {fileID: 102900000, guid: af137e695d9fbfd4887972feca53a00d, type: 3}
     - target: {fileID: 3868662999927243602, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_Layer
       value: 20
@@ -1409,15 +1414,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8305340579794474787, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_Color.b
-      value: 0.86666673
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 8305340579794474787, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_Color.g
-      value: 0.7803922
+      value: 0.9960785
       objectReference: {fileID: 0}
     - target: {fileID: 8305340579794474787, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_Color.r
-      value: 0.6117647
+      value: 0.77647066
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

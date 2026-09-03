@@ -10,8 +10,7 @@ using Random = UnityEngine.Random;
 public class WeatherManager : MonoBehaviour
 {
     public enum WeatherType {Clear, Hot, Cold, Rainy}
-    public WeatherType weatherType;
-    [FormerlySerializedAs("wp")]
+    [EnumButtons] public WeatherType weatherType;
     public WeatherProperties[] weatherProperties = new WeatherProperties[3];
     private MapManager mm;
     [SerializeField] private SectionManager sm;

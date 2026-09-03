@@ -42,7 +42,7 @@ public class SaveSystem
             map.SaveSceneData();
             map.MakeDataPersistent();
         }
-        SceneDataManager.Instance.Save(ref saveData.sceneData);
+        DataManager.Instance.Save(ref saveData.sceneData);
         PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);
         PlayerManager.Instance.Save(ref saveData.playerStats);
         InvManager.Instance.Save(ref saveData.playerInventory);
@@ -60,7 +60,7 @@ public class SaveSystem
 
     public static void HandleLoadData()
     {
-        SceneDataManager.Instance.Load(saveData.sceneData);
+        DataManager.Instance.Load(saveData.sceneData);
         PlayerHealth.Instance.pc.Load(saveData.playerCurrentData);
         PlayerManager.Instance.Load(saveData.playerStats);
         InvManager.Instance.Load(saveData.playerInventory);

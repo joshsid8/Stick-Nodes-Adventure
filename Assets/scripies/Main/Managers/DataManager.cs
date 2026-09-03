@@ -1,22 +1,24 @@
 using System;
 using System.Collections.Generic;
 using scripies.Dialogue;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class SceneDataManager : MonoBehaviour
+public class DataManager : MonoBehaviour
 {
-    public static SceneDataManager Instance { get; private set; }
+    public static DataManager Instance { get; private set; }
     public GameObject mainCamera;
+    [Header("Scene Data")]
     public List<SceneList> sceneData = new();
-
+    [Header("NPC Data")]
+    public List<NpcData> npcs = new();
+    
     [Serializable]
     public class SceneList
     {
         public string sceneName;
         public List<EnemySceneData> enemies = new();
         public List<CollectableSceneData> collectables = new();
-        public List<NpcSceneData> npcs = new();
+        
         public List<DoorSceneData> doors = new();
         public List<SpawnerSceneData> spawners = new();
 
@@ -48,11 +50,12 @@ public class SceneDataManager : MonoBehaviour
     }
 
     [Serializable]
-    public class NpcSceneData
+    public class NpcData
     {
         public int activeNpc;
         public bool willTravel;
         public DialogueObject[] dialogue;
+        public ShopItem[] shopItems;
     }
 
     [Serializable]
@@ -87,10 +90,10 @@ public class SceneDataManager : MonoBehaviour
 [Serializable]
 public struct SceneData
 {
-    public List<SceneDataManager.SceneList> realSceneData;
+    public List<DataManager.SceneList> realSceneData;
 
     public SceneData(bool initialize)
     {
-        realSceneData = new List<SceneDataManager.SceneList>();
+        realSceneData = new List<DataManager.SceneList>();
     }
 }

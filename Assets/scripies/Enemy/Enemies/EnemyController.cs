@@ -121,7 +121,7 @@ namespace scripies.Enemy
 
         public void ChangeState(EnemyState newState)
         {
-            if (enemyState == newState) return;
+            if (enemyState == newState || vegetable) return;
             enemyState = newState;
             switch (enemyState)
             {
