@@ -39,16 +39,22 @@ public class SaveSystem
     {
         foreach (var map in MapManager.Instances.Values)
         {
-            map.SaveSceneData();
-            map.MakeDataPersistent();
+            if (map != null)
+            {
+                map.SaveSceneData();
+                map.MakeDataPersistent();
+            }
         }
-        DataManager.Instance.Save(ref saveData.sceneData);
-        PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);
-        PlayerManager.Instance.Save(ref saveData.playerStats);
-        InvManager.Instance.Save(ref saveData.playerInventory);
-        InvManager.Instance.invIndex.Save(ref saveData.playerIndex);
-        QuestLogManager.Instance.Save(ref saveData.playerQuests);
-        AudioManager.Instance.Save(ref saveData.currentScene);
+        if (DataManager.Instance != null) DataManager.Instance.Save(ref saveData.sceneData);
+        if (PlayerHealth.Instance != null && PlayerHealth.Instance.pc != null) PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);
+        if (PlayerManager.Instance != null) PlayerManager.Instance.Save(ref saveData.playerStats);
+        if (InvManager.Instance != null)
+        {
+            InvManager.Instance.Save(ref saveData.playerInventory);
+            if (InvManager.Instance.invIndex != null) InvManager.Instance.invIndex.Save(ref saveData.playerIndex);
+        }
+        if (QuestLogManager.Instance != null) QuestLogManager.Instance.Save(ref saveData.playerQuests);
+        if (AudioManager.Instance != null) AudioManager.Instance.Save(ref saveData.currentScene);
     }
 
     public static void HandleSettingsSaveData() => MainMenuManager.Instance.Save(ref saveData.mainMenuData);
@@ -60,17 +66,23 @@ public class SaveSystem
 
     public static void HandleLoadData()
     {
-        DataManager.Instance.Load(saveData.sceneData);
-        PlayerHealth.Instance.pc.Load(saveData.playerCurrentData);
-        PlayerManager.Instance.Load(saveData.playerStats);
-        InvManager.Instance.Load(saveData.playerInventory);
-        InvManager.Instance.invIndex.Load(saveData.playerIndex);
-        QuestLogManager.Instance.Load(saveData.playerQuests);
-        AudioManager.Instance.Load(saveData.currentScene);
+        if (DataManager.Instance != null) DataManager.Instance.Load(saveData.sceneData);
+        if (PlayerHealth.Instance != null && PlayerHealth.Instance.pc != null) PlayerHealth.Instance.pc.Load(saveData.playerCurrentData);
+        if (PlayerManager.Instance != null) PlayerManager.Instance.Load(saveData.playerStats);
+        if (InvManager.Instance != null)
+        {
+            InvManager.Instance.Load(saveData.playerInventory);
+            if (InvManager.Instance.invIndex != null) InvManager.Instance.invIndex.Load(saveData.playerIndex);
+        }
+        if (QuestLogManager.Instance != null) QuestLogManager.Instance.Load(saveData.playerQuests);
+        if (AudioManager.Instance != null) AudioManager.Instance.Load(saveData.currentScene);
+        
+        scripies.Core.GameEvents.TriggerLoadMapData();
     }
 
     public static void Save()
     {
+        if (DataManager.Instance == null) return;
         HandleSaveData();
 
         try

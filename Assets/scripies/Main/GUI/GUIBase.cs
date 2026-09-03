@@ -67,7 +67,7 @@ public abstract class GUIBase : MonoBehaviour
     {
         foreach (var gui in allGuis)
         {
-            if (!gui.isActive || gui == this) return;
+            if (!gui.isActive || gui == this) continue;
             
             if (gui.TryGetComponent<InvManager>(out var inv)) inv.ToggleInventory();
             else if (gui.TryGetComponent<QuestLogManager>(out var quest)) quest.ToggleQuestLog();
@@ -94,7 +94,6 @@ public abstract class GUIBase : MonoBehaviour
         isActive = true;
         ActiveGUICount++;
         ActiveGuis.Add(this);
-        CloseCurrentMenus();
         OnActivated();
     }
 

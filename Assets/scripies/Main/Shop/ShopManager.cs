@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using scripies.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -81,6 +82,7 @@ public class ShopManager : GUIBase
             currentShopKeeper.SaveShopItems(shopItems.ToArray());
         buyButton.onClick.RemoveAllListeners();
         currentShopKeeper = null;
+        GameEvents.TriggerSaveGame();
         if (isActive) ToggleShop(false);
     }
 

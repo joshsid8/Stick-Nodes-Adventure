@@ -40,6 +40,10 @@ namespace scripies.Core
         public static Action<ScriptableObject> OnDialogueClose;
         
         // Misc events
+        public static Action SaveMapData;
+        public static Action LoadMapData;
+        public static Action SaveGame;
+        
         public static Action<AudioClip, bool, GameObject> PlaySound;
         public static Action<int, bool> PlayMusic;
         
@@ -70,6 +74,10 @@ namespace scripies.Core
         public static void TriggerAddDialogue(ScriptableObject dialogue, GameObject npc) => AddDialogue?.Invoke(dialogue, npc);
         public static void TriggerDialogueClose() => CloseDialogue?.Invoke();
         public static void TriggerDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
+        
+        public static void TriggerSaveMapData() => SaveMapData?.Invoke();
+        public static void TriggerLoadMapData() => LoadMapData?.Invoke();
+        public static void TriggerSaveGame() => SaveGame?.Invoke();
         
         public static void TriggerPlaySound(AudioClip clip = null, bool randomPitch = true, GameObject source = null) => PlaySound?.Invoke(clip, randomPitch, source);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);

@@ -12,7 +12,7 @@ namespace scripies.Core
         [Tooltip("This is for whenever you want to target a certain object externally. The ID format is currently 000 for enemies..")]
         public int id;
         public int spawnId;
-        public enum ObjectType{Entity, Item, [Obsolete] Door, [Obsolete] Npc, [Obsolete] Spawner, Checkpoint}
+        public enum ObjectType{Entity, Item, [Obsolete] Door, Npc, [Obsolete] Spawner, Checkpoint}
         [EnumButtons] public ObjectType typeOfObject;
         
         [HideInInspector] public MonoBehaviour mapManager;

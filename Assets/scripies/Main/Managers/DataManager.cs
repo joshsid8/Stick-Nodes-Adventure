@@ -38,7 +38,16 @@ public class DataManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        scripies.Core.GameEvents.SaveGame += SaveDisk;
     }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) scripies.Core.GameEvents.SaveGame -= SaveDisk;
+    }
+
+    private static void SaveDisk() => SaveSystem.Save();
 
     #region Scene data classes
 
@@ -52,7 +61,7 @@ public class DataManager : MonoBehaviour
     [Serializable]
     public class NpcData
     {
-        public int activeNpc;
+        public string activeNpcName;
         public bool willTravel;
         public DialogueObject[] dialogue;
         public ShopItem[] shopItems;

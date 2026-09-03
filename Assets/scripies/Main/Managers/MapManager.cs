@@ -54,23 +54,34 @@ public class MapManager : MonoBehaviour
 
     private void Awake() { if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections"); }
     
-    private IEnumerator Start()
+    private void Start()
     {
         sceneName = gameObject.scene.name;
         mainCamera = DataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
         weather = GetComponent<WeatherManager>();
         audioManager = AudioManager.Instance;
-        SaveSceneData();
-        yield return new WaitForSeconds(0.3f);
-        if (DataManager.Instance.sceneData.Count > 0) LoadSceneData();
+        InitialiseSceneData();
+        Invoke(nameof(LoadSceneData), 0.1f);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.F1)) SaveSceneData();
-        if (Input.GetKeyDown(KeyCode.F2)) MakeDataPersistent();
-        if (Input.GetKeyDown(KeyCode.F3)) LoadSceneData();
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            print("Saving data");
+            SaveSceneData();
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            print("Persisting data");
+            MakeDataPersistent();
+        }
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            print("Loading data");
+            LoadSceneData();
+        }
         #endif
 
         // if (!activeMap) return;
@@ -79,7 +90,11 @@ public class MapManager : MonoBehaviour
     }
 
     #region Map Announcing
-    private void OnBossDefeated() => bossSceneData.isDead = true;
+    private void OnBossDefeated()
+    {
+        bossSceneData.isDead = true;
+        GameEvents.TriggerSaveGame();
+    }
 
     public void OnDoorStatusChanged(DoorObjective doorObjective, bool isOpen)
     {
@@ -92,19 +107,24 @@ public class MapManager : MonoBehaviour
         if (!Instances.ContainsKey(gameObject.scene.name))
             Instances.Add(gameObject.scene.name, this);
         if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
+        
         GameEvents.OnPlayerSpawned += StartMap;
         GameEvents.OnBossDefeated += OnBossDefeated;
         GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
+        GameEvents.SaveMapData += SaveSceneData;
+        GameEvents.LoadMapData += LoadSceneData;
     }
-    
 
     private void OnDisable()
     {
         if (Instances.ContainsKey(gameObject.scene.name) && Instances[gameObject.scene.name] == this)
             Instances.Remove(gameObject.scene.name);
+        
         GameEvents.OnBossDefeated -= OnBossDefeated;
         GameEvents.OnPlayerSpawned -= StartMap;
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
+        GameEvents.SaveMapData -= SaveSceneData;
+        GameEvents.LoadMapData -= LoadSceneData;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -174,6 +194,7 @@ public class MapManager : MonoBehaviour
         if (!activeMap) return;
         activeMap = false;
         MakeDataPersistent();
+        GameEvents.TriggerSaveGame();
         weather.ClearDisasters();
         if (!audioManager.gameObject.IsDestroyed())
         {
@@ -190,6 +211,7 @@ public class MapManager : MonoBehaviour
     private void CollateObjects()
     {
         var scene = SceneManager.GetSceneByName(sceneName);
+        if (!scene.isLoaded) return;
         sceneObjects = scene.GetRootGameObjects();
         
         doorObjects.Clear();
@@ -238,10 +260,15 @@ public class MapManager : MonoBehaviour
         }
     }
     
-    private void SaveDataOnDialogueClose(ScriptableObject dialogue = null) 
+    private static void SaveDataOnDialogueClose(ScriptableObject dialogue = null) => GameEvents.TriggerSaveGame();
+
+    private void InitialiseSceneData()
     {
-        SaveSceneData();
-        Invoke(nameof(MakeDataPersistent), 0.1f);
+        if (enemySceneData.Count == 0) enemySceneData.Add(new EnemySceneData());
+        if (npcSceneData.Count == 0) npcSceneData.Add(new NpcSceneData());
+        if (collectableSceneData.Count == 0) collectableSceneData.Add(new CollectableSceneData());
+        if (doorSceneData.Count == 0) doorSceneData.Add(new DoorSceneData());
+        if (spawnerSceneData.Count == 0) spawnerSceneData.Add(new SpawnerSceneData());
     }
     
     public void SaveSceneData()
@@ -269,13 +296,14 @@ public class MapManager : MonoBehaviour
                         bossSceneData.activeBoss = obj.name;
                         break;
                     case "NPC":
-                        var npcId = obj.GetComponent<Identifier>();
+                        var npcId = obj.GetComponent<NPChat>().npc?.npcName;
+                        if (npcId == null) continue;
                         var dTrigger = obj.GetComponent<NPChat>();
                         obj.TryGetComponent<ShopKeeper>(out var shopKeeper);
                         var newNpc = new NpcSceneData
                         {
-                            activeNpcs = obj,
-                            id = npcId.id,
+                            activeNpc = obj,
+                            npcName = npcId,
                             willTravel = dTrigger.willTravel,
                             dialogue = new List<DialogueObject>(dTrigger.dialogue),
                             isShopKeeper = shopKeeper != null,
@@ -369,16 +397,22 @@ public class MapManager : MonoBehaviour
 
         foreach (var nData in npcSceneData)
         {
-            if (nData.activeNpcs == null || nData.id == 0) return;
-            if (manager.npcs.Find(x => x.activeNpc == nData.id) == null)
+            if (nData.activeNpc == null || string.IsNullOrEmpty(nData.npcName)) continue;
+            var npc = manager.npcs.Find(x => x.activeNpcName.Contains(nData.npcName));
+            if (npc == null)
             {
                 manager.npcs.Add(new DataManager.NpcData
                 {
-                    activeNpc = nData.id,
+                    activeNpcName = nData.npcName,
                     willTravel = nData.willTravel,
                     dialogue = nData.dialogue.ToArray(),
                     shopItems = nData.shopItems
                 });
+            }
+            else
+            {
+                npc.dialogue = nData.dialogue.ToArray();
+                npc.shopItems = nData.shopItems;
             }
         }
         
@@ -411,10 +445,14 @@ public class MapManager : MonoBehaviour
     public void LoadSceneData()
     {
         var manager = DataManager.Instance;
-
+        if (manager == null || manager.sceneData.Count == 0)
+        {
+            GameEvents.TriggerSaveGame();
+            return;
+        }
         foreach (var list in manager.sceneData)
         {
-            if (list.sceneName != sceneName) return;
+            if (list.sceneName != sceneName) continue;
             foreach (var enemyData in list.enemies)
             {
                 var enemy = enemySceneData.Find(e => e.spawnId == enemyData.activeEnemyID);
@@ -424,24 +462,20 @@ public class MapManager : MonoBehaviour
 
             foreach (var npcData in manager.npcs)
             {
-                var npc = npcSceneData.Find(n => n.id == npcData.activeNpc);
-                if (npc == null || npc.activeNpcs == null) return;
-                npc.activeNpcs.TryGetComponent<NPChat>(out var dTrigger);
+                var npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
+                if (npc == null || npc.activeNpc == null) continue;
+                npc.activeNpc.TryGetComponent<NPChat>(out var dTrigger);
                 if (dTrigger != null)
                 {
                     dTrigger.dialogue.Clear();
                     dTrigger.dialogue.AddRange(npcData.dialogue);
                 }
-                npc.activeNpcs.TryGetComponent<ShopKeeper>(out var shopKeeper);
+                npc.activeNpc.TryGetComponent<ShopKeeper>(out var shopKeeper);
                 if (shopKeeper != null)
                 {
-                    print($"Shopkeeper {npc.activeNpcs.name}'s items synced!");
                     shopKeeper.shopItems.Clear();
                     shopKeeper.shopItems.AddRange(npcData.shopItems);
                 }
-                
-                // if (npcData.willTravel) 
-                //     Destroy(npc.activeNpcs);
             }
 
             foreach (var collectableData in list.collectables)
@@ -522,8 +556,8 @@ public class MapManager : MonoBehaviour
     public class NpcSceneData
     {
         [Tooltip("Any NPCs that are active get detected here")]
-        public GameObject activeNpcs;
-        public int id;
+        public GameObject activeNpc;
+        public string npcName;
         [Tooltip("Will this NPC travel throughout scenes (areas)?")] 
         public bool willTravel;
         public List<DialogueObject> dialogue = new();

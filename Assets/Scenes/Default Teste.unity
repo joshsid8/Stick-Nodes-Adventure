@@ -6481,6 +6481,10 @@ PrefabInstance:
       propertyPath: 'dialogue.Array.data[1]'
       value: 
       objectReference: {fileID: 11400000, guid: 516c1cf6f9f147643a27a447b568c531, type: 2}
+    - target: {fileID: 5921352939605734611, guid: edac96a8e0e3a0840af04ac529cefdfb, type: 3}
+      propertyPath: typeOfObject
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

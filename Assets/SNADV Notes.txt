@@ -5,13 +5,16 @@ SNADV Notes
     
     Priorities:
         
-        Now that npc data has been moved out of the scene list, I need to make it so that the data manager finds the right npc, and insert the data
-            I moved the npc list data because they will move between scenes
-            Jerome, for example, is in both shops, so his data needs to be synced between shops
-        
-        One of the big 3 has been done! Now to do the other 2 (Once instability is fixed):
-            Typewriter Logic
-            Background/Foreground Logic
+        Scene Data is so close (again...)!
+            The one and only problem is that npc's data gets overriden by its initial data if the scene reloads, or if a duplicate npc is active
+            E.g, Jerome, the shopkeeper, and his shop items are all saved, until i go to his other shop, and it gets reset.
+            It is likely because data gets saved and persisted before it gets loaded
+                Im worried this might cause other errors if i change the saving order
+                
+        Post Instability Fixes
+            One of the big 3 has been done! Now to do the other 2:
+                Typewriter Logic
+                Background/Foreground Logic
         
     Optimisations & Hotfixes:
         
@@ -24,6 +27,9 @@ SNADV Notes
                     Casting abilities may have caused this, or maybe just jumping in general?
                 Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map
                 I need to make CloseCurrentMenus work properly in GUIBase, just to make things more clear
+                Data syncing between npcs's dont always work
+                    The logic DOES work, but i think the load method isnt being properly called
+                When clicking on and off the stats menu, i get NULLREFS about the UI input action map being non existent, cuz why would it be.
                                 
             Replicatable or From-Build bugs/problems
 
@@ -42,12 +48,13 @@ SNADV Notes
                     
                 Not really an issue, but when the player spawns for the very first time, there is a chance Origo's weather gets changed
                     The weather ideally should be clear at the very start of the game, then can be changed once the player reenters
+                    In general, we need a flag to show that the player has entered a map for the first time, then stuff like announcements can be different depending on it
                     
         Junie Help
             See how to fix the individual exit bugs i get
                 the audiomanager getting an error whenever i exit the game
-                Spawner coroutines not being able to be activated cuz its null or soemthing...
-            
+                    This is inevitable!!!
+                           
     Things to be added/changed:
         
         AO        
@@ -58,11 +65,7 @@ SNADV Notes
             Background/Foreground Logic
                 Make backgrounds similar to Terraria in terms of appearance!
                 Even tho this is cosmetic, i would like to just get the logic done
-                    I will use placeholder bgs just to test it, then will worry about designs Post-AO 
-                    
-            Make minibosses: a normal-enemy/boss hybrid
-                This is basically already a thing; there are spawners that have a onetime flag
-                Tho they arent a physical thing yet
+                    I will use placeholder bgs just to test it, then will worry about designs Post-AO
                         
             Audio
                 Make it so that the music transitions smoothly
@@ -76,7 +79,11 @@ SNADV Notes
                         For example, Cynder Valley's version of this piece will have its signature shamisen, shifting the genre a bit
         
         Post-AO           
-  
+            
+            Make minibosses: a normal-enemy/boss hybrid
+                This is basically already a thing; there are spawners that have a onetime flag
+                Tho they arent a physical thing yet
+            
             Boss Logic
                 Improve/Remake Noxu
                     He is a very very boring boss fight, so i need to add more functionality to his moves
