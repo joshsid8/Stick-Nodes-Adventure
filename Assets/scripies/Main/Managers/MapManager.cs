@@ -97,9 +97,9 @@ public class MapManager : MonoBehaviour
         GameEvents.TriggerSaveGame();
     }
 
-    public void OnDoorStatusChanged(DoorObjective doorObjective, bool isOpen)
+    public void OnDoorStatusChanged(DoorManager doorManager, bool isOpen)
     {
-        var dData = doorSceneData.Find(x => x.doorObjective == doorObjective);
+        var dData = doorSceneData.Find(x => x.doorManager == doorManager);
         if (dData != null) dData.isOpen = isOpen;
     }
 
@@ -220,7 +220,7 @@ public class MapManager : MonoBehaviour
         {
             if (obj.CompareTag("Section"))
             {
-                foreach (var section in obj.GetComponentsInChildren<DoorObjective>())
+                foreach (var section in obj.GetComponentsInChildren<DoorManager>())
                     doorObjects.Add(section.gameObject);
             }
         }
@@ -333,11 +333,11 @@ public class MapManager : MonoBehaviour
         foreach (var door in doorObjects)
         {
             var doorId = door.GetComponent<Identifier>();
-            var doorObjective = door.GetComponent<DoorObjective>();
+            var doorObjective = door.GetComponent<DoorManager>();
             var newDoor = new DoorSceneData
             {
                 activeDoors = door,
-                doorObjective = doorObjective,
+                doorManager = doorObjective,
                 id = doorId.id,
                 isOpen = doorObjective.isOpen
             };
@@ -456,10 +456,6 @@ public class MapManager : MonoBehaviour
             return;
         }
 
-        // Check if there is actually data for THIS scene before claiming we loaded nothing
-        var hasSceneData = manager.sceneData.Exists(x => x.sceneName == sceneName);
-        
-        // Even if we don't have scene specific data, we might have NPC data to load
         foreach (var npcData in manager.npcs)
         {
             var npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
@@ -478,6 +474,9 @@ public class MapManager : MonoBehaviour
             }
         }
 
+        var hasSceneData = manager.sceneData.Exists(x => x.sceneName == sceneName);
+        if (!hasSceneData) return;
+        
         foreach (var list in manager.sceneData)
         {
             if (list.sceneName != sceneName) continue;
@@ -488,11 +487,6 @@ public class MapManager : MonoBehaviour
                 if (enemy != null && enemy.activeEnemies != null) 
                     Destroy(enemy.activeEnemies);
             }
-
-            // We already handled global NPC data above, so we skip it here if it was duplicate
-            // but the original code had it inside the scene list loop. 
-            // Since NPCs can travel, it's better to load them from the global manager.npcs list
-            // which we just did.
 
             foreach (var collectableData in list.collectables)
             {
@@ -510,7 +504,7 @@ public class MapManager : MonoBehaviour
                 if (doorData.isOpen)
                 {
                     var door = doorSceneData.Find(d => d.id == doorData.activeDoor);
-                    if (door != null && door.doorObjective != null) door.doorObjective.InstantOpen();
+                    if (door != null && door.doorManager != null) door.doorManager.InstantOpen();
                 }
             }
 
@@ -598,7 +592,7 @@ public class MapManager : MonoBehaviour
     public class DoorSceneData
     {
         public GameObject activeDoors;
-        public DoorObjective doorObjective;
+        public DoorManager doorManager;
         public int id;
         public bool isOpen;
     }

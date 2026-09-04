@@ -72,7 +72,6 @@ public class EntitySpawner : MonoBehaviour
                             currentEnemies.Add(instance);
                         }
                     }
-                    yield return new WaitForSeconds(spawnTime);
                 }
             }
         }
@@ -87,26 +86,24 @@ public class EntitySpawner : MonoBehaviour
                 var prevPoint = 0;
                 for (var i = 0; i < spawn.spawnAmount; i++)
                 {
-                    if (currentEnemies.Count >= spawn.spawnAmount) break;
-                    if (!playerIsClose)
+                    if (currentEnemies.Count >= spawn.spawnAmount || playerIsClose) break;
+                    var rng = 0;
+                    while (rng == prevPoint)
                     {
-                        var rng = 0;
-                        while (rng == prevPoint)
-                        {
-                            rng = Random.Range(0, spawnPoints.Length);
-                            yield return null;
-                        }
-                        prevPoint = rng;
-                        var instance = Instantiate(spawn.objectToSpawn, spawnPoints[rng].transform.position, Quaternion.identity);
-                        var targetScene = SceneManager.GetSceneByName(scene);
-                        if (targetScene.IsValid() && targetScene.isLoaded)
-                        {
-                            SceneManager.MoveGameObjectToScene(instance, targetScene);
-                            instance.GetComponent<Identifier>().AutomateID(targetScene);
-                            if (spawn.settings != null) instance.GetComponent<EnemyController>().enemy = spawn.settings;
-                            currentEnemies.Add(instance);
-                        }
+                        rng = Random.Range(0, spawnPoints.Length);
+                        yield return null;
                     }
+                    prevPoint = rng;
+                    var instance = Instantiate(spawn.objectToSpawn, spawnPoints[rng].transform.position, Quaternion.identity);
+                    var targetScene = SceneManager.GetSceneByName(scene);
+                    if (targetScene.IsValid() && targetScene.isLoaded)
+                    {
+                        SceneManager.MoveGameObjectToScene(instance, targetScene);
+                        instance.GetComponent<Identifier>().AutomateID(targetScene);
+                        if (spawn.settings != null) instance.GetComponent<EnemyController>().enemy = spawn.settings;
+                        currentEnemies.Add(instance);
+                    }
+                    yield return new WaitForSeconds(spawnTime);
                 }
             }
         }

@@ -89,7 +89,7 @@ public class SaveSystem
         {
             var json = JsonUtility.ToJson(saveData, true);
             File.WriteAllText(SaveFileName(), json);
-            //Debug.Log($"[SaveSystem] Saved to: {SaveFileName()}");
+            if (Application.isEditor) Debug.Log($"[SaveSystem] Saved to: {SaveFileName()}");
         }
         catch (IOException ex)
         {

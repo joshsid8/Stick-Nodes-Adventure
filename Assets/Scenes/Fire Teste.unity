@@ -311,13 +311,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  doorObj:
-  - {fileID: 177574534}
-  - {fileID: 1311922857}
+  doorObjs: []
   objective: 2
   enemies: []
   boss: {fileID: 0}
   keys: []
+  badge: {fileID: 0}
 --- !u!114 &13393109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1543,8 +1542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4cbf7639981a084eb85f4e6cb0e573e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectiveComplete: 0
-  finishTime: 1
+  openTime: 0
   openSfx: {fileID: 0}
 --- !u!1 &181286255
 GameObject:
@@ -7264,8 +7262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4cbf7639981a084eb85f4e6cb0e573e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectiveComplete: 0
-  finishTime: 1
+  openTime: 0
   openSfx: {fileID: 0}
 --- !u!1 &1312736192
 GameObject:
@@ -11100,6 +11097,10 @@ PrefabInstance:
     - target: {fileID: 5796141929305424383, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_Color.r
       value: 0.9716981
+      objectReference: {fileID: 0}
+    - target: {fileID: 6295141710437693120, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: openTime
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9019721987122131995, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_Name

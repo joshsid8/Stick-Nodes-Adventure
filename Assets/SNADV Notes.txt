@@ -4,13 +4,8 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Junie really helped with a bunch of stuff <3
+        Junie really helped with a bunch of stuff
             Check and understand the code to ensure i know how to configure it myself
-        
-        Post Instability Fixes
-            One of the big 3 has been done! Now to do the other 2:
-                Typewriter Logic
-                Background/Foreground Logic
         
     Optimisations & Hotfixes:
         
@@ -18,11 +13,10 @@ SNADV Notes
         
             Issues from Testing                
                 I think when i first open a gui, the input action maps dont get switched correctly from Player to UI
-                Door data doesnt seem to be loading anymore, amazing!!!!!!!!!!!!!
-                    Cuz of the new way data is loaded and saved, it might have caused stuff like this to happen
-                    I wanna assume item data is also not loading properly either
-                    This doesnt seem to happen in the editor...
-                    I once left cynder valley, reentered, and only ONE of its doors was opened...??!?!!??!
+                NPC data doesnt seem to be successfully fetched from the save file
+                I think the save system isnt fully working to begin with
+                    The Map manager's save data, and the global data manager, hopefully, is ok
+                    But the actual main save data no longer WANTS to work!
                 
             Replicatable or From-Build bugs/problems
                 Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map

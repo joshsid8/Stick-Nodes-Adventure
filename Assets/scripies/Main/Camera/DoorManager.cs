@@ -4,23 +4,21 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DoorObjective : MonoBehaviour
+public class DoorManager : MonoBehaviour
 {
+    private enum Objectives { DefeatEnemy, FindKeys, DefeatBoss, UnlockBadge }
     public bool isOpen;
     
-    public ObjectiveDoor[] doorObj;
-    [SerializeField] Objectives objective;
+    public List<DoorObject> doorObjs = new();
+    [EnumButtons] [SerializeField] private Objectives objective;
 
     public List<GameObject> enemies = new();
     public GameObject boss;
     public CollectableSOBase[] keys;
+    public Badge badge;
     private bool playerDetected;
-    private enum Objectives
-    {
-        DefeatEnemy,
-        FindKeys,
-        DefeatBoss
-    }
+
+    private void Awake() => doorObjs = GetComponentsInChildren<DoorObject>().ToList(); // SINCE WHEN DID TOLIST EXIST?! MY LIIIIIIFFFFEEE!!!
 
     private void OnEnable()
     {
@@ -33,49 +31,28 @@ public class DoorObjective : MonoBehaviour
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.UnregisterDoor(gameObject);
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (isOpen)  return;
-        switch (objective)
-        {
-            case Objectives.DefeatEnemy:
-                if (collision.gameObject.CompareTag("Enemy"))
-                {
-                    if (enemies.Count < 1) enemies.Add(collision.gameObject);
-                    if (enemies[0] == null) enemies[0] = collision.gameObject;
-                }
-                break;
-            case Objectives.FindKeys:
-                playerDetected = collision.gameObject.CompareTag("Player");
-                break;
-            case Objectives.DefeatBoss:
-                if (collision.gameObject.CompareTag("Boss")) boss = collision.gameObject;
-                break;
-            default:
-                print("Clueless.");
-                break;
-        }
-    }
-
+    
     public void InstantOpen()
     {
         isOpen = true;
-        foreach (var door in doorObj)
+        foreach (var door in doorObjs)
         {
             if (door != null)
             {
-                door.finishTime = 0;
-                door.objectiveComplete = true;
+                door.openTime = 0;
+                StartCoroutine(door.Open());
+                if (door.gameObject.activeInHierarchy) door.gameObject.SetActive(false);
             }
+            else print("Door is null?!");
         }
     }
 
-    private void Open()
+    private void OpenDoors()
     {
         if (isOpen) return;
         isOpen = true;
-        foreach (var door in doorObj) if (door != null) door.objectiveComplete = true;
+        foreach (var door in doorObjs) if (door != null)
+                StartCoroutine(door.Open());
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.OnDoorStatusChanged(this, true);
     }
@@ -87,7 +64,7 @@ public class DoorObjective : MonoBehaviour
         switch (objective)
         {
             case Objectives.DefeatEnemy:
-                if (enemies == null) Open();
+                if (enemies.Count == 0) OpenDoors();
                 break;
             case Objectives.FindKeys:
                 if (playerDetected)
@@ -104,14 +81,17 @@ public class DoorObjective : MonoBehaviour
                                 break;
                             }
                     }
-                    Open();
+                    OpenDoors();
                 }
+                break;
+            case Objectives.UnlockBadge:
+                if (StatsManager.Instance.HasBadge(badge) && playerDetected) OpenDoors();
                 break;
             case Objectives.DefeatBoss:
                 if (boss != null)
                 {
                     var bh = boss.GetComponent<BossHealth>();
-                    if (bh != null && bh.isDead) Open();
+                    if (bh != null && bh.isDead) OpenDoors();
                 }
                 break;
             default:
@@ -119,11 +99,39 @@ public class DoorObjective : MonoBehaviour
                 break;
         }
     }
+    
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player")) playerDetected = true;
+        
+        if (isOpen) return;
+        switch (objective)
+        {
+            case Objectives.DefeatEnemy:
+                if (collision.gameObject.CompareTag("Enemy"))
+                {
+                    if (enemies.Count < 1) enemies.Add(collision.gameObject);
+                    if (enemies[0] == null) enemies[0] = collision.gameObject;
+                }
+                // This ensures that the doors open the moment the enemy dies, rather than when they get destroyed
+                else if (collision.gameObject.layer == LayerMask.NameToLayer("EDead") && enemies.Contains(collision.gameObject))
+                    enemies.Remove(collision.gameObject);
+                break;
+            case Objectives.FindKeys:
+                playerDetected = collision.gameObject.CompareTag("Player");
+                break;
+            case Objectives.DefeatBoss:
+                if (collision.gameObject.CompareTag("Boss")) boss = collision.gameObject;
+                break;
+            default:
+                print("Clueless.");
+                break;
+        }
+    }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-
-        if (collision.gameObject.CompareTag("Dead") && objective == Objectives.DefeatEnemy)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("EDead") && objective == Objectives.DefeatEnemy)
         {
             foreach (var enemy in enemies)
             {

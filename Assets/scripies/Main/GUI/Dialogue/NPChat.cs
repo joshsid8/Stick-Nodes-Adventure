@@ -93,7 +93,7 @@ namespace scripies.Dialogue
             if (speaker != gameObject) return;
             
             if (!dialogue.Contains(dialogueObject as DialogueObject)) dialogue.Add(dialogueObject as DialogueObject);
-            else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
+            //else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
         }
 
         public void ClearDialogue() => dialogue.Clear();
