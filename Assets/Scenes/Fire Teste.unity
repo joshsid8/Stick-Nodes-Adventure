@@ -3080,6 +3080,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8287228556211095260, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: lootItems.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8287228556211095260, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: lootItems.Array.data[2].obj
+      value: 
+      objectReference: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+    - target: {fileID: 8287228556211095260, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: lootItems.Array.data[2].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 619807cf4a3de5745a10a564311b843e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4445,9 +4457,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 885c523ccec4c224c98b4d10111dd1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTeleport: 0
   tagsToIgnore: []
-  forcePlayerTeleport: 0
   teleportTarget: {fileID: 361743893}
+  forcePlayerTeleport: 0
+  isTeledoor: 0
+  isSceneTeleport: 0
+  sceneToTeleport:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
+  inRange: 0
+  teleporterSize: {x: 0, y: 0}
+  enterIndicator: {fileID: 0}
+  connectingDoor: 
   teleportSfx: {fileID: 0}
   doesDamage: 1
   damage: 20
@@ -9896,9 +9918,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 885c523ccec4c224c98b4d10111dd1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTeleport: 0
   tagsToIgnore: []
-  forcePlayerTeleport: 0
   teleportTarget: {fileID: 361743893}
+  forcePlayerTeleport: 0
+  isTeledoor: 0
+  isSceneTeleport: 0
+  sceneToTeleport:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
+  inRange: 0
+  teleporterSize: {x: 0, y: 0}
+  enterIndicator: {fileID: 0}
+  connectingDoor: 
   teleportSfx: {fileID: 0}
   doesDamage: 1
   damage: 20

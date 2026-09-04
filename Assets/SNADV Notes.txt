@@ -4,13 +4,9 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
+        Junie really helped with a bunch of stuff <3
+            Check and understand the code to ensure i know how to configure it myself
         
-        Scene Data is so close (again...)!
-            The one and only problem is that npc's data gets overriden by its initial data if the scene reloads, or if a duplicate npc is active
-            E.g, Jerome, the shopkeeper, and his shop items are all saved, until i go to his other shop, and it gets reset.
-            It is likely because data gets saved and persisted before it gets loaded
-                Im worried this might cause other errors if i change the saving order
-                
         Post Instability Fixes
             One of the big 3 has been done! Now to do the other 2:
                 Typewriter Logic
@@ -20,44 +16,41 @@ SNADV Notes
         
         Instability
         
-            Issues from Testing
-                I keep spawning at the first spawn point instead of wherever the others are
-                    Teleporting ANYWHERE takes me to the first spawn point unless i walk into a checkpoint trigger
-                Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
-                    Casting abilities may have caused this, or maybe just jumping in general?
-                Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map
-                I need to make CloseCurrentMenus work properly in GUIBase, just to make things more clear
-                Data syncing between npcs's dont always work
-                    The logic DOES work, but i think the load method isnt being properly called
-                When clicking on and off the stats menu, i get NULLREFS about the UI input action map being non existent, cuz why would it be.
-                                
+            Issues from Testing                
+                I think when i first open a gui, the input action maps dont get switched correctly from Player to UI
+                Door data doesnt seem to be loading anymore, amazing!!!!!!!!!!!!!
+                    Cuz of the new way data is loaded and saved, it might have caused stuff like this to happen
+                    I wanna assume item data is also not loading properly either
+                    This doesnt seem to happen in the editor...
+                    I once left cynder valley, reentered, and only ONE of its doors was opened...??!?!!??!
+                
             Replicatable or From-Build bugs/problems
+                Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map
 
             One time occurrences or Rare/Intimidating bugs
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
-                
-                In the player logs, Apparently, leaks will happen if certain Input maps are toggled, which in itself causes VERY random and erratic issues
-                
-                Find out why one shot sfx are very very quiet
-                    
-                Ive successfully remade the player animator controller, but i have a few things to look at
+
+                Ive successfully remade the player animator controller, but its BUGGY!
                     I need to allow attacking when wall jumping specifically
                     Sometimes the run animation blends in after a wall jump, and plays again when walking off a platform before playing the fall anim
                     I can indefinitely hold the ability button, freezing the animation at inconvenient times
+                    Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
+                        Casting abilities may have caused this, or maybe just jumping in general?
+                    When it comes to the counter animation, deflecting works, but melee countering doesnt.
                     
                 Not really an issue, but when the player spawns for the very first time, there is a chance Origo's weather gets changed
                     The weather ideally should be clear at the very start of the game, then can be changed once the player reenters
                     In general, we need a flag to show that the player has entered a map for the first time, then stuff like announcements can be different depending on it
                     
-        Junie Help
-            See how to fix the individual exit bugs i get
-                the audiomanager getting an error whenever i exit the game
-                    This is inevitable!!!
+            Junie Help
                            
     Things to be added/changed:
         
-        AO        
+        AO      
+        
+            Find out why one shot sfx are very very quiet
+              
             Improve Typewriter Logic
                 The Typewriter updates the settings as it displays text
                     but i would rather have it know what settings should be implemented beforehand to make it work well          

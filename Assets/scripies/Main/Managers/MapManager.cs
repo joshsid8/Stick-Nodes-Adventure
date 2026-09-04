@@ -35,7 +35,6 @@ public class MapManager : MonoBehaviour
     #endregion
 
     #region Scene Data
-    
     private string sceneName; 
     public GameObject[] sceneObjects;
     [SerializeField] private List<GameObject> doorObjects = new();
@@ -50,10 +49,12 @@ public class MapManager : MonoBehaviour
     public List<CollectableSceneData> collectableSceneData = new();
     public List<DoorSceneData> doorSceneData = new();
     public List<SpawnerSceneData> spawnerSceneData = new();
+    
+    private bool sceneLoaded;
     #endregion
 
     private void Awake() { if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections"); }
-    
+
     private void Start()
     {
         sceneName = gameObject.scene.name;
@@ -61,7 +62,7 @@ public class MapManager : MonoBehaviour
         weather = GetComponent<WeatherManager>();
         audioManager = AudioManager.Instance;
         InitialiseSceneData();
-        Invoke(nameof(LoadSceneData), 0.1f);
+        LoadSceneData();
     }
 
     private void LateUpdate()
@@ -264,17 +265,21 @@ public class MapManager : MonoBehaviour
 
     private void InitialiseSceneData()
     {
-        if (enemySceneData.Count == 0) enemySceneData.Add(new EnemySceneData());
-        if (npcSceneData.Count == 0) npcSceneData.Add(new NpcSceneData());
-        if (collectableSceneData.Count == 0) collectableSceneData.Add(new CollectableSceneData());
-        if (doorSceneData.Count == 0) doorSceneData.Add(new DoorSceneData());
-        if (spawnerSceneData.Count == 0) spawnerSceneData.Add(new SpawnerSceneData());
+        ClearSceneData(); // Clear any editor-time or dummy data
+        CollateObjects(); // Find objects in the scene
+        UpdateLists(); // Capture their initial state (but don't persist yet)
     }
-    
+
     public void SaveSceneData()
     {
-        ClearSceneData();
+        if (!sceneLoaded) return;
         CollateObjects();
+        UpdateLists();
+    }
+
+    private void UpdateLists()
+    {
+        ClearSceneData();
         foreach (var obj in sceneObjects)
         {
             if (obj != null)
@@ -356,7 +361,7 @@ public class MapManager : MonoBehaviour
     
     public void MakeDataPersistent()
     {
-        if (PlayerHealth.Instance == null) return;
+        if (!sceneLoaded || PlayerHealth.Instance == null) return;
         var manager = DataManager.Instance;
         var list = manager.sceneData.Find(x => x.sceneName == sceneName);
 
@@ -445,14 +450,38 @@ public class MapManager : MonoBehaviour
     public void LoadSceneData()
     {
         var manager = DataManager.Instance;
-        if (manager == null || manager.sceneData.Count == 0)
+        if (manager == null || manager.sceneData.Count == 0 && manager.npcs.Count == 0)
         {
-            GameEvents.TriggerSaveGame();
+            sceneLoaded = true;
             return;
         }
+
+        // Check if there is actually data for THIS scene before claiming we loaded nothing
+        var hasSceneData = manager.sceneData.Exists(x => x.sceneName == sceneName);
+        
+        // Even if we don't have scene specific data, we might have NPC data to load
+        foreach (var npcData in manager.npcs)
+        {
+            var npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
+            if (npc == null || npc.activeNpc == null) continue;
+            npc.activeNpc.TryGetComponent<NPChat>(out var dTrigger);
+            if (dTrigger != null)
+            {
+                dTrigger.dialogue.Clear();
+                dTrigger.dialogue.AddRange(npcData.dialogue);
+            }
+            npc.activeNpc.TryGetComponent<ShopKeeper>(out var shopKeeper);
+            if (shopKeeper != null)
+            {
+                shopKeeper.shopItems.Clear();
+                shopKeeper.shopItems.AddRange(npcData.shopItems);
+            }
+        }
+
         foreach (var list in manager.sceneData)
         {
             if (list.sceneName != sceneName) continue;
+            
             foreach (var enemyData in list.enemies)
             {
                 var enemy = enemySceneData.Find(e => e.spawnId == enemyData.activeEnemyID);
@@ -460,23 +489,10 @@ public class MapManager : MonoBehaviour
                     Destroy(enemy.activeEnemies);
             }
 
-            foreach (var npcData in manager.npcs)
-            {
-                var npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
-                if (npc == null || npc.activeNpc == null) continue;
-                npc.activeNpc.TryGetComponent<NPChat>(out var dTrigger);
-                if (dTrigger != null)
-                {
-                    dTrigger.dialogue.Clear();
-                    dTrigger.dialogue.AddRange(npcData.dialogue);
-                }
-                npc.activeNpc.TryGetComponent<ShopKeeper>(out var shopKeeper);
-                if (shopKeeper != null)
-                {
-                    shopKeeper.shopItems.Clear();
-                    shopKeeper.shopItems.AddRange(npcData.shopItems);
-                }
-            }
+            // We already handled global NPC data above, so we skip it here if it was duplicate
+            // but the original code had it inside the scene list loop. 
+            // Since NPCs can travel, it's better to load them from the global manager.npcs list
+            // which we just did.
 
             foreach (var collectableData in list.collectables)
             {
@@ -514,11 +530,14 @@ public class MapManager : MonoBehaviour
             if (list.isBossDead && bossHealth != null) 
                 Destroy(bossHealth.gameObject);
             bossSceneData.willBeNpc = list.willBeNpc;
-            return;
             
+            sceneLoaded = true;
+            break;
         }
         if (bossHealth != null && bossSceneData.isDead) 
             Destroy(bossHealth.gameObject);
+            
+        sceneLoaded = true;
     }
     #endregion
     

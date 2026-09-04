@@ -135,7 +135,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: scripies::ShopKeeper
   shopItems:
   - itemName: Sandwich
-    itemDescription: 
+    itemDescription: Delicious sandwich I definitely handmade. Definitely didnt go
+      to aldi to get these for such an amazing price...
     itemSprite: {fileID: 0}
     itemPrice: 50
     itemCollectable: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
@@ -143,30 +144,30 @@ MonoBehaviour:
     badgeRequired: {fileID: 0}
   - itemName: Bubble Blower
     itemDescription: This comes from a fish woman, it apparently increases your attack
-      efficiency.
+      speed by a small bit
     itemSprite: {fileID: 0}
-    itemPrice: 400
+    itemPrice: 200
     itemCollectable: {fileID: 11400000, guid: 3d6a83f08d4c48c419380fa337444060, type: 2}
-    itemAmount: 2
+    itemAmount: 1
     badgeRequired: {fileID: 0}
   - itemName: Shuriken Scroll
     itemDescription: Three lil shurikens. It's prolly an upgrade compared to the
-      fireball script
+      fireball scroll
     itemSprite: {fileID: 0}
     itemPrice: 300
     itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
     itemAmount: 1
     badgeRequired: {fileID: 0}
   - itemName: Earth Rock Scroll
-    itemDescription: A scroll you can get from a  "down to earth" guy somewhere below
+    itemDescription: A scroll you can get from a  "down to earth" guy somewhere downward
     itemSprite: {fileID: 0}
-    itemPrice: 700
+    itemPrice: 500
     itemCollectable: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
     itemAmount: 1
     badgeRequired: {fileID: 0}
   - itemName: SuperKey
-    itemDescription: A spare one, but as long as youve defeaten Cynder, Ill give
-      it to ya
+    itemDescription: A Key to access an earthly place. It'll be yours if you defeat
+      that one fire guy in the valleys
     itemSprite: {fileID: 0}
     itemPrice: 100
     itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}

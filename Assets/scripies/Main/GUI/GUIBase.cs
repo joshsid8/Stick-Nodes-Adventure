@@ -69,10 +69,11 @@ public abstract class GUIBase : MonoBehaviour
         {
             if (!gui.isActive || gui == this) continue;
             
-            if (gui.TryGetComponent<InvManager>(out var inv)) inv.ToggleInventory();
-            else if (gui.TryGetComponent<QuestLogManager>(out var quest)) quest.ToggleQuestLog();
-            else if (gui.TryGetComponent<StatsManager>(out var stats)) stats.ToggleStats();
-            else if (gui.TryGetComponent<ShopManager>(out var shop)) shop.ToggleShop(false);
+            if (gui is InvManager inv) inv.ToggleInventory();
+            else if (gui is QuestLogManager quest) quest.ToggleQuestLog();
+            else if (gui is StatsManager stats) stats.ToggleStats();
+            else if (gui is ShopManager shop) shop.ToggleShop(false);
+            else gui.GetActive(false);
         }
     }
 
@@ -120,11 +121,13 @@ public abstract class GUIBase : MonoBehaviour
         player.canAct = ActiveGUICount <= 0;
         if (ActiveGUICount > 0)
         {
+            input ??= PlayerHealth.Instance.pc.input;
             input.UI.Enable();
             input.Player.Disable();
         }
         else
         {
+            input ??= PlayerHealth.Instance.pc.input;
             input.UI.Disable();
             input.Player.Enable();
         }

@@ -359,7 +359,7 @@ namespace scripies.Player
             if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding)
             {
                 isJumping = true;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult * 0.75f);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult * 0.85f);
                 doubleJump = false;
                 if (jumpClips.Length > 0) AudioSource.PlayClipAtPoint(jumpClips[1] ?? jumpClips[0], transform.position);
             }

@@ -59,6 +59,7 @@ public class QuestLogManager : GUIBase
         if (questMenu != null) 
             rt.anchoredPosition = new Vector2(isActive ? 0 : -2000, 0);
         GetActive(isActive);
+        if (isActive) CloseCurrentMenus();
     }
 
     public void Save(ref PlayerSaveQuests data)

@@ -82,7 +82,7 @@ public class SaveSystem
 
     public static void Save()
     {
-        if (DataManager.Instance == null) return;
+        if (DataManager.Instance == null || Application.isEditor && PlayerHealth.Instance.pc.debugMode) return;
         HandleSaveData();
 
         try
