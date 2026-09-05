@@ -14,15 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Informaton.
   dialogueThread:
-  - thread: 'There is another enemy above the previous one.
-
-      it will be difficult
-      since they cannot be stunned in any way.'
+  - thread: To unlock that door on your right, you need to take down a certain enemy
+      above you.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
-  - thread: Good luck.
+    useCameraEvents: 1
+    disablePreviousEvents: 0
+    cameraDistance: 10
+    zoomSpeed: 1
+    cameraTarget: Boss Section
+    cameraLookupType: 2
+  - thread: He's a quick one, so be careful!
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 1
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 2
   pendingChoice: 0
   isAnimated: 0
   yesResponse:
@@ -40,6 +50,7 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
+  openShopOnClose: 0
   speaker: 
   alteredDialogue: {fileID: 0}
   externalInstance: 

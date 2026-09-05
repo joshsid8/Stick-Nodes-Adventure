@@ -12,12 +12,18 @@ SNADV Notes
         Instability
         
             Issues from Testing                
-                I think when i first open a gui, the input action maps dont get switched correctly from Player to UI
-                NPC data doesnt seem to be successfully fetched from the save file
-                I think the save system isnt fully working to begin with
-                    The Map manager's save data, and the global data manager, hopefully, is ok
-                    But the actual main save data no longer WANTS to work!
-                
+                I think the save system isnt fully working yet
+                Why did the superkey's sprite turn into a rock?!
+                    Its because the shop slots dont get updated per change or interaction in shop
+                Fishmen are RELENTLESS when it comes to fighting the player
+                    Because its currently the only one who can fly and stuff, i dont think it wants to spare the player by any means
+                    Ill need to make sparing a bit more efficient, adapting to flying enemies
+                    On par with this, jumping logic should only happen when ALL enemies are close enough to the player
+                        If i were to run away from a RELENTLESS fishman, and fight a cynderian, the cynderian would be zoning, waiting for the fishman's turn
+                        even tho the fishman is in a different universe!
+                One time i tried walking from Cynder Valley to Origo, and I FELL OFFF THE MAP!!!
+                    Origo didnt spawn at all!!! WHY?!
+                    
             Replicatable or From-Build bugs/problems
                 Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map
 

@@ -41,7 +41,6 @@ public abstract class GUIBase : MonoBehaviour
         {
             if (gui.isActive) break;
             if (gui != allGuis[^1] || gui.isActive || ActiveGUICount <= 0) return;
-            Cluelessness.Instance.CluelessF(ActiveGUICount, "ActiveGUICount");
             Debug.LogError($"All guis are inactive, but the count was {ActiveGUICount}. \nResetting Count. You may be frozen mb");
             ActiveGUICount = 0;
         }
@@ -73,7 +72,6 @@ public abstract class GUIBase : MonoBehaviour
             else if (gui is QuestLogManager quest) quest.ToggleQuestLog();
             else if (gui is StatsManager stats) stats.ToggleStats();
             else if (gui is ShopManager shop) shop.ToggleShop(false);
-            else gui.GetActive(false);
         }
     }
 
@@ -107,7 +105,7 @@ public abstract class GUIBase : MonoBehaviour
     }
     
     /// <summary>
-    ///  get actiiiiiiivvee-
+    /// get actiiiiiiivvee-
     /// </summary>
     protected void GetActive(bool active)
     {

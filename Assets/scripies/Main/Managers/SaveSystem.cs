@@ -7,6 +7,7 @@ public class SaveSystem
     private static SaveData saveData = new()
     {
         sceneData = new SceneData(true),
+        globalNpcData = new GlobalNpcData(),
         playerCurrentData = new PlayerSaveCurrentData(),
         playerStats = new PlayerSaveStats(),
         playerInventory = new PlayerSaveInventory(),
@@ -20,6 +21,7 @@ public class SaveSystem
     public struct SaveData
     {
         public SceneData sceneData;
+        public GlobalNpcData globalNpcData;
         public PlayerSaveCurrentData playerCurrentData;
         public PlayerSaveStats playerStats;
         public PlayerSaveInventory playerInventory;
@@ -39,13 +41,11 @@ public class SaveSystem
     {
         foreach (var map in MapManager.Instances.Values)
         {
-            if (map != null)
-            {
-                map.SaveSceneData();
-                map.MakeDataPersistent();
-            }
+            if (map == null) continue;
+            map.SaveSceneData();
+            map.MakeDataPersistent();
         }
-        if (DataManager.Instance != null) DataManager.Instance.Save(ref saveData.sceneData);
+        if (DataManager.Instance != null) DataManager.Instance.Save(ref saveData.sceneData, ref saveData.globalNpcData);
         if (PlayerHealth.Instance != null && PlayerHealth.Instance.pc != null) PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);
         if (PlayerManager.Instance != null) PlayerManager.Instance.Save(ref saveData.playerStats);
         if (InvManager.Instance != null)
@@ -66,7 +66,7 @@ public class SaveSystem
 
     public static void HandleLoadData()
     {
-        if (DataManager.Instance != null) DataManager.Instance.Load(saveData.sceneData);
+        if (DataManager.Instance != null) DataManager.Instance.Load(saveData.sceneData, saveData.globalNpcData);
         if (PlayerHealth.Instance != null && PlayerHealth.Instance.pc != null) PlayerHealth.Instance.pc.Load(saveData.playerCurrentData);
         if (PlayerManager.Instance != null) PlayerManager.Instance.Load(saveData.playerStats);
         if (InvManager.Instance != null)
@@ -107,6 +107,7 @@ public class SaveSystem
             {
                 var json = File.ReadAllText(path);
                 saveData = JsonUtility.FromJson<SaveData>(json);
+                Debug.Log($"[SaveSystem] Loaded settings from: {path}");
             }
             catch (IOException ex)
             {

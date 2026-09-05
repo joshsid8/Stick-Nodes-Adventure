@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Watery Shop Teste.unity
     guid: 8824045789d114e479dae4c4e136ef50
+  - enabled: 1
+    path: Assets/Scenes/Fiery Shop Teste.unity
+    guid: 7f20e3033c28f84429296cd7a255a114
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 17a3c72a5b633e1489eab7d307b4b86b, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

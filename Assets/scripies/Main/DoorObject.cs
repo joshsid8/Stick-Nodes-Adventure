@@ -4,13 +4,13 @@
 
 public class DoorObject : MonoBehaviour
 {
-    private DoorManager manager;
+    private AccessManager manager;
     public float openTime;
     [SerializeField] private AudioClip openSfx;
 
     private void Start()
     {
-        manager = GetComponentInParent<DoorManager>();
+        manager = GetComponentInParent<AccessManager>();
         if (manager.isOpen) StartCoroutine(Open());
     }
 

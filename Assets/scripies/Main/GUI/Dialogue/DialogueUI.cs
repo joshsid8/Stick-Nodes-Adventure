@@ -101,7 +101,7 @@ namespace scripies.Dialogue
                     switch (dialogue.cameraLookupType)
                     {
                         case DialogueThread.LookupType.RawName:
-                            target = GameObject.Find(dialogue.cameraTarget ?? dialogue.cameraTarget + "(Clone)");
+                            target = GameObject.Find(dialogue.cameraTarget ?? dialogue.cameraTarget + " (Clone)");
                             break;
                         case DialogueThread.LookupType.Tag:
                             target = GameObject.FindGameObjectWithTag(dialogue.cameraTarget);
@@ -110,7 +110,7 @@ namespace scripies.Dialogue
                             var allSects = GameObject.FindGameObjectsWithTag("Section");
                             foreach (var sect in allSects)
                             {
-                                if (sect.name == dialogue.cameraTarget)
+                                if (sect.name.Contains(dialogue.cameraTarget))
                                 {
                                     target = sect;
                                     break;
@@ -121,7 +121,7 @@ namespace scripies.Dialogue
                             var spawners = GameObject.FindGameObjectsWithTag("Spawner");
                             foreach (var spawner in spawners)
                             {
-                                if (spawner.name == dialogue.cameraTarget)
+                                if (spawner.name.Contains(dialogue.cameraTarget))
                                 {
                                     target = spawner;
                                     break;
@@ -131,6 +131,7 @@ namespace scripies.Dialogue
                         default:
                             throw new ArgumentException($"[DialogueUI Camera Event] How did u even make the type as {dialogue.cameraLookupType}??");
                     }
+                    if (target == null) throw new NullReferenceException($"[DialogueUI Camera Event] We couldnt find {dialogue.cameraTarget} nowhere!");
                     CameraEventManager.Instance.ChangeTarget(target);
                 }
                 else if (dialogue.disablePreviousEvents) CameraEventManager.Instance.ResetCamera();
@@ -207,7 +208,7 @@ namespace scripies.Dialogue
                 if (dialogueObject.openShopOnClose)
                 {
                     var instance = GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName);
-                    if (instance != null && instance.TryGetComponent(out ShopKeeper shopKeeper))
+                    if (instance != null && instance.TryGetComponent(out ShopKeeper shopKeeper)) 
                         shopKeeper.StartShop();
                 }
 
@@ -248,13 +249,13 @@ namespace scripies.Dialogue
             }
 
             typeWriter.actionFactor = 0;
-            dialogueBox.SetActive(false);
-            GetActive(false);
             textLabel.text = string.Empty;
             gameHUD.SetActive(true);
             textLabel.color = Color.black;
             npcNameLabel.color = Color.black;
             currentNpc = null;
+            dialogueBox.SetActive(false);
+            GetActive(false);
         }
 
         private IEnumerator ChoiceDialogue(DialogueObject dialogueObject = null)

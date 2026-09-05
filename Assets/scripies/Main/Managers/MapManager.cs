@@ -14,7 +14,6 @@ public class MapManager : MonoBehaviour
     public static readonly Dictionary<string, MapManager> Instances = new();
     
     #region Map Info and Ost
-
     public bool activeMap;
     [SerializeField] private string mapName;
     [SerializeField] [TextArea] private string mapDescription;
@@ -97,9 +96,9 @@ public class MapManager : MonoBehaviour
         GameEvents.TriggerSaveGame();
     }
 
-    public void OnDoorStatusChanged(DoorManager doorManager, bool isOpen)
+    public void OnDoorStatusChanged(AccessManager accessManager, bool isOpen)
     {
-        var dData = doorSceneData.Find(x => x.doorManager == doorManager);
+        var dData = doorSceneData.Find(x => x.accessManager == accessManager);
         if (dData != null) dData.isOpen = isOpen;
     }
 
@@ -220,7 +219,7 @@ public class MapManager : MonoBehaviour
         {
             if (obj.CompareTag("Section"))
             {
-                foreach (var section in obj.GetComponentsInChildren<DoorManager>())
+                foreach (var section in obj.GetComponentsInChildren<AccessManager>())
                     doorObjects.Add(section.gameObject);
             }
         }
@@ -333,11 +332,11 @@ public class MapManager : MonoBehaviour
         foreach (var door in doorObjects)
         {
             var doorId = door.GetComponent<Identifier>();
-            var doorObjective = door.GetComponent<DoorManager>();
+            var doorObjective = door.GetComponent<AccessManager>();
             var newDoor = new DoorSceneData
             {
                 activeDoors = door,
-                doorManager = doorObjective,
+                accessManager = doorObjective,
                 id = doorId.id,
                 isOpen = doorObjective.isOpen
             };
@@ -504,7 +503,7 @@ public class MapManager : MonoBehaviour
                 if (doorData.isOpen)
                 {
                     var door = doorSceneData.Find(d => d.id == doorData.activeDoor);
-                    if (door != null && door.doorManager != null) door.doorManager.InstantOpen();
+                    if (door != null && door.accessManager != null) door.accessManager.InstantOpen();
                 }
             }
 
@@ -592,7 +591,7 @@ public class MapManager : MonoBehaviour
     public class DoorSceneData
     {
         public GameObject activeDoors;
-        public DoorManager doorManager;
+        public AccessManager accessManager;
         public int id;
         public bool isOpen;
     }

@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class DoorManager : MonoBehaviour
+public class AccessManager : MonoBehaviour
 {
     private enum Objectives { DefeatEnemy, FindKeys, DefeatBoss, UnlockBadge }
     public bool isOpen;

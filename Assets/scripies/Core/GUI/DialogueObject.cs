@@ -15,7 +15,12 @@ namespace scripies.Dialogue
             {
                 thread = "Huh?",
                 dialogueColour = Color.black,
-                isBold = false
+                isBold = false,
+                useCameraEvents = false,
+                disablePreviousEvents = false,
+                cameraDistance = 10,
+                zoomSpeed = 1,
+                cameraTarget = ""
             }
         };
         [SerializeField] private bool pendingChoice;
@@ -81,7 +86,7 @@ namespace scripies.Dialogue
         
         public string cameraTarget;
         public enum LookupType {RawName, Tag, Section, Spawner}
-        public LookupType cameraLookupType;
+        [EnumButtons] public LookupType cameraLookupType;
     }
     [Serializable]
     public class ApplyFloat

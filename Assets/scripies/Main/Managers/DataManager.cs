@@ -92,17 +92,28 @@ public class DataManager : MonoBehaviour
 
     #endregion
 
-    public void Save(ref SceneData data) => data.realSceneData = new List<SceneList>(sceneData);
-    public void Load(SceneData data) => sceneData = new List<SceneList>(data.realSceneData);
+    public void Save(ref SceneData data, ref GlobalNpcData npcData)
+    {
+        data.realSceneData = new List<SceneList>(sceneData);
+        npcData.realNpcData = new List<NpcData>(npcs);
+    }
+    public void Load(SceneData data, GlobalNpcData npcData)
+    {
+        sceneData = new List<SceneList>(data.realSceneData);
+        npcs = new List<NpcData>(npcData.realNpcData);
+    }
 }
 
 [Serializable]
 public struct SceneData
 {
     public List<DataManager.SceneList> realSceneData;
+    public SceneData(bool initialize) => realSceneData = new List<DataManager.SceneList>();
+}
 
-    public SceneData(bool initialize)
-    {
-        realSceneData = new List<DataManager.SceneList>();
-    }
+[Serializable]
+public struct GlobalNpcData
+{
+    public List<DataManager.NpcData> realNpcData;
+    public GlobalNpcData(bool initialize) => realNpcData = new List<DataManager.NpcData>();
 }

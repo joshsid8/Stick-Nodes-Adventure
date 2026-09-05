@@ -17,14 +17,14 @@ public class Teleporter : MonoBehaviour
     [Space]
     [Header("Player Teleporting Properties")]
     [SerializeField] private bool forcePlayerTeleport;
-
     [SerializeField] private bool isTeledoor;
     [SerializeField] private bool isSceneTeleport;
-    public SceneField sceneToTeleport;
+    [Space]
+    [SerializeField] private SceneField sceneToTeleport;
+    [SerializeField] private string connectingDoor;
     [SerializeField] private bool inRange;
     [SerializeField] private Vector2 teleporterSize;
     [SerializeField] private GameObject enterIndicator;
-    [SerializeField] private string connectingDoor;
     [Space]
     [SerializeField] private AudioClip teleportSfx;
     private PlayerInput input;
