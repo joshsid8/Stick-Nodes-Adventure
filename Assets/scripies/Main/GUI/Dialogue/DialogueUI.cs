@@ -137,16 +137,15 @@ namespace scripies.Dialogue
                 else if (dialogue.disablePreviousEvents) CameraEventManager.Instance.ResetCamera();
                 
                 yield return typeWriter.Run(dialogue.thread, textLabel, npcNameLabel);
-                if (dialogueObject.PendingChoice)
+                if (dialogueObject.PendingChoice && dialogue == dialogueObject.DialogueThread[^1])
                 {
-                    var lastDialogue = dialogueObject.DialogueThread[^1];
-                    if (dialogue != lastDialogue) yield break; 
                     StartCoroutine(ChoiceDialogue(dialogueObject));
                     yield return new WaitUntil(() => !handler.responseBox.gameObject.activeInHierarchy);
                 }
                 else yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
             }
             ApplyCustomEffect(dialogueObject);
+            if (dialogueObject.PendingChoice) yield break;
             CloseDialogue(dialogueObject);
         }
 
@@ -260,14 +259,14 @@ namespace scripies.Dialogue
 
         private IEnumerator ChoiceDialogue(DialogueObject dialogueObject = null)
         {
-            if (dialogueObject != null)
+            if (dialogueObject == null)
             {
-                //npcNameLabel.text = dialogueObject.NPCName ?? dialogueObject.speaker ?? currentNpc.npcName ?? "HUH?! WHERE IS EVERYTHING?!";
-                //yield return typeWriter.Run(dialogueObject.DialogueThread[^1].thread, textLabel, npcNameLabel);
-                handler.ShowResponses(dialogueObject);
+                ForceCloseDialogue();
+                yield break;
             }
-            else CloseDialogue(dialogueObject);
-            yield return null;
+            //npcNameLabel.text = dialogueObject.NPCName ?? dialogueObject.speaker ?? currentNpc.npcName ?? "HUH?! WHERE IS EVERYTHING?!";
+            //yield return typeWriter.Run(dialogueObject.DialogueThread[^1].thread, textLabel, npcNameLabel);
+            handler.ShowResponses(dialogueObject);
         }
 
         private void ApplyCustomEffect(DialogueObject dialogueObject)

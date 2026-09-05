@@ -11,6 +11,7 @@ namespace scripies.Core
         float ChatRadius { get; }
 
         void AddDialogue(ScriptableObject dialogue, GameObject speaker = null);
+        void RemoveDialogue(ScriptableObject dialogue, GameObject speaker = null);
         void ClearDialogue();
     }
 }

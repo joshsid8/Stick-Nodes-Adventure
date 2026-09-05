@@ -69,12 +69,10 @@ public class MapManager : MonoBehaviour
         #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            print("Saving data");
             SaveSceneData();
         }
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            print("Persisting data");
             MakeDataPersistent();
         }
         if (Input.GetKeyDown(KeyCode.F3))
@@ -191,10 +189,9 @@ public class MapManager : MonoBehaviour
 
     private void HandleMapExit(GameObject playerObject)
     {
+        GameEvents.TriggerSaveGame();
         if (!activeMap) return;
         activeMap = false;
-        MakeDataPersistent();
-        GameEvents.TriggerSaveGame();
         weather.ClearDisasters();
         if (!audioManager.gameObject.IsDestroyed())
         {
@@ -264,13 +261,14 @@ public class MapManager : MonoBehaviour
 
     private void InitialiseSceneData()
     {
-        ClearSceneData(); // Clear any editor-time or dummy data
-        CollateObjects(); // Find objects in the scene
-        UpdateLists(); // Capture their initial state (but don't persist yet)
+        ClearSceneData();
+        CollateObjects();
+        UpdateLists();
     }
 
     public void SaveSceneData()
     {
+        print("Saving data");
         if (!sceneLoaded) return;
         CollateObjects();
         UpdateLists();
@@ -360,6 +358,7 @@ public class MapManager : MonoBehaviour
     
     public void MakeDataPersistent()
     {
+        print("Persisting data");
         if (!sceneLoaded || PlayerHealth.Instance == null) return;
         var manager = DataManager.Instance;
         var list = manager.sceneData.Find(x => x.sceneName == sceneName);
@@ -449,30 +448,12 @@ public class MapManager : MonoBehaviour
     public void LoadSceneData()
     {
         var manager = DataManager.Instance;
-        if (manager == null || manager.sceneData.Count == 0 && manager.npcs.Count == 0)
+        if (manager == null || manager.sceneData.Count == 0)
         {
             sceneLoaded = true;
             return;
         }
-
-        foreach (var npcData in manager.npcs)
-        {
-            var npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
-            if (npc == null || npc.activeNpc == null) continue;
-            npc.activeNpc.TryGetComponent<NPChat>(out var dTrigger);
-            if (dTrigger != null)
-            {
-                dTrigger.dialogue.Clear();
-                dTrigger.dialogue.AddRange(npcData.dialogue);
-            }
-            npc.activeNpc.TryGetComponent<ShopKeeper>(out var shopKeeper);
-            if (shopKeeper != null)
-            {
-                shopKeeper.shopItems.Clear();
-                shopKeeper.shopItems.AddRange(npcData.shopItems);
-            }
-        }
-
+        Invoke(nameof(LoadNpcData), 0.1f);
         var hasSceneData = manager.sceneData.Exists(x => x.sceneName == sceneName);
         if (!hasSceneData) return;
         
@@ -532,6 +513,29 @@ public class MapManager : MonoBehaviour
             
         sceneLoaded = true;
     }
+
+    public void LoadNpcData()
+    {
+        if (DataManager.Instance == null || DataManager.Instance.npcs.Count == 0) return;
+        foreach (var npcData in DataManager.Instance.npcs)
+        {
+            var npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
+            if (npc == null || npc.activeNpc == null) continue;
+            npc.activeNpc.TryGetComponent<NPChat>(out var dTrigger);
+            if (dTrigger != null)
+            {
+                dTrigger.dialogue.Clear();
+                dTrigger.dialogue.AddRange(npcData.dialogue);
+            }
+            npc.activeNpc.TryGetComponent<ShopKeeper>(out var shopKeeper);
+            if (shopKeeper != null)
+            {
+                shopKeeper.shopItems.Clear();
+                shopKeeper.shopItems.AddRange(npcData.shopItems);
+            }
+        }
+    }
+    
     #endregion
     
     #region Door and Spawner Stuff

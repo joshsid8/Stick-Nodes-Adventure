@@ -133,8 +133,8 @@ MonoBehaviour:
     item: {fileID: 11400000, guid: 78eb7255c5578d043b060d338de00e1b, type: 2}
     amount: 1
     chance: 100
-  - obj: {fileID: 5073680930954534561, guid: 9c51c0f4f10752c428f5b0b6803d5dc4, type: 3}
-    item: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
+  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
+    item: {fileID: 11400000, guid: 619807cf4a3de5745a10a564311b843e, type: 2}
     amount: 1
     chance: 100
   minPopX: -20
@@ -234,7 +234,7 @@ MonoBehaviour:
   prevAttack: 
   prevRepeat: 0
   defensiveAtk:
-  - Shuriken
+  - Jump
   - Teleport
   - NAttack
   - NAttack

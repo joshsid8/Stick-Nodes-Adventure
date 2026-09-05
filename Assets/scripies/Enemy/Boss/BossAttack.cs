@@ -172,14 +172,9 @@ public class BossAttack : MonoBehaviour
             }
             if (prevAttack == prevPrev) prevRepeat++;
             else prevRepeat = 0;
-            CancelInvoke(nameof(AttackSystem));
         }
-        else if (testing && isAttacking)
-        {
-            animator.SetTrigger(testAttacks[testIndex]);
-            CancelInvoke(nameof(AttackSystem));
-        }
-        if (!isAttacking) CancelInvoke(nameof(AttackSystem));
+        else if (testing && isAttacking) animator.SetTrigger(testAttacks[testIndex]);
+        if (!isAttacking) ResetTriggers();
     }
     
     private void Checks()
@@ -190,6 +185,8 @@ public class BossAttack : MonoBehaviour
         animator.SetBool("isAttacking", isAttacking);
         
         inRange = Physics2D.OverlapCircle(dt.ChatPoint.position, dt.ChatRadius, LayerMask.GetMask("Player"));
+        currentAttackCooldown -= Time.deltaTime;
+        if (currentAttackCooldown < 0) currentAttackCooldown = 0;
 
         if (inRange && dt.Dialogue.Length == 0 && forceStart && !bh.isDead && !bh.deathToggle)
         {
@@ -199,12 +196,10 @@ public class BossAttack : MonoBehaviour
 
         if (isAttacking && !isPerformingAttack && currentBackupMoveTimer <= 0)
         {
-            Debug.LogError($"Almost handicapped {gameObject.name}. attack system being invoked = {IsInvoking(nameof(AttackSystem))}"); 
+            Debug.LogError($"Almost handicapped {gameObject.name} atk cooldown: {currentAttackCooldown}"); 
             AttackSystem();
         }
-        currentAttackCooldown -= Time.deltaTime;
-        if (stunnableTimer > 0) stunnableTimer -= Time.deltaTime;
-        stunnable = stunnableTimer > 0;
+        
         if (isPerformingAttack)
         {
             currentBackupMoveTimer = backupMoveTime;
@@ -217,6 +212,7 @@ public class BossAttack : MonoBehaviour
     {
         foreach (var anim in activeAtk) animator.ResetTrigger(anim);
         foreach (var anim in defensiveAtk) animator.ResetTrigger(anim);
+        CancelInvoke(nameof(AttackSystem));
     }
     
     private void Movement()
@@ -254,7 +250,22 @@ public class BossAttack : MonoBehaviour
         Invoke(nameof(AttackSystem), currentAttackCooldown);
     }
 
-    private void GuardDown(float stunnableTime = 0.4f) => stunnableTimer = stunnableTime;
+    private void GuardDown(float stunnableTime = 0.4f)
+    {
+        stunnableTimer = stunnableTime;
+        StartCoroutine(Stunnability());
+    }
+
+    private IEnumerator Stunnability()
+    {
+        while (stunnableTimer > 0)
+        {
+            stunnable = true;
+            stunnableTimer -= Time.deltaTime;
+            yield return null;
+        }
+        stunnable = false;
+    }
 
     private void ResetBoss() { if (isAttacking) StartCoroutine(Restart()); }
     private IEnumerator Restart()

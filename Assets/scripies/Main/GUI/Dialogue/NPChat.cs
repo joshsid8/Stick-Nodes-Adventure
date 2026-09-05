@@ -95,6 +95,14 @@ namespace scripies.Dialogue
             if (!dialogue.Contains(dialogueObject as DialogueObject)) dialogue.Add(dialogueObject as DialogueObject);
             //else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
         }
+        
+        public void RemoveDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
+        {
+            if (speaker != gameObject) return;
+            if (!dialogue.Contains(dialogueObject as DialogueObject) || dialogue.Count == 1 && !canHaveNullList) return;
+            
+            dialogue.Remove(dialogueObject as DialogueObject);
+        }
 
         public void ClearDialogue() => dialogue.Clear();
         
@@ -102,12 +110,14 @@ namespace scripies.Dialogue
         {
             GameEvents.OnToggleDialogueTrigger += ToggleDialogueTrigger;
             GameEvents.AddDialogue += AddDialogue;
+            GameEvents.RemoveDialogue += RemoveDialogue;
             GameEvents.OnDialogueClose += RemoveSpokenDialogue;
         }
         private void OnDisable()
         {
             GameEvents.OnToggleDialogueTrigger -= ToggleDialogueTrigger;
             GameEvents.AddDialogue -= AddDialogue;
+            GameEvents.RemoveDialogue -= RemoveDialogue;
             GameEvents.OnDialogueClose -= RemoveSpokenDialogue;
         }
         

@@ -110,6 +110,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         gameObject.tag = "Dead";
         spriteRenderer.enabled = true;
         GameEvents.TriggerPlaySound(deathClip, false);
+        ba.ResetTriggers();
         yield return new WaitForSeconds(3);
         GameHUD.Instance.ToggleBossHealth(false);
         isDead = false;
@@ -184,7 +185,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             StartCoroutine(Defeat());
         }
         else if (bossHealth <= phase2Health) StartCoroutine(PhaseToggle(true));
-        if (ba.currentAttackCooldown == 0) ba.ActionCooldown(1f);
+        if (!IsInvoking(nameof(ba.AttackSystem))) Invoke(nameof(ba.AttackSystem), 0.2f);
     }
 
     public IEnumerator PhaseToggle(bool toggle)

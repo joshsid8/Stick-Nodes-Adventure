@@ -36,6 +36,7 @@ namespace scripies.Core
         public static Action<GameObject, bool> OnToggleDialogueTrigger;
         public static Action<ScriptableObject, NPC> ShowDialogue;
         public static Action<ScriptableObject, GameObject> AddDialogue;
+        public static Action<ScriptableObject, GameObject> RemoveDialogue;
         public static Action CloseDialogue;
         public static Action<ScriptableObject> OnDialogueClose;
         
@@ -72,6 +73,7 @@ namespace scripies.Core
         public static void TriggerToggleDialogue(GameObject owner, bool state) => OnToggleDialogueTrigger?.Invoke(owner, state);
         public static void TriggerShowDialogue(ScriptableObject dialogue, NPC npc = null) => ShowDialogue?.Invoke(dialogue, npc);
         public static void TriggerAddDialogue(ScriptableObject dialogue, GameObject npc) => AddDialogue?.Invoke(dialogue, npc);
+        public static void TriggerRemoveDialogue(ScriptableObject dialogue, GameObject npc) => RemoveDialogue?.Invoke(dialogue, npc);
         public static void TriggerDialogueClose() => CloseDialogue?.Invoke();
         public static void TriggerDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
         

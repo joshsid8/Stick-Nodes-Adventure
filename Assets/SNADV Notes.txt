@@ -4,31 +4,41 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Junie really helped with a bunch of stuff
-            Check and understand the code to ensure i know how to configure it myself
+        Instability. Thats all i need to say.
+        
+        I need to rewrite quest logic's speakto type to make it so that even if the target npc gets reloaded, the quest dialogue is still the topmost dialogue in their list
         
     Optimisations & Hotfixes:
         
         Instability
         
             Issues from Testing                
-                I think the save system isnt fully working yet
                 Why did the superkey's sprite turn into a rock?!
                     Its because the shop slots dont get updated per change or interaction in shop
-                Fishmen are RELENTLESS when it comes to fighting the player
-                    Because its currently the only one who can fly and stuff, i dont think it wants to spare the player by any means
-                    Ill need to make sparing a bit more efficient, adapting to flying enemies
-                    On par with this, jumping logic should only happen when ALL enemies are close enough to the player
-                        If i were to run away from a RELENTLESS fishman, and fight a cynderian, the cynderian would be zoning, waiting for the fishman's turn
-                        even tho the fishman is in a different universe!
-                One time i tried walking from Cynder Valley to Origo, and I FELL OFFF THE MAP!!!
-                    Origo didnt spawn at all!!! WHY?!
-                    
+                
+                Fishmen are broken cuz of course they are.
+                    They are RELENTLESS when it comes to fighting the player
+                        Because its currently the only one who can fly and stuff, i dont think it wants to spare the player by any means
+                        Ill need to make sparing a bit more efficient, adapting to flying enemies
+                        On par with this, jumping logic should only happen when ALL enemies are close enough to the player
+                            If i were to run away from a RELENTLESS fishman, and fight a cynderian, the cynderian would be zoning, waiting for the fishman's turn
+                            even tho the fishman is in a different universe!
+                    When flying, they just go back to grounded if hit, never to fly again
+			            This must mean when they get stunned, I guess the component gets switched off?
+			    Why when fighting 2 fishfolk, then any enemy after, i get spammed nullrefs???
+			    Jerome STILLLLLL doesnt want his data synced, unlike the editor
+			        It is either 
+                        the npc data doesnt (WANT TO) get loaded - the most likely
+                            Makeshift fix for this would be to invoke the load method a bit later to ensure it loads after everything else
+                        the data doesnt get persisted at the right time - pretty likely, and can go with the first
+                        the initial data gets saved, thus loading the same data - least likely, and hardest to fix
+			    
             Replicatable or From-Build bugs/problems
-                Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map
 
             One time occurrences or Rare/Intimidating bugs
-                
+                Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map   
+                    Instead of fixing the camera to avoid seeing the bottom of the floor, it just acts as if there isnt any confiner, in terms of its y axis
+
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
 
                 Ive successfully remade the player animator controller, but its BUGGY!
@@ -67,9 +77,10 @@ SNADV Notes
                         so it can easily switch between or merge together
                 OSTs
                     I need to make new boss music to fit the new map music
+                        Cynder Valley is all done
+                        I think ill focus on Noxu's temple next
                     Ive made shop music, but i want to make variants of it
-                        One for each major element place
-                        For example, Cynder Valley's version of this piece will have its signature shamisen, shifting the genre a bit
+                        I just need earth and air's variants to do
         
         Post-AO           
             
