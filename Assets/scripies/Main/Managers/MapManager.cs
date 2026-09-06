@@ -28,6 +28,8 @@ public class MapManager : MonoBehaviour
     
     [SerializeField] private GameObject sectionObj;
     public GameObject mainSpawnPoint;
+
+    public bool undiscoveredMap = true;
     
     private WeatherManager weather;
     private AudioManager audioManager;
@@ -62,11 +64,12 @@ public class MapManager : MonoBehaviour
         audioManager = AudioManager.Instance;
         InitialiseSceneData();
         LoadSceneData();
+        LoadNpcData();
     }
 
     private void LateUpdate()
     {
-        #if UNITY_EDITOR
+        //#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F1))
         {
             SaveSceneData();
@@ -80,7 +83,7 @@ public class MapManager : MonoBehaviour
             print("Loading data");
             LoadSceneData();
         }
-        #endif
+        //#endif
 
         // if (!activeMap) return;
         // var player = PlayerHealth.Instance;
@@ -156,6 +159,7 @@ public class MapManager : MonoBehaviour
             return;
         }
         weather.SetWeather();
+        if (undiscoveredMap) undiscoveredMap = false;
     }
 
     private IEnumerator TryStartMapAgain(GameObject objectRef)
@@ -183,7 +187,6 @@ public class MapManager : MonoBehaviour
     {
         if (!collision.CompareTag("Player")) return;
         if (GetComponent<Collider2D>().OverlapPoint(collision.transform.position)) return;
-        //print($"Map {sceneName} LLIIIEEED to you! youre still in the map!"); }
         HandleMapExit(collision.gameObject);
     }
 
@@ -268,7 +271,7 @@ public class MapManager : MonoBehaviour
 
     public void SaveSceneData()
     {
-        print("Saving data");
+        //print("Saving data");
         if (!sceneLoaded) return;
         CollateObjects();
         UpdateLists();
@@ -358,7 +361,7 @@ public class MapManager : MonoBehaviour
     
     public void MakeDataPersistent()
     {
-        print("Persisting data");
+        //print("Persisting data");
         if (!sceneLoaded || PlayerHealth.Instance == null) return;
         var manager = DataManager.Instance;
         var list = manager.sceneData.Find(x => x.sceneName == sceneName);
@@ -374,7 +377,9 @@ public class MapManager : MonoBehaviour
         list.collectables.Clear();
         list.doors.Clear();
         list.spawners.Clear();
-
+        
+        list.undiscoveredMap = undiscoveredMap;
+        
         foreach (var eData in enemySceneData)
         {
             if (eData.activeEnemies == null)
@@ -447,15 +452,17 @@ public class MapManager : MonoBehaviour
 
     public void LoadSceneData()
     {
+        Invoke(nameof(LoadNpcData), 0.2f);
         var manager = DataManager.Instance;
         if (manager == null || manager.sceneData.Count == 0)
         {
             sceneLoaded = true;
             return;
         }
-        Invoke(nameof(LoadNpcData), 0.1f);
         var hasSceneData = manager.sceneData.Exists(x => x.sceneName == sceneName);
         if (!hasSceneData) return;
+        
+        undiscoveredMap = manager.sceneData.Find(x => x.sceneName == sceneName).undiscoveredMap;
         
         foreach (var list in manager.sceneData)
         {

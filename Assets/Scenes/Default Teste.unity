@@ -2940,6 +2940,7 @@ MonoBehaviour:
   - 0.5
   sectionObj: {fileID: 1162324168}
   mainSpawnPoint: {fileID: 550305585}
+  undiscoveredMap: 1
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []

@@ -57,14 +57,7 @@ public class SlotBase : MonoBehaviour
         if (itemDescTitle != null) itemDescTitle.text = itemName;
         if (itemDescInfo != null) itemDescInfo.text = itemDescription;
         
-        if (usedSlot && itemSprite != null)
-        {
-            if (itemImage != null)
-            {
-                itemImage.enabled = true;
-                itemImage.sprite = itemSprite;
-            }
-        }
+        if (usedSlot && itemSprite != null && itemImage != null) itemImage.sprite = itemSprite;
         else if (!usedSlot) ClearSlotVisuals();
     }
 
@@ -75,20 +68,11 @@ public class SlotBase : MonoBehaviour
         itemSprite = null;
         usedSlot = false;
         ClearSlotVisuals();
-        /*if (!switchFrom)
-        {
-            switchFrom = true;
-            ClearSlotVisuals();
-        }*/
     }
 
     protected virtual void ClearSlotVisuals()
     {
-        if (itemImage != null)
-        {
-            itemImage.enabled = false;
-            itemImage.sprite = null;
-        }
+        if (itemImage != null) itemImage.sprite = null;
         if (selectedShader != null) selectedShader.SetActive(false);
         if (itemDescTitle != null) itemDescTitle.text = string.Empty;
         if (itemDescInfo != null) itemDescInfo.text = string.Empty;

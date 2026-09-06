@@ -113,7 +113,7 @@ public abstract class BossBase : MonoBehaviour
         
         var rng2 = Random.Range(0, 101);
         var px = player.GetComponent<Rigidbody2D>().linearVelocity.x;
-        var predictedDistanceX = px > 0 ? px * 0.2f : px * 0.2f * -1;
+        var predictedDistanceX = px > 0 ? px * 0.4f : px * 0.4f * -1;
         if (rng2 <= 50 || px == 0) rb.linearVelocity = new Vector2(rb.linearVelocity.x + predictedDistanceX, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
         else rb.linearVelocity = new Vector2(rb.linearVelocity.x, !bh.phase2 ? -dropSpeed * 1.5f : -dropSpeed * 2f);
     }

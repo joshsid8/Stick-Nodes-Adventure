@@ -7,7 +7,9 @@ namespace scripies.Enemy
 {
     public class EnemyFly : MonoBehaviour
     {
-        [Header("Fly checks")] public bool isChasing;
+        [Header("Fly checks")]
+        public bool isFlying;
+        public bool isChasing;
         public bool isTargeting;
         [SerializeField] private float baseFlySpeed = 10f;
         [HideInInspector] public float currentFlySpeed = 10f;
@@ -30,19 +32,17 @@ namespace scripies.Enemy
         private EnemyAttack ea;
         private Rigidbody2D rb;
 
-        private void Awake()
+        private void Start()
         {
             ea = GetComponent<EnemyAttack>();
             rb = GetComponent<Rigidbody2D>();
+            currentFlySpeed = baseFlySpeed;
+            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void OnEnable()
         {
-            currentFlySpeed = baseFlySpeed;
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-            rb.gravityScale = gravities[1];
-            ea.animator.SetBool("isFlying", true);
             /*while (isChasing)
             {
                 StartCoroutine(EaseIn());
@@ -59,16 +59,17 @@ namespace scripies.Enemy
 
         public void CeaseFlying()
         {
-            ea.isFlying = false;
+            isFlying = false;
             isChasing = false;
             isTargeting = false;
             rb.gravityScale = gravities[0];
-            ea.animator.SetBool("isFlying", false);
-            enabled = false;
         }
 
         private void Update()
         {
+            ea.animator.SetBool("isFlying", isFlying);
+            rb.gravityScale = gravities[isFlying ? 1 : 0];
+            
             timer[0] -= Time.deltaTime;
             timer[1] -= Time.deltaTime;
 
@@ -97,6 +98,7 @@ namespace scripies.Enemy
 
         private void FixedUpdate()
         {
+            if (!isFlying) return;
             if (isChasing && !isTargeting)
             {
                 flyDirection = new Vector2(playerTransform.position.x + flightOffset[0],

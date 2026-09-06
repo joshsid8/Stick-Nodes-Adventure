@@ -18,8 +18,8 @@ namespace scripies.Enemy
         [SerializeField] private float randomPause;
         [SerializeField] private float[] randomPauseChance = { 20f, 101f };
 
-        [Space] [Header("Player Check")] [SerializeField]
-        private bool hasFoundPlayer;
+        [Space] [Header("Player Check")]
+        public bool hasFoundPlayer;
 
         public Transform playerCheck;
         public LayerMask playerLayer;
@@ -42,7 +42,7 @@ namespace scripies.Enemy
         private Animator animator;
         public EnemyController ec;
 
-        void Awake()
+        private void Awake()
         {
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
@@ -58,7 +58,7 @@ namespace scripies.Enemy
         // Update is called once per frame
         void Update()
         {
-            if (ec.vegetable) return;
+            if (ec.vegetable || ec.attack.isAttacking || !ec.attack.canAttack) return;
             if (isPatrolling) Patrol();
             
             animator.SetBool("isPatrolling", isPatrolling);
@@ -68,7 +68,7 @@ namespace scripies.Enemy
             if (currentWalkTime <= 0) isWalking = true;
         }
 
-        void Patrol()
+        private void Patrol()
         {
             if (isWalking && canWalk)
                 rb.linearVelocity = new Vector2(ec.isFacingRight ? walkSpeed : -walkSpeed, rb.linearVelocity.y);
@@ -101,9 +101,10 @@ namespace scripies.Enemy
             isPatrolling = false;
             isWalking = false;
             GameEvents.TriggerAddPlayerCombat(20, false, "EnemySpotted");
+            ec.backupSpareTimer = ec.attack.spareTimer;
             //AudioSource.PlayClipAtPoint(foundPlayerClip, transform.position);
             yield return new WaitForSeconds(0.5f);
-            ec?.ChangeState(EnemyController.EnemyState.Zoning);
+            ec.ChangeState(EnemyController.EnemyState.Zoning);
         }
 
         private IEnumerator Pause()

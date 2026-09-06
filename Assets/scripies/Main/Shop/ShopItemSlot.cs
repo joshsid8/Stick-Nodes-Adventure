@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using scripies.Player;
 using UnityEngine.UI;
@@ -33,16 +34,8 @@ public class ShopItemSlot : SlotBase
 	    var itemToGet = ResourceDatabase.Instance.GetItemByName(collectableSo.name);
 	    invManager.PresetAddItem(itemToGet);
 	    itemAmount--;
-	    if (itemAmount <= 0)
-	    {
-		    ClearSlot();
-		    shopManager.ClearDisplay();
-	    }
-	    else
-	    {
-		    UpdateGlobalDetails();
-		    UpdateSlotUI();
-	    }
+	    if (itemAmount <= 0) shopManager.ClearDisplay();
+	    else UpdateSlotUI();
     }
 
     protected override void OnLeftClick()
@@ -50,9 +43,9 @@ public class ShopItemSlot : SlotBase
 	    //print("Selected " + (collectableSo != null ? collectableSo.itemName : itemName));
 	    if (!usedSlot) return;
 	    if (selectedShader != null) selectedShader.SetActive(true);
+	    shopManager.currentlySelectedItem = this;
 	    shopManager.DeselectAllSlots();
 	    shopManager.SelectSlot();
-	    UpdateGlobalDetails();
 	    UpdateSlotUI();
     }
 
@@ -70,29 +63,40 @@ public class ShopItemSlot : SlotBase
 
     private void UpdateGlobalDetails()
     {
-	    if (shopManager == null) return;
+	    if (shopManager == null || shopManager.currentlySelectedItem != this) return;
+	    if (itemDescTitle != null) itemDescTitle.text = itemName;
+	    if (itemDescInfo != null) itemDescInfo.text = itemDescription;
+	    shopManager.displayImage.sprite = itemSprite ?? (collectableSo != null
+		    ? collectableSo.itemSprite : shopManager.defaultSprite);
 	    shopManager.selectedAmountText.text = itemAmount.ToString();
 	    shopManager.selectedPriceText.text = "N" + itemPrice.ToString("F0");
-	    shopManager.currentlySelectedItem = this;
 	    if (badgeRequired != null) shopManager.buyButton.interactable = StatsManager.Instance.HasBadge(badgeRequired);
     }
     
     protected override void UpdateSlotUI()
     {
-        base.UpdateSlotUI();
-	    if (usedSlot && shopManager != null && shopManager.displayImage != null) 
-		    shopManager.displayImage.sprite = itemSprite ?? (collectableSo != null ? collectableSo.itemSprite : null);
+	    if (!usedSlot)
+	    {
+		    if (shopManager.isActive) shopManager.SelectProximalSlot();
+		    ClearSlotVisuals();
+		    gameObject.SetActive(false);
+		    return;
+	    }
+        if (collectableSo != null && itemSprite == null) itemSprite = collectableSo.itemSprite ?? shopManager.defaultSprite;
+        if (itemSprite != null) itemImage.sprite = itemSprite;
 	    if (amountText != null) amountText.text = usedSlot ? itemAmount.ToString() : "";
-	    CheckLiquidity();
-        UpdateGlobalDetails();
+	    if (usedSlot) CheckLiquidity();
+        if (shopManager.currentlySelectedItem == this) UpdateGlobalDetails();
     }
 
     public override void ClearSlot()
     {
-	    base.ClearSlot();
 	    itemPrice = 0;
 	    itemAmount = 0;
 	    collectableSo = null;
+	    badgeRequired = null;
+	    itemSprite = shopManager.defaultSprite;
+	    base.ClearSlot();
 	    UpdateSlotUI();
     }
 }

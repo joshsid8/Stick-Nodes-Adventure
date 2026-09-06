@@ -28,19 +28,20 @@ public class BossAttack : MonoBehaviour
     [Header("Attacks")]
     public string[] defensiveAtk = new string[5];
     public string[] activeAtk = new string[5];
+    [Space] public string[] antiWallAtk = new string[1];
     
     [Space]
     [Header("Checks")]
     public LayerMask playerLayer;
+    [HideInInspector] public float directionToPlayer;
     [SerializeField] private float groundCheckRadius;
     public Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     public bool isGrounded;
     
-    [HideInInspector] public float directionToPlayer;
-    [HideInInspector] public bool isTouchingWall;
-    [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallCheckRay;
+    public bool isTouchingWall;
+    [SerializeField] private float antiWallTimer;
+    [SerializeField] private float wallCheckRadius;
     
     public bool isFacingRight;
     public bool canFacePlayer;
@@ -116,7 +117,7 @@ public class BossAttack : MonoBehaviour
         StartFight();
     }
     
-    private void StartFight()
+    public void StartFight()
     {
         isAttacking = true;
         canFacePlayer = true;
@@ -127,6 +128,12 @@ public class BossAttack : MonoBehaviour
         GameHUD.Instance.ToggleBossHealth(true);
         StartCoroutine(bh.PhaseToggle(false));
         Invoke(nameof(AttackSystem), initStart);
+    }
+    
+    public void InvokeAttackSystem(float time) => Invoke(nameof(AttackSystem), time);
+    public bool IsInvokingAttackSystem()
+    {
+        return IsInvoking(nameof(AttackSystem));
     }
     
     public void AttackSystem()
@@ -180,7 +187,9 @@ public class BossAttack : MonoBehaviour
     private void Checks()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        isTouchingWall = Physics2D.Raycast(wallCheck.position, Vector2.up * transform.localScale.y, wallCheckRay, LayerMask.GetMask("Wall"));
+        isTouchingWall = Physics2D.OverlapCircle(transform.position, wallCheckRadius, groundLayer);
+        if (isTouchingWall) antiWallTimer -= Time.deltaTime;
+        
         animator.SetBool("isGrounded", isGrounded);
         animator.SetBool("isAttacking", isAttacking);
         
@@ -197,7 +206,14 @@ public class BossAttack : MonoBehaviour
         if (isAttacking && !isPerformingAttack && currentBackupMoveTimer <= 0)
         {
             Debug.LogError($"Almost handicapped {gameObject.name} atk cooldown: {currentAttackCooldown}"); 
+            currentAttackCooldown = backupMoveTime;
             AttackSystem();
+        }
+
+        if (isTouchingWall && isAttacking && antiWallTimer <= 0)
+        {
+            animator.SetTrigger(antiWallAtk[Random.Range(0, antiWallAtk.Length)]);
+            antiWallTimer = 1;
         }
         
         if (isPerformingAttack)
@@ -301,7 +317,6 @@ public class BossAttack : MonoBehaviour
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, rangeRadius);
         Gizmos.color = Color.green;
-        Vector3 rayDirection = Vector2.up * transform.localScale.y * wallCheckRay;
-        Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection);
+        Gizmos.DrawWireSphere(transform.position, wallCheckRadius);
     }
 }

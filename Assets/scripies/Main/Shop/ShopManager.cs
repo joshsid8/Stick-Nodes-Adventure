@@ -21,6 +21,8 @@ public class ShopManager : GUIBase
     
     public Button buyButton;
     public Image displayImage;
+    
+    public Sprite defaultSprite;
 
     protected override void Awake()
     {
@@ -55,14 +57,13 @@ public class ShopManager : GUIBase
             if (i < items.Length)
             {
                 shopItems[i].itemName = items[i].itemName;
-                shopItems[i].itemDescription = items[i].itemDescription;
+                shopItems[i].itemDescription = !string.IsNullOrEmpty(items[i].itemDescription) ? items[i].itemDescription : items[i].itemCollectable.itemDescription;
                 shopItems[i].itemPrice = items[i].itemPrice;
-                shopItems[i].itemSprite = items[i].itemSprite ?? items[i].itemCollectable.itemSprite;
+                shopItems[i].itemSprite = items[i].itemSprite ?? items[i].itemCollectable.itemSprite ?? defaultSprite;
                 shopItems[i].collectableSo = items[i].itemCollectable;
                 shopItems[i].itemAmount = items[i].itemAmount;
                 shopItems[i].badgeRequired = items[i].badgeRequired;
                 shopItems[i].usedSlot = true;
-                shopItems[i].ItemUpdate();
                 shopItems[i].gameObject.SetActive(true);
             }
             else
@@ -70,6 +71,16 @@ public class ShopManager : GUIBase
                 shopItems[i].ClearSlot();
                 shopItems[i].gameObject.SetActive(false);
             }
+        }
+
+        foreach (var item in shopItems)
+        {
+            if (item.usedSlot)
+            {
+                item.ItemUpdate();
+                continue;
+            }
+            item.ClearSlot();
         }
         if (items.Length > 0) shopItems[0].ItemSelect();
         
@@ -84,6 +95,7 @@ public class ShopManager : GUIBase
         currentShopKeeper = null;
         GameEvents.TriggerSaveGame();
         if (isActive) ToggleShop(false);
+        ClearEverything();
     }
 
     public void SelectSlot()
@@ -94,29 +106,52 @@ public class ShopManager : GUIBase
     
     public void DeselectAllSlots()
     {
-        foreach (var slot in shopItems) slot.Deselect();
+        foreach (var slot in shopItems)
+            slot.Deselect();
     }
     
-    public void ClearDisplay()
+    public void ClearDisplay(bool withSelectedItem = true)
     {
         selectedPriceText.text = "";
         selectedAmountText.text = "";
-        displayImage.sprite = null;
+        displayImage.sprite = defaultSprite;
+        if (!withSelectedItem) return;
+        currentlySelectedItem.ClearSlot();
+        currentlySelectedItem = null;
+    }
+
+    private void ClearEverything()
+    {
+        foreach (var item in shopItems) item.ClearSlot();
+        DeselectAllSlots();
     }
     
-    public bool CheckStock()
+    public void CheckStock()
     {
         foreach (var item in shopItems)
         {
-            if (item.usedSlot) 
-                return true;
-            if (item == shopItems[^1] && !item.usedSlot)
-            {
-                CloseShop();
-                return false;
-            }
+            if (item.usedSlot)
+                return; //true;
+            if (item != shopItems[^1] || item.usedSlot) continue;
+            CloseShop();
+            return; // false;
         }
-        return true;
+
+        return; // true;
+    }
+
+    public void SelectProximalSlot()
+    {
+        if (currentlySelectedItem == null)
+        {
+            CheckStock();
+            return;
+        }
+        var index = shopItems.IndexOf(currentlySelectedItem);
+        if (index == -1 || index == 0) return;
+        if (currentlySelectedItem == shopItems[^1]) shopItems[index - 1].ItemSelect();
+        else shopItems[index + 1].ItemSelect();
+        CheckStock();
     }
 }
 

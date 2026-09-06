@@ -24,7 +24,7 @@ namespace scripies.Enemy
         public bool isFacingRight = true;
         public bool vegetable;
         private EnemyPatrol patrol;
-        private EnemyAttack attack;
+        [HideInInspector] public EnemyAttack attack;
         private EnemyHealth health;
         private EnemyZone zone;
         private EnemyJump jump;
@@ -32,6 +32,7 @@ namespace scripies.Enemy
         private Transform playerTransform;
         private IPlayerStatus ps;
         private bool isAggressive;
+        public float backupSpareTimer;
 
         // ITarget implementation
         public Transform Transform => transform;
@@ -46,6 +47,7 @@ namespace scripies.Enemy
             health = GetComponent<EnemyHealth>();
             zone = GetComponent<EnemyZone>();
             jump = GetComponent<EnemyJump>();
+            backupSpareTimer = attack.spareTimer;
             var player = GameObject.FindGameObjectWithTag("Player");
             playerTransform = player.transform;
             ps = player.GetComponent<IPlayerStatus>();
@@ -58,6 +60,7 @@ namespace scripies.Enemy
         private void Update()
         {
             if (vegetable) return;
+            
             if (health.isDead && enemyState != EnemyState.Dead)
             {
                 ChangeState(EnemyState.Dead);
@@ -114,6 +117,10 @@ namespace scripies.Enemy
             if (jump != null && ps.AggressiveEnemies > 1) jump.isJumping = isAggressive; 
 
             canFacePlayer = attack.canFacePlayer;
+            
+            if (backupSpareTimer > 0) backupSpareTimer -= Time.deltaTime / 1.5f;
+            else if (backupSpareTimer <= 0 && enemyState == EnemyState.Attacking) ChangeState(EnemyState.Patrolling);
+            
             if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling &&
                 enemyState != EnemyState.Dead) FacePlayer();
             if (ps.IsDead && enemyState != EnemyState.Patrolling) ChangeState(EnemyState.Patrolling);
@@ -132,7 +139,11 @@ namespace scripies.Enemy
                     break;
                 case EnemyState.Patrolling:
                     patrol.enabled = true;
+                    patrol.hasFoundPlayer = false;
                     patrol.isPatrolling = true;
+                    zone.enabled = false;
+                    //if (!jump.isJumping) GameEvents.TriggerAddPlayerCombat(0, false, "EnemyLostPlayer");
+                    attack.canAttack = true;
                     attack.enabled = false;
                     break;
                 case EnemyState.Zoning:
@@ -145,11 +156,13 @@ namespace scripies.Enemy
                     zone.enabled = false;
                     attack.enabled = true;
                     break;
-                case EnemyState.Stunned:
                 case EnemyState.Dead:
                     patrol.enabled = false;
                     zone.enabled = false;
                     attack.enabled = false;
+                    break;
+                case EnemyState.Stunned:
+                default:
                     break;
             }
         }

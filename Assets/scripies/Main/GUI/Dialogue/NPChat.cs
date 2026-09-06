@@ -91,19 +91,11 @@ namespace scripies.Dialogue
         public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
         {
             if (speaker != gameObject) return;
-            
             if (!dialogue.Contains(dialogueObject as DialogueObject)) dialogue.Add(dialogueObject as DialogueObject);
             //else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
+            GameEvents.TriggerSaveGame();
         }
         
-        public void RemoveDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
-        {
-            if (speaker != gameObject) return;
-            if (!dialogue.Contains(dialogueObject as DialogueObject) || dialogue.Count == 1 && !canHaveNullList) return;
-            
-            dialogue.Remove(dialogueObject as DialogueObject);
-        }
-
         public void ClearDialogue() => dialogue.Clear();
         
         private void OnEnable()
@@ -126,8 +118,18 @@ namespace scripies.Dialogue
             if (obj == gameObject) isActive = state;
         }
 
+        public void RemoveDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
+        {
+            if (speaker != gameObject || dialogueObject == null) return;
+            if (!dialogue.Contains(dialogueObject as DialogueObject) || dialogue.Count <= 1 && !canHaveNullList) return;
+            StartCoroutine(RemoveDialogue(dialogueObject as DialogueObject));
+            GameEvents.TriggerSaveGame();
+            chatInterval = 0.1f;
+        }
+        
         private void RemoveSpokenDialogue(ScriptableObject dialogueToRemove)
         {
+            if (dialogueToRemove == null) return;
             var dto = dialogueToRemove as DialogueObject;
             
             if (dialogue.Count <= 1 && !canHaveNullList || !dialogue.Contains(dto)) return;
@@ -139,7 +141,6 @@ namespace scripies.Dialogue
         {
             yield return new WaitForSeconds(0.01f);
             dialogue.RemoveAt(dialogue.IndexOf(dto));
-            //if (isShopkeeper) shopKeeper.StartShop(); 
         }
         
         private void OnDrawGizmosSelected()

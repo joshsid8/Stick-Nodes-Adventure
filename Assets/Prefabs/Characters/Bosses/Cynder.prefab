@@ -247,19 +247,22 @@ MonoBehaviour:
   - Fire
   - FDash
   - BDash
+  antiWallAtk:
+  - FDash
+  - Teleport
   playerLayer:
     serializedVersion: 2
     m_Bits: 49408
+  directionToPlayer: 0
   groundCheckRadius: 0.56
   groundCheck: {fileID: 4525790539089257838}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
   isGrounded: 0
-  directionToPlayer: 0
   isTouchingWall: 0
-  wallCheck: {fileID: 4082605586263118162}
-  wallCheckRay: 3.141592
+  antiWallTimer: 0.5
+  wallCheckRadius: 1
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
@@ -608,7 +611,7 @@ Transform:
   m_GameObject: {fileID: 6603545464657641184}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.72, y: -1.93, z: 0.23256153}
+  m_LocalPosition: {x: -1.344, y: 0, z: 0.23256153}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

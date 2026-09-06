@@ -154,7 +154,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
                 break;
         }
         if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
-
+        if (!ba.isAttacking) ba.StartFight();
         CheckStatus();
     }
     
@@ -181,11 +181,13 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             deathToggle = true;
             bossHealth = 0;
             isDead = true;
+            ba.isAttacking = false;
             GameEvents.TriggerBossDefeated();
             StartCoroutine(Defeat());
         }
         else if (bossHealth <= phase2Health) StartCoroutine(PhaseToggle(true));
-        if (!IsInvoking(nameof(ba.AttackSystem))) Invoke(nameof(ba.AttackSystem), 0.2f);
+        if (!ba.IsInvokingAttackSystem() && ba.isAttacking)
+            ba.InvokeAttackSystem(0.2f);
     }
 
     public IEnumerator PhaseToggle(bool toggle)

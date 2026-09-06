@@ -104,11 +104,14 @@ public class InvManager : GUIBase
 
     public void PresetAddItem(CollectableSOBase collectable)
     {
+        if (collectable == null) throw new ArgumentNullException(nameof(collectable) + " doent exist!");
         switch (collectable)
         {
             case ItemSO item: AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, item.itemType, item); break;
+            case ConsumableSO consumable: AddItem(consumable.itemName, 1, consumable.itemSprite, consumable.itemDescription, consumable.maxItemAmount, "Consumable", consumable); break;
             case AspectSO aspect: AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect); break;
             case AbilitySO ability: AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability); break;
+            default: throw new ArgumentException($"[InvManager] We cant accept type {collectable.GetType()} dawg");
         }
     }
     

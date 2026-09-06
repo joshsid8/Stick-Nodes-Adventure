@@ -34,13 +34,13 @@ namespace scripies.Enemy
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             Dash();
             FlyDash();
             if (isHomingPlayer) dashDirection = (ea.playerTransform.position - transform.position).normalized;
             inRange = Physics2D.OverlapCircle(ea.attackTransform.position, ea.attackRange * 1.5f,
-                LayerMask.GetMask("Player", "Invincible"));
+                LayerMask.GetMask("Player"));
             if (isFrozen) Freeze();
         }
 
@@ -70,31 +70,20 @@ namespace scripies.Enemy
 
         private void Jump()
         {
-            if (ep.isGrounded)
+            if (!ep.isGrounded) return;
+
+            if (isRandomised)
             {
-                if (isRandomised)
-                {
-                    jumpForceX = Random.Range(-16, 16);
-                    jumpForceY = Random.Range(20, 31);
-                }
-
-                ea.rb.linearVelocity = new Vector2(jumpForceX, jumpForceY);
+                jumpForceX = Random.Range(-16, 16);
+                jumpForceY = Random.Range(20, 31);
             }
+
+            ea.rb.linearVelocity = new Vector2(jumpForceX, jumpForceY);
         }
 
-        public void FreezeX()
-        {
-            ea.rb.linearVelocity = new Vector2(0, ea.rb.linearVelocity.y);
-        }
-
-        private void FreezeY()
-        {
-            ea.rb.linearVelocity = new Vector2(ea.rb.linearVelocity.x, 0);
-        }
-
-        private void Freeze()
-        {
-            ea.rb.linearVelocity = Vector2.zero;
-        }
+        public void FreezeX() => ea.rb.linearVelocity = new Vector2(0, ea.rb.linearVelocity.y);
+        private void FreezeY() => ea.rb.linearVelocity = new Vector2(ea.rb.linearVelocity.x, 0);
+        private void Freeze() => ea.rb.linearVelocity = Vector2.zero;
+        
     }
 }

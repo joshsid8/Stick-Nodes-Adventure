@@ -7,25 +7,18 @@ SNADV Notes
         Instability. Thats all i need to say.
         
         I need to rewrite quest logic's speakto type to make it so that even if the target npc gets reloaded, the quest dialogue is still the topmost dialogue in their list
+            What i did instead was just save all data whenever any npcs' dialogue gets changed, hoping this fixes everything!
+        
+        Aspect inventory needs shaders to show that items are there, especially since all current aspects have no sprite yet
         
     Optimisations & Hotfixes:
         
         Instability
         
             Issues from Testing                
-                Why did the superkey's sprite turn into a rock?!
-                    Its because the shop slots dont get updated per change or interaction in shop
                 
-                Fishmen are broken cuz of course they are.
-                    They are RELENTLESS when it comes to fighting the player
-                        Because its currently the only one who can fly and stuff, i dont think it wants to spare the player by any means
-                        Ill need to make sparing a bit more efficient, adapting to flying enemies
-                        On par with this, jumping logic should only happen when ALL enemies are close enough to the player
-                            If i were to run away from a RELENTLESS fishman, and fight a cynderian, the cynderian would be zoning, waiting for the fishman's turn
-                            even tho the fishman is in a different universe!
-                    When flying, they just go back to grounded if hit, never to fly again
-			            This must mean when they get stunned, I guess the component gets switched off?
-			    Why when fighting 2 fishfolk, then any enemy after, i get spammed nullrefs???
+                Badges dont save.
+                    Prolly not added to the save data yet
 			    Jerome STILLLLLL doesnt want his data synced, unlike the editor
 			        It is either 
                         the npc data doesnt (WANT TO) get loaded - the most likely
@@ -38,9 +31,16 @@ SNADV Notes
             One time occurrences or Rare/Intimidating bugs
                 Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map   
                     Instead of fixing the camera to avoid seeing the bottom of the floor, it just acts as if there isnt any confiner, in terms of its y axis
+                
+                One time, right after beating Cynder, the handicap system activated, making cynder fight the player during the dialogue!
+                    Meaning the isAttacking flag was still turned on somehow, even when there are multiple instances of ensuring its off
 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
-
+                
+                Jumping logic should only happen when ALL enemies are close enough to the player
+                    If i were to run away from a RELENTLESS fishman, and fight a cynderian, the cynderian would be zoning, waiting for the fishman's turn
+                    even tho the fishman is in a different universe!
+                
                 Ive successfully remade the player animator controller, but its BUGGY!
                     I need to allow attacking when wall jumping specifically
                     Sometimes the run animation blends in after a wall jump, and plays again when walking off a platform before playing the fall anim
@@ -48,10 +48,6 @@ SNADV Notes
                     Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
                         Casting abilities may have caused this, or maybe just jumping in general?
                     When it comes to the counter animation, deflecting works, but melee countering doesnt.
-                    
-                Not really an issue, but when the player spawns for the very first time, there is a chance Origo's weather gets changed
-                    The weather ideally should be clear at the very start of the game, then can be changed once the player reenters
-                    In general, we need a flag to show that the player has entered a map for the first time, then stuff like announcements can be different depending on it
                     
             Junie Help
                            

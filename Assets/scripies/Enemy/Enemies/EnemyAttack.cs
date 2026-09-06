@@ -8,25 +8,26 @@ namespace scripies.Enemy
 {
     public class EnemyAttack : MonoBehaviour
     {
-        public enum StyleMode
-        {
-            Active,
-            Passive,
-            Evasive
-        }
+        public enum StyleMode { Active, Passive, Evasive }
 
         [SerializeField] private bool testing;
         [SerializeField] private string[] testMoves;
         [SerializeField] private int testIndex;
         
-        [EnumButtons] public StyleMode styleMode;
-        
+        [EnumButtons] 
+        [Tooltip(
+            "When the Enemy is:\n" +
+            "Active: they strive to come as close as possible to the player and attack at close range.\n" + 
+            "Passive: they try to keep a certain distance between them and the player, using any moves at their disposal to do so. This can also be considered Defensive\n" + 
+            "Evasive: similar to Passive, they focus on trying to stay as far away as possible from the player, always trying to back away if close.")] 
+        public StyleMode styleMode;
+        [Space]
         [Header("Fly stuff")] public bool canFly;
-        public bool isFlying;
         public int movesBeforeFlyingCount;
         public int[] movesBeforeFlying = new int[2];
-        private string flyTrigger = "FlyJump";
-
+        [SerializeField] private string flyTrigger = "FlyJump";
+        
+        [Space]
         [Header("Moves and Checks")] [Tooltip("When the player runs near")]
         public bool defensiveCheck;
 
@@ -100,7 +101,7 @@ namespace scripies.Enemy
         public string spareAnimation;
 
         [SerializeField] private bool canSpare = true;
-        [SerializeField] private float spareTimer = 10;
+        public float spareTimer = 10;
         private float currentSpareTimer;
 
         private void Awake()
@@ -115,7 +116,7 @@ namespace scripies.Enemy
             ez = GetComponent<EnemyZone>();
         }
 
-        void Start()
+        private void OnEnable()
         {
             originalDefensiveModeRadius = defensiveModeRadius;
             originalPassiveModeRadius = passiveModeRadius;
@@ -176,9 +177,8 @@ namespace scripies.Enemy
             else if (stunnable && styleMode == StyleMode.Evasive) GetComponent<EnemyHealth>().stunMultiplier = 1.5f;
             else GetComponent<EnemyHealth>().stunMultiplier = 1f;
 
-            //if (canFly) animator.SetBool("isFlying", isFlying);
-            //rb.gravityScale = isFlying ? 0 : 8;
-            if (canFly) ef.enabled = isFlying;
+            //if (canFly) animator.SetBool("ef.isFlying", ef.isFlying);
+            //rb.gravityScale = ef.isFlying ? 0 : 8;
 
             if (currentAttackCooldown > 0) currentAttackCooldown -= Time.deltaTime;
             canAttack = currentAttackCooldown <= 0;
@@ -192,71 +192,70 @@ namespace scripies.Enemy
             if (defensiveCheck) passiveCheck = false;
             else if (passiveCheck) defensiveCheck = false;
 
-            if (canSpare)
-            {
-                if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime;
-                else currentSpareTimer = spareTimer;
-                if (currentSpareTimer <= 0) ec.ChangeState(EnemyController.EnemyState.Patrolling);
-            }
+            if (defensiveCheck) ec.backupSpareTimer = spareTimer;
+            
+            if (!canSpare) return;
+            
+            if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime;
+            else currentSpareTimer = spareTimer;
+            if (currentSpareTimer <= 0) ec.ChangeState(EnemyController.EnemyState.Patrolling);
         }
 
         private void ActiveLogic()
         {
-            if (canAttack && !isAttacking && !eh.isStunned)
+            if (!canAttack || isAttacking || eh.isStunned) return;
+
+            if (!defensiveCheck)
             {
-                if (!defensiveCheck)
-                {
-                    em.FreezeX();
-                    animator.Play(!isFlying ? activeMoves[Random.Range(0, activeMoves.Length)]
-                        : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
-                }
-                else
-                {
-                    em.FreezeX();
-                    animator.Play(!isFlying ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
-                        : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
-                }
+                em.FreezeX();
+                animator.Play(!ef.isFlying
+                    ? activeMoves[Random.Range(0, activeMoves.Length)]
+                    : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
+            }
+            else
+            {
+                em.FreezeX();
+                animator.Play(!ef.isFlying
+                    ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
+                    : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
             }
         }
 
         private void PassiveLogic()
         {
-            if (canAttack && !isAttacking && !eh.isStunned)
-            {
-                em.FreezeX();
-                if (!passiveCheck && !defensiveCheck)
-                    animator.Play(!isFlying
-                        ? activeMoves[Random.Range(0, activeMoves.Length)]
-                        : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
-                else if (defensiveCheck && !passiveCheck)
-                    animator.Play(!isFlying
-                        ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
-                        : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
-                else
-                    animator.Play(!isFlying
-                        ? passiveMoves[Random.Range(0, passiveMoves.Length)]
-                        : flyingPassiveMoves[Random.Range(0, flyingPassiveMoves.Length)]);
-            }
+            if (!canAttack || isAttacking || eh.isStunned) return;
+            em.FreezeX();
+            if (!passiveCheck && !defensiveCheck)
+                animator.Play(!ef.isFlying
+                    ? activeMoves[Random.Range(0, activeMoves.Length)]
+                    : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
+            else if (defensiveCheck && !passiveCheck)
+                animator.Play(!ef.isFlying
+                    ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
+                    : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
+            else
+                animator.Play(!ef.isFlying
+                    ? passiveMoves[Random.Range(0, passiveMoves.Length)]
+                    : flyingPassiveMoves[Random.Range(0, flyingPassiveMoves.Length)]);
+
         }
 
         private void EvasiveLogic()
         {
-            if (canAttack && !isAttacking && !eh.isStunned)
-            {
-                em.FreezeX();
-                if (defensiveCheck)
-                    animator.Play(!isFlying
-                        ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
-                        : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
-                else if (passiveCheck)
-                    animator.Play(!isFlying
-                        ? passiveMoves[Random.Range(0, passiveMoves.Length)]
-                        : flyingPassiveMoves[Random.Range(0, flyingPassiveMoves.Length)]);
-                else
-                    animator.Play(!isFlying
-                        ? activeMoves[Random.Range(0, activeMoves.Length)]
-                        : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
-            }
+            if (!canAttack || isAttacking || eh.isStunned) return;
+            em.FreezeX();
+            if (defensiveCheck)
+                animator.Play(!ef.isFlying
+                    ? evasiveMoves[Random.Range(0, evasiveMoves.Length)]
+                    : flyingEvasiveMoves[Random.Range(0, flyingEvasiveMoves.Length)]);
+            else if (passiveCheck)
+                animator.Play(!ef.isFlying
+                    ? passiveMoves[Random.Range(0, passiveMoves.Length)]
+                    : flyingPassiveMoves[Random.Range(0, flyingPassiveMoves.Length)]);
+            else
+                animator.Play(!ef.isFlying
+                    ? activeMoves[Random.Range(0, activeMoves.Length)]
+                    : flyingActiveMoves[Random.Range(0, flyingActiveMoves.Length)]);
         }
 
 
@@ -284,7 +283,7 @@ namespace scripies.Enemy
         private void ActivateCooldown(float atkCd = 1)
         {
             currentAttackCooldown = atkCd;
-            if (isFlying) ef.currentFlySpeed = Math.Abs(rb.linearVelocity.x) / 2;
+            if (ef.isFlying) ef.currentFlySpeed = Math.Abs(rb.linearVelocity.x) / 2;
             else
             {
                 ez.enabled = true;
@@ -295,15 +294,15 @@ namespace scripies.Enemy
         private void FlyTrigger()
         {
             movesBeforeFlyingCount++;
-            if (movesBeforeFlyingCount == movesBeforeFlying[0] && !isFlying && canFly)
+            if (movesBeforeFlyingCount == movesBeforeFlying[0] && !ef.isFlying && canFly)
             {
                 animator.Play(flyTrigger);
-                isFlying = true;
+                ef.isFlying = true;
             }
 
             if (movesBeforeFlyingCount == movesBeforeFlying[1] && canFly)
             {
-                isFlying = false;
+                ef.isFlying = false;
                 movesBeforeFlyingCount = 0;
             }
         }

@@ -49,7 +49,7 @@ public class WeatherManager : MonoBehaviour
     public void SetWeather()
     {
         var rng = Random.Range(0, 101);
-        if (randomWeather && rng <= weatherChance) weatherType = (WeatherType) Random.Range(1, 4);
+        if (randomWeather && rng <= weatherChance) weatherType = mm.undiscoveredMap ? WeatherType.Clear : (WeatherType)Random.Range(1, 4);
         else if (randomWeather && weatherType != WeatherType.Clear)
         {
             var rng2 = Random.Range(0, 101);

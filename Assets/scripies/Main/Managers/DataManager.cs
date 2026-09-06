@@ -21,7 +21,7 @@ public class DataManager : MonoBehaviour
         
         public List<DoorSceneData> doors = new();
         public List<SpawnerSceneData> spawners = new();
-
+        public bool undiscoveredMap;
         public GameObject ItemToStore => GameObject.Find("persistentItem");
 
         public string activeBoss;
@@ -46,7 +46,7 @@ public class DataManager : MonoBehaviour
     {
         if (Instance == this) scripies.Core.GameEvents.SaveGame -= SaveDisk;
     }
-
+    
     private static void SaveDisk() => SaveSystem.Save();
 
     #region Scene data classes
