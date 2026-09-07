@@ -11,9 +11,10 @@ public class Collectable : MonoBehaviour
 
     public bool isStray = true;
     private bool gracePeriod;
+    public bool pickable;
     [SerializeField] private bool onGround;
     [SerializeField] private float edgeCheckRay = 2f;
-    [SerializeField] private float playerFinderHitbox = 2f;
+    public float playerFinderHitbox = 2f;
     [SerializeField] private float flySpeed = 1f;
     private Rigidbody2D rb;
     private RaycastHit2D hit;
@@ -29,12 +30,14 @@ public class Collectable : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         yield return new WaitForSeconds(1f);
         gracePeriod = true;
+        pickable = true;
     }
 
     private void Update()
     {
         if (collectable != null) name = collectable.itemName; // else print($"aint no collectable for {name}");
         onGround = Physics2D.Raycast(transform.position, Vector2.down * transform.localScale.y, edgeCheckRay, LayerMask.GetMask("Ground", "Platform"));
+        if (!pickable) return;
         if (onGround && gracePeriod)
         {
             rb.gravityScale = 0;

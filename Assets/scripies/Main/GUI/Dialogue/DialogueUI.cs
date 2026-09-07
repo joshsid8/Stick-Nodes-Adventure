@@ -160,7 +160,7 @@ namespace scripies.Dialogue
             {
                 switch (quest.questType)
                 {
-                    case Quest.QuestType.GiveTo:
+                    case QuestSlot.QuestType.GiveTo:
                         var needs = new (CollectableSOBase id, int count)[quest.objectsToInteract.Length];
                         for (var i = 0; i < quest.objectsToInteract.Length; i++) needs[i] = (quest.objectsToInteract[i], quest.numberOfObjects[i]);
                         var hasItems = InvManager.Instance.invIndex.MeetsAllCounts(needs);

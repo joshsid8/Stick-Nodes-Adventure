@@ -12,7 +12,7 @@ namespace scripies.Player
         public float attackCooldown;
         private float currentAttackCooldown;
         public float attackEnergy;
-        [SerializeField] private Transform attackTransform;
+        public Transform attackTransform;
 
         [Space] [Header("Air Attack")] public float airAttackCooldown;
         [SerializeField] private float airAttackRange = 1f;

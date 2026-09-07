@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "UI/QuestSO")]
 public class QuestSO : ScriptableObject
 {
-    public Quest.QuestType questType;
+    public QuestSlot.QuestType questType;
     public string questName;
     [TextArea(3, 5)] public string questDescription;
     

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using scripies.Player;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -120,18 +121,19 @@ public class ItemSlot : SlotBase, IPointerClickHandler
 
     protected override void OnLeftClick()
     {
+        if (invManager.swappingAbilities) return;
         base.OnLeftClick();
 
         if (useButtonText != null) 
             useButtonText.text = itemType == "Aspect" || itemType == "Ability" ? "Equip" : "Use";
-        useButtonText.gameObject.SetActive(itemType == "Key" ? false : true);
+        useButtonText.gameObject.SetActive(itemType != "Key");
                     
         if (itemName != "")
         {
             invManager.destroyButton.gameObject.SetActive(true);
             invManager.useButton.gameObject.SetActive(true);
             invManager.useButton.onClick.AddListener(() => ItemTypeAction());
-            invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
+            invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DropItem()));
         }
         else
         {
@@ -150,6 +152,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             invManager.slotButtons[0].onClick.AddListener(() => SwapAbility());
             invManager.slotButtons[1].onClick.AddListener(() => SwapAbility(1));
             invManager.slotButtons[2].onClick.AddListener(() => SwapAbility(2));
+            invManager.swappingAbilities = true;
             print("Choose an ability to swap!");
         }
         else if (itemType != "Key") DecrementItem();
@@ -203,6 +206,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
     private void SwapAbility(int slot = 0)
     {
         print("Ok uhh switching abilities");
+        if (invManager.swappingAbilities) invManager.swappingAbilities = false;
         var ability = invManager.abilitySlots[slot].abilityStats;
         if (ability != null) 
             invManager.AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
@@ -213,16 +217,33 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         
         DecrementItem();
     }
-    
-    private IEnumerator DestroyItem()
+    private IEnumerator DropItem(bool dropAll = false)
     {
-        choice.Choices(message: "Do you really want to destroy ALL of this item?");
-        yield return new WaitUntil(() => choice.choice != 0);
-        if (choice.choice == 2)
+        var playerPos = PlayerHealth.Instance.pf.attackTransform.position;
+        if (dropAll)
         {
-            if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject, itemAmount);
-            ClearSlot();
-            UpdateSlotUI();
+            choice.Choices(message: "Do you really want to drop ALL of this item?");
+            yield return new WaitUntil(() => choice.choice != 0);
+            if (choice.choice == 2)
+            {
+
+                for (var i = 0; i < itemAmount; i++)
+                {
+                    var itemToDrop = Instantiate(invManager.persistentItem, playerPos, Quaternion.identity);
+                    itemToDrop.GetComponent<Collectable>().collectable = itemScriptableObject;
+                    itemToDrop.GetComponent<Collectable>().playerFinderHitbox = 0;
+                }
+                if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject, itemAmount);
+                ClearSlot();
+            }
         }
+        else
+        {
+            var itemToDrop = Instantiate(invManager.persistentItem, playerPos, Quaternion.identity);
+            itemToDrop.GetComponent<Collectable>().collectable = itemScriptableObject;
+            itemToDrop.GetComponent<Collectable>().playerFinderHitbox = 0;
+            DecrementItem();
+        }
+        UpdateSlotUI();
     }
 }

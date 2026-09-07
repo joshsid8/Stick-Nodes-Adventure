@@ -18,7 +18,12 @@ public class InvManager : GUIBase
     public Button destroyButton;
     public Button[] slotButtons;
 
+    public bool swappingAbilities;
+
+    public GameObject persistentItem;
+    
     public PlayerManager playerManager;
+    
     protected override void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -39,6 +44,8 @@ public class InvManager : GUIBase
             if (input == null)
                 throw new NullReferenceException("InvManager: After trying TTTWWIIICCEEE, we still couldnt find input.");
         }
+        persistentItem = GameObject.Find("persistentItem");
+        
         input.Player.Inventory.performed += _ => ToggleInventory();
     }
 

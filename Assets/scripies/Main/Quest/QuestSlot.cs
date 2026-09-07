@@ -5,28 +5,29 @@ using scripies.Dialogue;
 using scripies.Enemy;
 using scripies.Player;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-public class Quest : MonoBehaviour, IPointerClickHandler
+public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join the family. QuestSlot: Nah, ima do my own thing.
 {
     public string questTitle;
     [TextArea(5, 10)] public string questDescription;
     public enum QuestType { DefeatEnemy, HaveInInventory, GiveTo, SpeakTo, NullQuest }
-    public QuestType questType;
+    [EnumButtons] public QuestType questType;
     
-    [SerializeField] private TMP_Text[] titleTexts;
-    [SerializeField] private TMP_Text taskText;
+    public TMP_Text[] titleTexts;
+    public TMP_Text taskText;
     
-    [SerializeField] private TMP_Text infoTitle;
-    [SerializeField] private TMP_Text infoDescription;
+    public TMP_Text infoDescription;
     [SerializeField] private TMP_Text objectiveText;
     
     public bool questCompleted;
 
-    [Tooltip("enemies to defeat")] public Enemy[] eTd = Array.Empty<Enemy>(); 
-    [Tooltip("Number of enemies currently defeated")] public int[] noOfE = Array.Empty<int>();
-    private readonly Dictionary<Enemy, int> requiredByEnemy = new Dictionary<Enemy, int>();  
-    private readonly Dictionary<Enemy, int> currentKillsByEnemy = new Dictionary<Enemy, int>(); 
+    //[Tooltip("enemies to defeat")] public Enemy[] eTd = Array.Empty<Enemy>(); 
+    //[Tooltip("Number of enemies currently defeated")] public int[] noOfE = Array.Empty<int>();
+    public List<EnemyToDefeat> enemiesToDefeat = new();
+    private readonly Dictionary<Enemy, int> requiredByEnemy = new();  
+    private readonly Dictionary<Enemy, int> currentKillsByEnemy = new(); 
     
     [Tooltip("objects to take, give, or find")] public CollectableSOBase[] oTi;
     public int[] noOfO;
@@ -65,11 +66,9 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void OnDialogueClosed(NPC npc)
     {
-        if (questType == QuestType.SpeakTo || questType == QuestType.GiveTo)
-        {
-            npcBuffer = npc;
-            CheckCompletion();
-        }
+        if (questType != QuestType.SpeakTo && questType != QuestType.GiveTo) return;
+        npcBuffer = npc;
+        CheckCompletion(); 
     }
 
     private void CheckCompletion()
@@ -149,7 +148,7 @@ public class Quest : MonoBehaviour, IPointerClickHandler
 
     private void UpdateUI()
     {
-        infoTitle.text = questTitle;
+        titleTexts[0].text = questTitle;
         infoDescription.text = questDescription;
     }
     
@@ -159,28 +158,38 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         questTitle = title;
         questDescription = description;
         nTi = npc;
-        eTd = enemies != null ? (Enemy[])enemies.Clone() : Array.Empty<Enemy>();
-        noOfE = eToDefeat != null ? (int[])eToDefeat.Clone() : Array.Empty<int>();
+        //eTd = enemies != null ? (Enemy[])enemies.Clone() : Array.Empty<Enemy>();
+        //noOfE = eToDefeat != null ? (int[])eToDefeat.Clone() : Array.Empty<int>();
+        enemiesToDefeat.Clear();
+        if (enemies != null && eToDefeat != null)
+        {
+            for (var i = 0; i < enemies.Length; i++)
+            {
+                enemiesToDefeat.Add(new EnemyToDefeat
+                {
+                    enemy = enemies[i],
+                    count = eToDefeat[i]
+                });
+            }
+        }
         oTi = objects != null ? (CollectableSOBase[])objects.Clone() : Array.Empty<CollectableSOBase>();
         noOfO = noOfObj != null ? (int[])noOfObj.Clone() : Array.Empty<int>();
         questRewards = rewards != null ? (CollectableSOBase[])rewards.Clone() : Array.Empty<CollectableSOBase>();
         
-        
         requiredByEnemy.Clear();
         currentKillsByEnemy.Clear();
 
-        if (questType == QuestType.DefeatEnemy && eTd != null && noOfE != null)
+        if (questType == QuestType.DefeatEnemy && enemiesToDefeat.Count > 0)
         {
-            var len = Math.Min(eTd.Length, noOfE.Length);
-            for (var i = 0; i < len; i++)
+            foreach (var enemyToDefeat in enemiesToDefeat)
             {
-                var enemy = eTd[i];
+                var enemy = enemyToDefeat.enemy;
                 if (enemy == null) continue;
-                var count = noOfE[i];
+                var count = enemyToDefeat.count;
                 
-                //requiredByEnemy.TryAdd(enemy, count); (this is supposedly the same as the line below. give it a try)
-                if (requiredByEnemy.ContainsKey(enemy)) requiredByEnemy[enemy] += count;
-                else requiredByEnemy[enemy] = count;
+                requiredByEnemy.TryAdd(enemy, count); //(this is supposedly the same as the line below. give it a try)
+                //if (requiredByEnemy.ContainsKey(enemy)) requiredByEnemy[enemy] += count;
+                //else requiredByEnemy[enemy] = count;
             }
         }
         OnAssigned();
@@ -196,18 +205,27 @@ public class Quest : MonoBehaviour, IPointerClickHandler
         oTi = Array.Empty<CollectableSOBase>();
         nTi = null;
         npcBuffer = null;
-        eTd = Array.Empty<Enemy>();
-        noOfE = Array.Empty<int>();
+        //eTd = Array.Empty<Enemy>();
+        //noOfE = Array.Empty<int>();
+        enemiesToDefeat.Clear();
         questRewards = Array.Empty<CollectableSOBase>();
         questCompleted = false;
         questType = QuestType.NullQuest;
         infoDescription.text = "";
-        infoTitle.text = "";
+        titleTexts[0].text = "";
         requiredByEnemy.Clear();
         currentKillsByEnemy.Clear();
+        gameObject.SetActive(false);
     }
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left && questType != QuestType.NullQuest) UpdateUI();
     }
+}
+
+[Serializable]
+public class EnemyToDefeat
+{
+    public Enemy enemy;
+    public int count;
 }

@@ -4,17 +4,17 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Instability. Thats all i need to say.
-        
-        I need to rewrite quest logic's speakto type to make it so that even if the target npc gets reloaded, the quest dialogue is still the topmost dialogue in their list
-            What i did instead was just save all data whenever any npcs' dialogue gets changed, hoping this fixes everything!
-                
+        Check everything quest related
+            We need to find a way to make the task text show the details of the task
+
     Optimisations & Hotfixes:
         
         Instability
         
             Issues from Testing                
                 I cant block fire pillars? Or maybe just pillars in general
+                    Just added a potential fix by overriding the SetValues function to ensure the pillar's facing direction is always the opposite of the players
+                        This way, it can be blocked from any side
 			    Jerome data SOMETIMES doesnt save
 			        The crazy thing is, when i entered the hot shop, the data didnt load,
 			        But when i entered the other shop (and pressed f3 to force load) it synced!
@@ -32,6 +32,9 @@ SNADV Notes
                     Meaning the isAttacking flag was still turned on somehow, even when there are multiple instances of ensuring its off
 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
+                
+                I need to rewrite quest logic's speakto type to make it so that even if the target npc gets reloaded, the quest dialogue is still the topmost dialogue in their list
+                    What i did instead was just save all data whenever any npcs' dialogue gets changed, hoping this fixes everything!
                 
                 Jumping logic should only happen when ALL enemies are close enough to the player
                     If i were to run away from a RELENTLESS fishman, and fight a cynderian, the cynderian would be zoning, waiting for the fishman's turn

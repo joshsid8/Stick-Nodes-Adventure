@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlotBase : MonoBehaviour
+public abstract class SlotBase : MonoBehaviour
 {
     [HideInInspector] public string itemName;
     [HideInInspector] public Sprite itemSprite;
@@ -15,13 +15,23 @@ public class SlotBase : MonoBehaviour
     public TMP_Text useButtonText;
     public Image itemImage;
     public GameObject selectedShader;
-
+    public GameObject usedShader;
+    
     // Manager References
     protected InvManager invManager;
     protected PlayerManager playerManager;
 
     //private bool switchFrom;
 
+    protected virtual void LateUpdate()
+    {
+        if (usedShader != null)
+        {
+            if (usedSlot && !usedShader.activeSelf) usedShader.SetActive(true);
+            else if (!usedSlot && usedShader.activeSelf) usedShader.SetActive(false);
+        }
+    }
+    
     protected virtual void Awake()
     {
         playerManager = FindAnyObjectByType<PlayerManager>();

@@ -27,8 +27,8 @@ public class PerformAbility : MonoBehaviour
     public int currentSlot;
     public int currentBlastType;
     
-    protected IPlayerStatus pa;
-    private IEnemyStatus es;
+    public IPlayerStatus pa;
+    public IEnemyStatus es;
 
     private void Start()
     {

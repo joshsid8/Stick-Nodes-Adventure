@@ -7,7 +7,7 @@ public class QuestLogManager : GUIBase
 {
     public static QuestLogManager Instance { get; private set; }
 
-    public Quest[] questSlots;
+    public QuestSlot[] questSlots;
 
     public GameObject questMenu;
     
@@ -27,6 +27,10 @@ public class QuestLogManager : GUIBase
         player = FindAnyObjectByType<PlayerController>();
         
         if (isActive) ToggleQuestLog();
+        
+        questSlots[0].titleTexts[0].text = "";
+        questSlots[0].infoDescription.text = "Pick a quest, if applicable";
+        questSlots[0].taskText.text = "<---";
     }
 
     public void AssignQuest(QuestSO quest)
@@ -34,8 +38,9 @@ public class QuestLogManager : GUIBase
         if (quest == null || completedQuests.Contains(quest)) return;
         for (var i = 0; i < questSlots.Length; i++)
         {
-            if (questSlots[i] != null && questSlots[i].questType == Quest.QuestType.NullQuest)
+            if (questSlots[i] != null && questSlots[i].questType == QuestSlot.QuestType.NullQuest)
             {
+                questSlots[i].gameObject.SetActive(true);
                 questSlots[i].LogQuest(quest.questType, quest.questName, quest.questDescription, quest.enemiesToDefeat,
                     quest.noOfEnemiesToDefeat, quest.objectsToInteract, quest.numberOfObjects, quest.npcToInteract, quest.rewards);
                 return;
@@ -67,15 +72,15 @@ public class QuestLogManager : GUIBase
         data.activeQuests = new List<QuestSaveData>();
         foreach (var slot in questSlots)
         {
-            if (slot != null && slot.questType != Quest.QuestType.NullQuest)
+            if (slot != null && slot.questType != QuestSlot.QuestType.NullQuest)
             {
                 data.activeQuests.Add(new QuestSaveData
                 {
                     questTitle = slot.questTitle,
                     questDescription = slot.questDescription,
                     questType = slot.questType,
-                    enemiesToDefeat = slot.eTd != null ? Array.ConvertAll(slot.eTd, e => e != null ? e.name : "") : Array.Empty<string>(),
-                    noOfEnemiesToDefeat = slot.noOfE,
+                    enemiesToDefeat = slot.enemiesToDefeat != null ? slot.enemiesToDefeat.ConvertAll(e => e != null && e.enemy != null ? e.enemy.name : "").ToArray() : Array.Empty<string>(),
+                    noOfEnemiesToDefeat = slot.enemiesToDefeat != null ? slot.enemiesToDefeat.ConvertAll(e => e.count).ToArray() : Array.Empty<int>(),
                     objectsToInteract = slot.oTi != null ? Array.ConvertAll(slot.oTi, o => o != null ? o.name : "") : Array.Empty<string>(),
                     numberOfObjects = slot.noOfO,
                     npcToInteract = slot.nTi != null ? slot.nTi.name : "",
@@ -100,7 +105,7 @@ public class QuestLogManager : GUIBase
             var qData = data.activeQuests[i];
             var enemies = Array.ConvertAll(qData.enemiesToDefeat, n => ResourceDatabase.Instance.GetEnemyByName(n));
             var objects = Array.ConvertAll(qData.objectsToInteract, id => ResourceDatabase.Instance.GetItemByName(id));
-            var npc = qData.questType == Quest.QuestType.SpeakTo || qData.questType == Quest.QuestType.GiveTo ? ResourceDatabase.Instance.GetNpcByName(qData.npcToInteract) : null;
+            var npc = qData.questType == QuestSlot.QuestType.SpeakTo || qData.questType == QuestSlot.QuestType.GiveTo ? ResourceDatabase.Instance.GetNpcByName(qData.npcToInteract) : null;
             var rewards = Array.ConvertAll(qData.rewards, id => ResourceDatabase.Instance.GetItemByName(id));
             
             questSlots[i].LogQuest(qData.questType, qData.questTitle, qData.questDescription, enemies, 
@@ -115,7 +120,7 @@ public struct QuestSaveData
 {
     public string questTitle;
     public string questDescription;
-    public Quest.QuestType questType;
+    public QuestSlot.QuestType questType;
     public string[] enemiesToDefeat;
     public int[] noOfEnemiesToDefeat;
     public string[] objectsToInteract;
