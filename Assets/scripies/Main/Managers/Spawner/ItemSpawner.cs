@@ -7,9 +7,8 @@ using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public class ItemSpawner : MonoBehaviour
+public class ItemSpawner : SpawnerBase
 {
-    public bool isOneTime;
     [SerializeField] private bool disableOnCollect;
     [SerializeField] private ItemSpawn[] itemSpawner;
     private string scene;
@@ -17,7 +16,7 @@ public class ItemSpawner : MonoBehaviour
     public List<GameObject> spawnedObjects = new List<GameObject>();
     
     [SerializeField] private bool spawnOnTrigger;
-    public TriggerTag triggerTag;
+    [EnumButtons] public TriggerTag triggerTag;
     public enum TriggerTag {Player, Enemy, Boss, Npc}
     [SerializeField] private float spawnInterval;
 
@@ -46,7 +45,7 @@ public class ItemSpawner : MonoBehaviour
         }
     }
 
-    private IEnumerator Spawn()
+    protected override IEnumerator Spawn()
     {
         scene = gameObject.scene.name;
         if (!isOneTime)
@@ -67,8 +66,8 @@ public class ItemSpawner : MonoBehaviour
                 if (targetScene.IsValid() && targetScene.isLoaded)
                 {
                     SceneManager.MoveGameObjectToScene(instance, targetScene);
-                    instance.GetComponent<scripies.Core.Identifier>().AutomateID(targetScene);
-                    instance.GetComponent<scripies.Core.Identifier>().typeOfObject = Identifier.ObjectType.Item;
+                    instance.GetComponent<Identifier>().AutomateID(targetScene);
+                    instance.GetComponent<Identifier>().typeOfObject = Identifier.ObjectType.Item;
                     spawnedObjects.Add(instance);
                 }
             }
@@ -81,7 +80,7 @@ public class ItemSpawner : MonoBehaviour
             StartCoroutine(Spawn());
     }
 
-    public void Despawn()
+    public override void Despawn()
     {
         foreach (var obj in spawnedObjects) Destroy(obj);
     }

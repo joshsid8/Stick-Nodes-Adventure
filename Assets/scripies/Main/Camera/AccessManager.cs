@@ -13,7 +13,7 @@ public class AccessManager : MonoBehaviour
     public List<GameObject> enemies = new();
     public GameObject boss;
     public CollectableSOBase[] keys;
-    public Badge badge;
+    public BadgeSO badgeSo;
     private bool playerDetected;
 
     private void Awake() => doorObjs = GetComponentsInChildren<DoorObject>().ToList(); // SINCE WHEN DID TOLIST EXIST?! MY LIIIIIIFFFFEEE!!!
@@ -83,7 +83,7 @@ public class AccessManager : MonoBehaviour
                 }
                 break;
             case Objectives.UnlockBadge:
-                if (StatsManager.Instance.HasBadge(badge) && playerDetected) OpenDoors();
+                if (StatsManager.Instance.HasBadge(badgeSo) && playerDetected) OpenDoors();
                 break;
             case Objectives.DefeatBoss:
                 if (boss != null)

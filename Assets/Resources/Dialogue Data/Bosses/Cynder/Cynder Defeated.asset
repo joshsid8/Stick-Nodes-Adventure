@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Cynder
   dialogueThread:
-  - thread: 'Heh, it seems you are more stupid than I thought. '
+  - thread: 'Tch, it seems you are more stupid than I thought. '
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
     useCameraEvents: 0
@@ -23,7 +23,7 @@ MonoBehaviour:
     zoomSpeed: 0
     cameraTarget: 
     cameraLookupType: 0
-  - thread: You think this is the end?
+  - thread: You really think this is the end?
     dialogueColour: {r: 0.29411766, g: 0, b: 0, a: 1}
     isBold: 0
     useCameraEvents: 0
@@ -32,7 +32,7 @@ MonoBehaviour:
     zoomSpeed: 0
     cameraTarget: 
     cameraLookupType: 0
-  - thread: '*I will come back. Just you wait... '
+  - thread: '*I will come back. Just you wait... (WILL BRO BE THO?!)'
     dialogueColour: {r: 0.6603774, g: 0, b: 0, a: 1}
     isBold: 1
     useCameraEvents: 0

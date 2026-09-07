@@ -16,7 +16,7 @@ public class ResourceDatabase : MonoBehaviour
     private readonly Dictionary<string, Enemy> enemyDatabase = new();
     private readonly Dictionary<string, QuestSO> questDatabase = new();
     private readonly Dictionary<string, NPC> npcDatabase = new();
-    private readonly Dictionary<string, Badge> badgeDatabase = new();
+    private readonly Dictionary<string, BadgeSO> badgeDatabase = new();
 
     void Awake()
     {
@@ -62,7 +62,7 @@ public class ResourceDatabase : MonoBehaviour
             else Debug.LogWarning($"[QuestDatabase] Duplicate quest name found: {quest.questName}.");
         }
         
-        var allBadges = Resources.LoadAll<Badge>("Badges");
+        var allBadges = Resources.LoadAll<BadgeSO>("Badges");
         foreach (var badge in allBadges)
         {
             if (!badgeDatabase.ContainsKey(badge.name)) badgeDatabase.Add(badge.name, badge);
@@ -112,7 +112,7 @@ public class ResourceDatabase : MonoBehaviour
         return npc;
     }
 
-    public Badge GetBadgeByName(string badgeName)
+    public BadgeSO GetBadgeByName(string badgeName)
     {
         if (string.IsNullOrEmpty(badgeName)) return null;
         badgeDatabase.TryGetValue(badgeName, out var badge);

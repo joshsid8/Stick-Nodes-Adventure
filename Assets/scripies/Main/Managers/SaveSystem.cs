@@ -2,8 +2,13 @@ using System.IO;
 using scripies.Player;
 using UnityEngine;
 
+/// <summary>
+/// The global save system, communicating the data in game to the save files!
+/// </summary>
 public class SaveSystem
 {
+    
+    public static int SaveSlot = 0;
     private static SaveData saveData = new()
     {
         sceneData = new SceneData(true),
@@ -12,6 +17,7 @@ public class SaveSystem
         playerStats = new PlayerSaveStats(),
         playerInventory = new PlayerSaveInventory(),
         playerIndex = PlayerSaveIndex.CreateNew(),
+        playerBadges = new PlayerBadges(),
         playerQuests = new PlayerSaveQuests(),
         mainMenuData = new MainMenuData(),
         currentScene = new SceneName()
@@ -27,23 +33,29 @@ public class SaveSystem
         public PlayerSaveInventory playerInventory;
         public PlayerSaveIndex playerIndex;
         public PlayerSaveQuests playerQuests;
+        public PlayerBadges playerBadges;
         public MainMenuData mainMenuData;
         public SceneName currentScene;
     }
 
     public static string SaveFileName()
     {
-        var saveFile = Application.persistentDataPath + "/save" + ".sna";
+        var saveFile = Application.persistentDataPath + "/save" + SaveSlot + ".sna";
         return saveFile;
     }
 
-    public static void HandleSaveData()
+    public static string SettingsSaveFileName()
+    {
+        var saveFile = Application.persistentDataPath + "/saveSettings.sna";
+        return saveFile;
+    }
+    public static void SetSaveSlot(int slot = 0) => SaveSlot = slot;
+
+    public static void HandleSaveData(int slot = 0)
     {
         foreach (var map in MapManager.Instances.Values)
         {
-            if (map == null) continue;
-            map.SaveSceneData();
-            map.MakeDataPersistent();
+            if (map != null) map.SaveSceneData();
         }
         if (DataManager.Instance != null) DataManager.Instance.Save(ref saveData.sceneData, ref saveData.globalNpcData);
         if (PlayerHealth.Instance != null && PlayerHealth.Instance.pc != null) PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);
@@ -54,6 +66,7 @@ public class SaveSystem
             if (InvManager.Instance.invIndex != null) InvManager.Instance.invIndex.Save(ref saveData.playerIndex);
         }
         if (QuestLogManager.Instance != null) QuestLogManager.Instance.Save(ref saveData.playerQuests);
+        if (StatsManager.Instance != null) StatsManager.Instance.Save(ref saveData.playerBadges);
         if (AudioManager.Instance != null) AudioManager.Instance.Save(ref saveData.currentScene);
     }
 
@@ -75,6 +88,7 @@ public class SaveSystem
             if (InvManager.Instance.invIndex != null) InvManager.Instance.invIndex.Load(saveData.playerIndex);
         }
         if (QuestLogManager.Instance != null) QuestLogManager.Instance.Load(saveData.playerQuests);
+        if (StatsManager.Instance != null) StatsManager.Instance.Load(saveData.playerBadges);
         if (AudioManager.Instance != null) AudioManager.Instance.Load(saveData.currentScene);
         
         scripies.Core.GameEvents.TriggerLoadMapData();
@@ -100,7 +114,7 @@ public class SaveSystem
     public static void SaveSettings() => HandleSettingsSaveData();
     public static void LoadSettings()
     {
-        var path = SaveFileName();
+        var path = SettingsSaveFileName();
         if (File.Exists(path))
         {
             try
@@ -122,7 +136,8 @@ public class SaveSystem
         var path = SaveFileName();
         if (!File.Exists(path))
         {
-            Debug.LogWarning($"[SaveSystem] No save file found at: {path}");
+            Debug.LogWarning($"[SaveSystem] No save file found at: {path} Creating new save file");
+            Save();
             return;
         }
 
@@ -131,13 +146,13 @@ public class SaveSystem
             var saveDataString = File.ReadAllText(path);
             saveData = JsonUtility.FromJson<SaveData>(saveDataString);
             HandleLoadData();
-            //Debug.Log($"[SaveSystem] Loaded from: {path}");
+            if (Application.isEditor) Debug.Log($"[SaveSystem] Loaded from: {path}");
         }
         catch (IOException ex)
         {
             Debug.LogError($"[SaveSystem] Failed to load: {ex.Message}");
         }
-
     }
-
+    
+    public static void DeleteSave(){}
 }

@@ -7,9 +7,8 @@ using UnityEngine.SceneManagement;
 using scripies.Core;
 using Random = UnityEngine.Random;
 
-public class EntitySpawner : MonoBehaviour
+public class EntitySpawner : SpawnerBase
 {
-    public bool isOneTime;
     [SerializeField] private List<GameObject> currentEnemies = new();
     [SerializeField] private EnemySpawn[] eSpawn;
     private string scene;
@@ -77,7 +76,7 @@ public class EntitySpawner : MonoBehaviour
         }
     }
 
-    private IEnumerator Spawn()
+    protected override IEnumerator Spawn()
     {
         if (canSpawn && spawnAbility)
         {
@@ -107,6 +106,11 @@ public class EntitySpawner : MonoBehaviour
                 }
             }
         }
+    }
+
+    public override void Despawn()
+    {
+        foreach (var obj in currentEnemies) Destroy(obj);
     }
 
     private void OnTriggerStay2D(Collider2D collision)

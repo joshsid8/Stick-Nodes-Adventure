@@ -6,7 +6,7 @@ using TMPro;
 
 public class ShopItemSlot : SlotBase
 {
-	[CanBeNull] public Badge badgeRequired;
+	[CanBeNull] public BadgeSO badgeSoRequired;
 
 	public float itemPrice;
     public int itemAmount;
@@ -70,7 +70,7 @@ public class ShopItemSlot : SlotBase
 		    ? collectableSo.itemSprite : shopManager.defaultSprite);
 	    shopManager.selectedAmountText.text = itemAmount.ToString();
 	    shopManager.selectedPriceText.text = "N" + itemPrice.ToString("F0");
-	    if (badgeRequired != null) shopManager.buyButton.interactable = StatsManager.Instance.HasBadge(badgeRequired);
+	    if (badgeSoRequired != null) shopManager.buyButton.interactable = StatsManager.Instance.HasBadge(badgeSoRequired);
     }
     
     protected override void UpdateSlotUI()
@@ -94,7 +94,7 @@ public class ShopItemSlot : SlotBase
 	    itemPrice = 0;
 	    itemAmount = 0;
 	    collectableSo = null;
-	    badgeRequired = null;
+	    badgeSoRequired = null;
 	    itemSprite = shopManager.defaultSprite;
 	    base.ClearSlot();
 	    UpdateSlotUI();

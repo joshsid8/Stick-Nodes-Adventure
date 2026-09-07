@@ -36,12 +36,6 @@ public class SceneLoadTrigger : MonoBehaviour
                 
             }
             if (!isSceneLoaded) SceneManager.LoadSceneAsync(scene.SceneName, LoadSceneMode.Additive);
-            /*else
-            {
-                if (MapManager.Instances.TryGetValue(scene.SceneName, out var mapManager)) 
-                    mapManager.LoadSceneData();
-                
-            }*/
         }
     }
 
@@ -57,8 +51,6 @@ public class SceneLoadTrigger : MonoBehaviour
                     if (MapManager.Instances.TryGetValue(scene.SceneName, out var mapManager))
                     {
                         mapManager.SaveSceneData();
-                        yield return new WaitForSeconds(0.1f);
-                        mapManager.MakeDataPersistent();
                         mapManager.DisableSpawners();
                         yield return new WaitForSeconds(0.1f);
                     }

@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 public class AspectSlot : SlotBase, IPointerClickHandler
 {
     // Aspect Data
+    // TODO: Aspect inventory needs shaders to show that items are there, especially since all current aspects have no sprite yet
+
     public AspectSO aspectStats;
 
     public Prompt choice;

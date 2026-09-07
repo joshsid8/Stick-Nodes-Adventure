@@ -103,9 +103,13 @@ public class BossAttack : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Checks();
         FacePlayer();
         FactorCheck();
+    }
+
+    private void LateUpdate()
+    {
+        Checks();
     }
 
     private void FactorCheck() => closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);

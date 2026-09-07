@@ -8,24 +8,20 @@ SNADV Notes
         
         I need to rewrite quest logic's speakto type to make it so that even if the target npc gets reloaded, the quest dialogue is still the topmost dialogue in their list
             What i did instead was just save all data whenever any npcs' dialogue gets changed, hoping this fixes everything!
-        
-        Aspect inventory needs shaders to show that items are there, especially since all current aspects have no sprite yet
-        
+                
     Optimisations & Hotfixes:
         
         Instability
         
             Issues from Testing                
-                
-                Badges dont save.
-                    Prolly not added to the save data yet
-			    Jerome STILLLLLL doesnt want his data synced, unlike the editor
-			        It is either 
-                        the npc data doesnt (WANT TO) get loaded - the most likely
-                            Makeshift fix for this would be to invoke the load method a bit later to ensure it loads after everything else
-                        the data doesnt get persisted at the right time - pretty likely, and can go with the first
-                        the initial data gets saved, thus loading the same data - least likely, and hardest to fix
-			    
+                I cant block fire pillars? Or maybe just pillars in general
+			    Jerome data SOMETIMES doesnt save
+			        The crazy thing is, when i entered the hot shop, the data didnt load,
+			        But when i entered the other shop (and pressed f3 to force load) it synced!
+			            Entering the other shops THEN started to sync properly
+                    Meaning it only syncs when it FEELS like it!!!!!!!
+                        (i dont know why this is happening)
+			        
             Replicatable or From-Build bugs/problems
 
             One time occurrences or Rare/Intimidating bugs
@@ -71,6 +67,8 @@ SNADV Notes
                     maybe i have to fade the music out and simultaneously fade in the new one?
                     To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
                         so it can easily switch between or merge together
+                I was also thinking of making music change depending on the distance between the player and things
+                    If the player is close to a boss or an enemy, the music will fade into fight music
                 OSTs
                     I need to make new boss music to fit the new map music
                         Cynder Valley is all done

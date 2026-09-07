@@ -1,14 +1,14 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CollectableTrigger : MonoBehaviour
 {
     private Collectable collectable;
 
-    private void Awake() => collectable = GetComponent<Collectable>();
-
+    private void Awake() =>
+        collectable = TryGetComponent<Collectable>(out var collectableComponent) ? collectableComponent : 
+            throw new MissingComponentException($"Collectable component in {gameObject.name} not found!");
+    
     public IEnumerator OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.collider.CompareTag("Player")) yield break;

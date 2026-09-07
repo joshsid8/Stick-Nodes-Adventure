@@ -48,7 +48,7 @@ public class ShopKeeper : MonoBehaviour
                 itemCollectable = items[i].collectableSo,
                 itemPrice = items[i].itemPrice,
                 itemAmount = items[i].itemAmount,
-                badgeRequired = items[i].badgeRequired
+                badgeSoRequired = items[i].badgeSoRequired
             });
         }
     }
@@ -77,8 +77,8 @@ public class ShopItem
     [TextArea(1, 2)] public string itemDescription;
     public Sprite itemSprite;
     public float itemPrice;
-    public CollectableSOBase itemCollectable;
+    public ScriptableObject itemCollectable;
     public int itemAmount = 1;
-    public Badge badgeRequired;
+    public BadgeSO badgeSoRequired;
 }
 

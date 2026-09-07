@@ -86,7 +86,7 @@ public class MainMenuManager : MonoBehaviour
         // 1. Start loading the scenes first
         scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
         
-        if (String.IsNullOrEmpty(audioManager.currentScene) && !newGame)
+        if (string.IsNullOrEmpty(audioManager.currentScene) && !newGame)
         {
             Debug.LogWarning("theres no scene name data. loading all scenes");
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Default Teste", LoadSceneMode.Additive));
@@ -119,7 +119,12 @@ public class MainMenuManager : MonoBehaviour
 
         // 3. Finalize
         yield return new WaitForSeconds(0.1f);
-        if (!newGame) SaveSystem.Load();
+        if (!newGame)
+        {
+            // TODO: Make a choice to switch between save slots
+            SaveSystem.SetSaveSlot();
+            SaveSystem.Load();
+        }
         SceneManager.UnloadSceneAsync(gameObject.scene);
         Destroy(gameObject.transform.root.gameObject);
     }

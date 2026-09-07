@@ -20129,7 +20129,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: e87773534996ab542ba773fd0724383a, type: 3}
     - target: {fileID: 261623171632948894, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: debugMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 261623171632948894, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: canWallJump

@@ -8,7 +8,7 @@ public class StatsManager : GUIBase
     public static StatsManager Instance { get; private set; }
     
     public StatInfo[] stats;
-    public List<Badge> badges = new();
+    public List<BadgeSO> badges = new();
     public List<BadgeSlot> badgeSlots = new();
     protected override void Awake()
     {
@@ -24,9 +24,15 @@ public class StatsManager : GUIBase
         UpdateBadgeSlotList();
     }
 
+    private void OnValidate()
+    {
+        if (Application.isPlaying)
+            UpdateBadgeSlotList();
+    }
+
     private void Update()
     {
-        if (Input.GetButtonDown("Inventory") && isActive || Input.GetButtonDown("Cancel") && isActive) ToggleStats();
+        //if (Input.GetButtonDown("Inventory") && isActive || Input.GetButtonDown("Cancel") && isActive) ToggleStats();
     }
 
     public void ToggleStats()
@@ -44,20 +50,47 @@ public class StatsManager : GUIBase
             stat.ClearInfo();
     }
     
-    public void AddBadge(Badge badge)
+    public void AddBadge(BadgeSO badgeSo)
     {
-        if (badges.Contains(badge)) return;
-        badges.Add(badge);
+        if (badges.Contains(badgeSo)) return;
+        badges.Add(badgeSo);
         UpdateBadgeSlotList();
     }
-    public bool HasBadge(Badge badge) => badges.Contains(badge);
+    public bool HasBadge(BadgeSO badgeSo) => badges.Contains(badgeSo);
 
     private void UpdateBadgeSlotList()
     {
+        if (badges.Count == 0)
+        {
+            foreach (var slot in badgeSlots) slot.gameObject.SetActive(false);
+            return;
+        }
         for (var i = 0; i < badges.Count; i++)
         {
             badgeSlots[i].gameObject.SetActive(true);
             badgeSlots[i].SetBadge(badges[i]);
         }
     }
+    
+    public void Save(ref PlayerBadges data)
+    {
+        if (badges == null) return;            
+        var badgesToSave = badges.ToArray() as ScriptableObject[]; //The hell do you mean a statically typed language construct???
+        data.badges = badgesToSave;
+    }
+
+    public void Load(PlayerBadges data)
+    {
+        if (badges == null || data.badges.Length == 0) return;
+        List<BadgeSO> badgesToLoad = new();
+        foreach (var badge in data.badges) badgesToLoad.Add(badge as BadgeSO); 
+        badges = new List<BadgeSO>(badgesToLoad);
+        UpdateBadgeSlotList();
+    }
+}
+
+[Serializable]
+public struct PlayerBadges
+{
+    public ScriptableObject[] badges;
 }

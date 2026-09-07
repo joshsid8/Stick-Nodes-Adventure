@@ -17,7 +17,12 @@ public class Collectable : MonoBehaviour
     [SerializeField] private float flySpeed = 1f;
     private Rigidbody2D rb;
     private RaycastHit2D hit;
-    public void Collect(GameObject objectCollected) => collectable.Collect(objectCollected);
+    public void Collect(GameObject objectCollected)
+    {
+        if (collectable == null)
+            throw new NullReferenceException($"item {gameObject.name} has no collectable. If it were initialised with one, it may mean its data wasnt loaded correctly.");
+        collectable.Collect(objectCollected);
+    }
 
     private IEnumerator Start()
     {
@@ -51,7 +56,6 @@ public class Collectable : MonoBehaviour
     {
         Vector3 rayDirection3 = Vector2.down * transform.localScale.y * edgeCheckRay;
         Gizmos.DrawLine(transform.position, transform.position + rayDirection3);
-        
         Gizmos.DrawWireSphere(transform.position, playerFinderHitbox);
     }
 }

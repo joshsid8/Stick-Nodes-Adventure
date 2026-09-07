@@ -101,6 +101,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         if (!isDead) yield break;
         ba.isAttacking = false;
         ba.ResetTriggers();
+        ba.enabled = false;
         spriteRenderer.color = Color.white;
         GameEvents.TriggerDropLoot(gameObject);
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
@@ -110,7 +111,6 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         gameObject.tag = "Dead";
         spriteRenderer.enabled = true;
         GameEvents.TriggerPlaySound(deathClip, false);
-        ba.ResetTriggers();
         yield return new WaitForSeconds(3);
         GameHUD.Instance.ToggleBossHealth(false);
         isDead = false;

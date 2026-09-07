@@ -3,19 +3,19 @@ using UnityEngine.UI;
 
 public class BadgeSlot : StatInfo
 {
-    public Badge badge;
+    public BadgeSO badgeSo;
 
     protected override void Update()
     {
         shader.SetActive(isClicked);
     }
     
-    public void SetBadge(Badge ba) => badge = ba;
+    public void SetBadge(BadgeSO ba) => badgeSo = ba;
     
     public override void ClearInfo()
     {
         base.ClearInfo();
-        badge = null;
+        badgeSo = null;
         gameObject.SetActive(false);
     }
     
@@ -23,9 +23,9 @@ public class BadgeSlot : StatInfo
     {
         statsManager.ClearStatShaders();
         isClicked = true;
-        statName.text = badge.itemName;
-        statDescription.text = badge.itemDescription;
-        GetComponent<Image>().sprite = badge.itemSprite;
+        statName.text = badgeSo.itemName;
+        statDescription.text = badgeSo.itemDescription;
+        GetComponent<Image>().sprite = badgeSo.itemSprite;
     }
 
 }

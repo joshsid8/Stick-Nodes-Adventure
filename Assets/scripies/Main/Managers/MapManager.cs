@@ -63,7 +63,6 @@ public class MapManager : MonoBehaviour
         weather = GetComponent<WeatherManager>();
         audioManager = AudioManager.Instance;
         InitialiseSceneData();
-        LoadSceneData();
         LoadNpcData();
     }
 
@@ -102,32 +101,7 @@ public class MapManager : MonoBehaviour
         var dData = doorSceneData.Find(x => x.accessManager == accessManager);
         if (dData != null) dData.isOpen = isOpen;
     }
-
-    private void OnEnable()
-    {
-        if (!Instances.ContainsKey(gameObject.scene.name))
-            Instances.Add(gameObject.scene.name, this);
-        if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
-        
-        GameEvents.OnPlayerSpawned += StartMap;
-        GameEvents.OnBossDefeated += OnBossDefeated;
-        GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
-        GameEvents.SaveMapData += SaveSceneData;
-        GameEvents.LoadMapData += LoadSceneData;
-    }
-
-    private void OnDisable()
-    {
-        if (Instances.ContainsKey(gameObject.scene.name) && Instances[gameObject.scene.name] == this)
-            Instances.Remove(gameObject.scene.name);
-        
-        GameEvents.OnBossDefeated -= OnBossDefeated;
-        GameEvents.OnPlayerSpawned -= StartMap;
-        GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
-        GameEvents.SaveMapData -= SaveSceneData;
-        GameEvents.LoadMapData -= LoadSceneData;
-    }
-
+    
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
@@ -227,13 +201,11 @@ public class MapManager : MonoBehaviour
         spawnerObjects.Clear();
         foreach (var obj in sceneObjects)
         {
-            if (obj.CompareTag("Spawner"))
-            {
-                foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>()) 
-                    spawnerObjects.Add(spawner.gameObject);
-                foreach (var spawner in obj.GetComponentsInChildren<ItemSpawner>()) 
-                    spawnerObjects.Add(spawner.gameObject);
-            }
+            if (!obj.CompareTag("Spawner")) continue;
+            foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>()) 
+                spawnerObjects.Add(spawner.gameObject);
+            foreach (var spawner in obj.GetComponentsInChildren<ItemSpawner>()) 
+                spawnerObjects.Add(spawner.gameObject);
         }
     }
 
@@ -266,7 +238,7 @@ public class MapManager : MonoBehaviour
     {
         ClearSceneData();
         CollateObjects();
-        UpdateLists();
+        UpdateLists(true);
     }
 
     public void SaveSceneData()
@@ -277,7 +249,7 @@ public class MapManager : MonoBehaviour
         UpdateLists();
     }
 
-    private void UpdateLists()
+    private void UpdateLists(bool initialise = false)
     {
         ClearSceneData();
         foreach (var obj in sceneObjects)
@@ -351,18 +323,26 @@ public class MapManager : MonoBehaviour
             var newSpawner = new SpawnerSceneData
             {
                 activeSpawner = spawner,
-                itemSpawner = itemSpawner,
+                spawner = itemSpawner,
                 id = spawnerId.id,
                 isOneTime = itemSpawner != null ? itemSpawner.isOneTime : (entitySpawner != null && entitySpawner.isOneTime)
             };
             spawnerSceneData.Add(newSpawner);
         }
+        
+        if (!initialise) 
+            Invoke(nameof(MakeDataPersistent), 0.1f);
+        else LoadSceneData();
     }
     
     public void MakeDataPersistent()
     {
         //print("Persisting data");
-        if (!sceneLoaded || PlayerHealth.Instance == null) return;
+        if (!sceneLoaded || PlayerHealth.Instance == null)
+        {
+            print($"{sceneName}'s scene data not loaded yet, cannot persist data.");
+            return;
+        }
         var manager = DataManager.Instance;
         var list = manager.sceneData.Find(x => x.sceneName == sceneName);
 
@@ -370,9 +350,9 @@ public class MapManager : MonoBehaviour
         {
             list = new DataManager.SceneList();
             manager.sceneData.Add(list);
+            list.sceneName = sceneName;
         }
 
-        list.sceneName = sceneName;
         list.enemies.Clear();
         list.collectables.Clear();
         list.doors.Clear();
@@ -450,7 +430,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void LoadSceneData()
+    private void LoadSceneData()
     {
         Invoke(nameof(LoadNpcData), 0.2f);
         var manager = DataManager.Instance;
@@ -460,7 +440,14 @@ public class MapManager : MonoBehaviour
             return;
         }
         var hasSceneData = manager.sceneData.Exists(x => x.sceneName == sceneName);
-        if (!hasSceneData) return;
+        if (!hasSceneData)
+        {
+            // if there isnt any found scene data, it should save the current new state into the data manager
+            print($"Scene data for {sceneName} not found, saving current scene data to data manager.");
+            sceneLoaded = true;
+            SaveSceneData();
+            return;
+        }
         
         undiscoveredMap = manager.sceneData.Find(x => x.sceneName == sceneName).undiscoveredMap;
         
@@ -499,11 +486,8 @@ public class MapManager : MonoBehaviour
             {
                 if (spawnerData.isOneTime)
                 {
-                    var spawner = spawnerSceneData.Find(s => s.id == spawnerData.activeSpawner);
-                    if (spawner != null && spawner.itemSpawner != null)
-                    {
-                        spawner.itemSpawner.Despawn();
-                    }
+                    var ssd = spawnerSceneData.Find(s => s.id == spawnerData.activeSpawner);
+                    if (ssd != null && ssd.spawner != null) ssd.spawner.Despawn();
                 }
             }
 
@@ -542,8 +526,32 @@ public class MapManager : MonoBehaviour
             }
         }
     }
-    
     #endregion
+    
+    private void OnEnable()
+    {
+        if (!Instances.ContainsKey(gameObject.scene.name))
+            Instances.Add(gameObject.scene.name, this);
+        if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
+        
+        GameEvents.OnPlayerSpawned += StartMap;
+        GameEvents.OnBossDefeated += OnBossDefeated;
+        GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
+        GameEvents.SaveMapData += SaveSceneData;
+        GameEvents.LoadMapData += LoadSceneData;
+    }
+
+    private void OnDisable()
+    {
+        if (Instances.ContainsKey(gameObject.scene.name) && Instances[gameObject.scene.name] == this)
+            Instances.Remove(gameObject.scene.name);
+        
+        GameEvents.OnBossDefeated -= OnBossDefeated;
+        GameEvents.OnPlayerSpawned -= StartMap;
+        GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
+        GameEvents.SaveMapData -= SaveSceneData;
+        GameEvents.LoadMapData -= LoadSceneData;
+    }
     
     #region Door and Spawner Stuff
     
@@ -611,7 +619,7 @@ public class MapManager : MonoBehaviour
     public class SpawnerSceneData
     {
         public GameObject activeSpawner;
-        public ItemSpawner itemSpawner;
+        public SpawnerBase spawner;
         public int id;
         public bool isOneTime;
     }

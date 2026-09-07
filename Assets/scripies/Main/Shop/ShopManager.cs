@@ -56,13 +56,15 @@ public class ShopManager : GUIBase
         {
             if (i < items.Length)
             {
+                var collectable = items[i].itemCollectable as CollectableSOBase;
+                if (collectable == null) throw new NullReferenceException($"[ShopManager] Somehow the item {items[i].itemName} collectable is null.");
+                shopItems[i].collectableSo = collectable;
                 shopItems[i].itemName = items[i].itemName;
-                shopItems[i].itemDescription = !string.IsNullOrEmpty(items[i].itemDescription) ? items[i].itemDescription : items[i].itemCollectable.itemDescription;
+                shopItems[i].itemDescription = !string.IsNullOrEmpty(items[i].itemDescription) ? items[i].itemDescription : string.IsNullOrEmpty(collectable.itemDescription) ? collectable.itemDescription : "Missing Desc >:(";
                 shopItems[i].itemPrice = items[i].itemPrice;
-                shopItems[i].itemSprite = items[i].itemSprite ?? items[i].itemCollectable.itemSprite ?? defaultSprite;
-                shopItems[i].collectableSo = items[i].itemCollectable;
+                if (items[i].itemSprite != null) shopItems[i].itemSprite = items[i].itemSprite;
                 shopItems[i].itemAmount = items[i].itemAmount;
-                shopItems[i].badgeRequired = items[i].badgeRequired;
+                shopItems[i].badgeSoRequired = items[i].badgeSoRequired;
                 shopItems[i].usedSlot = true;
                 shopItems[i].gameObject.SetActive(true);
             }
