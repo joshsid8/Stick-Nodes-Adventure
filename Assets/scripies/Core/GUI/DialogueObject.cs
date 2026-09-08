@@ -57,16 +57,18 @@ namespace scripies.Dialogue
         public bool canBeBold;
 
         [Header("NPC Control")]
-        public bool openShopOnClose;
-        
         public string speaker;
-        [Tooltip("Adds this dialogue to the current speaker. Ensure this is filled if this dialogue is quest based")]
-        public DialogueObject alteredDialogue;
-
+        [Tooltip("Adds these dialogues to the current speaker. Make sure the desired topmost dialogue is the last one in the array.")]
+        public DialogueObject[] dialoguesToAdd;
+        public DialogueObject[] dialoguesToRemove;
+        [Space]
         [Tooltip("Anyone else needs to be affected by this dialogue?")]
         public string externalInstance;
         [Tooltip("Adds this dialogue to another npc. Ensure this is filled if the quest type SpeakTo/GiveTo")]
-        public DialogueObject alteredExternalDialogue;
+        public DialogueObject[] alteredExternalDialogues;
+        
+        public bool openShopOnClose;
+        public bool respeakable;
     }
 
     [Serializable]

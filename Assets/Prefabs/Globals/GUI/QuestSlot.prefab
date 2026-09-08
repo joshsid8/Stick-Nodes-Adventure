@@ -199,21 +199,14 @@ MonoBehaviour:
   questTitle: 
   questDescription: 
   questType: 4
-  titleTexts:
-  - {fileID: 0}
-  - {fileID: 6522412237980651570}
-  taskText: {fileID: 0}
-  infoTitle: {fileID: 0}
-  infoDescription: {fileID: 0}
-  objectiveText: {fileID: 0}
   questCompleted: 0
-  eTd: []
-  noOfE: 
+  enemiesToDefeat: []
   oTi: []
   noOfO: 
   nTi: {fileID: 0}
   rewardObj: {fileID: 5219057863714752078, guid: e96de6d8fdb352a419b1eaedd4332931, type: 3}
   questRewards: []
+  summaryText: {fileID: 6522412237980651570}
 --- !u!114 &5321564717641283851
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,32 +17,86 @@ MonoBehaviour:
   - thread: '#LEAVE ME ALONE'
     dialogueColour: {r: 1, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '#LOOK AT YOU'
     dialogueColour: {r: 1, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '#WHERE DID YOUR HAIR GO?!'
     dialogueColour: {r: 1, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '#YOU LOOK DISGUSTING'
     dialogueColour: {r: 1, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '#NO ONE EVER THINKS OF YOU UNLESS THEY HAVE ABSOLUTELY NO CHOICE BUT
       TO'
     dialogueColour: {r: 1, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '#HOW MANY MIRROS HAVE YOU BROKEN DUE TO THE DISFIGURATION YOU CALL A
       FACE?!'
     dialogueColour: {r: 1, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '#YOU DONT EVEN HAVE A DAYUM FACE'
     dialogueColour: {r: 1, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '#LEAVE ME ALONE, ITS THE LAST TIME IM TELLING YOU'
     dialogueColour: {r: 1, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Will you leave bro alone?
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 1
   isAnimated: 0
   yesResponse:
@@ -61,6 +115,10 @@ MonoBehaviour:
   canBeColoured: 1
   canBeBold: 0
   speaker: 
-  alteredDialogue: {fileID: 0}
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues:
+  - {fileID: 11400000, guid: b8bdcc227971c624e8d67da75903b581, type: 2}
+  openShopOnClose: 0
+  respeakable: 0

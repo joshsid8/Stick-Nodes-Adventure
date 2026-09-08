@@ -19,13 +19,31 @@ MonoBehaviour:
       into my territory. "
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: 'I see you are after the orb of flames: you definitely aren''t taking
       it without getting pass me. '
     dialogueColour: {r: 0.29411766, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: '*This will be your final blunder...'
     dialogueColour: {r: 0.6603774, g: 0, b: 0, a: 1}
     isBold: 1
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
   isAnimated: 0
   yesResponse:
@@ -43,7 +61,10 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 1
-  speaker: 
-  alteredDialogue: {fileID: 0}
+  speaker: Cynder
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

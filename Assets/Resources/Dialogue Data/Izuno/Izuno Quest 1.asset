@@ -17,17 +17,41 @@ MonoBehaviour:
   - thread: Yo, i have another task for you.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: A friend of mine needs some fish scales...
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: No idea why, but try get some for me
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: 'You get something in return, of course. Preciate it
 
 '
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
   isAnimated: 0
   yesResponse:
@@ -46,6 +70,10 @@ MonoBehaviour:
   canBeColoured: 0
   canBeBold: 0
   speaker: Izuno
-  alteredDialogue: {fileID: 11400000, guid: 4e7d05becd58b1c46b25efa4008a6088, type: 2}
+  dialoguesToAdd:
+  - {fileID: 11400000, guid: 4e7d05becd58b1c46b25efa4008a6088, type: 2}
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

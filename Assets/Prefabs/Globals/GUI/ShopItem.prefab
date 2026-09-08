@@ -174,7 +174,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -107.04321, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -388,12 +388,12 @@ MonoBehaviour:
   useButtonText: {fileID: 0}
   itemImage: {fileID: 2735788358246742419}
   selectedShader: {fileID: 2123554028890211206}
-  isBuyable: 0
+  usedShader: {fileID: 0}
+  badgeSoRequired: {fileID: 0}
   itemPrice: 0
   itemAmount: 0
   collectableSo: {fileID: 0}
   amountText: {fileID: 7973754231887808610}
-  priceText: {fileID: 0}
   shopManager: {fileID: 0}
 --- !u!114 &8402916513234643257
 MonoBehaviour:

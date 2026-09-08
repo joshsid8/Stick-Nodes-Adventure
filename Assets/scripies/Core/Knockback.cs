@@ -10,7 +10,7 @@ public class Knockback : MonoBehaviour
 
     private IEnumerator KnockbackAction(Vector2 hitVector, float force, float time, bool targetPosition = false)
     {    
-        if (!targetPosition && hitVector == Vector2.zero) yield break;
+        if (!targetPosition && hitVector == Vector2.zero || time == 0 || force == 0) yield break;
 
         IsBeingKnocked = true;
         

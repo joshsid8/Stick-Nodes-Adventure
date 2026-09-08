@@ -204,20 +204,27 @@ namespace scripies.Dialogue
             OnDialogueClose?.Invoke(currentNpc);
             if (dialogueObject != null)
             {
+                var speaker = GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName);
                 if (dialogueObject.openShopOnClose)
                 {
-                    var instance = GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName);
-                    if (instance != null && instance.TryGetComponent(out ShopKeeper shopKeeper)) 
+                    if (speaker != null && speaker.TryGetComponent(out ShopKeeper shopKeeper)) 
                         shopKeeper.StartShop();
                 }
 
-                if (dialogueObject.alteredDialogue != null)
+                if (dialogueObject.dialoguesToAdd.Length > 0)
                 {
-                    var instance = GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName);
-                    if (instance != null) GameEvents.TriggerAddDialogue(dialogueObject.alteredDialogue, instance);
+                    foreach (var dialogue in dialogueObject.dialoguesToAdd) 
+                        GameEvents.TriggerAddDialogue(dialogue, speaker);
                 }
-                if (dialogueObject.alteredExternalDialogue != null) StartCoroutine(ChangeDialogues(dialogueObject));
-
+                
+                if (dialogueObject.dialoguesToRemove.Length > 0)
+                {
+                    foreach (var dialogue in dialogueObject.dialoguesToRemove)
+                        GameEvents.TriggerRemoveDialogue(dialogue, speaker);
+                }
+                
+                if (dialogueObject.alteredExternalDialogues != null) StartCoroutine(ChangeDialogues(dialogueObject));
+                
                 CameraEventManager.Instance.ResetCamera();
             }
             GameEvents.TriggerDialogueClose(dialogueObject);
@@ -235,8 +242,9 @@ namespace scripies.Dialogue
                 yield return null;
             }
             //print("found our instance");
-            yield return new WaitForSeconds(1);
-            GameEvents.TriggerAddDialogue(dialogueObject.alteredExternalDialogue, externalInstance);
+            yield return new WaitForSeconds(0.05f);
+            foreach (var dialogue in dialogueObject.alteredExternalDialogues)
+                GameEvents.TriggerAddDialogue(dialogue, externalInstance);
         }
 
         private void ClearData()

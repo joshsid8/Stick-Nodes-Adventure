@@ -220,9 +220,7 @@ namespace scripies.Player
             {
                 Flip(true);
                 isWallSliding = false;
-                //dashDirection = isFacingRight ? -1 : 1;
             }
-            //else dashDirection = isFacingRight ? 1 : -1;
             dashCooldownTimer = dashCooldown;
 
             if (!isGrounded) hasDashedInAir = true;
@@ -453,8 +451,8 @@ namespace scripies.Player
                 rb.linearVelocity.x != 0)
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
-            if (isWallJumping || isDashing || pab.isPerformingAbility || pco.isAttacking || pco.isAirAttacking ||
-                pdf.isBlocking || PlayerHealth.Instance.isStunned || kb.IsBeingKnocked || PlayerHealth.Instance.isDead)
+            if (pab.isPerformingAbility || pco.isAttacking || pco.isAirAttacking || pdf.isBlocking 
+                || PlayerHealth.Instance.isStunned || kb.IsBeingKnocked || PlayerHealth.Instance.isDead)
                 isPerformingAction = true;
             else isPerformingAction = false;
         }
@@ -462,8 +460,8 @@ namespace scripies.Player
         private void UpdateAnimation()
         {
             animator.SetBool("isRunning", isRunning);
-            animator.SetFloat("movementSpeed", Mathf.Abs(rb.linearVelocity.x));
-            animator.SetFloat("verticalVelocity", rb.linearVelocity.y);
+            //animator.SetFloat("movementSpeed", Mathf.Abs(rb.linearVelocity.x));
+            //animator.SetFloat("verticalVelocity", rb.linearVelocity.y);
             animator.SetBool("isJumping", isJumping);
             animator.SetBool("isGrounded", isGrounded);
             animator.SetBool("isWallSliding", isWallSliding);

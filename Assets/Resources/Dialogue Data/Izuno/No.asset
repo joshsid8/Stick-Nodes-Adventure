@@ -14,12 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Izuno
   dialogueThread:
-  - thread: Oh alr then...
+  - thread: Oh, alr...
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Come back whenever you do want something.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
   isAnimated: 1
   yesResponse:
@@ -38,6 +50,10 @@ MonoBehaviour:
   canBeColoured: 0
   canBeBold: 0
   speaker: 
-  alteredDialogue: {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
+  dialoguesToAdd:
+  - {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

@@ -13,24 +13,36 @@ MonoBehaviour:
   m_Name: Imo Quest 1
   m_EditorClassIdentifier: 
   npcName: Imo
-  dialogue:
-  - Hi, pretty random, but can i ask for a favour?
-  - I'd like to give Izuno this gem. it seems to be useless to me cuz its apparently
-    based on boosting health.
-  - If you just give this to him, that'd be awesome, thanks!
   dialogueThread:
   - thread: Hi, pretty random, but can i ask for a favour?
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: I'd like to give Izuno this gem. it seems to be useless to me cuz its
       apparently based on boosting health.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: If you just give this to him, that'd be awesome, thanks!
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -39,29 +51,19 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.13725491, g: 0.227451, b: 0.32156864, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 1
   questToOffer: {fileID: 11400000, guid: 7f67d483ba4ed7d449a711ff5e4d14c1, type: 2}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 1
-  itemDrop:
-  - {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
   itemType:
   - {fileID: 11400000, guid: 324dc0839a888484da1b58cbf1ccaadd, type: 2}
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
   speaker: 
-  alteredDialogue: {fileID: 0}
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: Izuno
-  alteredExternalDialogue: {fileID: 11400000, guid: d764165b30177764590650f359c01bf3, type: 2}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

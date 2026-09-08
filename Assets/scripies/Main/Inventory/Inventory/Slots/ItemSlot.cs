@@ -27,7 +27,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
     public AbilitySO abilityStats;
 
     [HideInInspector] public CollectableSOBase itemScriptableObject;
-    
+
     protected override void Awake()
     {
         base.Awake();

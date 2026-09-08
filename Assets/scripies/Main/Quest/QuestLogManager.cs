@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using scripies.Player;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class QuestLogManager : GUIBase
 {
@@ -11,9 +13,14 @@ public class QuestLogManager : GUIBase
 
     public GameObject questMenu;
     
-    // add this variable into the data file for future use (e.g checking if the player has already done a quest)
-    public List<QuestSO> completedQuests = new();
     public AudioClip questCompleteSound;
+    
+    public TMP_Text titleText;
+    public TMP_Text descText;
+    public TMP_Text taskText;
+    
+    public List<QuestSO> completedQuests = new();
+    public QuestSlot currentlySelectedQuest;
     
     protected override void Awake()
     {
@@ -28,9 +35,9 @@ public class QuestLogManager : GUIBase
         
         if (isActive) ToggleQuestLog();
         
-        questSlots[0].titleTexts[0].text = "";
-        questSlots[0].infoDescription.text = "Pick a quest, if applicable";
-        questSlots[0].taskText.text = "<---";
+        titleText.text = "";
+        descText.text = "Pick a quest, if applicable";
+        taskText.text = "<---";
     }
 
     public void AssignQuest(QuestSO quest)
@@ -81,8 +88,8 @@ public class QuestLogManager : GUIBase
                     questType = slot.questType,
                     enemiesToDefeat = slot.enemiesToDefeat != null ? slot.enemiesToDefeat.ConvertAll(e => e != null && e.enemy != null ? e.enemy.name : "").ToArray() : Array.Empty<string>(),
                     noOfEnemiesToDefeat = slot.enemiesToDefeat != null ? slot.enemiesToDefeat.ConvertAll(e => e.count).ToArray() : Array.Empty<int>(),
-                    objectsToInteract = slot.oTi != null ? Array.ConvertAll(slot.oTi, o => o != null ? o.name : "") : Array.Empty<string>(),
-                    numberOfObjects = slot.noOfO,
+                    objectsToInteract = slot.objectsToInteract != null ? slot.objectsToInteract.ConvertAll(o => o != null && o.objects != null ? o.objects.name : "").ToArray() : Array.Empty<string>(),
+                    numberOfObjects = slot.objectsToInteract != null ? slot.objectsToInteract.ConvertAll(o => o.count).ToArray() : Array.Empty<int>(),
                     npcToInteract = slot.nTi != null ? slot.nTi.name : "",
                     rewards = slot.questRewards != null ? Array.ConvertAll(slot.questRewards, r => r != null ? r.name : "") : Array.Empty<string>(),
                     isCompleted = slot.questCompleted
@@ -93,14 +100,14 @@ public class QuestLogManager : GUIBase
 
     public void Load(PlayerSaveQuests data)
     {
-        for (int i = 0; i < questSlots.Length; i++)
+        foreach (var quest in questSlots)
         {
-            if (questSlots[i] != null) questSlots[i].ClearUI();
+            if (quest != null) quest.ClearUI();
         }
 
         if (data.activeQuests == null) return;
 
-        for (int i = 0; i < Math.Min(data.activeQuests.Count, questSlots.Length); i++)
+        for (var i = 0; i < Math.Min(data.activeQuests.Count, questSlots.Length); i++)
         {
             var qData = data.activeQuests[i];
             var enemies = Array.ConvertAll(qData.enemiesToDefeat, n => ResourceDatabase.Instance.GetEnemyByName(n));

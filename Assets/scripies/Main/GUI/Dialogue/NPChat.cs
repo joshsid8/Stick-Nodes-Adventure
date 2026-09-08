@@ -33,8 +33,9 @@ namespace scripies.Dialogue
         private Transform playerTransform;
 
         [SerializeField] private bool moveCamToNpc;
-        private float chatInterval = 0.2f;
+        private float chatInterval = 0.5f;
         [SerializeField] private bool canHaveNullList;
+        public List<DialogueObject> spokenDialogue = new();
         
         public bool isShopkeeper;
         private ShopKeeper shopKeeper;
@@ -75,7 +76,12 @@ namespace scripies.Dialogue
                     if (dialogue.Count >= 1)
                     {
                         var priorityDialogue = dialogue[^1];
-                        if (priorityDialogue != null) DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                        if (priorityDialogue != null)
+                        {
+                            DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                            if (!spokenDialogue.Contains(priorityDialogue) && !priorityDialogue.respeakable) spokenDialogue.Add(priorityDialogue);
+                            if (priorityDialogue.PendingChoice) dialogue.Remove(priorityDialogue);
+                        }
                     }
                     else if (isShopkeeper && !ShopManager.Instance.isActive)
                     {
@@ -90,10 +96,16 @@ namespace scripies.Dialogue
         
         public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
         {
-            if (speaker != gameObject) return;
+            if (speaker != gameObject || spokenDialogue.Contains(dialogueObject as DialogueObject)) return;
             if (!dialogue.Contains(dialogueObject as DialogueObject)) dialogue.Add(dialogueObject as DialogueObject);
             //else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
-            GameEvents.TriggerSaveGame();
+            StartCoroutine(SaveGame());
+        }
+
+        private IEnumerator SaveGame(float time = 0.2f)
+        {
+            yield return new WaitForSeconds(time);
+            if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm)) mm.UpdateLists();
         }
         
         public void ClearDialogue() => dialogue.Clear();
@@ -123,24 +135,25 @@ namespace scripies.Dialogue
             if (speaker != gameObject || dialogueObject == null) return;
             if (!dialogue.Contains(dialogueObject as DialogueObject) || dialogue.Count <= 1 && !canHaveNullList) return;
             StartCoroutine(RemoveDialogue(dialogueObject as DialogueObject));
-            GameEvents.TriggerSaveGame();
-            chatInterval = 0.1f;
+            chatInterval = 0.5f;
         }
         
         private void RemoveSpokenDialogue(ScriptableObject dialogueToRemove)
         {
             if (dialogueToRemove == null) return;
             var dto = dialogueToRemove as DialogueObject;
-            
+            if (dto == null) return;
+            if (!spokenDialogue.Contains(dto) && dialogue.Contains(dto) && !dto.respeakable) spokenDialogue.Add(dto);
             if (dialogue.Count <= 1 && !canHaveNullList || !dialogue.Contains(dto)) return;
             StartCoroutine(RemoveDialogue(dto));
-            chatInterval = 0.2f;
+            chatInterval = 0.5f;
         }
 
         private IEnumerator RemoveDialogue(DialogueObject dto)
         {
             yield return new WaitForSeconds(0.01f);
             dialogue.RemoveAt(dialogue.IndexOf(dto));
+            StartCoroutine(SaveGame());
         }
         
         private void OnDrawGizmosSelected()
@@ -160,7 +173,5 @@ namespace scripies.Dialogue
             isFacingRight = !isFacingRight;
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
-
-
     }
 }

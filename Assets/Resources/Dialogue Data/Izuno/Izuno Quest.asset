@@ -17,6 +17,8 @@ MonoBehaviour:
   - thread: Yo, i have a task for you..
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
     cameraDistance: 0
     zoomSpeed: 0
     cameraTarget: 
@@ -25,6 +27,8 @@ MonoBehaviour:
       watery area you can beat too
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
     cameraDistance: 0
     zoomSpeed: 0
     cameraTarget: Cynderian
@@ -32,6 +36,8 @@ MonoBehaviour:
   - thread: This is just to test your combat capabilities. ill reward you for it.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
     cameraDistance: 0
     zoomSpeed: 0
     cameraTarget: 
@@ -51,10 +57,13 @@ MonoBehaviour:
   questToOffer: {fileID: 11400000, guid: e640935d858ad994db98737ac6d06ff2, type: 2}
   itemCheckFailureDialogue: {fileID: 0}
   itemType: []
-  useCameraEvents: 0
   canBeColoured: 0
   canBeBold: 0
   speaker: Izuno
-  alteredDialogue: {fileID: 11400000, guid: 657afb249bfe09344917153690b19101, type: 2}
+  dialoguesToAdd:
+  - {fileID: 11400000, guid: 657afb249bfe09344917153690b19101, type: 2}
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

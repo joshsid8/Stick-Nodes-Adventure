@@ -250,8 +250,8 @@ MonoBehaviour:
   itemDescInfo: {fileID: 0}
   useButtonText: {fileID: 0}
   itemImage: {fileID: 5926515796260870601}
-  selectedShader: {fileID: 0}
-  usedShader: {fileID: 0}
+  selectedShader: {fileID: 1165384965479155561}
+  usedShader: {fileID: 5986008079754108885}
   abilityStats: {fileID: 0}
   slotIndex: 0
   abilitySlotButton: {fileID: 0}

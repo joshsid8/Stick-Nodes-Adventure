@@ -125,10 +125,10 @@ namespace scripies.Enemy
 
         private void OnDrawGizmosSelected()
         {
-            if (!GetComponent<EnemyAttack>()) return;
+            if (ec.vegetable) return;
             Gizmos.color = Color.grey;
             Vector3 rayDirection = ec.isFacingRight ? Vector2.right : Vector2.left * transform.localScale.x * eyeSight;
-            Gizmos.DrawLine(playerCheck.position, playerCheck.position + rayDirection);
+            Gizmos.DrawLine(transform.position, transform.position + rayDirection);
             Gizmos.color = Color.red;
             Vector3 rayDirection2 = Vector2.down * transform.localScale.y * wallCheckRay;
             Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection2);

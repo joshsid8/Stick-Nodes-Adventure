@@ -995,6 +995,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -3579,6 +3583,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -3699,6 +3707,10 @@ PrefabInstance:
       propertyPath: infoDescription
       value: 
       objectReference: {fileID: 684693671}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
@@ -4068,6 +4080,10 @@ PrefabInstance:
       propertyPath: infoDescription
       value: 
       objectReference: {fileID: 684693671}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
@@ -5877,6 +5893,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -6932,6 +6952,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -7581,6 +7605,10 @@ PrefabInstance:
       propertyPath: infoDescription
       value: 
       objectReference: {fileID: 684693671}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
@@ -11718,6 +11746,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -13467,6 +13499,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -14564,6 +14600,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -15320,6 +15360,10 @@ PrefabInstance:
       propertyPath: infoDescription
       value: 
       objectReference: {fileID: 684693671}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
@@ -16852,6 +16896,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -16989,6 +17037,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 684693671}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
       objectReference: {fileID: 448323178}
@@ -17065,8 +17117,12 @@ MonoBehaviour:
   - {fileID: 872441717}
   - {fileID: 1318740215}
   questMenu: {fileID: 1087541070}
-  completedQuests: []
   questCompleteSound: {fileID: 8300000, guid: 48379353a82642b44bca2a07e8dab2bf, type: 3}
+  titleText: {fileID: 448323178}
+  descText: {fileID: 684693671}
+  taskText: {fileID: 1531818914}
+  completedQuests: []
+  currentlySelectedQuest: {fileID: 0}
 --- !u!1 &1641355994
 GameObject:
   m_ObjectHideFlags: 0
@@ -17779,6 +17835,10 @@ PrefabInstance:
       propertyPath: infoDescription
       value: 
       objectReference: {fileID: 684693671}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
@@ -18994,6 +19054,10 @@ PrefabInstance:
       propertyPath: infoDescription
       value: 
       objectReference: {fileID: 684693671}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 
@@ -21302,15 +21366,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 46.371033
+      value: 50.525494
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 70.669304
+      value: 69.5388
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0009674728
+      value: -0.0007767379
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -22753,7 +22817,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.75787, y: 70.723175, z: -0.06050682}
+  m_LocalPosition: {x: 50.91233, y: 69.59268, z: -0.060316086}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23929,7 +23993,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 48.738186, y: 74.94725, z: -0.06050682}
+  m_LocalPosition: {x: 52.89265, y: 73.81676, z: -0.060316086}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -28750,6 +28814,10 @@ PrefabInstance:
       propertyPath: infoDescription
       value: 
       objectReference: {fileID: 684693671}
+    - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
+      propertyPath: questLogManager
+      value: 
+      objectReference: {fileID: 1640621741}
     - target: {fileID: 8867754724126372761, guid: c25c952141d839e4a8d1675c02223f33, type: 3}
       propertyPath: 'titleTexts.Array.data[0]'
       value: 

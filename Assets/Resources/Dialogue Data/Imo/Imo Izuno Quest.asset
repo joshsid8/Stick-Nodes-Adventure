@@ -10,29 +10,47 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
-  m_Name: Imo Quest
+  m_Name: Imo Izuno Quest
   m_EditorClassIdentifier: 
   npcName: Imo
-  dialogue:
-  - Hey! Need anything?
-  - Oh, Izuno said hi?
-  - Thank you man, i thought he didnt notice me standing around!
-  - Tell him i said hi back!
   dialogueThread:
   - thread: Hey! What's up?
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Oh, Izuno said hi?
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Thank you man, i thought he didnt notice me standing around!
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Tell him i said hi back!
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: 
@@ -41,27 +59,19 @@ MonoBehaviour:
     responseText: 
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.13725491, g: 0.227451, b: 0.32156864, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 1
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 1
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
   speaker: Imo
-  alteredDialogue: {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
+  dialoguesToAdd:
+  - {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

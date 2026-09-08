@@ -22,7 +22,9 @@ public class ShopItemSlot : SlotBase
 		shopManager = ShopManager.Instance;
 	}
 
-    public void ItemUpdate() => UpdateSlotUI();
+	protected override void LateUpdate() { }
+
+	public void ItemUpdate() => UpdateSlotUI();
 
     private void BuyItem()
     {

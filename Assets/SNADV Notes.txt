@@ -4,17 +4,22 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-        Check everything quest related
-            We need to find a way to make the task text show the details of the task
+    
+        When dropping an item from my inventory, leaving, and reentering the game, the item disappears
+            Its probably because the game doesnt save if a collectable is created or destroyed
+            Tho i dont think i want the game saving constantly, that might be expensive
+                Ill have to resort to this if i cant find an efficient way to save each change without constantly saving
+        
+        Ive renamed AO to GRF - Game Refactor
+            It lists all the things i want to do to the back-end of the game
+            I advise myself to clear Instability before further working on this phase
+            AO will only be about the animations ill make in Stick Nodes, and will be brought up here much later
 
     Optimisations & Hotfixes:
         
         Instability
         
             Issues from Testing                
-                I cant block fire pillars? Or maybe just pillars in general
-                    Just added a potential fix by overriding the SetValues function to ensure the pillar's facing direction is always the opposite of the players
-                        This way, it can be blocked from any side
 			    Jerome data SOMETIMES doesnt save
 			        The crazy thing is, when i entered the hot shop, the data didnt load,
 			        But when i entered the other shop (and pressed f3 to force load) it synced!
@@ -27,22 +32,19 @@ SNADV Notes
             One time occurrences or Rare/Intimidating bugs
                 Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map   
                     Instead of fixing the camera to avoid seeing the bottom of the floor, it just acts as if there isnt any confiner, in terms of its y axis
-                
-                One time, right after beating Cynder, the handicap system activated, making cynder fight the player during the dialogue!
-                    Meaning the isAttacking flag was still turned on somehow, even when there are multiple instances of ensuring its off
+                    The only conclusion i can come up with is that these scenes have only one box collider, which might be the cause?
 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
                 
-                I need to rewrite quest logic's speakto type to make it so that even if the target npc gets reloaded, the quest dialogue is still the topmost dialogue in their list
-                    What i did instead was just save all data whenever any npcs' dialogue gets changed, hoping this fixes everything!
+                Cynderian's fire pillar is unblockable for some reason...
+                    While Cynder himself's pillars (and every other pillar) are
                 
                 Jumping logic should only happen when ALL enemies are close enough to the player
                     If i were to run away from a RELENTLESS fishman, and fight a cynderian, the cynderian would be zoning, waiting for the fishman's turn
                     even tho the fishman is in a different universe!
                 
-                Ive successfully remade the player animator controller, but its BUGGY!
+                Ive successfully remade the player animator controller, but its a bit buggy...
                     I need to allow attacking when wall jumping specifically
-                    Sometimes the run animation blends in after a wall jump, and plays again when walking off a platform before playing the fall anim
                     I can indefinitely hold the ability button, freezing the animation at inconvenient times
                     Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
                         Casting abilities may have caused this, or maybe just jumping in general?
@@ -52,7 +54,7 @@ SNADV Notes
                            
     Things to be added/changed:
         
-        AO      
+        GRF     
         
             Find out why one shot sfx are very very quiet
               

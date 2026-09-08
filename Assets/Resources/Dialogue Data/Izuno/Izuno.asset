@@ -69,6 +69,10 @@ MonoBehaviour:
   canBeColoured: 0
   canBeBold: 0
   speaker: Izuno
-  alteredDialogue: {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
+  dialoguesToAdd:
+  - {fileID: 11400000, guid: d7fd37e83933aca4eb99d3c11672637d, type: 2}
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

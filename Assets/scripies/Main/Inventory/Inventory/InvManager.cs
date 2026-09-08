@@ -56,7 +56,6 @@ public class InvManager : GUIBase
         foreach (var slot in abilitySlots) if (slot != null) slot.ClearSlot();
     }
 
-
     private void Update()
     {
         #if UNITY_EDITOR

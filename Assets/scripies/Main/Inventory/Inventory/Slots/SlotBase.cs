@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,14 +23,11 @@ public abstract class SlotBase : MonoBehaviour
     protected PlayerManager playerManager;
 
     //private bool switchFrom;
-
+    
     protected virtual void LateUpdate()
     {
-        if (usedShader != null)
-        {
-            if (usedSlot && !usedShader.activeSelf) usedShader.SetActive(true);
-            else if (!usedSlot && usedShader.activeSelf) usedShader.SetActive(false);
-        }
+        if (usedSlot != usedShader.activeSelf) usedShader.SetActive(usedSlot);
+        if (itemImage.enabled != usedSlot) itemImage.enabled = usedSlot;
     }
     
     protected virtual void Awake()
@@ -66,10 +64,11 @@ public abstract class SlotBase : MonoBehaviour
     {
         if (itemDescTitle != null) itemDescTitle.text = itemName;
         if (itemDescInfo != null) itemDescInfo.text = itemDescription;
-        
         if (usedSlot && itemSprite != null && itemImage != null) itemImage.sprite = itemSprite;
         else if (!usedSlot) ClearSlotVisuals();
     }
+
+    private void OnDisable() => ClearSlotVisuals();
 
     public virtual void ClearSlot()
     {

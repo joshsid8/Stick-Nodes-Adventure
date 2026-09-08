@@ -100,7 +100,7 @@ MonoBehaviour:
   useButtonText: {fileID: 0}
   itemImage: {fileID: 368799799946419354}
   selectedShader: {fileID: 8943111018517190187}
-  usedShader: {fileID: 0}
+  usedShader: {fileID: 6245103994041637690}
   aspectStats: {fileID: 0}
   choice: {fileID: 0}
 --- !u!1 &6245103994041637690

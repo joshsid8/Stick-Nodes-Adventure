@@ -249,7 +249,7 @@ public class MapManager : MonoBehaviour
         UpdateLists();
     }
 
-    private void UpdateLists(bool initialise = false)
+    public void UpdateLists(bool initialise = false)
     {
         ClearSceneData();
         foreach (var obj in sceneObjects)
@@ -258,6 +258,11 @@ public class MapManager : MonoBehaviour
                 switch (obj.tag)
                 {
                     case "Enemy":
+                        if (obj.name == "Imo")
+                        {
+                            // Imo is a character who is a test dummy, thus has the enemy layer and tag, but also is an NPC.
+                            goto npcStuff;
+                        }
                         var enemyId = obj.GetComponent<Identifier>();
                         var newEnemy = new EnemySceneData
                         {
@@ -273,6 +278,7 @@ public class MapManager : MonoBehaviour
                         bossSceneData.activeBoss = obj.name;
                         break;
                     case "NPC":
+                        npcStuff:
                         var npcId = obj.GetComponent<NPChat>().npc?.npcName;
                         if (npcId == null) continue;
                         var dTrigger = obj.GetComponent<NPChat>();
@@ -338,11 +344,7 @@ public class MapManager : MonoBehaviour
     public void MakeDataPersistent()
     {
         //print("Persisting data");
-        if (!sceneLoaded || PlayerHealth.Instance == null)
-        {
-            print($"{sceneName}'s scene data not loaded yet, cannot persist data.");
-            return;
-        }
+        if (!sceneLoaded || PlayerHealth.Instance == null) return;
         var manager = DataManager.Instance;
         var list = manager.sceneData.Find(x => x.sceneName == sceneName);
 
@@ -539,6 +541,7 @@ public class MapManager : MonoBehaviour
         GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
         GameEvents.SaveMapData += SaveSceneData;
         GameEvents.LoadMapData += LoadSceneData;
+        InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
     }
 
     private void OnDisable()
@@ -551,6 +554,7 @@ public class MapManager : MonoBehaviour
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
         GameEvents.SaveMapData -= SaveSceneData;
         GameEvents.LoadMapData -= LoadSceneData;
+        InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
     }
     
     #region Door and Spawner Stuff
