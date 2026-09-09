@@ -7,11 +7,7 @@ using UnityEngine.EventSystems;
 public class AspectSlot : SlotBase, IPointerClickHandler
 {
     // Aspect Data
-    // TODO: Aspect inventory needs shaders to show that items are there, especially since all current aspects have no sprite yet
-
     public AspectSO aspectStats;
-
-    public Prompt choice;
     
     protected override void Awake()
     {
@@ -46,11 +42,11 @@ public class AspectSlot : SlotBase, IPointerClickHandler
     {
         base.OnLeftClick();
         if (useButtonText != null) useButtonText.text = "Unequip";
-        
+        invManager.destroyButton.gameObject.SetActive(false);
         if (!string.IsNullOrEmpty(itemName))
         {
             invManager.useButton.onClick.AddListener(() => UnequipAspect());
-            invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
+            //invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DestroyItem()));
         }
     }
 
@@ -58,17 +54,6 @@ public class AspectSlot : SlotBase, IPointerClickHandler
     {
         invManager.UnequipAspect(itemName, itemSprite, itemDescription, aspectStats);
         ClearSlot();
-    }
-    private IEnumerator DestroyItem()
-    {
-        choice.Choices(message: "Do you really want to destroy this aspect?");
-        yield return new WaitUntil(() => choice.choice != 0);
-        if (choice.choice == 2)
-        {
-            invManager.UnequipAspect(itemName, itemSprite, itemDescription, aspectStats);
-            ClearSlot();
-            UpdateSlotUI();
-        }
     }
     
     public void AspectSelect() => OnLeftClick();

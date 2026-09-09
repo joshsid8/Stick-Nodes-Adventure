@@ -13,24 +13,12 @@ MonoBehaviour:
   m_Name: GemBG
   m_EditorClassIdentifier: 
   itemName: Boxing Gloves
-  itemDescription: 'These look great on you!
-
-
-    ---
-
-
-    Melee Damage +0.2
-
-    Stun
-    To Enemies +0.15
-
-    Protection -0.2'
+  itemDescription: These look great on you!
   itemSprite: {fileID: 0}
-  floatStatsName:
-  - AttackDamageMultiplier
-  - AttackPotency
-  - RawDamageResistance
-  floatStats:
-  - 0.2
-  - 0.15
-  - -0.2
+  aspectProperties:
+  - statName: AttackDamageMultiplier
+    statValue: 0.1
+  - statName: AttackPotency
+    statValue: 0.15
+  - statName: RawDamageResistance
+    statValue: -0.1

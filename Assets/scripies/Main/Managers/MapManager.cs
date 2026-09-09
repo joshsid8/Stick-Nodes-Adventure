@@ -36,7 +36,7 @@ public class MapManager : MonoBehaviour
     #endregion
 
     #region Scene Data
-    private string sceneName; 
+    [HideInInspector] public string sceneName; 
     public GameObject[] sceneObjects;
     [SerializeField] private List<GameObject> doorObjects = new();
     [SerializeField] private List<GameObject> spawnerObjects = new();
@@ -50,7 +50,7 @@ public class MapManager : MonoBehaviour
     public List<CollectableSceneData> collectableSceneData = new();
     public List<DoorSceneData> doorSceneData = new();
     public List<SpawnerSceneData> spawnerSceneData = new();
-    
+    [Tooltip("Checks if the scene data has tried to find and load its scene data")]
     private bool sceneLoaded;
     #endregion
 
@@ -298,9 +298,8 @@ public class MapManager : MonoBehaviour
                         var collectable = obj.GetComponent<Collectable>();
                         var newCollectable = new CollectableSceneData
                         {
-                            activeCollectables = obj,
+                            activeCollectable = obj,
                             collectable = collectable.collectable,
-                            itemColour = obj.GetComponent<SpriteRenderer>().color,
                             position = obj.transform.position,
                             isStray = collectable.isStray
                         };
@@ -378,7 +377,6 @@ public class MapManager : MonoBehaviour
             var newCollectable = new DataManager.CollectableSceneData
             {
                 activeCollectable = cData.collectable,
-                colour = cData.itemColour,
                 position = cData.position,
                 isStray = cData.isStray
             };
@@ -603,9 +601,8 @@ public class MapManager : MonoBehaviour
     [Serializable]
     public class CollectableSceneData
     {
-        public GameObject activeCollectables;
+        public GameObject activeCollectable;
         public CollectableSOBase collectable;
-        public Color itemColour = Color.white;
         public Vector3 position;
         public bool isStray;
     }

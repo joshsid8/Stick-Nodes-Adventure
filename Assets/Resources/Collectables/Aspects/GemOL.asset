@@ -13,25 +13,15 @@ MonoBehaviour:
   m_Name: GemOL
   m_EditorClassIdentifier: 
   itemName: Magic Gem of life
-  itemDescription: 'It magically gives a small boost magically to your vitality magically.
-    It doesnt like melee tho
-
-
-    ---
-
-
-    Max Health +0.1
-
-    Max Energy +0.1
-
-    Melee
-    Damage -0.2'
+  itemDescription: It magically gives a magically small boost magically to your vitality
+    magically. It doesnt like melee tho
   itemSprite: {fileID: 0}
-  floatStatsName:
-  - MaxHealth
-  - MaxEnergy
-  - AirDamageAmount
-  floatStats:
-  - 0.1
-  - 0.1
-  - -0.2
+  aspectProperties:
+  - statName: MaxHealth
+    statValue: 0.1
+  - statName: MaxEnergy
+    statValue: 0.1
+  - statName: AttackDamageMultiplier
+    statValue: -0.1
+  - statName: AttackPotency
+    statValue: -0.1

@@ -69,7 +69,7 @@ public class ObjectDatabase : MonoBehaviour
     {
         var target = allNpcs.Find(n => n.gameObject.GetComponent<NPC>().npcName == npcName);
         if (target != null) return target;
-        Debug.LogError($"[ObjectDatabase] We couldn't find an enemy with name {npcName} in our enemy list");
+        Debug.LogError($"[ObjectDatabase] We couldn't find an enemy with name {npcName} in our NPC list");
         return null;
     }
 

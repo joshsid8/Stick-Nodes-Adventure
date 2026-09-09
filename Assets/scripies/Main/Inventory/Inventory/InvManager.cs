@@ -71,6 +71,7 @@ public class InvManager : GUIBase
         rt.anchoredPosition = new Vector2(0, isActive ? 0 : -1000);
         GetActive(isActive);
         if (isActive) CloseCurrentMenus();
+        CancelSwap();
     }
 
     public void AddItem(string itemName , int itemAmount = 1, Sprite itemSprite = null, string itemDescription = "", int maxItemAmount = 1, string itemType = null, CollectableSOBase collectable = null)
@@ -148,9 +149,30 @@ public class InvManager : GUIBase
         AddItem(itemName, 1, itemSprite, itemDescription, 16, "Aspect", aspect);
     }
 
-    public void EquipAbility(string itemName, Sprite itemSprite, string itemDescription, AbilitySO ability, int slot = 0)
+    private void EquipAbility(string itemName, Sprite itemSprite, string itemDescription, AbilitySO ability, int slot = 0)
     {
         if (abilitySlots.Length > 0) abilitySlots[slot].AddAbility(itemName, itemSprite, itemDescription, ability, slot);
+    }
+    
+    public void SwapAbility(int slot, ItemSlot item)
+    {
+        if (item.abilityStats == null) throw new Exception("SwapAbility: Seems like the ability was removed.");
+        if (swappingAbilities) swappingAbilities = false;
+        var ability = abilitySlots[slot].abilityStats;
+        EquipAbility(item.abilityStats.itemName, item.abilityStats.itemSprite, item.abilityStats.itemDescription, item.abilityStats, slot);
+        
+        if (ability != null) 
+            AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
+        
+        foreach (var slotButton in slotButtons) slotButton.onClick.RemoveAllListeners();
+    }
+    
+    public void CancelSwap()
+    {
+        if (!swappingAbilities) return;
+        print("Ok i guess not then >:(");
+        swappingAbilities = false;
+        foreach (var slotButton in slotButtons) slotButton.onClick.RemoveAllListeners();
     }
 
     public void SelectSlot()
@@ -197,10 +219,9 @@ public class InvManager : GUIBase
                 AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
         }
     }
-    
 }
 
-[System.Serializable]
+[Serializable]
 public struct PlayerSaveInventory
 {
     public CollectableSOBase[] storedItems;

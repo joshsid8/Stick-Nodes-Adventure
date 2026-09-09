@@ -7,14 +7,21 @@ public class StatsManager : GUIBase
 {
     public static StatsManager Instance { get; private set; }
     
+    private Dictionary<string, StatSO> statLookup;
     public StatInfo[] stats;
     public List<BadgeSO> badges = new();
     public List<BadgeSlot> badgeSlots = new();
+    
     protected override void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         base.Awake();
+        
+        statLookup = new Dictionary<string, StatSO>();
+        foreach(var s in stats) {
+            if(s.stat != null) statLookup[s.stat.name] = s.stat;
+        }
     }
 
     private void Start()
@@ -33,6 +40,13 @@ public class StatsManager : GUIBase
     private void Update()
     {
         //if (Input.GetButtonDown("Inventory") && isActive || Input.GetButtonDown("Cancel") && isActive) ToggleStats();
+    }
+    
+    public string GetDisplayName(string rawName) 
+    {
+        if (statLookup.TryGetValue(rawName, out var stat))
+            return stat.DisplayName;
+        return rawName; // Fallback to raw name if not found
     }
 
     public void ToggleStats()

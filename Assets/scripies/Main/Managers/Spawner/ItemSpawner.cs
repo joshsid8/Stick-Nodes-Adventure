@@ -65,9 +65,7 @@ public class ItemSpawner : SpawnerBase
                 var targetScene = SceneManager.GetSceneByName(scene);
                 if (targetScene.IsValid() && targetScene.isLoaded)
                 {
-                    SceneManager.MoveGameObjectToScene(instance, targetScene);
-                    instance.GetComponent<Identifier>().AutomateID(targetScene);
-                    instance.GetComponent<Identifier>().typeOfObject = Identifier.ObjectType.Item;
+                    instance.GetComponent<CollectableTrigger>().SetProperties(targetScene);
                     spawnedObjects.Add(instance);
                 }
             }

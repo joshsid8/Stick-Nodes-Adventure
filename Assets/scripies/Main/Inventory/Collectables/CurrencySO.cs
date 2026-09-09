@@ -7,7 +7,7 @@ public class CurrencySO : CollectableSOBase
     public float minItem;
     public override void Collect(GameObject objectCollected)
     {
-        float rng = Random.Range(minItem, maxItem);
+        var rng = Random.Range(minItem, maxItem);
         PlayerManager.Instance.AlterGlobalFloat("Money", rng);
     }
 }

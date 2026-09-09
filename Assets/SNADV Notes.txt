@@ -4,17 +4,8 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Priorities:
-    
-        When dropping an item from my inventory, leaving, and reentering the game, the item disappears
-            Its probably because the game doesnt save if a collectable is created or destroyed
-            Tho i dont think i want the game saving constantly, that might be expensive
-                Ill have to resort to this if i cant find an efficient way to save each change without constantly saving
+        We should probably fix that one save bug, then move onto the cinemachine confiner issue
         
-        Ive renamed AO to GRF - Game Refactor
-            It lists all the things i want to do to the back-end of the game
-            I advise myself to clear Instability before further working on this phase
-            AO will only be about the animations ill make in Stick Nodes, and will be brought up here much later
-
     Optimisations & Hotfixes:
         
         Instability
@@ -36,7 +27,7 @@ SNADV Notes
 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
                 
-                Cynderian's fire pillar is unblockable for some reason...
+                Cynderians' fire pillar is unblockable for some reason...
                     While Cynder himself's pillars (and every other pillar) are
                 
                 Jumping logic should only happen when ALL enemies are close enough to the player
@@ -49,23 +40,36 @@ SNADV Notes
                     Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
                         Casting abilities may have caused this, or maybe just jumping in general?
                     When it comes to the counter animation, deflecting works, but melee countering doesnt.
+                
+                    Fix(ed) stats
+                        Thanks to Junie, i improved the stats display logic
+                        I think all i need to do is to check the values and see if the negatives and positives are correct
                     
             Junie Help
-                           
+                Tackling The Big 3
+                
     Things to be added/changed:
         
         GRF     
         
             Find out why one shot sfx are very very quiet
-              
-            Improve Typewriter Logic
-                The Typewriter updates the settings as it displays text
-                    but i would rather have it know what settings should be implemented beforehand to make it work well          
             
-            Background/Foreground Logic
-                Make backgrounds similar to Terraria in terms of appearance!
-                Even tho this is cosmetic, i would like to just get the logic done
-                    I will use placeholder bgs just to test it, then will worry about designs Post-AO
+            The Big 3:
+                Improve Stat Display Logic
+                    It not that its broken, but the its all being displayed inaccurately
+                    E.g. some resistance multipliers are being shown as negative numbers if positive, and vice versa
+                    Tbh, the way stats are even displayed is very inefficient to begin with, but i dont know how to make it any better
+                        Maybe use nameof() for efficient display, with the caveat of potentially not being able to edit the names easier...
+                    Because of how tedious this is, this now a part of the big 3!
+                
+                Improve Typewriter Logic
+                    The Typewriter updates the settings as it displays text
+                        but i would rather have it know what settings should be implemented beforehand to make it work well          
+                
+                Background/Foreground Logic
+                    Make backgrounds similar to Terraria in terms of appearance!
+                    Even tho this is cosmetic, i would like to just get the logic done
+                        I will use placeholder bgs just to test it, then will worry about designs Post-AO
                         
             Audio
                 Make it so that the music transitions smoothly
@@ -79,7 +83,7 @@ SNADV Notes
                         Cynder Valley is all done
                         I think ill focus on Noxu's temple next
                     Ive made shop music, but i want to make variants of it
-                        I just need earth and air's variants to do
+                        I just have earth and air's variants to do
         
         Post-AO           
             

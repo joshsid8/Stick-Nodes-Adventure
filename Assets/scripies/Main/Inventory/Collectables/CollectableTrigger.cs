@@ -1,6 +1,7 @@
 using System.Collections;
+using scripies.Core;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class CollectableTrigger : MonoBehaviour
 {
     private Collectable collectable;
@@ -22,8 +23,8 @@ public class CollectableTrigger : MonoBehaviour
     {
         var colType = collectable.collectable;
         if (colType == null) return;
-        // No! I am NNNOT going to turn this into a switch expression!!!
         
+        // No! I am NNNOT going to turn this into a switch expression!!!
         if (colType is ConsumableSO) spriteRenderer.color = new Color(1f, 0.525f, 0.251f);
         else if (colType is AspectSO) spriteRenderer.color = new Color(0.961f, 0.4f, 0.078f);
         else if (colType is AbilitySO) spriteRenderer.color = new Color(0.259f, 0.969f, 1f);
@@ -31,11 +32,26 @@ public class CollectableTrigger : MonoBehaviour
         else if (colType is ItemSO) spriteRenderer.color = new Color(0.8f, 1, 0.52f);
         //else print($"{gameObject.name} has an unknown collectable type: {colType.GetType()}");
     }
+    // TODO: Probably add more to this method, stuff like assigning the collectable, its stray-ness, and if it can magnet to the player 
+    public void SetProperties(Scene targetScene = default)
+    {
+        var id = GetComponent<Identifier>();
+        id.typeOfObject = Identifier.ObjectType.Item;
+        if (!targetScene.IsValid() || !targetScene.isLoaded) return;
+        SceneManager.MoveGameObjectToScene(gameObject, targetScene);
+        id.AutomateID(targetScene);
+    }
     
     public IEnumerator OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.collider.TryGetComponent<MapManager>(out var mapManager) && gameObject.scene.name != mapManager.sceneName)
+        {
+            print($"Moving collectable to map {mapManager.sceneName}");
+            SceneManager.MoveGameObjectToScene(gameObject, mapManager.gameObject.scene);
+        }
+        
         if (!collision.collider.CompareTag("Player")) yield break;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
         collectable.Collect(collision.gameObject);
         Destroy(gameObject);
     }

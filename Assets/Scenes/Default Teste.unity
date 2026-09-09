@@ -2941,6 +2941,7 @@ MonoBehaviour:
   sectionObj: {fileID: 1162324168}
   mainSpawnPoint: {fileID: 550305585}
   undiscoveredMap: 1
+  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -3473,8 +3474,8 @@ Transform:
   m_GameObject: {fileID: 1025324428}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -144.7523, y: -43.9821, z: 0}
-  m_LocalScale: {x: 1.3285587, y: -34.167492, z: 0.3}
+  m_LocalPosition: {x: -144.7523, y: -33.983322, z: 0}
+  m_LocalScale: {x: 1.3285587, y: -54.164898, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 944811997}
@@ -3977,19 +3978,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: m_Size.x
-      value: 17
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: m_Size.y
-      value: 20
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: m_Offset.x
-      value: 2
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6503887071300752274, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: m_Offset.y
-      value: -5.5
+      value: -9.5
       objectReference: {fileID: 0}
     - target: {fileID: 7748368748266955415, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
       propertyPath: scenesToLoad.Array.size
@@ -4884,8 +4885,8 @@ Transform:
   m_GameObject: {fileID: 1625395454}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -144.038, y: -38.3879, z: 0}
-  m_LocalScale: {x: -0.68765783, y: 22.987135, z: 0.3}
+  m_LocalPosition: {x: -144.038, y: -28.61486, z: 0}
+  m_LocalScale: {x: -0.68765783, y: 43.441257, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 944811997}

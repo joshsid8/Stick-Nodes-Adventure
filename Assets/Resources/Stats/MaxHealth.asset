@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
-  m_Name: Stat 19
+  m_Name: MaxHealth
   m_EditorClassIdentifier: 
-  statName: AbilityDamageMultiplier
-  statDescription: How much stronger your abilities deal to enemies.
+  statName: MaxHealth
+  displayName: Max Health
+  statDescription: The natural amount of health you have. Ensure the number doesn't
+    reach 0!

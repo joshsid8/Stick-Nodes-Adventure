@@ -40,8 +40,10 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  openShopOnClose: 1
-  speaker: 
-  alteredDialogue: {fileID: 0}
+  speaker: Jerome
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 1
+  respeakable: 1

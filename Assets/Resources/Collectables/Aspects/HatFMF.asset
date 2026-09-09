@@ -13,20 +13,10 @@ MonoBehaviour:
   m_Name: HatFMF
   m_EditorClassIdentifier: 
   itemName: Fish Fin
-  itemDescription: 'A fin directly from a fishman!
-
-
-    ---
-
-
-    Dash Length +0.2
-
-    Dash
-    Speed -0.2'
+  itemDescription: A fin directly from a fishman!
   itemSprite: {fileID: 0}
-  floatStatsName:
-  - DashTime
-  - DashSpeed
-  floatStats:
-  - 0.2
-  - -0.05
+  aspectProperties:
+  - statName: DashTime
+    statValue: 0.1
+  - statName: DashSpeed
+    statValue: -0.1

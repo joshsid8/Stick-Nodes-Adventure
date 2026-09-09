@@ -41,6 +41,9 @@ MonoBehaviour:
   canBeColoured: 0
   canBeBold: 0
   speaker: 
-  alteredDialogue: {fileID: 0}
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 1

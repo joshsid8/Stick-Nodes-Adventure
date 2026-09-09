@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
-  m_Name: Stat 4
+  m_Name: AbilityLifetimeMultiplier
   m_EditorClassIdentifier: 
-  statName: ShockMultiplier
-  statDescription: How long you get stunned for, as well as how much further you
-    get knocked back. You wont get knocked back by anything if you are 100% FERM
+  displayName: Ability Longevity
+  statDescription: 'lonk!
+
+'

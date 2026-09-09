@@ -13,25 +13,12 @@ MonoBehaviour:
   m_Name: GemBB
   m_EditorClassIdentifier: 
   itemName: Bubble Blower
-  itemDescription: 'A bubble blower that fishwomen use to make their bubbles more
-    deadly...
-
-
-    ---
-
-
-    Counter Damage Resistance +0.1
-
-    Ability Efficiency
-    +0.1
-
-    Block Damage Res -0.1'
+  itemDescription: A bubble blower that fishwomen use to make their bubbles hurt
   itemSprite: {fileID: 0}
-  floatStatsName:
-  - CounterDamageResistance
-  - AbilityCooldownMultiplier
-  - BlockDamageResistance
-  floatStats:
-  - 0.1
-  - -0.1
-  - -0.1
+  aspectProperties:
+  - statName: CounterDamageResistance
+    statValue: 0.05
+  - statName: AbilityCooldownMultiplier
+    statValue: 0.05
+  - statName: BlockDamageResistance
+    statValue: -0.05

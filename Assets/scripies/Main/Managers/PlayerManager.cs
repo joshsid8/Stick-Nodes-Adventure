@@ -137,10 +137,10 @@ public class PlayerManager : MonoBehaviour
 
         foreach (var aspect in activeAspects)
         {
-            for (var i = 0; i < aspect.floatStatsName.Length; i++)
+            for (var i = 0; i < aspect.aspectProperties.Length; i++)
             {
-                var statName = aspect.floatStatsName[i];
-                var statValue = aspect.floatStats[i];
+                var statName = aspect.aspectProperties[i].statName;
+                var statValue = aspect.aspectProperties[i].statValue;
 
                 if (currentFloatStats.ContainsKey(statName)) 
                     currentFloatStats[statName] += currentFloatStats[statName] * statValue;

@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
-  m_Name: Stat 18
+  m_Name: MaxEnergy
   m_EditorClassIdentifier: 
-  statName: AbilityCooldownMultiplier
-  statDescription: How quickly you can perform abilities.
+  statName: MaxEnergy
+  displayName: Max Energy
+  statDescription: The maximum amount of energy you have. Most moves use up this
+    energy, but can be replenished from landing melee attacks.

@@ -34,6 +34,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         if (invManager == null) Debug.LogError("ItemSlot: InvManager not found on Awake!", this);
         if (equippedAspectSlots == null || equippedAspectSlots.Length == 0)
             Debug.LogWarning($"ItemSlot {gameObject.name}: No equippedAspectSlots assigned. Aspects cannot be equipped from this slot.");
+        choice = Prompt.Instance ?? FindAnyObjectByType<Prompt>();
     }
 
     public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, CollectableSOBase collectable)
@@ -121,14 +122,14 @@ public class ItemSlot : SlotBase, IPointerClickHandler
 
     protected override void OnLeftClick()
     {
-        if (invManager.swappingAbilities) return;
+        if (invManager.swappingAbilities) invManager.CancelSwap();
         base.OnLeftClick();
 
         if (useButtonText != null) 
             useButtonText.text = itemType == "Aspect" || itemType == "Ability" ? "Equip" : "Use";
         useButtonText.gameObject.SetActive(itemType != "Key");
                     
-        if (itemName != "")
+        if (usedSlot)
         {
             invManager.destroyButton.gameObject.SetActive(true);
             invManager.useButton.gameObject.SetActive(true);
@@ -141,7 +142,6 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             invManager.useButton.gameObject.SetActive(false);
         }
     }
-
     
     private void ItemTypeAction()
     {
@@ -167,7 +167,6 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         }
         else if (invManager.playerManager == null) Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
         if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
-        
         itemAmount--;
         if (itemAmount <= 0)
         {
@@ -201,22 +200,15 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         }
         if (!equipped) Debug.LogWarning("All equipped Aspect slots are full! Cannot equip " + itemName);
     }
-
-
+    
     private void SwapAbility(int slot = 0)
     {
+        if (abilityStats == null) throw new Exception("SwapAbility: Seems like the ability was removed.");
         print("Ok uhh switching abilities");
-        if (invManager.swappingAbilities) invManager.swappingAbilities = false;
-        var ability = invManager.abilitySlots[slot].abilityStats;
-        if (ability != null) 
-            invManager.AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
-        
-        invManager.EquipAbility(abilityStats.itemName, abilityStats.itemSprite, abilityStats.itemDescription, abilityStats, slot);
-        foreach (var slotButton in invManager.slotButtons) slotButton.onClick.RemoveAllListeners();
-        if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
-        
+        invManager.SwapAbility(slot, this);
         DecrementItem();
     }
+    
     private IEnumerator DropItem(bool dropAll = false)
     {
         var playerPos = PlayerHealth.Instance.pf.attackTransform.position;
@@ -226,7 +218,6 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             yield return new WaitUntil(() => choice.choice != 0);
             if (choice.choice == 2)
             {
-
                 for (var i = 0; i < itemAmount; i++)
                 {
                     var itemToDrop = Instantiate(invManager.persistentItem, playerPos, Quaternion.identity);
@@ -242,6 +233,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             var itemToDrop = Instantiate(invManager.persistentItem, playerPos, Quaternion.identity);
             itemToDrop.GetComponent<Collectable>().collectable = itemScriptableObject;
             itemToDrop.GetComponent<Collectable>().playerFinderHitbox = 0;
+            itemToDrop.GetComponent<CollectableTrigger>().SetProperties(PlayerHealth.Instance.gameObject.scene);
             DecrementItem();
         }
         UpdateSlotUI();

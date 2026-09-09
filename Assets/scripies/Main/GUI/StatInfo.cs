@@ -21,6 +21,11 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
     private PlayerCombat pf;
     protected StatsManager statsManager;
     
+    // System.Func?! This is something I MUST learn!!!
+    private System.Func<float> getValue;
+    private bool isPercent;
+    private bool isReversed;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -33,42 +38,63 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
         pd = PlayerHealth.Instance.GetComponent<PlayerDefense>();
         pf = PlayerHealth.Instance.GetComponent<PlayerCombat>();
         statsManager = StatsManager.Instance;
+        
+        SetupStatMapping();
         ClearInfo();
+    }
+
+    private void SetupStatMapping()
+    {
+        if (stat == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        switch (stat.name)
+        {
+            case "MaxHealth": getValue = () => ph.playerMaxHealth; break;
+            case "RegenerationMultiplier": getValue = () => ph.regenerationMultiplier; isPercent = true; break;
+            case "MovementSpeedMultiplier": getValue = () => pc.movementSpeedMult; break;
+            case "JumpForceMultiplier": getValue = () => pc.jumpForceMult; break;
+            case "ShockMultiplier": getValue = () => ph.shockMultiplier; isPercent = true; isReversed = true; break;
+            case "RawDamageResistance": getValue = () => ph.rawDamageResistance; isPercent = true; isReversed = true; break;
+            
+            case "DashSpeed": getValue = () => pc.dashSpeed; break;
+            case "DashCooldown": getValue = () => pc.dashCooldown; break;
+            case "DashTime": getValue = () => pc.dashTime; break;
+            
+            case "MaxEnergy": getValue = () => pa.maxEnergy; break;
+            case "EnergyRefill": getValue = () => pa.energyRefill; isPercent = true; break;
+            case "AbilityCooldownMultiplier": getValue = () => pa.abilityCooldownMult; isPercent = true; break;
+            case "AbilityDamageMultiplier": getValue = () => pp.abilityDamageMult; isPercent = true; break;
+            case "AbilityPotency": getValue = () => pp.abilityPotency; isPercent = true; break;
+            case "AbilityLifetimeMultiplier": getValue = () => pp.abilityLifetimeMult; isPercent = true; break;
+            
+            case "AttackDamageMultiplier": getValue = () => pf.attackDamageMult; isPercent = true; break;
+            case "AttackCooldownMultiplier": getValue = () => pf.attackCooldownMult; isPercent = true; break;
+            case "AttackPotency": getValue = () => pf.attackPotency; isPercent = true; break;
+            
+            case "BlockDamageResistance": getValue = () => pd.blockDamageResistance; isPercent = true; isReversed = true; break;
+            case "CounterTime": getValue = () => pd.counterTime; break;
+            case "CounterDamage": getValue = () => pd.counterDamage; break;
+            case "CounterDamageResistance": getValue = () => pd.counterDamageResistance; isPercent = true; isReversed = true; break;
+            
+            default: getValue = null; break;
+        }
     }
     
     protected virtual void Update()
     {
-        switch (stat.StatName)
+        if (getValue != null)
         {
-            case "MaxHealth": DisplayFloat("Max HP", ph.playerMaxHealth); break;
-            case "RegenerationMultiplier": DisplayPercent("Health REG", ph.regenerationMultiplier); break;
-            case "MovementSpeedMultiplier": DisplayFloat("Walk SPD", pc.movementSpeedMult); break;
-            case "JumpForceMultiplier": DisplayFloat("Jump Height", pc.jumpForceMult); break;
-            case "ShockMultiplier": DisplayPercent("Firmness", ph.shockMultiplier, true); break;
-            case "RawDamageResistance": DisplayPercent("Toughness", ph.rawDamageResistance, true); break;
-            
-            case "DashSpeed": DisplayFloat("Dash SPD", pc.dashSpeed); break;
-            case "DashCooldown": DisplayFloat("Dash CD", pc.dashCooldown); break;
-            case "DashTime": DisplayFloat("Dash Duration", pc.dashTime); break;
-            
-            case "MaxEnergy": DisplayFloat("Max Energy", pa.maxEnergy); break;
-            case "EnergyRefill": DisplayPercent("Energy REG", pa.energyRefill); break;
-            case "AbilityCooldownMultiplier": DisplayPercent("Ability Efficiency", pa.abilityCooldownMult); break;
-            case "AbilityDamageMultiplier": DisplayPercent("Ability Strength", pp.abilityDamageMult); break;
-            case "AbilityPotency": DisplayPercent("Ability Potency", pp.abilityPotency); break;
-            case "AbilityLifetimeMultiplier": DisplayPercent("Ability Longevity", pp.abilityLifetimeMult); break;
-            
-            case "AttackDamageMultiplier": DisplayPercent("ATK Strength", pf.attackDamageMult); break;
-            case "AttackCooldownMultiplier": DisplayPercent("ATK Efficiency", pf.attackCooldownMult); break;
-            case "AttackPotency": DisplayPercent("Attack Potency", pf.attackPotency); break;
-            
-            case "BlockDamageResistance": DisplayPercent("Block Resistance", pd.blockDamageResistance, true); break;
-            case "CounterTime": DisplayFloat("Counter Window", pd.counterTime); break;
-            case "CounterDamage": DisplayFloat("Counter DMG", pd.counterDamage); break;
-            case "CounterDamageResistance": DisplayPercent("Counter Resistance", pd.counterDamageResistance, true); break;
-            
-            default: statName.text = ""; Debug.LogWarning("Clueless."); break;
+            if (isPercent) DisplayPercent(stat.DisplayName, getValue(), isReversed);
+            else DisplayFloat(stat.DisplayName, getValue());
         }
+        else
+        {
+            statName.text = "";
+        }
+        
         shader.SetActive(isClicked);
     }
 
@@ -83,17 +109,18 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
         var percent = value * 100 - 100;
         if (!reverse)
         {
-            if (value != 1) statName.text = title + ": " + percent.ToString("F0") + "%";
+            if ((int)value != 1) statName.text = title + ": " + percent.ToString("F0") + "%";
             else statName.text = $"{title}: 0%";
         }
         else
         {
-            if (value != 1) statName.text = title + ": " + (-percent).ToString("F0") + "%";
+            if ((int)value != 1) statName.text = title + ": " + (-percent).ToString("F0") + "%";
             else statName.text = $"{title}: 0%";
         }
 
         // man im so smat >:D
         // are u tho?
+        // YES! YES I AM!!!
     }
     
     public void OnPointerClick(PointerEventData eventData)
@@ -103,9 +130,10 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
 
     protected virtual void OnLeftClick()
     {
+        if (getValue == null || stat == null) return;
         statsManager.ClearStatShaders();
         isClicked = true;
-        statName.text = stat.StatName;
+        statName.text = stat.name;
         statDescription.text = stat.StatDescription;
     }
     

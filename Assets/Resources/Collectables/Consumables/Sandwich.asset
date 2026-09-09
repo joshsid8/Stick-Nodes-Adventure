@@ -22,6 +22,7 @@ MonoBehaviour:
   itemSprite: {fileID: 0}
   itemAmount: 1
   maxItemAmount: 99
+  restoreCooldown: 10
   restoreAttributes:
   - attributeName: PlayerHealth
     restoreValue: 10
