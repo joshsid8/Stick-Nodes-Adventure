@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace scripies.Dialogue
 {
-    public class NPChat : MonoBehaviour, IDialogueTrigger
+    public class NPChat : MonoBehaviour, IDialogueProperties
     {
         public bool isActive = true;
         public float chatRadius;
@@ -46,6 +46,7 @@ namespace scripies.Dialogue
         public bool IsForced { get => isForced; set => isForced = value; }
         public Transform ChatPoint => chatPoint;
         public float ChatRadius => chatRadius;
+        public Entity Speaker => npc;
         
         private void Start()
         {

@@ -51,7 +51,7 @@ public class BossAttack : MonoBehaviour
     [SerializeField] private float initStart = 1;
     
     [SerializeField] private float backupMoveTime = 5;
-    [SerializeField] private float currentBackupMoveTimer;
+    public float currentBackupMoveTimer;
     
     [Space]
     [Header("Stun and Dialogue")]
@@ -62,7 +62,7 @@ public class BossAttack : MonoBehaviour
     private bool forceStart;
     private Vector3 originalPosition;
     
-    private IDialogueTrigger dt;
+    public IDialogueProperties dt;
     private BossHealth bh;
     private Animator animator;
 
@@ -70,7 +70,7 @@ public class BossAttack : MonoBehaviour
     {
         bh = GetComponent<BossHealth>();
         animator = GetComponent<Animator>();
-        dt = GetComponent<IDialogueTrigger>();
+        dt = GetComponent<IDialogueProperties>();
         
         if (dt == null)
         {
@@ -118,6 +118,7 @@ public class BossAttack : MonoBehaviour
     {
         if (dialogueToDerive == null || dt.Dialogue.Length == 0) return; 
         if (dialogueToDerive != dt.Dialogue[^1] || dt == null) return;
+        if (bh.bossHealth <= 0) return;
         StartFight();
     }
     

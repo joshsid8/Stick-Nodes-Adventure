@@ -138,15 +138,14 @@ namespace scripies.Player
 
         private void OnDestroy()
         {
-           if (!Application.isEditor)
-           {
-               GameEvents.TriggerJumpScare();
-               throw new MissingMemberException("THE PLAYER GOT DESTROYED?! WHAT THE HAIL HAPPENED!?");
-           }
+           if (!Application.isEditor) return;
+           GameEvents.TriggerJumpScare();
+           GameEvents.TriggerPlaySound();
+           throw new MissingMemberException("THE PLAYER GOT DESTROYED?! WHAT THE HAIL HAPPENED!?");
         }
         private void OnDisable()
         {
-            if (!Application.isEditor) throw new NullReferenceException("Wth? why is player disabled??");
+            if (Application.isEditor) throw new NullReferenceException("Wth? why is player disabled??");
             // gameObject.SetActive(true);
             // GameEvents.TriggerJumpScare();
             // Debug.LogError("no!");
@@ -266,9 +265,11 @@ namespace scripies.Player
                     break;
                 case true:
                 case false:
-                    // the player blocking but getting hit at the back OR the player not blocking at all
+                    // the player blocking but getting hit at the back / the player not blocking at all
                     StartCoroutine(ApplyDamage(calcDamage * rawDamageResistance, true, damageOverTime, procDmg * rawDamageResistance,
                         procInterval, isTrue));
+                    pc.animator.SetTrigger("Damaged");
+                    pa.isPerformingAbility = false;
                     break;
             }
             
@@ -312,11 +313,6 @@ namespace scripies.Player
             stunTime = stunDuration * shockMultiplier;
             if (stunTime > 0 && !pd.isBlocking) getStunned = true;
             kb.CallKnockback(knockbackDirection, force, knockbackTime * shockMultiplier, targetPosition);
-            if (!pd.isBlocking)
-            {
-                pc.animator.SetTrigger("Damaged");
-                pa.isPerformingAbility = false;
-            }
         }
 
         private void Stunned()

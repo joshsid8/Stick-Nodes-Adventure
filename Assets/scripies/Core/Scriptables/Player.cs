@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerStats", menuName = "Player/PlayerStats")]
-public class PlayerStats : ScriptableObject
+[CreateAssetMenu(fileName = "PlayerStats", menuName = "Entities/PlayerStats")]
+public class PlayerStats : Entity
 {
     [Header("Vitality")]
     [Tooltip("The maximum health of the player!")]

@@ -818,6 +818,8 @@ MonoBehaviour:
   - 0
   sectionObj: {fileID: 341918498}
   mainSpawnPoint: {fileID: 1659805599}
+  undiscoveredMap: 1
+  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -2499,6 +2501,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1337813847}
     m_Modifications:
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: itemSpawner.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: spawnPoints.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnPoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1942535142}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnPoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1041742246}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnPoints.Array.data[2]'
+      value: 
+      objectReference: {fileID: 441747041}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnPoints.Array.data[3]'
+      value: 
+      objectReference: {fileID: 441747041}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: spawnedObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
+      propertyPath: 'spawnedObjects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3463261996892548931, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
     - target: {fileID: 109414120128023590, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: m_Name
       value: Fishman
@@ -2585,38 +2619,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9223160534816086470, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: eSpawn.Array.data[0].objectToSpawn
-      value: 
-      objectReference: {fileID: 3463261996892548931, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: itemSpawner.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: spawnPoints.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnPoints.Array.data[0]'
-      value: 
-      objectReference: {fileID: 1942535142}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnPoints.Array.data[1]'
-      value: 
-      objectReference: {fileID: 1041742246}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnPoints.Array.data[2]'
-      value: 
-      objectReference: {fileID: 441747041}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnPoints.Array.data[3]'
-      value: 
-      objectReference: {fileID: 441747041}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: spawnedObjects.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
-      propertyPath: 'spawnedObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 3463261996892548931, guid: 431a9e19f40352447a270b7977c26b95, type: 3}
     m_RemovedComponents: []
@@ -6358,11 +6360,11 @@ PrefabInstance:
     - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: itemSpawner.Array.data[0].collectable
       value: 
-      objectReference: {fileID: 11400000, guid: 3caca639c8826094ea6293f1f4ecd3e2, type: 2}
+      objectReference: {fileID: 11400000, guid: 324dc0839a888484da1b58cbf1ccaadd, type: 2}
     - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: itemSpawner.Array.data[0].objectToSpawn
       value: 
-      objectReference: {fileID: 3237700672439869688, guid: f25228cf8dffce34ca1924c8f5226326, type: 3}
+      objectReference: {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
     - target: {fileID: 6217457163881888616, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 18.970581

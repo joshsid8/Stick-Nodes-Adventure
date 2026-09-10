@@ -63,7 +63,6 @@ public class MapManager : MonoBehaviour
         weather = GetComponent<WeatherManager>();
         audioManager = AudioManager.Instance;
         InitialiseSceneData();
-        LoadNpcData();
     }
 
     private void LateUpdate()
@@ -238,7 +237,9 @@ public class MapManager : MonoBehaviour
     {
         ClearSceneData();
         CollateObjects();
-        UpdateLists(true);
+        UpdateLists();
+        LoadSceneData();
+        LoadNpcData();
     }
 
     public void SaveSceneData()
@@ -247,9 +248,10 @@ public class MapManager : MonoBehaviour
         if (!sceneLoaded) return;
         CollateObjects();
         UpdateLists();
+        MakeDataPersistent();
     }
 
-    public void UpdateLists(bool initialise = false)
+    public void UpdateLists()
     {
         ClearSceneData();
         foreach (var obj in sceneObjects)
@@ -334,13 +336,9 @@ public class MapManager : MonoBehaviour
             };
             spawnerSceneData.Add(newSpawner);
         }
-        
-        if (!initialise) 
-            Invoke(nameof(MakeDataPersistent), 0.1f);
-        else LoadSceneData();
     }
     
-    public void MakeDataPersistent()
+    private void MakeDataPersistent()
     {
         //print("Persisting data");
         if (!sceneLoaded || PlayerHealth.Instance == null) return;
@@ -382,27 +380,6 @@ public class MapManager : MonoBehaviour
             };
             list.collectables.Add(newCollectable);
         }
-
-        foreach (var nData in npcSceneData)
-        {
-            if (nData.activeNpc == null || string.IsNullOrEmpty(nData.npcName)) continue;
-            var npc = manager.npcs.Find(x => x.activeNpcName.Contains(nData.npcName));
-            if (npc == null)
-            {
-                manager.npcs.Add(new DataManager.NpcData
-                {
-                    activeNpcName = nData.npcName,
-                    willTravel = nData.willTravel,
-                    dialogue = nData.dialogue.ToArray(),
-                    shopItems = nData.shopItems
-                });
-            }
-            else
-            {
-                npc.dialogue = nData.dialogue.ToArray();
-                npc.shopItems = nData.shopItems;
-            }
-        }
         
         if (bossSceneData.activeBoss != null)
         {
@@ -432,7 +409,6 @@ public class MapManager : MonoBehaviour
 
     private void LoadSceneData()
     {
-        Invoke(nameof(LoadNpcData), 0.2f);
         var manager = DataManager.Instance;
         if (manager == null || manager.sceneData.Count == 0)
         {
@@ -505,7 +481,33 @@ public class MapManager : MonoBehaviour
         sceneLoaded = true;
     }
 
-    public void LoadNpcData()
+    public void SaveNpcData()
+    {
+        var manager = DataManager.Instance;
+        if (manager == null) return;
+        foreach (var nData in npcSceneData)
+        {
+            if (nData.activeNpc == null || string.IsNullOrEmpty(nData.npcName)) continue;
+            var npc = manager.npcs.Find(x => x.activeNpcName.Contains(nData.npcName));
+            if (npc == null)
+            {
+                manager.npcs.Add(new DataManager.NpcData
+                {
+                    activeNpcName = nData.npcName,
+                    willTravel = nData.willTravel,
+                    dialogue = nData.dialogue.ToArray(),
+                    shopItems = nData.shopItems
+                });
+            }
+            else
+            {
+                npc.dialogue = nData.dialogue.ToArray();
+                npc.shopItems = nData.shopItems;
+            }
+        }
+    }
+    
+    private void LoadNpcData()
     {
         if (DataManager.Instance == null || DataManager.Instance.npcs.Count == 0) return;
         foreach (var npcData in DataManager.Instance.npcs)
@@ -537,7 +539,6 @@ public class MapManager : MonoBehaviour
         GameEvents.OnPlayerSpawned += StartMap;
         GameEvents.OnBossDefeated += OnBossDefeated;
         GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
-        GameEvents.SaveMapData += SaveSceneData;
         GameEvents.LoadMapData += LoadSceneData;
         InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
     }
@@ -550,7 +551,6 @@ public class MapManager : MonoBehaviour
         GameEvents.OnBossDefeated -= OnBossDefeated;
         GameEvents.OnPlayerSpawned -= StartMap;
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
-        GameEvents.SaveMapData -= SaveSceneData;
         GameEvents.LoadMapData -= LoadSceneData;
         InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
     }

@@ -3,29 +3,32 @@ SNADV Notes
     Ahh man...
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
-    Priorities:
-        We should probably fix that one save bug, then move onto the cinemachine confiner issue
+    Priorities & Notices:
+        The cinemachine confiner issue seems daunting tbh
+            Im really hoping my hypothesis on it is correct, otherwise im cooked!
+            
+        Stat logic improvements were streamlined, so it was removed from the Big 3
+            Now Audio improvements will take its place. cuz i realised it'll be pretty hard to get done
+            The Big 3 seems to be the last things i have to do before moving onto the next phase: Animation Overhaul (AO)
+                THATS when ill be able to hiatus and start animation and stuff
         
     Optimisations & Hotfixes:
         
         Instability
         
-            Issues from Testing                
-			    Jerome data SOMETIMES doesnt save
-			        The crazy thing is, when i entered the hot shop, the data didnt load,
-			        But when i entered the other shop (and pressed f3 to force load) it synced!
-			            Entering the other shops THEN started to sync properly
-                    Meaning it only syncs when it FEELS like it!!!!!!!
-                        (i dont know why this is happening)
-			        
+            Issues from Testing
+
             Replicatable or From-Build bugs/problems
 
             One time occurrences or Rare/Intimidating bugs
                 Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map   
                     Instead of fixing the camera to avoid seeing the bottom of the floor, it just acts as if there isnt any confiner, in terms of its y axis
                     The only conclusion i can come up with is that these scenes have only one box collider, which might be the cause?
+                
+                One time after confronting Noxu, i had his decimate ability instead of my normal fireball
+                    Very very weird bug ive never had before, and idk if it can be replicated yet
 
-            Low Priority or Passive Tasks / Unconfirmed fixed Bugs
+            Low Priority or Passive Tasks / Unconfirmed fixed Bugs       
                 
                 Cynderians' fire pillar is unblockable for some reason...
                     While Cynder himself's pillars (and every other pillar) are
@@ -50,18 +53,9 @@ SNADV Notes
                 
     Things to be added/changed:
         
-        GRF     
+        Game Refactor (GRF):
         
-            Find out why one shot sfx are very very quiet
-            
-            The Big 3:
-                Improve Stat Display Logic
-                    It not that its broken, but the its all being displayed inaccurately
-                    E.g. some resistance multipliers are being shown as negative numbers if positive, and vice versa
-                    Tbh, the way stats are even displayed is very inefficient to begin with, but i dont know how to make it any better
-                        Maybe use nameof() for efficient display, with the caveat of potentially not being able to edit the names easier...
-                    Because of how tedious this is, this now a part of the big 3!
-                
+            The Big 3
                 Improve Typewriter Logic
                     The Typewriter updates the settings as it displays text
                         but i would rather have it know what settings should be implemented beforehand to make it work well          
@@ -71,21 +65,63 @@ SNADV Notes
                     Even tho this is cosmetic, i would like to just get the logic done
                         I will use placeholder bgs just to test it, then will worry about designs Post-AO
                         
-            Audio
-                Make it so that the music transitions smoothly
-                    maybe i have to fade the music out and simultaneously fade in the new one?
-                    To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
-                        so it can easily switch between or merge together
-                I was also thinking of making music change depending on the distance between the player and things
-                    If the player is close to a boss or an enemy, the music will fade into fight music
-                OSTs
-                    I need to make new boss music to fit the new map music
-                        Cynder Valley is all done
-                        I think ill focus on Noxu's temple next
-                    Ive made shop music, but i want to make variants of it
-                        I just have earth and air's variants to do
+                Audio
+                    Find out why one shot sfx are very very quiet
+                    Make it so that the music transitions smoothly
+                        maybe i have to fade the music out and simultaneously fade in the new one?
+                        To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
+                            so it can easily switch between or merge together
+                    I was also thinking of making music change depending on the distance between the player and things
+                        If the player is close to a boss or an enemy, the music will fade into fight music
+                    OSTs
+                        I need to make new boss music to fit the new map music
+                            Cynder Valley is all done
+                            I think ill focus on Noxu's temple next
+                        Ive made shop music, but i want to make variants of it
+                            I just have earth and air's variants to do
         
-        Post-AO           
+        Animation Overhaul (AO):
+        
+            This is where i will improve almost all animations, along with making some extra characters and FX
+            It be after almost all logic is completed, and only the cosmetic/extra logic will remain
+        
+            Make better/seperate animations in general
+                Player
+                    Turning around
+                    First step before walking
+                    Wall jumping/climbing
+                    Better dashing
+                    Walk blocking
+                    Idle (for a long time, thus secret) animations
+                    Spawn animation?
+                Cynder/Cyderians
+                    More/Improved animations
+                    
+            Make 3 more moves for the fish folk
+                Fishwoman
+                    Flying bubble attack
+                    Flying dash attack
+                    Feinted dash counter
+                    Decieving attack
+            
+            Fused Animations
+                anims that fuse the 2 entities together for a joint animation
+                    e.g a finisher on the player from cynder
+                    the player dapping up a friendly character
+                    fishfolk successfully decieving the player by fakely asking for forgiveness
+                    cynder's dash attack clashing with the player
+            
+            Animate HUD
+                Like how i animated the Map's title
+                Just animate anything prominent to make the game look gud
+                I got a plugin to help with this!
+                
+            Switch to Tilemaps
+                Instead of just loose shapes everywhere to form maps, maybe use tilemaps for level design
+                
+        Post-AO:
+            
+            This will be the ultimate phase before i actually can consider the core of the game to be finished
             
             Make minibosses: a normal-enemy/boss hybrid
                 This is basically already a thing; there are spawners that have a onetime flag
@@ -121,45 +157,6 @@ SNADV Notes
                 SN Demon
                     Tbh i completely forgot about this one, even tho it is the main antagonist!
                     I think i might just potentially probably perhaps use Machine Learning to make a very difficult boss
-
-            Switch to Tilemaps
-                Instead of just loose shapes everywhere to form maps, maybe use tilemaps for level design
-                
-    Animation Overhaul:
-    
-        This is where i will improve almost all animations, along with making some extra characters and FX
-        It be after almost all logic is completed, and only the cosmetic/extra logic will remain
-    
-        Make better/seperate animations in general
-            Player
-                Turning around
-                First step before walking
-                Wall jumping/climbing
-                Better dashing
-                Walk blocking
-                Idle (for a long time, thus secret) animations
-                Spawn animation?
-            Cynder/Cyderians
-                More/Improved animations
-                
-        Make 3 more moves for the fish folk
-            Fishwoman
-                Flying bubble attack
-                Flying dash attack
-                Feinted dash counter
-                Decieving attack
-        
-        Fused Animations
-            anims that fuse the 2 entities together for a joint animation
-                e.g a finisher on the player from cynder
-                the player dapping up a friendly character
-                fishfolk successfully decieving the player by fakely asking for forgiveness
-                cynder's dash attack clashing with the player
-        
-        Animate HUD
-            Like how i animated the Map's title
-            Just animate anything prominent to make the game look gud
-            I got a plugin to help with this!        
         
 When you are done: Find the one piece.
     (This should mean the base has been completed, and I can start on designing everything! [Post-Post-AO])

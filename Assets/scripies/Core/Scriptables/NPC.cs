@@ -1,6 +1,6 @@
 using UnityEngine;
-[CreateAssetMenu(fileName = "NPC", menuName = "NPC")]
-public class NPC : ScriptableObject
+[CreateAssetMenu(fileName = "NPC", menuName = "Entities/NPC")]
+public class NPC : Entity
 {
     public string npcName;
     public bool willTravel;

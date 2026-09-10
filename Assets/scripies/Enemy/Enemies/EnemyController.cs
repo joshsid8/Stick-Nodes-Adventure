@@ -51,7 +51,7 @@ namespace scripies.Enemy
             var player = GameObject.FindGameObjectWithTag("Player");
             playerTransform = player.transform;
             ps = player.GetComponent<IPlayerStatus>();
-            if (enemy != null) enemy.SetProperties(attack);
+            if (enemy != null) attack.SetProperties(enemy);
             if (patrol != null && patrol.isPatrolling) ChangeState(EnemyState.Patrolling);
             else ChangeState(EnemyState.Idle);
             isFacingRight = true;

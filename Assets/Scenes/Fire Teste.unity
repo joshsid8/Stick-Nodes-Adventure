@@ -317,7 +317,7 @@ MonoBehaviour:
   enemies: []
   boss: {fileID: 0}
   keys: []
-  badge: {fileID: 0}
+  badgeSo: {fileID: 0}
 --- !u!114 &13393109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3766,6 +3766,8 @@ MonoBehaviour:
   - 0
   sectionObj: {fileID: 341918498}
   mainSpawnPoint: {fileID: 0}
+  undiscoveredMap: 1
+  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -5594,11 +5596,11 @@ PrefabInstance:
     - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: itemSpawner.Array.data[0].collectable
       value: 
-      objectReference: {fileID: 11400000, guid: 324dc0839a888484da1b58cbf1ccaadd, type: 2}
+      objectReference: {fileID: 11400000, guid: c723739f5db29fc4886fd77884d9cde1, type: 2}
     - target: {fileID: 3745149709133969889, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: itemSpawner.Array.data[0].objectToSpawn
       value: 
-      objectReference: {fileID: 3490253027308570714, guid: 06733424615809845b397bbd3f85d622, type: 3}
+      objectReference: {fileID: 3237700672439869688, guid: f25228cf8dffce34ca1924c8f5226326, type: 3}
     - target: {fileID: 5190355191559164575, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
       propertyPath: m_Offset.x
       value: 0

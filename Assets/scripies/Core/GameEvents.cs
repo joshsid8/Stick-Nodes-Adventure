@@ -41,7 +41,6 @@ namespace scripies.Core
         public static Action<ScriptableObject> OnDialogueClose;
         
         // Misc events
-        public static Action SaveMapData;
         public static Action LoadMapData;
         public static Action SaveGame;
         
@@ -77,7 +76,6 @@ namespace scripies.Core
         public static void TriggerDialogueClose() => CloseDialogue?.Invoke();
         public static void TriggerDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
         
-        public static void TriggerSaveMapData() => SaveMapData?.Invoke();
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
         public static void TriggerSaveGame() => SaveGame?.Invoke();
         

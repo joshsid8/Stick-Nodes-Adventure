@@ -55,7 +55,9 @@ public class SaveSystem
     {
         foreach (var map in MapManager.Instances.Values)
         {
-            if (map != null) map.SaveSceneData();
+            if (map == null) continue;
+            map.SaveSceneData();
+            map.SaveNpcData();
         }
         if (DataManager.Instance != null) DataManager.Instance.Save(ref saveData.sceneData, ref saveData.globalNpcData);
         if (PlayerHealth.Instance != null && PlayerHealth.Instance.pc != null) PlayerHealth.Instance.pc.Save(ref saveData.playerCurrentData);

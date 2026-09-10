@@ -51,7 +51,6 @@ namespace scripies.Player
                     isBlocking = true;
             };
             pc.input.Player.Block.canceled += _ => StopBlocking();
-
         }
 
         // Update is called once per frame

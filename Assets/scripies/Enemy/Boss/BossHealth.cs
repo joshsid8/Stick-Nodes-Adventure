@@ -101,7 +101,8 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         if (!isDead) yield break;
         ba.isAttacking = false;
         ba.ResetTriggers();
-        ba.enabled = false;
+        ba.currentBackupMoveTimer = 10 ^ 10;
+        //ba.enabled = false;
         spriteRenderer.color = Color.white;
         GameEvents.TriggerDropLoot(gameObject);
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
@@ -116,7 +117,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         isDead = false;
         GameEvents.TriggerAddPlayerTime("Combat", 0);
         animator.SetTrigger("Rise");
-        GameEvents.TriggerShowDialogue(deathDialogue);
+        GameEvents.TriggerShowDialogue(deathDialogue, ba.dt.Speaker as NPC);
     }
 
     public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
@@ -154,7 +155,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
                 break;
         }
         if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
-        if (!ba.isAttacking) ba.StartFight();
+        if (!ba.isAttacking && bossHealth > 0) ba.StartFight();
         CheckStatus();
     }
     

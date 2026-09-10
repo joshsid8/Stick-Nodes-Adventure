@@ -19,7 +19,7 @@ namespace scripies.Dialogue
         public GameObject gameHUD;
         public bool isAnimated;
         public Animator animator;
-        private NPC currentNpc;
+        [SerializeField] private NPC currentNpc;
         private bool isBold;
         
         [SerializeField] private AudioClip[] dialoguePings;

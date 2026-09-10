@@ -124,6 +124,15 @@ namespace scripies.Enemy
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
             em.enabled = true;
         }
+        
+        public void SetProperties(Enemy e)
+        {
+            damageAmount *= e.damageMult;
+            eh.enemyHealth *= e.healthMult;
+            em.dashSpeed *= e.speedMult;
+            if (ef != null) ef.currentFlySpeed *= e.speedMult;
+            ep.walkSpeed *= e.speedMult;
+        }
 
         private void OnDisable()
         {
