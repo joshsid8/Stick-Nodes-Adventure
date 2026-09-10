@@ -14,12 +14,11 @@ namespace scripies.Enemy
         public float TurnTime => turnTime;
         public float turnTimer;
         [SerializeField] private GameObject[] partners = new GameObject[1];
+        public EnemyAttack.StyleMode prevState = EnemyAttack.StyleMode.Passive;
         private EnemyController ec;
         private EnemyAttack ea;
-
-        public EnemyAttack.StyleMode prevState = EnemyAttack.StyleMode.Passive;
-        
-        public float backupTimer;
+        [SerializeField] private float farAwayDistance = 10;
+        public float[] backupTimers = { 10, 10 };
 
         private void Awake()
         {
@@ -63,11 +62,20 @@ namespace scripies.Enemy
                     if (ea != null) ea.styleMode = EnemyAttack.StyleMode.Passive;
                     if (ec != null) ec.ChangeState(EnemyController.EnemyState.Zoning);
                 }
-                backupTimer -= Time.deltaTime;
-                if (!myTurn && backupTimer <= 0)
+                backupTimers[0] -= Time.deltaTime;
+                if (ec.distToPlayerX >= farAwayDistance) backupTimers[1] -= Time.deltaTime;
+                else backupTimers[1] = 10;
+                if (!myTurn && backupTimers[0] <= 0)
                 {
                     myTurn = true;
-                    backupTimer = 10;
+                    backupTimers[0] = 10;
+                }
+
+                if (backupTimers[1] <= 0)
+                {
+                    isJumping = false;
+                    myTurn = false;
+                    ec.LostPlayer();
                 }
             }
         }

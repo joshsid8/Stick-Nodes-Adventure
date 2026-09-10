@@ -690,10 +690,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 885c523ccec4c224c98b4d10111dd1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTeleport: 0
   tagsToIgnore:
   - Player
-  forcePlayerTeleport: 0
   teleportTarget: {fileID: 908794099}
+  forcePlayerTeleport: 0
+  isTeledoor: 0
+  isSceneTeleport: 0
+  sceneToTeleport:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
+  connectingDoor: 
+  inRange: 0
+  teleporterSize: {x: 0, y: 0}
+  enterIndicator: {fileID: 0}
+  teleportSfx: {fileID: 0}
   doesDamage: 1
   damage: 20
 --- !u!61 &870999332
@@ -864,6 +875,8 @@ MonoBehaviour:
   - 1
   sectionObj: {fileID: 0}
   mainSpawnPoint: {fileID: 0}
+  undiscoveredMap: 1
+  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -910,7 +923,7 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_CompositeOperation: 0
+  m_CompositeOperation: 1
   m_CompositeOrder: 0
   m_Offset: {x: -18.138668, y: 50.124767}
   m_SpriteTilingProperty:
@@ -998,6 +1011,7 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  sm: {fileID: 0}
   randomWeather: 1
   weatherChance: 15
   earthquakeTimer: 0.2
@@ -1042,11 +1056,25 @@ CompositeCollider2D:
   m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths: []
+  m_ColliderPaths:
+  - m_Collider: {fileID: 1317523870}
+    m_ColliderPaths:
+    - - X: 296185600
+        Y: 611699904
+      - X: -658958976
+        Y: 611699904
+      - X: -658958976
+        Y: 390795456
+      - X: 296185600
+        Y: 390795456
   m_CompositePaths:
-    m_Paths: []
+    m_Paths:
+    - - {x: 29.61856, y: 61.16999}
+      - {x: -65.8959, y: 61.16999}
+      - {x: -65.8959, y: 39.079548}
+      - {x: 29.61856, y: 39.079548}
   m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
+  m_OffsetDistance: 0
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 1317523868}
 --- !u!50 &1317523875
@@ -1364,9 +1392,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 885c523ccec4c224c98b4d10111dd1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTeleport: 0
   tagsToIgnore: []
-  forcePlayerTeleport: 0
   teleportTarget: {fileID: 908794099}
+  forcePlayerTeleport: 0
+  isTeledoor: 0
+  isSceneTeleport: 0
+  sceneToTeleport:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
+  connectingDoor: 
+  inRange: 0
+  teleporterSize: {x: 0, y: 0}
+  enterIndicator: {fileID: 0}
+  teleportSfx: {fileID: 0}
   doesDamage: 1
   damage: 20
 --- !u!61 &2085355167

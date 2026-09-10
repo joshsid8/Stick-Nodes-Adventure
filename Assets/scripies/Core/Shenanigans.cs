@@ -38,7 +38,7 @@ public class Shenanigans : MonoBehaviour
         Instance = this;
         
         GameEvents.JumpScare += JumpScare;
-        GameEvents.StopTime += StopTime;
+        //GameEvents.StopTime += StopTime;
     }
 
     private void Update()

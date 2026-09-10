@@ -28,10 +28,11 @@ namespace scripies.Enemy
         private EnemyHealth health;
         private EnemyZone zone;
         private EnemyJump jump;
-        
+        private Rigidbody2D rb;
         private Transform playerTransform;
         private IPlayerStatus ps;
         private bool isAggressive;
+        public float distToPlayerX;
         public float backupSpareTimer;
 
         // ITarget implementation
@@ -40,8 +41,9 @@ namespace scripies.Enemy
         public int Priority => 0; // Default priority
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
+            rb = GetComponent<Rigidbody2D>();
             patrol = GetComponent<EnemyPatrol>();
             attack = GetComponent<EnemyAttack>();
             health = GetComponent<EnemyHealth>();
@@ -115,11 +117,14 @@ namespace scripies.Enemy
             }
 
             if (jump != null && ps.AggressiveEnemies > 1) jump.isJumping = isAggressive; 
-
             canFacePlayer = attack.canFacePlayer;
+
+            distToPlayerX = transform.position.x - playerTransform.position.x; 
             
-            if (backupSpareTimer > 0) backupSpareTimer -= Time.deltaTime / 1.5f;
-            else if (backupSpareTimer <= 0 && enemyState == EnemyState.Attacking) ChangeState(EnemyState.Patrolling);
+            if (attack.isAttacking && distToPlayerX >= 50) LostPlayer();
+            
+            if (backupSpareTimer > 0 && attack.isAttacking) backupSpareTimer -= Time.deltaTime / 1.5f;
+            else if (backupSpareTimer <= 0 && enemyState == EnemyState.Attacking) LostPlayer();
             
             if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling &&
                 enemyState != EnemyState.Dead) FacePlayer();
@@ -142,7 +147,6 @@ namespace scripies.Enemy
                     patrol.hasFoundPlayer = false;
                     patrol.isPatrolling = true;
                     zone.enabled = false;
-                    //if (!jump.isJumping) GameEvents.TriggerAddPlayerCombat(0, false, "EnemyLostPlayer");
                     attack.canAttack = true;
                     attack.enabled = false;
                     break;
@@ -167,6 +171,17 @@ namespace scripies.Enemy
             }
         }
 
+        public void LostPlayer()
+        {
+            backupSpareTimer = 10;
+            jump.backupTimers[0] = 10;
+            jump.backupTimers[1] = 10;
+            attack.spareTimer = 10;
+            ChangeState(EnemyState.Patrolling);
+            if (ps.AggressiveEnemies <= 0) 
+                GameEvents.TriggerAddPlayerCombat(0, false, "EnemyLostPlayer");
+        }
+
         private void InactiveState(int factor = 1)
         {
             if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling) return;
@@ -176,11 +191,9 @@ namespace scripies.Enemy
 
         private void FacePlayer()
         {
-            if (canFacePlayer)
-            {
-                var directionToPlayer = playerTransform.position.x - transform.position.x;
-                if (directionToPlayer > 0 && !isFacingRight || directionToPlayer < 0 && isFacingRight) Flip();
-            }
+            if (!canFacePlayer) return;
+            var directionToPlayer = playerTransform.position.x - transform.position.x;
+            if (directionToPlayer > 0 && !isFacingRight || directionToPlayer < 0 && isFacingRight) Flip();
         }
 
         public void Flip()

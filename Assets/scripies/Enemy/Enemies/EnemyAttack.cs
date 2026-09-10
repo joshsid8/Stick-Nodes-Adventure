@@ -207,7 +207,7 @@ namespace scripies.Enemy
             
             if (!defensiveCheck && !passiveCheck) currentSpareTimer -= Time.deltaTime;
             else currentSpareTimer = spareTimer;
-            if (currentSpareTimer <= 0) ec.ChangeState(EnemyController.EnemyState.Patrolling);
+            if (currentSpareTimer <= 0) ec.LostPlayer();
         }
 
         private void ActiveLogic()

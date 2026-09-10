@@ -145,7 +145,7 @@ namespace scripies.Player
         }
         private void OnDisable()
         {
-            if (Application.isEditor) throw new NullReferenceException("Wth? why is player disabled??");
+            //if (!Application.isEditor) throw new NullReferenceException("Wth? why is player disabled??");
             // gameObject.SetActive(true);
             // GameEvents.TriggerJumpScare();
             // Debug.LogError("no!");

@@ -16,7 +16,9 @@ public class ObjectDatabase : MonoBehaviour
     public List<GameObject> allItems = new();
     public List<GameObject> allNpcs = new();
     public List<GameObject> allTeledoors = new();
-
+    
+    public List<GameObject> everything = new();
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -55,6 +57,13 @@ public class ObjectDatabase : MonoBehaviour
         allItems = new List<GameObject>(GameObject.FindGameObjectsWithTag("Item"));
         allNpcs = new List<GameObject>(GameObject.FindGameObjectsWithTag("NPC"));
         allTeledoors = new List<GameObject>(GameObject.FindGameObjectsWithTag("TeleDoor"));
+        
+        everything.Clear();
+        everything.AddRange(allEnemies);
+        everything.AddRange(allItems);
+        everything.AddRange(allNpcs);
+        everything.AddRange(allTeledoors);
+        everything.Add(GameObject.FindGameObjectWithTag("Player"));
     }
 
     public GameObject GetEnemyByName(string enemyName)

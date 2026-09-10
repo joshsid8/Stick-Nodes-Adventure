@@ -3,15 +3,19 @@ SNADV Notes
     Ahh man...
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
-    Priorities & Notices:
-        The cinemachine confiner issue seems daunting tbh
-            Im really hoping my hypothesis on it is correct, otherwise im cooked!
+    Notices:
+        
+        I fixed the cinemachine confiner issue!
+            One thing to note, always ensure all colliders' composite operations are MERGED!!!
             
         Stat logic improvements were streamlined, so it was removed from the Big 3
             Now Audio improvements will take its place. cuz i realised it'll be pretty hard to get done
             The Big 3 seems to be the last things i have to do before moving onto the next phase: Animation Overhaul (AO)
                 THATS when ill be able to hiatus and start animation and stuff
-        
+    
+    Priorities:
+        Lets start tackling The Big 3 - A very daunting set of tasks
+
     Optimisations & Hotfixes:
         
         Instability
@@ -21,21 +25,20 @@ SNADV Notes
             Replicatable or From-Build bugs/problems
 
             One time occurrences or Rare/Intimidating bugs
-                Seems like the cinemachine confiner isnt working for Alatus islands and the Teste map   
-                    Instead of fixing the camera to avoid seeing the bottom of the floor, it just acts as if there isnt any confiner, in terms of its y axis
-                    The only conclusion i can come up with is that these scenes have only one box collider, which might be the cause?
-                
+
                 One time after confronting Noxu, i had his decimate ability instead of my normal fireball
                     Very very weird bug ive never had before, and idk if it can be replicated yet
 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs       
                 
-                Cynderians' fire pillar is unblockable for some reason...
-                    While Cynder himself's pillars (and every other pillar) are
-                
-                Jumping logic should only happen when ALL enemies are close enough to the player
-                    If i were to run away from a RELENTLESS fishman, and fight a cynderian, the cynderian would be zoning, waiting for the fishman's turn
-                    even tho the fishman is in a different universe!
+                Blocking and countering is very wonky
+                    It is common for abilities to bypass the player's blocks
+                    I dont know if its because of the new logic the potentally outdated blocking logic is communicating with,
+                    or if the newer logic itself is the issue
+                        Cynderians' fire pillar is unblockable for some reason...
+                            While Cynder himself's pillars (and every other pillar) are
+                    I think ill move the logic to the player's animations to make blocking feel more natural
+                        Ill need to then make a playerUnblock animation if so
                 
                 Ive successfully remade the player animator controller, but its a bit buggy...
                     I need to allow attacking when wall jumping specifically
@@ -43,11 +46,7 @@ SNADV Notes
                     Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
                         Casting abilities may have caused this, or maybe just jumping in general?
                     When it comes to the counter animation, deflecting works, but melee countering doesnt.
-                
-                    Fix(ed) stats
-                        Thanks to Junie, i improved the stats display logic
-                        I think all i need to do is to check the values and see if the negatives and positives are correct
-                    
+                                    
             Junie Help
                 Tackling The Big 3
                 
