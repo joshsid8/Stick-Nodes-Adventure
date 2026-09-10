@@ -204,7 +204,17 @@ namespace scripies.Dialogue
             OnDialogueClose?.Invoke(currentNpc);
             if (dialogueObject != null)
             {
-                var speaker = GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName);
+                GameObject speaker;
+                if (currentNpc != null) speaker = GameObject.Find(currentNpc.npcName);
+                else if (string.IsNullOrEmpty(dialogueObject.speaker)) speaker = GameObject.Find(dialogueObject.speaker);
+                else if (string.IsNullOrEmpty(dialogueObject.NPCName)) speaker = GameObject.Find(dialogueObject.NPCName);
+                else
+                {
+                    ClearData();
+                    GameEvents.TriggerDialogueClose(dialogueObject);
+                    goto close;  // we, (yes, WE, US, me AND you) love the goto keyword
+                }
+                
                 if (dialogueObject.openShopOnClose)
                 {
                     if (speaker != null && speaker.TryGetComponent(out ShopKeeper shopKeeper)) 
@@ -227,6 +237,7 @@ namespace scripies.Dialogue
                 
                 CameraEventManager.Instance.ResetCamera();
             }
+            close:
             GameEvents.TriggerDialogueClose(dialogueObject);
             //GameEvents.TriggerPlaySound(dialoguePings[1], false);
             ClearData();
@@ -251,6 +262,7 @@ namespace scripies.Dialogue
         {
             if (isAnimated)
             {
+                typeWriter.ApplyAnimation(0);
                 isAnimated = false;
                 animator = null;
             }

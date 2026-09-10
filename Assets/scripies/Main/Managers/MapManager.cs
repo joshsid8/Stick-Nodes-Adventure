@@ -116,22 +116,38 @@ public class MapManager : MonoBehaviour
         {
             SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
             mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
-            //StartCoroutine(AreaManager.Instance.LerpColours(mapBgColor));
+            
+            var targetWeather = weather.GetTargetWeather();
+            var targetColor = mapBgColor;
+            
+            if (targetWeather != WeatherManager.WeatherType.Clear)
+            {
+                int index = (int)targetWeather - 1;
+                if (index >= 0 && index < weather.weatherProperties.Length)
+                {
+                    targetColor = weather.weatherProperties[index].weatherBgColor;
+                }
+            }
+            
+            AreaManager.Instance.TriggerColorFade(targetColor);
+            
             if (audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene) audioManager.TriggerFadeIn(0.5f);
             yield return new WaitForSeconds(0.8f);
             if (collision.gameObject.scene == gameObject.scene) 
-                StartMap(collision.gameObject);
+                StartMap(collision.gameObject, targetWeather);
         }
     }
 
-    private void StartMap(GameObject objectRef = null)
+    private void StartMap(GameObject objectRef) => StartMap(objectRef, null);
+
+    private void StartMap(GameObject objectRef, WeatherManager.WeatherType? forcedWeather)
     {
         if (objectRef == null || objectRef.scene.name != gameObject.scene.name)
         {
             if (objectRef != null && objectRef.scene.name != "Persistent Objects") StartCoroutine(TryStartMapAgain(objectRef));
             return;
         }
-        weather.SetWeather();
+        weather.SetWeather(forcedWeather);
         if (undiscoveredMap) undiscoveredMap = false;
     }
 
@@ -190,21 +206,18 @@ public class MapManager : MonoBehaviour
         doorObjects.Clear();
         foreach (var obj in sceneObjects)
         {
-            if (obj.CompareTag("Section"))
-            {
-                foreach (var section in obj.GetComponentsInChildren<AccessManager>())
-                    doorObjects.Add(section.gameObject);
-            }
+            if (!obj.CompareTag("Section")) continue;
+            foreach (var section in obj.GetComponentsInChildren<AccessManager>())
+                doorObjects.Add(section.gameObject);
         }
         
         spawnerObjects.Clear();
         foreach (var obj in sceneObjects)
         {
             if (!obj.CompareTag("Spawner")) continue;
-            foreach (var spawner in obj.GetComponentsInChildren<EntitySpawner>()) 
+            foreach (var spawner in obj.GetComponentsInChildren<SpawnerBase>()) 
                 spawnerObjects.Add(spawner.gameObject);
-            foreach (var spawner in obj.GetComponentsInChildren<ItemSpawner>()) 
-                spawnerObjects.Add(spawner.gameObject);
+            if (obj.GetComponent<AccessManager>() != null) doorObjects.Add(obj); // For spawner-Door Hybrids
         }
     }
 
@@ -419,7 +432,7 @@ public class MapManager : MonoBehaviour
         if (!hasSceneData)
         {
             // if there isnt any found scene data, it should save the current new state into the data manager
-            print($"Scene data for {sceneName} not found, saving current scene data to data manager.");
+            //print($"Scene data for {sceneName} not found, saving current scene data to data manager.");
             sceneLoaded = true;
             SaveSceneData();
             return;

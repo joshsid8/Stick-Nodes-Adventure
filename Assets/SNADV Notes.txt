@@ -4,24 +4,20 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices:
-        
-        I fixed the cinemachine confiner issue!
-            One thing to note, always ensure all colliders' composite operations are MERGED!!!
             
-        Stat logic improvements were streamlined, so it was removed from the Big 3
-            Now Audio improvements will take its place. cuz i realised it'll be pretty hard to get done
-            The Big 3 seems to be the last things i have to do before moving onto the next phase: Animation Overhaul (AO)
-                THATS when ill be able to hiatus and start animation and stuff
-    
     Priorities:
-        Lets start tackling The Big 3 - A very daunting set of tasks
-
+        Instability, then maybe sfx improvements
+        
     Optimisations & Hotfixes:
         
         Instability
         
             Issues from Testing
-
+                I got spammed null refs whenever an enemy attacks
+                    This is the second time happening, and only happening right after i fight a fishman, after leaving the watery shop
+                    Whenever someone else fights after, they end up zoning, as if they are with someone (who doesnt exist!)
+                    I think jump logic doesnt get cleaned up after an enemy gets destroyed or defeated, making the nullrefs happen
+                
             Replicatable or From-Build bugs/problems
 
             One time occurrences or Rare/Intimidating bugs
@@ -46,18 +42,15 @@ SNADV Notes
                     Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
                         Casting abilities may have caused this, or maybe just jumping in general?
                     When it comes to the counter animation, deflecting works, but melee countering doesnt.
-                                    
+
             Junie Help
-                Tackling The Big 3
+                Tackling The Danger Duo
                 
     Things to be added/changed:
         
         Game Refactor (GRF):
         
-            The Big 3
-                Improve Typewriter Logic
-                    The Typewriter updates the settings as it displays text
-                        but i would rather have it know what settings should be implemented beforehand to make it work well          
+            The Danger Duo
                 
                 Background/Foreground Logic
                     Make backgrounds similar to Terraria in terms of appearance!
@@ -66,19 +59,14 @@ SNADV Notes
                         
                 Audio
                     Find out why one shot sfx are very very quiet
+                        Ill improve on sfx in general by adding stuff like mixers                        
                     Make it so that the music transitions smoothly
                         maybe i have to fade the music out and simultaneously fade in the new one?
                         To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
                             so it can easily switch between or merge together
                     I was also thinking of making music change depending on the distance between the player and things
                         If the player is close to a boss or an enemy, the music will fade into fight music
-                    OSTs
-                        I need to make new boss music to fit the new map music
-                            Cynder Valley is all done
-                            I think ill focus on Noxu's temple next
-                        Ive made shop music, but i want to make variants of it
-                            I just have earth and air's variants to do
-        
+
         Animation Overhaul (AO):
         
             This is where i will improve almost all animations, along with making some extra characters and FX
@@ -109,6 +97,13 @@ SNADV Notes
                     the player dapping up a friendly character
                     fishfolk successfully decieving the player by fakely asking for forgiveness
                     cynder's dash attack clashing with the player
+            
+            OSTs
+                I need to make new boss music to fit the new map music
+                    Cynder Valley is all done
+                    I think ill focus on Noxu's temple next
+                Ive made shop music, but i want to make variants of it
+                    I just have earth and air's variants to do
             
             Animate HUD
                 Like how i animated the Map's title

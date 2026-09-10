@@ -15,6 +15,8 @@ public class AreaManager : MonoBehaviour
     public Animator animator;
     
     [SerializeField] private float lerpTime = 5f;
+    private Coroutine colorCoroutine;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -48,24 +50,34 @@ public class AreaManager : MonoBehaviour
         if (actualCamera.backgroundColor != bgColor && bgColor != default)
         {
             //Maybe change background logic into an active sprite/image behind the player, and use CrossFadeColor to efficiently change it
-            StartCoroutine(LerpColours(bgColor));
+            TriggerColorFade(bgColor);
         }
+    }
+
+    public void TriggerColorFade(Color targetColor)
+    {
+        if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+        colorCoroutine = StartCoroutine(LerpColours(targetColor));
     }
 
     public IEnumerator LerpColours(Color bgColor)
     {
-        var timer = 2f;
         while (actualCamera.backgroundColor != bgColor)
         {
             actualCamera.backgroundColor = Color.Lerp(actualCamera.backgroundColor, bgColor, lerpTime * Time.deltaTime);
-            timer -= Time.deltaTime;
-            if (timer <= 0)
+            
+            if (ColorDistance(actualCamera.backgroundColor, bgColor) < 0.001f)
             {
                 actualCamera.backgroundColor = bgColor;
-                StopCoroutine(LerpColours(bgColor));
-                yield break;
+                break;
             }
             yield return null;
         }
+        colorCoroutine = null;
+    }
+
+    private float ColorDistance(Color a, Color b)
+    {
+        return Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b) + Mathf.Abs(a.a - b.b);
     }
 }

@@ -158,7 +158,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         else if (itemType != "Key") DecrementItem();
     }
 
-    public void DecrementItem()
+    public void DecrementItem(bool itemRemoval = true)
     {
         if (invManager.playerManager != null && restoreAttributes.Count > 0)
         {
@@ -166,7 +166,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
                 invManager.playerManager.AlterGlobalFloat(restoreAttribute.attributeName, restoreAttribute.restoreValue);
         }
         else if (invManager.playerManager == null) Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
-        if (invManager.invIndex != null) invManager.invIndex.RemoveItem(itemScriptableObject);
+        if (invManager.invIndex != null && itemRemoval) invManager.invIndex.RemoveItem(itemScriptableObject);
         itemAmount--;
         if (itemAmount <= 0)
         {
@@ -192,8 +192,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
                     invManager.EquipAspect(iName, iSprite, iDescription, aStats);
                     
                     equipped = true;
-                    DecrementItem();
-                    //if (!usedSlot) itemImage.enabled = false;
+                    DecrementItem(false);
                     break;
                 }
             }
@@ -206,7 +205,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         if (abilityStats == null) throw new Exception("SwapAbility: Seems like the ability was removed.");
         print("Ok uhh switching abilities");
         invManager.SwapAbility(slot, this);
-        DecrementItem();
+        DecrementItem(false);
     }
     
     private IEnumerator DropItem(bool dropAll = false)

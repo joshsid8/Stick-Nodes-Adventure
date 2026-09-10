@@ -1,13 +1,24 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using System.Text.RegularExpressions;
+using scripies.Core;
+using scripies.Player;
 
+// Majorly Edited By Junie
 namespace scripies.Dialogue
 {
     public class TypeWriterFX : MonoBehaviour
     {
+        public class TextSegment
+        {
+            public string text;
+            public float speed;
+            public int action;
+            public bool isPunctuation;
+        }
+
         public float originalTypingSpeed = 0.05f;
         public float typingSpeed = 0.05f;
         public float punctuationPause = 0.2f;
@@ -19,132 +30,157 @@ namespace scripies.Dialogue
         private readonly char[] actionControlChars = { '|', '/', '_', '~' };
         
         [SerializeField] private AudioClip[] typingSfx;
+        
+        private PlayerInput input;
+
+        private void Start()
+        {
+            input = PlayerHealth.Instance.pc.input;
+        }
 
         public Coroutine Run(string textToType, TMP_Text textLabel, TMP_Text npcLabel)
         {
             return StartCoroutine(TypeText(textToType, textLabel, npcLabel));
         }
 
-        private void Update()
+        public void ApplyAnimation(int action)
         {
-            if (Input.GetButtonDown("Submit") || Input.GetMouseButtonDown(0)) 
-                skip = true;
-            
             var dialogueUI = GetComponent<DialogueUI>();
+            if (dialogueUI == null || !dialogueUI.isAnimated || dialogueUI.animator == null) return;
+
+            dialogueUI.animator.SetBool("Action1", action == 1);
+            dialogueUI.animator.SetBool("Action2", action == 2);
+            dialogueUI.animator.SetBool("Action3", action == 3);
             
-            if (dialogueUI == null || !dialogueUI.isAnimated) return;
-            switch (actionFactor)
+            if (action != 0) return;
+            dialogueUI.animator.SetBool("Action1", false);
+            dialogueUI.animator.SetBool("Action2", false);
+            dialogueUI.animator.SetBool("Action3", false);
+        }
+
+        private List<TextSegment> ParseSegments(string rawText)
+        {
+            var segments = new List<TextSegment>();
+            var currentSpeed = originalTypingSpeed;
+            var currentAction = 0;
+            var currentText = new System.Text.StringBuilder();
+
+            for (var i = 0; i < rawText.Length; i++)
             {
-                case 1:
-                    dialogueUI.animator.SetBool("Action1", true);
-                    dialogueUI.animator.SetBool("Action2", false);
-                    dialogueUI.animator.SetBool("Action3", false);
-                    break;
-                case 2:
-                    dialogueUI.animator.SetBool("Action2", true);
-                    dialogueUI.animator.SetBool("Action1", false);
-                    dialogueUI.animator.SetBool("Action3", false);
-                    break;
-                case 3:
-                    dialogueUI.animator.SetBool("Action3", true);
-                    dialogueUI.animator.SetBool("Action1", false);
-                    dialogueUI.animator.SetBool("Action2", false);
-                    break;
-                default:
-                    dialogueUI.animator.SetBool("Action1", false);
-                    dialogueUI.animator.SetBool("Action2", false);
-                    dialogueUI.animator.SetBool("Action3", false);
-                    break;
+                char c = rawText[i];
+
+                // Check for control characters
+                if (Array.IndexOf(speedControlChars, c) != -1 || Array.IndexOf(actionControlChars, c) != -1)
+                {
+                    // Flush current text to a segment if it's not empty
+                    if (currentText.Length > 0)
+                    {
+                        segments.Add(new TextSegment { text = currentText.ToString(), speed = currentSpeed, action = currentAction });
+                        currentText.Clear();
+                    }
+
+                    if (Array.IndexOf(speedControlChars, c) != -1)
+                    {
+                        if (c == '#') currentSpeed /= textSpeedMultiplier;
+                        else if (c == '*') currentSpeed *= textSpeedMultiplier;
+                    }
+                    else if (Array.IndexOf(actionControlChars, c) != -1)
+                    {
+                        switch (c)
+                        {
+                            case '|': currentAction = 1; break;
+                            case '/': currentAction = 2; break;
+                            case '_': currentAction = 3; break;
+                            case '~': currentAction = 0; break;
+                        }
+                    }
+                    continue;
+                }
+
+                // Check for punctuation pauses
+                if (c == '.' || c == ',' || c == '?' || c == '!' || c == ':' || c == ';')
+                {
+                    // Flush current text
+                    if (currentText.Length > 0)
+                    {
+                        segments.Add(new TextSegment { text = currentText.ToString(), speed = currentSpeed, action = currentAction });
+                        currentText.Clear();
+                    }
+
+                    // Add punctuation as its own segment
+                    segments.Add(new TextSegment { text = c.ToString(), speed = punctuationPause, action = currentAction, isPunctuation = true });
+                }
+                else
+                {
+                    currentText.Append(c);
+                }
             }
+
+            if (currentText.Length > 0)
+            {
+                segments.Add(new TextSegment { text = currentText.ToString(), speed = currentSpeed, action = currentAction });
+            }
+
+            return segments;
         }
 
         private IEnumerator TypeText(string textToType, TMP_Text textLabel, TMP_Text npcLabel)
         {
-            typingSpeed = originalTypingSpeed;
-            textLabel.text = string.Empty;
-            actionFactor = 0;
-            skip = false;
-
+            var segments = ParseSegments(textToType);
             var cleanText = RemoveControlCharacters(textToType);
 
-            for (var i = 0; i < textToType.Length; i++)
+            textLabel.text = cleanText;
+            textLabel.maxVisibleCharacters = 0;
+            skip = false;
+
+            var visibleCharacters = 0;
+
+            foreach (var segment in segments)
             {
-                if (Array.IndexOf(speedControlChars, textToType[i]) != -1)
+                actionFactor = segment.action;
+                ApplyAnimation(actionFactor);
+                typingSpeed = segment.speed;
+
+                for (var i = 0; i < segment.text.Length; i++)
                 {
-                    if (i + 1 < textToType.Length)
-                    {
-                        if (textToType[i] == '#') typingSpeed /= textSpeedMultiplier;
-                        else if (textToType[i] == '*') typingSpeed *= textSpeedMultiplier;
-                        i++;
-                    }
-                    else Debug.LogWarning($"TypeWriterFX: Speed control character '{textToType[i]}' at end of string. Ignoring.");
-                }
+                    visibleCharacters++;
+                    textLabel.maxVisibleCharacters = visibleCharacters;
 
-                var dialogueUI = GetComponent<DialogueUI>();
-                if (dialogueUI != null && dialogueUI.isAnimated)
-                {
-                    if (Array.IndexOf(actionControlChars, textToType[i]) != -1)
-                    {
-                        if (i + 1 < textToType.Length)
-                        {
-                            switch (textToType[i])
-                            {
-                                case '|': actionFactor = 1; break;
-                                case '/': actionFactor = 2; break;
-                                case '_': actionFactor = 3; break;
-                                case '~': actionFactor = 0; break;
-                            }
+                    if (skip) break;
 
-                            i++;
-                        }
-                        else Debug.LogWarning($"TypeWriterFX: Action control character '{textToType[i]}' at end of string. Ignoring.");
-                    }
-                }
-
-                if (i < textToType.Length) textLabel.text += textToType[i];
-                
-                if (i < textToType.Length && (textToType[i] == '.' || textToType[i] == ',' || textToType[i] == '?' || textToType[i] == '!' || textToType[i] == ':' || textToType[i] == ';')) 
-                    yield return new WaitForSeconds(punctuationPause);
-                else
                     yield return new WaitForSeconds(typingSpeed);
-                
-
-                if (skip)
-                {
-                    textLabel.text = cleanText;
-                    yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
-                    break;
                 }
+
+                if (skip) break;
             }
 
-            textLabel.text = cleanText;
+            textLabel.maxVisibleCharacters = cleanText.Length;
+
+            if (skip)
+            {
+                yield return new WaitUntil(() => input.UI.Submit.WasPressedThisFrame());
+            }
+        }
+
+        private void Update()
+        {
+            if (input.UI.Submit.WasPressedThisFrame())
+                skip = true;
         }
 
         private string RemoveControlCharacters(string originalText)
         {
-            // Combine all control characters into a single regex pattern
-            // Escaping special regex characters like *, /, |, _
-            var pattern = "[" + Regex.Escape(new string(speedControlChars)) +
-                             Regex.Escape(new string(actionControlChars)) + "]";
-
-            var result = "";
+            var result = new System.Text.StringBuilder();
             for (var i = 0; i < originalText.Length; i++)
             {
                 var currentChar = originalText[i];
-                if (Array.IndexOf(speedControlChars, currentChar) != -1 ||
-                    Array.IndexOf(actionControlChars, currentChar) != -1)
+                if (Array.IndexOf(speedControlChars, currentChar) == -1 &&
+                    Array.IndexOf(actionControlChars, currentChar) == -1)
                 {
-                    // If it's a control character, skip it and the next character
-                    //i++; // Skip the character that follows the control character too
+                    result.Append(currentChar);
                 }
-                else result += currentChar;
             }
-
-            return result;
-
-            // Alternative using Regex (if patterns are simpler, e.g., just removing the control char itself)
-            // string pattern = @"[#*|/_~]"; // Matches any of your control characters
-            // return Regex.Replace(originalText, pattern, "");
+            return result.ToString();
         }
     }
 }

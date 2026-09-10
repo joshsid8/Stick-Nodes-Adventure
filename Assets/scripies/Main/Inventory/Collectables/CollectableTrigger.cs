@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using scripies.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class CollectableTrigger : MonoBehaviour
 {
+    
     private Collectable collectable;
     
     private SpriteRenderer spriteRenderer;

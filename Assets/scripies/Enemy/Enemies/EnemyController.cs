@@ -138,17 +138,19 @@ namespace scripies.Enemy
             switch (enemyState)
             {
                 case EnemyState.Idle:
-                    patrol.isPatrolling = false;
                     patrol.enabled = true;
-                    attack.enabled = false;
-                    break;
+                    patrol.isPatrolling = false;
+                    goto lostPlayer;
                 case EnemyState.Patrolling:
                     patrol.enabled = true;
+                lostPlayer:
                     patrol.hasFoundPlayer = false;
                     patrol.isPatrolling = true;
                     zone.enabled = false;
                     attack.canAttack = true;
                     attack.enabled = false;
+                    jump.isJumping = false;
+                    isAggressive = false;
                     break;
                 case EnemyState.Zoning:
                     patrol.enabled = false;
@@ -164,6 +166,8 @@ namespace scripies.Enemy
                     patrol.enabled = false;
                     zone.enabled = false;
                     attack.enabled = false;
+                    jump.isJumping = false;
+                    isAggressive = false;
                     break;
                 case EnemyState.Stunned:
                 default:

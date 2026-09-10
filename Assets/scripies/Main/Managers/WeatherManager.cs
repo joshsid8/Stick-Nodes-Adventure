@@ -46,15 +46,27 @@ public class WeatherManager : MonoBehaviour
         preValues[1] = player.pc.movementSpeed;
     }
 
-    public void SetWeather()
+    public WeatherType GetTargetWeather()
     {
         var rng = Random.Range(0, 101);
-        if (randomWeather && rng <= weatherChance) weatherType = mm.undiscoveredMap ? WeatherType.Clear : (WeatherType)Random.Range(1, 4);
+        var targetWeather = weatherType;
+        
+        if (randomWeather && rng <= weatherChance) 
+            targetWeather = mm.undiscoveredMap ? WeatherType.Clear : (WeatherType)Random.Range(1, 4);
         else if (randomWeather && weatherType != WeatherType.Clear)
         {
             var rng2 = Random.Range(0, 101);
-            if (rng2 <= 50) weatherType = weatherType = WeatherType.Clear;
+            if (rng2 <= 50) targetWeather = WeatherType.Clear;
         }
+        
+        return targetWeather;
+    }
+
+    public void SetWeather(WeatherType? forcedWeather = null)
+    {
+        if (forcedWeather.HasValue) weatherType = forcedWeather.Value;
+        else weatherType = GetTargetWeather();
+        
         switch (weatherType)
         {
             case WeatherType.Clear:

@@ -13,14 +13,17 @@ MonoBehaviour:
   m_Name: angy 8
   m_EditorClassIdentifier: 
   npcName: Informaton...
-  dialogue:
-  - Thats what i thought! Get outta my face
   dialogueThread:
   - thread: Thats what i thought! Get outta my face
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 10
+    zoomSpeed: 1
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
-  choiceQuestion: 
   isAnimated: 0
   yesResponse:
     responseText: I beat the Boss!
@@ -29,27 +32,18 @@ MonoBehaviour:
     responseText: Dont worry...
     dialogueObject: {fileID: 0}
   nameColour: {r: 0.49056602, g: 0, b: 0, a: 1}
-  appliesFloatChange: 0
-  targetFloatVariables: []
-  newFloatValues: []
-  appliesBooleanChange: 0
-  targetBoolVariables: []
-  newBoolValues: 
+  applyBools: []
+  applyFloats: []
   willGiveQuest: 0
   questToOffer: {fileID: 0}
-  isQuestInteraction: 0
   itemCheckFailureDialogue: {fileID: 0}
-  completeSpeakQuestOnClose: 0
-  derivedDialogue: {fileID: 0}
-  canDropItem: 0
-  itemDrop: []
   itemType: []
   canBeColoured: 0
-  colour: []
-  colourIndex: 0
   canBeBold: 0
-  bold: 
   speaker: 
-  alteredDialogue: {fileID: 0}
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

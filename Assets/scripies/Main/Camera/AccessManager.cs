@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class AccessManager : MonoBehaviour
 {
     private enum Objectives { DefeatEnemy, FindKeys, DefeatBoss, UnlockBadge }
@@ -14,9 +15,14 @@ public class AccessManager : MonoBehaviour
     public GameObject boss;
     public CollectableSOBase[] keys;
     public BadgeSO badgeSo;
+    [SerializeField] private bool checkOnTrigger = true;
     private bool playerDetected;
 
-    private void Awake() => doorObjs = GetComponentsInChildren<DoorObject>().ToList(); // SINCE WHEN DID TOLIST EXIST?! MY LIIIIIIFFFFEEE!!!
+    private void Awake()
+    {
+        if (doorObjs.Count == 0) doorObjs = GetComponentsInChildren<DoorObject>().ToList(); // SINCE WHEN DID TOLIST EXIST?! MY LIIIIIIFFFFEEE!!!
+        playerDetected = !checkOnTrigger;
+    }
 
     private void OnEnable()
     {
@@ -45,6 +51,7 @@ public class AccessManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("Open Doors")]
     private void OpenDoors()
     {
         if (isOpen) return;
@@ -100,7 +107,7 @@ public class AccessManager : MonoBehaviour
     
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) playerDetected = true;
+        if (collision.gameObject.CompareTag("Player") && checkOnTrigger) playerDetected = true;
         
         if (isOpen) return;
         switch (objective)
@@ -116,13 +123,14 @@ public class AccessManager : MonoBehaviour
                     enemies.Remove(collision.gameObject);
                 break;
             case Objectives.FindKeys:
+            case Objectives.UnlockBadge:
                 playerDetected = collision.gameObject.CompareTag("Player");
                 break;
             case Objectives.DefeatBoss:
                 if (collision.gameObject.CompareTag("Boss")) boss = collision.gameObject;
                 break;
             default:
-                print("Clueless.");
+                print($"Clueless: {objective}");
                 break;
         }
     }
@@ -142,7 +150,7 @@ public class AccessManager : MonoBehaviour
                 print($"{enemy} is NNNNNOT the same as {collision.gameObject}");
             }
         }
-        else if (collision.gameObject.CompareTag("Player")) playerDetected = false;
+        else if (collision.gameObject.CompareTag("Player") && checkOnTrigger) playerDetected = false;
         else if (collision.gameObject.CompareTag("Boss"))
             boss.transform.position =
                 new Vector2(GetComponent<Collider2D>().bounds.center.x, boss.transform.position.y);

@@ -213,6 +213,7 @@ public class PlayerManager : MonoBehaviour
                 break;
             case "PlayerHealth":
                 ph.playerHealth = additive ? ph.playerHealth + value : value;
+                ph.CheckStatus();
                 break;
             case "PlayerRegen":
                 if (ph != null) ph.regenerationMultiplier = additive ? ph.regenerationMultiplier + value : value;

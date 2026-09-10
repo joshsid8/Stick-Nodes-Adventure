@@ -142,7 +142,7 @@ namespace scripies.Player
         }
 
         // Start is called before the first frame update
-        private void Start()
+        private IEnumerator Start()
         {
             canAct = true;
             defaultGravity = rb.gravityScale;
@@ -166,7 +166,20 @@ namespace scripies.Player
                 canWallJump = true;
                 canDoubleJump = true;
             }
+            yield return new WaitForSeconds(0.5f);
+            var isFalling = rb.linearVelocity.y < 0;
+            if (isFalling)
+            {
+                print("Player is falling out of the world?!");
+                yield return new WaitForSeconds(1);
+                if (rb.linearVelocity.y < 0)
+                {
+                    print("respawning");
+                    StartCoroutine(PlayerHealth.Instance.Spawn());
+                }
+            }
             #endif
+            yield return null;
         }
         
         [ContextMenu("Teleport Player a lil bit lol")] public void TeleportToSpot() => rb.MovePosition(new Vector2(transform.position.x + 5, transform.position.y + 5));
@@ -582,7 +595,7 @@ namespace scripies.Player
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct PlayerSaveCurrentData
     {
         public Vector3 position;

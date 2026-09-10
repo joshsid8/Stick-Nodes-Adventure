@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3946a1d852dd20248a61d67d36716b47, type: 3}
+  m_Name: Complete Trial
+  m_EditorClassIdentifier: scripies::BadgeSO
+  itemName: Complete Noxu's Trial
+  itemDescription: Youhave successfully up and down the trial in Modai Village!
+  itemSprite: {fileID: 6533358136819214859, guid: 59458430644330c4694cbd09db1baf50, type: 3}

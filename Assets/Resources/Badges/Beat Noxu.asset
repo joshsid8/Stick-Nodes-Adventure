@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: scripies::Badge
   itemName: Spar Successfully with Noxu
   itemDescription: You proved yourself worthy!
-  itemSprite: {fileID: 0}
+  itemSprite: {fileID: -3462183450620985132, guid: 8950f287f1d198e44b2c190b24ddb59c, type: 3}

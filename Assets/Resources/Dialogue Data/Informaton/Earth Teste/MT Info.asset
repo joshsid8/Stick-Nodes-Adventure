@@ -17,13 +17,31 @@ MonoBehaviour:
   - thread: We welcome you to our humble Modai Village!
     dialogueColour: {r: 0.26415092, g: 0.11089354, b: 0.11089354, a: 1}
     isBold: 1
-  - thread: You can either take the door to the entrance (WIP), or complete this
-      trial for a chance to prove your worth to the chief of the Temple!
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
+  - thread: Make your way through this trail in order to meet the chief of the village.
+      Be careful, however, you will need to speak to him in order to return safely
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: "We're looking forward to meeting you!\n\t\t\t\t\t\t\t\t- Modai Village"
     dialogueColour: {r: 0.2627451, g: 0.15686275, b: 0.15686275, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
   isAnimated: 0
   yesResponse:
@@ -42,6 +60,9 @@ MonoBehaviour:
   canBeColoured: 0
   canBeBold: 1
   speaker: 
-  alteredDialogue: {fileID: 0}
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  openShopOnClose: 0
+  respeakable: 0

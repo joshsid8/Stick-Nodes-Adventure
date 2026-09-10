@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7815146938817235339}
   - component: {fileID: 8305340579794474787}
   - component: {fileID: 3128955811597120186}
-  m_Layer: 7
+  m_Layer: 20
   m_Name: TeleDoor
   m_TagString: TeleDoor
   m_Icon: {fileID: 0}
@@ -115,10 +115,10 @@ MonoBehaviour:
   sceneToTeleport:
     m_SceneAsset: {fileID: 102900000, guid: af137e695d9fbfd4887972feca53a00d, type: 3}
     m_SceneName: Default Teste
+  connectingDoor: 
   inRange: 0
   teleporterSize: {x: 2.86, y: 4.78}
   enterIndicator: {fileID: 3868662999927243602}
-  connectingDoor: 
   teleportSfx: {fileID: 0}
   doesDamage: 0
   damage: 20
@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1386247984924157901}
   - component: {fileID: 3387410665608843372}
-  m_Layer: 11
+  m_Layer: 20
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3621895889625953966}
   - component: {fileID: 8396042885829707116}
-  m_Layer: 7
+  m_Layer: 20
   m_Name: Telepoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

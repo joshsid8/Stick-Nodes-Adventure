@@ -48,6 +48,8 @@ namespace scripies.Core
         public static Action<int, bool> PlayMusic;
         
         public static Action<GameObject> DropLoot;
+        public static Action OnCollect;
+
         public static Action<float> StopTime;
         public static Action<Image, float, float> JumpScare;
         
@@ -83,6 +85,8 @@ namespace scripies.Core
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
         
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);
+        public static void TriggerCollect() => OnCollect?.Invoke();
+
         public static void TriggerStopTime(float time) => StopTime?.Invoke(time);
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
     }

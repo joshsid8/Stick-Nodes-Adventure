@@ -63,8 +63,7 @@ MonoBehaviour:
   canBeBold: 0
   speaker: 
   dialoguesToAdd: []
-  dialoguesToRemove:
-  - {fileID: 11400000, guid: a5fe877f9e4656f4f80bb92de2d3a2d7, type: 2}
+  dialoguesToRemove: []
   externalInstance: Imo
   alteredExternalDialogues:
   - {fileID: 11400000, guid: ac8ea9b7cbf891046b04b0fb5b623b2c, type: 2}

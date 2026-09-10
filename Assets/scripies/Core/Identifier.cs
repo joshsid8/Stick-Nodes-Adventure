@@ -9,10 +9,10 @@ namespace scripies.Core
     public class Identifier : MonoBehaviour
     {
         //These will be variables of what this object is, just for efficient queries and filters 
-        [Tooltip("This is for whenever you want to target a certain object externally. The ID format is currently 000 for enemies..")]
+        [Tooltip("This is for whenever you want to target a certain object externally. The ID format is currently 000 for enemies.\nEnsure the ID isn't 0 for the data to be saved")]
         public int id;
         public int spawnId;
-        public enum ObjectType{Entity, Item, [Obsolete] Door, Npc, [Obsolete] Spawner, Checkpoint}
+        public enum ObjectType{Entity, Item, [Obsolete] Door, Npc, Spawner, Checkpoint}
         [EnumButtons] public ObjectType typeOfObject;
         
         [HideInInspector] public MonoBehaviour mapManager;

@@ -50,7 +50,7 @@ public class Teleporter : MonoBehaviour
     {
         switch (collision.tag)
         {
-            case "Player" when !isSceneTeleport && !isTeledoor:
+            case "Player" when !isTeledoor:
             {
                 if (tagsToIgnore.Contains(collision.tag)) return;
                 if (!forcePlayerTeleport) StartCoroutine(PlayerHealth.Instance.Spawn());

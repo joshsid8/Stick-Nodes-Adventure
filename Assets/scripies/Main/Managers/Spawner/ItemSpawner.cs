@@ -12,8 +12,9 @@ public class ItemSpawner : SpawnerBase
     [SerializeField] private bool disableOnCollect;
     [SerializeField] private ItemSpawn[] itemSpawner;
     private string scene;
+    [SerializeField] private bool randomiseSpawn = true;
     [SerializeField] private GameObject[] spawnPoints;
-    public List<GameObject> spawnedObjects = new List<GameObject>();
+    public List<GameObject> spawnedObjects = new();
     
     [SerializeField] private bool spawnOnTrigger;
     [EnumButtons] public TriggerTag triggerTag;
@@ -24,52 +25,62 @@ public class ItemSpawner : SpawnerBase
     {
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.RegisterSpawner(gameObject);
+        GameEvents.OnCollect += CheckItemsStatus;
     }
 
     private void OnDisable()
     {
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.UnregisterSpawner(gameObject);
+        GameEvents.OnCollect -= CheckItemsStatus;
     }
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()  {
-        StartCoroutine(Spawn());
+        
+        if (isOneTime) StartCoroutine(Spawn());
     }
 
-    private void Update()
+    private void CheckItemsStatus()
     {
+        if (!disableOnCollect) return;
+        var allCollected = false;
         foreach (var obj in spawnedObjects)
         {
-            if (obj.IsDestroyed() && disableOnCollect) isOneTime = true;
+            if (!obj.IsDestroyed()) continue;
+            allCollected = true;
         }
+        if (allCollected) isOneTime = true;
     }
 
     protected override IEnumerator Spawn()
     {
         scene = gameObject.scene.name;
-        if (!isOneTime)
+        if (isOneTime) yield break;
+        yield return new WaitForSeconds(spawnInterval);
+        foreach (var spawn in itemSpawner)
         {
-            yield return new WaitForSeconds(spawnInterval);
-            foreach (var spawn in itemSpawner)
+            var spawnChoice = randomiseSpawn 
+                ? Random.Range(0, spawnPoints.Length) :
+                Array.IndexOf(itemSpawner, spawn);
+            if (spawnChoice == -1) spawnChoice = 0; // Apparently, IndexOf returns -1 if the index isn't found. good to know!
+            
+            var instance = Instantiate(spawn.objectToSpawn,
+                spawnPoints[spawnChoice].transform.position, Quaternion.identity);
+            
+            if (spawn.collectable != null)
             {
-                var instance = Instantiate(spawn.objectToSpawn,
-                    spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position, Quaternion.identity);
-                
-                if (spawn.collectable != null)
-                {
-                    instance.GetComponent<Collectable>().collectable = spawn.collectable;
-                    instance.GetComponent<Collectable>().isStray = false;
-                }
-                
-                var targetScene = SceneManager.GetSceneByName(scene);
-                if (targetScene.IsValid() && targetScene.isLoaded)
-                {
-                    instance.GetComponent<CollectableTrigger>().SetProperties(targetScene);
-                    spawnedObjects.Add(instance);
-                }
+                instance.GetComponent<Collectable>().collectable = spawn.collectable;
+                instance.GetComponent<Collectable>().isStray = false;
+            }
+            
+            var targetScene = SceneManager.GetSceneByName(scene);
+            if (targetScene.IsValid() && targetScene.isLoaded)
+            {
+                instance.GetComponent<CollectableTrigger>().SetProperties(targetScene);
+                spawnedObjects.Add(instance);
             }
         }
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

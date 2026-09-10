@@ -33,7 +33,7 @@ public sealed class InvIndex
         OnInventoryChanged?.Invoke();
     }
 
-    public int GetCount(CollectableSOBase id) => counts.TryGetValue(id, out var c) ? c : 0;
+    public int GetCount(CollectableSOBase id) => counts.GetValueOrDefault(id, 0);
 
     public bool HasAtLeast(CollectableSOBase id, int count) => GetCount(id) >= count;
 
@@ -81,9 +81,6 @@ public struct PlayerSaveIndex
 
     public static PlayerSaveIndex CreateNew()
     {
-        return new PlayerSaveIndex
-        {
-            items = new List<SerializableItem>()
-        };
+        return new PlayerSaveIndex { items = new List<SerializableItem>() };
     }
 }

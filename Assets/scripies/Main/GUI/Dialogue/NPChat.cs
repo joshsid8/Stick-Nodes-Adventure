@@ -88,8 +88,8 @@ namespace scripies.Dialogue
                     {
                         shopKeeper.StartShop();
                     }
+                    if (moveCamToNpc && DialogueUI.Instance.isActive) CameraEventManager.Instance.ChangeTarget(gameObject);
                     CameraEventManager.Instance.ResetCamera();
-                    if (moveCamToNpc) CameraEventManager.Instance.ChangeTarget(gameObject);
                 }
             }
             else if (indicator != null) indicator.SetActive(false);

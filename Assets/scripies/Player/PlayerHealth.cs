@@ -138,7 +138,7 @@ namespace scripies.Player
 
         private void OnDestroy()
         {
-           if (!Application.isEditor) return;
+           if (Application.isEditor) return;
            GameEvents.TriggerJumpScare();
            GameEvents.TriggerPlaySound();
            throw new MissingMemberException("THE PLAYER GOT DESTROYED?! WHAT THE HAIL HAPPENED!?");
@@ -184,7 +184,7 @@ namespace scripies.Player
             StartCoroutine(SpawnPeriod());
         }
 
-        private void CheckStatus(float damage = 0)
+        public void CheckStatus(float damage = 0)
         {
             if (playerHealth > 0 || isDead) return;
             StartCoroutine(Death());

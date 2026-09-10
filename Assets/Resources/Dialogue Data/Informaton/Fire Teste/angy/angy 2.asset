@@ -17,12 +17,30 @@ MonoBehaviour:
   - thread: Why are you stiill here?
     dialogueColour: {r: 0.24705882, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: In my face?!
     dialogueColour: {r: 0.56078434, g: 0, b: 0, a: 1}
     isBold: 1
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Didnt i tell you to leave me be?! Damn!
     dialogueColour: {r: 0.5176471, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 0
   isAnimated: 0
   yesResponse:
@@ -41,6 +59,10 @@ MonoBehaviour:
   canBeColoured: 1
   canBeBold: 0
   speaker: 
-  alteredDialogue: {fileID: 0}
-  externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  dialoguesToAdd: []
+  dialoguesToRemove: []
+  externalInstance: Izuno
+  alteredExternalDialogues:
+  - {fileID: 11400000, guid: b8bdcc227971c624e8d67da75903b581, type: 2}
+  openShopOnClose: 0
+  respeakable: 0

@@ -35,6 +35,9 @@ public class MainMenuManager : MonoBehaviour
             return; 
         }
         Instance = this;
+        
+        if (SceneManager.GetSceneByName("Persistent Objects").isLoaded) SceneManager.UnloadSceneAsync("Persistent Objects");
+        
         input = new PlayerInput();
     }
 

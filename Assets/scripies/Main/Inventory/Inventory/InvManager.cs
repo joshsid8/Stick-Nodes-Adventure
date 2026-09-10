@@ -196,27 +196,61 @@ public class InvManager : GUIBase
     {
         data.storedItems = new CollectableSOBase[itemSlots.Length];
         for (var i = 0; i < itemSlots.Length; i++) data.storedItems[i] = itemSlots[i].itemScriptableObject;
+
+        data.equippedAspects = new CollectableSOBase[aspectSlots.Length];
+        for (var i = 0; i < aspectSlots.Length; i++) data.equippedAspects[i] = aspectSlots[i].aspectStats;
+
+        data.equippedAbilities = new CollectableSOBase[abilitySlots.Length];
+        for (var i = 0; i < abilitySlots.Length; i++) data.equippedAbilities[i] = abilitySlots[i].abilityStats;
     }
     
     public void Load(PlayerSaveInventory data)
     {
-        foreach (var slot in itemSlots) if (slot != null) slot.ClearSlot();
+        InitializeAllSlots();
         
-        for (var i = 0; i < itemSlots.Length; i++)
+        // Load stored items
+        if (data.storedItems != null)
         {
-            var item = data.storedItems[i] as ItemSO;
-            var aspect = data.storedItems[i] as AspectSO;
-            var ability = data.storedItems[i] as AbilitySO;
-            
-            if (data.storedItems[i] is ItemSO) 
-                AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, 
-                    item.itemType, item);
-            
-            else if (data.storedItems[i] is AspectSO)
-                AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect);
-            
-            else if (data.storedItems[i] is AbilitySO)
-                AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
+            for (var i = 0; i < Mathf.Min(data.storedItems.Length, itemSlots.Length); i++)
+            {
+                var so = data.storedItems[i];
+                if (so == null) continue;
+                
+                if (so is ItemSO item) 
+                    AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, 
+                        item.itemType, item);
+                else if (so is ConsumableSO consumable)
+                    AddItem(consumable.itemName, 1, consumable.itemSprite, consumable.itemDescription, consumable.maxItemAmount, 
+                        "Consumable", consumable);
+                else if (so is AspectSO aspect)
+                    AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect);
+                else if (so is AbilitySO ability)
+                    AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
+            }
+        }
+
+        // Load equipped aspects
+        if (data.equippedAspects != null)
+        {
+            for (var i = 0; i < Mathf.Min(data.equippedAspects.Length, aspectSlots.Length); i++)
+            {
+                if (data.equippedAspects[i] is AspectSO aspect)
+                {
+                    aspectSlots[i].AddAspect(aspect.itemName, aspect.itemSprite, aspect.itemDescription, aspect);
+                }
+            }
+        }
+
+        // Load equipped abilities
+        if (data.equippedAbilities != null)
+        {
+            for (var i = 0; i < Mathf.Min(data.equippedAbilities.Length, abilitySlots.Length); i++)
+            {
+                if (data.equippedAbilities[i] is AbilitySO ability)
+                {
+                    abilitySlots[i].AddAbility(ability.itemName, ability.itemSprite, ability.itemDescription, ability, i);
+                }
+            }
         }
     }
 }
@@ -225,4 +259,6 @@ public class InvManager : GUIBase
 public struct PlayerSaveInventory
 {
     public CollectableSOBase[] storedItems;
+    public CollectableSOBase[] equippedAspects;
+    public CollectableSOBase[] equippedAbilities;
 }
