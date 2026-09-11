@@ -6,7 +6,12 @@ public class Pillar : AbilityBase
 { 
     //PILLAR IS SO BARREN NOW!!!
     private void LateUpdate() => isFacingRightDirection = !GameObject.FindGameObjectWithTag("Player").GetComponent<PerformAbility>().pa.IsFacingRight;
-    public override void SetValues(int factor, bool facingRight) => typeFactor = factor;
+    public override void SetValues(int factor, bool facingRight, GameObject caster)
+    {
+        typeFactor = factor;
+        abilityCaster = caster;
+        // isFacingRight is already updated
+    }
     
     private void OnDestroy()
     {

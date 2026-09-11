@@ -1,6 +1,8 @@
+using System;
 using scripies.Core;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace scripies.Enemy
 {
@@ -31,7 +33,7 @@ namespace scripies.Enemy
         private Rigidbody2D rb;
         private Transform playerTransform;
         private IPlayerStatus ps;
-        private bool isAggressive;
+        [SerializeField] private bool isAggressive;
         public float distToPlayerX;
         public float backupSpareTimer;
 
@@ -106,15 +108,17 @@ namespace scripies.Enemy
                     GameEvents.TriggerAggressiveStatusChanged(this, true);
                 }
             }
-            else if (enemyState == EnemyState.Dead || enemyState == EnemyState.Idle || enemyState == EnemyState.Patrolling)
-            {
-                if (isAggressive)
-                {
-                    isAggressive = false;
-                    GameEvents.TriggerAggressiveStatusChanged(this, false);
-                }
-                if (jump != null) jump.isJumping = false;
-            }
+            // if (enemyState == EnemyState.Dead || enemyState == EnemyState.Idle || enemyState == EnemyState.Patrolling)
+            // {
+            //     if (isAggressive)
+            //     {
+            //         print($"{gameObject.name} no longer aggressive");
+            //         isAggressive = false;
+            //         GameEvents.TriggerAggressiveStatusChanged(this, false);
+            //
+            //         if (jump != null) jump.isJumping = false;
+            //     }
+            // }
 
             if (jump != null && ps.AggressiveEnemies > 1) jump.isJumping = isAggressive; 
             canFacePlayer = attack.canFacePlayer;
@@ -129,6 +133,11 @@ namespace scripies.Enemy
             if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling &&
                 enemyState != EnemyState.Dead) FacePlayer();
             if (ps.IsDead && enemyState != EnemyState.Patrolling) ChangeState(EnemyState.Patrolling);
+        }
+
+        private void OnDestroy()
+        {
+            LostPlayer();
         }
 
         public void ChangeState(EnemyState newState)
@@ -150,7 +159,6 @@ namespace scripies.Enemy
                     attack.canAttack = true;
                     attack.enabled = false;
                     jump.isJumping = false;
-                    isAggressive = false;
                     break;
                 case EnemyState.Zoning:
                     patrol.enabled = false;
@@ -178,12 +186,16 @@ namespace scripies.Enemy
         public void LostPlayer()
         {
             backupSpareTimer = 10;
-            jump.backupTimers[0] = 10;
-            jump.backupTimers[1] = 10;
-            attack.spareTimer = 10;
+            if (jump != null)
+            {
+                jump.backupTimers[0] = 10;
+                jump.backupTimers[1] = 10;
+            }
+            if (attack != null) attack.spareTimer = 10;
             ChangeState(EnemyState.Patrolling);
-            if (ps.AggressiveEnemies <= 0) 
-                GameEvents.TriggerAddPlayerCombat(0, false, "EnemyLostPlayer");
+            isAggressive = false;
+            GameEvents.TriggerAggressiveStatusChanged(this, false);
+            if (ps.AggressiveEnemies <= 0) GameEvents.TriggerAddPlayerCombat(0, false, "EnemyLostPlayer");
         }
 
         private void InactiveState(int factor = 1)

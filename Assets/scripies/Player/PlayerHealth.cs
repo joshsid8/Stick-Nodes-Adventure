@@ -211,6 +211,7 @@ namespace scripies.Player
                 deathSound = (null, false);
             }
             #endif
+            GameEvents.TriggerMuteMusic();
             GameEvents.TriggerPlaySound(deathSound.Item1, deathSound.Item2);
             //Shenanigans.Instance.ToggleFreezeCamera();
             GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
@@ -227,6 +228,7 @@ namespace scripies.Player
             yield return new WaitForSeconds(respawnTime / 2);
             
             StartCoroutine(Spawn(0, true));
+            GameEvents.TriggerMuteMusic(false);
             playerHealth = playerMaxHealth * 0.25f;
             isDead = false;
             pc.canAct = true;
@@ -274,6 +276,7 @@ namespace scripies.Player
             }
             
             if (aggressor.Contains("Enemy")) ApplyCombat(30, true, aggressor);
+            else if (aggressor.Contains("Boss")) ApplyCombat(30, true, aggressor);
             else if (aggressor.Contains("End")) ResetCombat();
             
             pc.currentDashTime = 0f;
@@ -414,7 +417,7 @@ namespace scripies.Player
             }
             else
             {
-                if (aggressiveEnemies.Contains(target)) aggressiveEnemies.Remove(target);
+                if (aggressiveEnemies.Contains(target) || target == null) aggressiveEnemies.Remove(target);
             }
         }
 

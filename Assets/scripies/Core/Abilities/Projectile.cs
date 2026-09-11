@@ -88,11 +88,6 @@ public class Projectile : AbilityBase
             }
         }
     }
-    public override void SetValues(int factor, bool facingRight)
-    {
-        base.SetValues(factor, facingRight);
-        isFacingRightDirection = facingRight;
-    }
     
     protected void OnTriggerEnter2D(Collider2D collision)
     {
@@ -183,7 +178,7 @@ public class Projectile : AbilityBase
             {
                 var ab = Instantiate(ability.abilityPrefab, transform.position, transform.rotation);
                 ability.SetProperties(ab.GetComponent<AbilityBase>());
-                ab.GetComponent<AbilityBase>().SetValues(typeFactor, isFacingRightDirection);
+                ab.GetComponent<AbilityBase>().SetValues(typeFactor, isFacingRightDirection, gameObject);
             }
         }
         Destroy(gameObject, 0.1f);

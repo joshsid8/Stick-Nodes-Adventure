@@ -46,6 +46,7 @@ namespace scripies.Core
         
         public static Action<AudioClip, bool, GameObject> PlaySound;
         public static Action<int, bool> PlayMusic;
+        public static Action<bool> MuteMusic;
         
         public static Action<GameObject> DropLoot;
         public static Action OnCollect;
@@ -83,6 +84,7 @@ namespace scripies.Core
         
         public static void TriggerPlaySound(AudioClip clip = null, bool randomPitch = true, GameObject source = null) => PlaySound?.Invoke(clip, randomPitch, source);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
+        public static void TriggerMuteMusic(bool toggle = true) => MuteMusic?.Invoke(toggle);
         
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);
         public static void TriggerCollect() => OnCollect?.Invoke();

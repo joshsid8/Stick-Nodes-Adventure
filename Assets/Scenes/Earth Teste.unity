@@ -1336,6 +1336,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: canTurn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: Dialogue
       value: 
       objectReference: {fileID: 11400000, guid: b1c22cc172bc51d4cbf9fde76941f4ce, type: 2}

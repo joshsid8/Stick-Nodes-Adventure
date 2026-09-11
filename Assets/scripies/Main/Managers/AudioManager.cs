@@ -37,6 +37,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         GameEvents.PlaySound += PlaySfx;
         GameEvents.OnDisableGUI += QuietOnGUI;
         GameEvents.OnEnableGUI += QuietOnGUI;
+        GameEvents.MuteMusic += ToggleMuteMusic;
         
         if (backgroundMusic.Length > 2 && backgroundMusic[1] == null && backgroundMusic[2] == null || backgroundMusic.Length > 0 && musicSource.clip == null) 
             PlayMusic(0, false);

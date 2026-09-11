@@ -192,7 +192,7 @@ namespace scripies.Player
             CheckInput();
             CheckMovementDirection();
             CheckIfCanJump();
-            if (!kb.IsBeingKnocked && !isPerformingAction && !isFrozen)
+            if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
             {
                 Jump();
                 DashSettings();

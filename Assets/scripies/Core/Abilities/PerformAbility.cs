@@ -92,7 +92,7 @@ public class PerformAbility : MonoBehaviour
                 if (abScript != null)
                 {
                     ability.SetProperties(abScript);
-                    abScript.SetValues(casterFactor, isFacingRight);
+                    abScript.SetValues(casterFactor, isFacingRight, gameObject);
 
                     if (casterType == CasterType.Enemy) abScript.direction = abilityDirection;
 
@@ -112,7 +112,7 @@ public class PerformAbility : MonoBehaviour
             if (abScript != null)
             {
                 ability.SetProperties(abScript);
-                abScript.SetValues(casterFactor, isFacingRight);
+                abScript.SetValues(casterFactor, isFacingRight, gameObject);
 
                 if (casterType == CasterType.Enemy) abScript.direction = abilityDirection;
 

@@ -14,20 +14,22 @@ public class AspectSO : CollectableSOBase
             Debug.LogWarning("InvManager not found in scene! Cannot add item.");
     }
     
-private string SetDescription()
-{
-    var desc = $"{itemDescription}\n\n---\n\n\n";
-
-    foreach (var prop in aspectProperties)
+    private string SetDescription()
     {
-        var displayName = StatsManager.Instance.GetDisplayName(prop.statName);
-        desc += displayName + " ";
-        
-        desc += prop.statValue > 0 ? $"+{prop.statValue}" : $"{prop.statValue}";
-        if (prop != aspectProperties[^1]) desc += "\n";
+        var desc = $"{itemDescription}\n\n---\n\n";
+        var completed = false;
+        foreach (var prop in aspectProperties)
+        {
+            var displayName = StatsManager.Instance.GetDisplayName(prop.statName);
+            desc += displayName + " ";
+            
+            desc += prop.statValue > 0 ? $"+{prop.statValue}" : $"{prop.statValue}";
+            if (prop != aspectProperties[^1]) desc += "\n";
+            completed = true;
+        }
+        if (!completed) desc += "None";
+        return desc;
     }
-    return desc;
-}
 }
 
 [System.Serializable]

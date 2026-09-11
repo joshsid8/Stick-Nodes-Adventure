@@ -8,6 +8,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
 {
     [Header("Factors")]
     [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
+    public GameObject abilityCaster;
     public int typeFactor;
     public int elementType;
     public int elementFactor = 1;
@@ -78,10 +79,11 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public AudioClip endSfx;
     public AudioClip contactSfx;
 
-    public virtual void SetValues(int factor, bool facingRight)
+    public virtual void SetValues(int factor, bool facingRight, GameObject caster = null)
     {
         typeFactor = factor;
         isFacingRightDirection = facingRight;
+        if (caster != null) abilityCaster = caster;
     }
 
     protected virtual void Awake()
@@ -171,8 +173,12 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     protected void Damageable(IDamageable damageable = null)
     {
         if (damageable == null) return;
+        string aggressor;
+        if (abilityCaster.CompareTag("Boss")) aggressor = "BossAbility";
+        else aggressor = typeFactor switch { 0 => "Ability", 1 => "PlayerAbility", 2 => "EnemyAbility", _ => "Ability" };
+        
         damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType,
-            elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "Ability", 1 => "PlayerAbility", 2 => "EnemyAbility", _ => "Ability" });
+            elementFactor, trueDamage, damageOverTime, procDmg, procInterval, aggressor);
         Vector2 calcDirection;
         if (useRadialKnockback) calcDirection = damageable.Position - transform.position;
         else calcDirection = new Vector2(isFacingRightDirection ? knockbackDirection.x : -knockbackDirection.x, knockbackDirection.y).normalized;

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c113df88118765245ac2a9fc63186bc7, type: 3}
   m_Name: ShockMultiplier
   m_EditorClassIdentifier: 
-  statName: ShockMultiplier
-  displayName: Shock
+  displayName: Firmness
   statDescription: How long you get stunned for, as well as how much further you
     get knocked back. You wont get knocked back by anything if you are 100% FERM

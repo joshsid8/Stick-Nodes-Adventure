@@ -23,12 +23,6 @@ public class Beam : AbilityBase
         if (moveWithCaster && typeFactor == 1) parentObject.transform.position = player.abilityPoint.position;
     }
     
-    public override void SetValues(int factor, bool facingRight)
-    {
-        base.SetValues(factor, facingRight);
-        isFacingRightDirection = facingRight;
-    }
-    
     private void OnDestroy()
     {
         if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);

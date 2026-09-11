@@ -240,13 +240,13 @@ MonoBehaviour:
   - NAttack
   - BDash
   - FDash
+  - Shuriken
   activeAtk:
   - Jump
-  - Shuriken
   - Teleport
   - Fire
+  - Fire
   - FDash
-  - BDash
   antiWallAtk:
   - FDash
   - Teleport
@@ -366,6 +366,7 @@ MonoBehaviour:
   isFacingRight: 1
   moveCamToNpc: 0
   canHaveNullList: 1
+  spokenDialogue: []
   isShopkeeper: 0
 --- !u!95 &769820852523672261
 Animator:

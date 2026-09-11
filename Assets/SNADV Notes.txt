@@ -13,10 +13,10 @@ SNADV Notes
         Instability
         
             Issues from Testing
-                I got spammed null refs whenever an enemy attacks
-                    This is the second time happening, and only happening right after i fight a fishman, after leaving the watery shop
-                    Whenever someone else fights after, they end up zoning, as if they are with someone (who doesnt exist!)
-                    I think jump logic doesnt get cleaned up after an enemy gets destroyed or defeated, making the nullrefs happen
+                Modai Village's items just dont spawn
+                    Also after leaving the village, the entrace is closed
+                        Meaning either the data for origo isnt saving, or some sort of error is happening to stop said data to load >:(
+                Noxu's counter stopped working
                 
             Replicatable or From-Build bugs/problems
 

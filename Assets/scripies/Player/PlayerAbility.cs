@@ -54,6 +54,7 @@ namespace scripies.Player
             pc.input.Player.AbilitySwap.performed += _ => AbilitySwap();
         }
 
+        private float backupTimer;
         // Update is called once per frame!!!
         private void Update()
         {
@@ -62,6 +63,15 @@ namespace scripies.Player
             
             timeBetweenCast += Time.deltaTime;
             if (timeBetweenCast >= 1.5f) spamAmount = 0;
+            if (isPerformingAbility) backupTimer += Time.deltaTime;
+            else backupTimer = 5;
+            if (backupTimer <= 0 && isPerformingAbility) // TODO: This was made as a makeshift fix to stop the player from only being able to walk. Instead of this, make an actual fix
+            {
+                isPerformingAbility = false;
+                isHolding = false;
+                backupTimer = 5;
+                Debug.LogError("You were likely frozen for too long. disabling isPerformingAbility");
+            }
         }
         
         private void Execute(int slot = 0)
