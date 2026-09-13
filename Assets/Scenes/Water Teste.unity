@@ -5168,9 +5168,21 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: teleportType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: thisTeleDoor
+      value: 
+      objectReference: {fileID: 11400000, guid: 661fb09aab7b40b47baadccd6c21e9c8, type: 2}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: connectingDoor
       value: MR Door
       objectReference: {fileID: 0}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: targetTeleDoor
+      value: 
+      objectReference: {fileID: 11400000, guid: 18b3940624986f64096ee9f88db3c706, type: 2}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: sceneToTeleport.m_SceneName
       value: Watery Shop Teste
@@ -5239,6 +5251,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8396042885829707116, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: teleDoorID
+      value: 
+      objectReference: {fileID: 11400000, guid: 661fb09aab7b40b47baadccd6c21e9c8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

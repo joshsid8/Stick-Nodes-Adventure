@@ -17,6 +17,7 @@ public class ResourceDatabase : MonoBehaviour
     private readonly Dictionary<string, QuestSO> questDatabase = new();
     private readonly Dictionary<string, NPC> npcDatabase = new();
     private readonly Dictionary<string, BadgeSO> badgeDatabase = new();
+    private readonly Dictionary<string, TeleDoor> teleDoorDatabase = new();
 
     void Awake()
     {
@@ -68,6 +69,13 @@ public class ResourceDatabase : MonoBehaviour
             if (!badgeDatabase.ContainsKey(badge.name)) badgeDatabase.Add(badge.name, badge);
             else Debug.LogWarning($"[BadgeDatabase] Duplicate badge name found: {badge.name}.");
         }
+        
+        var allTeleDoors = Resources.LoadAll<TeleDoor>("TeleDoors");
+        foreach (var door in allTeleDoors)
+        {
+            if (!teleDoorDatabase.ContainsKey(door.name)) teleDoorDatabase.Add(door.name, door);
+            else Debug.LogWarning($"[TeleDoorDatabase] Duplicate TeleDoor name found: {door.name}.");
+        }
     }
     
     // Items
@@ -117,5 +125,12 @@ public class ResourceDatabase : MonoBehaviour
         if (string.IsNullOrEmpty(badgeName)) return null;
         badgeDatabase.TryGetValue(badgeName, out var badge);
         return badge;
+    }
+
+    public TeleDoor GetTeleDoorByName(string doorName)
+    {
+        if (string.IsNullOrEmpty(doorName)) return null;
+        teleDoorDatabase.TryGetValue(doorName, out var door);
+        return door;
     }
 }

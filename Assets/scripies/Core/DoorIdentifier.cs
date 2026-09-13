@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace scripies.Core
 {
+    // This is obsolete now, for I am using scriptable objects for lookup instead
     public class DoorIdentifier : MonoBehaviour
     {
-        [HideInInspector] public string doorNameID;
-        private void Awake() => doorNameID = transform.parent.gameObject.name;
+        public TeleDoor teleDoorID;
     }
 }

@@ -987,6 +987,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!4 &158151579 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3621895889625953966, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+  m_PrefabInstance: {fileID: 1519337351}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &201548141
 GameObject:
   m_ObjectHideFlags: 0
@@ -2476,6 +2481,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!4 &563418735 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3621895889625953966, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+  m_PrefabInstance: {fileID: 763964408}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &580845220
 GameObject:
   m_ObjectHideFlags: 0
@@ -2920,11 +2930,12 @@ MonoBehaviour:
   teleportTarget: {fileID: 361743893}
   forcePlayerTeleport: 0
   isTeledoor: 0
-  isSceneTeleport: 0
+  teleportType: 0
+  targetTeleDoor: {fileID: 0}
   sceneToTeleport:
     m_SceneAsset: {fileID: 0}
     m_SceneName: 
-  connectingDoor: 
+  previousTeleDoor: {fileID: 0}
   inRange: 0
   teleporterSize: {x: 0, y: 0}
   enterIndicator: {fileID: 0}
@@ -3720,6 +3731,14 @@ PrefabInstance:
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: connectingDoor
       value: NT Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: teleportTarget
+      value: 
+      objectReference: {fileID: 158151579}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: sceneToTeleport.m_SceneAsset
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7815146938817235339, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6544,8 +6563,16 @@ PrefabInstance:
       value: NB Door
       objectReference: {fileID: 0}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: teleportTarget
+      value: 
+      objectReference: {fileID: 563418735}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: isSceneTeleport
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: sceneToTeleport.m_SceneAsset
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7815146938817235339, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_LocalPosition.x

@@ -837,6 +837,8 @@ MonoBehaviour:
   - 1
   sectionObj: {fileID: 1162324168}
   mainSpawnPoint: {fileID: 123635839}
+  undiscoveredMap: 1
+  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
@@ -1357,9 +1359,21 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: teleportType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: thisTeleDoor
+      value: 
+      objectReference: {fileID: 11400000, guid: 3c4f229fece732347b83bb37a8f3189b, type: 2}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: connectingDoor
       value: CVS Door
       objectReference: {fileID: 0}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: previousTeleDoor
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a3d8cc6f7d95dc46a8150416a68c95b, type: 2}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: sceneToTeleport.m_SceneName
       value: Fire Teste
@@ -1367,7 +1381,7 @@ PrefabInstance:
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: sceneToTeleport.m_SceneAsset
       value: 
-      objectReference: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 3868662999927243602, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: m_Layer
       value: 20
@@ -1428,6 +1442,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.87843144
       objectReference: {fileID: 0}
+    - target: {fileID: 8396042885829707116, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: teleDoorID
+      value: 
+      objectReference: {fileID: 11400000, guid: 3c4f229fece732347b83bb37a8f3189b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

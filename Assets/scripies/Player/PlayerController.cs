@@ -272,64 +272,60 @@ namespace scripies.Player
             if (isTouchingWall && !isGrounded && rb.linearVelocity.y < 0 && canWallJump) isWallSliding = true;
             else isWallSliding = false;
 
-            if (isWallSliding)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
-                if (pab.isPerformingAbility) pab.isPerformingAbility = false;
-                if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
-                    StartCoroutine(WallJump());
-            }
+            if (!isWallSliding) return;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
+            if (pab.isPerformingAbility) pab.isPerformingAbility = false;
+            if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
+                StartCoroutine(WallJump());
         }
 
         private IEnumerator WallJump()
         {
             yield return new WaitForSeconds(0.05f);
-            if (isWallSliding && jumpBufferCounter >= 0 && canWallJump && !isDashing)
+            if (!isWallSliding || !(jumpBufferCounter >= 0) || !canWallJump || isDashing) yield break;
+            var wjForce = new Vector2(wallJumpForce * wallJumpDirection.x * (isFacingRight ? -1 : 1),
+                wallJumpForce * wallJumpDirection.y);
+            var weakForce = new Vector2(wallJumpForce * wallJumpDirection.x * (isFacingRight ? -1 : 1),
+                wallJumpForce * wallJumpDirection.y / 3);
+            var wallJumpTimer = wallJumpTime;
+            jumpBufferCounter = 0f;
+            isWallSliding = false;
+            isWallJumping = true;
+            Flip(true);
+            while (wallJumpTimer > 0)
             {
-                var wjForce = new Vector2(wallJumpForce * wallJumpDirection.x * (isFacingRight ? -1 : 1),
-                    wallJumpForce * wallJumpDirection.y);
-                var weakForce = new Vector2(wallJumpForce * wallJumpDirection.x * (isFacingRight ? -1 : 1),
-                    wallJumpForce * wallJumpDirection.y / 3);
-                var wallJumpTimer = wallJumpTime;
-                jumpBufferCounter = 0f;
-                isWallSliding = false;
-                isWallJumping = true;
-                Flip(true);
-                while (wallJumpTimer > 0)
-                {
-                    canFlip = false;
-                    rb.linearVelocity = availableWallsLeft > 0 ? wjForce : weakForce;
-                    wallJumpTimer -= Time.deltaTime;
-                    yield return new WaitForFixedUpdate();
-                }
-                canFlip = true;
-                availableWallsLeft--;
-
-                // lerp stuff i must learn
-                const float easeDuration = 0.1f;
-                var elapsed = 0f;
-                var velocityAtEnd = rb.linearVelocity;
-                while (elapsed < easeDuration && moveInputDir == 0 && !isGrounded)
-                {
-                    elapsed += Time.fixedDeltaTime;
-                    var t = elapsed / easeDuration;
-                    var newX = Mathf.Lerp(velocityAtEnd.x, 0, t);
-                    rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
-                    yield return new WaitForFixedUpdate();
-                }
-
-                if (moveInputDir == 0) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                isWallJumping = false;
+                canFlip = false;
+                rb.linearVelocity = availableWallsLeft > 0 ? wjForce : weakForce;
+                wallJumpTimer -= Time.deltaTime;
+                yield return new WaitForFixedUpdate();
             }
+            canFlip = true;
+            availableWallsLeft--;
+
+            // lerp stuff i must learn
+            const float easeDuration = 0.1f;
+            var elapsed = 0f;
+            var velocityAtEnd = rb.linearVelocity;
+            while (elapsed < easeDuration && moveInputDir == 0 && !isGrounded)
+            {
+                elapsed += Time.fixedDeltaTime;
+                var t = elapsed / easeDuration;
+                var newX = Mathf.Lerp(velocityAtEnd.x, 0, t);
+                rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
+                yield return new WaitForFixedUpdate();
+            }
+
+            if (moveInputDir == 0) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            isWallJumping = false;
         }
 
         private void VariableJumpHeight()
         {
             if (rb.linearVelocity.y < 0)
-                rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+                rb.linearVelocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
             else if (rb.linearVelocity.y > 0 && !Input.GetButton("Jump") && !pco.isAirAttacking && !isWallJumping)
             {
-                rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+                rb.linearVelocity += Vector2.up * (Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime);
                 coyoteTimeCounter = 0f;
             }
 
@@ -367,13 +363,11 @@ namespace scripies.Player
 
         private void DoubleJump()
         {
-            if (!isGrounded && jumpBufferCounter > 0f && !isDashing && !isWallSliding)
-            {
-                isJumping = true;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult * 0.85f);
-                doubleJump = false;
-                if (jumpClips.Length > 0) AudioSource.PlayClipAtPoint(jumpClips[1] ?? jumpClips[0], transform.position);
-            }
+            if (isGrounded || !(jumpBufferCounter > 0f) || isDashing || isWallSliding) return;
+            isJumping = true;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult * 0.85f);
+            doubleJump = false;
+            if (jumpClips.Length > 0) AudioSource.PlayClipAtPoint(jumpClips[1] ?? jumpClips[0], transform.position);
         }
 
         private void ApplyMovement()
@@ -449,7 +443,7 @@ namespace scripies.Player
 
             if (Input.GetAxisRaw("Vertical") < 0 && Input.GetButtonDown("Jump") && isGrounded)
             {
-                RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckCircle + 0.1f,
+                var hit = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckCircle + 0.1f,
                     oneWayPlatformLayer);
                 if (hit.collider != null && hit.collider.GetComponent<PlatformEffector2D>() != null)
                 {

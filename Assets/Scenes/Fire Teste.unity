@@ -318,6 +318,7 @@ MonoBehaviour:
   boss: {fileID: 0}
   keys: []
   badgeSo: {fileID: 0}
+  checkOnTrigger: 1
 --- !u!114 &13393109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4511,11 +4512,12 @@ MonoBehaviour:
   teleportTarget: {fileID: 361743893}
   forcePlayerTeleport: 0
   isTeledoor: 0
-  isSceneTeleport: 0
+  teleportType: 0
+  targetTeleDoor: {fileID: 0}
   sceneToTeleport:
     m_SceneAsset: {fileID: 0}
     m_SceneName: 
-  connectingDoor: 
+  previousTeleDoor: {fileID: 0}
   inRange: 0
   teleporterSize: {x: 0, y: 0}
   enterIndicator: {fileID: 0}
@@ -10278,11 +10280,12 @@ MonoBehaviour:
   teleportTarget: {fileID: 361743893}
   forcePlayerTeleport: 0
   isTeledoor: 0
-  isSceneTeleport: 0
+  teleportType: 0
+  targetTeleDoor: {fileID: 0}
   sceneToTeleport:
     m_SceneAsset: {fileID: 0}
     m_SceneName: 
-  connectingDoor: 
+  previousTeleDoor: {fileID: 0}
   inRange: 0
   teleporterSize: {x: 0, y: 0}
   enterIndicator: {fileID: 0}
@@ -10302,9 +10305,21 @@ PrefabInstance:
       value: CVS Door
       objectReference: {fileID: 0}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: teleportType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: thisTeleDoor
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a3d8cc6f7d95dc46a8150416a68c95b, type: 2}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: connectingDoor
       value: CV Door
       objectReference: {fileID: 0}
+    - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: targetTeleDoor
+      value: 
+      objectReference: {fileID: 11400000, guid: 3c4f229fece732347b83bb37a8f3189b, type: 2}
     - target: {fileID: 3128955811597120186, guid: e032d07ebd12df04a837818ec5978618, type: 3}
       propertyPath: sceneToTeleport.m_SceneName
       value: Fiery Shop Teste
@@ -10365,6 +10380,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.8588236
       objectReference: {fileID: 0}
+    - target: {fileID: 8396042885829707116, guid: e032d07ebd12df04a837818ec5978618, type: 3}
+      propertyPath: teleDoorID
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a3d8cc6f7d95dc46a8150416a68c95b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
