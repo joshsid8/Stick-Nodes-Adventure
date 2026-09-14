@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: dfa10072d8e39bc4290ff8f498469e81
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Utility/AutocompleteTextField.cs
+  uploadId: 991816

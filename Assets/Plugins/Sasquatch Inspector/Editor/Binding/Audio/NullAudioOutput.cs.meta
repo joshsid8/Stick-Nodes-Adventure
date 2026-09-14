@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a2e4b812e803fcf48b9146a9838a1a4b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Audio/NullAudioOutput.cs
+  uploadId: 991816

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 98467f336e151fa4c829171f81fd5e80
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Demo/Data/DemoWeaponFrostbite.asset
+  uploadId: 991816

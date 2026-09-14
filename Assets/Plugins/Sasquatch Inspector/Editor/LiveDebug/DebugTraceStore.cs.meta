@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f4b15d2f859cbed4d8a1997912a5d0ab
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LiveDebug/DebugTraceStore.cs
+  uploadId: 991816

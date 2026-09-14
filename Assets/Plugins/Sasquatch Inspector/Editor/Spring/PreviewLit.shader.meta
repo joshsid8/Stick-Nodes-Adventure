@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d03a0a6209cb5694ba520dff0c6cdff6
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Spring/PreviewLit.shader
+  uploadId: 991816

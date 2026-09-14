@@ -102,7 +102,7 @@ namespace scripies.Enemy
             isWalking = false;
             GameEvents.TriggerAddPlayerCombat(20, false, "EnemySpotted");
             ec.backupSpareTimer = ec.attack.spareTimer;
-            //AudioSource.PlayClipAtPoint(foundPlayerClip, transform.position);
+            if (foundPlayerClip != null) GameEvents.TriggerPlaySound(foundPlayerClip, gameObject);
             yield return new WaitForSeconds(0.5f);
             ec.ChangeState(EnemyController.EnemyState.Zoning);
         }
@@ -119,7 +119,7 @@ namespace scripies.Enemy
             randomPause = 3;
         }
         
-        private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? footstepClips[Random.Range(0, footstepClips.Length)], true, gameObject);
+        private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? footstepClips[Random.Range(0, footstepClips.Length)], gameObject);
 
         private void Flip() => ec.Flip();
 

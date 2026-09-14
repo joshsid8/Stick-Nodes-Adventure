@@ -94,7 +94,7 @@ namespace scripies.Player
         private void Attack()
         {
             animator.SetTrigger("Attack");
-            GameEvents.TriggerPlaySound(whooshSfx[Random.Range(0, whooshSfx.Length)], true, gameObject);
+            GameEvents.TriggerPlaySound(whooshSfx[Random.Range(0, whooshSfx.Length)], gameObject);
         }
 
         private void GroundAttack()

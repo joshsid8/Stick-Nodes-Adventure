@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 630d9eedc1b257e4f846b79ba62cb18b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Building/DrawerVisibilityBridge.cs
+  uploadId: 991816

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using scripies.Core;
+using scripies.Player;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -13,7 +15,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
     public IAudioStatus.MusicType musicType { get; set; }
     
     public AudioSource musicSource;
-    public AudioSource sfxSource;
+    public AudioSource globalSfxSource;
     
     public AudioClip[] backgroundMusic;
     public float[] backgroundMusicVolume;
@@ -23,7 +25,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
     private Coroutine fadeCoroutine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -43,6 +45,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             PlayMusic(0, false);
     }
 
+    #region Music
     private void PlayMusic(int index, bool fade)
     {
         ToggleMuteMusic(false);
@@ -118,27 +121,6 @@ public class AudioManager : MonoBehaviour, IAudioStatus
     }
     
     public void ToggleMuteMusic(bool toggle = true) => musicSource.mute = toggle;
-
-    private void PlaySfx(AudioClip clip = null, bool randomPitch = true, GameObject source = null)
-    {
-        sfxSource.pitch = randomPitch ? Random.Range(0.85f, 1.15f) : 1;
-
-        switch (source != null)
-        {
-            case true when clip == null:
-                AudioSource.PlayClipAtPoint(sFXMusic[Random.Range(0, sFXMusic.Length)], source.transform.position);
-                break;
-            case false when clip == null:
-                sfxSource.PlayOneShot(sFXMusic[Random.Range(0, sFXMusic.Length)]);
-                break;
-            case true:
-                AudioSource.PlayClipAtPoint(clip, source.transform.position);
-                break;
-            case false:
-                sfxSource.PlayOneShot(clip);
-                break;
-        }
-    }
     
     private void QuietOnGUI()
     {
@@ -147,21 +129,58 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             if (g.activeInHierarchy)
             {
                 musicSource.volume = backgroundMusicVolume[(int)musicType] / 2;
-                sfxSource.volume = 0.2f;
+                globalSfxSource.volume = 0.2f;
             }
             else
             {
                 musicSource.volume = backgroundMusicVolume[(int)musicType];
-                sfxSource.volume = 1f;
+                globalSfxSource.volume = 1f;
             }
         }
     }
+    #endregion
+
+    #region SFX
+    private void PlaySfx(AudioClip clip, GameObject source = null, float volume = 1f, bool randomPitch = false)
+    {
+        var pos = source != null ? source.transform.position : globalSfxSource.transform.position;
+        var sfxSource = Instantiate(globalSfxSource, pos, Quaternion.identity);
+        if (source != null)
+        {
+            SceneManager.MoveGameObjectToScene(sfxSource.gameObject, source.scene);
+            StartCoroutine(UpdateSfxVolume(source, sfxSource, volume));
+        }
+        else sfxSource.volume = volume;
+
+        sfxSource.clip = clip != null ? clip : sFXMusic[Random.Range(0, sFXMusic.Length)];
+        sfxSource.pitch = randomPitch ? Random.Range(0.85f, 1.15f) : 1;
+        
+        sfxSource.Play();
+        Destroy(sfxSource.gameObject, sfxSource.clip.length);
+    }
+
+    private static IEnumerator UpdateSfxVolume(GameObject source, AudioSource sfxSource, float volume = 1f)
+    {
+        const float maxDistance = 65;
+        
+        while (!source.IsDestroyed() && !sfxSource.IsDestroyed() && PlayerHealth.Instance != null)
+        {
+            var distToPlayer = Mathf.Abs(PlayerHealth.Instance.gameObject.transform.position.x - source.transform.position.x);
+            var distancePercentage = Mathf.Clamp01(distToPlayer / maxDistance);
+            //print($"{source.name} is {distancePercentage * 100}% away from player");
+            var vol = volume * (1 - distancePercentage);
+            sfxSource.volume = vol;
+
+            yield return null;
+        }
+    }
+    #endregion
 
     public void Save(ref SceneName data) => data.sceneName = currentScene;
     public void Load(SceneName data) => currentScene = data.sceneName;
 }
 
-[System.Serializable]
+[Serializable]
 public struct SceneName
 {
     public string sceneName;

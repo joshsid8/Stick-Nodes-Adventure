@@ -105,6 +105,11 @@ public class MapManager : MonoBehaviour
     
     private void OnTriggerStay2D(Collider2D collision)
     {
+        if (collision.CompareTag("Ability") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            if (collision.gameObject.scene.name == gameObject.scene.name) SceneManager.MoveGameObjectToScene(collision.gameObject, gameObject.scene);
+        }
+        
         if (!collision.CompareTag("Player")) return;
         if (activeMap) return;
         activeMap = true;

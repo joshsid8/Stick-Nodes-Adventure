@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 826f0f3bcefb4d64590cd778a74c3cf6
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LiveDebug/DebugWriteSiteScanner.cs
+  uploadId: 991816

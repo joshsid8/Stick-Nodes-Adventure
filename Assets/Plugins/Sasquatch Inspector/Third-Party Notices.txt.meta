@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: aa7574a9fb1d5a342b4db64f05762561
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Third-Party Notices.txt
+  uploadId: 991816

@@ -1,0 +1,136 @@
+/* ===== Sasquatch Inspector widget skin — DARK =====
+   Defines every --sasq-* token consumed by SasquatchWidgets.uss. These values are byte-identical
+   to the var() fallbacks in that sheet (and to the historical literals), so loading this sheet is
+   visually a no-op on dark — it exists so the LIGHT sheet can override the same names. Keep the
+   token NAME SET identical to SasquatchWidgetThemeLight.uss (verified by SasquatchVerificationTests
+   token-parity test). Loaded by LayoutTreeBuilder next to the sasq-skin-dark root class. */
+
+.sasq-skin-dark {
+    /* Surfaces */
+    --sasq-window-bg: #383838;
+    --sasq-well-bg: #1e1e1e;
+    --sasq-well-bg-soft: rgba(30, 30, 30, 0.85);
+    --sasq-control-bg: #2b2b2b;
+    --sasq-control-bg-hover: #353535;
+    --sasq-group-content-bg: #2b2b2b;
+    --sasq-pane-bg: #222222;
+    --sasq-pane-header-bg: #2d2d2d;
+    --sasq-header-bg: #383838;
+    --sasq-header-bg-hover: #424242;
+    --sasq-card-bg: #313131;
+    --sasq-box-bg: #232323;
+    --sasq-swatch-hover-bg: #242424;
+    --sasq-list-row-bg: rgba(46, 46, 46, 0.22);
+
+    /* Borders & lines */
+    --sasq-border: #3f3f3f;
+    --sasq-border-strong: #1e1e1e;
+    --sasq-border-hover: #5a5a5a;
+    --sasq-divider: #4a4a4a;
+    /* Collection row separators. Ink, not solids: a near-black rule on #2b2b2b is a ~9/255 step and
+       reads as a smudge; 10% white is ~22/255 and reads as a line. */
+    --sasq-row-divider: rgba(255, 255, 255, 0.1);
+    --sasq-row-rail: rgba(255, 255, 255, 0.2);
+    --sasq-row-card-bg: rgba(255, 255, 255, 0.045);
+    --sasq-drop-slot-border: rgba(120, 120, 120, 0.5);
+    --sasq-drop-slot-bg: rgba(255, 255, 255, 0.031);
+    --sasq-swatch-border: rgba(255, 255, 255, 0.16);
+    --sasq-swatch-border-hover: rgba(255, 255, 255, 0.6);
+
+    /* Toggle switch */
+    --sasq-toggle-on: #1e3d6b;
+    --sasq-toggle-on-hover: #264a82;
+    --sasq-toggle-on-hover-border: #16304f;
+    --sasq-toggle-on-border: #5C5C5C;
+    --sasq-knob: #a0a0a0;
+    --sasq-knob-hover: #c0c0c0;
+
+    /* Slider knob. Its OWN token rather than sharing the toggle's --sasq-knob: the two controls are
+       unrelated and a future toggle tweak must not move the slider thumb. The value is the editor
+       theme's own thumb grey at FULL alpha — the stock thumb paints at 50%, which lets the track
+       read straight through the knob as a brighter band across its middle. */
+    --sasq-slider-knob: #999999;
+    --sasq-slider-knob-hover: #b4b4b4;
+
+    /* Text ladder (brightest → dimmest on dark) */
+    --sasq-text-strong: #ffffff;
+    --sasq-text-preview: #e4e4e4;
+    --sasq-text-title: #d6d6d6;
+    /* Container-title ink — the USS twin of LayoutTreeBuilder.TitleInk (WidgetPalette.LabelBright), so a
+       group-shell header matches the Card / Rows / Foldout titles beside it. */
+    --sasq-text-node-title: #e6e6e6;
+    --sasq-text-body: #cfcfcf;
+    --sasq-text-help: #cccccc;
+    --sasq-text-label: #c8c8c8;
+    --sasq-text-caption-hover: #c0c0c0;
+    --sasq-add-glyph: #b0b0b0;
+    --sasq-empty-msg: #aeaeae;
+    --sasq-text-muted: #9a9a9a;
+    --sasq-text-soft: #8a8a8a;
+    --sasq-text-faint: #888888;
+    --sasq-text-caption: #7d7d7d;
+    --sasq-text-dim: #7c7c7c;
+    --sasq-chevron: #5d5d5d;
+    --sasq-text-hint: rgba(200, 200, 200, 0.45);
+    --sasq-text-axis: rgba(195, 195, 195, 0.55);
+
+    /* Accent family */
+    --sasq-accent: #2f7ad4;
+    /* The USS twin of WidgetPalette.AccentSoft — a barely-there accent wash for "this is the thing you are
+       about to grab" states (the Timeline node's hover). Floats x 255, per the pager note below. */
+    --sasq-accent-soft: rgba(46, 122, 217, 0.12);
+    /* The pressed/hover step of the same wash — the soft accent button needs somewhere to GO on hover. */
+    --sasq-accent-softer: rgba(46, 122, 217, 0.24);
+    --sasq-progress-fill: #2E7AD9;
+    --sasq-accent-text: #99C7FF;
+    --sasq-richtext-on-bg: rgba(90, 140, 220, 0.35);
+    --sasq-richtext-on-border: rgba(120, 170, 240, 0.7);
+    --sasq-banner-fg: #c9d6e8;
+    --sasq-banner-dismiss: #9fb0c4;
+
+    /* Pager. These (and --sasq-accent-text/--sasq-colhead-hover above) were long written as
+       0–1 float rgb() — a parser-dependent form that rendered ~black on 6000.0, sinking the pager
+       text/dots and sort glyphs into a dark background. Normalized 2026-07-17 to the intended
+       colors (floats × 255); keep them in ordinary hex/rgba-255 form. */
+    --sasq-pager-active: #4582ED;
+    --sasq-pager-dot: rgba(128, 128, 128, 0.55);
+    --sasq-pager-dot-hover: rgba(128, 128, 128, 0.85);
+    --sasq-pager-gap: rgba(128, 128, 128, 0.7);
+    --sasq-pager-count: #999999;
+    --sasq-colhead-hover: #EBEBEB;
+
+    /* Ink washes (white-alpha on dark) */
+    --sasq-ink-015: rgba(255, 255, 255, 0.015);
+    --sasq-ink-03: rgba(255, 255, 255, 0.03);
+    --sasq-ink-04: rgba(255, 255, 255, 0.04);
+    --sasq-ink-05: rgba(255, 255, 255, 0.05);
+    --sasq-ink-08: rgba(255, 255, 255, 0.08);
+    --sasq-ink-10: rgba(255, 255, 255, 0.1);
+    --sasq-ink-12: rgba(255, 255, 255, 0.12);
+    --sasq-ink-14: rgba(255, 255, 255, 0.14);
+    --sasq-ink-28: rgba(255, 255, 255, 0.28);
+
+    /* Popups / floating chrome */
+    --sasq-popup-bg: rgba(28, 30, 34, 0.98);
+    --sasq-popup-bg-heavy: rgba(20, 20, 20, 0.92);
+    --sasq-popup-heavy-border: rgba(255, 255, 255, 0.18);
+    --sasq-popup-border: rgba(120, 130, 145, 0.55);
+    --sasq-popup-divider: rgba(120, 130, 145, 0.4);
+    --sasq-popup-text: rgb(224, 228, 234);
+    --sasq-popup-text-soft: rgba(180, 188, 200, 0.85);
+    --sasq-popup-text-faint: rgba(160, 168, 180, 0.9);
+    --sasq-popup-headline: rgba(205, 212, 222, 0.95);
+    --sasq-toast-text: #d7f0d7;
+    --sasq-tip-text: #eaeaea;
+
+    /* Status */
+    --sasq-success-text: #7fd28b;
+    --sasq-missing-fg: #e08585;
+    --sasq-danger-fg: rgb(248, 113, 113);
+    --sasq-warn-fg: rgb(251, 191, 36);
+    --sasq-playhead: #e0b020;
+
+    /* Mixed (multi-object) state */
+    --sasq-mixed-fg: #9e9e9e;
+    --sasq-mixed-border: #6a6a6a;
+}

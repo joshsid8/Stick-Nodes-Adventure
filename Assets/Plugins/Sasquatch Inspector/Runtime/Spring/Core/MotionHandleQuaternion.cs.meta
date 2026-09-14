@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a6e7725a2db8aba40a176f8c0275e61b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Runtime/Spring/Core/MotionHandleQuaternion.cs
+  uploadId: 991816

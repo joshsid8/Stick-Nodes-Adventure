@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 4d6110455c73a4949b5c14aa523223b1
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Utility/PopupCodePeek.cs
+  uploadId: 991816

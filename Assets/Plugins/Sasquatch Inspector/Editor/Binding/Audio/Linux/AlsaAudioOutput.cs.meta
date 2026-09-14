@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 0cc7c5a51e813054795fddf6f4aea63f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Audio/Linux/AlsaAudioOutput.cs
+  uploadId: 991816

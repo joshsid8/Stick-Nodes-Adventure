@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 0978ff0cbc3d09149b347167f709f551
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LiveDebug/DebugTooltipMute.cs
+  uploadId: 991816

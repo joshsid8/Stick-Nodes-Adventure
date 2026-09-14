@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: e5da43edc31c5044ba92cc0a054bc9fb
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/UnityPresetImporter.cs
+  uploadId: 991816

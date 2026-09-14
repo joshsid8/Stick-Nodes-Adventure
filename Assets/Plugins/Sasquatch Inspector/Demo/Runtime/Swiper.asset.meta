@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dc44473537332ac40b3fd1deeaf064f4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Demo/Runtime/Swiper.asset
+  uploadId: 991816

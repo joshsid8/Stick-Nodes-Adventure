@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 4ebf029fffc419e4d8a806dc4c5d54fe
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Export/StandaloneEditorExporter.cs
+  uploadId: 991816

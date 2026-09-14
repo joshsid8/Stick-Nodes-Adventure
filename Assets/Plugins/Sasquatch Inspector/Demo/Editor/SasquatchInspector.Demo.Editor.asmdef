@@ -1,0 +1,19 @@
+{
+    "name": "SasquatchInspector.Demo.Editor",
+    "rootNamespace": "SasquatchInspector.Demo.Editor",
+    "references": [
+        "SasquatchInspector.Runtime",
+        "SasquatchInspector.Demo"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

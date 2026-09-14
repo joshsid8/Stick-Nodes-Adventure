@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 91fb91dac01ea2044b7c33df69e895a3
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Audio/INativeAudioOutput.cs
+  uploadId: 991816

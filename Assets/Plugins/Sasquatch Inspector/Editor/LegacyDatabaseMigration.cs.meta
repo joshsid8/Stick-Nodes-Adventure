@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 79b6c68c8525e9f41b5513ee7a9fd255
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LegacyDatabaseMigration.cs
+  uploadId: 991816

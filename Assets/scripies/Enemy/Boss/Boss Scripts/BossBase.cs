@@ -160,7 +160,7 @@ public abstract class BossBase : MonoBehaviour
         PlaySound(sfx);
     }
     
-    private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? combatSfx[Random.Range(0, combatSfx.Length)], true, gameObject);
+    private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? combatSfx[Random.Range(0, combatSfx.Length)], gameObject);
     
     protected void FollowupMove(string move) => animator.SetTrigger(move);
 

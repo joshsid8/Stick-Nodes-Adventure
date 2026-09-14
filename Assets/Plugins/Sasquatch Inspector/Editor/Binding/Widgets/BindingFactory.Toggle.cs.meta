@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: dc7a2f0d7e3ab19469b8b3933792b2e4
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.Toggle.cs
+  uploadId: 991816

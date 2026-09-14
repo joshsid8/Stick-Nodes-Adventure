@@ -195,7 +195,7 @@ namespace scripies.Enemy
             ChangeState(EnemyState.Patrolling);
             isAggressive = false;
             GameEvents.TriggerAggressiveStatusChanged(this, false);
-            if (ps.AggressiveEnemies <= 0) GameEvents.TriggerAddPlayerCombat(0, false, "EnemyLostPlayer");
+            if (ps?.AggressiveEnemies <= 0) GameEvents.TriggerAddPlayerCombat(0, false, "EnemyLostPlayer");
         }
 
         private void InactiveState(int factor = 1)

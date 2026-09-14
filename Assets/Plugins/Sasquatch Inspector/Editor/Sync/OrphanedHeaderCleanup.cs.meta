@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a0929ba33d66e3e4bbcb4b5d7e61e49a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Sync/OrphanedHeaderCleanup.cs
+  uploadId: 991816

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: abb5c1e02a8febc428c3dd888b55f84d
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.Audio.cs
+  uploadId: 991816

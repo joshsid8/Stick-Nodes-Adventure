@@ -15,6 +15,7 @@ TagManager:
   - Section
   - Spawner
   - TeleDoor
+  - Ability
   layers:
   - Default
   - TransparentFX

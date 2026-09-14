@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a3b0fb0449e61ed44841ff4b2667b06b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Building/CanvasDragController.cs
+  uploadId: 991816

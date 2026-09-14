@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 20d0d5ba12adf034c88a2fd49d880674
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/LayerMaskDropdownPopup.cs
+  uploadId: 991816

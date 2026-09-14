@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 7cf50a2a2539d684c984df11868dd11a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LiveDebug/DebugTransportBar.cs
+  uploadId: 991816

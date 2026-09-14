@@ -203,16 +203,14 @@ namespace scripies.Player
             isDead = true;
             playerHealth = 0;
             GameEvents.TriggerPlayerDeath();
-            (AudioClip, bool) deathSound = (deathClip, true);
-            #if UNITY_EDITOR
-            if (pc.debugMode)
+            var deathSound = (deathClip, true);
+            if (pc.debugMode && Application.isEditor)
             {
                 GameEvents.TriggerJumpScare();
                 deathSound = (null, false);
             }
-            #endif
             GameEvents.TriggerMuteMusic();
-            GameEvents.TriggerPlaySound(deathSound.Item1, deathSound.Item2);
+            GameEvents.TriggerPlaySound(deathSound.deathClip, randomPitch: deathSound.Item2);
             //Shenanigans.Instance.ToggleFreezeCamera();
             GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
 
@@ -380,7 +378,7 @@ namespace scripies.Player
         {
             inCombat = false;
             currentCombatTimer = 0;
-            pc.combatIndicator.SetActive(false);
+            pc?.combatIndicator.SetActive(false);
             GameEvents.TriggerMusic(0, false);
         }
         private void ResetCombatViaEnemy(GameObject enemy)

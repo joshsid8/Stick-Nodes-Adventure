@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 6308e05f830f8ea48992666f3a7655f6
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LiveDebug/DebugLegendDiagram.cs
+  uploadId: 991816

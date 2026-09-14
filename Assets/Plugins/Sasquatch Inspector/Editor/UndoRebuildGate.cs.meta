@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 9ae6f811bb109ab4c818cba3e29ca2be
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/UndoRebuildGate.cs
+  uploadId: 991816

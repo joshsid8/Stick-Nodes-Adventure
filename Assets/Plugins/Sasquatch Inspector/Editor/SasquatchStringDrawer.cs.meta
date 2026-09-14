@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b695a0eb167bf504782c0e13b8a4a66f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/SasquatchStringDrawer.cs
+  uploadId: 991816

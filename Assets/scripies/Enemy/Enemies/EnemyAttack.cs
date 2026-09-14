@@ -280,7 +280,7 @@ namespace scripies.Enemy
             PlaySound(sfx);
         }
 
-        private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? combatSfx[Random.Range(0, combatSfx.Length)], true,gameObject);
+        private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? combatSfx[Random.Range(0, combatSfx.Length)], gameObject);
         
         private void FollowupAttack(string attack)
         {

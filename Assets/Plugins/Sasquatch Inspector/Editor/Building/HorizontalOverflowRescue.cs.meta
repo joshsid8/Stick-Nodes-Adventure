@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b121a60e9359d2947bea5ff8696f8c1a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Building/HorizontalOverflowRescue.cs
+  uploadId: 991816

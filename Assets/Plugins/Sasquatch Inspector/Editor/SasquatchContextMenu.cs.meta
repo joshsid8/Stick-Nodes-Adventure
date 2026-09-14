@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c982ddc2113e2444188627afd7cd0108
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/SasquatchContextMenu.cs
+  uploadId: 991816

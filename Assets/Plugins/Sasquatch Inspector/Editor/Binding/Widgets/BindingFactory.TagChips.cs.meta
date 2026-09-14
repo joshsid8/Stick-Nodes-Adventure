@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f751eb1150a030146a7a123f43974a0b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.TagChips.cs
+  uploadId: 991816

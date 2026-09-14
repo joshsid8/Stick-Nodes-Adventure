@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c441e9f0898f3414dbfdaa2eab7f7e44
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/SasquatchCurveControl.cs
+  uploadId: 991816

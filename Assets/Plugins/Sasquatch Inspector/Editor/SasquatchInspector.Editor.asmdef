@@ -1,0 +1,41 @@
+{
+    "name": "SasquatchInspector.Editor",
+    "rootNamespace": "SasquatchInspector.Editor",
+    "references": [
+        "SasquatchInspector.Runtime",
+        "Unity.VisualEffectGraph.Runtime",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.visualeffectgraph",
+            "expression": "",
+            "define": "SASQ_VFX"
+        },
+        {
+            "name": "com.unity.modules.audio",
+            "expression": "",
+            "define": "SASQ_AUDIO"
+        },
+        {
+            "name": "com.unity.modules.particlesystem",
+            "expression": "",
+            "define": "SASQ_PARTICLES"
+        },
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "SASQ_INPUTSYSTEM"
+        }
+    ],
+    "noEngineReferences": false
+}

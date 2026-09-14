@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: ba122f42d99c54848a212356b7d71f9d
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Building/EmbeddedEditorHost.cs
+  uploadId: 991816

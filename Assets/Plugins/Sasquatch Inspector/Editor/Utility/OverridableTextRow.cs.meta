@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 3efc7601989c5524e8a94882b6424994
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Utility/OverridableTextRow.cs
+  uploadId: 991816

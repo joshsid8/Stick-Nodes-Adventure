@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a61eeb220943e9a4fa146c90e86a98c7
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/LICENSE.txt
+  uploadId: 991816

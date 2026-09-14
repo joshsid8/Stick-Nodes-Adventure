@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 447b0467f991f8842b5a6261d0ad8ca3
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Runtime/Spring/Components/SasquatchSpringTween.cs
+  uploadId: 991816

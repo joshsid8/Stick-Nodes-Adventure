@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b988d17ef418065489cd34f0c540cd6c
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Utility/PanelLifetime.cs
+  uploadId: 991816

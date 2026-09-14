@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 0c837eade562adb489311465241a3e38
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.Stepper.cs
+  uploadId: 991816

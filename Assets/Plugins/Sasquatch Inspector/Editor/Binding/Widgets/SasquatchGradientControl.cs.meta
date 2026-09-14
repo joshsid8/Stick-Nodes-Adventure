@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: dc02db7ac41704e4c8a8118920395bf4
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/SasquatchGradientControl.cs
+  uploadId: 991816

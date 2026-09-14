@@ -631,7 +631,7 @@ AudioSource:
   m_GameObject: {fileID: 518048548}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2971266182565919010, guid: 3b8c14220abe4c346957d4802f07e141, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -1142,7 +1142,7 @@ AudioSource:
   m_GameObject: {fileID: 1044450329}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -903148209127648984, guid: 3b8c14220abe4c346957d4802f07e141, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -2384,7 +2384,7 @@ MonoBehaviour:
   currentScene: Default Teste
   previousScene: {}
   musicSource: {fileID: 518048549}
-  sfxSource: {fileID: 1044450330}
+  globalSfxSource: {fileID: 1044450330}
   backgroundMusic:
   - {fileID: 8300000, guid: afbe41b4a41ad3a489eb94f660859a2c, type: 3}
   - {fileID: 0}

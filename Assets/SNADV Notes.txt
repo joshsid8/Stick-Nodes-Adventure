@@ -3,24 +3,27 @@ SNADV Notes
     Ahh man...
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
-    Notices:
-        I had to make a Door-Spawner Hybrid object to save objects that have both the Access Manager and a Spawner component
-            Save data is pretty much all good now
-        
-        Noxu's boss fight is so trash to the point where I made it optional instead of compulsory
-            The dialogue has been changed; you can ask to fight
-            but if not, you still gain the ability to walljump to access the rest of the world
-        
-    Priorities:        
+    Notices & Priorities:
+        The danger duo stands before me: Time to tackle it
+            (IF Instability doesnt strike again)
 
-        Instability, then maybe sfx improvements
-        
     Optimisations & Hotfixes:
         
         Instability
-        
+
             Issues from Testing
+                Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
+                    Casting abilities may have caused this, or maybe just jumping in general?
+                    I found it out! It is when i press the ability button during dashing
+                        Fix it!
+                        
+                When loading a saved slot (just pressing the play button), I spawn at the exact place i left with.
+                    What its meant to do instead is spawn at the last checkpoint i was instead
+                    I do remember seeing a warning that the last scene name isnt being saved, thus loading all scenes on play
+                        That might be the reason
                 
+                Quest task info isnt updated when the status is changed
+                        
             Replicatable or From-Build bugs/problems
 
             One time occurrences or Rare/Intimidating bugs
@@ -41,12 +44,13 @@ SNADV Notes
                 Ive successfully remade the player animator controller, but its a bit buggy...
                     I need to allow attacking when wall jumping specifically
                     I can indefinitely hold the ability button, freezing the animation at inconvenient times
-                    Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
-                        Casting abilities may have caused this, or maybe just jumping in general?
                     When it comes to the counter animation, deflecting works, but melee countering doesnt.
                 
                 Noxu's boulder hurts himself!
                     I think its because the radius hitbox type that spawns after explosion is neutral instead of enemy
+                
+                SFX Logic i think is all done for now!
+                    I might make audio variables into its own class to hold the volume and maybe pitch too
 
             Junie Help
                 Tackling The Danger Duo
@@ -62,9 +66,7 @@ SNADV Notes
                     Even tho this is cosmetic, i would like to just get the logic done
                         I will use placeholder bgs just to test it, then will worry about designs Post-AO
                         
-                Audio
-                    Find out why one shot sfx are very very quiet
-                        Ill improve on sfx in general by adding stuff like mixers                        
+                Audio                   
                     Make it so that the music transitions smoothly
                         maybe i have to fade the music out and simultaneously fade in the new one?
                         To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers

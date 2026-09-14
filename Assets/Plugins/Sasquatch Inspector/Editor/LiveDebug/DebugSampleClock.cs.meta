@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 76dcf58729497bf418c5261d603f0113
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LiveDebug/DebugSampleClock.cs
+  uploadId: 991816

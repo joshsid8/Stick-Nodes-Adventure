@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 4300f5c2555bb50418838ce296ec7c8f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.EnumBadgeGrid.cs
+  uploadId: 991816

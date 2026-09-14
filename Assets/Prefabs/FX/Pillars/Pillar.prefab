@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8569537563959189878}
   m_Layer: 10
   m_Name: Pillar
-  m_TagString: Untagged
+  m_TagString: Ability
   m_Icon: {fileID: 2800000, guid: 387e4ed28331bfc4880bb2451c19eb37, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -158,6 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583ad71d6abd4f04aa1796341b7bb9fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityCaster: {fileID: 0}
   typeFactor: 0
   elementType: 0
   elementFactor: 1
@@ -167,6 +168,7 @@ MonoBehaviour:
   damageOverTime: 0
   procDmg: 0
   procInterval: 0
+  sizeMult: 1
   knockbackDirection: {x: 0, y: 0}
   knockbackForce: 20
   knockbackTime: 0.2
@@ -194,7 +196,10 @@ MonoBehaviour:
   coll: {fileID: 6437316070702605537}
   anim: {fileID: 0}
   endAnim: {fileID: 0}
-  shockwave: 0
+  startSfx: {fileID: 0}
+  loopingSfx: {fileID: 0}
+  endSfx: {fileID: 0}
+  contactSfx: {fileID: 0}
 --- !u!61 &6437316070702605537
 BoxCollider2D:
   m_ObjectHideFlags: 0

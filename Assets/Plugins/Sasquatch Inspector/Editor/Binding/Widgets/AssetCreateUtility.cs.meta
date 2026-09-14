@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 65092fe0dd31e41478b8ab75c88a06ce
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/AssetCreateUtility.cs
+  uploadId: 991816

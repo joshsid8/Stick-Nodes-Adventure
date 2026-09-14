@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f193fe1da492726408a0b3f39a621e99
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Utility/LayoutFieldTypeResolver.cs
+  uploadId: 991816

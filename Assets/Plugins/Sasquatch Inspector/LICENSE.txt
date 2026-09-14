@@ -1,0 +1,101 @@
+Sasquatch Inspector
+Copyright (c) 2026 Sasquatch B Studios. All rights reserved.
+
+Sasquatch Inspector is licensed under the Unity Asset Store End User License
+Agreement ("Asset Store EULA"):
+
+    https://unity.com/legal/as-terms
+
+Your purchase grants you the rights described there. The notes below do two
+separate things, and it matters which is which:
+
+  - Sections 1, 3, 4 and 5 CLARIFY how the Asset Store EULA applies to this
+    package. Where any clarification conflicts with the Asset Store EULA, the
+    Asset Store EULA governs.
+
+  - Section 2 is an ADDITIONAL GRANT from Sasquatch B Studios covering the
+    C# editor scripts you export. Those scripts embed Sasquatch-authored
+    code, and this section is the copyright holder granting you rights in
+    that code beyond what the Asset Store EULA provides. It adds permissions;
+    it does not remove any.
+
+
+1. WHAT YOU CAN DO WITH THE PACKAGE
+
+   Use Sasquatch Inspector in your own Unity projects — personal, commercial,
+   client work, and games you ship — under the seat license you bought.
+
+   Sasquatch Inspector is an Editor Extension, so the Asset Store EULA
+   licenses it per seat. Every person who installs and uses the package needs
+   their own license. That applies to teammates and to contractors alike.
+
+   Section 2 covers what happens to the editor scripts you export, which is a
+   different question.
+
+
+2. EXPORTED EDITOR SCRIPTS — ADDITIONAL GRANT
+
+   Sasquatch Inspector can export any layout you design to a self-contained
+   C# editor script that compiles and runs without this package installed.
+   Those files embed code authored by Sasquatch B Studios.
+
+   As the copyright holder in that embedded code, Sasquatch B Studios grants
+   you the following, in addition to your rights under the Asset Store EULA:
+
+   YOU MAY:
+
+     - Keep and use exported editor scripts in your own projects, indefinitely,
+       including after you stop using or uninstall Sasquatch Inspector.
+
+     - Include exported editor scripts in a project you share with your team,
+       and in a finished project you deliver to a client who commissioned it —
+       whether or not those recipients hold a Sasquatch Inspector license.
+       They receive the exported script only. They do not receive any right to
+       install or use the Sasquatch Inspector package itself, which still
+       requires its own seat.
+
+     - Modify exported editor scripts freely.
+
+   YOU MAY NOT:
+
+     - Distribute Sasquatch Inspector, any part of it, or any editor script it
+       exports, as part of an asset, plugin, toolkit, template, framework, or
+       library that you sell or give away — on the Unity Asset Store or
+       anywhere else.
+
+   The line is what the recipient is doing. Someone working on your project
+   is fine. Someone receiving tooling as a product is not.
+
+
+3. OWNERSHIP
+
+   Sasquatch Inspector and all intellectual property in it remain the sole
+   property of Sasquatch B Studios. Nothing here transfers ownership, and all
+   rights not expressly granted are reserved.
+
+   The inspector layouts you design are your own work product. Editor scripts
+   you export are yours to use, keep and modify as described in section 2,
+   with the Sasquatch-authored code embedded in them remaining the property of
+   Sasquatch B Studios and licensed to you under that section.
+
+
+4. WARRANTY AND LIABILITY
+
+   Warranty disclaimers and limitations of liability are as set out in the
+   Asset Store EULA.
+
+
+5. THIRD-PARTY COMPONENTS
+
+   This package includes third-party material governed by its own licenses.
+   See "Third-Party Notices.txt" in this package.
+
+
+6. BUG REPORTER
+
+   Sasquatch Inspector includes an optional in-editor bug reporter. Report
+   content is transmitted to Codecks (codecks.io) only when you choose to
+   submit a report. No telemetry, analytics or usage data is collected.
+
+
+Questions, bug reports, or feedback: sasquatchbstudios@gmail.com

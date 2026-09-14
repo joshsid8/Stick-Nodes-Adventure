@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 8c283c8d77956bf478ebc098a382befb
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/SasquatchGradientEditorWindow.cs
+  uploadId: 991816

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 223cccb4b461dc642830ff4884916085
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Demo/Runtime/SasquatchInspector.Demo.asmdef
+  uploadId: 991816

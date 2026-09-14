@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 85bbb361f44f190478b457688d653847
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Audio/NativeAudioBackend.cs
+  uploadId: 991816

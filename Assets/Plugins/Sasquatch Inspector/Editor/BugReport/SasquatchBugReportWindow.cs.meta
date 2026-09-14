@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 4ba0dcfa3f89e5a49ad83cfd41ebf91b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/BugReport/SasquatchBugReportWindow.cs
+  uploadId: 991816

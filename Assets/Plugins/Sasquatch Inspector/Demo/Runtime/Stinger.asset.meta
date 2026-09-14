@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e9dbeadd6fa366243a17644e4c42083a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Demo/Runtime/Stinger.asset
+  uploadId: 991816

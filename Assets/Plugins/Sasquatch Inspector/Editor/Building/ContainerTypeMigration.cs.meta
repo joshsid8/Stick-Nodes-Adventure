@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 678d2038345d0af4d93773001bef24f7
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Building/ContainerTypeMigration.cs
+  uploadId: 991816

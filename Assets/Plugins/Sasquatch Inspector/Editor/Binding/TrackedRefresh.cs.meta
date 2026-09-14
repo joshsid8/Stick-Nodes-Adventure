@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 8f1fbef517f2f904e97f8c6c1b9b9f10
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/TrackedRefresh.cs
+  uploadId: 991816

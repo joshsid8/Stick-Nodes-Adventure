@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b38daa3be2ce7154b9dd4c792a89ce69
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Audio/Linux/PulseAudioOutput.cs
+  uploadId: 991816

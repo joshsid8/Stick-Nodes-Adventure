@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: d46c970064e849247b8afd5ee3c7e123
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/AudioWaveformRenderer.cs
+  uploadId: 991816

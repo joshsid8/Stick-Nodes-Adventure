@@ -340,7 +340,7 @@ namespace scripies.Player
             if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && !isDashing && !isWallSliding)
             {
                 isJumping = true;
-                if (jumpClips.Length > 0) AudioSource.PlayClipAtPoint(jumpClips[0], transform.position);
+                GameEvents.TriggerPlaySound(jumpClips[Random.Range(0, jumpClips.Length)], gameObject);
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
@@ -367,7 +367,7 @@ namespace scripies.Player
             isJumping = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult * 0.85f);
             doubleJump = false;
-            if (jumpClips.Length > 0) AudioSource.PlayClipAtPoint(jumpClips[1] ?? jumpClips[0], transform.position);
+            if (jumpClips.Length > 0) GameEvents.TriggerPlaySound(jumpClips[Random.Range(0, jumpClips.Length)], gameObject);
         }
 
         private void ApplyMovement()
@@ -526,10 +526,12 @@ namespace scripies.Player
             switch (fx)
             {
                 case "Footstep":
-                    AudioSource.PlayClipAtPoint(footstepClips[Random.Range(0, footstepClips.Length)], transform.position);
+                    if (footstepClips.Length > 0) 
+                        GameEvents.TriggerPlaySound(footstepClips[Random.Range(0, footstepClips.Length)], gameObject);
                     break;
                 case "Dash":
-                    AudioSource.PlayClipAtPoint(dashClips[Random.Range(0, dashClips.Length)], transform.position);
+                    if (dashClips.Length > 0) 
+                        GameEvents.TriggerPlaySound(dashClips[Random.Range(0, dashClips.Length)], gameObject, 0.6f);
                     break;
             }
         }

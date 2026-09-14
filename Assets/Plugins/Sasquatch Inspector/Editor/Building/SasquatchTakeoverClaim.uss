@@ -1,0 +1,20 @@
+/* TAKEOVER CLAIM SHEET (see SasquatchForceTakeover). Added to an InspectorElement the moment panel
+   displacement claims it (paired with the .sasq-takeover-claimed class on the SAME element). Its job is
+   closing the last flash window displacement had: when Unity REPOPULATES a claimed InspectorElement, the
+   fresh native children are born matching `> *` and are hidden AT STYLE-RESOLUTION TIME — before they can
+   ever paint — instead of waiting a scan tick for the inline-style hide loop to visit them.
+
+   The injected replacement body (#sasq-takeover-body) is exempted both here and by an inline
+   `display: flex` set at build time (inline always outranks USS, so the body can never hide itself).
+
+   Scoped by OUR OWN marker class (never a Unity-internal name): the sheet lives only on claimed
+   InspectorElements and its rules only match direct children of an element carrying the class. Removed,
+   together with the class, when the takeover releases. */
+
+.sasq-takeover-claimed > * {
+    display: none;
+}
+
+.sasq-takeover-claimed > #sasq-takeover-body {
+    display: flex;
+}

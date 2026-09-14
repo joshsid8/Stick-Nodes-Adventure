@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: d8ef66d45677d184fb00eae2a4672aa0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/BugReport/CodecksReporter.cs
+  uploadId: 991816

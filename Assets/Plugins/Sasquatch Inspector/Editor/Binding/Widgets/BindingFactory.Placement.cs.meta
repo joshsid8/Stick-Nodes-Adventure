@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f3a6d254ad8e64d48be89e11429d9338
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.Placement.cs
+  uploadId: 991816

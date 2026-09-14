@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3088073380334134565}
   m_Layer: 18
   m_Name: Projectile
-  m_TagString: Untagged
+  m_TagString: Ability
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83f21163c3de664fba71345e0d3c1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityCaster: {fileID: 0}
   typeFactor: 0
   elementType: 0
   elementFactor: 1
@@ -116,6 +117,7 @@ MonoBehaviour:
   damageOverTime: 0
   procDmg: 0
   procInterval: 0
+  sizeMult: 1
   knockbackDirection: {x: 1, y: 0}
   knockbackForce: 20
   knockbackTime: 0.2
@@ -124,9 +126,14 @@ MonoBehaviour:
   isFacingRightDirection: 0
   stunTime: 0.5
   energyRequired: 10
+  explodeOnImpact: 0
+  useRadialKnockback: 0
+  explosionUpwardForce: 2
+  explosionForce: 20
+  explosionTime: 0.2
   cooldown: 0.5
-  proc: 0
-  procTimer: 0
+  procTime: 0
+  currentProcTimer: 0
   activeHitbox: 0
   lifeTime: 3
   lifeTimer: 0
@@ -138,6 +145,10 @@ MonoBehaviour:
   coll: {fileID: 0}
   anim: {fileID: 0}
   endAnim: {fileID: 0}
+  startSfx: {fileID: 0}
+  loopingSfx: {fileID: 0}
+  endSfx: {fileID: 0}
+  contactSfx: {fileID: 0}
   projectileHeight: 1
   projectileSpeed: 20
   gravityScale: 1

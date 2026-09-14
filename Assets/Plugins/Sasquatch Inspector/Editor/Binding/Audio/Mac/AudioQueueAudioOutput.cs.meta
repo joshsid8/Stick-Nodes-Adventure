@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 4a65f1851fb53cb409af8080af784175
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Audio/Mac/AudioQueueAudioOutput.cs
+  uploadId: 991816

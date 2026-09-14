@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using scripies.Core;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public abstract class AbilityBase : MonoBehaviour //at this point this is just the pillar script
 {
     [Header("Factors")]
-    [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
     public GameObject abilityCaster;
+    [Tooltip("This is for the whatever gets hurt. \n1: Enemies/Bosses\n2: Player\nDefault/0: neutral/all")]
     public int typeFactor;
     public int elementType;
     public int elementFactor = 1;
@@ -83,7 +84,10 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         typeFactor = factor;
         isFacingRightDirection = facingRight;
-        if (caster != null) abilityCaster = caster;
+        
+        if (caster == null) return;
+        abilityCaster = caster;
+        SceneManager.MoveGameObjectToScene(this is not Projectile ? transform.parent.gameObject : gameObject, abilityCaster.scene); // Lol pseudocode at this point "this is not"
     }
 
     protected virtual void Awake()
@@ -106,10 +110,10 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         procTimes = lifeTime / procTime;
         procTimes = energyRequired / procTimes;
         transform.localScale = new Vector3(transform.localScale.x * sizeMult,transform.localScale.y * sizeMult, 1);
+        
+        if (startSfx != null) GameEvents.TriggerPlaySound(startSfx, gameObject);
         if (animator.runtimeAnimatorController == null) 
             Destroy(parentObject.gameObject ?? gameObject, lifeTime);
-        
-        if (startSfx != null) GameEvents.TriggerPlaySound(startSfx, true, gameObject);
     }
 
     protected virtual void Update()
@@ -183,7 +187,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (useRadialKnockback) calcDirection = damageable.Position - transform.position;
         else calcDirection = new Vector2(isFacingRightDirection ? knockbackDirection.x : -knockbackDirection.x, knockbackDirection.y).normalized;
         damageable.Shock(stunTime, calcDirection, knockbackForce, knockbackTime);
-        if (contactSfx != null) GameEvents.TriggerPlaySound(contactSfx, true, gameObject);
+        if (contactSfx != null) GameEvents.TriggerPlaySound(contactSfx, gameObject);
     }
 
     protected void RadiusProc()

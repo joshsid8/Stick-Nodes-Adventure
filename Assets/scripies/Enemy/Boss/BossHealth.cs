@@ -111,7 +111,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         gameObject.layer = LayerMask.NameToLayer("EDead");
         gameObject.tag = "Dead";
         spriteRenderer.enabled = true;
-        GameEvents.TriggerPlaySound(deathClip, false);
+        GameEvents.TriggerPlaySound(deathClip, gameObject, randomPitch: false);
         yield return new WaitForSeconds(3);
         GameHUD.Instance.ToggleBossHealth(false);
         isDead = false;

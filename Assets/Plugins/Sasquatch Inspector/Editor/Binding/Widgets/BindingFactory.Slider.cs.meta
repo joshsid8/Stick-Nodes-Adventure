@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: da6aeb5cdb9469540bdb3249076b8e7d
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.Slider.cs
+  uploadId: 991816

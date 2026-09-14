@@ -92,7 +92,7 @@ public class Teleporter : MonoBehaviour
                 collision.transform.position = teleportTarget.position;
                 break;
         }
-        if (teleportSfx != null) AudioSource.PlayClipAtPoint(teleportSfx, transform.position);
+        if (teleportSfx != null) GameEvents.TriggerPlaySound(teleportSfx, gameObject);
     }
 
     private void UnloadCurrentScenes(string sceneToIgnore = "")

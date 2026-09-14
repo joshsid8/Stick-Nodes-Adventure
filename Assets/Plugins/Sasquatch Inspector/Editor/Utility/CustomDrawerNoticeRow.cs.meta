@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: e70c5062388623e47a31ac60705853ba
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Utility/CustomDrawerNoticeRow.cs
+  uploadId: 991816

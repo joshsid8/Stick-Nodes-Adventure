@@ -1,0 +1,62 @@
+{
+    "name": "SasquatchInspector.Runtime",
+    "rootNamespace": "SasquatchInspector.Runtime",
+    "references": [
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "Unity.Burst",
+        "Unity.Mathematics",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Universal.2D.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.burst",
+            "expression": "",
+            "define": "SASQ_BURST"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "",
+            "define": "SASQ_UGUI"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "2.0.0",
+            "define": "SASQ_TMP"
+        },
+        {
+            "name": "com.unity.textmeshpro",
+            "expression": "",
+            "define": "SASQ_TMP"
+        },
+        {
+            "name": "com.unity.render-pipelines.universal",
+            "expression": "",
+            "define": "SASQ_URP"
+        },
+        {
+            "name": "com.unity.modules.physics",
+            "expression": "",
+            "define": "SASQ_PHYSICS"
+        },
+        {
+            "name": "com.unity.modules.physics2d",
+            "expression": "",
+            "define": "SASQ_PHYSICS2D"
+        },
+        {
+            "name": "com.unity.modules.audio",
+            "expression": "",
+            "define": "SASQ_AUDIO"
+        }
+    ],
+    "noEngineReferences": false
+}

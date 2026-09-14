@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 22adc9491a57b84469efac23578713dc
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/SceneReferenceDrawer.cs
+  uploadId: 991816

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c2dc76ca5a6346642893092863f5a86e
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.EulerAngles.cs
+  uploadId: 991816

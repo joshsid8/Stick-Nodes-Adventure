@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 7766f4c4a31802d4db24c574bb5dafc8
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/AssetPreviewRenderer.cs
+  uploadId: 991816

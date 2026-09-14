@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 4574daaacdf6b1c4ab716d142a332a8a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.ProgressBar.cs
+  uploadId: 991816

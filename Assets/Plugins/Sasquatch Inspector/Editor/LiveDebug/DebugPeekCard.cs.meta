@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: afd50d38fe69d7b4ebd0e585c1a3e88c
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LiveDebug/DebugPeekCard.cs
+  uploadId: 991816

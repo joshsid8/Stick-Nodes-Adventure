@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f1dc98863262e6d4984b90073fc8b138
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.Color.cs
+  uploadId: 991816

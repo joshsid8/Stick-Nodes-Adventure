@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 968bc067a30e70f42a404dc822c6ece8
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/LiveDebug/DebugRowBinder.cs
+  uploadId: 991816

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: aea971cd70f716e46a9cb3d8e201aaf6
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Building/TrackedCellResolver.cs
+  uploadId: 991816

@@ -1,0 +1,513 @@
+.designer-card {
+    border-color: rgba(0, 0, 0, 0);
+    padding-left: 20px;
+    /* NOTE: container expansion (min-height) and the drop-settle glide are driven by explicit
+       value animations in the drag engine, NOT transitions — min-height starts as the keyword
+       'auto', which transitions can't interpolate from. Don't add min-height here. */
+    transition-property: border-color, background-color, translate;
+    transition-duration: 0.15s, 0.15s, 0.2s;
+    transition-timing-function: ease-out, ease-out, ease-out;
+}
+
+.designer-card:hover {
+    border-color: rgba(90, 140, 204, 0.6);
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Layer 2 of the hover/selection feedback: a SEPARATE inset ring drawn on top of the card border, so a
+   binding's own outline (an inline border color that beats a :hover USS rule) can never hide the highlight.
+   Its color is baked inline per-card (LayoutTreeBuilder.RingHighlightColor — adapts to the card background
+   so it always contrasts); USS toggles only its VISIBILITY via opacity, never its color. The bold inline
+   color makes it read clearly even atop a custom outline. See QuickEditGlow for the same overlay idea. */
+.designer-hover-ring {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-width: 1px;
+    border-radius: 4px;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-out;
+}
+
+.designer-card:hover > .designer-hover-ring,
+.designer-card-selected > .designer-hover-ring {
+    opacity: 1;
+}
+
+/* Layer 4, CONTAINERS only: a barely-opaque wash over the whole container while it is selected. A container
+   is the one card whose own box styling routinely swallows the mark — a black background plus a black border
+   beats the USS selected-border (inline colour wins) and leaves only the ring, which RingHighlightColor
+   derives from that background and so renders grey-white on a dark card: a glow, not a selection. The wash
+   cannot be hidden by any card colour. Its hue is baked inline per-card (LayoutTreeBuilder.SelectionAccentFor,
+   shared with the ring and the badge) and steps off blue when the container ITSELF is blue; USS toggles only
+   its visibility. Absolute + PickingMode.Ignore, so it costs no layout and no hit-testing. */
+.designer-selection-wash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-out;
+}
+
+.designer-card-selected > .designer-selection-wash {
+    opacity: 1;
+}
+
+/* Grips center their GripGlyph via layout (top/bottom anchoring + justify/align center), never
+   via top:50% + translate -50% — that render transform is a permanent half-pixel shift on a
+   7px-tall box, which lands the glyph's hairlines between device pixel rows (one line rounds
+   fatter than its siblings at 125%/150% display scaling). The full-height strip also makes a
+   far bigger hover/drag target than the old 14x7 box. */
+.designer-grip {
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.12s;
+    transition-timing-function: ease-out;
+}
+
+.designer-grip:hover {
+    opacity: 1 !important;
+}
+
+/* Vertical guide line shown while hovering a grip, spanning the card top-to-bottom. */
+.designer-grip-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: #2f7ad4;
+    border-radius: 2px;
+    display: none;
+}
+
+/* Hover-reveal, innermost only: grips are invisible at rest; GripHoverTracker marks the single
+   deepest grip-owning element under the cursor with .grip-hot (a plain :hover rule would light
+   up every ancestor card's grip at once — the old "glow cluster"). The selected card keeps its
+   grip pinned since it's the active manipulation target. */
+.grip-hot > .designer-grip,
+.grip-hot > .collection-item-grip,
+.designer-card-selected > .designer-grip {
+    opacity: 0.6;
+}
+
+.collection-item-row {
+    position: relative;
+    padding-left: 20px;
+    transition-property: translate;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.collection-item-grip {
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.12s;
+    transition-timing-function: ease-out;
+}
+
+.collection-item-grip:hover {
+    opacity: 1 !important;
+}
+
+/* A TABLE COLUMN is two elements in two rows — the header that names it and the representative row's
+   cell that shows its value — and a reorder moves both. They get the canvas card's glide so a column
+   drag slides them together; the transition lives here (a designer-only sheet) so the live inspector's
+   table, which uses the same classes, is untouched. Same duration as .designer-card, because the cells
+   and the cards beside them are parting in the same gesture and must move as one motion. */
+.sasq-table-cell,
+.sasq-table-header-cell {
+    transition-property: translate;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+/* The other half of "which value is this?": selecting a column's binding lights its header, and
+   hovering the cell warms it. Both are on the HEADER because the header is the label — the question
+   people actually ask of a table is "what is this column called", and the answer should light up the
+   moment you touch either half. Border-bottom rather than a fill: a tinted header cell reads as a
+   sort state, which this is not. */
+.sasq-table-header-cell--hot .unity-label,
+.sasq-table-header-cell--hot.unity-label {
+    color: var(--sasq-colhead-hover, #EBEBEB);
+}
+
+/* The negative margin is load-bearing, not a hack: a header cell's height IS its content plus its
+   borders, and the header row is as tall as its tallest cell — so a bare 2px border would grow the row
+   by 2px and jog the whole table down the moment a column was selected. Cancelling it keeps the cell's
+   outer box identical, and the bar lands on the header's own baseline rule, which is where a selected-
+   column indicator belongs anyway. */
+.sasq-table-header-cell--linked {
+    border-bottom-width: 2px;
+    border-bottom-color: #2f7ad4;
+    margin-bottom: -2px;
+}
+
+.sasq-table-header-cell--linked .unity-label,
+.sasq-table-header-cell--linked.unity-label {
+    color: #9cc4ee;
+    -unity-font-style: bold;
+}
+
+/* Organizer (tab kanban) cards shift with the same glide as canvas cards during a drag. */
+.organizer-card {
+    transition-property: translate;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.designer-card-selected {
+    border-color: #2f7ad4 !important;
+}
+
+.selection-badge {
+    position: absolute;
+    top: -10px;
+    left: 8px;
+    background-color: #2f7ad4;
+    color: #ffffff;
+    font-size: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-radius: 2px;
+    -unity-font-style: bold;
+}
+
+.designer-ghost-slot {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+    transition-property: height, margin-bottom, width, margin-right;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-out;
+    overflow: hidden;
+}
+
+/* Hide card selection/hover highlights and badges during a drag operation. The card border carries the
+   classic outline; the ring is hidden by collapsing its opacity (its color is inline per-card). */
+.designer-dragging .designer-hover-ring {
+    opacity: 0 !important;
+}
+
+.designer-dragging .designer-selection-wash {
+    opacity: 0 !important;
+}
+
+.designer-dragging .designer-card-selected {
+    border-color: rgba(0, 0, 0, 0) !important;
+}
+
+.designer-dragging .selection-badge {
+    display: none !important;
+}
+
+.designer-dragging .designer-card:hover {
+    border-color: rgba(0, 0, 0, 0) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.designer-dragging .designer-grip,
+.designer-dragging .collection-item-grip {
+    opacity: 0 !important;
+}
+
+/* Resize dividers are pure noise while something is in hand — hide them, but KEEP their
+   layout space (visibility, never display) so the frozen drag snapshot stays valid. Covers
+   the grid variants too (they stack on these base classes). */
+.designer-dragging .sasq-row-resizer,
+.designer-dragging .sasq-col-resizer {
+    visibility: hidden;
+}
+
+/* Snapshot-based Drag & Drop engine */
+
+.designer-draggable {
+    cursor: pan;
+}
+
+/* The dragged card(s) dim in place — never display:none, which would reflow the layout out from
+   under the drag engine's geometry snapshot. */
+.drag-lifted {
+    opacity: 0.35;
+}
+
+/* The card facsimile that follows the cursor. */
+.drag-ghost {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    scale: 0.96;
+    background-color: rgba(32, 34, 38, 0.96);
+    border-color: #2f7ad4;
+    border-width: 1px;
+    border-radius: 6px;
+    padding: 5px 10px 6px 10px;
+    /* width animates so the stack ghost morphs its WIDTH (not just height) as it crosses regions:
+       narrow over the organizer/hierarchy, full card width over the canvas. */
+    transition-property: opacity, scale, width;
+    transition-duration: 0.09s;
+    transition-timing-function: ease-out;
+}
+
+.drag-ghost--live {
+    opacity: 0.92;
+    scale: 1;
+}
+
+/* Over a remove target (the Bindings panel / delete zone) the ghost reads RED: this drop unbinds. */
+.drag-ghost--remove {
+    border-color: #d4564b;
+    background-color: rgba(60, 30, 30, 0.96);
+}
+.drag-ghost--remove .drag-ghost-stack-card {
+    border-color: #d4564b;
+    background-color: rgba(60, 30, 30, 0.96);
+}
+
+/* Stack mode (multi-drag): the root becomes a transparent column of true-height cards; each card
+   carries the chrome the single ghost normally draws on its root. */
+.drag-ghost--stack {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    padding: 0;
+}
+
+.drag-ghost-stack-card {
+    background-color: rgba(32, 34, 38, 0.96);
+    border-color: #2f7ad4;
+    border-width: 1px;
+    border-radius: 6px;
+    padding: 5px 10px 6px 10px;
+    overflow: hidden;
+    /* Region morph: heights/margins are inline px from creation, so the canvas <-> hierarchy
+       presentation change (true heights+spacing <-> uniform row height, touching) animates. */
+    transition-property: height, margin-top;
+    transition-duration: 0.12s;
+    transition-timing-function: ease-out;
+}
+
+.drag-ghost-header {
+    flex-direction: row;
+    align-items: center;
+}
+
+.drag-ghost-icon {
+    font-size: 13px;
+    margin-right: 6px;
+    color: #2f7ad4;
+}
+
+.drag-ghost-text {
+    font-size: 12px;
+    color: #e8e8e8;
+    -unity-font-style: bold;
+}
+
+.drag-ghost-kind {
+    margin-left: 6px;
+    background-color: rgba(47, 122, 212, 0.22);
+    color: #9cc4ee;
+    font-size: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-radius: 2px;
+    -unity-font-style: bold;
+}
+
+.drag-ghost-count {
+    margin-left: 6px;
+    background-color: #2f7ad4;
+    color: #ffffff;
+    font-size: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-radius: 7px;
+    -unity-font-style: bold;
+}
+
+.drag-ghost-body {
+    margin-top: 5px;
+    border-radius: 3px;
+    background-color: rgba(47, 122, 212, 0.10);
+    border-color: rgba(47, 122, 212, 0.35);
+    border-width: 1px;
+}
+
+/* The single indicator pair: insertion line (exact index) + parent outline (receiving container). */
+.drop-indicator-line {
+    position: absolute;
+    background-color: #2f7ad4;
+    border-radius: 1px;
+}
+
+.drop-indicator-cap {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 3.5px;
+    background-color: #2f7ad4;
+}
+
+.drop-parent-outline {
+    position: absolute;
+    border-width: 1.5px;
+    border-color: #2f7ad4;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.drop-parent-outline--tint {
+    background-color: rgba(47, 122, 212, 0.10);
+}
+
+/* Indicative-only outline (hierarchy indent target): the line is the real signal, so this whispers.
+   Also the permanent look of the CONTEXT outline (the container/frame around a cell/pane target). */
+.drop-parent-outline--thin {
+    border-width: 1px;
+    border-color: rgba(47, 122, 212, 0.65);
+}
+
+/* Phantom "+" cells: the next grid/columns row that will EXIST if the drop lands — shown only while
+   the new-row slot is the active target. The active (first) cell is where the item actually lands. */
+.drop-phantom-cell {
+    position: absolute;
+    border-width: 1px;
+    border-color: rgba(47, 122, 212, 0.40);
+    border-radius: 4px;
+    background-color: rgba(47, 122, 212, 0.05);
+    justify-content: center;
+    align-items: center;
+}
+
+.drop-phantom-cell--active {
+    border-width: 1.5px;
+    border-color: #2f7ad4;
+    background-color: rgba(47, 122, 212, 0.14);
+}
+
+.drop-phantom-plus {
+    color: rgba(126, 166, 209, 0.75);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+}
+
+.drop-phantom-cell--active .drop-phantom-plus {
+    color: #9cc4ee;
+}
+
+/* Landing cells: one full "+" rect per HELD card at the exact spot it will occupy — the canvas's
+   primary "lands here" signal (replaces the old underline+dot, which read as "lands underneath").
+   Same visual weight as an active phantom cell so single- and multi-drops share one language. */
+.drop-landing-cell {
+    position: absolute;
+    border-width: 1.5px;
+    border-color: #2f7ad4;
+    border-radius: 4px;
+    background-color: rgba(47, 122, 212, 0.14);
+    justify-content: center;
+    align-items: center;
+}
+
+.drop-landing-cell .drop-phantom-plus {
+    color: #9cc4ee;
+}
+
+/* Displaced cells: where EXISTING cards get pushed to when a drop into a full tracked container
+   reflows it — the "and a second column appears, carrying this one with it" signal. Deliberately a
+   different hue from the blue landing/phantom family: blue answers "where does the thing in my hand
+   go", amber answers "what else moves because of it". Without this the reflow was invisible until
+   release, which is exactly the surprise a WYSIWYG preview exists to prevent. */
+.drop-displaced-cell {
+    position: absolute;
+    border-width: 1.5px;
+    border-color: rgba(224, 160, 62, 0.85);
+    border-radius: 4px;
+    background-color: rgba(224, 160, 62, 0.10);
+    justify-content: center;
+    align-items: center;
+}
+
+.drop-displaced-arrow {
+    color: rgba(240, 190, 110, 0.95);
+    font-size: 13px;
+    -unity-text-align: middle-center;
+}
+
+/* Escape ring: the container the pointer is passing OVER on its way to a sibling slot beside it.
+   Deliberately colourless — every "you are dropping here" mark in this system is blue (landing,
+   phantom) or amber (displaced), so a NEUTRAL box paired with a blue insertion line outside it reads
+   as "not in this one — there". Without it the only cue that you had left the cell model was the cell
+   highlight disappearing, which is an absence, and an absence is not feedback. It matters more now
+   that a container's two margins mean opposite things (escape vs append). */
+.drop-escape-ring {
+    position: absolute;
+    border-width: 1.5px;
+    border-color: rgba(150, 158, 170, 0.55);
+    border-radius: 5px;
+    background-color: rgba(150, 158, 170, 0.07);
+}
+
+.drop-delete-zone {
+    position: relative;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    height: 46px;
+    background-color: rgba(220, 53, 69, 0.08);
+    border-color: rgba(220, 53, 69, 0.45);
+    border-width: 1.5px;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    transition-property: background-color, border-color;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-out;
+}
+
+.drop-delete-zone--active {
+    background-color: rgba(220, 53, 69, 0.2);
+    border-color: #dc3545;
+}
+
+.drop-delete-label {
+    color: #dc3545;
+    font-size: 12px;
+    -unity-font-style: bold;
+}
+
+/* Must stay LAST: suppresses the translate transition for one frame when the engine needs to
+   pre-position or snap elements without animating (gap clear before a rebuild, settle setup). */
+.drag-no-transition {
+    transition-property: none;
+}
+
+.sasq-clickable {
+    cursor: link;
+}

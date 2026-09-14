@@ -66,5 +66,5 @@ MonoBehaviour:
   dialoguesToRemove: []
   externalInstance: 
   alteredExternalDialogues: []
-  openShopOnClose: 0
+  speakerType: 2
   respeakable: 0

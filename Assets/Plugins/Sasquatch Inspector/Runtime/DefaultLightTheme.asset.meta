@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: da5a8fdfa94a4fc1bc0711a643f21e90
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Runtime/DefaultLightTheme.asset
+  uploadId: 991816

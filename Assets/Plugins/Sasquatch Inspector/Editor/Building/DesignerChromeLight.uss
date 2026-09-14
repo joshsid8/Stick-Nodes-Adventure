@@ -1,0 +1,58 @@
+/* ===== Designer chrome — LIGHT-editor overrides =====
+   Loaded AFTER DesignerCanvas.uss (equal specificity → later sheet wins) ONLY when the editor runs
+   the light skin, so a dark editor never touches this file. Only rules whose DesignerCanvas.uss
+   values are dark-baked need overriding here — accent blues, danger reds and translucent accent
+   tints read fine on both skins and are left alone. */
+
+/* Card hover wash: white-ink on dark flips to black-ink on light. */
+.designer-card:hover {
+    background-color: rgba(0, 0, 0, 0.035);
+}
+
+/* Selection accent, darkened for light chrome (matches DesignerPalette.Accent's light branch). */
+.designer-card-selected {
+    border-color: #2265B8 !important;
+}
+.selection-badge {
+    background-color: #2265B8;
+}
+.designer-grip-line {
+    background-color: #2265B8;
+}
+.drop-indicator-line {
+    background-color: #2265B8;
+}
+.drop-indicator-cap {
+    background-color: #2265B8;
+}
+.drop-parent-outline {
+    border-color: #2265B8;
+}
+
+/* Drag ghost: near-white card with dark text. */
+.drag-ghost {
+    background-color: rgba(248, 249, 251, 0.97);
+    border-color: #2265B8;
+}
+.drag-ghost-stack-card {
+    background-color: rgba(248, 249, 251, 0.97);
+    border-color: #2265B8;
+}
+.drag-ghost--remove {
+    background-color: rgba(252, 238, 238, 0.97);
+}
+.drag-ghost--remove .drag-ghost-stack-card {
+    background-color: rgba(252, 238, 238, 0.97);
+}
+.drag-ghost-icon {
+    color: #2265B8;
+}
+.drag-ghost-text {
+    color: #17181A;
+}
+.drag-ghost-kind {
+    color: #1D4F8C;
+}
+.drag-ghost-count {
+    background-color: #2265B8;
+}

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c01328d9c526b3f4887d22b4caaac331
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.Dropdowns.cs
+  uploadId: 991816

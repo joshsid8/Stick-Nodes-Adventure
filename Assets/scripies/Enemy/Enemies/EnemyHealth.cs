@@ -114,7 +114,7 @@ namespace scripies.Enemy
             gameObject.layer = LayerMask.NameToLayer("EDead");
             gameObject.tag = "Dead";
             spriteRenderer.enabled = true;
-            AudioSource.PlayClipAtPoint(deathClip, transform.position);
+            GameEvents.TriggerPlaySound(deathClip, gameObject, randomPitch: false, volume: 0.5f);
             yield return new WaitForSeconds(2f);
             for (var i = 0; i < 25; i++)
             {

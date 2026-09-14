@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 092391e911712164f9bc24115f2815e8
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/AudioPreviewPlayback.cs
+  uploadId: 991816

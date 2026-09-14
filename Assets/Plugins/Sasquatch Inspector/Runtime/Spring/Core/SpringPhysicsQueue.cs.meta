@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a2f4e0a6c6e955940a47430e836e0ca1
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Runtime/Spring/Core/SpringPhysicsQueue.cs
+  uploadId: 991816

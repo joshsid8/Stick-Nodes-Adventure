@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3b33ea996e9c6d64d92088ea74a60ad8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Demo/Layouts/DemoLiveDebug_59142849.asset
+  uploadId: 991816

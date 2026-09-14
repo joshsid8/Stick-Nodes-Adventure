@@ -66,6 +66,7 @@ public class Projectile : AbilityBase
         Destroy(gameObject, lifeTime);
         objectRange = ccoll.radius / 3 * sizeMult + 0.3f;
         transform.localScale *= sizeMult;
+        if (startSfx != null) GameEvents.TriggerPlaySound(startSfx, gameObject);
     }
 
     protected override void Update()
@@ -144,22 +145,20 @@ public class Projectile : AbilityBase
         hits[1] = Physics2D.CircleCast(transform.position, objectRange, transform.right, 0f, target[1]);
         var deflected = false;
         
-        foreach (var hit in hits) 
+        foreach (var hit in hits)
         {
-            if (hit.collider != null)
+            if (hit.collider == null) continue;
+            var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
+            var pStatus = hit.collider.gameObject.GetComponent<IPlayerStatus>();
+            if (pStatus != null && pStatus.IsCountering)
             {
-                var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
-                var pStatus = hit.collider.gameObject.GetComponent<IPlayerStatus>();
-                if (pStatus != null && pStatus.IsCountering)
-                {
-                    deflected = true;
-                    typeFactor = 1;
-                    GameEvents.TriggerPlayerAction("Counter");
-                    GameEvents.TriggerPlayerCounter();
-                }
-                
-                if (!deflected) Damageable(damageable);
+                deflected = true;
+                typeFactor = 1;
+                GameEvents.TriggerPlayerAction("Counter");
+                GameEvents.TriggerPlayerCounter();
             }
+                
+            if (!deflected) Damageable(damageable);
         }
         if (!deflected && pierceAmount <= 0) Crash();
         else if (deflected) Deflect(typeFactor);
@@ -181,6 +180,7 @@ public class Projectile : AbilityBase
                 ab.GetComponent<AbilityBase>().SetValues(typeFactor, isFacingRightDirection, gameObject);
             }
         }
+        if (contactSfx != null) GameEvents.TriggerPlaySound(contactSfx, gameObject);
         Destroy(gameObject, 0.1f);
     }
 

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: ee5641f84e396e24897eebd930bb7055
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Widgets/BindingFactory.AnimationCurve.cs
+  uploadId: 991816

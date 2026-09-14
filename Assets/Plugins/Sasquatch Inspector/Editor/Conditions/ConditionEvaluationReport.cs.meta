@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: fb1550d234373b045b2a0d741960f7b3
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Conditions/ConditionEvaluationReport.cs
+  uploadId: 991816

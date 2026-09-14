@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f279b87a9b1c17a469a29a7b58c3de8a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Utility/RenderPipelineUtility.cs
+  uploadId: 991816

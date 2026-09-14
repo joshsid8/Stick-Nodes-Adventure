@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cc912bbddfaa9704e8a08fc051d1d84b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Showcase/Assets/JumpParticles.prefab
+  uploadId: 991816

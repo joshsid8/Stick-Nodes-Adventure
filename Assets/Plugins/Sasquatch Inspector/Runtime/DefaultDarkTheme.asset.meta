@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8f01e8edcb59ab84ea97f4512d552cb1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Runtime/DefaultDarkTheme.asset
+  uploadId: 991816

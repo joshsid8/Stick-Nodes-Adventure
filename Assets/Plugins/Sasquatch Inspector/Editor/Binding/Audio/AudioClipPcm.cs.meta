@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 551773ce5d2c9da47b422b5849bd9043
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Audio/AudioClipPcm.cs
+  uploadId: 991816

@@ -1,0 +1,27 @@
+{
+    "name": "SasquatchInspector.Demo",
+    "rootNamespace": "SasquatchInspector.Demo",
+    "references": [
+        "SasquatchInspector.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.audio",
+            "expression": "",
+            "define": "SASQ_AUDIO"
+        },
+        {
+            "name": "com.unity.modules.particlesystem",
+            "expression": "",
+            "define": "SASQ_PARTICLES"
+        }
+    ],
+    "noEngineReferences": false
+}

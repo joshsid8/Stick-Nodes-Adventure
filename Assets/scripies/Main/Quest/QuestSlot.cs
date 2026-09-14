@@ -95,11 +95,8 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
             default:
                 break;
         }
-        if (!allMet)
-        {
-            UpdateTaskText();
-            return;
-        }
+        UpdateTaskText();
+        if (!allMet) return;
         CompleteQuest();
     }
 

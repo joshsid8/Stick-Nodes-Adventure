@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 55f12143af9192e4cb35869aa207b33a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Building/FoldoutStateStore.cs
+  uploadId: 991816

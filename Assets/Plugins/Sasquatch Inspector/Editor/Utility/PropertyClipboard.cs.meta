@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 3a0d620dfa8cd5646bf2c1c8ebd396db
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Utility/PropertyClipboard.cs
+  uploadId: 991816

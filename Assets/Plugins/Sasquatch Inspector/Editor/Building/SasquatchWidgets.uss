@@ -1,0 +1,2752 @@
+﻿/* ===== Skin tokens =====
+   Every skin-dependent color reads a --sasq-* variable with the ORIGINAL dark literal as its
+   fallback. The variables are defined per-skin in SasquatchWidgetThemeDark.uss /
+   SasquatchWidgetThemeLight.uss (loaded onto the build root by LayoutTreeBuilder next to the
+   sasq-skin-dark / sasq-skin-light class). Hosts that load only THIS sheet (Welcome, Tutorial,
+   Showcase, Feedback, SpringSandbox chrome) resolve the fallbacks — i.e. the historical dark
+   look, byte-for-byte. Skin-NEUTRAL colors stay literal on purpose: validation reds/ambers,
+   white text/knobs sitting on accent fills, overlays drawn over images or color swatches, and
+   the black bottom hairlines. NOTE: USS variables don't work in shorthand properties, so
+   border colors that carry a variable are written as the four longhands. */
+
+/* Label-above-field (opt-in per binding, and the fallback FieldLabelColumn stacks a too-narrow track to):
+   put the field's label on its own line above the rest of the row instead of in the inspector's left label
+   column. Applies to BaseField widgets and PropertyField-wrapped fields (the inner base-field is the row).
+
+   Done by WRAPPING the row and giving the label a full-width first line — NOT by flipping the row to a
+   column. A column stacks EVERY child, and a composite widget's row is not just [label][input]: a
+   MinMaxSlider mounts [label][min][track][max] and a Slider with its value field on the Left mounts
+   [label][value][track], so the column put one part per line — a 20px min-max row measured 74px with the
+   min value above the track above the max. Wrapping leaves those parts side by side on line two, exactly
+   where they were, and is identical to a column for the ordinary [label][input] row. */
+.sasq-label-above.unity-base-field,
+.sasq-label-above > .unity-base-field {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+/* Scoped to the row's OWN label and input. A descendant selector also reaches a composite's inner value
+   fields (a MinMaxSlider's min/max FloatFields are base fields in their own right), and a 100%-wide inner
+   label would re-break the very row this is meant to fix. */
+.sasq-label-above.unity-base-field > .unity-base-field__label,
+.sasq-label-above > .unity-base-field > .unity-base-field__label {
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+    flex-basis: 100%;
+    flex-shrink: 0;
+    -unity-text-align: middle-left;
+    margin-left: 0;
+    margin-bottom: 1px;
+}
+.sasq-label-above.unity-base-field > .unity-base-field__input,
+.sasq-label-above > .unity-base-field > .unity-base-field__input {
+    flex-grow: 1;
+}
+
+/* A composite field's number boxes take their width from the ROW, never from their own text.
+
+   Unity ships this container as `flex-shrink: 0` with `flex-basis: auto`, and an auto basis on a row child
+   is MEASURED FROM ITS CONTENT — so typing a long value made the container size itself to the digits and
+   then refuse to give the width back. Measured in a 320px lane with "-1234567890.123456" in every box:
+
+       Vector2 304   Vector3 452   Vector4 604   Rect 304   Bounds 452   (available: 192)
+
+   The row genuinely painted past the inspector edge, which is what summoned HorizontalOverflowRescue's pan
+   rail. Every composite was affected — Vector2/3/4, Vector2Int/3Int, Rect, RectInt, Bounds, BoundsInt and
+   the Quaternion euler row — with or without a prefix/suffix; affixes only made it wider sooner. Scalar
+   fields were never affected, because their width is cross-axis and basis never gets a vote.
+
+   Basis 0 + shrink 1 + min-width 0 says "the row decides", which is what every other inspector row already
+   does. The digits that no longer fit are clipped by the stock text input, exactly as they are in Unity's
+   own Transform. A USS rule rather than a build-time walk on purpose: a PropertyField builds its real
+   field during BIND, a tick after the build pass, so a walk would need the same re-arm dance the affixes
+   carry — a stylesheet just applies whenever the element shows up.
+
+   Scoped by attachment, not by selector: LayoutTreeBuilder adds this sheet to the build root, so it reaches
+   Sasquatch-built trees (both live render paths) and nothing else in the editor. */
+.unity-composite-field__input {
+    flex-shrink: 1;
+    flex-basis: 0;
+    min-width: 0;
+}
+
+/* Toggle-as-switch track */
+.sq-toggle .unity-toggle__input {
+    background-color: var(--sasq-control-bg, #2b2b2b);
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-width: 1px;
+    width: 44px;
+    height: 20px;
+    max-height: 20px;
+    min-height: 20px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Switch knob */
+.sq-toggle .unity-toggle__checkmark {
+    background-image: none;
+    background-color: var(--sasq-knob, #a0a0a0);
+    width: 14px;
+    height: 14px;
+    border-width: 0px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    margin: 0;
+    padding: 0;
+    transition-property: left, background-color;
+    transition-duration: 0.15s;
+}
+
+/* NOTE: the `left` half of that transition is a FALLBACK, not the shipping behaviour. Every switch the
+   package builds runs EditorSpringFX.SpringToggleKnob, which rewrites this element's transition list inline
+   (background-color only) and THROWS the knob across on a spring instead — a transition cannot overshoot,
+   and the overshoot is the whole point. The rule stays so a `.sq-toggle` that never reaches that call still
+   slides rather than teleports; to change how a switch feels, change the spring, not this line. */
+
+/* Suppress the slide transition on freshly-built toggles (applied for one frame on each
+   rebuild) so the intro animation doesn't replay when an unrelated value changes. */
+.sq-toggle--instant .unity-toggle__checkmark,
+.sq-toggle--instant .unity-toggle__input {
+    transition-duration: 0s;
+}
+
+/* Hover feedback — subtle lift on the track + knob so the switch doesn't feel static.
+   Applies in the designer and in live inspectors (both load this stylesheet). */
+.sq-toggle:hover .unity-toggle__input {
+    background-color: var(--sasq-control-bg-hover, #353535);
+    border-top-color: var(--sasq-border-hover, #5a5a5a);
+    border-right-color: var(--sasq-border-hover, #5a5a5a);
+    border-bottom-color: var(--sasq-border-hover, #5a5a5a);
+    border-left-color: var(--sasq-border-hover, #5a5a5a);
+}
+.sq-toggle:hover .unity-toggle__checkmark {
+    background-color: var(--sasq-knob-hover, #c0c0c0);
+}
+.sq-toggle:checked:hover .unity-toggle__input {
+    background-color: var(--sasq-toggle-on-hover, #264a82);
+    /* keep a clearly darker outline even while hovering the ON state */
+    border-top-color: var(--sasq-toggle-on-hover-border, #16304f);
+    border-right-color: var(--sasq-toggle-on-hover-border, #16304f);
+    border-bottom-color: var(--sasq-toggle-on-hover-border, #16304f);
+    border-left-color: var(--sasq-toggle-on-hover-border, #16304f);
+}
+.sq-toggle:checked:hover .unity-toggle__checkmark {
+    background-color: #ffffff;
+}
+
+/* Checked states */
+.sq-toggle:checked .unity-toggle__input {
+    background-color: var(--sasq-toggle-on, #1e3d6b); /* Default accent (overridden inline if customized) */
+    /* A near-black border so the ON edge reads clearly against the blue fill (the grey #3f3f3f default
+       blurred into the blue — a problem for low-contrast / color-blind viewers). Color only; width stays 1px. */
+    border-top-color: var(--sasq-toggle-on-border, #5C5C5C);
+    border-right-color: var(--sasq-toggle-on-border, #5C5C5C);
+    border-bottom-color: var(--sasq-toggle-on-border, #5C5C5C);
+    border-left-color: var(--sasq-toggle-on-border, #5C5C5C);
+}
+
+.sq-toggle:checked .unity-toggle__checkmark {
+    left: 26px; /* width 44 - knob 14 - margin 2 - border 2 */
+    background-color: #ffffff;
+}
+
+/* Switch variants */
+.sq-toggle--rounded .unity-toggle__input {
+    border-radius: 10px;
+}
+.sq-toggle--rounded .unity-toggle__checkmark {
+    border-radius: 7px;
+}
+
+.sq-toggle--square .unity-toggle__input {
+    border-radius: 2px;
+}
+.sq-toggle--square .unity-toggle__checkmark {
+    border-radius: 1px;
+}
+
+.sq-toggle--slim .unity-toggle__input {
+    height: 10px;
+    max-height: 10px;
+    min-height: 10px;
+    border-radius: 5px;
+    /* The knob is intentionally taller than the 10px track (a protruding "switch" look). The track's
+       layout box only reserves margin-top + height, so without a bottom margin the row collapses to 15px
+       and the knob's lower edge (~y17) gets clipped. Reserve a full 20px row (5 + 10 + 5) — matching a
+       normal toggle, which also keeps row heights consistent — so the knob shows in full. */
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 44px;
+    overflow: visible;
+}
+.sq-toggle--slim .unity-toggle__checkmark {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    top: -4px; /* knob sits a hair above the track center for visual balance (row-y 1→17 in the 20px row) */
+    left: 0px;
+}
+.sq-toggle--slim:checked .unity-toggle__checkmark {
+    left: 26px;
+}
+
+/* ON/OFF Overlay Text styling */
+.sq-toggle-onoff-label {
+    position: absolute;
+    color: var(--sasq-text-faint, #888888);
+    font-size: 10px;
+    -unity-font-style: bold;
+    top: 50%;
+    translate: 0 -50%;
+    /* OFF state: text sits on the right, opposite the left knob. "OFF" (3 chars) is wider than the
+       "ON" it flips to (see :checked below), so a symmetric 6px inset let the wider word's LEFT edge
+       reach back and touch the knob — most visible on Extra Large, which scales the whole switch from
+       its left edge. A smaller inset nudges "OFF" clear of the knob; the right side is empty when off. */
+    right: 3px;
+}
+
+.sq-toggle:checked .sq-toggle-onoff-label {
+    left: 6px;
+    right: auto;
+    /* FALLBACK ONLY, and only correct for the default blue track. Every switch BindingFactory builds writes
+       this color inline from the track's ACTUAL fill (BindingFactory.Toggle → ApplyOnOffInk), because a light
+       custom fill — yellow, a pastel accent — leaves white "ON" unreadable. The rule stays for the toggles
+       that never reach that call (the spring sandbox). To change how the word reads, change ApplyOnOffInk. */
+    color: #ffffff;
+}
+
+/* Custom Sizes */
+.sq-size--compact {
+    font-size: 10px;
+}
+.sq-size--compact .unity-label {
+    font-size: 10px;
+}
+.sq-size--compact .unity-text-element {
+    font-size: 10px;
+}
+.sq-size--compact .unity-base-field__input {
+    height: 16px;
+    min-height: 16px;
+    font-size: 10px;
+}
+
+.sq-size--large {
+    font-size: 14px;
+}
+.sq-size--large .unity-label {
+    font-size: 14px;
+}
+.sq-size--large .unity-text-element {
+    font-size: 14px;
+}
+.sq-size--large .unity-base-field__input {
+    height: 26px;
+    min-height: 26px;
+    font-size: 14px;
+}
+
+/* Table column resize handle — the horizontal-resize cursor signals it's draggable.
+   (Inline code can't set a system cursor; USS keywords can.) */
+.sasq-col-resizer {
+    cursor: resize-horizontal;
+}
+
+/* ---- Large-collection ergonomics: pagination toolbar, sort note, clickable Table headers ---- */
+
+/* Clickable Table column header (label + sort glyph) — pointer cursor hints it sorts. */
+.sasq-table-col-header:hover .unity-label {
+    color: var(--sasq-colhead-hover, #EBEBEB);
+}
+/* The link cursor belongs to the ARROWS, not the whole header. Sorting used to be a click anywhere on the
+   cell; it is now the glyph alone, so that the header's own surface is free for the reorder grip. A cell
+   that still claimed "clickable" everywhere would be promising a sort it no longer performs. */
+.sasq-col-sort-glyph {
+    font-size: 10px;
+    color: var(--sasq-accent-text, #99C7FF);
+    cursor: link;
+}
+
+/* ===== Live column reorder (TableColumnGrip) =====
+   Hover a column header and a grip springs in on its left while the header text slides right to make room;
+   drag it and the real columns rearrange in real time. Both halves are driven in C# — the lane is a spring
+   on the label's padding, the grip's pop is a scale spring, the columns glide on translate springs — so
+   only the paint lives here.
+
+   The grip's own mark is a PAINTED GripGlyph, not a text character and not a background: it was a Braille
+   "⠿" and drew nothing at all, because the editor font has no such glyph. Its colour lives in C# with the
+   rest of that glyph's tinting. */
+
+/* The header of the column being dragged. A soft accent wash, NOT a fade: the column is travelling under
+   the user's hand and needs to read as lifted, not as removed. */
+.sasq-col-grip-dragging {
+    background-color: var(--sasq-accent-soft, rgba(46, 122, 217, 0.12));
+}
+
+/* Prev/Next pagination toolbar. */
+.sasq-collection-pager {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+.sasq-pager-btn {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-left: 1px;
+    margin-right: 1px;
+    font-size: 11px;
+}
+.sasq-pager-label {
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 11px;
+    -unity-font-style: bold;
+}
+.sasq-pager-count {
+    margin-left: 6px;
+    font-size: 10px;
+    color: var(--sasq-pager-count, #999999);
+}
+
+/* iOS-style page dots (PaginationDisplayStyle.DotsOnly / ButtonsAndDots). The current page's dot is larger
+   and accent-blue; the rest are small + muted. Clickable: each jumps straight to its page. */
+.sasq-pager-dots {
+    margin-left: 6px;
+    margin-right: 6px;
+}
+.sasq-pager-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 4px;
+    margin-left: 3px;
+    margin-right: 3px;
+    background-color: var(--sasq-pager-dot, rgba(128, 128, 128, 0.55));
+}
+.sasq-pager-dot:hover {
+    background-color: var(--sasq-pager-dot-hover, rgba(128, 128, 128, 0.85));
+}
+.sasq-pager-dot.active {
+    width: 11px;
+    height: 11px;
+    border-radius: 6px;
+    background-color: var(--sasq-pager-active, #4582ED);
+}
+.sasq-pager-dot-gap {
+    font-size: 11px;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: var(--sasq-pager-gap, rgba(128, 128, 128, 0.7));
+    -unity-text-align: middle-center;
+}
+
+/* List-mode sort dropdown row. */
+.sasq-collection-sort {
+    margin-right: 4px;
+}
+
+/* "Sorted by X ▲ · reorder paused [clear]" note. */
+.sasq-collection-sortnote {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.sasq-sortnote-label {
+    font-size: 10px;
+    -unity-font-style: italic;
+    color: var(--sasq-accent-text, #99C7FF);
+}
+.sasq-sortnote-clear {
+    margin-left: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 10px;
+}
+
+/* Resizable text-box bottom edge — vertical-resize cursor. */
+.sasq-text-resizer {
+    cursor: resize-vertical;
+}
+
+/* Rows container row-height resize handle — vertical-resize cursor signals it's draggable. */
+.sasq-row-resizer {
+    cursor: resize-vertical;
+}
+
+/* Validation and conditional warning highlight outline */
+.sasq-binding-row,
+.sasq-validation-wrapper {
+    min-width: 0;
+    flex-shrink: 1;
+    align-self: stretch;
+}
+
+/* ===== Right-edge (and left-label) normalization =====
+   Every full-width inspector row should reach the SAME right edge — "put a ruler on the far right and
+   nothing wobbles". NormalizeFullRowBinding zeroes the OUTER row element's horizontal margins, but some
+   widgets wrap the real field one level deeper, where that pass can't reach it:
+     • DisplayType.Default          → the field sits inside a PropertyField wrapper
+     • a custom widget with [Header]→ the field sits inside WrapWithHeader's column
+   The nested Unity field keeps the editor theme's default ~3px horizontal field margin, so its input (and
+   its label) stop ~3px short of the row edge — and only for SOME widgets, which is exactly the misalignment.
+   Zero that nested margin. The child combinator keeps it surgical: composite sub-fields (e.g. a Vector2's
+   x/y) and a slider's trailing value field are NOT direct children of the row or the property field, so
+   they keep their own spacing (synthetic right-edge spread measured 3px -> 0px). */
+.sasq-binding-row > .unity-base-field,
+.sasq-binding-row .unity-property-field > .unity-base-field {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* The Min-Max slider's drag groove carries a built-in 1px right margin, so its track stops 1px shy of the
+   row edge while every other slider reaches it. */
+.sasq-binding-row .unity-min-max-slider__tracker {
+    margin-right: 0;
+}
+
+/* ===== Slider knobs are OPAQUE =====
+   The editor theme paints the slider thumb at 50% alpha (measured: a #999999 thumb composites to 95/255
+   over the #262626 field and 109/255 over the #424242 track), so the track reads straight through the
+   knob as a brighter band across its middle. Repaint it solid.
+
+   The hover rule deliberately mirrors the theme's OWN selector shape (state on the slider, not the
+   dragger) so the two tie on specificity — this sheet is attached to the element and resolves after the
+   panel's default theme, so a tie goes to us. Without it, hovering would hand the knob back to the
+   translucent thumb color.
+
+   Read-only does NOT ride this rule: SetEnabled(false) dims via opacity on the field root, and UITK
+   composites that per element down the subtree, which puts the see-through knob straight back. Those
+   sliders are dimmed in COLOUR instead, inline, by BindingFactory.ApplyReadOnlySliderLook. A user-picked
+   Knob Color is likewise applied INLINE by BindingFactory.ApplySliderLook and still wins.
+   Covers Slider, SliderInt and the per-axis Vector Sliders (all real BaseSliders); the Min-Max thumbs
+   are the same thumb part under their own class names. The min-max CENTER BAR is deliberately absent —
+   that one is a fill spanning the selected range, not a knob. */
+.unity-base-slider__dragger,
+.unity-min-max-slider__min-thumb,
+.unity-min-max-slider__max-thumb {
+    background-color: var(--sasq-slider-knob, #999999);
+}
+
+.unity-base-slider:hover:enabled .unity-base-slider__dragger,
+.unity-min-max-slider:hover:enabled .unity-min-max-slider__min-thumb,
+.unity-min-max-slider:hover:enabled .unity-min-max-slider__max-thumb {
+    background-color: var(--sasq-slider-knob-hover, #b4b4b4);
+}
+
+.sasq-warning-highlight {
+    border-color: #ef4444 !important;
+    border-width: 1px !important;
+}
+
+/* ===== Condition Debugger overlay & card ===== */
+/* The reveal-in-place wash drawn over a field that conditions would hide/disable. Absolute inset-0 + pickable
+   (set in C#) so it both blocks editing of the revealed field and drives the hover card. */
+.sasq-cond-debug-overlay {
+    border-width: 2px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.sasq-cond-debug-hidden {
+    background-color: rgba(239, 68, 68, 0.42);
+    border-color: rgba(239, 68, 68, 0.95);
+}
+.sasq-cond-debug-disabled {
+    background-color: rgba(245, 158, 11, 0.34);
+    border-color: rgba(245, 158, 11, 0.95);
+}
+
+/* Corner verdict pill (HIDDEN / DISABLED). */
+.sasq-cond-debug-pill {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0;
+    padding-bottom: 1px;
+    font-size: 10px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.sasq-cond-debug-hidden .sasq-cond-debug-pill { background-color: rgba(239, 68, 68, 0.95); }
+.sasq-cond-debug-disabled .sasq-cond-debug-pill { background-color: rgba(245, 158, 11, 0.95); }
+
+/* The floating breakdown card shown on hover (appended to the build root, absolute, on top). */
+.sasq-cond-card {
+    max-width: 340px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: var(--sasq-popup-bg, rgba(28, 30, 34, 0.98));
+    border-width: 1px;
+    border-top-color: var(--sasq-popup-border, rgba(120, 130, 145, 0.55));
+    border-right-color: var(--sasq-popup-border, rgba(120, 130, 145, 0.55));
+    border-bottom-color: var(--sasq-popup-border, rgba(120, 130, 145, 0.55));
+    border-left-color: var(--sasq-popup-border, rgba(120, 130, 145, 0.55));
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.sasq-cond-card-title {
+    font-size: 11px;
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+.sasq-cond-card-title--hidden { color: var(--sasq-danger-fg, rgb(248, 113, 113)); }
+.sasq-cond-card-title--disabled { color: var(--sasq-warn-fg, rgb(251, 191, 36)); }
+.sasq-cond-group-label {
+    font-size: 10px;
+    color: var(--sasq-popup-text-soft, rgba(180, 188, 200, 0.85));
+    margin-top: 3px;
+    margin-bottom: 1px;
+}
+.sasq-cond-row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+.sasq-cond-chip {
+    font-size: 10px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 0;
+    padding-bottom: 1px;
+    margin-right: 6px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.sasq-cond-chip-pass { background-color: rgba(34, 197, 94, 0.92); }
+.sasq-cond-chip-fail { background-color: rgba(239, 68, 68, 0.92); }
+.sasq-cond-rule {
+    font-size: 11px;
+    color: var(--sasq-popup-text, rgb(224, 228, 234));
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+.sasq-cond-actual {
+    font-size: 10px;
+    color: var(--sasq-popup-text-faint, rgba(160, 168, 180, 0.9));
+    margin-left: 6px;
+}
+.sasq-cond-divider {
+    height: 1px;
+    background-color: var(--sasq-popup-divider, rgba(120, 130, 145, 0.4));
+    margin-top: 6px;
+    margin-bottom: 5px;
+}
+.sasq-cond-headline {
+    font-size: 10px;
+    color: var(--sasq-popup-headline, rgba(205, 212, 222, 0.95));
+    white-space: normal;
+}
+
+/* Empty column/row drop slot shown in design mode for a container with an explicit track count, so an
+   empty N-column container visibly shows N droppable cells. Purely a visual affordance (the slot ignores
+   picking so drops fall through to the parent container). */
+.sasq-drop-slot {
+    border-width: 1px;
+    border-top-color: var(--sasq-drop-slot-border, rgba(120, 120, 120, 0.5));
+    border-right-color: var(--sasq-drop-slot-border, rgba(120, 120, 120, 0.5));
+    border-bottom-color: var(--sasq-drop-slot-border, rgba(120, 120, 120, 0.5));
+    border-left-color: var(--sasq-drop-slot-border, rgba(120, 120, 120, 0.5));
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: var(--sasq-drop-slot-bg, rgba(255, 255, 255, 0.031));
+    font-size: 16px;
+}
+
+/* Progress Bar Track */
+.sasq-progress-track {
+    background-color: var(--sasq-control-bg, #2b2b2b);
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-width: 1px;
+    border-radius: 4px;
+    height: 20px;
+    min-height: 20px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+/* Progress Bar Fill. The background-color here is only a fallback — the widget always sets the
+   resolved fill inline (BindingFactory.ProgressFillDefault); keep the two in sync. The rounded
+   corners give the leading edge a soft cap inside the radius-4 track, and the 1px translucent
+   top border reads as a highlight sheen at any DPI scale (a single border scales cleanly at
+   125%/150%, unlike stacked hairline divs). */
+.sasq-progress-fill {
+    background-color: var(--sasq-progress-fill, #2E7AD9);
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 3px;
+    border-top-width: 1px;
+    border-top-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Progress Bar readout. Two perfectly-aligned copies of the text: this base copy spans the whole
+   track, and a second copy (--fill, below) rides inside an invisible clip whose width mirrors the
+   fill — so the readout inverts color exactly at the fill's leading edge. Each copy's color is
+   picked in code for contrast against ITS backdrop (fill / track / per-value gradient), which is
+   what keeps these small glyphs crisp: no outline or shadow smearing them. */
+.sasq-progress-label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -unity-text-align: middle-center;
+    color: #f4f4f4;
+    font-size: 11px;
+    -unity-font-style: bold;
+    letter-spacing: 0.5px;
+}
+
+/* The fill-side copy. Color is set inline per resolved fill; this is only the pre-layout fallback. */
+.sasq-progress-label--fill {
+    color: #ffffff;
+}
+
+/* Invisible clip carrying the fill-side copy; its width is driven in lockstep with the fill. */
+.sasq-progress-label-clip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+/* Optional Text Backdrop (accessibility): full-track centering host + an auto-sized pill behind a
+   single readout copy — guaranteed contrast regardless of bar colors, in either editor skin. */
+.sasq-progress-backdrop-host {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.sasq-progress-label-backdrop {
+    max-width: 100%;
+    background-color: rgba(10, 10, 10, 0.62);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.14);
+    padding: 1px 7px;
+}
+
+/* Readout copy riding the pill: back in flow, auto-sized, always light-on-dark. */
+.sasq-progress-label--boxed {
+    position: relative;
+    width: auto;
+    height: auto;
+    color: #ffffff;
+}
+
+/* Expandable Help Box Header */
+.sasq-help-expand-header {
+    background-color: var(--sasq-pane-header-bg, #2d2d2d);
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-width: 1px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 6px 10px;
+    flex-direction: row;
+    align-items: center;
+}
+.sasq-help-expand-header:hover {
+    background-color: var(--sasq-header-bg, #383838);
+}
+
+/* Chevron */
+.sasq-help-expand-chevron {
+    margin-right: 6px;
+    color: var(--sasq-chevron, #5d5d5d);
+    font-size: 10px;
+    width: 14px;
+}
+
+/* Details pane */
+.sasq-help-expand-details {
+    background-color: var(--sasq-pane-bg, #222222);
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-width: 0 1px 1px 1px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--sasq-text-help, #cccccc);
+}
+
+/* Asset Preview Thumbnail Container */
+.sasq-asset-preview-container {
+    background-color: var(--sasq-well-bg, #1e1e1e);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 4px;
+    padding: 2px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.sasq-asset-preview-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+}
+
+/* Reset-view button overlaid on the interactive asset preview (bottom-left corner). Sits over the
+   rendered preview image, so its scrim colors are skin-neutral by design. */
+.sasq-asset-preview-reset {
+    position: absolute;
+    left: 3px;
+    bottom: 3px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.45);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+}
+.sasq-asset-preview-reset:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 2D/3D toggle overlaid on the interactive asset preview (bottom-right corner). The ON (blue) background is
+   set inline by the widget; OFF falls back to this neutral-dark pill (over the image — skin-neutral). */
+.sasq-asset-preview-2d {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    height: 18px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    font-size: 10px;
+    -unity-font-style: bold;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(0, 0, 0, 0.45);
+    color: rgba(255, 255, 255, 0.85);
+}
+.sasq-asset-preview-2d:hover {
+    border-color: rgba(255, 255, 255, 0.55);
+}
+
+.sasq-progress-interactive {
+    cursor: link;
+}
+
+/* ===== Audio Preview widget ===== */
+/* Waveform display area (Show Soundwaves mode) */
+.sasq-audio-waveform {
+    background-color: var(--sasq-well-bg, #1e1e1e);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* Thin vertical playhead that slides across the field / waveform during playback */
+.sasq-audio-playhead {
+    background-color: var(--sasq-playhead, #e0b020);
+    width: 2px;
+}
+
+/* Interactive (scrubbable) waveform */
+.sasq-audio-interactive {
+    cursor: link;
+}
+
+/* Clickable elements */
+.sasq-clickable {
+    cursor: link;
+}
+
+/* Markdown help-box hyperlink — class is toggled on only while the pointer is over a <link> span,
+   so the hand cursor appears exactly over the link text (a HelpBox label has no per-span cursor). */
+.sasq-md-link-hover {
+    cursor: link;
+}
+
+/* ===== Toggle Group (Particle-System-style collapsible group; the bound bool IS the header checkbox) ===== */
+.sasq-group {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+/* Header bar — the entire bar is the clickable expand/collapse surface. */
+.sasq-group-header {
+    background-color: var(--sasq-header-bg, #383838);
+    border-top-color: var(--sasq-border-strong, #1e1e1e);
+    border-right-color: var(--sasq-border-strong, #1e1e1e);
+    border-bottom-color: var(--sasq-border-strong, #1e1e1e);
+    border-left-color: var(--sasq-border-strong, #1e1e1e);
+    border-width: 1px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    /* Left pad is 5, not 6, so the title lands on LayoutTreeBuilder.SectionGutter (18px) exactly like a Card's
+       and a Foldout's: 1px border + 5px pad + 10px chevron + 2px chevron gap = 18. Every caller builds the
+       chevron at size 10 (SasquatchIcons.Create), which is why .sasq-group-chevron declares 10 below — change
+       either number and this arithmetic has to move with it. Pinned by TestContainerTitlesShareTwoLeftEdges. */
+    padding: 4px 6px 4px 5px;
+    cursor: link;
+}
+.sasq-group-header:hover {
+    background-color: var(--sasq-header-bg-hover, #424242);
+}
+
+/* Left-pinned expand indicator. 10px + the 2px gap IS the header's title gutter (see above); every builder
+   also passes 10 inline to SasquatchIcons.Create, so the two agree rather than the USS being dead weight. */
+.sasq-group-chevron {
+    color: var(--sasq-chevron, #5d5d5d);
+    font-size: 10px;
+    width: 10px;
+    margin-right: 2px;
+    -unity-text-align: middle-center;
+}
+
+/* Group name. Its own token rather than the shared --sasq-text-title, so container titles can carry one ink
+   (LayoutTreeBuilder.TitleInk) without dragging the palette window and the UnityEvent captions along. */
+.sasq-group-title {
+    color: var(--sasq-text-node-title, #e6e6e6);
+    -unity-font-style: bold;
+}
+
+/* Bound checkbox — kept as a plain checkbox (like a particle-system module's enable box). Hide the empty
+   BaseField label column and stop the input from growing so it sits flush next to the name. */
+.sasq-group-toggle {
+    margin: 0 5px 0 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+.sasq-group-toggle .unity-base-field__label {
+    display: none;
+    min-width: 0;
+    width: 0;
+}
+.sasq-group-toggle .unity-toggle__input {
+    flex-grow: 0;
+}
+
+/* Content area — inset under the header; Unity greys it automatically when SetEnabled(false). */
+.sasq-group-content {
+    background-color: var(--sasq-group-content-bg, #2b2b2b);
+    border-top-color: var(--sasq-border-strong, #1e1e1e);
+    border-right-color: var(--sasq-border-strong, #1e1e1e);
+    border-bottom-color: var(--sasq-border-strong, #1e1e1e);
+    border-left-color: var(--sasq-border-strong, #1e1e1e);
+    border-width: 0 1px 1px 1px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    /* Left pad 17 (+ the 1px border) puts the body on the same 18px gutter as the header's title, so the
+       fields hang under the name rather than under the caret — the rule the --list variant below already
+       followed. The other three sides keep the original 6/8 box inset. */
+    padding: 6px 8px 6px 17px;
+}
+
+/* ===== List row style (Project Settings ▸ Sasquatch Inspector ▸ Expandable Rows = List) =====
+   The same shell with the per-row box removed: no border, no fill, no radius, no margin. A run of expandable
+   widgets then reads as ONE list rather than N stacked cards, and neighbours are parted by a hairline instead
+   of a gap. Scoped to this modifier so container groups, the Welcome window, the palette editor and the spring
+   sandbox (the other .sasq-group users) keep the card look. Applied only by BuildExpandableGroup. */
+.sasq-group--list {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.sasq-group--list > .sasq-group-header {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    /* Left pad stays 6 (not the boxed shell's 5) because this variant drops the 1px border — 6 + 10 + 2 is
+       the same 18px title gutter. */
+    padding: 2px 6px;
+}
+/* Same specificity as the base :hover rule and declared later, so it must be restated to survive. Row hover
+   is the only chrome a list row has left — it is what tells you the whole bar is the click target. */
+.sasq-group--list > .sasq-group-header:hover {
+    background-color: var(--sasq-header-bg-hover, #424242);
+}
+.sasq-group--list > .sasq-group-content {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    /* Left pad clears the chevron so expanded content hangs under the title, not under the caret — 18 exactly,
+       the shared section gutter (no border to subtract on this variant). */
+    padding: 2px 6px 6px 18px;
+}
+/* Drawn only while another list row follows (BindingFactory.AttachListRowRule) — a trailing rule under the
+   last row of a run reads as "there's more below". */
+.sasq-group--list-rule {
+    border-bottom-color: var(--sasq-row-divider, rgba(255, 255, 255, 0.1));
+    border-bottom-width: 1px;
+}
+
+/* Unbound-field sync banner (NotificationBanner mode): slim accent-tinted row at the top of the
+   real inspector offering to add fields that exist in code but not in the layout. The blue tint
+   washes are skin-neutral; only the texts flip. */
+.sasq-sync-banner {
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(53, 96, 160, 0.18);
+    border-color: rgba(70, 120, 190, 0.55);
+    border-width: 1px;
+    border-radius: 3px;
+    padding: 4px 8px;
+    margin: 2px 4px 4px 4px;
+}
+
+.sasq-sync-banner__label {
+    flex-grow: 1;
+    color: var(--sasq-banner-fg, #c9d6e8);
+    white-space: normal;
+}
+
+.sasq-sync-banner__btn {
+    margin-left: 8px;
+    padding: 2px 10px;
+}
+
+/* Borderless × so dismissal reads as quiet, not destructive. */
+.sasq-sync-banner__dismiss {
+    margin-left: 4px;
+    padding: 0 6px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    color: var(--sasq-banner-dismiss, #9fb0c4);
+}
+
+.sasq-sync-banner__dismiss:hover {
+    color: var(--sasq-text-strong, #ffffff);
+}
+
+/* Designer stand-in for a binding whose property no longer exists in code (deleted/renamed while
+   auto-sync hasn't run). The real inspector hides dead bindings entirely; the designer shows this
+   red-tinted row so the stale node stays discoverable, selectable and deletable. */
+.sasq-missing-binding {
+    background-color: rgba(190, 60, 60, 0.15);
+    border-color: rgba(220, 90, 90, 0.8);
+    border-width: 1px;
+    border-radius: 3px;
+    padding: 4px 8px;
+    margin: 1px 0;
+}
+
+.sasq-missing-binding .unity-label {
+    color: var(--sasq-missing-fg, #e08585);
+}
+
+/* Guidance card for a plain Dictionary<,> binding: the field exists in code but Unity can't serialize
+   it, so there is no SerializedProperty to draw or save. Informational (not an error like the red
+   missing-binding row): a HelpBox explaining why, plus a click-to-copy SerializedDictionary declaration. */
+.sasq-unserializable-dict {
+    padding: 2px 0;
+    margin: 1px 0;
+}
+
+.sasq-unserializable-dict__code {
+    font-size: 11px;
+    padding: 3px 6px;
+    margin-right: 4px;
+    border-radius: 3px;
+    background-color: rgba(128, 128, 128, 0.08);
+    border-width: 1px;
+    border-color: rgba(128, 128, 128, 0.35);
+    white-space: normal;
+}
+
+/* The card's live-mode "Don't show this again" opt-out: a quiet link-style button, right-aligned,
+   deliberately dimmer than the Copy action so it never competes with the actual guidance. */
+.sasq-unserializable-dict__dismiss {
+    font-size: 10px;
+    padding: 1px 4px;
+    margin: 1px 0 0 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    color: rgba(128, 128, 128, 0.9);
+}
+
+.sasq-unserializable-dict__dismiss:hover {
+    color: var(--sasq-text-muted, #9a9a9a);
+}
+
+/* Sibling rows uniform backgrounds & clean bottom borders.
+   The divider color is a theme token rather than the old hardcoded black alpha, which sank into the
+   group-content background on dark and muddied the light skin. Widths/last-row suppression are set per
+   row in C# (LayoutTreeBuilder.ApplyRowSeparator) because they depend on the node's RowSeparator and on
+   which row is last in the current page. */
+.sasq-table-row {
+    background-color: var(--sasq-ink-015, rgba(255, 255, 255, 0.015));
+    border-bottom-width: 1px;
+    border-bottom-color: var(--sasq-row-divider, rgba(255, 255, 255, 0.1));
+}
+
+/* A table shows many rows at once, and a per-row ✕ / ▲ / ▼ is noise on every row you are NOT working on —
+   a column of delete buttons reads as chrome competing with the data. Same opacity reveal the UnityEvent
+   card's clear-✕ uses (.sasq-uevent-clear): faded out until the pointer is on the row.
+   OPACITY, not display/visibility, on purpose — the lane keeps its width either way, so nothing reflows
+   when a row is hovered and the columns never twitch as the pointer travels down the table. The buttons
+   stay hit-testable while faded, which is harmless: reaching one with the pointer is what reveals it. */
+.sasq-table-row-action {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.12s;
+}
+.sasq-table-row:hover .sasq-table-row-action {
+    opacity: 1;
+}
+
+.sasq-list-row {
+    background-color: var(--sasq-list-row-bg, rgba(46, 46, 46, 0.22));
+    border-bottom-width: 1px;
+    border-bottom-color: var(--sasq-row-divider, rgba(255, 255, 255, 0.1));
+}
+
+/* Card separator: each row is its own tray. The left rail is what makes this work on TALL rows —
+   a bottom hairline is a fixed 1px of signal no matter how far apart the boundaries are, while the
+   rail grows with the row. Geometry (widths, padding, spacing) is applied in C# alongside it. */
+.sasq-list-row--card {
+    background-color: var(--sasq-row-card-bg, rgba(255, 255, 255, 0.045));
+    border-left-color: var(--sasq-row-rail, rgba(255, 255, 255, 0.2));
+    border-bottom-width: 0;
+}
+
+/* ===== Multi-row selection (CollectionRowSelection) =====
+   Ctrl/Shift-click a row's gutter to pick several, then drag them as one block.
+
+   THE HIGHLIGHT IS AN OVERLAY CHILD, NOT THE ROW'S OWN BACKGROUND — and it has to be. ApplyRowSeparator
+   writes background, borders, padding and margins INLINE (zebra tints, Card trays), and an inline style
+   beats every rule in this file. A `.sasq-list-row--selected { background-color: … }` would therefore be
+   invisible on exactly the rows most likely to be selected: the striped ones. The overlay is a sibling
+   surface with nothing competing for it.
+
+   Geometry (absolute, inset 0, 2px left rail, picking off) is set in C# beside the class, matching how
+   every other row treatment splits paint from layout here. Reuses the existing accent tokens rather than
+   minting new ones — a new token is a lockstep edit across BOTH theme sheets and the exported kit's baked
+   twins, for a colour that already exists. */
+.sasq-row-select-overlay {
+    background-color: var(--sasq-accent-soft, rgba(46, 122, 217, 0.12));
+    border-left-color: var(--sasq-accent, #2f7ad4);
+}
+
+/* ===== List styles =====
+   Two orthogonal axes: CollectionListStyle owns the CONTAINER (shell, gutter, density, ordinal), and
+   CollectionRowSeparator — the .sasq-list-row--card rules above — owns the ROW SURFACE. Every style
+   composes with every frame.
+
+   THESE RULES MUST STAY BELOW .sasq-list-row / .sasq-list-row--card. They are single-class selectors just
+   like those, so specificity TIES and source order is the only reason a style can drop the base row
+   treatment. Note also what USS cannot reach here: ApplyRowSeparator writes background, borders, padding
+   and margins INLINE, so a Card frame's tray fill and a zebra tint both beat every rule below — which is
+   deliberate, an explicitly authored fill should win over a style's resting state. Anything that must
+   override those (Minimal's air, Well's trough, removing a shell border) is applied in C# instead. */
+
+/* --- Shared by every style ----------------------------------------------------------------------- */
+
+/* Row actions (✕ ▲ ▼) fade in on row hover. The twin of the .sasq-table-row rule further up — a LIST row
+   is not a .sasq-table-row, so without this the shared .sasq-table-row-action class would leave them at
+   opacity 0 forever. Keep the two in lockstep. */
+.sasq-list-row:hover .sasq-table-row-action {
+    opacity: 1;
+}
+
+/* The ordinal lane. Stretched to the row's full height in C# so its edge (or Timeline's rail) is ONE
+   unbroken vertical line — the strongest "orderly" cue available, and the reason a tall in-line-editor row
+   still reads as part of the same column of rows. */
+.sasq-list-gutter {
+    flex-shrink: 0;
+}
+
+/* No brackets: "[3]" reads as debug output.
+   `middle-*` is LOAD-BEARING, not cosmetic: MakeListGutter pins this label to the lane's top AND bottom, so
+   the vertical half of the text-align is the only thing centring the number on the row. Change it to a
+   `upper-*` variant and every ordinal jumps back to hugging the row's top edge. */
+.sasq-list-ordinal {
+    color: var(--sasq-text-dim, #7c7c7c);
+    font-size: 10px;
+    -unity-text-align: middle-right;
+    transition-property: opacity;
+    transition-duration: 0.12s;
+}
+
+/* The number IS the drag handle. Hover cross-fades the ordinal out and the grip in, occupying the SAME
+   lane — so the handle costs no extra column, the lane never changes width, and nothing in the row
+   reflows as the pointer travels down the list. The grip stays hit-testable while faded (opacity, not
+   display), which is harmless: reaching it with the pointer is what reveals it.
+
+   The fade-out is scoped to --draggable ON PURPOSE. A lane with no handle in it (a collection with reorder
+   off, or ANY row while a sort/filter has reorder paused) has nothing to swap in, so an unscoped rule
+   would simply make the number disappear under the pointer. */
+.sasq-list-gutter-grip {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.12s;
+}
+.sasq-list-row:hover .sasq-list-gutter-grip {
+    opacity: 1;
+}
+.sasq-list-row:hover .sasq-list-gutter--draggable .sasq-list-ordinal {
+    opacity: 0;
+}
+
+/* Count pill — deliberately the UnityEvent badge's exact recipe, so a count reads the same wherever it
+   appears in the package. */
+.sasq-list-count {
+    color: var(--sasq-text-muted, #9a9a9a);
+    font-size: 10px;
+    -unity-font-style: bold;
+    margin-left: 6px;
+    padding: 0 6px;
+    background-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+    border-radius: 7px;
+}
+
+/* Header "+": a quiet icon, because the footer strip is the loud add affordance now. */
+.sasq-list-add-header {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    align-items: center;
+    justify-content: center;
+}
+.sasq-list-add-header:hover {
+    background-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+}
+
+/* HOLD-TO-CLEAR, the leading button of the header group — deliberately the FURTHEST from the "+", because
+   a destructive control next to the one people click most is a mis-click waiting to happen. Same quiet
+   icon-button weight as its neighbours at rest; the commitment is shown by the progress ring the button
+   paints over itself (CollectionClearAll.HoldRing), never by a colour the button wears while idle. The ring
+   is an absolute overlay, so `overflow: visible` is what keeps it from being clipped to the padding box. */
+.sasq-list-clear-header {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+.sasq-list-clear-header:hover {
+    background-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+}
+
+/* TRIAL: the list EYEDROPPER, sitting left of the header "+". Idle it is the same quiet icon button as its
+   neighbour; ARMED it wears a soft accent fill and an accent border, so a mode that stays on until you turn
+   it off is impossible to leave running without noticing. Not amber — amber means "this pointed somewhere
+   and no longer does" in this package. */
+.sasq-list-pick-header {
+    background-color: rgba(0, 0, 0, 0);
+    /* The border is RESERVED, not absent: the button is content-sized (an 11px icon plus 4px of inline
+       padding), so letting --armed introduce a 1px border grew the element by 2px on both axes and the
+       header re-flowed on every arm/disarm. Transparent here, recoloured there. */
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+}
+.sasq-list-pick-header:hover {
+    background-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+}
+.sasq-list-pick-header--armed {
+    background-color: var(--sasq-accent-soft, rgba(46, 122, 217, 0.12));
+    border-color: var(--sasq-accent, #2f7ad4);
+}
+.sasq-list-pick-header--armed:hover {
+    background-color: var(--sasq-accent-soft, rgba(46, 122, 217, 0.12));
+}
+
+/* Search + sort on ONE line. Three stacked full-width stock controls is what made the historical toolbar
+   read like a debug panel rather than part of the inspector. */
+.sasq-list-toolbar-line {
+    margin-bottom: 4px;
+}
+.sasq-list-toolbar-line .sasq-collection-sortrow {
+    margin-left: 6px;
+}
+
+/* Sort direction. Hidden outright unless a sort is active (C# owns `display`); when shown it is a SOFT
+   accent button — a tinted fill and an accent border, so the control reads as something you can press and
+   some of the accent is visible around the arrow rather than the glyph floating alone. It matches the
+   "Sorted by X · reorder paused" note so the two read as ONE state. Not amber — amber means "this pointed
+   somewhere and no longer does" in this package.
+   Height comes from `align-self: stretch` in C#, which matches the sort dropdown beside it. */
+.sasq-list-sortdir {
+    background-color: var(--sasq-accent-soft, rgba(46, 122, 217, 0.12));
+    border-width: 1px;
+    border-color: var(--sasq-accent, #2f7ad4);
+    border-radius: 3px;
+    padding: 0 7px;
+    margin-left: 3px;
+    align-items: center;
+    justify-content: center;
+}
+.sasq-list-sortdir:hover {
+    background-color: var(--sasq-accent-softer, rgba(46, 122, 217, 0.24));
+}
+
+/* The sort note's direction arrow — a real icon rather than a "▲" text glyph. */
+.sasq-sortnote-dir {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+/* Footer add strip. Outlined rather than filled so it reads as "there is room for more here" instead of
+   competing with the rows above it.
+   NOT full width, and that is a functional constraint rather than a taste one: EditorSpringFX.ButtonSpring
+   SCALES the button on hover, so an edge-to-edge strip grew past the collection's content box and got
+   clipped — you could not see the whole thing at the moment you were pointing at it. Shrink-wrapped to its
+   own content plus generous padding, centred, it has room to grow into. */
+.sasq-list-add-footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 1px;
+    border-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-radius: 4px;
+    margin: 6px 0 2px 0;
+    padding: 3px 22px;
+}
+.sasq-list-add-footer:hover {
+    background-color: var(--sasq-ink-05, rgba(255, 255, 255, 0.05));
+    border-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+}
+.sasq-list-add-footer-label {
+    color: var(--sasq-text-muted, #9a9a9a);
+    font-size: 11px;
+    margin-left: 5px;
+}
+
+/* Empty state as a designed panel, not a loose sentence. */
+.sasq-list-empty {
+    align-items: center;
+    justify-content: center;
+    background-color: var(--sasq-ink-03, rgba(255, 255, 255, 0.03));
+    border-width: 1px;
+    border-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+    border-radius: 4px;
+    padding: 10px 8px;
+    margin: 2px 0 4px 0;
+}
+
+/* --- Style: Rows (default) ----------------------------------------------------------------------- */
+/* A bordered shell with a crisp gutter edge. No fill on the row itself at rest — the frame and the gutter
+   edge carry the structure, and a permanent wash on every row is most of what made the historical list
+   look striped-by-default. */
+.sasq-list-row--rows {
+    background-color: rgba(0, 0, 0, 0);
+}
+.sasq-list-row--rows:hover {
+    background-color: var(--sasq-ink-04, rgba(255, 255, 255, 0.04));
+}
+.sasq-list-row--rows .sasq-list-gutter {
+    border-right-width: 1px;
+    border-right-color: var(--sasq-row-divider, rgba(255, 255, 255, 0.1));
+    margin-right: 8px;
+}
+.sasq-list-row--rows .sasq-list-ordinal {
+    padding-right: 6px;
+}
+
+/* --- Style: Minimal ------------------------------------------------------------------------------ */
+/* Premium via restraint: no shell (removed in C#), no row fill, and air instead of lines. The gutter edge
+   is fainter than Rows' — it is the only structural line left, so it should whisper. */
+.sasq-list-row--minimal {
+    background-color: rgba(0, 0, 0, 0);
+}
+.sasq-list-row--minimal:hover {
+    background-color: var(--sasq-ink-05, rgba(255, 255, 255, 0.05));
+}
+.sasq-list-row--minimal .sasq-list-gutter {
+    border-right-width: 1px;
+    border-right-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+    margin-right: 10px;
+}
+.sasq-list-row--minimal .sasq-list-ordinal {
+    padding-right: 7px;
+}
+/* The header carries the structure once the box is gone, so it takes the weight the box used to have. */
+.sasq-list--minimal .sasq-collection-header {
+    font-size: 12px;
+}
+
+/* --- Style: Timeline ----------------------------------------------------------------------------- */
+/* A continuous rail down the list with each ordinal as a node on it, over a RECESSED WELL (fill + top edge
+   set in C#). A list IS an ordered thing; this is the style that says so. The well is not decoration: with
+   a transparent body this was a rail floating on nothing and read as a variant of Minimal — the darker
+   surface is what gives the rail and its nodes something to sit on, and it is why a separate "Well" style
+   turned out to be unnecessary.
+   The rail is one absolutely-positioned element behind the rows (AttachTimelineRail), capped to the first
+   and last node — a rail running past the last row reads as "there's more below", the same reason the last
+   row never gets a hairline. No gutter border here: the rail IS the edge. */
+.sasq-list-rail {
+    background-color: var(--sasq-ink-14, rgba(255, 255, 255, 0.14));
+}
+.sasq-list-row--timeline {
+    background-color: rgba(0, 0, 0, 0);
+}
+.sasq-list-row--timeline:hover {
+    background-color: var(--sasq-ink-05, rgba(255, 255, 255, 0.05));
+}
+.sasq-list-row--timeline .sasq-list-gutter {
+    margin-right: 6px;
+}
+/* The node disc the ordinal sits in, and that the rail threads through. Filled with the WELL colour rather
+   than left transparent, so the rail is hidden behind the disc instead of striking through the number. */
+.sasq-list-node {
+    background-color: var(--sasq-well-bg, #1e1e1e);
+    border-width: 1px;
+    border-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-radius: 8px;
+    transition-property: background-color, border-color;
+    transition-duration: 0.12s;
+}
+.sasq-list-row--timeline .sasq-list-ordinal {
+    -unity-text-align: middle-center;
+}
+/* Hovering lights the node, so the thing you are about to grab is the thing that responds. */
+.sasq-list-row--timeline:hover .sasq-list-node {
+    background-color: var(--sasq-accent-soft, rgba(46, 122, 217, 0.12));
+    border-color: var(--sasq-accent, #2f7ad4);
+}
+
+/* 3-line reorder handle. The lines are a single GripGlyph (device-pixel-snapped Painter2D)
+   rather than stacked 1px elements, which round to uneven heights at fractional display
+   scaling; its rest/hover colors are set in code (MakeReorderGrip). */
+.sasq-reorder-grip {
+    width: 14px;
+    height: 7px;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+    margin-right: 4px;
+    align-self: center;
+}
+
+/* Prevent list/foldout chevrons from being clipped inside collapsible group contents */
+.sasq-group-content .unity-foldout {
+    margin-left: 15px;
+    margin-right: 4px;
+}
+
+/* ===== Color Palette widget (inspector) ===== */
+/* The swatch SLOT — the stable hit target (cursor + click live here). It never moves, so the animated
+   visual inside can rise/scale without sliding out from under the cursor. */
+.sasq-swatch {
+    cursor: link;
+    position: relative;
+}
+.sasq-swatch--grid {
+    margin: 0;
+}
+/* One explicit NoWrap line of the grid. The grid is a COLUMN of these and never uses flex-wrap: a wrapping
+   row's height is measured by the parent through a different width than it lays out at, so the field draws a
+   swatch line outside its own box and overlaps the field above. See BindingFactory.ColorPalette. */
+.sasq-swatch-row {
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.sasq-swatch--bar {
+    margin: 0;
+}
+/* The animated colored block (this is what the spring scales/translates). Fills the slot.
+   Its border sits OVER the swatch color — skin-neutral.
+
+   THE RIM COLOUR BELOW IS A FALLBACK ONLY. BindingFactory.SwatchRimColor writes it inline, per swatch,
+   because the right rim depends on how dark the swatch is: a fixed 16% white over a NEAR-BLACK fill
+   composites onto the editor's own panel grey, so the rim reads as background and the swatch looks a
+   pixel narrower each side than its light neighbours. The `:hover` rule below is likewise superseded
+   inline (an inline border colour beats USS), and is driven from the same pointer callbacks. */
+.sasq-swatch-visual {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-width: 1px;
+    border-color: var(--sasq-swatch-border, rgba(255, 255, 255, 0.16));
+}
+.sasq-swatch-visual--grid {
+    border-radius: 4px;
+}
+.sasq-swatch:hover .sasq-swatch-visual {
+    border-color: var(--sasq-swatch-border-hover, rgba(255, 255, 255, 0.6));
+}
+/* Inset selection ring (color set inline, adaptive). Inset so neighbours never clip it. */
+.sasq-swatch-ring {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    right: 2px;
+    bottom: 2px;
+    border-width: 2px;
+    border-radius: 3px;
+}
+/* "+" tile that appends the field's current color to the palette. The tile itself is a bare grid CELL; the
+   drawn box is the child below, inset by the swatch gap exactly like .sasq-swatch-visual is — so the tile
+   fills one column instead of one column plus a margin. */
+.sasq-swatch--add {
+    margin: 0;
+}
+.sasq-swatch--add-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--sasq-ink-04, rgba(255, 255, 255, 0.04));
+    border-width: 1px;
+    border-top-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-right-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-bottom-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-left-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-radius: 4px;
+}
+.sasq-swatch--add:hover .sasq-swatch--add-fill {
+    background-color: var(--sasq-ink-10, rgba(255, 255, 255, 0.1));
+}
+/* Absolute-fill + middle-center guarantees the glyph is centered regardless of the tile's flex setup. */
+.sasq-swatch-add-glyph {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    color: var(--sasq-add-glyph, #b0b0b0);
+    font-size: 15px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+/* The optional current-color bar (a standard ColorField).
+   The HORIZONTAL zeroes matter as much as the vertical ones. The bar lives inside the widget's own input
+   column, where the .sasq-binding-row right-edge normalizer (direct children only) cannot reach it, so it
+   keeps the editor theme's inspector-field margins — 3px on the left and MINUS 2px on the right, meant for a
+   field that spans a whole inspector row. Inside a fixed-width bar+gear lane those are just noise that the
+   lane's minWidth reservation in BindingFactory.ColorPalette (kColorBarMinWidth + kGearLaneWidth) cannot
+   account for: leave them in and the gear ends up 1px outside the lane it was reserved room in. */
+.sasq-swatch-colorbar {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+/* Transient "Copied #hex" toast that springs in over the field. */
+.sasq-swatch-toast {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--sasq-popup-bg-heavy, rgba(20, 20, 20, 0.92));
+    border-top-color: var(--sasq-popup-heavy-border, rgba(255, 255, 255, 0.18));
+    border-right-color: var(--sasq-popup-heavy-border, rgba(255, 255, 255, 0.18));
+    border-bottom-color: var(--sasq-popup-heavy-border, rgba(255, 255, 255, 0.18));
+    border-left-color: var(--sasq-popup-heavy-border, rgba(255, 255, 255, 0.18));
+    border-width: 1px;
+    border-radius: 4px;
+    padding: 2px 7px;
+    color: var(--sasq-toast-text, #d7f0d7);
+    font-size: 10px;
+    -unity-font-style: bold;
+}
+/* "No palette assigned" prompt shown inside an unconfigured ColorPalette field. */
+.sasq-swatch-empty {
+    background-color: var(--sasq-ink-03, rgba(255, 255, 255, 0.03));
+    border-top-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-right-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-bottom-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-left-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-width: 1px;
+    border-radius: 4px;
+    padding: 8px 10px;
+}
+.sasq-swatch-empty-msg {
+    color: var(--sasq-empty-msg, #aeaeae);
+    margin-bottom: 6px;
+    white-space: normal;
+}
+.sasq-swatch-empty-btn {
+    flex-grow: 1;
+    margin-right: 4px;
+}
+/* Gear at the right edge of the color bar — picks the palette / opens the palette window. */
+.sasq-swatch-gear {
+    width: 20px;
+    height: 18px;
+    margin-left: 3px;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    align-items: center;
+    justify-content: center;
+}
+.sasq-swatch-gear:hover {
+    background-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+    border-radius: 3px;
+}
+
+/* ===== Rich Text editor widget ===== */
+.sasq-richtext-input .unity-base-text-field__input {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+/* The nested raw TextField lives in the wrapper's input column, where the .sasq-binding-row right-edge
+   normalizer (it only reaches direct children / property-field children) can't touch it — so it keeps the
+   editor theme's default horizontal field margin and its right border/rounding gets clipped (the left looks
+   rounded + outlined, the right does not). Zero its horizontal margins so it sits flush and the dark rounded
+   outline shows symmetrically on both sides. */
+.sasq-richtext-field .sasq-richtext-input {
+    margin-left: 0;
+    margin-right: 0;
+}
+/* The formatting toolbar (a column: button bar on top, an expandable chip row below). */
+.sasq-richtext-toolbar {
+    margin-bottom: 3px;
+}
+.sasq-richtext-bar {
+    flex-direction: row;
+    align-items: center;
+}
+/* B / I / U / Color / Size buttons — compact, flat, non-focusable. */
+.sasq-richtext-btn {
+    min-width: 22px;
+    height: 18px;
+    padding: 0 6px;
+    margin: 0 3px 0 0;
+    font-size: 11px;
+    background-color: var(--sasq-ink-05, rgba(255, 255, 255, 0.05));
+    border-width: 1px;
+    border-top-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-right-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-bottom-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-left-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-radius: 3px;
+    -unity-text-align: middle-center;
+}
+.sasq-richtext-btn:hover {
+    background-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-top-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-right-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-bottom-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-left-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+}
+/* Active (its chip row is open). */
+.sasq-richtext-btn--on {
+    background-color: var(--sasq-richtext-on-bg, rgba(90, 140, 220, 0.35));
+    border-top-color: var(--sasq-richtext-on-border, rgba(120, 170, 240, 0.7));
+    border-right-color: var(--sasq-richtext-on-border, rgba(120, 170, 240, 0.7));
+    border-bottom-color: var(--sasq-richtext-on-border, rgba(120, 170, 240, 0.7));
+    border-left-color: var(--sasq-richtext-on-border, rgba(120, 170, 240, 0.7));
+}
+/* Expandable Color / Size chip row under the bar. */
+.sasq-richtext-chiprow {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 3px;
+}
+/* A palette color chip (click wraps the selection in <color=#hex>). Border sits over the chip color —
+   skin-neutral. */
+.sasq-richtext-swatch {
+    width: 16px;
+    height: 16px;
+    margin: 2px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.18);
+    cursor: link;
+}
+.sasq-richtext-swatch:hover {
+    border-color: rgba(255, 255, 255, 0.75);
+    scale: 1.12 1.12;
+}
+/* A Size / More tag chip (click wraps the selection in the matching tag). */
+.sasq-richtext-tagchip {
+    height: 18px;
+    padding: 0 7px;
+    margin: 2px;
+    font-size: 11px;
+    background-color: var(--sasq-ink-05, rgba(255, 255, 255, 0.05));
+    border-width: 1px;
+    border-top-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-right-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-bottom-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-left-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-radius: 3px;
+}
+.sasq-richtext-tagchip:hover {
+    background-color: var(--sasq-ink-12, rgba(255, 255, 255, 0.12));
+    border-top-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-right-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-bottom-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+    border-left-color: var(--sasq-ink-28, rgba(255, 255, 255, 0.28));
+}
+/* The free ColorField in the Color row — compact, sits inline with the swatch chips. */
+.sasq-richtext-colorfield {
+    width: 46px;
+    min-width: 46px;
+    height: 18px;
+    margin: 2px 4px 2px 2px;
+}
+.sasq-richtext-colorfield .unity-base-field__input {
+    min-height: 16px;
+    margin: 0;
+}
+/* The palette gear in the Color row (an icon-only .sasq-richtext-btn). */
+.sasq-richtext-gear {
+    padding: 0 4px;
+    align-items: center;
+    justify-content: center;
+}
+/* Blue "drop here" outline shown at the slot a dragged gradient preset will land in (accent
+   affordance — skin-neutral). */
+.sasq-gradient-drop-indicator {
+    border-width: 2px;
+    border-color: rgba(80, 150, 240, 0.95);
+    border-radius: 4px;
+    background-color: rgba(80, 150, 240, 0.12);
+}
+
+/* Custom selection highlight overlay for the rich-text field (shown when the native one is gone — e.g. while
+   the color picker window holds focus — so you always see which text you're coloring). */
+.sasq-richtext-selhl {
+    background-color: rgba(80, 140, 220, 0.45);
+    border-radius: 2px;
+}
+
+/* The "Clear" chip in the Color row (only shown when the selection already has a color). Red washes —
+   skin-neutral. */
+.sasq-richtext-clearchip {
+    background-color: rgba(220, 90, 90, 0.18);
+    border-color: rgba(220, 90, 90, 0.55);
+}
+.sasq-richtext-clearchip:hover {
+    background-color: rgba(220, 90, 90, 0.30);
+    border-color: rgba(235, 110, 110, 0.85);
+}
+/* Tiny dim caption above the preview bubble. */
+.sasq-richtext-caption {
+    font-size: 10px;
+    color: var(--sasq-text-caption, #7d7d7d);
+    -unity-font-style: bold;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+}
+/* The live formatted preview "result bubble" (background color is applied inline from the node option). */
+.sasq-richtext-preview {
+    border-width: 1px;
+    border-top-color: var(--sasq-ink-14, rgba(255, 255, 255, 0.14));
+    border-right-color: var(--sasq-ink-14, rgba(255, 255, 255, 0.14));
+    border-bottom-color: var(--sasq-ink-14, rgba(255, 255, 255, 0.14));
+    border-left-color: var(--sasq-ink-14, rgba(255, 255, 255, 0.14));
+    border-radius: 5px;
+    padding: 7px 9px;
+    min-height: 22px;
+}
+.sasq-richtext-preview-label {
+    white-space: normal;
+    color: var(--sasq-text-preview, #e4e4e4);
+    font-size: 12px;
+}
+/* Minimizable preview header — chevron + dim "PREVIEW" label, click to spring the preview open/closed. */
+.sasq-richtext-preview-header {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    cursor: link;
+}
+.sasq-richtext-preview-header:hover .sasq-richtext-caption {
+    color: var(--sasq-text-caption-hover, #c0c0c0);
+}
+
+/* ===== Color Palette window ===== */
+.sasq-palettewin-title {
+    font-size: 15px;
+    -unity-font-style: bold;
+    color: var(--sasq-text-title, #d6d6d6);
+    margin-bottom: 6px;
+}
+.sasq-palettewin-hint {
+    font-size: 11px;
+    color: var(--sasq-text-muted, #9a9a9a);
+    margin-bottom: 2px;
+    white-space: normal;
+}
+.sasq-palettewin-status {
+    font-size: 11px;
+    -unity-font-style: bold;
+    color: var(--sasq-success-text, #7fd28b);
+    min-height: 14px;
+    margin-bottom: 4px;
+}
+/* A browse swatch: big rounded block above its hex (and optional name). Block border sits over the
+   swatch color — skin-neutral. */
+.sasq-palettewin-card {
+    align-items: center;
+    width: 64px;
+    margin: 4px;
+}
+.sasq-palettewin-block {
+    width: 56px;
+    height: 40px;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.16);
+    cursor: link;
+}
+.sasq-palettewin-card:hover .sasq-palettewin-block {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+.sasq-palettewin-hex {
+    font-size: 10px;
+    color: var(--sasq-text-label, #c8c8c8);
+    margin-top: 2px;
+}
+.sasq-palettewin-name {
+    font-size: 10px;
+    color: var(--sasq-text-soft, #8a8a8a);
+}
+
+/* ===== Custom UnityEvent drawer ===== */
+.sasq-uevent {
+    margin-top: 4px;
+    margin-bottom: 6px;
+}
+.sasq-uevent-header {
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--sasq-header-bg, #383838);
+    border-top-color: var(--sasq-border-strong, #1e1e1e);
+    border-right-color: var(--sasq-border-strong, #1e1e1e);
+    border-bottom-color: var(--sasq-border-strong, #1e1e1e);
+    border-left-color: var(--sasq-border-strong, #1e1e1e);
+    border-width: 1px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 3px 6px;
+    cursor: link;
+}
+.sasq-uevent-header:hover {
+    background-color: var(--sasq-header-bg-hover, #424242);
+}
+.sasq-uevent-chevron {
+    color: var(--sasq-text-muted, #9a9a9a);
+    font-size: 10px;
+    width: 12px;
+    -unity-text-align: middle-center;
+}
+.sasq-uevent-title {
+    color: var(--sasq-text-title, #d6d6d6);
+    -unity-font-style: bold;
+    margin-left: 2px;
+}
+.sasq-uevent-typehint {
+    color: var(--sasq-text-dim, #7c7c7c);
+    font-size: 10px;
+    margin-left: 4px;
+}
+.sasq-uevent-badge {
+    color: var(--sasq-banner-fg, #c9d6e8);
+    font-size: 10px;
+    -unity-font-style: bold;
+    margin-left: 6px;
+    padding: 0 6px;
+    background-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+    border-radius: 7px;
+}
+.sasq-uevent-body {
+    background-color: var(--sasq-group-content-bg, #2b2b2b);
+    border-top-color: var(--sasq-border-strong, #1e1e1e);
+    border-right-color: var(--sasq-border-strong, #1e1e1e);
+    border-bottom-color: var(--sasq-border-strong, #1e1e1e);
+    border-left-color: var(--sasq-border-strong, #1e1e1e);
+    border-width: 0 1px 1px 1px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 6px;
+}
+.sasq-uevent-empty {
+    color: var(--sasq-text-dim, #7c7c7c);
+    -unity-font-style: italic;
+    padding: 4px 2px;
+}
+.sasq-uevent-card {
+    background-color: var(--sasq-card-bg, #313131);
+    border-top-color: var(--sasq-border-strong, #1e1e1e);
+    border-right-color: var(--sasq-border-strong, #1e1e1e);
+    border-bottom-color: var(--sasq-border-strong, #1e1e1e);
+    border-left-color: var(--sasq-border-strong, #1e1e1e);
+    border-width: 1px 1px 1px 4px;
+    border-radius: 4px;
+    padding: 5px 6px;
+    margin-bottom: 5px;
+    transition-property: border-left-color;
+    transition-duration: 0.15s;
+}
+/* Left-edge color bar = call state at a glance (only border-left-color is overridden). The three state
+   colors are status hues — skin-neutral. */
+.sasq-uevent-card--state-off {
+    border-left-color: #6e6e6e;
+}
+.sasq-uevent-card--state-editor-runtime {
+    border-left-color: #10b981;
+}
+.sasq-uevent-card--state-runtime-only {
+    border-left-color: #3b82f6;
+}
+/* A listener with no function on it gives up its status stripe ENTIRELY — a call state on something that can
+   never run is a status light on a dead wire. Stripe present = this listener does something; that binary is
+   what you read peripherally, with no colour vocabulary to learn and nothing lost to colour blindness. Must
+   stay AFTER the three state rules: same specificity, so source order is what makes it win. Only the border
+   is touched, never the fill — UnityEventCardColor writes the background INLINE, which beats any stylesheet. */
+.sasq-uevent-card--unwired {
+    border-left-color: var(--sasq-border-strong, #1e1e1e);
+}
+/* Optional density tweak from the designer's Compact toggle (the layout is always 2-row). */
+.sasq-uevent-card--compact {
+    padding: 3px 5px;
+    margin-bottom: 3px;
+}
+.sasq-uevent-row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 3px;
+}
+/* The function button is a MENU, not a text field. It sat at the same fill, border and height as the target
+   ObjectField directly above it, so the card read as two identical slabs with nothing saying "this opens
+   something". Recessed a step, and it carries a caret at its right edge. Its content is built as child
+   labels (not the Button's own text) so the method name can out-weigh its breadcrumb prefix. */
+.sasq-uevent-method {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    -unity-text-align: middle-left;
+    background-color: var(--sasq-well-bg, #1e1e1e);
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+}
+.sasq-uevent-method:hover {
+    background-color: var(--sasq-control-bg-hover, #353535);
+}
+/* Breadcrumb prefix ("Event Picker Audio #2 ▸") — only present when it says something the ObjectField above
+   doesn't, and dimmed when it is, so the method name is what the eye lands on. */
+.sasq-uevent-method-prefix {
+    -unity-font-style: normal;
+    color: var(--sasq-text-muted, #9a9a9a);
+    flex-shrink: 1;
+    overflow: hidden;
+}
+.sasq-uevent-method-name {
+    -unity-font-style: bold;
+    color: var(--sasq-text-title, #d6d6d6);
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+}
+/* The empty state ("Select a function…") in the voice .sasq-uevent-empty already uses for an absence. It was
+   previously drawn bold at --sasq-text-title, i.e. the loudest text the card has, so at a glance an unassigned
+   listener weighed exactly as much as a real one. AFTER .sasq-uevent-method-name — equal specificity, so source
+   order decides. Amber is not reused here: that means "this pointed somewhere and no longer does". */
+.sasq-uevent-method-name--empty {
+    -unity-font-style: italic;
+    color: var(--sasq-text-dim, #7c7c7c);
+}
+.sasq-uevent-method-caret {
+    color: var(--sasq-text-muted, #9a9a9a);
+    flex-shrink: 0;
+    margin-left: 4px;
+    font-size: 9px;
+}
+.sasq-uevent-iconbtn {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+.sasq-uevent-iconbtn:hover {
+    background-color: var(--sasq-ink-08, rgba(255, 255, 255, 0.08));
+}
+/* The clear-function button is only occasionally relevant, so it stays out of the way until you are actually
+   working on this listener — the same opacity reveal the Script Header's buttons use. It remains hit-testable
+   while faded, which is harmless: reaching it with the pointer is what reveals it. It lives INSIDE the method
+   well (see UnityEventWidget), so this stays a descendant rule off the card. */
+.sasq-uevent-clear {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.12s;
+}
+.sasq-uevent-card:hover .sasq-uevent-clear {
+    opacity: 1;
+}
+/* The "dynamic" tag that stands in for the static-argument field when the event supplies the value itself.
+   It sits in the arg column so that column always answers one question — a box you type in, or the event.
+   NO color here on purpose: it is set inline from WidgetPalette.AccentIcon, the same token the method
+   picker's dynamic column uses, because the tag only teaches anything if it is that exact blue and a
+   second declaration here would be free to drift from it. Bold for the same reason the picker is. */
+.sasq-uevent-dynamic {
+    -unity-font-style: bold;
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-left: 2px;
+    align-self: center;
+}
+
+/* ===== Animation Curve editor widget ===== */
+/* Root marker (also the verification-test hook). The Painter2D surface paints all curve visuals;
+   USS only styles the surrounding chrome — one consistent button/field language for all rows. */
+.sasq-animation-curve-field {
+}
+.sasq-curve-label {
+    margin-bottom: 2px;
+    color: var(--sasq-text-label, #c8c8c8);
+}
+.sasq-curve-well {
+    background-color: var(--sasq-well-bg, #1e1e1e);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.sasq-curve-preview {
+    margin-left: 6px;
+    flex-shrink: 0;
+}
+.sasq-curve-surface {
+}
+
+/* The single, consistent button style shared by presets, Frame, Edit, and the tangent-mode toggles (#1). */
+.sasq-curve-ribbon {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+.sasq-curve-btn {
+    height: 18px;
+    min-height: 18px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--sasq-control-bg, #2b2b2b);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 3px;
+    color: var(--sasq-text-body, #cfcfcf);
+    font-size: 11px;
+    -unity-text-align: middle-center;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 7px;
+    padding-right: 7px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 0;
+    margin-right: 3px;
+}
+.sasq-curve-btn:hover {
+    border-top-color: var(--sasq-accent, #2f7ad4);
+    border-right-color: var(--sasq-accent, #2f7ad4);
+    border-bottom-color: var(--sasq-accent, #2f7ad4);
+    border-left-color: var(--sasq-accent, #2f7ad4);
+    color: var(--sasq-text-strong, #ffffff);
+}
+.sasq-curve-btn--active {
+    background-color: var(--sasq-accent, #2f7ad4);
+    border-top-color: var(--sasq-accent, #2f7ad4);
+    border-right-color: var(--sasq-accent, #2f7ad4);
+    border-bottom-color: var(--sasq-accent, #2f7ad4);
+    border-left-color: var(--sasq-accent, #2f7ad4);
+    color: #ffffff;
+}
+
+/* Two stacked action rows so the selected-key controls never overflow at default inspector width:
+   row 1 = tangent shaping, row 2 = Time/Value (left) + Frame/Edit (right). */
+.sasq-curve-actionrow {
+    flex-direction: column;
+    margin-top: 4px;
+}
+.sasq-curve-tangentrow {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.sasq-curve-fieldsrow {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 3px;
+}
+.sasq-curve-keyfields {
+    flex-direction: row;
+    align-items: center;
+}
+/* Vertical separator that sets the Both/One handle toggle apart from the tangent-shape buttons (#3). */
+.sasq-curve-divider {
+    width: 1px;
+    height: 14px;
+    background-color: var(--sasq-divider, #4a4a4a);
+    margin-left: 4px;
+    margin-right: 6px;
+}
+/* The handle-mode toggle reads as its own control (a touch wider + a faint outline even when inactive). */
+.sasq-curve-handlebtn {
+    min-width: 40px;
+}
+.sasq-curve-cap {
+    font-size: 11px;
+    color: var(--sasq-text-muted, #9a9a9a);
+    margin-right: 4px;
+    align-self: center;
+}
+.sasq-curve-numrow {
+    flex-direction: row;
+    align-items: center;
+    margin-left: 4px;
+}
+.sasq-curve-num {
+    width: 44px;
+    margin-left: 0;
+    margin-right: 0;
+}
+.sasq-curve-num .unity-base-field__input {
+    min-height: 18px;
+    height: 18px;
+    font-size: 11px;
+}
+.sasq-curve-fold-content {
+    margin-top: 4px;
+}
+
+/* Axis numbers + editable Max fields (overlay children; #6, #10). */
+.sasq-curve-axis-label {
+    font-size: 10px;
+    color: var(--sasq-text-axis, rgba(195, 195, 195, 0.55));
+}
+.sasq-curve-maxfield {
+    width: 48px;
+}
+.sasq-curve-maxfield .unity-base-field__input {
+    height: 15px;
+    min-height: 15px;
+    font-size: 10px;
+    background-color: var(--sasq-well-bg-soft, rgba(30, 30, 30, 0.85));
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+}
+
+/* Resizable well drag handle (#7). */
+.sasq-curve-resize-handle {
+    height: 9px;
+    align-items: center;
+    justify-content: center;
+    cursor: resize-vertical;
+}
+.sasq-curve-resize-handle:hover {
+    background-color: var(--sasq-ink-05, rgba(255, 255, 255, 0.05));
+    border-radius: 0 0 4px 4px;
+}
+
+/* Window: collapsible "Controls" info box + preset swatch gallery (#9, #10). */
+.sasq-curve-controls-box {
+    margin-top: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: var(--sasq-box-bg, #232323);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 4px;
+}
+.sasq-curve-controls-header {
+    flex-direction: row;
+    align-items: center;
+    cursor: link;
+}
+.sasq-curve-controls-fold {
+    margin-top: 4px;
+}
+.sasq-curve-swatch-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.sasq-curve-swatch {
+    width: 38px;
+    height: 24px;
+    background-color: var(--sasq-well-bg, #1e1e1e);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 3px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    align-items: center;
+    justify-content: center;
+    cursor: link;
+}
+.sasq-curve-swatch:hover {
+    border-top-color: var(--sasq-accent, #2f7ad4);
+    border-right-color: var(--sasq-accent, #2f7ad4);
+    border-bottom-color: var(--sasq-accent, #2f7ad4);
+    border-left-color: var(--sasq-accent, #2f7ad4);
+    background-color: var(--sasq-swatch-hover-bg, #242424);
+}
+.sasq-curve-swatch-add {
+    background-color: var(--sasq-control-bg, #2b2b2b);
+}
+.sasq-curve-swatch-plus {
+    font-size: 16px;
+    color: var(--sasq-text-muted, #9a9a9a);
+    -unity-text-align: middle-center;
+}
+.sasq-curve-swatch-add:hover .sasq-curve-swatch-plus {
+    color: var(--sasq-text-strong, #ffffff);
+}
+/* Icon-only buttons (Frame / Edit / preset ⋮): square, snug, same 18px height as the rest. */
+.sasq-curve-iconbtn {
+    width: 22px;
+    min-width: 22px;
+    padding-left: 2px;
+    padding-right: 2px;
+    align-items: center;
+    justify-content: center;
+}
+/* Wrap-mode dropdowns (full editor). */
+.sasq-curve-wrap-row {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    margin-bottom: 2px;
+}
+.sasq-curve-wrap-field {
+    margin-right: 10px;
+    min-width: 150px;
+}
+.sasq-curve-hint {
+    font-size: 11px;
+    color: var(--sasq-text-hint, rgba(200, 200, 200, 0.45));
+    margin-top: 4px;
+    white-space: normal;
+}
+
+
+/* ===== Gradient editor widget ===== */
+.sasq-gradient-field {
+}
+.sasq-gradient-label {
+    margin-bottom: 2px;
+    color: var(--sasq-text-label, #c8c8c8);
+}
+/* The strip well — rounded + inset dark border + overflow hidden (mirrors .sasq-curve-well). */
+.sasq-gradient-well {
+    background-color: var(--sasq-well-bg, #1e1e1e);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.sasq-gradient-preview {
+    margin-left: 6px;
+    flex-shrink: 0;
+}
+/* The pin surface fills the well; the composited strip is set as its background image by the control. */
+.sasq-gradient-surface {
+    -unity-background-scale-mode: stretch-to-fill;
+}
+/* Preset ribbon swatches show a mini gradient via background-image — stretch it to fill the swatch box. */
+.sasq-gradient-preset-swatch {
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+/* Resizable strip drag handle (mirrors .sasq-curve-resize-handle). */
+.sasq-gradient-resize-handle {
+    height: 9px;
+    align-items: center;
+    justify-content: center;
+    cursor: resize-vertical;
+}
+.sasq-gradient-resize-handle:hover {
+    background-color: var(--sasq-ink-05, rgba(255, 255, 255, 0.05));
+    border-radius: 0 0 4px 4px;
+}
+
+/* Action row + blend-mode segmented control (reuses the curve button language). */
+.sasq-gradient-actionrow {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+.sasq-gradient-seg {
+    flex-direction: row;
+    align-items: center;
+}
+.sasq-gradient-seg-btn {
+    height: 18px;
+    min-height: 18px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--sasq-control-bg, #2b2b2b);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    color: var(--sasq-text-body, #cfcfcf);
+    font-size: 11px;
+    -unity-text-align: middle-center;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 7px;
+    padding-right: 7px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 0;
+    margin-right: 0;
+}
+.sasq-gradient-seg-btn:hover {
+    border-top-color: var(--sasq-accent, #2f7ad4);
+    border-right-color: var(--sasq-accent, #2f7ad4);
+    border-bottom-color: var(--sasq-accent, #2f7ad4);
+    border-left-color: var(--sasq-accent, #2f7ad4);
+    color: var(--sasq-text-strong, #ffffff);
+}
+.sasq-gradient-seg-btn--active {
+    background-color: var(--sasq-accent, #2f7ad4);
+    border-top-color: var(--sasq-accent, #2f7ad4);
+    border-right-color: var(--sasq-accent, #2f7ad4);
+    border-bottom-color: var(--sasq-accent, #2f7ad4);
+    border-left-color: var(--sasq-accent, #2f7ad4);
+    color: #ffffff;
+}
+.sasq-gradient-seg-btn--first {
+    border-radius: 3px 0 0 3px;
+}
+.sasq-gradient-seg-btn--last {
+    border-radius: 0 3px 3px 0;
+}
+
+/* ===== Enum Badge Grid widget =====
+   A grid of clickable toggle chips replacing the enum dropdown. Active / partial colors are applied INLINE
+   from the node's resolved accent (per-node) — USS only carries shape, text and the non-accent states. */
+.sasq-enum-badge-field .unity-base-field__label {
+    align-self: flex-start;
+    margin-top: 3px;
+}
+.sasq-enum-badge-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+/* Fixed-column grid cell: takes exactly 1/cols of the row; its padding is the inter-badge gap. */
+.sasq-enum-badge-cell {
+    flex-direction: row;
+    padding-right: 4px;
+    padding-bottom: 4px;
+}
+.sasq-enum-badge {
+    height: 20px;
+    min-height: 20px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--sasq-control-bg, #2b2b2b);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 4px;
+    color: var(--sasq-text-body, #cfcfcf);
+    font-size: 11px;
+    -unity-text-align: middle-center;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 0;
+    margin-right: 4px;
+    /* A CHIP THAT CANNOT FIT ITS NAME MUST TRUNCATE, NOT SPILL. In fixed-column mode the cells are an
+       exact 1/cols share of the row, so a narrow host hands each chip a width its label may not fit —
+       measured in a 90px split pane at "Columns: 3": 30px cells, a 26px button, and "Single" wanting
+       ~49px. Centred text with no clip then overflows BOTH sides equally and the pane's own clip cut the
+       left off, so the chip rendered as "ingle": it reads as a rendering fault rather than as a chip that
+       is too small. Ellipsis keeps the overflow inside the chip and says what is actually true. Costs
+       nothing whenever the label fits, which is every roomy layout.
+
+       THE 8px SIDE PADDING BELOW IS NEGOTIABLE, and SasquatchEnumBadgeControl.KeepOneGlyphVisible writes
+       over it INLINE on a chip whose width is dictated from outside. Truncation has a last step that reads
+       as a rendering fault of its own: under "one letter + the ellipsis" Unity draws the ellipsis ALONE, so
+       a squeezed chip renders as "…". The chip therefore trades this padding away — down to a 1px floor,
+       and only as far as the fit demands — before it gives up the word. Change the 8 here and change
+       BadgePadX there (and EnumChipPadX in ExportedWidgetKit) in the same pass; the fit holds them as
+       constants precisely so it never reads back its own last answer. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sasq-enum-badge:hover {
+    border-top-color: var(--sasq-accent, #2f7ad4);
+    border-right-color: var(--sasq-accent, #2f7ad4);
+    border-bottom-color: var(--sasq-accent, #2f7ad4);
+    border-left-color: var(--sasq-accent, #2f7ad4);
+    color: var(--sasq-text-strong, #ffffff);
+}
+.sasq-enum-badge--active {
+    /* background-color, border-color AND color are set inline from the resolved accent — the ink is picked
+       for contrast against that badge's own fill (SasquatchEnumBadgeControl.Refresh), because a flat white
+       label disappears on a light tint. This white is only the pre-inline fallback; it never paints on a
+       built badge, and the inline value also beats the :hover rule above. */
+    color: #ffffff;
+    /* Non-color selection cue: a thicker bottom border reads as "selected" even in grayscale / for colorblind
+       users, not only via the accent fill. The badge has a fixed 20px height, so the extra border grows inward —
+       no layout jitter, no width change. */
+    border-bottom-width: 3px;
+}
+.sasq-enum-badge--mixed {
+    color: var(--sasq-mixed-fg, #9e9e9e);
+    border-top-color: var(--sasq-mixed-border, #6a6a6a);
+    border-right-color: var(--sasq-mixed-border, #6a6a6a);
+    border-bottom-color: var(--sasq-mixed-border, #6a6a6a);
+    border-left-color: var(--sasq-mixed-border, #6a6a6a);
+}
+.sasq-enum-badge--special {
+    -unity-font-style: italic;
+}
+
+/* Optional Text Backdrop (accessibility), the twin of .sasq-button__backdrop and
+   .sasq-progress-label-backdrop: a hugging dark pill inside the chip's centering row, carrying the label AND
+   any per-value icon so neither can be lost against a bright accent or a light per-value tint.
+
+   The pill's PAINT is a separate --lit class rather than part of this rule, because a badge is the one of the
+   three whose fill is only user-colored HALF the time: an idle chip is the theme's own control background under
+   the theme's own body ink, already readable by construction, and a permanent dark pill on it would read as a
+   box inside a box (and, in the light skin, as a black smear). The pill's SPACE is reserved in both states —
+   transparent border included — so lighting a badge never changes its width and the grid never re-flows. */
+.sasq-enum-badge__row {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.sasq-enum-badge__backdrop {
+    max-width: 100%;
+    flex-shrink: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border-width: 1px;
+    border-top-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+.sasq-enum-badge__backdrop--lit {
+    background-color: rgba(10, 10, 10, 0.62);
+    border-top-color: rgba(255, 255, 255, 0.14);
+    border-right-color: rgba(255, 255, 255, 0.14);
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+    border-left-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Mixed (multi-object) value state for text readouts (dropdowns, min/max labels, scene).
+   Graphical widgets (progress/gradient/curve/color/spring/toggle) mute inline from WidgetPalette.Mixed. */
+.sasq-mixed-text {
+    -unity-font-style: italic;
+    color: var(--sasq-mixed-fg, #9e9e9e);
+}
+
+/* Palette swatch row under the editor. */
+.sasq-gradient-swatch-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    margin-bottom: 2px;
+}
+.sasq-gradient-swatch {
+    width: 18px;
+    height: 18px;
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 3px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    cursor: link;
+}
+.sasq-gradient-swatch:hover {
+    border-top-color: var(--sasq-accent, #2f7ad4);
+    border-right-color: var(--sasq-accent, #2f7ad4);
+    border-bottom-color: var(--sasq-accent, #2f7ad4);
+    border-left-color: var(--sasq-accent, #2f7ad4);
+}
+
+/* Glassmorphic live drag tooltip — same recipe as .sasq-swatch-toast. */
+.sasq-gradient-tip {
+    position: absolute;
+    background-color: var(--sasq-popup-bg-heavy, rgba(20, 20, 20, 0.92));
+    border-top-color: var(--sasq-popup-heavy-border, rgba(255, 255, 255, 0.18));
+    border-right-color: var(--sasq-popup-heavy-border, rgba(255, 255, 255, 0.18));
+    border-bottom-color: var(--sasq-popup-heavy-border, rgba(255, 255, 255, 0.18));
+    border-left-color: var(--sasq-popup-heavy-border, rgba(255, 255, 255, 0.18));
+    border-width: 1px;
+    border-radius: 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 6px;
+    padding-right: 6px;
+    color: var(--sasq-tip-text, #eaeaea);
+    font-size: 10px;
+    -unity-font-style: bold;
+}
+
+/* Window: controls box + pin-layout row + hint (mirror the curve classes). */
+.sasq-gradient-controls-box {
+    margin-top: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: var(--sasq-box-bg, #232323);
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 4px;
+}
+.sasq-gradient-wrap-row {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    margin-bottom: 2px;
+}
+.sasq-gradient-hint {
+    font-size: 11px;
+    color: var(--sasq-text-hint, rgba(200, 200, 200, 0.45));
+    margin-top: 4px;
+    white-space: normal;
+}
+
+/* Color popover (anchored to a clicked color pin). */
+.sasq-gradient-popover-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.sasq-gradient-popover-swatch {
+    width: 22px;
+    height: 22px;
+    border-width: 1px;
+    border-top-color: var(--sasq-border, #3f3f3f);
+    border-right-color: var(--sasq-border, #3f3f3f);
+    border-bottom-color: var(--sasq-border, #3f3f3f);
+    border-left-color: var(--sasq-border, #3f3f3f);
+    border-radius: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    cursor: link;
+}
+.sasq-gradient-popover-swatch:hover {
+    border-top-color: var(--sasq-accent, #2f7ad4);
+    border-right-color: var(--sasq-accent, #2f7ad4);
+    border-bottom-color: var(--sasq-accent, #2f7ad4);
+    border-left-color: var(--sasq-accent, #2f7ad4);
+}
+
+/* While the format painter is armed the canvas root carries .sasq-painting, which USS can hang
+   paint-mode styling off. The CURSOR is deliberately NOT here: the armed cursor is a rasterized
+   paint-roller texture (SasquatchIcons.RenderCursorTexture), and USS `cursor` can only name a
+   built-in keyword or a project asset — neither of which a generated texture is. It is written
+   inline per node surface instead (SyncPainterSurfaces), which also beats any rule placed here,
+   so re-adding a `cursor:` declaration below would be dead style. */
+
+/* ==== Button presets ====
+   Structural styling only — the accent-derived colors, radius, and hover feedback are inline
+   (per-node dynamic values; inline always beats USS pseudo-states). Classic buttons carry NONE
+   of these classes: they are Unity's stock button, untouched. */
+.sasq-button {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.sasq-button__row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+.sasq-button__icon {
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+.sasq-button__icon--right {
+    margin-right: 0;
+    margin-left: 6px;
+}
+
+/* Text Backdrop: a hugging dark pill inside the centering row, holding the label AND the icon so
+   neither can be lost against a bright accent. Mirrors .sasq-progress-label-backdrop; the row keeps
+   the centering, so the pill only ever needs to lay out its own content. */
+.sasq-button__backdrop {
+    max-width: 100%;
+    flex-shrink: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(10, 10, 10, 0.62);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.14);
+    padding: 1px 7px;
+}
+/* Label riding the pill: always light-on-dark, whatever the preset's own ink is. */
+.sasq-button__label--boxed {
+    color: #ffffff;
+}
+
+
+
+/* ==== Inspector field search ====
+   Rows/containers whose text matched the filter carry an accent left stripe (a filter, not a
+   highlight — per-glyph highlighting can't be injected uniformly across the widget label paths).
+   Inline border-left values (section tint / accent stripe rails) win over this class by design,
+   so already-railed cards keep their own color. Fallback equals the dark-token value. */
+.sasq-search-match {
+    border-left-width: 2px;
+    border-left-color: var(--sasq-accent, #2f7ad4);
+}
+
+
+/* ==== Prefab-override bar on a custom-drawn widget ====
+   Unity paints the bar from inside its own two-way binding, so it only ever appears on a widget that went
+   through BindProperty. Everything hand-drawn (Enum Badge Grid, Progress Bar, Rating, Gradient, Tag Chips…)
+   showed NOTHING for a genuinely overridden value. BindingFactory.ArmPrefabOverrideBar adds this class only
+   when Unity is not already marking the field, so a natively bound row keeps exactly one bar — Unity's.
+
+   Matches the editor theme's own override rail: a solid 2px bar hard against the field's left edge, using
+   the margin trick so the bar sits OUTSIDE the field's content box and cannot reflow the row. Deliberately
+   NOT keyed to Unity's `unity-binding--prefab-override` name, which is theirs to rename on a version hop. */
+.sasq-prefab-override {
+    border-left-width: 2px;
+    border-left-color: rgb(31, 122, 255);
+    margin-left: -2px;
+    padding-left: 0;
+}
+
+
+/* ==== Live Debug rows ====
+   The graph strip a field grows under itself while Live Debug is recording. Deliberately its OWN row rather
+   than a sparkline beside the field: the field row stays untouched, so no widget is squeezed and a Vector3
+   cannot push the inspector into horizontal scroll (the help chip hit exactly that). It also leaves room for
+   the readout and the min/max pins, which a beside-the-field trace has nowhere to put.
+
+   Colours are set inline from WidgetPalette at construction (the paint callback runs outside the build's
+   palette scope), so these rules own only geometry plus the two surfaces that never vary. Fallbacks equal
+   the dark-token values, matching every other rule in this file. */
+.sasq-debug-wrapper {
+    flex-direction: column;
+}
+
+.sasq-debug-row {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.sasq-debug-well {
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: var(--sasq-border, #3f3f3f);
+    background-color: var(--sasq-well-bg, #1e1e1e);
+}
+
+/* Reuses the audio waveform's playhead colour: one "you are looking at this instant" tell across the package. */
+.sasq-debug-playhead {
+    background-color: var(--sasq-playhead, #e0b020);
+}
+
+.sasq-debug-ghost {
+    -unity-font-style: italic;
+}
+
+.sasq-debug-readout {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* The moment card floats over the built tree, so it needs to sit above every row it may overlap. */
+.sasq-debug-card {
+    position: absolute;
+}
+
+/* The code peek is a SEPARATE card beside the moment card, never a pane inside it — growing and shrinking the
+   card someone is reading, while the row they are aiming at moves, is not something eyes can follow. */
+.sasq-debug-peek {
+    position: absolute;
+}
+
+/* The playhead transport — one per inspector, directly under the Script Header. Hidden until recording arms.
+   Fallbacks equal the dark-token values (pixel armor), same contract as every other rule in this file.
+
+   Every button here is a square icon button of ONE size. The first version mixed unicode glyphs with text
+   labels ("Clear", "CSV"), so each control was whatever width its own characters happened to be and the row
+   read as a jumble rather than as a toolbar. Uniform geometry is what makes a strip of controls scan. */
+.sasq-debug-transport {
+    border-radius: 3px;
+    background-color: var(--sasq-control-bg, #2b2b2b);
+    border-width: 1px;
+    border-color: var(--sasq-border, #3f3f3f);
+}
+
+/* Pinned state — the bar has floated free of the flow to stay reachable in a long inspector. It needs to look
+   like it is ABOVE the content, or a toolbar sitting on top of a field reads as a rendering bug. */
+.sasq-debug-transport--pinned {
+    border-color: var(--sasq-accent, #2f7ad4);
+    background-color: var(--sasq-control-bg, #2b2b2b);
+}
+
+.sasq-debug-transport__btn {
+    width: 18px;
+    height: 16px;
+    min-width: 18px;
+    margin: 0 1px 0 1px;
+    padding: 0;
+    border-width: 0;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0);
+    align-items: center;
+    justify-content: center;
+}
+
+/* NOTE: the hover and pressed fills are set INLINE from WidgetPalette, not here. Both are skin-relative
+   washes (WidgetPalette.Ink), and inventing a --sasq-hover-wash token for one control would have to be
+   mirrored in both theme sheets forever — TestThemeTokenSheetParity enforces exactly that, and caught the
+   first attempt. Same reasoning, same place, as the Script Header bar right above this feature. */
+
+/* Group divider. Navigation | readout | actions — the grouping is the whole reason the row scans as three
+   jobs instead of eight loose buttons. */
+.sasq-debug-transport__sep {
+    width: 1px;
+    height: 12px;
+    margin: 0 4px 0 4px;
+    background-color: var(--sasq-border, #3f3f3f);
+}
+
+.sasq-debug-transport__readout {
+    -unity-font-style: normal;
+}
+
+/* LIVE and TIPS. A rounded chip reads as a state light as well as a button, which is what both of these are:
+   LIVE says "these numbers are current" and un-freezes the playhead; TIPS says "field tooltips are on" and
+   turns them off. Unity's own Toggle is a checkbox plus a label — around 60px on a bar that already wraps at
+   198px, and drawn in the editor skin rather than this one.
+
+   Colours are set INLINE from WidgetPalette (see Paint), for the same reason the button hover washes are:
+   they are skin-relative, and a --sasq-* token invented for one control has to be mirrored in both theme
+   sheets forever. Geometry only, here. */
+.sasq-debug-transport__pill {
+    height: 14px;
+    min-width: 0;
+    margin: 0 2px 0 2px;
+    padding: 0 5px 0 5px;
+    border-width: 1px;
+    border-radius: 7px;
+    font-size: 8px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/* The row the jump-to-change buttons are scoped to. Without a tell, "next change" silently means something
+   different depending on which graph you last touched — the same class of quiet lie the old global search was,
+   arriving from the other direction. */
+.sasq-debug-row--focused .sasq-debug-well {
+    border-color: var(--sasq-accent, #2f7ad4);
+}

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ee3af9e6b1358b84597d53d8cf6e0083
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Runtime/Spring/README.md
+  uploadId: 991816

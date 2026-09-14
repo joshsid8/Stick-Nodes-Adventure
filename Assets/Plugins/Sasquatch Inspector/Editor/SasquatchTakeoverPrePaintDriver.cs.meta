@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 0b580343337ca8c4ba32ba0860ea4016
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/SasquatchTakeoverPrePaintDriver.cs
+  uploadId: 991816

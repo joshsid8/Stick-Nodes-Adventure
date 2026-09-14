@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 90a52ed701c35c14f97dc5c8e1d34e8a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/InspectorScrollPreservation.cs
+  uploadId: 991816

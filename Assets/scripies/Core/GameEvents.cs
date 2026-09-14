@@ -45,7 +45,7 @@ namespace scripies.Core
         public static Action SaveGameToDisk;
         public static Action PersistGameData;
         
-        public static Action<AudioClip, bool, GameObject> PlaySound;
+        public static Action<AudioClip, GameObject, float, bool> PlaySound;
         public static Action<int, bool> PlayMusic;
         public static Action<bool> MuteMusic;
         
@@ -86,7 +86,7 @@ namespace scripies.Core
         public static void TriggerSaveGameToDisk() => SaveGameToDisk?.Invoke();
         public static void TriggerPersistGameData() => PersistGameData?.Invoke();
         
-        public static void TriggerPlaySound(AudioClip clip = null, bool randomPitch = true, GameObject source = null) => PlaySound?.Invoke(clip, randomPitch, source);
+        public static void TriggerPlaySound(AudioClip clip = null, GameObject source = null, float volume = 1, bool randomPitch = true) => PlaySound?.Invoke(clip, source, volume, randomPitch);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
         public static void TriggerMuteMusic(bool toggle = true) => MuteMusic?.Invoke(toggle);
         

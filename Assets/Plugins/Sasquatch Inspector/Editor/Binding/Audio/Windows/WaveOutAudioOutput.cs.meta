@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: d54eefa7fe7b00f48af01ecb8387eae0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 398710
+  packageName: Sasquatch Inspector
+  packageVersion: 1.0
+  assetPath: Assets/Sasquatch Inspector/Editor/Binding/Audio/Windows/WaveOutAudioOutput.cs
+  uploadId: 991816
