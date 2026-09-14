@@ -261,7 +261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019721987122131995, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_TagString
-      value: Section
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -808,7 +808,7 @@ GameObject:
   - component: {fileID: 227789835}
   m_Layer: 12
   m_Name: Section (1)
-  m_TagString: Section
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2961,6 +2961,7 @@ MonoBehaviour:
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
+  doorSpawnerObjects: []
   enemySceneData: []
   enemyIds: 
   bossHealth: {fileID: 0}
@@ -2972,6 +2973,7 @@ MonoBehaviour:
   collectableSceneData: []
   doorSceneData: []
   spawnerSceneData: []
+  doorSpawnerHybridSceneData: []
 --- !u!4 &944811997
 Transform:
   m_ObjectHideFlags: 0
@@ -3760,7 +3762,7 @@ GameObject:
   - component: {fileID: 1162324169}
   m_Layer: 0
   m_Name: Sections
-  m_TagString: Untagged
+  m_TagString: Section
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

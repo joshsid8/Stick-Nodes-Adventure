@@ -95,7 +95,7 @@ public class ShopManager : GUIBase
             currentShopKeeper.SaveShopItems(shopItems.ToArray());
         buyButton.onClick.RemoveAllListeners();
         currentShopKeeper = null;
-        GameEvents.TriggerSaveGame();
+        GameEvents.TriggerPersistGameData();
         if (isActive) ToggleShop(false);
         ClearEverything();
     }

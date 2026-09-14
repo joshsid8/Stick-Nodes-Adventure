@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
+  m_Name: Noxu Defeated 1
+  m_EditorClassIdentifier: 
+  npcName: Noxu
+  dialogueThread:
+  - thread: That was a great spar we had. I look forward to your future.
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
+  pendingChoice: 0
+  isAnimated: 0
+  yesResponse:
+    responseText: 
+    dialogueObject: {fileID: 0}
+  noResponse:
+    responseText: 
+    dialogueObject: {fileID: 0}
+  nameColour: {r: 0.2735849, g: 0.1509879, b: 0.1509879, a: 1}
+  applyBools: []
+  applyFloats: []
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
+  itemCheckFailureDialogue: {fileID: 0}
+  itemType:
+  - {fileID: 11400000, guid: 42fc952e064a1b445a0382282774002e, type: 2}
+  canBeColoured: 1
+  canBeBold: 1
+  speaker: Noxu
+  dialoguesToAdd: []
+  dialoguesToRemove: []
+  externalInstance: 
+  alteredExternalDialogues: []
+  speakerType: 0
+  respeakable: 1

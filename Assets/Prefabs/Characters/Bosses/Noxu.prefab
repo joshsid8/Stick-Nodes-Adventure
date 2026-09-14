@@ -212,8 +212,8 @@ Transform:
   m_GameObject: {fileID: 8715122064913410510}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: -0.01625447, y: 2.1811, z: 0}
-  m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 0.19999999}
+  m_LocalPosition: {x: -0.01625447, y: 2.58, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 113191802042553342}
@@ -314,7 +314,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -14.796373, y: -33.042286, z: 0}
-  m_LocalScale: {x: 1.01, y: 1.01, z: 1.01}
+  m_LocalScale: {x: 1.03, y: 1.03, z: 1.03}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 178288124548165457}
@@ -493,7 +493,7 @@ MonoBehaviour:
   testing: 0
   testIndex: 0
   testAttacks:
-  - Boulder
+  - BoulderRise
   - Counter
   - Shield
   - Decimate
@@ -514,6 +514,7 @@ MonoBehaviour:
   - BoulderRise
   antiWallAtk:
   - Strafe
+  - Decimate
   playerLayer:
     serializedVersion: 2
     m_Bits: 49408
@@ -530,7 +531,7 @@ MonoBehaviour:
   isFacingRight: 1
   canFacePlayer: 1
   playerTransform: {fileID: 0}
-  initStart: 5
+  initStart: 2
   backupMoveTime: 10
   currentBackupMoveTimer: 15
   stunnable: 0
@@ -549,16 +550,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 684f3ff0ddb86224fb47656ad7b73cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossMaxHealth: 750
-  bossHealth: 750
+  bossMaxHealth: 500
+  bossHealth: 500
   isDead: 0
   deathToggle: 0
   bossName: Noxu, the Keeper of Earth
   healthColours:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0.4433962, g: 0.24640387, b: 0.15686187, a: 1}
+  - {r: 0.3584906, g: 0.2216454, b: 0.16402636, a: 1}
   phase2: 0
-  phase2Health: 0
+  phase2Health: 100
   deathDialogue: {fileID: 11400000, guid: 25a0ddcace9378b41b6a5761bf1f6919, type: 2}
   damageTint: {r: 1, g: 0, b: 0, a: 1}
   tintDuration: 0.5
@@ -593,8 +594,6 @@ MonoBehaviour:
   indicator: {fileID: 8715122064913410510}
   npc: {fileID: 11400000, guid: 8094ff95c90333f4c9b8ad50b628aa02, type: 2}
   dialogue:
-  - {fileID: 11400000, guid: 6cfa5a20770f557408dd62bd9a6c7ea6, type: 2}
-  - {fileID: 11400000, guid: fc546ccfcc2d4514ba3eb062aa5a92af, type: 2}
   - {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
   pLayer:
     serializedVersion: 2
@@ -603,6 +602,7 @@ MonoBehaviour:
   isFacingRight: 1
   moveCamToNpc: 0
   canHaveNullList: 1
+  spokenDialogue: []
   isShopkeeper: 0
 --- !u!114 &6578614805006208656
 MonoBehaviour:

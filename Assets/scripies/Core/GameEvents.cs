@@ -6,7 +6,7 @@ namespace scripies.Core
 {
     /// <summary>
     /// A central hub for global game events to facilitate decoupling between assemblies.
-    /// Ensure, when calling methods, it starts with "Trigger"; otherwise you will be calling a static Action.
+    /// Ensure, when calling methods, it starts with "Trigger"; otherwise you'll be calling a static Action.
     /// </summary>
     public static class GameEvents
     {
@@ -42,7 +42,8 @@ namespace scripies.Core
         
         // Misc events
         public static Action LoadMapData;
-        public static Action SaveGame;
+        public static Action SaveGameToDisk;
+        public static Action PersistGameData;
         
         public static Action<AudioClip, bool, GameObject> PlaySound;
         public static Action<int, bool> PlayMusic;
@@ -50,6 +51,8 @@ namespace scripies.Core
         
         public static Action<GameObject> DropLoot;
         public static Action OnCollect;
+        public static Action<GameObject> OnObjectSpawn;
+        public static Action<GameObject> OnObjectDestroyed;
 
         public static Action<float> StopTime;
         public static Action<Image, float, float> JumpScare;
@@ -80,7 +83,8 @@ namespace scripies.Core
         public static void TriggerDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
         
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
-        public static void TriggerSaveGame() => SaveGame?.Invoke();
+        public static void TriggerSaveGameToDisk() => SaveGameToDisk?.Invoke();
+        public static void TriggerPersistGameData() => PersistGameData?.Invoke();
         
         public static void TriggerPlaySound(AudioClip clip = null, bool randomPitch = true, GameObject source = null) => PlaySound?.Invoke(clip, randomPitch, source);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
@@ -88,6 +92,8 @@ namespace scripies.Core
         
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);
         public static void TriggerCollect() => OnCollect?.Invoke();
+        public static void TriggerObjectSpawn(GameObject obj = null) => OnObjectSpawn?.Invoke(obj);
+        public static void TriggerObjectDestroy(GameObject obj) => OnObjectDestroyed?.Invoke(obj);
 
         public static void TriggerStopTime(float time) => StopTime?.Invoke(time);
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);

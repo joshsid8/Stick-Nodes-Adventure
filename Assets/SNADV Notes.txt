@@ -4,9 +4,15 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices:
-            
-    Priorities:
-                
+        I had to make a Door-Spawner Hybrid object to save objects that have both the Access Manager and a Spawner component
+            Save data is pretty much all good now
+        
+        Noxu's boss fight is so trash to the point where I made it optional instead of compulsory
+            The dialogue has been changed; you can ask to fight
+            but if not, you still gain the ability to walljump to access the rest of the world
+        
+    Priorities:        
+
         Instability, then maybe sfx improvements
         
     Optimisations & Hotfixes:
@@ -14,10 +20,6 @@ SNADV Notes
         Instability
         
             Issues from Testing
-                Modai Village's items just dont spawn
-                    Also after leaving the village, the entrace is closed
-                        Meaning either the data for origo isnt saving, or some sort of error is happening to stop said data to load >:(
-                Noxu's counter stopped working
                 
             Replicatable or From-Build bugs/problems
 
@@ -26,10 +28,9 @@ SNADV Notes
                 One time after confronting Noxu, i had his decimate ability instead of my normal fireball
                     Very very weird bug ive never had before, and idk if it can be replicated yet
 
-            Low Priority or Passive Tasks / Unconfirmed fixed Bugs       
+            Low Priority or Passive Tasks / Unconfirmed fixed Bugs
                 
                 Blocking and countering is very wonky
-                    It is common for abilities to bypass the player's blocks
                     I dont know if its because of the new logic the potentally outdated blocking logic is communicating with,
                     or if the newer logic itself is the issue
                         Cynderians' fire pillar is unblockable for some reason...
@@ -43,6 +44,9 @@ SNADV Notes
                     Sometimes, the player becomes unable to jump or do anything except walk, its after doing something, and said something getting canceled i think
                         Casting abilities may have caused this, or maybe just jumping in general?
                     When it comes to the counter animation, deflecting works, but melee countering doesnt.
+                
+                Noxu's boulder hurts himself!
+                    I think its because the radius hitbox type that spawns after explosion is neutral instead of enemy
 
             Junie Help
                 Tackling The Danger Duo

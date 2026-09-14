@@ -40,6 +40,7 @@ public class MapManager : MonoBehaviour
     public GameObject[] sceneObjects;
     [SerializeField] private List<GameObject> doorObjects = new();
     [SerializeField] private List<GameObject> spawnerObjects = new();
+    [SerializeField] private List<GameObject> doorSpawnerObjects = new();
     
     public List<EnemySceneData> enemySceneData = new();
     public List<int> enemyIds = new();
@@ -50,10 +51,11 @@ public class MapManager : MonoBehaviour
     public List<CollectableSceneData> collectableSceneData = new();
     public List<DoorSceneData> doorSceneData = new();
     public List<SpawnerSceneData> spawnerSceneData = new();
+    public List<DoorSpawnerHybridData> doorSpawnerHybridSceneData = new();
     [Tooltip("Checks if the scene data has tried to find and load its scene data")]
     private bool sceneLoaded;
     #endregion
-
+    
     private void Awake() { if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections"); }
 
     private void Start()
@@ -92,7 +94,7 @@ public class MapManager : MonoBehaviour
     private void OnBossDefeated()
     {
         bossSceneData.isDead = true;
-        GameEvents.TriggerSaveGame();
+        GameEvents.TriggerPersistGameData();
     }
 
     public void OnDoorStatusChanged(AccessManager accessManager, bool isOpen)
@@ -111,31 +113,26 @@ public class MapManager : MonoBehaviour
 
     private IEnumerator MapTransition(Collider2D collision)
     {
-        // No! I am NNNNOT going to inverse the if statement!!!
-        if (AreaManager.Instance.titleText.text != mapName || AreaManager.Instance.titleText.text != null)
+        // FIIIIINNEEEE
+        if (AreaManager.Instance.titleText.text == mapName && AreaManager.Instance.titleText.text == null) yield break;
+        SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
+        mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
+            
+        var targetWeather = weather.GetTargetWeather();
+        var targetColor = mapBgColor;
+            
+        if (targetWeather != WeatherManager.WeatherType.Clear)
         {
-            SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
-            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
-            
-            var targetWeather = weather.GetTargetWeather();
-            var targetColor = mapBgColor;
-            
-            if (targetWeather != WeatherManager.WeatherType.Clear)
-            {
-                int index = (int)targetWeather - 1;
-                if (index >= 0 && index < weather.weatherProperties.Length)
-                {
-                    targetColor = weather.weatherProperties[index].weatherBgColor;
-                }
-            }
-            
-            AreaManager.Instance.TriggerColorFade(targetColor);
-            
-            if (audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene) audioManager.TriggerFadeIn(0.5f);
-            yield return new WaitForSeconds(0.8f);
-            if (collision.gameObject.scene == gameObject.scene) 
-                StartMap(collision.gameObject, targetWeather);
+            var index = (int)targetWeather - 1;
+            if (index >= 0 && index < weather.weatherProperties.Length) targetColor = weather.weatherProperties[index].weatherBgColor;
         }
+            
+        AreaManager.Instance.TriggerColorFade(targetColor);
+            
+        if (audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene) audioManager.TriggerFadeIn(0.5f);
+        yield return new WaitForSeconds(0.8f);
+        if (collision.gameObject.scene == gameObject.scene) 
+            StartMap(collision.gameObject, targetWeather);
     }
 
     private void StartMap(GameObject objectRef) => StartMap(objectRef, null);
@@ -181,7 +178,7 @@ public class MapManager : MonoBehaviour
 
     private void HandleMapExit(GameObject playerObject)
     {
-        GameEvents.TriggerSaveGame();
+        GameEvents.TriggerPersistGameData();
         if (!activeMap) return;
         activeMap = false;
         weather.ClearDisasters();
@@ -203,21 +200,31 @@ public class MapManager : MonoBehaviour
         if (!scene.isLoaded) return;
         sceneObjects = scene.GetRootGameObjects();
         
+        doorSpawnerObjects.Clear();
         doorObjects.Clear();
         foreach (var obj in sceneObjects)
         {
             if (!obj.CompareTag("Section")) continue;
             foreach (var section in obj.GetComponentsInChildren<AccessManager>())
+            {
                 doorObjects.Add(section.gameObject);
+                if (section.gameObject.GetComponent<SpawnerBase>() == null || doorSpawnerObjects.Contains(obj)) continue;
+                doorSpawnerObjects.Add(section.gameObject);
+                if (doorObjects.Contains(section.gameObject)) doorObjects.Remove(section.gameObject);
+            }
         }
         
         spawnerObjects.Clear();
         foreach (var obj in sceneObjects)
         {
             if (!obj.CompareTag("Spawner")) continue;
-            foreach (var spawner in obj.GetComponentsInChildren<SpawnerBase>()) 
+            foreach (var spawner in obj.GetComponentsInChildren<SpawnerBase>())
+            {
                 spawnerObjects.Add(spawner.gameObject);
-            if (obj.GetComponent<AccessManager>() != null) doorObjects.Add(obj); // For spawner-Door Hybrids
+                if (spawner.gameObject.GetComponent<AccessManager>() == null || doorSpawnerObjects.Contains(obj)) continue;
+                doorSpawnerObjects.Add(spawner.gameObject);
+                if (spawnerObjects.Contains(spawner.gameObject)) spawnerObjects.Remove(spawner.gameObject);
+            }
         }
     }
 
@@ -228,6 +235,7 @@ public class MapManager : MonoBehaviour
         collectableSceneData.Clear();
         doorSceneData.Clear();
         spawnerSceneData.Clear();
+        doorSpawnerHybridSceneData.Clear();
     }
 
     public void DisableSpawners()
@@ -244,7 +252,7 @@ public class MapManager : MonoBehaviour
         }
     }
     
-    private static void SaveDataOnDialogueClose(ScriptableObject dialogue = null) => GameEvents.TriggerSaveGame();
+    private static void SaveDataOnDialogueClose(ScriptableObject dialogue = null) => GameEvents.TriggerPersistGameData();
 
     private void InitialiseSceneData()
     {
@@ -325,29 +333,45 @@ public class MapManager : MonoBehaviour
         foreach (var door in doorObjects)
         {
             var doorId = door.GetComponent<Identifier>();
-            var doorObjective = door.GetComponent<AccessManager>();
+            var accManager = door.GetComponent<AccessManager>();
             var newDoor = new DoorSceneData
             {
                 activeDoors = door,
-                accessManager = doorObjective,
+                accessManager = accManager,
                 id = doorId.id,
-                isOpen = doorObjective.isOpen
+                isOpen = accManager.isOpen
             };
             doorSceneData.Add(newDoor);
         }
         foreach (var spawner in spawnerObjects)
         {
             var spawnerId = spawner.GetComponent<Identifier>();
-            var itemSpawner = spawner.GetComponent<ItemSpawner>();
-            var entitySpawner = spawner.GetComponent<EntitySpawner>();
+            var spawnerBase = spawner.GetComponent<SpawnerBase>();
             var newSpawner = new SpawnerSceneData
             {
                 activeSpawner = spawner,
-                spawner = itemSpawner,
+                spawner = spawnerBase,
                 id = spawnerId.id,
-                isOneTime = itemSpawner != null ? itemSpawner.isOneTime : (entitySpawner != null && entitySpawner.isOneTime)
+                isOneTime = spawnerBase.isOneTime
             };
             spawnerSceneData.Add(newSpawner);
+        }
+
+        foreach (var dsh in doorSpawnerObjects)
+        {
+            var id = dsh.GetComponent<Identifier>();
+            var accManager = dsh.GetComponent<AccessManager>();
+            var spawnerBase = dsh.GetComponent<SpawnerBase>();
+            var newDsh = new DoorSpawnerHybridData
+            {
+                activeDsh = dsh,
+                id = id.id,
+                accessManager = accManager,
+                spawner = spawnerBase,
+                isOneTime = spawnerBase.isOneTime,
+                isOpen = accManager.isOpen
+            };
+            doorSpawnerHybridSceneData.Add(newDsh);
         }
     }
     
@@ -369,6 +393,7 @@ public class MapManager : MonoBehaviour
         list.collectables.Clear();
         list.doors.Clear();
         list.spawners.Clear();
+        list.doorSpawnerHybrids.Clear();
         
         list.undiscoveredMap = undiscoveredMap;
         
@@ -418,6 +443,16 @@ public class MapManager : MonoBehaviour
                 isOneTime = sData.isOneTime
             });
         }
+
+        foreach (var dshData in doorSpawnerHybridSceneData)
+        {
+            list.doorSpawnerHybrids.Add(new DataManager.DoorSpawnerHybridSceneData
+            {
+                activeDsh = dshData.id,
+                isOpen = dshData.isOpen,
+                isOneTime = dshData.isOneTime
+            });
+        }
     }
 
     private void LoadSceneData()
@@ -432,7 +467,7 @@ public class MapManager : MonoBehaviour
         if (!hasSceneData)
         {
             // if there isnt any found scene data, it should save the current new state into the data manager
-            //print($"Scene data for {sceneName} not found, saving current scene data to data manager.");
+            // print($"Scene data for {sceneName} not found, saving current scene data to data manager.");
             sceneLoaded = true;
             SaveSceneData();
             return;
@@ -464,20 +499,25 @@ public class MapManager : MonoBehaviour
 
             foreach (var doorData in list.doors)
             {
-                if (doorData.isOpen)
-                {
-                    var door = doorSceneData.Find(d => d.id == doorData.activeDoor);
-                    if (door != null && door.accessManager != null) door.accessManager.InstantOpen();
-                }
+                if (!doorData.isOpen) continue;
+                var door = doorSceneData.Find(d => d.id == doorData.activeDoor);
+                if (door != null && door.accessManager != null) door.accessManager.InstantOpen();
             }
 
             foreach (var spawnerData in list.spawners)
             {
-                if (spawnerData.isOneTime)
-                {
-                    var ssd = spawnerSceneData.Find(s => s.id == spawnerData.activeSpawner);
-                    if (ssd != null && ssd.spawner != null) ssd.spawner.Despawn();
-                }
+                if (!spawnerData.isOneTime) continue;
+                var ssd = spawnerSceneData.Find(s => s.id == spawnerData.activeSpawner);
+                if (ssd != null && ssd.spawner != null) StartCoroutine(ssd.spawner.Despawn());
+            }
+
+            foreach (var dshData in list.doorSpawnerHybrids)
+            {
+                var dsh = doorSpawnerHybridSceneData.Find(d => d.id == dshData.activeDsh);
+                if (dsh == null) continue;
+                if (dshData.isOpen) dsh.accessManager.InstantOpen();
+                if (!dshData.isOneTime) continue;
+                StartCoroutine(dsh.spawner.Despawn());
             }
 
             bossSceneData.activeBoss = list.activeBoss;
@@ -636,5 +676,18 @@ public class MapManager : MonoBehaviour
         public SpawnerBase spawner;
         public int id;
         public bool isOneTime;
+    }
+
+    [Serializable]
+    public class DoorSpawnerHybridData
+    {
+        public GameObject activeDsh;
+        public int id;
+        
+        public bool isOpen;
+        public AccessManager accessManager;
+        
+        public bool isOneTime;
+        public SpawnerBase spawner;
     }
 #endregion

@@ -67,14 +67,15 @@ namespace scripies.Dialogue
         [Tooltip("Adds this dialogue to another npc. Ensure this is filled if the quest type SpeakTo/GiveTo")]
         public DialogueObject[] alteredExternalDialogues;
         
-        public bool openShopOnClose;
+        public enum SpeakerType {Default, ShopOpen, BossFight}
+        [EnumButtons] public SpeakerType speakerType;
         public bool respeakable;
     }
 
     [Serializable]
     public class DialogueThread
     {
-        [Tooltip("Keep in mind: # = slow down, * = speed up, |/_ = animations 1 to 3, ~ = stop animation")]
+        [Tooltip("Keep in mind: * = slow down, # = speed up, |/_ = animations 1 to 3, ~ = stop animation")]
         [TextArea(4, 10)]
         public string thread;
         public Color dialogueColour = Color.black;

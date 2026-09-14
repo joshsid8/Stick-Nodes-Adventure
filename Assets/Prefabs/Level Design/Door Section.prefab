@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4cbf7639981a084eb85f4e6cb0e573e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectiveComplete: 0
-  finishTime: 0
+  openTime: 0
+  openSfx: {fileID: 0}
 --- !u!212 &5796141929305424383
 SpriteRenderer:
   serializedVersion: 2
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 2511440761741511710}
   m_Layer: 12
   m_Name: Door Section
-  m_TagString: Section
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -473,6 +473,7 @@ MonoBehaviour:
   - 0.5
   - 0.5
   - 0.5
+  muteMusic: 0
   mapDisasterNames:
   - Temperature
   - Earthquake
@@ -497,13 +498,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  doorObj:
-  - {fileID: 6295141710437693120}
+  doorObjs: []
   objective: 0
   enemies:
   - {fileID: 0}
   boss: {fileID: 0}
   keys: []
+  badgeSo: {fileID: 0}
+  checkOnTrigger: 1
 --- !u!114 &2511440761741511710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,6 +556,7 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+  sm: {fileID: 0}
   randomWeather: 0
   weatherChance: 10
   earthquakeTimer: 0.2

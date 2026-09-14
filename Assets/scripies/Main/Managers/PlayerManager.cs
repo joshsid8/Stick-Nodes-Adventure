@@ -269,12 +269,12 @@ public class PlayerManager : MonoBehaviour
                 else Debug.LogWarning($"PlayerController not found to set PlayerCanAct.");
                 break;
            case "PlayerCanWallJump":
+               if (pc.canWallJump == value) break;
                pc.canWallJump = value;
                if (value) print("You can wall jump now!");
                break;
             default:
-                if (!string.IsNullOrEmpty(variableName)) Debug.LogWarning($"zlawg whats a '{variableName}'??");
-                else Debug.LogWarning("BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
+                Debug.LogWarning(!string.IsNullOrEmpty(variableName) ? $"zlawg whats a '{variableName}'??" : "BRO THERE IS NOTHING HERE TO CHAAANGE >:(");
                 break;
         }
     }

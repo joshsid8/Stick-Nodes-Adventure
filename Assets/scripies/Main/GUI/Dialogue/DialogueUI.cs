@@ -215,7 +215,7 @@ namespace scripies.Dialogue
                     goto close;  // we, (yes, WE, US, me AND you) love the goto keyword
                 }
                 
-                if (dialogueObject.openShopOnClose)
+                if (dialogueObject.speakerType == (DialogueObject.SpeakerType) 2)
                 {
                     if (speaker != null && speaker.TryGetComponent(out ShopKeeper shopKeeper)) 
                         shopKeeper.StartShop();

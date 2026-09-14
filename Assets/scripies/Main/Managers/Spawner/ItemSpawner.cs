@@ -26,6 +26,7 @@ public class ItemSpawner : SpawnerBase
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.RegisterSpawner(gameObject);
         GameEvents.OnCollect += CheckItemsStatus;
+        GameEvents.OnObjectDestroyed += OnDestroyedItem;
     }
 
     private void OnDisable()
@@ -33,13 +34,18 @@ public class ItemSpawner : SpawnerBase
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.UnregisterSpawner(gameObject);
         GameEvents.OnCollect -= CheckItemsStatus;
+        GameEvents.OnObjectDestroyed -= OnDestroyedItem;
     }
     
-    private void Start()  {
-        
-        if (isOneTime) StartCoroutine(Spawn());
+    private void Start()
+    {
+        if (!isOneTime) StraySpawn();
     }
-
+    
+    [ContextMenu("Spawn")] private void StraySpawn() => StartCoroutine(Spawn());
+    
+    private void OnDestroyedItem(GameObject obj) => CheckItemsStatus();
+    
     private void CheckItemsStatus()
     {
         if (!disableOnCollect) return;
@@ -51,7 +57,6 @@ public class ItemSpawner : SpawnerBase
         }
         if (allCollected) isOneTime = true;
     }
-
     protected override IEnumerator Spawn()
     {
         scene = gameObject.scene.name;
@@ -59,9 +64,7 @@ public class ItemSpawner : SpawnerBase
         yield return new WaitForSeconds(spawnInterval);
         foreach (var spawn in itemSpawner)
         {
-            var spawnChoice = randomiseSpawn 
-                ? Random.Range(0, spawnPoints.Length) :
-                Array.IndexOf(itemSpawner, spawn);
+            var spawnChoice = randomiseSpawn ? Random.Range(0, spawnPoints.Length) : Array.IndexOf(itemSpawner, spawn);
             if (spawnChoice == -1) spawnChoice = 0; // Apparently, IndexOf returns -1 if the index isn't found. good to know!
             
             var instance = Instantiate(spawn.objectToSpawn,
@@ -74,13 +77,11 @@ public class ItemSpawner : SpawnerBase
             }
             
             var targetScene = SceneManager.GetSceneByName(scene);
-            if (targetScene.IsValid() && targetScene.isLoaded)
-            {
-                instance.GetComponent<CollectableTrigger>().SetProperties(targetScene);
-                spawnedObjects.Add(instance);
-            }
+            if (!targetScene.IsValid() || !targetScene.isLoaded) continue;
+            instance.GetComponent<CollectableTrigger>().SetProperties(targetScene);
+            spawnedObjects.Add(instance);
         }
-        
+        GameEvents.TriggerObjectSpawn();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -89,9 +90,11 @@ public class ItemSpawner : SpawnerBase
             StartCoroutine(Spawn());
     }
 
-    public override void Despawn()
+    public override IEnumerator Despawn()
     {
+        yield return new WaitUntil(() => spawnedObjects.Count == 0);
         foreach (var obj in spawnedObjects) Destroy(obj);
+        CheckItemsStatus();
     }
 
     private void OnDrawGizmosSelected()

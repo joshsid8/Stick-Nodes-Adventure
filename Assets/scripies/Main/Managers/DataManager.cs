@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using scripies.Dialogue;
 using UnityEngine;
+using scripies.Core;
+using UnityEngine.SceneManagement;
 
 public class DataManager : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class DataManager : MonoBehaviour
         
         public List<DoorSceneData> doors = new();
         public List<SpawnerSceneData> spawners = new();
+        public List<DoorSpawnerHybridSceneData> doorSpawnerHybrids = new();
         public bool undiscoveredMap;
         public GameObject ItemToStore => GameObject.Find("persistentItem");
 
@@ -39,15 +42,28 @@ public class DataManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         
-        scripies.Core.GameEvents.SaveGame += SaveDisk;
+        GameEvents.SaveGameToDisk += SaveDisk;
+        GameEvents.PersistGameData += PersistData;
     }
 
     private void OnDestroy()
     {
-        if (Instance == this) scripies.Core.GameEvents.SaveGame -= SaveDisk;
+        if (Instance != this) return;
+        GameEvents.SaveGameToDisk -= SaveDisk;
+        GameEvents.PersistGameData -= PersistData;
     }
     
     private static void SaveDisk() => SaveSystem.Save();
+
+    private static void PersistData()
+    {
+        foreach (var map in MapManager.Instances.Values)
+        {
+            if (map == null || !SceneManager.GetSceneByName(map.sceneName).isLoaded) continue;
+            map.SaveSceneData();
+            map.SaveNpcData();
+        }
+    }
 
     #region Scene data classes
 
@@ -87,6 +103,14 @@ public class DataManager : MonoBehaviour
     public class SpawnerSceneData
     {
         public int activeSpawner;
+        public bool isOneTime;
+    }
+    
+    [Serializable]
+    public class DoorSpawnerHybridSceneData
+    {
+        public int activeDsh;
+        public bool isOpen;
         public bool isOneTime;
     }
 

@@ -17,35 +17,31 @@ MonoBehaviour:
   - thread: Welcome to my temple.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
-  - thread: 'It appears you have come in peace, right?
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
+  - thread: 'It appears you have come in peace, is this correct?
 
-
-      No?'
+'
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
-  - thread: 'Ah, yes. You aren''t like everyone else: you are here to achieve greater
-      power!'
-    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
-    isBold: 0
-  - thread: 'That''s great, but in order for you to gain further power, you will
-      come across obstacles you must face.
-
-
-      Right now, I am going to be one
-      of those obstacles for you.'
-    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
-    isBold: 0
-  - thread: '*Come now, show me who you truly are.'
-    dialogueColour: {r: 0.30980393, g: 0.16078432, b: 0.09411765, a: 1}
-    isBold: 1
-  pendingChoice: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
+  pendingChoice: 1
   isAnimated: 0
   yesResponse:
-    responseText: 
-    dialogueObject: {fileID: 0}
+    responseText: Yes
+    dialogueObject: {fileID: 11400000, guid: 607fda7683ef13c4e9eff50944a2901a, type: 2}
   noResponse:
-    responseText: 
-    dialogueObject: {fileID: 0}
+    responseText: No!
+    dialogueObject: {fileID: 11400000, guid: 412100c3cca0a954fb2eb0084b32cfe2, type: 2}
   nameColour: {r: 0.2735849, g: 0.1509879, b: 0.1509879, a: 1}
   applyBools: []
   applyFloats: []
@@ -55,7 +51,10 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 1
-  speaker: 
-  alteredDialogue: {fileID: 0}
+  speaker: Noxu
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  speakerType: 0
+  respeakable: 0

@@ -108,9 +108,11 @@ public class EntitySpawner : SpawnerBase
         }
     }
 
-    public override void Despawn()
+    public override IEnumerator Despawn()
     {
+        yield return new WaitUntil(() => currentEnemies.Count == 0);
         foreach (var obj in currentEnemies) Destroy(obj);
+        yield break;
     }
 
     private void OnTriggerStay2D(Collider2D collision)

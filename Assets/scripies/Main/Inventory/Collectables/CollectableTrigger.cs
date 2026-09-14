@@ -63,4 +63,9 @@ public class CollectableTrigger : MonoBehaviour
         collectable.Collect(collision.gameObject);
         Destroy(gameObject);
     }
+
+    private void OnDestroy()
+    {
+        GameEvents.TriggerObjectDestroy(gameObject);
+    }
 }

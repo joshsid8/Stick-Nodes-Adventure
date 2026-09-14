@@ -26,7 +26,12 @@ MonoBehaviour:
     zoomSpeed: 0
     cameraTarget: 
     cameraLookupType: 0
-  - thread: Go on. The orb of earth is waiting. (IT'S NOT!!!)
+  - thread: 'Go on. The orb of earth is waiting. (IT''S NOT!!!)
+
+
+
+      #(You can
+      walljump now!)'
     dialogueColour: {r: 0.27450982, g: 0.15294118, b: 0.15294118, a: 1}
     isBold: 0
     useCameraEvents: 0
@@ -55,8 +60,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 42fc952e064a1b445a0382282774002e, type: 2}
   canBeColoured: 1
   canBeBold: 1
-  openShopOnClose: 0
-  speaker: 
-  alteredDialogue: {fileID: 0}
+  speaker: Noxu
+  dialoguesToAdd:
+  - {fileID: 11400000, guid: 408731244617b5a4aa7445798dc0d4ea, type: 2}
+  dialoguesToRemove:
+  - {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  speakerType: 0
+  respeakable: 0

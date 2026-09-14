@@ -5,5 +5,5 @@ public abstract class SpawnerBase : MonoBehaviour
 {
     public bool isOneTime;
     protected abstract IEnumerator Spawn();
-    public abstract void Despawn();
+    public abstract IEnumerator Despawn();
 }

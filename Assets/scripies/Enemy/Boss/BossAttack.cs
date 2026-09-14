@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using scripies.Core;
+using scripies.Dialogue;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -117,8 +118,9 @@ public class BossAttack : MonoBehaviour
     private void StartFightOnDialogueClose(ScriptableObject dialogueToDerive)
     {
         if (dialogueToDerive == null || dt.Dialogue.Length == 0) return; 
-        if (dialogueToDerive != dt.Dialogue[^1] || dt == null) return;
         if (bh.bossHealth <= 0) return;
+        var dto = dialogueToDerive as DialogueObject;
+        if (dto == null || dto.speakerType != DialogueObject.SpeakerType.BossFight) return;
         StartFight();
     }
     
