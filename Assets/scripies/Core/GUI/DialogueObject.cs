@@ -69,6 +69,8 @@ namespace scripies.Dialogue
         
         public enum SpeakerType {Default, ShopOpen, BossFight}
         [EnumButtons] public SpeakerType speakerType;
+        public ControlDoor[] doorsToControl;
+        
         public bool respeakable;
     }
 
@@ -106,5 +108,12 @@ namespace scripies.Dialogue
         [Tooltip("(e.g., 'CanWallJump')")]
         public string boolName;
         public bool value;
+    }
+
+    [Serializable]
+    public class ControlDoor
+    {
+        public string doorName;
+        public bool openDoor;
     }
 }

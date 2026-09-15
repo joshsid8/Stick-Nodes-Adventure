@@ -78,7 +78,7 @@ public class BossAttack : MonoBehaviour
             Debug.LogError($"[BossAttack] IDialogueTrigger component not found on {gameObject.name}!");
             return;
         }
-        GameEvents.TriggerToggleDialogue(gameObject, false);
+        GameEvents.TriggerToggleNpChat(gameObject, false);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -92,7 +92,7 @@ public class BossAttack : MonoBehaviour
         GameEvents.OnPlayerDeath += ResetBoss;
 
         yield return new WaitForSeconds(1f);
-        GameEvents.TriggerToggleDialogue(gameObject, true);
+        GameEvents.TriggerToggleNpChat(gameObject, true);
     }
 
     private void OnDestroy()
@@ -128,9 +128,10 @@ public class BossAttack : MonoBehaviour
     {
         isAttacking = true;
         canFacePlayer = true;
-        GameEvents.TriggerToggleDialogue(gameObject, false);
+        GameEvents.TriggerToggleNpChat(gameObject, false);
         GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
-        GameEvents.TriggerDialogueClose();
+        GameEvents.TriggerForceCloseDialogue();
+        GameEvents.TriggerToggleDoor(gameObject.name, false);
         if (useMovement) InvokeRepeating(nameof(Movement), 0, 1.5f);
         GameHUD.Instance.ToggleBossHealth(true);
         StartCoroutine(bh.PhaseToggle(false));
@@ -303,7 +304,7 @@ public class BossAttack : MonoBehaviour
         bh.phase2 = false;
         GameHUD.Instance.ToggleBossHealth(false);
         yield return new WaitForSeconds(0.5f);
-        GameEvents.TriggerToggleDialogue(gameObject, true);
+        GameEvents.TriggerToggleNpChat(gameObject, true);
         dt.IsForced = true;
         
         if (dt.Dialogue.Length >= 1) yield break;

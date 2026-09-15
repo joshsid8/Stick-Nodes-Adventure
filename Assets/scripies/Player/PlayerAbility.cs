@@ -44,11 +44,9 @@ namespace scripies.Player
             if (pc.input == null) throw new Exception("PlayerController missing InputManager!");
             pc.input.Player.Ability.started += _ =>
             {
-                if (ability.objects[blastIndex] != null && !isPerformingAbility && canAbility[blastIndex])
-                {
-                    Execute(blastIndex);
-                    isHolding = true;
-                }
+                if (ability.objects[blastIndex] == null || pc.isPerformingAction || !canAbility[blastIndex]) return;
+                Execute(blastIndex);
+                isHolding = true;
             };
             pc.input.Player.Ability.canceled += _ => isHolding = false;
             pc.input.Player.AbilitySwap.performed += _ => AbilitySwap();
@@ -65,13 +63,11 @@ namespace scripies.Player
             if (timeBetweenCast >= 1.5f) spamAmount = 0;
             if (isPerformingAbility) backupTimer += Time.deltaTime;
             else backupTimer = 5;
-            if (backupTimer <= 0 && isPerformingAbility) // TODO: This was made as a makeshift fix to stop the player from only being able to walk. Instead of this, make an actual fix
-            {
-                isPerformingAbility = false;
-                isHolding = false;
-                backupTimer = 5;
-                Debug.LogError("You were likely frozen for too long. disabling isPerformingAbility");
-            }
+            if (!(backupTimer <= 0) || !isPerformingAbility) return; // TODO: This was made as a makeshift fix to stop the player from only being able to walk. Instead of this, make an actual fix
+            isPerformingAbility = false;
+            isHolding = false;
+            backupTimer = 5;
+            Debug.LogError("You were likely frozen for too long. disabling isPerformingAbility");
         }
         
         private void Execute(int slot = 0)
@@ -93,25 +89,23 @@ namespace scripies.Player
             maxAbilityCooldowns[slot] = prefabBase.cooldown;
             
             var hasEnoughEnergy = energy >= energyReq * totalAmount;
-            if (hasEnoughEnergy && !ability.unavailable)
-            {
-                ability.isActivated = true;
-                ability.currentBlastType = blastType;
-                ability.currentSlot = slot;
-                isPerformingAbility = true;
+            if (!hasEnoughEnergy || ability.unavailable) return;
+            ability.isActivated = true;
+            ability.currentBlastType = blastType;
+            ability.currentSlot = slot;
+            isPerformingAbility = true;
 
-                var animName = blastType switch
-                {
-                    0 => pc.isGrounded ? "Fire" : "AirFire",
-                    1 => "Pillar",
-                    2 => "Beam",
-                    _ => "Fire"
-                };
-                GameEvents.TriggerPlayerAction(animName, true);
+            var animName = blastType switch
+            {
+                0 => pc.isGrounded ? "Fire" : "AirFire",
+                1 => "Pillar",
+                2 => "Beam",
+                _ => "Fire"
+            };
+            GameEvents.TriggerPlayerAction(animName, true);
                 
-                if (timeBetweenCast <= 1.5f) spamAmount++; else spamAmount = 0;
-                timeBetweenCast = 0;
-            }
+            if (timeBetweenCast <= 1.5f) spamAmount++; else spamAmount = 0;
+            timeBetweenCast = 0;
         }
 
         private void AbilitySwap()
@@ -179,9 +173,12 @@ namespace scripies.Player
         {
             if (!isPerformingAbility)
             {
-                if (PlayerHealth.Instance.inCombat) energy += Time.deltaTime * 2 * energyRefill;
-                else if (spamAmount >= 3) energy -= Time.deltaTime * 3f;
-                else energy += Time.deltaTime * 5 * energyRefill;
+                if (spamAmount >= 3) energy -= Time.deltaTime * 3f;
+                else
+                {
+                    if (PlayerHealth.Instance.inCombat) energy += Time.deltaTime * 2 * energyRefill;
+                    else energy += Time.deltaTime * 5 * energyRefill;
+                }
             }
 
             if (energy >= maxEnergy) energy = maxEnergy;

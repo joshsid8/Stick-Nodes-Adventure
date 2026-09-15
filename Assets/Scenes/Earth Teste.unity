@@ -858,6 +858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openTime: 0
   openSfx: {fileID: 0}
+  closeSfx: {fileID: 0}
 --- !u!251 &132701379
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -973,7 +974,7 @@ SpriteRenderer:
   m_SortingOrder: 6
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.6320754, g: 0.46042064, b: 0.372686, a: 1}
+  m_Color: {r: 0.6320754, g: 0.46042064, b: 0.372686, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1421,9 +1422,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: scripies::AccessManager
   isOpen: 0
-  doorObjs:
-  - {fileID: 444274285}
-  - {fileID: 1603003257}
   objective: 3
   enemies: []
   boss: {fileID: 0}
@@ -2062,6 +2060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openTime: 2
   openSfx: {fileID: 0}
+  closeSfx: {fileID: 0}
 --- !u!1 &472889275
 GameObject:
   m_ObjectHideFlags: 0
@@ -4082,7 +4081,7 @@ GameObject:
   - component: {fileID: 811889217}
   - component: {fileID: 811889216}
   m_Layer: 12
-  m_Name: Boss Section
+  m_Name: Noxu Section
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4119,8 +4118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc819fd1a0ede064193aeb2045d4e2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
-  doorObjs: []
+  isOpen: 1
   objective: 2
   enemies: []
   boss: {fileID: 9003786030466987805}
@@ -7248,6 +7246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openTime: 2
   openSfx: {fileID: 0}
+  closeSfx: {fileID: 0}
 --- !u!1 &1626361171
 GameObject:
   m_ObjectHideFlags: 0
@@ -10031,6 +10030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openTime: 0
   openSfx: {fileID: 0}
+  closeSfx: {fileID: 0}
 --- !u!61 &2048072640
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10524,6 +10524,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9085918208820846365, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 9085918208820846365, guid: 098dfe13ed2143f46a4efc878d2ee602, type: 3}
       propertyPath: m_Name
       value: Noxu

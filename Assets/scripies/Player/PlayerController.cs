@@ -3,6 +3,7 @@ using System.Collections;
 using scripies.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace scripies.Player
@@ -98,9 +99,10 @@ namespace scripies.Player
         
         [SerializeField] private AudioClip[] jumpClips;
         [SerializeField] private AudioClip[] footstepClips;
-        [SerializeField] private AudioClip[] wallClips;
+        [SerializeField] private AudioClip[] wallJumpClips;
         [SerializeField] private AudioClip[] dashClips;
 
+        private PlayerHealth ph;
         private PlayerCombat pco;
         private PlayerDefense pdf;
         private PlayerAbility pab;
@@ -116,6 +118,7 @@ namespace scripies.Player
         {
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            ph = GetComponent<PlayerHealth>();
             pco = GetComponent<PlayerCombat>();
             pab = GetComponent<PlayerAbility>();
             kb = GetComponent<Knockback>();
@@ -151,21 +154,9 @@ namespace scripies.Player
             originalJumpForce = jumpForce;
             availableWallsLeft = availableWalls;
             
-            
             #if UNITY_EDITOR
-            if (debugMode)
-            {
-                GameHUD.Instance.ActivateShader();
-                PlayerHealth.Instance.playerMaxHealth = 1000;
-                PlayerHealth.Instance.playerHealth = 1000;
-                PlayerHealth.Instance.respawnTime = 2;
-                PlayerHealth.Instance.pm.nodeBucks = 1000;
-                PlayerHealth.Instance.spawnOnAwake = false;
-                PlayerHealth.Instance.deathClip = null;
-                pab.energyRefill = 50;
-                canWallJump = true;
-                canDoubleJump = true;
-            }
+            GameHUD.Instance.ActivateShader();
+            if (debugMode) SetDebugMode();
             yield return new WaitForSeconds(0.5f);
             var isFalling = rb.linearVelocity.y < 0;
             if (isFalling)
@@ -175,14 +166,25 @@ namespace scripies.Player
                 if (rb.linearVelocity.y < 0)
                 {
                     print("respawning");
-                    StartCoroutine(PlayerHealth.Instance.Spawn());
+                    StartCoroutine(ph.Spawn());
                 }
             }
             #endif
             yield return null;
         }
         
-        [ContextMenu("Teleport Player a lil bit lol")] public void TeleportToSpot() => rb.MovePosition(new Vector2(transform.position.x + 5, transform.position.y + 5));
+        [ContextMenu("Debug Mode")] public void SetDebugMode()
+        {
+            ph.playerMaxHealth = 1000;
+            ph.playerHealth = 1000;
+            ph.respawnTime = 2;
+            ph.pm.nodeBucks = 1000;
+            ph.spawnOnAwake = false;
+            ph.deathClip = null;
+            pab.energyRefill = 50;
+            canWallJump = true;
+            canDoubleJump = true;
+        }
         
         // Update is called once per frame
         private void Update()
@@ -291,6 +293,7 @@ namespace scripies.Player
             jumpBufferCounter = 0f;
             isWallSliding = false;
             isWallJumping = true;
+            GameEvents.TriggerPlaySound(wallJumpClips[Random.Range(0, wallJumpClips.Length)], gameObject);
             Flip(true);
             while (wallJumpTimer > 0)
             {
@@ -339,9 +342,10 @@ namespace scripies.Player
         {
             if (coyoteTimeCounter > 0f && jumpBufferCounter > 0 && !isDashing && !isWallSliding)
             {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
+                if (rb.linearVelocity.y <= 0) return;
                 isJumping = true;
                 GameEvents.TriggerPlaySound(jumpClips[Random.Range(0, jumpClips.Length)], gameObject);
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpForceMult);
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
             }
@@ -377,15 +381,12 @@ namespace scripies.Player
             if (moveInputDir != 0)
             {
                 isMoving = true;
-                rb.linearVelocity = new Vector2(movementSpeed * movementSpeedMult * moveInputDir,
-                    rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(movementSpeed * movementSpeedMult * moveInputDir, rb.linearVelocity.y);
             }
 
-            if (moveInputDir == 0 && isMoving)
-            {
-                isMoving = false;
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            }
+            if (moveInputDir != 0 || !isMoving) return;
+            isMoving = false;
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
 
 
@@ -400,16 +401,19 @@ namespace scripies.Player
 
         private void Other()
         {
-            if (rb.linearVelocity.y > 0)
+            switch (rb.linearVelocity.y)
             {
-                rb.gravityScale = defaultGravity;
-            }
-            else if (rb.linearVelocity.y <= 0)
-            {
-                isJumping = false;
-                isWallJumping = false;
-                if (!isDashing) rb.gravityScale = defaultGravity - 1f;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -maxFallSpeed));
+                case > 0:
+                    rb.gravityScale = defaultGravity;
+                    break;
+                case <= 0:
+                {
+                    isJumping = false;
+                    isWallJumping = false;
+                    if (!isDashing) rb.gravityScale = defaultGravity - 1f;
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -maxFallSpeed));
+                    break;
+                }
             }
 
             //standing still
@@ -441,7 +445,7 @@ namespace scripies.Player
                 availableWallsLeft = availableWalls;
             }
 
-            if (Input.GetAxisRaw("Vertical") < 0 && Input.GetButtonDown("Jump") && isGrounded)
+            if (Input.GetAxisRaw("Vertical") < 0 && input.Player.Jump.WasPressedThisFrame() && isGrounded)
             {
                 var hit = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckCircle + 0.1f,
                     oneWayPlatformLayer);
@@ -459,7 +463,7 @@ namespace scripies.Player
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
             if (pab.isPerformingAbility || pco.isAttacking || pco.isAirAttacking || pdf.isBlocking 
-                || PlayerHealth.Instance.isStunned || kb.IsBeingKnocked || PlayerHealth.Instance.isDead)
+                || ph.isStunned || kb.IsBeingKnocked || ph.isDead || isDashing || isWallSliding)
                 isPerformingAction = true;
             else isPerformingAction = false;
         }
@@ -480,12 +484,10 @@ namespace scripies.Player
 
         private void Flip(bool forced = false)
         {
-            if (canFlip && !forced || forced)
-            {
-                isFacingRight = !isFacingRight;
-                transform.Rotate(0.0f, 180.0f, 0.0f);
-                if (isWallSliding) isWallSliding = false;
-            }
+            if ((!canFlip || forced) && !forced) return;
+            isFacingRight = !isFacingRight;
+            transform.Rotate(0.0f, 180.0f, 0.0f);
+            if (isWallSliding) isWallSliding = false;
         }
 
         private void AddCooldown(string variable, float cooldown, bool additive = false)
@@ -499,20 +501,32 @@ namespace scripies.Player
                     pab.currentAbilityCooldowns[pab.ability.currentSlot] = additive ? pab.currentAbilityCooldowns[pab.ability.currentSlot] + cooldown * pab.abilityCooldownMult : cooldown * pab.abilityCooldownMult;
                     break;
                 case "Combat":
-                    PlayerHealth.Instance.ApplyCombat(cooldown, additive);
+                    ph.ApplyCombat(cooldown, additive);
                     break;
             }
         }
 
         private IEnumerator DropThroughPlatform(Collider2D platformCollider)
         {
-            Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), platformCollider, true);
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), platformCollider, true);
 
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -5f);
-
-            yield return new WaitForSeconds(dropThroughDuration);
-
-            Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), platformCollider, false);
+            
+            yield return new WaitForSeconds(0.5f);
+            
+            var distToPlayer = transform.position.y - platformCollider.transform.position.y;
+            var playerBelowPlatform = distToPlayer <= 6;
+            
+            if (playerBelowPlatform)
+            {
+                while (distToPlayer <= 0)
+                {
+                    distToPlayer = transform.position.y - platformCollider.transform.position.y;
+                    yield return new WaitForFixedUpdate();
+                }
+            } 
+            yield return new WaitForSeconds(0.1f);
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), platformCollider, false);
         }
 
         private void CheckEnvironment()
@@ -536,7 +550,6 @@ namespace scripies.Player
             }
         }
 
-
         #endregion
         private void OnDrawGizmosSelected()
         {
@@ -550,43 +563,38 @@ namespace scripies.Player
         public void Save(ref PlayerSaveCurrentData data)
         {
             data.position = transform.position;
-            data.health = PlayerHealth.Instance.playerHealth;
+            data.health = ph.playerHealth;
             data.energy = pab.energy;
             data.money = pm.nodeBucks;
-            data.abilities = PlayerHealth.Instance.CurrentAbilities;
+            data.abilities = ph.CurrentAbilities;
             data.wallJumpAbility = canWallJump;
             data.doubleJumpAbility = canDoubleJump;
-            
-            if (currentSpawnPoint != null)
-            {
-                var ident = currentSpawnPoint.GetComponent<Identifier>();
-                if (ident != null) data.currentSpawnPointId = ident.id;
-            }
+
+            if (currentSpawnPoint == null) return;
+            var ident = currentSpawnPoint.GetComponent<Identifier>();
+            if (ident != null) data.currentSpawnPointId = ident.id;
         }
 
         public void Load(PlayerSaveCurrentData data)
         {
             transform.position = data.position;
-            PlayerHealth.Instance.playerHealth = data.health;
+            ph.playerHealth = data.health;
             pab.energy = data.energy;
             pm.nodeBucks = data.money;
             pab.ability.objects = data.abilities;
             canWallJump = data.wallJumpAbility;
             canDoubleJump = data.doubleJumpAbility;
 
-            if (data.currentSpawnPointId != 0)
+            if (data.currentSpawnPointId == 0) return;
+            var identifiers = FindObjectsByType<Identifier>(FindObjectsSortMode.None);
+            foreach (var ident in identifiers)
             {
-                var identifiers = FindObjectsByType<Identifier>(FindObjectsSortMode.None);
-                foreach (var ident in identifiers)
-                {
-                    if (ident.typeOfObject == Identifier.ObjectType.Checkpoint && ident.id == data.currentSpawnPointId)
-                    {
-                        currentSpawnPoint = ident.gameObject;
-                        if (!SceneManager.GetSceneByName(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded) SceneManager.LoadScene(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName, LoadSceneMode.Additive);
-                        //else print($"Scene {SceneManager.GetSceneByName(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName)} already loaded");
-                        break;
-                    }
-                }
+                if (ident.typeOfObject != Identifier.ObjectType.Checkpoint || ident.id != data.currentSpawnPointId) continue;
+                currentSpawnPoint = ident.gameObject;
+                if (!SceneManager.GetSceneByName(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded) 
+                    SceneManager.LoadScene(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName, LoadSceneMode.Additive);
+                //else print($"Scene {SceneManager.GetSceneByName(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName)} already loaded");
+                break;
             }
         }
     }

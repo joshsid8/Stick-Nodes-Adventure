@@ -9,9 +9,11 @@ using Random = UnityEngine.Random;
 /// <summary>
 ///  This script is meant to manage literally every small function that occurs in this game, similar to the player manager.
 ///  If it cant be managed anywhere else without it being inconvenient, add it here!
+///  Keep in mind it that this derives from Core. Tomfoolery is the script that derives from Main
 /// </summary>
 public class Shenanigans : MonoBehaviour
 {
+    public static Shenanigans Instance {get; private set;}
 
     [Header("Jump Scare Object")] 
     [SerializeField] private Image jsObjImage;
@@ -26,7 +28,6 @@ public class Shenanigans : MonoBehaviour
     public bool freezeCamera;
     [SerializeField] private GameObject camObj;
     
-    public static Shenanigans Instance {get; private set;}
 
     private void Awake()
     {
@@ -37,10 +38,19 @@ public class Shenanigans : MonoBehaviour
         }
         Instance = this;
         
-        GameEvents.JumpScare += JumpScare;
         //GameEvents.StopTime += StopTime;
     }
 
+    private void OnEnable()
+    {
+        GameEvents.JumpScare += JumpScare;
+    }
+    
+    private void OnDisable()
+    {
+        GameEvents.JumpScare -= JumpScare;
+    }
+    
     private void Update()
     {
         //camObj.SetActive(!freezeCamera);
@@ -60,19 +70,17 @@ public class Shenanigans : MonoBehaviour
 
     private IEnumerator StartJumpScare(Image image, float duration, float fadeMult)
     {
-        if (jsObjImage != null)
+        if (jsObjImage == null) yield break;
+        jsObjImage.sprite = image == null ? jsImages[Random.Range(0, jsImages.Length)] : image.sprite;
+        jsObjImage.color = new Color(1,1,1,1);
+        jsObjImage.enabled = true;
+        yield return new WaitForSeconds(duration);
+        while (jsObjImage.color.a > 0)
         {
-            jsObjImage.sprite = image == null ? jsImages[Random.Range(0, jsImages.Length)] : image.sprite;
-            jsObjImage.color = new Color(1,1,1,1);
-            jsObjImage.enabled = true;
-            yield return new WaitForSeconds(duration);
-            while (jsObjImage.color.a > 0)
-            {
-                jsObjImage.color -= new Color(0, 0, 0, Time.deltaTime * fadeMult);
-                yield return new WaitForFixedUpdate();
-            }
-            jsObjImage.enabled = false;
+            jsObjImage.color -= new Color(0, 0, 0, Time.deltaTime * fadeMult);
+            yield return new WaitForFixedUpdate();
         }
+        jsObjImage.enabled = false;
     }
 
     public void StoreObject(GameObject obj) => storedObj = obj;

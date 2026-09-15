@@ -53,7 +53,7 @@ public class Teleporter : MonoBehaviour
         if (!isTeledoor || forcePlayerTeleport || !canTeleport) return;
         inRange = Physics2D.OverlapBox(transform.position, teleporterSize, 0, LayerMask.GetMask("Player"));
         if (enterIndicator != null) enterIndicator.SetActive(inRange);
-        if (input.Player.Interact.IsPressed() && inRange) StartCoroutine(ActivateTeleDoor());
+        if (input.Player.Interact.WasPressedThisFrame() && inRange) StartCoroutine(ActivateTeleDoor());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

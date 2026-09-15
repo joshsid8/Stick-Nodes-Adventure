@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using scripies.Core;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -8,7 +9,7 @@ public class AccessManager : MonoBehaviour
     private enum Objectives { DefeatEnemy, FindKeys, DefeatBoss, UnlockBadge }
     public bool isOpen;
     
-    public List<DoorObject> doorObjs = new();
+    private List<DoorObject> doorObjs = new();
     [EnumButtons] [SerializeField] private Objectives objective;
 
     public List<GameObject> enemies = new();
@@ -20,20 +21,21 @@ public class AccessManager : MonoBehaviour
 
     private void Awake()
     {
-        if (doorObjs.Count == 0) doorObjs = GetComponentsInChildren<DoorObject>().ToList(); // SINCE WHEN DID TOLIST EXIST?! MY LIIIIIIFFFFEEE!!!
+        doorObjs = GetComponentsInChildren<DoorObject>().ToList(); // SINCE WHEN DID TOLIST EXIST?! MY LIIIIIIFFFFEEE!!!
         playerDetected = !checkOnTrigger;
+        if (!isOpen) return;
+        isOpen = false;
+        OpenDoors();
     }
 
     private void OnEnable()
     {
-        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
-            mm.RegisterDoor(gameObject);
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm)) mm.RegisterDoor(gameObject);
     }
 
     private void OnDisable()
     {
-        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
-            mm.UnregisterDoor(gameObject);
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm)) mm.UnregisterDoor(gameObject);
     }
     
     public void InstantOpen()
@@ -51,8 +53,22 @@ public class AccessManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("Toggle Door")]
+    public void ToggleDoors()
+    {
+        switch (isOpen)
+        {
+            case true:
+                CloseDoors();
+                break;
+            case false:
+                OpenDoors();
+                break;
+        }
+    }
+
     [ContextMenu("Open Doors")]
-    private void OpenDoors()
+    public void OpenDoors()
     {
         if (isOpen) return;
         isOpen = true;
@@ -60,6 +76,19 @@ public class AccessManager : MonoBehaviour
                 StartCoroutine(door.Open());
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.OnDoorStatusChanged(this, true);
+        GameEvents.TriggerPersistGameData();
+    }
+
+    [ContextMenu("Close Doors")]
+    public void CloseDoors()
+    {
+        if (!isOpen) return;
+        isOpen = false;
+        foreach (var door in doorObjs) if (door != null)
+            door.Close();
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
+            mm.OnDoorStatusChanged(this, false);
+        GameEvents.TriggerPersistGameData();
     }
 
     private void Update()
@@ -104,7 +133,7 @@ public class AccessManager : MonoBehaviour
                 break;
         }
     }
-    
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && checkOnTrigger) playerDetected = true;
@@ -122,15 +151,12 @@ public class AccessManager : MonoBehaviour
                 else if (collision.gameObject.layer == LayerMask.NameToLayer("EDead") && enemies.Contains(collision.gameObject))
                     enemies.Remove(collision.gameObject);
                 break;
-            case Objectives.FindKeys:
-            case Objectives.UnlockBadge:
-                playerDetected = collision.gameObject.CompareTag("Player");
-                break;
             case Objectives.DefeatBoss:
                 if (collision.gameObject.CompareTag("Boss")) boss = collision.gameObject;
                 break;
+            case Objectives.FindKeys:
+            case Objectives.UnlockBadge:
             default:
-                print($"Clueless: {objective}");
                 break;
         }
     }
@@ -150,7 +176,7 @@ public class AccessManager : MonoBehaviour
                 print($"{enemy} is NNNNNOT the same as {collision.gameObject}");
             }
         }
-        else if (collision.gameObject.CompareTag("Player") && checkOnTrigger) playerDetected = false;
+        else if (collision.gameObject.CompareTag("Player")) playerDetected = false;
         else if (collision.gameObject.CompareTag("Boss"))
             boss.transform.position =
                 new Vector2(GetComponent<Collider2D>().bounds.center.x, boss.transform.position.y);

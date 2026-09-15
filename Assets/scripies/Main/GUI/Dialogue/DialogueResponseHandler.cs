@@ -14,18 +14,18 @@ namespace scripies.Dialogue
         public TMP_Text yesButtonText;
         public TMP_Text noButtonText;
 
-        private DialogueUI dialogueUI;
+        private DialogueManager dialogueManager;
 
         private void Awake()
         {
-            dialogueUI = GetComponent<DialogueUI>();
+            dialogueManager = GetComponent<DialogueManager>();
             responseBox.gameObject.SetActive(false);
             responseButtonsParent.gameObject.SetActive(false);
         }
 
         public void ShowResponses(DialogueObject dialogueObject)
         {
-            dialogueUI.DecrementActiveGUICount();
+            dialogueManager.DecrementActiveGUICount();
             responseButtonsParent.gameObject.SetActive(true);
             responseBox.gameObject.SetActive(true);
 
@@ -44,7 +44,7 @@ namespace scripies.Dialogue
             responseButtonsParent.gameObject.SetActive(false);
             responseBox.gameObject.SetActive(false);
 
-            dialogueUI.ShowDialogue(response.DialogueObject);
+            dialogueManager.ShowDialogue(response.DialogueObject);
         }
     }
 }

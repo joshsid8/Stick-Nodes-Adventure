@@ -37,7 +37,7 @@ namespace scripies.Core
         public static Action<ScriptableObject, NPC> ShowDialogue;
         public static Action<ScriptableObject, GameObject> AddDialogue;
         public static Action<ScriptableObject, GameObject> RemoveDialogue;
-        public static Action CloseDialogue;
+        public static Action ForceCloseDialogue;
         public static Action<ScriptableObject> OnDialogueClose;
         
         // Misc events
@@ -56,6 +56,7 @@ namespace scripies.Core
 
         public static Action<float> StopTime;
         public static Action<Image, float, float> JumpScare;
+        public static Action<string, bool> ToggleDoor;
         
         // Methods to trigger events
         public static void TriggerPlayerSpawn(GameObject objectRef = null) =>OnPlayerSpawned?.Invoke(objectRef);
@@ -75,12 +76,12 @@ namespace scripies.Core
         
         public static void TriggerEnableGUI() => OnEnableGUI?.Invoke();
         public static void TriggerDisableGUI() => OnDisableGUI?.Invoke();
-        public static void TriggerToggleDialogue(GameObject owner, bool state) => OnToggleDialogueTrigger?.Invoke(owner, state);
+        public static void TriggerToggleNpChat(GameObject owner, bool state) => OnToggleDialogueTrigger?.Invoke(owner, state);
         public static void TriggerShowDialogue(ScriptableObject dialogue, NPC npc = null) => ShowDialogue?.Invoke(dialogue, npc);
         public static void TriggerAddDialogue(ScriptableObject dialogue, GameObject npc) => AddDialogue?.Invoke(dialogue, npc);
         public static void TriggerRemoveDialogue(ScriptableObject dialogue, GameObject npc) => RemoveDialogue?.Invoke(dialogue, npc);
-        public static void TriggerDialogueClose() => CloseDialogue?.Invoke();
-        public static void TriggerDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
+        public static void TriggerForceCloseDialogue() => ForceCloseDialogue?.Invoke();
+        public static void TriggerCloseDialogue(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
         
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
         public static void TriggerSaveGameToDisk() => SaveGameToDisk?.Invoke();
@@ -97,5 +98,6 @@ namespace scripies.Core
 
         public static void TriggerStopTime(float time) => StopTime?.Invoke(time);
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
+        public static void TriggerToggleDoor(string doorName, bool state) => ToggleDoor?.Invoke(doorName, state);
     }
 }

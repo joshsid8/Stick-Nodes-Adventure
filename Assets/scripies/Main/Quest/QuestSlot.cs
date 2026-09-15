@@ -18,8 +18,8 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
     public bool questCompleted;
 
     public List<EnemyToDefeat> enemiesToDefeat = new();
-    private readonly Dictionary<Enemy, int> requiredByEnemy = new();  
-    private readonly Dictionary<Enemy, int> currentKillsByEnemy = new(); 
+    private readonly Dictionary<Enemy, int> currentEnemiesToDefeat = new();  
+    private readonly Dictionary<Enemy, int> currentEnemyKills = new(); 
     
     [Tooltip("objects to take, give, or find")] 
     public List<ObjectToInteract> objectsToInteract = new();
@@ -41,16 +41,10 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
     private void OnEnemyKilled(Enemy enemy)
     {
         if (questType != QuestType.DefeatEnemy || questCompleted) return;
-        if (requiredByEnemy.ContainsKey(enemy) && enemy != null)
-        {
-            if (!currentKillsByEnemy.ContainsKey(enemy)) currentKillsByEnemy[enemy] = 0;
-            
-            if (currentKillsByEnemy[enemy] < requiredByEnemy[enemy])
-            {
-                currentKillsByEnemy[enemy]++;
-                CheckCompletion();
-            }
-        }
+        if (!currentEnemiesToDefeat.ContainsKey(enemy) || enemy == null) return;
+        if (currentEnemyKills[enemy] >= currentEnemiesToDefeat[enemy]) return;
+        currentEnemyKills[enemy]++;
+        CheckCompletion();
     }
 
     private void OnInventoryChanged()
@@ -74,9 +68,9 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
         switch (questType)
         {
             case QuestType.DefeatEnemy:
-                foreach (var enemy in requiredByEnemy)
+                foreach (var enemy in currentEnemiesToDefeat)
                 {
-                    var currentKills = currentKillsByEnemy.GetValueOrDefault(enemy.Key, 0);
+                    var currentKills = currentEnemyKills.GetValueOrDefault(enemy.Key, 0);
                     if (currentKills < enemy.Value) allMet = false;
                 }
                 break;
@@ -112,7 +106,7 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
     private void OnAssigned()
     {
         summaryText.text = questTitle;
-        DialogueUI.OnDialogueClose += OnDialogueClosed;
+        DialogueManager.OnDialogueClose += OnDialogueClosed;
         EnemyHealth.OnEnemyKilled += OnEnemyKilled;
         if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
             InvManager.Instance.invIndex.OnInventoryChanged += OnInventoryChanged;
@@ -121,22 +115,26 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
     private void UpdateTaskText()
     {
         if (questType == QuestType.NullQuest || questLogManager.currentlySelectedQuest != this || questLogManager.taskText == null) return;
-        string taskStr;
+        var taskStr = "";
         switch (questType)
         {
             case QuestType.DefeatEnemy:
             {
-                taskStr = "Defeat ";
                 foreach (var enemy in enemiesToDefeat)
                 {
+                    var currentEnemyKillsLeft = Mathf.Clamp(currentEnemiesToDefeat[enemy.enemy] - currentEnemyKills[enemy.enemy], 0, currentEnemiesToDefeat[enemy.enemy]);
+
                     if (enemy == enemiesToDefeat[^1] && enemiesToDefeat.Count > 1) taskStr += " & ";
                     var eName = enemy.enemy.enemyName;
-                    if (eName.Contains("man") && enemy.count > 1) eName = eName.Replace("man", "men");
-                    else if (enemy.count > 1) eName += "s";
-                    var str = $"{enemy.count} {eName}";
+                    if (eName.EndsWith("man") && currentEnemyKillsLeft != 1) eName = eName.Replace("man", "men");
+                    else if (eName.EndsWith("us") && currentEnemyKillsLeft != 1) eName = eName.Replace("us", "i");
+                    if (eName.EndsWith("s") && currentEnemyKillsLeft != 1) eName += "es";
+                    else if (currentEnemyKillsLeft != 1) eName += "s";
+                    var str = $"{currentEnemyKillsLeft} {eName}";
                     taskStr += str;
                     if (enemy != enemiesToDefeat[^1] && enemy != enemiesToDefeat[^2]) taskStr += ", ";
                 } 
+                taskStr += "Left to defeat";
                 break;
             }
             case QuestType.SpeakTo:
@@ -149,9 +147,13 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
                 {
                     if (item == objectsToInteract[^1] && objectsToInteract.Count > 1) taskStr += " & ";
                     taskStr += item.count;
-                    if (item.count == 1 && item.objects.itemName.EndsWith("s")) taskStr += " set of ";
-                    else if (item.count > 1 && item.objects.itemName.EndsWith("s")) taskStr += " sets of ";
-                    else taskStr += " ";
+                    taskStr += item.count switch
+                    {
+                        1 when item.objects.itemName.EndsWith("s") => " set of ",
+                        > 1 when item.objects.itemName.EndsWith("s") => " sets of ",
+                        < 1 when item.objects.itemName.EndsWith("s") => " sets of ",
+                        _ => " "
+                    };
                     taskStr += item.objects.itemName;
                     if (item.count > 1) taskStr += "s";
                     if (item != objectsToInteract[^1] && item != objectsToInteract[^2]) taskStr += ", ";
@@ -182,7 +184,7 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
     
     private void OnCleared()
     {
-        DialogueUI.OnDialogueClose -= OnDialogueClosed;
+        DialogueManager.OnDialogueClose -= OnDialogueClosed;
         EnemyHealth.OnEnemyKilled -= OnEnemyKilled;
         if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
             InvManager.Instance.invIndex.OnInventoryChanged -= OnInventoryChanged;
@@ -245,8 +247,8 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
         }
         questRewards = rewards != null ? (CollectableSOBase[])rewards.Clone() : Array.Empty<CollectableSOBase>();
         
-        requiredByEnemy.Clear();
-        currentKillsByEnemy.Clear();
+        currentEnemiesToDefeat.Clear();
+        currentEnemyKills.Clear();
 
         if (questType == QuestType.DefeatEnemy && enemiesToDefeat.Count > 0)
         {
@@ -255,7 +257,9 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
                 var enemy = enemyToDefeat.enemy;
                 if (enemy == null) continue;
                 var count = enemyToDefeat.count;
-                requiredByEnemy.TryAdd(enemy, count);
+                currentEnemiesToDefeat.TryAdd(enemy, count);
+                currentEnemyKills.TryAdd(enemy, 0);
+                //print(Mathf.Clamp(currentEnemyKills[enemy] - currentEnemiesToDefeat[enemy], 0, currentEnemiesToDefeat[enemy]));
             }
         }
         OnAssigned();
@@ -278,8 +282,8 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
         questType = QuestType.NullQuest;
         questLogManager.descText.text = "";
         questLogManager.titleText.text = "";
-        requiredByEnemy.Clear();
-        currentKillsByEnemy.Clear();
+        currentEnemiesToDefeat.Clear();
+        currentEnemyKills.Clear();
         if (questLogManager.currentlySelectedQuest == this) questLogManager.currentlySelectedQuest = null;
         gameObject.SetActive(false);
     }

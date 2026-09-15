@@ -47,4 +47,7 @@ MonoBehaviour:
   externalInstance: 
   alteredExternalDialogues: []
   speakerType: 0
+  doorsToControl:
+  - doorName: Noxu Section
+    openDoor: 1
   respeakable: 1

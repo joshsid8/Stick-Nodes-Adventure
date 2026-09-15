@@ -45,7 +45,7 @@ namespace scripies.Dialogue
 
         public void ApplyAnimation(int action)
         {
-            var dialogueUI = GetComponent<DialogueUI>();
+            var dialogueUI = GetComponent<DialogueManager>();
             if (dialogueUI == null || !dialogueUI.isAnimated || dialogueUI.animator == null) return;
 
             dialogueUI.animator.SetBool("Action1", action == 1);

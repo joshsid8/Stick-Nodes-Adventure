@@ -6,9 +6,9 @@ using TMPro;
 
 namespace scripies.Dialogue
 {
-    public class DialogueUI : GUIBase
+    public class DialogueManager : GUIBase
     {
-        public static DialogueUI Instance { get; private set; }
+        public static DialogueManager Instance { get; private set; }
         public static event Action<NPC> OnDialogueClose;
 
         public GameObject dialogueBox;
@@ -46,12 +46,12 @@ namespace scripies.Dialogue
         private void OnEnable()
         {
             GameEvents.ShowDialogue += ShowDialogue;
-            GameEvents.CloseDialogue += ForceCloseDialogue;
+            GameEvents.ForceCloseDialogue += ForceCloseDialogue;
         }
         private void OnDisable()
         {
             GameEvents.ShowDialogue -= ShowDialogue;
-            GameEvents.CloseDialogue -= ForceCloseDialogue;
+            GameEvents.ForceCloseDialogue -= ForceCloseDialogue;
         }
 
         private void Update() => textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;
@@ -211,14 +211,19 @@ namespace scripies.Dialogue
                 else
                 {
                     ClearData();
-                    GameEvents.TriggerDialogueClose(dialogueObject);
+                    GameEvents.TriggerCloseDialogue(dialogueObject);
                     goto close;  // we, (yes, WE, US, me AND you) love the goto keyword
                 }
                 
-                if (dialogueObject.speakerType == (DialogueObject.SpeakerType) 2)
+                if (dialogueObject.speakerType == (DialogueObject.SpeakerType) 1)
                 {
                     if (speaker != null && speaker.TryGetComponent(out ShopKeeper shopKeeper)) 
                         shopKeeper.StartShop();
+                }
+
+                if (dialogueObject.doorsToControl.Length > 0)
+                {
+                    foreach (var door in dialogueObject.doorsToControl) TomFoolery.Instance.ToggleDoor(door.doorName, door.openDoor);
                 }
 
                 if (dialogueObject.dialoguesToAdd.Length > 0)
@@ -238,7 +243,7 @@ namespace scripies.Dialogue
                 CameraEventManager.Instance.ResetCamera();
             }
             close:
-            GameEvents.TriggerDialogueClose(dialogueObject);
+            GameEvents.TriggerCloseDialogue(dialogueObject);
             //GameEvents.TriggerPlaySound(dialoguePings[1], false);
             ClearData();
         }
@@ -257,7 +262,6 @@ namespace scripies.Dialogue
             foreach (var dialogue in dialogueObject.alteredExternalDialogues)
                 GameEvents.TriggerAddDialogue(dialogue, externalInstance);
         }
-
         private void ClearData()
         {
             if (isAnimated)

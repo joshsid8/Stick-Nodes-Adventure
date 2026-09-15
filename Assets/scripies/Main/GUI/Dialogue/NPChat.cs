@@ -61,7 +61,7 @@ namespace scripies.Dialogue
         {
             var inputDirection = Input.GetAxisRaw("Vertical");
             if (chatInterval <= 0) isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
-            if (!DialogueUI.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
+            if (!DialogueManager.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
             chatInterval -= Time.deltaTime;
             
             if (!isActive) return;
@@ -79,7 +79,7 @@ namespace scripies.Dialogue
                         var priorityDialogue = dialogue[^1];
                         if (priorityDialogue != null)
                         {
-                            DialogueUI.Instance.ShowDialogue(priorityDialogue, npc);
+                            DialogueManager.Instance.ShowDialogue(priorityDialogue, npc);
                             if (!spokenDialogue.Contains(priorityDialogue) && !priorityDialogue.respeakable) spokenDialogue.Add(priorityDialogue);
                             if (priorityDialogue.PendingChoice) dialogue.Remove(priorityDialogue);
                         }
@@ -88,7 +88,7 @@ namespace scripies.Dialogue
                     {
                         shopKeeper.StartShop();
                     }
-                    if (moveCamToNpc && DialogueUI.Instance.isActive) CameraEventManager.Instance.ChangeTarget(gameObject);
+                    if (moveCamToNpc && DialogueManager.Instance.isActive) CameraEventManager.Instance.ChangeTarget(gameObject);
                     CameraEventManager.Instance.ResetCamera();
                 }
             }

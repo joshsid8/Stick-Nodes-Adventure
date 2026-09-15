@@ -8,6 +8,7 @@ public class DoorObject : MonoBehaviour
     private AccessManager manager;
     public float openTime;
     [SerializeField] private AudioClip openSfx;
+    [SerializeField] private AudioClip closeSfx;
 
     private void Start()
     {
@@ -17,9 +18,16 @@ public class DoorObject : MonoBehaviour
 
     public IEnumerator Open()
     {
-        if (openSfx != null) GameEvents.TriggerPlaySound(openSfx, gameObject);
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm)) mm.SaveSceneData();
         yield return new WaitForSeconds(openTime);
+        if (openSfx != null) GameEvents.TriggerPlaySound(openSfx, gameObject);
         gameObject.SetActive(false);
+    }
+    
+    public void Close()
+    {
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm)) mm.SaveSceneData();
+        if (closeSfx != null) GameEvents.TriggerPlaySound(closeSfx, gameObject);
+        gameObject.SetActive(true);
     }
 }

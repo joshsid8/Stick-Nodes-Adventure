@@ -502,8 +502,9 @@ public class MapManager : MonoBehaviour
                 }
             }
 
-            foreach (var doorData in list.doors)
+            for (var i = 0; i < list.doors.Count; i++)
             {
+                var doorData = list.doors[i];
                 if (!doorData.isOpen) continue;
                 var door = doorSceneData.Find(d => d.id == doorData.activeDoor);
                 if (door != null && door.accessManager != null) door.accessManager.InstantOpen();
@@ -614,13 +615,11 @@ public class MapManager : MonoBehaviour
     }
     
     #region Door and Spawner Stuff
-    
     public void RegisterDoor(GameObject door) { if (!doorObjects.Contains(door)) doorObjects.Add(door); }
     public void UnregisterDoor(GameObject door) => doorObjects.Remove(door);
     
     public void RegisterSpawner(GameObject spawner) { if (!spawnerObjects.Contains(spawner)) spawnerObjects.Add(spawner); }
     public void UnregisterSpawner(GameObject spawner) => spawnerObjects.Remove(spawner);
-    
     #endregion
 }
     

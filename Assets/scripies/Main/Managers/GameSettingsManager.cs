@@ -7,7 +7,7 @@ public class GameSettingsManager : MonoBehaviour
     public static GameSettingsManager Instance {get; private set;}
     
     private GameMenuManager menuManager;
-    
+    [SerializeField] private GameObject settingsMenu;
     public bool isActive;
     [SerializeField] private bool debugMode;
     [SerializeField] private float fps;
@@ -33,7 +33,7 @@ public class GameSettingsManager : MonoBehaviour
     public void ToggleSettings(bool toggle)
     {
         isActive = toggle;
-        gameObject.SetActive(toggle);
+        settingsMenu.SetActive(toggle);
         if (menuManager.pausedGame) menuManager.gameMenu.SetActive(!toggle);
     }
     
