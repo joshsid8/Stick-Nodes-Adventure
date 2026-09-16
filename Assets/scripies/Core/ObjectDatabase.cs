@@ -14,10 +14,9 @@ public class ObjectDatabase : MonoBehaviour
     public static ObjectDatabase Instance { get; private set; }
     [SerializeField] private List<string> allScenesList = new();
     [HideInInspector] public List<Scene> allScenes = new();
-    public List<GameObject> allEnemies = new();
     public List<GameObject> allItems = new();
-    public List<GameObject> allNpcs = new();
-    public List<GameObject> allTeledoors = new();
+    public List<GameObject> allEntities = new();
+    public List<GameObject> allTeleDoors = new();
     
     public List<GameObject> everything = new();
 
@@ -53,34 +52,31 @@ public class ObjectDatabase : MonoBehaviour
     private void UpdateLists()
     {
         loaded = false;
-        allEnemies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
         allItems = new List<GameObject>(GameObject.FindGameObjectsWithTag("Item"));
-        allNpcs = new List<GameObject>(GameObject.FindGameObjectsWithTag("NPC"));
-        allTeledoors = new List<GameObject>(GameObject.FindGameObjectsWithTag("TeleDoor"));
+        allEntities = new List<GameObject>(FindObjectsByType<Identifier>(FindObjectsSortMode.None).Where(entity => entity.typeOfObject == Identifier.ObjectType.Entity).Select(entity => entity.gameObject));
+        allTeleDoors = new List<GameObject>(GameObject.FindGameObjectsWithTag("TeleDoor"));
         everything.Clear();
-        everything.AddRange(allEnemies);
         everything.AddRange(allItems);
-        everything.AddRange(allNpcs);
-        everything.AddRange(allTeledoors);
+        everything.AddRange(allTeleDoors);
+        everything.AddRange(allEntities);
         everything.Add(GameObject.FindGameObjectWithTag("Player"));
         loaded = true;
     }
 
-    public GameObject GetEnemyObjByName(string enemyName)
+    public GameObject GetEntityObjByName(string entityName, bool looped = false)
     {
-        if (string.IsNullOrEmpty(enemyName)) return null;
-        var target = allEnemies.Find(e => e != null && e.GetComponent<Enemy>().enemyName == enemyName);
+        if (string.IsNullOrEmpty(entityName)) return null;
+        GameObject target = null;
+        foreach (var entity in allEntities)
+        {
+            if (entity == null || entity.IsDestroyed()) continue;
+            if (entity.GetComponent<Identifier>().name != entityName) continue;
+            target = entity;
+            break;
+        }
+        
         if (target != null) return target;
-        Debug.LogWarning($"[ObjectDatabase] We couldn't find an enemy with name {enemyName} in our enemy list");
-        return null;
-    }
-
-    public GameObject GetNpcObjByName(string npcName)
-    {
-        if (string.IsNullOrEmpty(npcName)) return null;
-        var target = allNpcs.Find(n => n != null && n.GetComponent<NPC>().npcName == npcName);
-        if (target != null) return target;
-        Debug.LogWarning($"[ObjectDatabase] We couldn't find an NPC with name {npcName} in our NPC list");
+        if (!looped) Debug.LogWarning($"[ObjectDatabase] We couldn't find an NPC with name {entityName} in our NPC list");
         return null;
     }
 
@@ -97,12 +93,12 @@ public class ObjectDatabase : MonoBehaviour
     {
         if (teleDoorId == null) return null;
         GameObject target = null;
-        for (var i = 0; i < allTeledoors.Count; i++)
+        for (var i = 0; i < allTeleDoors.Count; i++)
         {
-            var door = allTeledoors[i];
+            var door = allTeleDoors[i];
             if (door == null || door.IsDestroyed())
             {
-                allTeledoors.Remove(door);
+                allTeleDoors.Remove(door);
                 continue;
             }
 

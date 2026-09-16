@@ -553,6 +553,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: persistentItem
       objectReference: {fileID: 0}
+    - target: {fileID: 5528623093452585138, guid: 06733424615809845b397bbd3f85d622, type: 3}
+      propertyPath: typeOfObject
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8596268458041364805, guid: 06733424615809845b397bbd3f85d622, type: 3}
       propertyPath: m_LocalPosition.x
       value: -126.78398
@@ -29036,7 +29040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 167edf3a70a2432409dd1e6cef25c1a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basePlayerStats: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
+  basePlayer: {fileID: 11400000, guid: e859e1ca89fc22847be0edd6a6645157, type: 2}
 --- !u!1 &4046370451193814400
 GameObject:
   m_ObjectHideFlags: 0
@@ -36976,10 +36980,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: scripies::ObjectDatabase
   allScenesList: []
   allScenes: []
-  allEnemies: []
   allItems: []
-  allNpcs: []
-  allTeledoors: []
+  allEntities: []
+  allTeleDoors: []
   everything: []
   loaded: 0
 --- !u!114 &8754919029274191491

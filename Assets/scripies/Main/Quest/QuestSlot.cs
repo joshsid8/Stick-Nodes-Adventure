@@ -125,7 +125,7 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
                     var currentEnemyKillsLeft = Mathf.Clamp(currentEnemiesToDefeat[enemy.enemy] - currentEnemyKills[enemy.enemy], 0, currentEnemiesToDefeat[enemy.enemy]);
 
                     if (enemy == enemiesToDefeat[^1] && enemiesToDefeat.Count > 1) taskStr += " & ";
-                    var eName = enemy.enemy.enemyName;
+                    var eName = enemy.enemy.name;
                     if (eName.EndsWith("man") && currentEnemyKillsLeft != 1) eName = eName.Replace("man", "men");
                     else if (eName.EndsWith("us") && currentEnemyKillsLeft != 1) eName = eName.Replace("us", "i");
                     if (eName.EndsWith("s") && currentEnemyKillsLeft != 1) eName += "es";
@@ -138,7 +138,7 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
                 break;
             }
             case QuestType.SpeakTo:
-                taskStr = $"Speak to {nTi.npcName}";
+                taskStr = $"Speak to {nTi.name}";
                 break;
             case QuestType.HaveInInventory:
             {
@@ -171,7 +171,7 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
                     if (item.count > 1) taskStr += "s";
                     if (item != objectsToInteract[^1]) taskStr += ", ";
                 }
-                taskStr += " to " + nTi.npcName;
+                taskStr += " to " + nTi.name;
                 break;
             }
             case QuestType.NullQuest:

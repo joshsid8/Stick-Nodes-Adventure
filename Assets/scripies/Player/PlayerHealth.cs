@@ -376,9 +376,10 @@ namespace scripies.Player
         
         private void ResetCombat()
         {
+            if (!isActiveAndEnabled) return;
             inCombat = false;
             currentCombatTimer = 0;
-            pc?.combatIndicator.SetActive(false);
+            pc.combatIndicator.SetActive(false);
             GameEvents.TriggerMusic(0, false);
         }
         private void ResetCombatViaEnemy(GameObject enemy)
@@ -389,11 +390,9 @@ namespace scripies.Player
         
         private void Tint()
         {
-            if (isTinting)
-            {
-                spriteRenderer.color = Color.Lerp(spriteRenderer.color, originalColor, tintSpeed * Time.deltaTime);
-                if (spriteRenderer.color == originalColor) isTinting = false;
-            }
+            if (!isTinting) return;
+            spriteRenderer.color = Color.Lerp(spriteRenderer.color, originalColor, tintSpeed * Time.deltaTime);
+            if (spriteRenderer.color == originalColor) isTinting = false;
         }
 
         private void Regeneration()

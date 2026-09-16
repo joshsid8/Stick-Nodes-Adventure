@@ -12,7 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683cbdf287c3cfe4585e7d8911761b71, type: 3}
   m_Name: Izuno
   m_EditorClassIdentifier: Assembly-CSharp::NPC
-  npcName: Izuno
-  dialogue:
-  - {fileID: 11400000, guid: a5fe877f9e4656f4f80bb92de2d3a2d7, type: 2}
-  - {fileID: 11400000, guid: a5fe877f9e4656f4f80bb92de2d3a2d7, type: 2}
+  willTravel: 0

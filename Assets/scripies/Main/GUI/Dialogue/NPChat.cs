@@ -24,7 +24,7 @@ namespace scripies.Dialogue
         public bool willTravel;
 
         public GameObject indicator;
-        public NPC npc;
+        [HideInInspector] public NPC npc;
         public List<DialogueObject> dialogue = new();
         [SerializeField] private LayerMask pLayer;
 
@@ -50,6 +50,7 @@ namespace scripies.Dialogue
         
         private void Start()
         {
+            npc = GetComponent<Identifier>().entity as NPC;
             var playerObject = PlayerHealth.Instance.gameObject;
             if (playerObject != null) playerTransform = playerObject.transform;
             if (isShopkeeper) shopKeeper = GetComponent<ShopKeeper>();

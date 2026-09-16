@@ -20,8 +20,8 @@ namespace scripies.Enemy
         }
 
         [EnumButtons] public EnemyState enemyState;
-
-        public Enemy enemy;
+        [HideInInspector] public Identifier id;
+        [HideInInspector] public Enemy enemy;
         private bool canFacePlayer;
         public bool isFacingRight = true;
         public bool vegetable;
@@ -45,6 +45,8 @@ namespace scripies.Enemy
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
+            id = GetComponent<Identifier>();
+            enemy = id.entity as Enemy;
             rb = GetComponent<Rigidbody2D>();
             patrol = GetComponent<EnemyPatrol>();
             attack = GetComponent<EnemyAttack>();

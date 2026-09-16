@@ -332,7 +332,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   spawnId: 0
-  typeOfObject: 0
+  typeOfObject: 2
+  entity: {fileID: 0}
   mapManager: {fileID: 0}
 --- !u!114 &13393110
 MonoBehaviour:
@@ -620,6 +621,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ae7a0a36e534d0428f22d1f86d5aed7, type: 2}
     - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: mapInfo
       value: 
@@ -8558,6 +8563,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ae7a0a36e534d0428f22d1f86d5aed7, type: 2}
+    - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: mapInfo
       value: 
       objectReference: {fileID: 0}
@@ -11747,6 +11756,10 @@ PrefabInstance:
     - target: {fileID: 2153638448317964997, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: id
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2153638448317964997, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
+      propertyPath: typeOfObject
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6217457163881888616, guid: 08fd5bf5a06ab43408b644c3addfb9be, type: 3}
       propertyPath: m_LocalPosition.x

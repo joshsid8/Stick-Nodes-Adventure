@@ -2,5 +2,5 @@ using UnityEngine;
 
 public abstract class Entity : ScriptableObject
 {
-    //Nothing!
+    // Use the object's name for lookup and references
 }

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c71cf99ec0d17142987d39326f7be54, type: 3}
   m_Name: Noxu
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyName: Noxu
   enemyType: 2
   damageMult: 1
   healthMult: 1

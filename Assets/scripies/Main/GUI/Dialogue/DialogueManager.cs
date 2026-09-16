@@ -81,7 +81,7 @@ namespace scripies.Dialogue
         {
             npcNameLabel.text = dialogueObject.NPCName;
             npcNameLabel.color = dialogueObject.nameColour;
-            animator = isAnimated ? GameObject.Find(currentNpc.npcName ?? dialogueObject.speaker ?? dialogueObject.NPCName).GetComponent<Animator>() : null;
+            animator = isAnimated ? GameObject.Find(currentNpc.name).GetComponent<Animator>() : null;
             if (dialoguePings.Length > 0) GameEvents.TriggerPlaySound(dialoguePings?[0], randomPitch: false);
             if (!dialogueObject.canBeColoured) textLabel.color = Color.black;
             if (!dialogueObject.canBeBold) isBold = false;
@@ -205,7 +205,7 @@ namespace scripies.Dialogue
             if (dialogueObject != null)
             {
                 GameObject speaker;
-                if (currentNpc != null) speaker = GameObject.Find(currentNpc.npcName);
+                if (currentNpc != null) speaker = GameObject.Find(currentNpc.name);
                 else if (string.IsNullOrEmpty(dialogueObject.speaker)) speaker = GameObject.Find(dialogueObject.speaker);
                 else if (string.IsNullOrEmpty(dialogueObject.NPCName)) speaker = GameObject.Find(dialogueObject.NPCName);
                 else
@@ -254,7 +254,8 @@ namespace scripies.Dialogue
             
             while (externalInstance == null)
             {
-                externalInstance = GameObject.Find(dialogueObject.externalInstance);
+                externalInstance = ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.externalInstance, true);
+                //print("waiting for our instance");
                 yield return null;
             }
             //print("found our instance");

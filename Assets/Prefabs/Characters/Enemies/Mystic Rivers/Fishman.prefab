@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: id
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: -3014423799198804129, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 06a2b4cdfbda6b54d9617395ae4fd77c, type: 2}
     - target: {fileID: -2052741742867292352, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: enemy
       value: 

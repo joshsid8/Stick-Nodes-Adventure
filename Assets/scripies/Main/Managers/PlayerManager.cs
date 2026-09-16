@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
 
     // Reference to your base player stats (PlayerStats ScriptableObject)
     // This holds the "clean" default values for all player attributes.
-    public PlayerStats basePlayerStats; 
+    public Player basePlayer; 
 
     // References to player components (assigned in Awake)
     private PlayerController pc;
@@ -51,7 +51,7 @@ public class PlayerManager : MonoBehaviour
         if (pd == null) Debug.LogWarning("PlayerManager: PlayerDefense not found.");
         if (pf == null) Debug.LogWarning("PlayerManager: PlayerCombat not found.");
 
-        if (basePlayerStats != null) InitializeBaseStats();
+        if (basePlayer != null) InitializeBaseStats();
         else Debug.LogError("PlayerManager: basePlayerStats ScriptableObject is not assigned! Player stats will not be correctly initialized.");
     }
     /// <summary>
@@ -59,38 +59,38 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     private void InitializeBaseStats()
     {
-        currentFloatStats["MaxHealth"] = basePlayerStats.MaxHealth;
-        currentFloatStats["RegenerationMultiplier"] = basePlayerStats.RegenerationMultiplier;
-        currentFloatStats["ShockMultiplier"] = basePlayerStats.ShockMultiplier;
-        currentFloatStats["RawDamageResistance"] = basePlayerStats.RawDamageResistance;
+        currentFloatStats["MaxHealth"] = basePlayer.MaxHealth;
+        currentFloatStats["RegenerationMultiplier"] = basePlayer.RegenerationMultiplier;
+        currentFloatStats["ShockMultiplier"] = basePlayer.ShockMultiplier;
+        currentFloatStats["RawDamageResistance"] = basePlayer.RawDamageResistance;
         
-        currentFloatStats["MovementSpeedMultiplier"] = basePlayerStats.MovementSpeedMultiplier;
-        currentFloatStats["JumpForceMultiplier"] = basePlayerStats.JumpForceMultiplier;
-        currentFloatStats["DashSpeed"] = basePlayerStats.DashSpeed;
-        currentFloatStats["DashTime"] = basePlayerStats.DashTime;
-        currentFloatStats["DashCooldown"] = basePlayerStats.DashCooldown;
-        currentFloatStats["DashEnergyCost"] = basePlayerStats.DashEnergyCost;
+        currentFloatStats["MovementSpeedMultiplier"] = basePlayer.MovementSpeedMultiplier;
+        currentFloatStats["JumpForceMultiplier"] = basePlayer.JumpForceMultiplier;
+        currentFloatStats["DashSpeed"] = basePlayer.DashSpeed;
+        currentFloatStats["DashTime"] = basePlayer.DashTime;
+        currentFloatStats["DashCooldown"] = basePlayer.DashCooldown;
+        currentFloatStats["DashEnergyCost"] = basePlayer.DashEnergyCost;
 
-        currentFloatStats["MaxEnergy"] = basePlayerStats.MaxEnergy;
-        currentFloatStats["EnergyRefill"] = basePlayerStats.EnergyRefillMultiplier;
-        currentFloatStats["AbilityCooldownMultiplier"] = basePlayerStats.AbilityCooldownMultiplier;
-        currentFloatStats["AbilityPotency"] = basePlayerStats.AbilityPotency;
-        currentFloatStats["AbilityLifetimeMultiplier"] = basePlayerStats.AbilityLifetimeMultiplier;
-        currentFloatStats["AbilityDamageMultiplier"] = basePlayerStats.AbilityDamageMultiplier;
+        currentFloatStats["MaxEnergy"] = basePlayer.MaxEnergy;
+        currentFloatStats["EnergyRefill"] = basePlayer.EnergyRefillMultiplier;
+        currentFloatStats["AbilityCooldownMultiplier"] = basePlayer.AbilityCooldownMultiplier;
+        currentFloatStats["AbilityPotency"] = basePlayer.AbilityPotency;
+        currentFloatStats["AbilityLifetimeMultiplier"] = basePlayer.AbilityLifetimeMultiplier;
+        currentFloatStats["AbilityDamageMultiplier"] = basePlayer.AbilityDamageMultiplier;
         
         //currentFloatStats["AirAttackForce"] = basePlayerStats.AirAttackForce;
-        currentFloatStats["AttackDamageMultiplier"] = basePlayerStats.AttackDamageMultiplier;
-        currentFloatStats["AttackPotency"] = basePlayerStats.AttackPotency;
-        currentFloatStats["AttackCooldownMultiplier"] = basePlayerStats.AttackCooldownMultiplier;
+        currentFloatStats["AttackDamageMultiplier"] = basePlayer.AttackDamageMultiplier;
+        currentFloatStats["AttackPotency"] = basePlayer.AttackPotency;
+        currentFloatStats["AttackCooldownMultiplier"] = basePlayer.AttackCooldownMultiplier;
         
-        currentFloatStats["BlockDamageResistance"] = basePlayerStats.BlockDamageResistance;
-        currentFloatStats["CounterTime"] = basePlayerStats.CounterTime;
-        currentFloatStats["CounterDamageResistance"] = basePlayerStats.CounterDamageResistance;
-        currentFloatStats["CounterDamage"] = basePlayerStats.CounterDamage;
+        currentFloatStats["BlockDamageResistance"] = basePlayer.BlockDamageResistance;
+        currentFloatStats["CounterTime"] = basePlayer.CounterTime;
+        currentFloatStats["CounterDamageResistance"] = basePlayer.CounterDamageResistance;
+        currentFloatStats["CounterDamage"] = basePlayer.CounterDamage;
         //currentFloatStats["AvailableWalls"] = basePlayerStats.AvailableWalls;
         
         //currentBooleanStats["WallJumpAbility"] = basePlayerStats.WallJumpAbility;
-        currentBooleanStats["CounterAbility"] = basePlayerStats.CounterAbility;
+        currentBooleanStats["CounterAbility"] = basePlayer.CounterAbility;
         //currentBooleanStats["M1Ability"] = basePlayerStats.M1Ability;
 
         ApplyAllStatsToComponents();

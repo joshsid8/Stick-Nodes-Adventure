@@ -12,14 +12,15 @@ namespace scripies.Core
         [Tooltip("This is for whenever you want to target a certain object externally. The ID format is currently 000 for enemies.\nEnsure the ID isn't 0 (in most cases) for the data to be saved")]
         public int id;
         public int spawnId;
-        public enum ObjectType{Entity, Item, [Obsolete] Door, Npc, Spawner, Checkpoint}
+        public enum ObjectType{Entity, Item, Section, Spawner, Checkpoint}
         [EnumButtons] public ObjectType typeOfObject;
+        public Entity entity;
         
         [HideInInspector] public MonoBehaviour mapManager;
 
         [ContextMenu("Automate ID")]
         public void AutomateID() => AutomateID(gameObject.scene);
-        
+
         public void AutomateID(Scene targetScene)
         {
             if (mapManager == null)
@@ -30,11 +31,9 @@ namespace scripies.Core
                     var components = obj.GetComponentsInChildren<MonoBehaviour>(true);
                     foreach (var c in components)
                     {
-                        if (c != null && c.GetType().Name == "MapManager")
-                        {
-                            mapManager = c;
-                            break;
-                        }
+                        if (c == null || c.GetType().Name != "MapManager") continue;
+                        mapManager = c;
+                        break;
                     }
                     if (mapManager != null) break;
                 }
@@ -55,8 +54,7 @@ namespace scripies.Core
                 var enemyIdsField = mmType.GetField("enemyIds");
                 if (enemyIdsField != null)
                 {
-                    var enemyIds = enemyIdsField.GetValue(mapManager) as List<int>;
-                    if (enemyIds != null)
+                    if (enemyIdsField.GetValue(mapManager) is List<int> enemyIds)
                     {
                         var idn = 1;
                         while (enemyIds.Contains(idn)) idn++;

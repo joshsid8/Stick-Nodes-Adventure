@@ -131,6 +131,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     
     protected virtual void OnTriggerStay2D(Collider2D collision)
     {
+        if (collision.gameObject == abilityCaster) return;
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             if (!inContact.Contains(collision.gameObject) && GetHealth(collision.gameObject) > 0) 
@@ -195,9 +196,14 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         var objects = inContact;
         foreach (var obj in objects)
         {
-            if (typeFactor == 1 && !obj.CompareTag("Enemy") && !obj.CompareTag("Boss")) continue;
-            if (typeFactor == 2 && !obj.CompareTag("Player")) continue;
-            
+            if (obj == abilityCaster) continue;
+            switch (typeFactor)
+            {
+                case 1 when !obj.CompareTag("Enemy") && !obj.CompareTag("Boss"):
+                case 2 when !obj.CompareTag("Player"):
+                    continue;
+            }
+
             var damageable = obj.GetComponent<IDamageable>();
             if (damageable != null && currentProcTimer <= 0 && activeHitbox)
             {

@@ -146,7 +146,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Identifier
   id: 0
   spawnId: 0
-  typeOfObject: 0
+  typeOfObject: 1
+  entity: {fileID: 0}
   mapManager: {fileID: 0}
 --- !u!114 &4495788041319736467
 MonoBehaviour:
@@ -160,6 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82902125324a9024b8d405c64ec367af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemColours: []
 --- !u!114 &7352367289808877247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,6 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectable: {fileID: 11400000, guid: 41c0bbe2c1b15624cb310fcb1d26d9f5, type: 2}
   isStray: 1
+  pickable: 0
   onGround: 0
   edgeCheckRay: 1
   playerFinderHitbox: 5

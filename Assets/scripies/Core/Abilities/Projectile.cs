@@ -147,7 +147,7 @@ public class Projectile : AbilityBase
         
         foreach (var hit in hits)
         {
-            if (hit.collider == null) continue;
+            if (hit.collider == null || hit.collider.gameObject == abilityCaster) continue;
             var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
             var pStatus = hit.collider.gameObject.GetComponent<IPlayerStatus>();
             if (pStatus != null && pStatus.IsCountering)
@@ -186,8 +186,7 @@ public class Projectile : AbilityBase
 
     private void Deflect(int factor)
     {
-        typeFactor = factor;
-        isFacingRightDirection = !isFacingRightDirection;
+        SetValues(factor, !isFacingRightDirection, factor == 1 ? abilityCaster : GameObject.FindGameObjectWithTag("Player"));
         projectileSpeed += 5f;
         if (swapForce)
         {

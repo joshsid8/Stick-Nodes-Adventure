@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openTime: 0
   openSfx: {fileID: 0}
+  closeSfx: {fileID: 0}
 --- !u!212 &5796141929305424383
 SpriteRenderer:
   serializedVersion: 2
@@ -345,7 +346,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   spawnId: 0
-  typeOfObject: 0
+  typeOfObject: 2
+  entity: {fileID: 0}
   mapManager: {fileID: 0}
 --- !u!212 &8904813838509925188
 SpriteRenderer:
@@ -498,7 +500,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  doorObjs: []
   objective: 0
   enemies:
   - {fileID: 0}

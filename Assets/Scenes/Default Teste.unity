@@ -183,6 +183,10 @@ PrefabInstance:
       propertyPath: id
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 449413243954514990, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
+      propertyPath: typeOfObject
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2122868428494586592, guid: dc8b5a84db09e2140b589c61db62bdc3, type: 3}
       propertyPath: m_Size.x
       value: 1.0015936
@@ -669,6 +673,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ae7a0a36e534d0428f22d1f86d5aed7, type: 2}
     - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: mapInfo
       value: 
@@ -6520,7 +6528,11 @@ PrefabInstance:
     - target: {fileID: 3896614092649104574, guid: edac96a8e0e3a0840af04ac529cefdfb, type: 3}
       propertyPath: 'dialogue.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: 516c1cf6f9f147643a27a447b568c531, type: 2}
+      objectReference: {fileID: 11400000, guid: 4e7d05becd58b1c46b25efa4008a6088, type: 2}
+    - target: {fileID: 5921352939605734611, guid: edac96a8e0e3a0840af04ac529cefdfb, type: 3}
+      propertyPath: entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
     - target: {fileID: 5921352939605734611, guid: edac96a8e0e3a0840af04ac529cefdfb, type: 3}
       propertyPath: typeOfObject
       value: 3

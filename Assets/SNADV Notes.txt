@@ -5,19 +5,18 @@ SNADV Notes
     
     Notices & Priorities:
         
-        The danger duo stands before me: Time to tackle it
-            (IF Instability doesnt strike again)
+        When loading a saved slot (just pressing the play button), I spawn at the exact place i left with.
+            What its meant to do instead is spawn at the last checkpoint i was instead
+            I do remember seeing a warning that the last scene name isnt being saved, thus loading all scenes on play
+                That might be the reason
+        
+        The danger duo stands before me...
 
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from Testing
-                        
-                When loading a saved slot (just pressing the play button), I spawn at the exact place i left with.
-                    What its meant to do instead is spawn at the last checkpoint i was instead
-                    I do remember seeing a warning that the last scene name isnt being saved, thus loading all scenes on play
-                        That might be the reason
                                         
             Replicatable or From-Build bugs/problems
 
@@ -41,8 +40,7 @@ SNADV Notes
                     When it comes to the counter animation, deflecting works, but melee countering doesnt.
                 
                 Noxu's boulder hurts himself!
-                    I think its because the radius hitbox type that spawns after explosion is neutral instead of enemy
-
+                    I ensured the caster of any ability cant hurt themself, so this should be fixed
             Junie Help
                 Tackling The Danger Duo
                 

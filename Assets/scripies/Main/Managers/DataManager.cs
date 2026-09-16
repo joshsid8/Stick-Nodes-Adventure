@@ -80,6 +80,7 @@ public class DataManager : MonoBehaviour
         public string activeNpcName;
         public bool willTravel;
         public DialogueObject[] dialogue;
+        public DialogueObject[] spokenDialogue;
         public ShopItem[] shopItems;
     }
 

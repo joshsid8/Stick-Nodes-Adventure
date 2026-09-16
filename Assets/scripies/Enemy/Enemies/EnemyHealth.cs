@@ -105,7 +105,7 @@ namespace scripies.Enemy
         {
             if (!isDead) yield break;
 
-            OnEnemyKilled?.Invoke(ec.enemy);
+            OnEnemyKilled?.Invoke(ec.id.entity as Enemy);
             GameEvents.TriggerDropLoot(gameObject);
             GameEvents.TriggerEnemyDefeated(gameObject);
             ec.ChangeState(EnemyController.EnemyState.Dead);

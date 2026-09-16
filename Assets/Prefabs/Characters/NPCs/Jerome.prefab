@@ -13,6 +13,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: entity
+      value: 
+      objectReference: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
+    - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: typeOfObject
       value: 3
       objectReference: {fileID: 0}
@@ -141,7 +145,7 @@ MonoBehaviour:
     itemPrice: 50
     itemCollectable: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
     itemAmount: 10
-    badgeRequired: {fileID: 0}
+    badgeSoRequired: {fileID: 0}
   - itemName: Bubble Blower
     itemDescription: This comes from a fish woman, it apparently increases your attack
       speed by a small bit
@@ -149,7 +153,7 @@ MonoBehaviour:
     itemPrice: 200
     itemCollectable: {fileID: 11400000, guid: 3d6a83f08d4c48c419380fa337444060, type: 2}
     itemAmount: 1
-    badgeRequired: {fileID: 0}
+    badgeSoRequired: {fileID: 0}
   - itemName: Shuriken Scroll
     itemDescription: Three lil shurikens. It's prolly an upgrade compared to the
       fireball scroll
@@ -157,14 +161,14 @@ MonoBehaviour:
     itemPrice: 300
     itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
     itemAmount: 1
-    badgeRequired: {fileID: 0}
+    badgeSoRequired: {fileID: 0}
   - itemName: Earth Rock Scroll
     itemDescription: A scroll you can get from a  "down to earth" guy somewhere downward
     itemSprite: {fileID: 0}
     itemPrice: 500
     itemCollectable: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
     itemAmount: 1
-    badgeRequired: {fileID: 0}
+    badgeSoRequired: {fileID: 0}
   - itemName: SuperKey
     itemDescription: A Key to access an earthly place. It'll be yours if you defeat
       that one fire guy in the valleys
@@ -172,7 +176,7 @@ MonoBehaviour:
     itemPrice: 100
     itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
     itemAmount: 1
-    badgeRequired: {fileID: 11400000, guid: c0afdfb270d3b6147b48712b0a7469dc, type: 2}
+    badgeSoRequired: {fileID: 0}
   inStockDialogue: {fileID: 11400000, guid: da39fe38aa5ae124bad360df7d822a5e, type: 2}
   soldOutDialogue: {fileID: 11400000, guid: 765665ee72c63764cbea02546ecacb26, type: 2}
   canRestock: 1

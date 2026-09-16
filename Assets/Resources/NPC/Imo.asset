@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683cbdf287c3cfe4585e7d8911761b71, type: 3}
   m_Name: Imo
   m_EditorClassIdentifier: Assembly-CSharp::NPC
-  npcName: Imo
-  dialogue:
-  - {fileID: 11400000, guid: 9bc21a44d25d1d3459fa8753ea4a1945, type: 2}
+  willTravel: 0

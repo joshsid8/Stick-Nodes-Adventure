@@ -288,13 +288,13 @@ public class MapManager : MonoBehaviour
                     case "Enemy":
                         if (obj.name == "Imo")
                         {
-                            // Imo is a character who is a test dummy, thus has the enemy layer and tag, but also is an NPC.
+                            // Imo is a character who is a test dummy, thus having the enemy layer and tag, but also is an NPC.
                             goto npcStuff;
                         }
                         var enemyId = obj.GetComponent<Identifier>();
                         var newEnemy = new EnemySceneData
                         {
-                            activeEnemies = obj,
+                            activeEnemy = obj,
                             spawnId = enemyId.spawnId
                         };
                         enemySceneData.Add(newEnemy);
@@ -307,16 +307,17 @@ public class MapManager : MonoBehaviour
                         break;
                     case "NPC":
                         npcStuff:
-                        var npcId = obj.GetComponent<NPChat>().npc?.npcName;
+                        var npcId = obj.GetComponent<NPChat>().npc?.name;
                         if (npcId == null) continue;
-                        var dTrigger = obj.GetComponent<NPChat>();
+                        var npChat = obj.GetComponent<NPChat>();
                         obj.TryGetComponent<ShopKeeper>(out var shopKeeper);
                         var newNpc = new NpcSceneData
                         {
                             activeNpc = obj,
                             npcName = npcId,
-                            willTravel = dTrigger.willTravel,
-                            dialogue = new List<DialogueObject>(dTrigger.dialogue),
+                            willTravel = npChat.willTravel,
+                            dialogue = new List<DialogueObject>(npChat.dialogue),
+                            spokenDialogue = new List<DialogueObject>(npChat.spokenDialogue),
                             isShopKeeper = shopKeeper != null,
                             shopItems = shopKeeper != null ? shopKeeper.shopItems.ToArray() : null
                         };
@@ -404,7 +405,7 @@ public class MapManager : MonoBehaviour
         
         foreach (var eData in enemySceneData)
         {
-            if (eData.activeEnemies == null)
+            if (eData.activeEnemy == null)
             {
                 list.enemies.Add(new DataManager.EnemySceneData
                 {
@@ -487,8 +488,8 @@ public class MapManager : MonoBehaviour
             foreach (var enemyData in list.enemies)
             {
                 var enemy = enemySceneData.Find(e => e.spawnId == enemyData.activeEnemyID);
-                if (enemy != null && enemy.activeEnemies != null) 
-                    Destroy(enemy.activeEnemies);
+                if (enemy != null && enemy.activeEnemy != null) 
+                    Destroy(enemy.activeEnemy);
             }
 
             foreach (var collectableData in list.collectables)
@@ -555,6 +556,7 @@ public class MapManager : MonoBehaviour
                     activeNpcName = nData.npcName,
                     willTravel = nData.willTravel,
                     dialogue = nData.dialogue.ToArray(),
+                    spokenDialogue = nData.spokenDialogue.ToArray(),
                     shopItems = nData.shopItems
                 });
             }
@@ -627,8 +629,7 @@ public class MapManager : MonoBehaviour
     [Serializable]
     public class EnemySceneData
     {
-        [Tooltip("Ensure these are spawners unless they are one-time enemies")] 
-        public GameObject activeEnemies; 
+        public GameObject activeEnemy; 
         public int spawnId;
     }
 
@@ -651,6 +652,7 @@ public class MapManager : MonoBehaviour
         [Tooltip("Will this NPC travel throughout scenes (areas)?")] 
         public bool willTravel;
         public List<DialogueObject> dialogue = new();
+        public List<DialogueObject> spokenDialogue = new();
         public bool isShopKeeper;
         public ShopItem[] shopItems;
     }

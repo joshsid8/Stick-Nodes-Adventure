@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683cbdf287c3cfe4585e7d8911761b71, type: 3}
   m_Name: Jerome
   m_EditorClassIdentifier: scripies.Core::NPC
-  npcName: Jerome
   willTravel: 0
