@@ -41,7 +41,6 @@ namespace scripies.Player
             GameEvents.AddPlayerEnergy += AddEnergy;
             GameEvents.PlayerPerformAbility += TogglePa;
             
-            if (pc.input == null) throw new Exception("PlayerController missing InputManager!");
             pc.input.Player.Ability.started += _ =>
             {
                 if (ability.objects[blastIndex] == null || pc.isPerformingAction || !canAbility[blastIndex]) return;
@@ -62,11 +61,11 @@ namespace scripies.Player
             timeBetweenCast += Time.deltaTime;
             if (timeBetweenCast >= 1.5f) spamAmount = 0;
             if (isPerformingAbility) backupTimer += Time.deltaTime;
-            else backupTimer = 5;
-            if (!(backupTimer <= 0) || !isPerformingAbility) return; // TODO: This was made as a makeshift fix to stop the player from only being able to walk. Instead of this, make an actual fix
+            else backupTimer = 0;
+            if (backupTimer < 5f || !isPerformingAbility) return; // TODO: This was made as a makeshift fix to stop the player from only being able to walk. Instead of this, make an actual fix
             isPerformingAbility = false;
             isHolding = false;
-            backupTimer = 5;
+            backupTimer = 0;
             Debug.LogError("You were likely frozen for too long. disabling isPerformingAbility");
         }
         
@@ -154,6 +153,7 @@ namespace scripies.Player
         private void TogglePa(bool state)
         {
             isPerformingAbility = state;
+            print($"toggling to {state}");
             if (!state) StopAllCoroutines(); // Stop any pending safety resets if we manually release
             else StartCoroutine(AbilitySafetyReset());
         }
@@ -161,12 +161,10 @@ namespace scripies.Player
         private IEnumerator AbilitySafetyReset()
         {
             yield return new WaitForSeconds(5f); // 5 second safety net
-            if (isPerformingAbility)
-            {
-                Debug.LogWarning("Ability safety reset triggered!");
-                isPerformingAbility = false;
-                isHolding = false;
-            }
+            if (!isPerformingAbility) yield break;
+            Debug.LogWarning("Ability safety reset triggered!");
+            isPerformingAbility = false;
+            isHolding = false;
         }
         
         private void Energy()

@@ -16,8 +16,8 @@ public class Pillar : AbilityBase
         SceneManager.MoveGameObjectToScene(transform.parent.gameObject, abilityCaster.scene);
     }
     
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
-        if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
+        base.OnDestroy();
     }
 }

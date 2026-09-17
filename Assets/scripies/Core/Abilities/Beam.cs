@@ -23,9 +23,9 @@ public class Beam : AbilityBase
         if (moveWithCaster && typeFactor == 1) parentObject.transform.position = player.abilityPoint.position;
     }
     
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
-        if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
+        base.OnDestroy();
     }
 
 }

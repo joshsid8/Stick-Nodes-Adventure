@@ -94,7 +94,7 @@ namespace scripies.Dialogue
         [EnumButtons] public LookupType cameraLookupType;
     }
     [Serializable]
-    public class ApplyFloat
+    public struct ApplyFloat
     {
         [Tooltip("(e.g., 'PlayerHealth')")]
         public string floatName;
@@ -103,7 +103,7 @@ namespace scripies.Dialogue
     }
     
     [Serializable]
-    public class ApplyBool
+    public struct ApplyBool
     {
         [Tooltip("(e.g., 'CanWallJump')")]
         public string boolName;
@@ -111,7 +111,7 @@ namespace scripies.Dialogue
     }
 
     [Serializable]
-    public class ControlDoor
+    public struct ControlDoor
     {
         public string doorName;
         public bool openDoor;

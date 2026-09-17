@@ -23,6 +23,7 @@ public class AbilityObjSO : ScriptableObject
      public float potency = 1;
      public float sizeMult = 1;
      public bool isHoldable;
+     public float minHoldTime = 0.5f;
      public bool trueDamage;
      public bool radialKnockback;
      [Tooltip("Will another ability be spawned when this one collides?")]
@@ -57,6 +58,7 @@ public class AbilityObjSO : ScriptableObject
                }
                ab.sizeMult = sizeMult;
                ab.isHoldable = isHoldable;
+               ab.minHoldTime = minHoldTime;
                ab.abilityOnCollide = abilityOnCollide;
           }
      }

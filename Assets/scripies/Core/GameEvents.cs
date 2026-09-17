@@ -81,7 +81,7 @@ namespace scripies.Core
         public static void TriggerAddDialogue(ScriptableObject dialogue, GameObject npc) => AddDialogue?.Invoke(dialogue, npc);
         public static void TriggerRemoveDialogue(ScriptableObject dialogue, GameObject npc) => RemoveDialogue?.Invoke(dialogue, npc);
         public static void TriggerForceCloseDialogue() => ForceCloseDialogue?.Invoke();
-        public static void TriggerCloseDialogue(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
+        public static void TriggerOnDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
         
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
         public static void TriggerSaveGameToDisk() => SaveGameToDisk?.Invoke();

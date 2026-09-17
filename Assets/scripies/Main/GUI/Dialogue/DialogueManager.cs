@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using scripies.Core;
+using scripies.Player;
 using UnityEngine;
 using TMPro;
 
@@ -15,13 +16,14 @@ namespace scripies.Dialogue
         [SerializeField] private TMP_Text textLabel;
         [SerializeField] private TMP_Text npcNameLabel;
         private TypeWriterFX typeWriter;
-        private DialogueResponseHandler handler;
+        private DialogueResponseManager manager;
         public GameObject gameHUD;
         public bool isAnimated;
         public Animator animator;
         [SerializeField] private NPC currentNpc;
         private bool isBold;
         
+        [SerializeField] private PlaceholderDialogues placeholderDialogues;
         [SerializeField] private AudioClip[] dialoguePings;
         private GameObject persistentItem;
 
@@ -37,7 +39,7 @@ namespace scripies.Dialogue
             base.Awake();
 
             typeWriter = GetComponent<TypeWriterFX>();
-            handler = GetComponent<DialogueResponseHandler>();
+            manager = GetComponent<DialogueResponseManager>();
             if (isActive) CloseDialogue();
             
             persistentItem = GameObject.Find("persistentItem");
@@ -62,8 +64,7 @@ namespace scripies.Dialogue
             if (dialogueObject == null)
             {
                 Debug.LogError("There isnt a dialogue object to show!");
-                CloseDialogue();
-                return;
+                dialogueObject = placeholderDialogues.emptyDialogue;
             }
             if (npc != null) currentNpc = npc;
             CloseAll();
@@ -110,22 +111,18 @@ namespace scripies.Dialogue
                             var allSects = GameObject.FindGameObjectsWithTag("Section");
                             foreach (var sect in allSects)
                             {
-                                if (sect.name.Contains(dialogue.cameraTarget))
-                                {
-                                    target = sect;
-                                    break;
-                                }
+                                if (!sect.name.Contains(dialogue.cameraTarget)) continue;
+                                target = sect;
+                                break;
                             }
                             break;
                         case DialogueThread.LookupType.Spawner:
                             var spawners = GameObject.FindGameObjectsWithTag("Spawner");
                             foreach (var spawner in spawners)
                             {
-                                if (spawner.name.Contains(dialogue.cameraTarget))
-                                {
-                                    target = spawner;
-                                    break;
-                                }
+                                if (!spawner.name.Contains(dialogue.cameraTarget)) continue;
+                                target = spawner;
+                                break;
                             }
                             break;
                         default:
@@ -140,9 +137,9 @@ namespace scripies.Dialogue
                 if (dialogueObject.PendingChoice && dialogue == dialogueObject.DialogueThread[^1])
                 {
                     StartCoroutine(ChoiceDialogue(dialogueObject));
-                    yield return new WaitUntil(() => !handler.responseBox.gameObject.activeInHierarchy);
+                    yield return new WaitUntil(() => !manager.responseBox.gameObject.activeInHierarchy);
                 }
-                else yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
+                else yield return new WaitUntil(() => PlayerHealth.Instance.pc.input.UI.Submit.WasPressedThisFrame());
             }
             ApplyCustomEffect(dialogueObject);
             if (dialogueObject.PendingChoice) yield break;
@@ -161,8 +158,10 @@ namespace scripies.Dialogue
                 switch (quest.questType)
                 {
                     case QuestSlot.QuestType.GiveTo:
+                    {
                         var needs = new (CollectableSOBase id, int count)[quest.objectsToInteract.Length];
-                        for (var i = 0; i < quest.objectsToInteract.Length; i++) needs[i] = (quest.objectsToInteract[i], quest.numberOfObjects[i]);
+                        for (var i = 0; i < quest.objectsToInteract.Length; i++)
+                            needs[i] = (quest.objectsToInteract[i], quest.numberOfObjects[i]);
                         var hasItems = InvManager.Instance.invIndex.MeetsAllCounts(needs);
                         if (!hasItems)
                         {
@@ -171,7 +170,7 @@ namespace scripies.Dialogue
                             else
                             {
                                 Debug.LogWarning("Player failed item check, but no failure dialogue is set.");
-                                CloseDialogue();
+                                StartCoroutine(StepThroughDialogue(placeholderDialogues.failedQuestDialogue));
                             }
                         }
                         else
@@ -187,12 +186,14 @@ namespace scripies.Dialogue
                                 }
                             }
                         }
+
                         break;
+                    }
                 }
             }
         }
 
-        public void DecrementActiveGUICount() => ActiveGUICount--;
+        public static void DecrementActiveGUICount() => ActiveGUICount--;
         
         private void ForceCloseDialogue()
         {
@@ -205,15 +206,10 @@ namespace scripies.Dialogue
             if (dialogueObject != null)
             {
                 GameObject speaker;
-                if (currentNpc != null) speaker = GameObject.Find(currentNpc.name);
-                else if (string.IsNullOrEmpty(dialogueObject.speaker)) speaker = GameObject.Find(dialogueObject.speaker);
-                else if (string.IsNullOrEmpty(dialogueObject.NPCName)) speaker = GameObject.Find(dialogueObject.NPCName);
-                else
-                {
-                    ClearData();
-                    GameEvents.TriggerCloseDialogue(dialogueObject);
-                    goto close;  // we, (yes, WE, US, me AND you) love the goto keyword
-                }
+                if (currentNpc != null) speaker = ObjectDatabase.Instance.GetEntityObjByName(currentNpc.name);
+                else if (string.IsNullOrEmpty(dialogueObject.speaker)) speaker = GameObject.Find(dialogueObject.speaker) ?? ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.speaker);
+                else if (string.IsNullOrEmpty(dialogueObject.NPCName)) speaker = GameObject.Find(dialogueObject.NPCName) ?? ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.NPCName);
+                else goto close;  // we, (yes, WE, US, me AND you) love the goto keyword
                 
                 if (dialogueObject.speakerType == (DialogueObject.SpeakerType) 1)
                 {
@@ -243,7 +239,7 @@ namespace scripies.Dialogue
                 CameraEventManager.Instance.ResetCamera();
             }
             close:
-            GameEvents.TriggerCloseDialogue(dialogueObject);
+            GameEvents.TriggerOnDialogueClose(dialogueObject);
             //GameEvents.TriggerPlaySound(dialoguePings[1], false);
             ClearData();
         }
@@ -255,7 +251,6 @@ namespace scripies.Dialogue
             while (externalInstance == null)
             {
                 externalInstance = ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.externalInstance, true);
-                //print("waiting for our instance");
                 yield return null;
             }
             //print("found our instance");
@@ -291,7 +286,7 @@ namespace scripies.Dialogue
             }
             //npcNameLabel.text = dialogueObject.NPCName ?? dialogueObject.speaker ?? currentNpc.npcName ?? "HUH?! WHERE IS EVERYTHING?!";
             //yield return typeWriter.Run(dialogueObject.DialogueThread[^1].thread, textLabel, npcNameLabel);
-            handler.ShowResponses(dialogueObject);
+            manager.ShowResponses(dialogueObject);
         }
 
         private void ApplyCustomEffect(DialogueObject dialogueObject)
@@ -304,37 +299,31 @@ namespace scripies.Dialogue
 
             if (dialogueObject.applyFloats.Count > 0)
             {
-                /*for (var i = 0; i < dialogueObject.targetFloatVariables.Length; i++)
-                    PlayerManager.Instance.SetGlobalFloat(dialogueObject.targetFloatVariables[i],
-                        dialogueObject.newFloatValues[i]);*/
-                
                 foreach (var floatToChange in dialogueObject.applyFloats) 
                     PlayerManager.Instance.SetGlobalFloat(floatToChange.floatName, floatToChange.value, floatToChange.additive);
             }
 
             if (dialogueObject.applyBools.Count > 0)
             {
-                /*for (var i = 0; i < dialogueObject.targetBoolVariables.Length; i++)
-                {
-                    PlayerManager.Instance.SetGlobalBool(dialogueObject.targetBoolVariables[i],
-                        dialogueObject.newBoolValues[i]);
-                }*/
-                
                 foreach (var boolToChange in dialogueObject.applyBools) 
                     PlayerManager.Instance.SetGlobalBool(boolToChange.boolName, boolToChange.value);
             }
 
             if (dialogueObject.willGiveQuest) QuestLogManager.Instance.AssignQuest(dialogueObject.questToOffer as QuestSO);
 
-            if (dialogueObject.itemType.Length > 0)
+            if (dialogueObject.itemType.Length <= 0) return;
+            foreach (var type in dialogueObject.itemType)
             {
-                foreach (var type in dialogueObject.itemType)
-                {
-                    var item = Instantiate(persistentItem, player.transform.position, Quaternion.identity);
-                    item.GetComponent<Collectable>().collectable = type;
-                    //print($"Dropped {dialogueObject.itemDrop[i]}, with the type of {dialogueObject.itemType[i]}.");
-                }
+                var item = Instantiate(persistentItem, player.transform.position, Quaternion.identity);
+                item.GetComponent<Collectable>().collectable = type;
             }
+        }
+
+        [Serializable]
+        public struct PlaceholderDialogues
+        {
+            public DialogueObject emptyDialogue;
+            public DialogueObject failedQuestDialogue;
         }
     }
 }

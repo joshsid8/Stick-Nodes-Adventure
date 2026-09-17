@@ -22298,17 +22298,29 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7870431470146604584, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: 'objects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7914a45e9bcc54d46a919ffd276119da, type: 2}
+    - target: {fileID: 7870431470146604584, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: 'objects.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}
+    - target: {fileID: 7870431470146604584, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: 'objects.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 50.72683
+      value: -82.751045
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 70.37622
+      value: 33.02711
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0011268556
+      value: -0.0008407533
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23751,7 +23763,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 51.113667, y: 70.4301, z: -0.060667038}
+  m_LocalPosition: {x: -82.36421, y: 33.080986, z: -0.060380936}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24672,7 +24684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd14626b034b7504fabf2f650b65e007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: 
   previousScene: {}
   musicSource: {fileID: 3026628980759326563}
   globalSfxSource: {fileID: 2209087731487205237, guid: f15af1e1acb04c94ea602223295efd70, type: 3}
@@ -24927,7 +24938,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 53.093983, y: 74.654175, z: -0.060667038}
+  m_LocalPosition: {x: -80.38391, y: 37.305065, z: -0.060380936}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25650,6 +25661,9 @@ MonoBehaviour:
   isAnimated: 0
   animator: {fileID: 0}
   currentNpc: {fileID: 0}
+  placeholderDialogues:
+    emptyDialogue: {fileID: 0}
+    failedQuestDialogue: {fileID: 0}
   dialoguePings: []
 --- !u!1 &2081685047811090893
 GameObject:

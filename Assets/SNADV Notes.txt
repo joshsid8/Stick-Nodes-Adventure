@@ -6,9 +6,8 @@ SNADV Notes
     Notices & Priorities:
         
         When loading a saved slot (just pressing the play button), I spawn at the exact place i left with.
-            What its meant to do instead is spawn at the last checkpoint i was instead
-            I do remember seeing a warning that the last scene name isnt being saved, thus loading all scenes on play
-                That might be the reason
+            Ive refactored the save system to no longer use the audiomanager to find the last active scene, but for each map to hold said flag
+            THAT part works, but the spawn position isnt working still
         
         The danger duo stands before me...
 
@@ -17,8 +16,6 @@ SNADV Notes
         Instability
 
             Issues from Testing
-                                        
-            Replicatable or From-Build bugs/problems
 
             One time occurrences or Rare/Intimidating bugs
 
@@ -33,16 +30,12 @@ SNADV Notes
                         Cynderians' fire pillar is unblockable for some reason...
                             While Cynder himself's pillars (and every other pillar) are
                     I think ill move the logic to the player's animations to make blocking feel more natural
-                        Ill need to then make a playerUnblock animation if so
+                        Ill need to then make a Character_Unblock animation if so                
                 
-                Ive successfully remade the player animator controller, but its a bit buggy...
-                    I can indefinitely hold the ability button, freezing the animation at inconvenient times
-                    When it comes to the counter animation, deflecting works, but melee countering doesnt.
-                
-                Noxu's boulder hurts himself!
-                    I ensured the caster of any ability cant hurt themself, so this should be fixed
             Junie Help
                 Tackling The Danger Duo
+                
+                Beating up Instability
                 
     Things to be added/changed:
         

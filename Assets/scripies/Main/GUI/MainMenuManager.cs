@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 using scripies.Core;
 
 public class MainMenuManager : MonoBehaviour
@@ -86,10 +87,23 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator ProgressLoading(bool newGame = false)
     {
-        // 1. Start loading the scenes first
         scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
-        
-        if (string.IsNullOrEmpty(audioManager.currentScene) && !newGame)
+        var lastActiveScene = "";
+        yield return new WaitUntil(() => DataManager.Instance != null);
+        if (!newGame)
+        {
+            // TODO: Make a choice to switch between save slots
+            SaveSystem.SetSaveSlot();
+            SaveSystem.Load();
+            yield return new WaitUntil(() => DataManager.Instance.sceneData.Count > 0);
+            foreach (var scene in DataManager.Instance.sceneData.Where(scene => scene.activeMap))
+            {
+                lastActiveScene = scene.sceneName;
+                print($"Loading scene {scene.sceneName}");
+                break;
+            }
+        }
+        if (string.IsNullOrEmpty(lastActiveScene) && !newGame)
         {
             Debug.LogWarning("theres no scene name data. loading all scenes");
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Default Teste", LoadSceneMode.Additive));
@@ -97,12 +111,10 @@ public class MainMenuManager : MonoBehaviour
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Water Teste", LoadSceneMode.Additive));
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Earth Teste", LoadSceneMode.Additive));
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Air Teste", LoadSceneMode.Additive));
-
         }
         else if (newGame) scenesToLoad.Add(SceneManager.LoadSceneAsync("Default Teste", LoadSceneMode.Additive));
-        else scenesToLoad.Add(SceneManager.LoadSceneAsync(audioManager.currentScene, LoadSceneMode.Additive));
+        else scenesToLoad.Add(SceneManager.LoadSceneAsync(lastActiveScene, LoadSceneMode.Additive));
         
-        // 2. Wait for all scenes in the list to finish
         var allDone = false;
         
         while (!allDone)
@@ -120,14 +132,8 @@ public class MainMenuManager : MonoBehaviour
             yield return null;
         }
 
-        // 3. Finalize
         yield return new WaitForSeconds(0.1f);
-        if (!newGame)
-        {
-            // TODO: Make a choice to switch between save slots
-            SaveSystem.SetSaveSlot();
-            SaveSystem.Load();
-        }
+
         SceneManager.UnloadSceneAsync(gameObject.scene);
         Destroy(gameObject.transform.root.gameObject);
     }
@@ -145,7 +151,7 @@ public class MainMenuManager : MonoBehaviour
     }
 }
 
-[System.Serializable]
+[Serializable]
 public struct MainMenuData
 {
     public int fps;

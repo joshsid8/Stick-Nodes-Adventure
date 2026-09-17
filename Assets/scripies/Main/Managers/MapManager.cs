@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using scripies.Core;
 using scripies.Dialogue;
 using UnityEngine;
@@ -14,7 +15,9 @@ public class MapManager : MonoBehaviour
     public static readonly Dictionary<string, MapManager> Instances = new();
     
     #region Map Info and Ost
+
     public bool activeMap;
+    public bool mapToggle;
     [SerializeField] private string mapName;
     [SerializeField] [TextArea] private string mapDescription;
     [SerializeField] private Color mapTextColor = Color.white;
@@ -83,11 +86,6 @@ public class MapManager : MonoBehaviour
             print("Loading data");
             LoadSceneData();
         }
-        //#endif
-
-        // if (!activeMap) return;
-        // var player = PlayerHealth.Instance;
-        // var playerCol = player.GetComponent<Collider2D>();
     }
 
     #region Map Announcing
@@ -111,9 +109,12 @@ public class MapManager : MonoBehaviour
         }
         
         if (!collision.CompareTag("Player")) return;
-        if (activeMap) return;
+        if (mapToggle) return;
+        mapToggle = true;
         activeMap = true;
+        foreach (var otherMap in Instances.Values.Where(m => m.sceneName != sceneName)) otherMap.activeMap = false;
         StartCoroutine(MapTransition(collision));
+        GameEvents.TriggerPersistGameData();
     }
 
     private IEnumerator MapTransition(Collider2D collision)
@@ -170,7 +171,6 @@ public class MapManager : MonoBehaviour
             audioManager.backgroundMusic[i] = mOst[i];
             audioManager.backgroundMusicVolume[i] = mOstVolume[i];
         }
-        audioManager.currentScene = gameObject.scene.name;
         GameEvents.TriggerMusic(0, false);
     }
 
@@ -184,8 +184,8 @@ public class MapManager : MonoBehaviour
     private void HandleMapExit(GameObject playerObject)
     {
         GameEvents.TriggerPersistGameData();
-        if (!activeMap) return;
-        activeMap = false;
+        if (!mapToggle) return;
+        mapToggle = false;
         weather.ClearDisasters();
         if (!audioManager.gameObject.IsDestroyed())
         {
@@ -401,6 +401,7 @@ public class MapManager : MonoBehaviour
         list.spawners.Clear();
         list.doorSpawnerHybrids.Clear();
         
+        list.activeMap = activeMap;
         list.undiscoveredMap = undiscoveredMap;
         
         foreach (var eData in enemySceneData)
@@ -478,13 +479,11 @@ public class MapManager : MonoBehaviour
             SaveSceneData();
             return;
         }
-        
+        activeMap = manager.sceneData.Find(x => x.sceneName == sceneName).activeMap;
         undiscoveredMap = manager.sceneData.Find(x => x.sceneName == sceneName).undiscoveredMap;
         
-        foreach (var list in manager.sceneData)
+        foreach (var list in manager.sceneData.Where(list => list.sceneName == sceneName))
         {
-            if (list.sceneName != sceneName) continue;
-            
             foreach (var enemyData in list.enemies)
             {
                 var enemy = enemySceneData.Find(e => e.spawnId == enemyData.activeEnemyID);
@@ -494,13 +493,11 @@ public class MapManager : MonoBehaviour
 
             foreach (var collectableData in list.collectables)
             {
-                if (collectableData.isStray)
-                {
-                    var item = Instantiate(list.ItemToStore, collectableData.position, Quaternion.identity);
-                    item.GetComponent<SpriteRenderer>().color = collectableData.colour;
-                    item.GetComponent<Collectable>().collectable = collectableData.activeCollectable;
-                    SceneManager.MoveGameObjectToScene(item, SceneManager.GetSceneByName(sceneName));
-                }
+                if (!collectableData.isStray) continue;
+                var item = Instantiate(list.ItemToStore, collectableData.position, Quaternion.identity);
+                item.GetComponent<SpriteRenderer>().color = collectableData.colour;
+                item.GetComponent<Collectable>().collectable = collectableData.activeCollectable;
+                SceneManager.MoveGameObjectToScene(item, SceneManager.GetSceneByName(sceneName));
             }
 
             for (var i = 0; i < list.doors.Count; i++)

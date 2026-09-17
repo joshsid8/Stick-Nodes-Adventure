@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NUnit.Framework.Internal.Commands;
 using scripies.Core;
@@ -56,78 +57,111 @@ public class PerformAbility : MonoBehaviour
     private IEnumerator SpawnRoutine(AbilityObjSO ability, int blastType)
     {
         if (ability == null) yield break;
-
+        var abilityScript = ability.abilityPrefab.GetComponent<AbilityBase>() ?? ability.abilityPrefab.GetComponentInChildren<AbilityBase>();
+        var isHoldable = ability.setProperties ? ability.isHoldable : abilityScript.isHoldable;
         var isFacingRight = GetFacingRight();
         var casterFactor = casterType == CasterType.Player ? 1 : 2;
         var amount = casterType == CasterType.Player ? (int)Mathf.Round(ability.amount * abilityAmountMult[currentSlot]) : ability.amount;
         var xOffset = blastType == 1 ? ability.initSeparation : 0f;
-
+        
         for (var i = 0; i < amount; i++)
         {
-            if (casterType == CasterType.Player && blastType == 0 && ability.isHoldable && !pa.IsHoldingAbility) break;
-            if (!unavailable)
+            if (unavailable) continue;
+            
+            if (i == 0 && ability.shockwave) xOffset = ability.initSeparation;
+            
+            if (i < amount - 1) StartCoroutine(Spawn(blastType, xOffset, isFacingRight, casterFactor, ability, i == amount));
+            else if (i == amount - 1 || blastType == 0 && casterType == CasterType.Player && isHoldable && !pa.IsHoldingAbility)
             {
-                if (i == 0 && ability.shockwave) xOffset = ability.initSeparation;
-                
-                Spawn(i, blastType, xOffset, isFacingRight, casterFactor, ability);
-                
-                if (blastType != 0) xOffset += ability.separation;
-                yield return new WaitForSeconds(ability.spawnInterval);
+                StartCoroutine(Spawn(blastType, xOffset, isFacingRight, casterFactor, ability, true));
+                break;
             }
+            if (i == amount - 1 || casterType == CasterType.Player && ability.isHoldable && !pa.IsHoldingAbility)
+            {
+                if (blastType == 0) GameEvents.TriggerPlayerPerformAbility(false);
+                break;
+            }
+            if (blastType != 0) xOffset += ability.separation;
+            yield return new WaitForSeconds(ability.spawnInterval);
         }
-        if (casterType == CasterType.Player) GameEvents.TriggerPlayerPerformAbility(false);
+        if (casterType == CasterType.Player && !isHoldable) GameEvents.TriggerPlayerPerformAbility(false);
     }
 
-    private void Spawn(int i, int blastType, float xOffset, bool isFacingRight, int casterFactor, AbilityObjSO ability)
+    private IEnumerator Spawn(int blastType, float xOffset, bool isFacingRight, int casterFactor, AbilityObjSO ability, bool lastObject = false)
     {
         Vector3[] spawnPos = {abilityPoint.position + transform.right * xOffset, abilityPoint.position - transform.right * xOffset};
         var spawnRot = blastType == 2 ? abilityPoint.rotation : Quaternion.identity;
         GameObject[] newObjs = {Instantiate(ability.abilityPrefab, spawnPos[0], spawnRot), Instantiate(ability.abilityPrefab, spawnPos[1], spawnRot)};
-        if (ability.shockwave)
+        switch (ability.shockwave)
         {
-            foreach (var obj in newObjs)
+            case true:
             {
-                var abScript = obj.GetComponent<AbilityBase>() ?? obj.GetComponentInChildren<AbilityBase>();
-
-                if (abScript != null)
+                foreach (var obj in newObjs)
                 {
+                    var abScript = obj.GetComponent<AbilityBase>() ?? obj.GetComponentInChildren<AbilityBase>();
+
+                    if (abScript == null) continue;
                     ability.SetProperties(abScript);
                     abScript.SetValues(casterFactor, isFacingRight, gameObject);
 
-                    if (casterType == CasterType.Enemy) abScript.direction = abilityDirection;
-
-                    if (casterType == CasterType.Player)
+                    switch (casterType)
                     {
-                        GameEvents.TriggerAddPlayerEnergy(-abScript.energyRequired / 2);
-                        GameEvents.TriggerAddPlayerTime("Ability", 0);
+                        case CasterType.Enemy:
+                            abScript.direction = abilityDirection;
+                            break;
+                        case CasterType.Player:
+                            GameEvents.TriggerAddPlayerEnergy(-abScript.energyRequired / 2);
+                            GameEvents.TriggerAddPlayerTime("Ability", 0);
+                            if (lastObject)
+                            {
+                                yield return new WaitUntil(() => newObjs[0].IsDestroyed() || abScript.lifeTimer <= 0);
+                                GameEvents.TriggerPlayerPerformAbility(false);
+                            }
+                            break;
+                        default:
+                            Debug.LogError($"How did you choose {casterType} as a caster type???");
+                            break;
                     }
                 }
+                break;
             }
-        }
-        else if (!ability.shockwave)
-        {
-            Destroy(newObjs[1]);
-            var abScript = newObjs[0].GetComponent<AbilityBase>() ?? newObjs[0].GetComponentInChildren<AbilityBase>();
-
-            if (abScript != null)
+            case false:
             {
+                Destroy(newObjs[1]);
+                var abScript = newObjs[0].GetComponent<AbilityBase>() ?? newObjs[0].GetComponentInChildren<AbilityBase>();
+                if (abScript == null) yield break;
                 ability.SetProperties(abScript);
                 abScript.SetValues(casterFactor, isFacingRight, gameObject);
 
-                if (casterType == CasterType.Enemy) abScript.direction = abilityDirection;
-
-                if (casterType == CasterType.Player)
+                switch (casterType)
                 {
-                    GameEvents.AddPlayerEnergy(-abScript.energyRequired);
-                    GameEvents.TriggerAddPlayerTime("Ability", 0);
+                    case CasterType.Enemy:
+                        abScript.direction = abilityDirection;
+                        break;
+                    case CasterType.Player:
+                    {
+                        GameEvents.AddPlayerEnergy(-abScript.energyRequired);
+                        GameEvents.TriggerAddPlayerTime("Ability", 0);
+                        if (lastObject && abScript is not Projectile)
+                        {
+                            GameEvents.TriggerPlayerPerformAbility(true);
+                            while (!newObjs[0].IsDestroyed()) yield return null;
+                            GameEvents.TriggerPlayerPerformAbility(false);
+                        }
+                        else GameEvents.TriggerPlayerPerformAbility(!lastObject);
+                        break;
+                    }
+                    default:
+                        Debug.LogError($"How did you choose {casterType} as a caster type???");
+                        break;
                 }
+                break;
             }
         }
     }
-
+    
     private bool GetFacingRight()
     {
-        if (casterType == CasterType.Player) return pa.IsFacingRight;
-        return es.IsFacingRight;
+        return casterType == CasterType.Player ? pa.IsFacingRight : es.IsFacingRight;
     }
 }

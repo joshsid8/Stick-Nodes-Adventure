@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace scripies.Dialogue
 {
-    public class DialogueResponseHandler : MonoBehaviour
+    public class DialogueResponseManager : MonoBehaviour
     {
         public RectTransform responseBox;
         [SerializeField] private GameObject responseButtonsParent;
@@ -25,7 +25,7 @@ namespace scripies.Dialogue
 
         public void ShowResponses(DialogueObject dialogueObject)
         {
-            dialogueManager.DecrementActiveGUICount();
+            DialogueManager.DecrementActiveGUICount();
             responseButtonsParent.gameObject.SetActive(true);
             responseBox.gameObject.SetActive(true);
 

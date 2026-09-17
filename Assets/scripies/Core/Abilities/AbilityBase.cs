@@ -59,6 +59,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     
     public float lifeTimer;
     public bool isHoldable;
+    public float minHoldTime;
     public bool abilityOnCollide;
     public AbilityObjSO[] subAbilities;
     
@@ -100,7 +101,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         currentProcTimer = 0;
         pa = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>(); 
-        parentObject = transform.parent.gameObject;
+        parentObject = transform.parent != null ? transform.parent.gameObject : gameObject;
         
         if (anim != null) GetComponent<SpriteRenderer>().sprite = null;
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
@@ -121,6 +122,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         Lifetime();
         Proc();
         HitBox();
+
         gameObject.layer = typeFactor switch
         {
             1 => LayerMask.NameToLayer("PVFX"),
@@ -172,6 +174,27 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             }
             
             currentProcTimer = procTime;
+        }
+    }
+
+    public virtual void Explode()
+    {
+        if (useRadialKnockback) RadiusProc();
+        else
+        {
+            Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, sizeMult * 2); // default radius if not using RadiusProc
+            foreach (var obj in objects)
+            {
+                if (obj.gameObject == abilityCaster) continue;
+                switch (typeFactor)
+                {
+                    case 1 when !obj.CompareTag("Enemy") && !obj.CompareTag("Boss"):
+                    case 2 when !obj.CompareTag("Player"):
+                        continue;
+                }
+                var damageable = obj.GetComponent<IDamageable>();
+                Damageable(damageable);
+            }
         }
     }
 
@@ -236,19 +259,33 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (lifeTimer > 0)
         {
             lifeTimer -= Time.deltaTime;
-            if (!pa.IsHoldingAbility && isHoldable && typeFactor == 1) lifeTimer = 0;
+            
+            // Holdable logic: Release early only if we've passed minHoldTime
+            if (isHoldable && typeFactor == 1 && pa != null)
+            {
+                float timeActive = lifeTime - lifeTimer;
+                if (!pa.IsHoldingAbility && timeActive >= minHoldTime)
+                {
+                    lifeTimer = 0;
+                }
+            }
+
             if (lifeTimer <= 0 && endAnim != null)
             {
-                if (explodeOnImpact) RadiusProc();
+                if (explodeOnImpact) Explode();
                 animator.Play(endAnim.name);
             }
             else if (lifeTimer <= 0)
             {
-                if (explodeOnImpact) RadiusProc();
-                if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
+                if (explodeOnImpact) Explode();
                 Destroy(parentObject);
             }
         }
+    }
+    
+    protected virtual void OnDestroy()
+    {
+        if (pa != null && typeFactor == 1) GameEvents.TriggerPlayerPerformAbility(false);
     }
     
     private float GetHealth(GameObject entity)

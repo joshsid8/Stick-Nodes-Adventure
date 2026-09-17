@@ -9,18 +9,17 @@ using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour, IAudioStatus
 {
-    public static AudioManager Instance {get; private set;}
-    public string currentScene;
+    public static AudioManager Instance { get; private set; }
     public Scene previousScene;
     public IAudioStatus.MusicType musicType { get; set; }
-    
+
     public AudioSource musicSource;
     public AudioSource globalSfxSource;
-    
+
     public AudioClip[] backgroundMusic;
     public float[] backgroundMusicVolume;
     public AudioClip[] sFXMusic;
-    
+
     public GameObject[] gUI;
     private Coroutine fadeCoroutine;
 
@@ -32,35 +31,38 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
-        
+
         DontDestroyOnLoad(gameObject);
         GameEvents.PlayMusic += PlayMusic;
         GameEvents.PlaySound += PlaySfx;
         GameEvents.OnDisableGUI += QuietOnGUI;
         GameEvents.OnEnableGUI += QuietOnGUI;
         GameEvents.MuteMusic += ToggleMuteMusic;
-        
-        if (backgroundMusic.Length > 2 && backgroundMusic[1] == null && backgroundMusic[2] == null || backgroundMusic.Length > 0 && musicSource.clip == null) 
+
+        if (backgroundMusic.Length > 2 && backgroundMusic[1] == null && backgroundMusic[2] == null ||
+            backgroundMusic.Length > 0 && musicSource.clip == null)
             PlayMusic(0, false);
     }
 
     #region Music
+
     private void PlayMusic(int index, bool fade)
     {
         ToggleMuteMusic(false);
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
         fadeCoroutine = StartCoroutine(BeginMusic(index, fade));
     }
-    
+
     private IEnumerator BeginMusic(int index, bool fade)
     {
         if (index < 0 || index >= backgroundMusic.Length) yield break;
-        
+
         var targetVolume = backgroundMusicVolume[index];
 
         if (fade && musicSource.isPlaying) yield return StartCoroutine(FadeOutMusic(2f));
-        
+
         if (musicSource.clip != backgroundMusic[index])
         {
             musicSource.clip = backgroundMusic[index];
@@ -70,7 +72,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
         if (fade) yield return StartCoroutine(FadeInMusic(2f));
         else musicSource.volume = targetVolume;
-        
+
         fadeCoroutine = null;
     }
 
@@ -82,9 +84,10 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             musicSource.volume = Mathf.MoveTowards(musicSource.volume, targetVolume, Time.deltaTime * fadeTime);
             yield return null;
         }
+
         musicSource.volume = targetVolume;
     }
-    
+
     public IEnumerator FadeOutMusic(float fadeTime = 2)
     {
         while (musicSource.volume > 0)
@@ -92,9 +95,10 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             musicSource.volume = Mathf.MoveTowards(musicSource.volume, 0, Time.deltaTime * fadeTime);
             yield return null;
         }
+
         musicSource.volume = 0;
     }
-    
+
     // Junie worked here, making fading work properly. learn how all this works passively once you learn more about coroutines
     public void TriggerFadeIn(float fadeTime = 1)
     {
@@ -119,9 +123,9 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         yield return FadeOutMusic(fadeTime);
         fadeCoroutine = null;
     }
-    
+
     public void ToggleMuteMusic(bool toggle = true) => musicSource.mute = toggle;
-    
+
     private void QuietOnGUI()
     {
         foreach (var g in gUI)
@@ -138,9 +142,11 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             }
         }
     }
+
     #endregion
 
     #region SFX
+
     private void PlaySfx(AudioClip clip, GameObject source = null, float volume = 1f, bool randomPitch = false)
     {
         var pos = source != null ? source.transform.position : globalSfxSource.transform.position;
@@ -154,7 +160,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
         sfxSource.clip = clip != null ? clip : sFXMusic[Random.Range(0, sFXMusic.Length)];
         sfxSource.pitch = randomPitch ? Random.Range(0.85f, 1.15f) : 1;
-        
+
         sfxSource.Play();
         Destroy(sfxSource.gameObject, sfxSource.clip.length);
     }
@@ -162,10 +168,11 @@ public class AudioManager : MonoBehaviour, IAudioStatus
     private static IEnumerator UpdateSfxVolume(GameObject source, AudioSource sfxSource, float volume = 1f)
     {
         const float maxDistance = 65;
-        
+
         while (!source.IsDestroyed() && !sfxSource.IsDestroyed() && PlayerHealth.Instance != null)
         {
-            var distToPlayer = Mathf.Abs(PlayerHealth.Instance.gameObject.transform.position.x - source.transform.position.x);
+            var distToPlayer =
+                Mathf.Abs(PlayerHealth.Instance.gameObject.transform.position.x - source.transform.position.x);
             var distancePercentage = Mathf.Clamp01(distToPlayer / maxDistance);
             //print($"{source.name} is {distancePercentage * 100}% away from player");
             var vol = volume * (1 - distancePercentage);
@@ -175,13 +182,4 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         }
     }
     #endregion
-
-    public void Save(ref SceneName data) => data.sceneName = currentScene;
-    public void Load(SceneName data) => currentScene = data.sceneName;
-}
-
-[Serializable]
-public struct SceneName
-{
-    public string sceneName;
 }

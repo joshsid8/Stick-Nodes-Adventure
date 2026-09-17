@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using scripies.Dialogue;
 using UnityEngine;
 using scripies.Core;
@@ -18,6 +19,7 @@ public class DataManager : MonoBehaviour
     public class SceneList
     {
         public string sceneName;
+        public bool activeMap;
         public List<EnemySceneData> enemies = new();
         public List<CollectableSceneData> collectables = new();
         
@@ -57,9 +59,8 @@ public class DataManager : MonoBehaviour
 
     private static void PersistData()
     {
-        foreach (var map in MapManager.Instances.Values)
+        foreach (var map in MapManager.Instances.Values.Where(map => map != null && SceneManager.GetSceneByName(map.sceneName).isLoaded))
         {
-            if (map == null || !SceneManager.GetSceneByName(map.sceneName).isLoaded) continue;
             map.SaveSceneData();
             map.SaveNpcData();
         }

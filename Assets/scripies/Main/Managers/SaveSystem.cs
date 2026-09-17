@@ -20,7 +20,6 @@ public class SaveSystem
         playerBadges = new PlayerBadges(),
         playerQuests = new PlayerSaveQuests(),
         mainMenuData = new MainMenuData(),
-        currentScene = new SceneName()
     };
 
     [System.Serializable]
@@ -35,7 +34,6 @@ public class SaveSystem
         public PlayerSaveQuests playerQuests;
         public PlayerBadges playerBadges;
         public MainMenuData mainMenuData;
-        public SceneName currentScene;
     }
 
     public static string SaveFileName()
@@ -69,13 +67,11 @@ public class SaveSystem
         }
         if (QuestLogManager.Instance != null) QuestLogManager.Instance.Save(ref saveData.playerQuests);
         if (StatsManager.Instance != null) StatsManager.Instance.Save(ref saveData.playerBadges);
-        if (AudioManager.Instance != null) AudioManager.Instance.Save(ref saveData.currentScene);
     }
 
     public static void HandleSettingsSaveData() => MainMenuManager.Instance.Save(ref saveData.mainMenuData);
     public static void HandleSettingsLoadData()
     {
-        AudioManager.Instance.Load(saveData.currentScene);
         MainMenuManager.Instance.Load(saveData.mainMenuData);
     }
 
@@ -91,7 +87,6 @@ public class SaveSystem
         }
         if (QuestLogManager.Instance != null) QuestLogManager.Instance.Load(saveData.playerQuests);
         if (StatsManager.Instance != null) StatsManager.Instance.Load(saveData.playerBadges);
-        if (AudioManager.Instance != null) AudioManager.Instance.Load(saveData.currentScene);
         
         scripies.Core.GameEvents.TriggerLoadMapData();
     }
