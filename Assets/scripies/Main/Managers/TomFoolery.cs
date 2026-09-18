@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Linq;
 using scripies.Core;
+using scripies.Player;
 using UnityEngine;
 /// <summary>
 /// This is Shenanigans' brother
@@ -12,15 +14,18 @@ public class TomFoolery : MonoBehaviour
 {
     public static TomFoolery Instance {get; private set;}
     private Shenanigans shenanigans;
+    private PlayerHealth player;
 
     private void OnEnable()
     {
         GameEvents.ToggleDoor += ToggleDoor;
+        GameEvents.OnSpawnPointChanged += PlayerSpawnChange;
     }
     
     private void OnDisable()
     {
         GameEvents.ToggleDoor -= ToggleDoor;
+        GameEvents.OnSpawnPointChanged -= PlayerSpawnChange;
     }
 
     private void Awake()
@@ -32,7 +37,8 @@ public class TomFoolery : MonoBehaviour
         }
         Instance = this;
         
-        shenanigans = Shenanigans.Instance;
+        shenanigans = Shenanigans.Instance ?? FindAnyObjectByType<Shenanigans>();
+        player = PlayerHealth.Instance ?? FindAnyObjectByType<PlayerHealth>();
     }
     
     public void ToggleDoor(string doorName, bool open) => StartCoroutine(ToggleDoorC(doorName, open));
@@ -65,5 +71,21 @@ public class TomFoolery : MonoBehaviour
                 accessManager.CloseDoors();
                 break;
         }
+    }
+
+    private void PlayerSpawnChange(GameObject point, bool spawn)
+    {
+        if (point == null) return;
+        if (spawn)
+        {
+            player.pc.currentSpawnPoint = point;
+            foreach (var map in MapManager.Instances.Values.Where(map => map.activeMap))
+            {
+                map.currentSpawnPoint = point;
+                break;
+            }
+        }
+        player.pc.currentCheckPoint = point;
+        GameEvents.TriggerPersistGameData();
     }
 }

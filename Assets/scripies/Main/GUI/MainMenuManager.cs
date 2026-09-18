@@ -27,7 +27,8 @@ public class MainMenuManager : MonoBehaviour
     [Header("Settings")] 
     private int fps = 60;
     private bool vsync;
-    
+
+    [SerializeField] private SceneField defaultScene;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -95,25 +96,30 @@ public class MainMenuManager : MonoBehaviour
             // TODO: Make a choice to switch between save slots
             SaveSystem.SetSaveSlot();
             SaveSystem.Load();
-            yield return new WaitUntil(() => DataManager.Instance.sceneData.Count > 0);
+            yield return new WaitUntil(() => DataManager.Instance.sceneData.Count > 0 && PlayerManager.Instance != null);
             foreach (var scene in DataManager.Instance.sceneData.Where(scene => scene.activeMap))
             {
                 lastActiveScene = scene.sceneName;
-                print($"Loading scene {scene.sceneName}");
+                scenesToLoad.Add(SceneManager.LoadSceneAsync(lastActiveScene, LoadSceneMode.Additive));
+
                 break;
             }
         }
         if (string.IsNullOrEmpty(lastActiveScene) && !newGame)
         {
             Debug.LogWarning("theres no scene name data. loading all scenes");
-            scenesToLoad.Add(SceneManager.LoadSceneAsync("Default Teste", LoadSceneMode.Additive));
+            scenesToLoad.Add(SceneManager.LoadSceneAsync(defaultScene.SceneName, LoadSceneMode.Additive));
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Fire Teste", LoadSceneMode.Additive));
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Water Teste", LoadSceneMode.Additive));
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Earth Teste", LoadSceneMode.Additive));
             scenesToLoad.Add(SceneManager.LoadSceneAsync("Air Teste", LoadSceneMode.Additive));
         }
-        else if (newGame) scenesToLoad.Add(SceneManager.LoadSceneAsync("Default Teste", LoadSceneMode.Additive));
-        else scenesToLoad.Add(SceneManager.LoadSceneAsync(lastActiveScene, LoadSceneMode.Additive));
+        else if (newGame)
+        {
+            scenesToLoad.Add(SceneManager.LoadSceneAsync(defaultScene.SceneName, LoadSceneMode.Additive));
+            yield return new WaitUntil(() => scenesToLoad[0].isDone && MapManager.Instances.ContainsKey(defaultScene.SceneName) && MapManager.Instances.ContainsKey(defaultScene.SceneName)); // Hoping that the first sceneToLoad instance is the loaded map above
+            StartCoroutine(DataManager.Instance.SpawnPlayer(MapManager.Instances[defaultScene.SceneName]));
+        }
         
         var allDone = false;
         

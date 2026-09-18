@@ -31,6 +31,7 @@ public class MapManager : MonoBehaviour
     
     [SerializeField] private GameObject sectionObj;
     public GameObject mainSpawnPoint;
+    public GameObject currentSpawnPoint;
 
     public bool undiscoveredMap = true;
     
@@ -58,8 +59,12 @@ public class MapManager : MonoBehaviour
     [Tooltip("Checks if the scene data has tried to find and load its scene data")]
     private bool sceneLoaded;
     #endregion
-    
-    private void Awake() { if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections"); }
+
+    private void Awake()
+    {
+        if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
+        if (currentSpawnPoint == null && mainSpawnPoint != null) currentSpawnPoint = mainSpawnPoint;
+    }
 
     private void Start()
     {
@@ -111,7 +116,6 @@ public class MapManager : MonoBehaviour
         if (!collision.CompareTag("Player")) return;
         if (mapToggle) return;
         mapToggle = true;
-        activeMap = true;
         foreach (var otherMap in Instances.Values.Where(m => m.sceneName != sceneName)) otherMap.activeMap = false;
         StartCoroutine(MapTransition(collision));
         GameEvents.TriggerPersistGameData();
@@ -307,9 +311,9 @@ public class MapManager : MonoBehaviour
                         break;
                     case "NPC":
                         npcStuff:
-                        var npcId = obj.GetComponent<NPChat>().npc?.name;
-                        if (npcId == null) continue;
-                        var npChat = obj.GetComponent<NPChat>();
+                        obj.TryGetComponent<NPChat>(out var npChat);
+                        if (npChat == null || npChat.fixedDialogue) continue;
+                        var npcId = npChat.name;
                         obj.TryGetComponent<ShopKeeper>(out var shopKeeper);
                         var newNpc = new NpcSceneData
                         {
@@ -402,6 +406,7 @@ public class MapManager : MonoBehaviour
         list.doorSpawnerHybrids.Clear();
         
         list.activeMap = activeMap;
+        list.currentSpawnName = currentSpawnPoint != null ? currentSpawnPoint.name : mainSpawnPoint.name;
         list.undiscoveredMap = undiscoveredMap;
         
         foreach (var eData in enemySceneData)
@@ -479,8 +484,10 @@ public class MapManager : MonoBehaviour
             SaveSceneData();
             return;
         }
-        activeMap = manager.sceneData.Find(x => x.sceneName == sceneName).activeMap;
-        undiscoveredMap = manager.sceneData.Find(x => x.sceneName == sceneName).undiscoveredMap;
+        var sceneData = manager.sceneData.Find(x => x.sceneName == sceneName);
+        activeMap = sceneData.activeMap;
+        currentSpawnPoint = GameObject.Find(sceneData.currentSpawnName);
+        undiscoveredMap = sceneData.undiscoveredMap;
         
         foreach (var list in manager.sceneData.Where(list => list.sceneName == sceneName))
         {
@@ -559,7 +566,9 @@ public class MapManager : MonoBehaviour
             }
             else
             {
+                npc.willTravel = nData.willTravel;
                 npc.dialogue = nData.dialogue.ToArray();
+                npc.spokenDialogue = nData.spokenDialogue.ToArray();
                 npc.shopItems = nData.shopItems;
             }
         }
@@ -587,6 +596,13 @@ public class MapManager : MonoBehaviour
         }
     }
     #endregion
+        
+    public void SpawnPlayer()
+    {
+        PlayerHealth.Instance.pc.currentSpawnPoint = currentSpawnPoint != null ? currentSpawnPoint : mainSpawnPoint;
+        //print($"Spawning player at {PlayerHealth.Instance.pc.currentSpawnPoint.name} ({currentSpawnPoint}, {mainSpawnPoint})");
+        StartCoroutine(PlayerHealth.Instance.Spawn());
+    }
     
     private void OnEnable()
     {

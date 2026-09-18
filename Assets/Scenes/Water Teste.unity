@@ -794,6 +794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeMap: 0
+  mapToggle: 0
   mapName: Mystic Rivers
   mapDescription: A waterborne archipelago filled to the brim with many hostile creatures...
   mapTextColor: {r: 0.495283, g: 1, b: 0.9861676, a: 1}
@@ -818,11 +819,13 @@ MonoBehaviour:
   - 0
   sectionObj: {fileID: 341918498}
   mainSpawnPoint: {fileID: 1659805599}
+  currentSpawnPoint: {fileID: 0}
   undiscoveredMap: 1
   sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
+  doorSpawnerObjects: []
   enemySceneData: []
   enemyIds: 01000000
   bossHealth: {fileID: 0}
@@ -834,6 +837,7 @@ MonoBehaviour:
   collectableSceneData: []
   doorSceneData: []
   spawnerSceneData: []
+  doorSpawnerHybridSceneData: []
 --- !u!114 &289567851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1326,6 +1330,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1874271575}
   - {fileID: 515500254}
   - {fileID: 1659805600}
   m_Father: {fileID: 0}
@@ -5430,6 +5435,100 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1001 &1874271574
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 361743893}
+    m_Modifications:
+    - target: {fileID: 550122312589149946, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_Name
+      value: spawn (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnPoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneName
+      value: Water Teste
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: spawnScene.m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: e8a25a24532bd034b84a8e597ba01708, type: 3}
+    - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: id
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_Size.x
+      value: 14.110611
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_Size.y
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.83348846
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_Offset.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -37.72374
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -11.468437
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.6009121
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+--- !u!4 &1874271575 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+  m_PrefabInstance: {fileID: 1874271574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1934887196
 GameObject:
   m_ObjectHideFlags: 0
@@ -6457,6 +6556,10 @@ PrefabInstance:
     - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: dialogueBox
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
+      propertyPath: fixedDialogue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: 'dialogue.Array.data[0]'

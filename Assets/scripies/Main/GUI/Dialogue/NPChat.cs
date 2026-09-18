@@ -13,6 +13,7 @@ namespace scripies.Dialogue
         public float chatRadius;
         public Transform chatPoint;
         [SerializeField] private bool isInRange;
+        public bool fixedDialogue;
 
         [Tooltip("This is turned on when the dialogue ui has been activated")]
         public bool isTriggered;
@@ -55,6 +56,7 @@ namespace scripies.Dialogue
             if (playerObject != null) playerTransform = playerObject.transform;
             if (isShopkeeper) shopKeeper = GetComponent<ShopKeeper>();
             
+            if (!fixedDialogue) canHaveNullList = false;
             if (dialogue.Count == 0 && !canHaveNullList) throw new ArgumentNullException($"[NPChat] WWHHHAT?! {gameObject.name} HAS NO DIALOGUE!!! HOWWW");
         }
 

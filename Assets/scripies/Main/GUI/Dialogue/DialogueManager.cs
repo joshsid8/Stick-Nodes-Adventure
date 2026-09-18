@@ -128,8 +128,8 @@ namespace scripies.Dialogue
                         default:
                             throw new ArgumentException($"[DialogueUI Camera Event] How did u even make the type as {dialogue.cameraLookupType}??");
                     }
-                    if (target == null) throw new NullReferenceException($"[DialogueUI Camera Event] We couldnt find {dialogue.cameraTarget} nowhere!");
-                    CameraEventManager.Instance.ChangeTarget(target);
+                    if (target == null) Debug.LogError($"[DialogueUI Camera Event] We couldnt find {dialogue.cameraTarget} nowhere!");
+                    else CameraEventManager.Instance.ChangeTarget(target);
                 }
                 else if (dialogue.disablePreviousEvents) CameraEventManager.Instance.ResetCamera();
                 

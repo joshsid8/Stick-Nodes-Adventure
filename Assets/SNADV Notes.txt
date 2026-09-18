@@ -5,9 +5,8 @@ SNADV Notes
     
     Notices & Priorities:
         
-        When loading a saved slot (just pressing the play button), I spawn at the exact place i left with.
-            Ive refactored the save system to no longer use the audiomanager to find the last active scene, but for each map to hold said flag
-            THAT part works, but the spawn position isnt working still
+        Spawn Logic is being annoying
+            Will fix asap
         
         The danger duo stands before me...
 

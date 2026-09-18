@@ -16,10 +16,6 @@ PrefabInstance:
       propertyPath: entity
       value: 
       objectReference: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
-    - target: {fileID: 1670288203860416531, guid: f283c487c77e003499e04c5e0d747125, type: 3}
-      propertyPath: typeOfObject
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 2479902616594427839, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: m_Sprite
       value: 

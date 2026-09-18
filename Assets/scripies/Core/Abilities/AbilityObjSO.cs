@@ -38,28 +38,26 @@ public class AbilityObjSO : ScriptableObject
 
      public void SetProperties(AbilityBase ab)
      {
-          if (setProperties)
+          if (!setProperties) return;
+          ab.damage *= damageMult;
+          ab.procDmg *= damageMult;
+          ab.knockbackDirection *= potency;
+          ab.stunTime *= potency;
+          ab.isDirectional = isDirectional;
+          ab.energyRequired = energyRequired;
+          ab.cooldown *= cooldownMult;
+          ab.lifeTime *= lifetimeMult;
+          ab.trueDamage = trueDamage;
+          ab.useRadialKnockback = radialKnockback;
+          if (proc > 0) ab.procTime = proc;
+          if (ab.gameObject.TryGetComponent<Projectile>(out var proj))
           {
-               ab.damage *= damageMult;
-               ab.procDmg *= damageMult;
-               ab.knockbackDirection *= potency;
-               ab.stunTime *= potency;
-               ab.isDirectional = isDirectional;
-               ab.energyRequired = energyRequired;
-               ab.cooldown *= cooldownMult;
-               ab.lifeTime *= lifetimeMult;
-               ab.trueDamage = trueDamage;
-               ab.useRadialKnockback = radialKnockback;
-               if (proc > 0) ab.procTime = proc;
-               if (ab.gameObject.TryGetComponent<Projectile>(out var proj))
-               {
-                    if (speedMult != 1) proj.projectileSpeed *= speedMult;
-                    if (swapForce) proj.swapForce = true;
-               }
-               ab.sizeMult = sizeMult;
-               ab.isHoldable = isHoldable;
-               ab.minHoldTime = minHoldTime;
-               ab.abilityOnCollide = abilityOnCollide;
+               if ((int)speedMult != 1) proj.projectileSpeed *= speedMult;
+               if (swapForce) proj.swapForce = true;
           }
+          ab.sizeMult = sizeMult;
+          ab.isHoldable = isHoldable;
+          ab.minHoldTime = minHoldTime;
+          ab.abilityOnCollide = abilityOnCollide;
      }
 }

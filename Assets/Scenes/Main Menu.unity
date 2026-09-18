@@ -1312,6 +1312,9 @@ MonoBehaviour:
     m_SceneAsset: {fileID: 102900000, guid: 1ef7b59d06af4ec499fa9ae6cc5fa1eb, type: 3}
     m_SceneName: Persistent Objects
   audioManager: {fileID: 2058421850}
+  defaultScene:
+    m_SceneAsset: {fileID: 102900000, guid: af137e695d9fbfd4887972feca53a00d, type: 3}
+    m_SceneName: Default Teste
 --- !u!114 &1176934938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2381,7 +2384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd14626b034b7504fabf2f650b65e007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: Default Teste
   previousScene: {}
   musicSource: {fileID: 518048549}
   globalSfxSource: {fileID: 1044450330}

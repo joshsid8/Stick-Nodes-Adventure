@@ -62,7 +62,7 @@ namespace scripies.Player
             if (timeBetweenCast >= 1.5f) spamAmount = 0;
             if (isPerformingAbility) backupTimer += Time.deltaTime;
             else backupTimer = 0;
-            if (backupTimer < 5f || !isPerformingAbility) return; // TODO: This was made as a makeshift fix to stop the player from only being able to walk. Instead of this, make an actual fix
+            if (backupTimer < 5f || !isPerformingAbility) return;
             isPerformingAbility = false;
             isHolding = false;
             backupTimer = 0;
@@ -153,7 +153,6 @@ namespace scripies.Player
         private void TogglePa(bool state)
         {
             isPerformingAbility = state;
-            print($"toggling to {state}");
             if (!state) StopAllCoroutines(); // Stop any pending safety resets if we manually release
             else StartCoroutine(AbilitySafetyReset());
         }

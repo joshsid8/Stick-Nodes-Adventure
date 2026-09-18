@@ -103,7 +103,7 @@ namespace scripies.Player
             originalColor = spriteRenderer.color;
             originalShockMultiplier = shockMultiplier;
 
-            if (spawnOnAwake) StartCoroutine(Spawn(1, true));
+            //if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             
             GameEvents.OnPlayerDeath += ResetCombat;
             GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
@@ -145,6 +145,12 @@ namespace scripies.Player
         }
         private void OnDisable()
         {
+            GameEvents.OnPlayerDeath -= ResetCombat;
+            GameEvents.OnEnemyDefeated -= ResetCombatViaEnemy;
+            GameEvents.OnAggressiveStatusChanged -= UpdateAggressiveEnemies;
+            GameEvents.AddPlayerCombat -= ApplyCombat;
+            GameEvents.OnPlayerHealthChanged -= CheckStatus;
+            
             //if (!Application.isEditor) throw new NullReferenceException("Wth? why is player disabled??");
             // gameObject.SetActive(true);
             // GameEvents.TriggerJumpScare();
@@ -157,6 +163,7 @@ namespace scripies.Player
             pc.animator.SetBool("isDead", isDead);
         }
 
+
         public IEnumerator Spawn(float timer = 0, bool realSpawn = false)
         {
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
@@ -164,16 +171,14 @@ namespace scripies.Player
             gameObject.layer = LayerMask.NameToLayer("Player");
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             
-            if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded)
-            {
-                SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName,
-                    LoadSceneMode.Additive);
-            }
-            //else print($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name).name} already loaded");
-            
             var spawnTarget = realSpawn ? pc.currentSpawnPoint : pc.currentCheckPoint;
             if (spawnTarget != null) transform.position = spawnTarget.transform.position;
-            else Debug.LogError("[PlayerHealth] We cant find the right spawn object!");
+            else
+            {
+                spawnTarget = pc.currentSpawnPoint;
+                if (spawnTarget != null) transform.position = spawnTarget.transform.position;
+                else Debug.LogError("[PlayerHealth] We cant find the right spawn object!");
+            }
 
             if (Shenanigans.Instance != null) Shenanigans.Instance.ToggleFreezeCamera(false);
             if (realSpawn)
@@ -213,13 +218,6 @@ namespace scripies.Player
             GameEvents.TriggerPlaySound(deathSound.deathClip, randomPitch: deathSound.Item2);
             //Shenanigans.Instance.ToggleFreezeCamera();
             GameHUD.Instance.ActivateShader(respawnTime / 2, -1f);
-
-            if (!SceneManager.GetSceneByName(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded)
-            {
-                SceneManager.LoadScene(pc.currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName,
-                    LoadSceneMode.Additive);
-            }
-            //else Debug.LogWarning($"Scene {SceneManager.GetSceneByName(pc.currentSpawnPoint.scene.name)} already loaded");
             
             yield return new WaitForSeconds(respawnTime / 2);
             //GameHUD.Instance.SetShaderColour(Color.white, 1.5f);

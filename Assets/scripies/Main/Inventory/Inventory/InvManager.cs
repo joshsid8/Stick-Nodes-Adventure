@@ -58,10 +58,9 @@ public class InvManager : GUIBase
 
     private void Update()
     {
-        #if UNITY_EDITOR
+        if (!Application.isEditor) return;
         if (Input.GetKeyDown("o")) SaveSystem.Save();
         if (Input.GetKeyDown("p")) SaveSystem.Load();
-        #endif
     }
 
     public void ToggleInventory()

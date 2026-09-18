@@ -460,6 +460,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: fixedDialogue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291510346899499134, guid: f283c487c77e003499e04c5e0d747125, type: 3}
       propertyPath: isFacingRight
       value: 1
       objectReference: {fileID: 0}

@@ -154,18 +154,18 @@ namespace scripies.Player
             originalJumpForce = jumpForce;
             availableWallsLeft = availableWalls;
             
-            #if UNITY_EDITOR
             GameHUD.Instance.ActivateShader();
+            #if UNITY_EDITOR
             if (debugMode) SetDebugMode();
             yield return new WaitForSeconds(0.5f);
             var isFalling = rb.linearVelocity.y < 0;
             if (isFalling)
             {
-                print("Player is falling out of the world?!");
+                Debug.LogWarning("Player is falling out of the world?!");
                 yield return new WaitForSeconds(1);
                 if (rb.linearVelocity.y < 0)
                 {
-                    print("respawning");
+                    Debug.LogWarning("respawning");
                     StartCoroutine(ph.Spawn());
                 }
             }
@@ -562,40 +562,24 @@ namespace scripies.Player
 
         public void Save(ref PlayerSaveCurrentData data)
         {
-            data.position = transform.position;
+            if (currentSpawnPoint != null) data.position = currentSpawnPoint.transform.position;
             data.health = ph.playerHealth;
             data.energy = pab.energy;
             data.money = pm.nodeBucks;
             data.abilities = ph.CurrentAbilities;
             data.wallJumpAbility = canWallJump;
             data.doubleJumpAbility = canDoubleJump;
-
-            if (currentSpawnPoint == null) return;
-            var ident = currentSpawnPoint.GetComponent<Identifier>();
-            if (ident != null) data.currentSpawnPointId = ident.id;
         }
 
         public void Load(PlayerSaveCurrentData data)
         {
-            transform.position = data.position;
+            if (data.position == Vector3.zero || data.position == default) transform.position = data.position;
             ph.playerHealth = data.health;
             pab.energy = data.energy;
             pm.nodeBucks = data.money;
             pab.ability.objects = data.abilities;
             canWallJump = data.wallJumpAbility;
             canDoubleJump = data.doubleJumpAbility;
-
-            if (data.currentSpawnPointId == 0) return;
-            var identifiers = FindObjectsByType<Identifier>(FindObjectsSortMode.None);
-            foreach (var ident in identifiers)
-            {
-                if (ident.typeOfObject != Identifier.ObjectType.Checkpoint || ident.id != data.currentSpawnPointId) continue;
-                currentSpawnPoint = ident.gameObject;
-                if (!SceneManager.GetSceneByName(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName).isLoaded) 
-                    SceneManager.LoadScene(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName, LoadSceneMode.Additive);
-                //else print($"Scene {SceneManager.GetSceneByName(currentSpawnPoint.GetComponent<Checkpoint>().spawnScene.SceneName)} already loaded");
-                break;
-            }
         }
     }
 
@@ -606,7 +590,6 @@ namespace scripies.Player
         public float health;
         public float energy;
         public float money;
-        public int currentSpawnPointId;
         
         public AbilityObjSO[] abilities;
 

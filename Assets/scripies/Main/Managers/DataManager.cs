@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using scripies.Dialogue;
@@ -20,6 +21,7 @@ public class DataManager : MonoBehaviour
     {
         public string sceneName;
         public bool activeMap;
+        public string currentSpawnName;
         public List<EnemySceneData> enemies = new();
         public List<CollectableSceneData> collectables = new();
         
@@ -127,6 +129,17 @@ public class DataManager : MonoBehaviour
     {
         sceneData = new List<SceneList>(data.realSceneData);
         npcs = new List<NpcData>(npcData.realNpcData);
+        foreach (var map in MapManager.Instances.Values.Where(map => map != null && map.activeMap))
+        {
+            StartCoroutine(SpawnPlayer(map));
+            break;
+        }
+    }
+
+    public IEnumerator SpawnPlayer(MapManager map)
+    {
+        yield return new WaitUntil(() => MapManager.Instances.ContainsKey(map.sceneName));
+        map.SpawnPlayer();
     }
 }
 

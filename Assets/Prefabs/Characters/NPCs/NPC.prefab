@@ -144,6 +144,7 @@ MonoBehaviour:
   id: 0
   spawnId: 0
   typeOfObject: 0
+  entity: {fileID: 0}
   mapManager: {fileID: 0}
 --- !u!212 &2479902616594427839
 SpriteRenderer:

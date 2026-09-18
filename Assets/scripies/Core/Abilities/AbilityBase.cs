@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using scripies.Core;
 using Unity.Mathematics;
 using UnityEngine;
@@ -182,7 +183,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (useRadialKnockback) RadiusProc();
         else
         {
-            Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, sizeMult * 2); // default radius if not using RadiusProc
+            var objects = Physics2D.OverlapCircleAll(transform.position, sizeMult * 2); // default radius if not using RadiusProc
             foreach (var obj in objects)
             {
                 if (obj.gameObject == abilityCaster) continue;
@@ -207,6 +208,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         
         damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType,
             elementFactor, trueDamage, damageOverTime, procDmg, procInterval, aggressor);
+        
         Vector2 calcDirection;
         if (useRadialKnockback) calcDirection = damageable.Position - transform.position;
         else calcDirection = new Vector2(isFacingRightDirection ? knockbackDirection.x : -knockbackDirection.x, knockbackDirection.y).normalized;
@@ -217,9 +219,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     protected void RadiusProc()
     {
         var objects = inContact;
-        foreach (var obj in objects)
+        foreach (var obj in objects.Where(obj => obj != abilityCaster))
         {
-            if (obj == abilityCaster) continue;
             switch (typeFactor)
             {
                 case 1 when !obj.CompareTag("Enemy") && !obj.CompareTag("Boss"):
@@ -228,15 +229,14 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             }
 
             var damageable = obj.GetComponent<IDamageable>();
-            if (damageable != null && currentProcTimer <= 0 && activeHitbox)
-            {
-                var radialDir = new Vector2(damageable.Position.x - transform.position.x, 
-                    (damageable.Position.y - transform.position.y) + explosionUpwardForce).normalized;
+            
+            if (damageable == null || !(currentProcTimer <= 0) || !activeHitbox) continue;
+            var radialDir = new Vector2(damageable.Position.x - transform.position.x, 
+                (damageable.Position.y - transform.position.y) + explosionUpwardForce).normalized;
 
-                damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "", 1 => "Player", 2 => "Enemy", _ => "" });
-                damageable.Shock(explosionTime, radialDir, explosionForce, explosionTime);
-                currentProcTimer = procTime;
-            }
+            damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "", 1 => "Player", 2 => "Enemy", _ => "" });
+            damageable.Shock(explosionTime, radialDir, explosionForce, explosionTime);
+            currentProcTimer = procTime;
         }
     }
     
@@ -244,15 +244,21 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         currentProcTimer -= Time.deltaTime;
         energyProc -= Time.deltaTime;
-        if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor == 1)
+        switch (isHoldable)
         {
-            energyProc = procTime;
-            if (pa != null && typeFactor == 1) GameEvents.AddPlayerEnergy(-procTimes);
+            case true when energyProc <= 0 && activeHitbox && typeFactor == 1:
+            {
+                energyProc = procTime;
+                if (pa != null && typeFactor == 1) GameEvents.AddPlayerEnergy(-procTimes);
+                break;
+            }
+            case true when energyProc <= 0 && activeHitbox && typeFactor != 1:
+                energyProc = procTime;
+                break;
         }
-        else if (isHoldable && energyProc <= 0 && activeHitbox && typeFactor != 1) energyProc = procTime;
     }
-    
-    void ApplyTimer() => lifeTimer = lifeTime;
+
+    private void ApplyTimer() => lifeTimer = lifeTime;
 
     private void Lifetime()
     {
