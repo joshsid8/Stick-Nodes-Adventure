@@ -54,6 +54,7 @@ namespace scripies.Core
         public static Action OnCollect;
         public static Action<GameObject> OnObjectSpawn;
         public static Action<GameObject> OnObjectDestroyed;
+        public static Action<BadgeSO> OnBadgeCollect;
 
         public static Action<float> StopTime;
         public static Action<Image, float, float> JumpScare;
@@ -102,4 +103,16 @@ namespace scripies.Core
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
         public static void TriggerToggleDoor(string doorName, bool state) => ToggleDoor?.Invoke(doorName, state);
     }
+}
+
+[Serializable]
+public class ShopItem
+{
+    public string itemName;
+    [TextArea(1, 2)] public string itemDescription;
+    public Sprite itemSprite;
+    public float itemPrice;
+    public ScriptableObject itemCollectable;
+    public int itemAmount = 1;
+    public BadgeSO badgeSoRequired;
 }

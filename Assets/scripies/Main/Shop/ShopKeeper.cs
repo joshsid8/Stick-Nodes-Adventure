@@ -36,28 +36,28 @@ public class ShopKeeper : MonoBehaviour
     public void SaveShopItems(ShopItemSlot[] items)
     {
         shopItems.Clear();
-        for (var i = 0; i < items.Length; i++)
+        foreach (var item in items)
         {
-            if (!items[i].usedSlot) continue;
+            if (!item.usedSlot) continue;
             
             shopItems.Add(new ShopItem
             {
-                itemName = items[i].itemName,
-                itemDescription = items[i].itemDescription,
-                itemSprite = items[i].itemSprite ?? items[i].collectableSo.itemSprite,
-                itemCollectable = items[i].collectableSo,
-                itemPrice = items[i].itemPrice,
-                itemAmount = items[i].itemAmount,
-                badgeSoRequired = items[i].badgeSoRequired
+                itemName = item.itemName,
+                itemDescription = item.itemDescription,
+                itemSprite = item.itemSprite ?? item.collectableSo.itemSprite,
+                itemCollectable = item.collectableSo,
+                itemPrice = item.itemPrice,
+                itemAmount = item.itemAmount,
+                badgeSoRequired = item.badgeSoRequired
             });
         }
     }
 
-    public void AddShopItem(ShopItem item,bool inNextRestock = false, GameObject keeper = null)
+    public void AddShopItems(ShopItem[] item, bool inNextRestock = false, GameObject keeper = null)
     {
         if (keeper != gameObject) return;
-        if (inNextRestock) backroomItems.Add(item);
-        else shopItems.Add(item);
+        backroomItems.AddRange(item);
+        if (!inNextRestock) shopItems.AddRange(item);
     }
     
     /// <summary>
@@ -69,16 +69,3 @@ public class ShopKeeper : MonoBehaviour
         GameEvents.TriggerAddDialogue(inStockDialogue, gameObject);
     }
 }
-
-[Serializable]
-public class ShopItem
-{
-    public string itemName;
-    [TextArea(1, 2)] public string itemDescription;
-    public Sprite itemSprite;
-    public float itemPrice;
-    public ScriptableObject itemCollectable;
-    public int itemAmount = 1;
-    public BadgeSO badgeSoRequired;
-}
-

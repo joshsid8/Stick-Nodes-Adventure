@@ -31,7 +31,6 @@ public class MapManager : MonoBehaviour
     
     [SerializeField] private GameObject sectionObj;
     public GameObject mainSpawnPoint;
-    public GameObject currentSpawnPoint;
 
     public bool undiscoveredMap = true;
     
@@ -45,10 +44,10 @@ public class MapManager : MonoBehaviour
     [SerializeField] private List<GameObject> doorObjects = new();
     [SerializeField] private List<GameObject> spawnerObjects = new();
     [SerializeField] private List<GameObject> doorSpawnerObjects = new();
+    [SerializeField] private List<GameObject> checkPointObjects = new();
     
     public List<EnemySceneData> enemySceneData = new();
     public List<int> enemyIds = new();
-    public BossHealth bossHealth;
     public BossSceneData bossSceneData;
     private CinemachineCamera mainCamera;
     public List<NpcSceneData> npcSceneData = new();
@@ -56,6 +55,8 @@ public class MapManager : MonoBehaviour
     public List<DoorSceneData> doorSceneData = new();
     public List<SpawnerSceneData> spawnerSceneData = new();
     public List<DoorSpawnerHybridData> doorSpawnerHybridSceneData = new();
+    public List<CheckPointSceneData> checkPointSceneData = new();
+    
     [Tooltip("Checks if the scene data has tried to find and load its scene data")]
     private bool sceneLoaded;
     #endregion
@@ -63,7 +64,6 @@ public class MapManager : MonoBehaviour
     private void Awake()
     {
         if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
-        if (currentSpawnPoint == null && mainSpawnPoint != null) currentSpawnPoint = mainSpawnPoint;
     }
 
     private void Start()
@@ -73,6 +73,7 @@ public class MapManager : MonoBehaviour
         weather = GetComponent<WeatherManager>();
         audioManager = AudioManager.Instance;
         InitialiseSceneData();
+        InvokeRepeating(nameof(CollateObjects), 0, 0.1f);
     }
 
     private void LateUpdate()
@@ -206,7 +207,6 @@ public class MapManager : MonoBehaviour
     private void CollateObjects()
     {
         var scene = SceneManager.GetSceneByName(sceneName);
-        if (!scene.isLoaded) return;
         sceneObjects = scene.GetRootGameObjects();
         
         doorSpawnerObjects.Clear();
@@ -235,6 +235,16 @@ public class MapManager : MonoBehaviour
                 if (spawnerObjects.Contains(spawner.gameObject)) spawnerObjects.Remove(spawner.gameObject);
             }
         }
+        
+        checkPointObjects.Clear();
+        foreach (var obj in sceneObjects)
+        {
+            if (!obj.CompareTag("CheckPoint")) continue;
+            foreach (var checkPoint in obj.GetComponentsInChildren<Checkpoint>())
+            {
+                checkPointObjects.Add(checkPoint.gameObject);
+            }
+        }
     }
 
     private void ClearSceneData()
@@ -245,6 +255,7 @@ public class MapManager : MonoBehaviour
         doorSceneData.Clear();
         spawnerSceneData.Clear();
         doorSpawnerHybridSceneData.Clear();
+        checkPointSceneData.Clear();
     }
 
     public void DisableSpawners()
@@ -260,13 +271,66 @@ public class MapManager : MonoBehaviour
             obj.gameObject.SetActive(false);
         }
     }
+
+    private void SetCurrentCheckPoint(GameObject checkPoint, bool realSpawn = true)
+    {
+        if (!activeMap) return;
+        if (checkPoint == null) return;
+        if (realSpawn)
+        {
+            foreach (var obj in checkPointObjects.Where(obj => obj != null && obj.GetComponent<Checkpoint>().spawnPoint))
+            {
+                obj.GetComponent<Checkpoint>().isCurrent = obj == checkPoint;
+            }
+        }
+        GameEvents.TriggerPersistGameData();
+    }
+    
+    public void InitialSpawnPlayer(string scene)
+    {
+        if (scene != sceneName) return;
+        
+        var spawn = mainSpawnPoint;
+        
+        // Priority 1: Check if we have a checkpoint ID loaded from save file
+        var loadedCpId = PlayerPrefs.GetInt("LoadedCheckPointId", 0);
+        if (loadedCpId != 0)
+        {
+            PlayerPrefs.DeleteKey("LoadedCheckPointId"); // Clear it so it doesn't persist forever
+            var foundCp = checkPointObjects.Find(obj => obj.GetComponent<Identifier>().id == loadedCpId);
+            if (foundCp != null)
+            {
+                spawn = foundCp;
+                goto performSpawn;
+            }
+        }
+
+        // Priority 2: Check current scene data for active checkpoint
+        DataManager.CheckPointSceneData targetSpawnPoint = null;
+        var sceneList = DataManager.Instance.sceneData.Find(list => list.sceneName == sceneName);
+        if (sceneList != null)
+        {
+            targetSpawnPoint = sceneList.checkPoints.Find(cp => cp.isCurrent) ?? sceneList.checkPoints.Find(cp => cp.activated);
+        }
+
+        if (targetSpawnPoint != null)
+        {
+            var foundCp = checkPointObjects.Find(obj => obj.GetComponent<Identifier>().id == targetSpawnPoint.activeCheckpoint);
+            if (foundCp != null) spawn = foundCp;
+        }
+
+        performSpawn:
+        PlayerHealth.Instance.pc.currentSpawnPoint = spawn;
+        PlayerHealth.Instance.pc.currentCheckPoint = spawn;
+        //print($"Spawning player at {spawn.name}");
+        StartCoroutine(PlayerHealth.Instance.Spawn(0.2f, true));
+    }
     
     private static void SaveDataOnDialogueClose(ScriptableObject dialogue = null) => GameEvents.TriggerPersistGameData();
 
     private void InitialiseSceneData()
     {
         ClearSceneData();
-        CollateObjects();
         UpdateLists();
         LoadSceneData();
         LoadNpcData();
@@ -276,7 +340,6 @@ public class MapManager : MonoBehaviour
     {
         //print("Saving data");
         if (!sceneLoaded) return;
-        CollateObjects();
         UpdateLists();
         MakeDataPersistent();
     }
@@ -306,7 +369,7 @@ public class MapManager : MonoBehaviour
                             enemyIds.Add(enemyId.spawnId);
                         break;
                     case "Boss":
-                        bossHealth = obj.GetComponent<BossHealth>();
+                        bossSceneData.bossHealth = obj.GetComponent<BossHealth>();
                         bossSceneData.activeBoss = obj.name;
                         break;
                     case "NPC":
@@ -322,7 +385,6 @@ public class MapManager : MonoBehaviour
                             willTravel = npChat.willTravel,
                             dialogue = new List<DialogueObject>(npChat.dialogue),
                             spokenDialogue = new List<DialogueObject>(npChat.spokenDialogue),
-                            isShopKeeper = shopKeeper != null,
                             shopItems = shopKeeper != null ? shopKeeper.shopItems.ToArray() : null
                         };
                         npcSceneData.Add(newNpc);
@@ -331,7 +393,6 @@ public class MapManager : MonoBehaviour
                         var collectable = obj.GetComponent<Collectable>();
                         var newCollectable = new CollectableSceneData
                         {
-                            activeCollectable = obj,
                             collectable = collectable.collectable,
                             position = obj.transform.position,
                             isStray = collectable.isStray
@@ -346,7 +407,6 @@ public class MapManager : MonoBehaviour
             var accManager = door.GetComponent<AccessManager>();
             var newDoor = new DoorSceneData
             {
-                activeDoors = door,
                 accessManager = accManager,
                 id = doorId.id,
                 isOpen = accManager.isOpen
@@ -359,7 +419,6 @@ public class MapManager : MonoBehaviour
             var spawnerBase = spawner.GetComponent<SpawnerBase>();
             var newSpawner = new SpawnerSceneData
             {
-                activeSpawner = spawner,
                 spawner = spawnerBase,
                 id = spawnerId.id,
                 isOneTime = spawnerBase.isOneTime
@@ -374,7 +433,6 @@ public class MapManager : MonoBehaviour
             var spawnerBase = dsh.GetComponent<SpawnerBase>();
             var newDsh = new DoorSpawnerHybridData
             {
-                activeDsh = dsh,
                 id = id.id,
                 accessManager = accManager,
                 spawner = spawnerBase,
@@ -382,6 +440,21 @@ public class MapManager : MonoBehaviour
                 isOpen = accManager.isOpen
             };
             doorSpawnerHybridSceneData.Add(newDsh);
+        }
+
+        foreach (var checkPoint in checkPointObjects)
+        {
+            checkPoint.TryGetComponent<Identifier>(out var checkPointId);
+            if (checkPointId == null) continue;
+            var checkPointScript = checkPoint.GetComponent<Checkpoint>();
+            var newCheckPoint = new CheckPointSceneData
+            {
+                activeCheckpoint = checkPoint,
+                id = checkPointId.id,
+                isCurrent = checkPointScript.isCurrent,
+                activated = checkPoint.GetComponent<Collider2D>().enabled
+            };
+            checkPointSceneData.Add(newCheckPoint);
         }
     }
     
@@ -404,9 +477,9 @@ public class MapManager : MonoBehaviour
         list.doors.Clear();
         list.spawners.Clear();
         list.doorSpawnerHybrids.Clear();
+        list.checkPoints.Clear();
         
         list.activeMap = activeMap;
-        list.currentSpawnName = currentSpawnPoint != null ? currentSpawnPoint.name : mainSpawnPoint.name;
         list.undiscoveredMap = undiscoveredMap;
         
         foreach (var eData in enemySceneData)
@@ -465,6 +538,16 @@ public class MapManager : MonoBehaviour
                 isOneTime = dshData.isOneTime
             });
         }
+
+        foreach (var cpData in checkPointSceneData)
+        {
+            list.checkPoints.Add(new DataManager.CheckPointSceneData
+            {
+                activeCheckpoint = cpData.id,
+                isCurrent = cpData.isCurrent,
+                activated = cpData.activated
+            });
+        }
     }
 
     private void LoadSceneData()
@@ -486,7 +569,6 @@ public class MapManager : MonoBehaviour
         }
         var sceneData = manager.sceneData.Find(x => x.sceneName == sceneName);
         activeMap = sceneData.activeMap;
-        currentSpawnPoint = GameObject.Find(sceneData.currentSpawnName);
         undiscoveredMap = sceneData.undiscoveredMap;
         
         foreach (var list in manager.sceneData.Where(list => list.sceneName == sceneName))
@@ -531,16 +613,29 @@ public class MapManager : MonoBehaviour
                 StartCoroutine(dsh.spawner.Despawn());
             }
 
+            foreach (var cpData in list.checkPoints)
+            {
+                var cp = checkPointSceneData.Find(c => c.id == cpData.activeCheckpoint);
+                if (cp == null) continue;
+                if (!cpData.activated)
+                {
+                    cp.activeCheckpoint.GetComponent<Collider2D>().enabled = false;
+                    cp.isCurrent = false;
+                    continue;
+                }
+                cp.isCurrent = cpData.isCurrent;
+            }
+
             bossSceneData.activeBoss = list.activeBoss;
-            if (list.isBossDead && bossHealth != null) 
-                Destroy(bossHealth.gameObject);
+            if (list.isBossDead && bossSceneData.bossHealth != null) 
+                Destroy(bossSceneData.bossHealth.gameObject);
             bossSceneData.willBeNpc = list.willBeNpc;
             
             sceneLoaded = true;
             break;
         }
-        if (bossHealth != null && bossSceneData.isDead) 
-            Destroy(bossHealth.gameObject);
+        if (bossSceneData.bossHealth != null && bossSceneData.isDead) 
+            Destroy(bossSceneData.bossHealth.gameObject);
             
         sceneLoaded = true;
     }
@@ -596,13 +691,7 @@ public class MapManager : MonoBehaviour
         }
     }
     #endregion
-        
-    public void SpawnPlayer()
-    {
-        PlayerHealth.Instance.pc.currentSpawnPoint = currentSpawnPoint != null ? currentSpawnPoint : mainSpawnPoint;
-        //print($"Spawning player at {PlayerHealth.Instance.pc.currentSpawnPoint.name} ({currentSpawnPoint}, {mainSpawnPoint})");
-        StartCoroutine(PlayerHealth.Instance.Spawn());
-    }
+
     
     private void OnEnable()
     {
@@ -615,6 +704,7 @@ public class MapManager : MonoBehaviour
         GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
         GameEvents.LoadMapData += LoadSceneData;
         InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
+        GameEvents.OnSpawnPointChanged += SetCurrentCheckPoint;
     }
 
     private void OnDisable()
@@ -627,6 +717,7 @@ public class MapManager : MonoBehaviour
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
         GameEvents.LoadMapData -= LoadSceneData;
         InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
+        GameEvents.OnSpawnPointChanged -= SetCurrentCheckPoint;
     }
     
     #region Door and Spawner Stuff
@@ -649,6 +740,7 @@ public class MapManager : MonoBehaviour
     [Serializable]
     public class BossSceneData
     {
+        public BossHealth bossHealth;
         [Tooltip("Any boss that is active gets detected here")] 
         public string activeBoss;
         public bool isDead;
@@ -666,14 +758,12 @@ public class MapManager : MonoBehaviour
         public bool willTravel;
         public List<DialogueObject> dialogue = new();
         public List<DialogueObject> spokenDialogue = new();
-        public bool isShopKeeper;
         public ShopItem[] shopItems;
     }
 
     [Serializable]
     public class CollectableSceneData
     {
-        public GameObject activeCollectable;
         public CollectableSOBase collectable;
         public Vector3 position;
         public bool isStray;
@@ -682,7 +772,6 @@ public class MapManager : MonoBehaviour
     [Serializable]
     public class DoorSceneData
     {
-        public GameObject activeDoors;
         public AccessManager accessManager;
         public int id;
         public bool isOpen;
@@ -691,16 +780,23 @@ public class MapManager : MonoBehaviour
     [Serializable]
     public class SpawnerSceneData
     {
-        public GameObject activeSpawner;
         public SpawnerBase spawner;
         public int id;
         public bool isOneTime;
     }
 
     [Serializable]
+    public class CheckPointSceneData
+    {
+        public GameObject activeCheckpoint;
+        public int id;
+        public bool isCurrent;
+        public bool activated;
+    }
+
+    [Serializable]
     public class DoorSpawnerHybridData
     {
-        public GameObject activeDsh;
         public int id;
         
         public bool isOpen;

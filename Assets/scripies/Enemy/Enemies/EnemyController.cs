@@ -193,7 +193,6 @@ namespace scripies.Enemy
                 jump.backupTimers[0] = 10;
                 jump.backupTimers[1] = 10;
             }
-            if (attack != null) attack.spareTimer = 10;
             ChangeState(EnemyState.Patrolling);
             isAggressive = false;
             GameEvents.TriggerAggressiveStatusChanged(this, false);

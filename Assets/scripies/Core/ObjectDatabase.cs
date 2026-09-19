@@ -76,7 +76,7 @@ public class ObjectDatabase : MonoBehaviour
         }
         
         if (target != null) return target;
-        if (!looped) Debug.LogWarning($"[ObjectDatabase] We couldn't find an NPC with name {entityName} in our NPC list");
+        if (!looped) Debug.LogWarning($"[ObjectDatabase] We couldn't find an Entity with name {entityName} in our Entity list");
         return null;
     }
 

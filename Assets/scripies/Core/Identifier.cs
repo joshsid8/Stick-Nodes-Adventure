@@ -12,8 +12,8 @@ namespace scripies.Core
         [Tooltip("This is for whenever you want to target a certain object externally. The ID format is currently 000 for enemies.\nEnsure the ID isn't 0 (in most cases) for the data to be saved")]
         public int id;
         public int spawnId;
-        public enum ObjectType{Entity, Item, Section, Spawner, [Obsolete]Checkpoint}
-        [EnumButtons] public ObjectType typeOfObject;
+        public enum ObjectType{Entity, Item, Other}
+        [EnumButtons] public ObjectType typeOfObject = ObjectType.Other;
         public Entity entity;
         
         [HideInInspector] public MonoBehaviour mapManager;
@@ -77,14 +77,12 @@ namespace scripies.Core
                 id = maxId + 1;
             }
 
-    #if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                UnityEditor.EditorUtility.SetDirty(this);
-                if (mapManager != null) UnityEditor.EditorUtility.SetDirty(mapManager);
-                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
-            }
-    #endif
+        #if UNITY_EDITOR
+            if (Application.isPlaying) return;
+            UnityEditor.EditorUtility.SetDirty(this);
+            if (mapManager != null) UnityEditor.EditorUtility.SetDirty(mapManager);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+        #endif
         }
     }
 }

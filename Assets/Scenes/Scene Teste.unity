@@ -860,6 +860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeMap: 0
+  mapToggle: 0
   mapName: Building Stimulation
   mapDescription: A place for testing, cuz where are we tho
   mapTextColor: {r: 0.95294124, g: 0.9960785, b: 0.854902, a: 1}
@@ -889,6 +890,8 @@ MonoBehaviour:
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
+  doorSpawnerObjects: []
+  checkPointObjects: []
   enemySceneData: []
   enemyIds: 
   bossHealth: {fileID: 0}
@@ -900,6 +903,8 @@ MonoBehaviour:
   collectableSceneData: []
   doorSceneData: []
   spawnerSceneData: []
+  doorSpawnerHybridSceneData: []
+  checkPointSceneData: []
 --- !u!61 &944811996
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1263,7 +1268,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1297244290}
     m_Modifications:
     - target: {fileID: 550122312589149946, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Name
@@ -1303,7 +1308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 33.00943
+      value: 22.00943
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1315,15 +1320,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1342,6 +1347,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+--- !u!4 &1088033143 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+  m_PrefabInstance: {fileID: 1088033142}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1162324168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,6 +1518,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7332658699125948795, guid: f283c487c77e003499e04c5e0d747125, type: 3}
   m_PrefabInstance: {fileID: 1296227733}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1297244289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1297244290}
+  m_Layer: 0
+  m_Name: Checkpoints
+  m_TagString: CheckPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1297244290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297244289}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 11, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1088033143}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1619184382
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,7 +1788,7 @@ SpriteRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1088033142}
+  - {fileID: 1297244290}
   - {fileID: 944811997}
   - {fileID: 1296227733}
   - {fileID: 1162324169}

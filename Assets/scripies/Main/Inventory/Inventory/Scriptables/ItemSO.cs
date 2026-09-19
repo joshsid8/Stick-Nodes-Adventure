@@ -8,7 +8,7 @@ public class ItemSO : CollectableSOBase
     
     public string itemType;
     
-    public override void Collect(GameObject objectCollected)
+    public override void Collect()
     {
         if (InvManager.Instance != null)
             InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, itemType, this);

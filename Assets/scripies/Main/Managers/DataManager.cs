@@ -21,19 +21,25 @@ public class DataManager : MonoBehaviour
     {
         public string sceneName;
         public bool activeMap;
-        public string currentSpawnName;
         public List<EnemySceneData> enemies = new();
         public List<CollectableSceneData> collectables = new();
         
         public List<DoorSceneData> doors = new();
         public List<SpawnerSceneData> spawners = new();
         public List<DoorSpawnerHybridSceneData> doorSpawnerHybrids = new();
+        public List<CheckPointSceneData> checkPoints = new();
         public bool undiscoveredMap;
         public GameObject ItemToStore => GameObject.Find("persistentItem");
 
         public string activeBoss;
         public bool isBossDead;
         public bool willBeNpc;
+    }
+
+    public string GetActiveSceneName()
+    {
+        var activeMap = sceneData.Find(map => map.activeMap);
+        return activeMap?.sceneName;
     }
 
     private void Awake()
@@ -49,7 +55,7 @@ public class DataManager : MonoBehaviour
         GameEvents.SaveGameToDisk += SaveDisk;
         GameEvents.PersistGameData += PersistData;
     }
-
+    
     private void OnDestroy()
     {
         if (Instance != this) return;
@@ -118,6 +124,13 @@ public class DataManager : MonoBehaviour
         public bool isOneTime;
     }
 
+    [Serializable]
+    public class CheckPointSceneData
+    {
+        public int activeCheckpoint;
+        public bool isCurrent;
+        public bool activated;
+    }
     #endregion
 
     public void Save(ref SceneData data, ref GlobalNpcData npcData)
@@ -129,17 +142,17 @@ public class DataManager : MonoBehaviour
     {
         sceneData = new List<SceneList>(data.realSceneData);
         npcs = new List<NpcData>(npcData.realNpcData);
-        foreach (var map in MapManager.Instances.Values.Where(map => map != null && map.activeMap))
-        {
-            StartCoroutine(SpawnPlayer(map));
-            break;
-        }
     }
-
-    public IEnumerator SpawnPlayer(MapManager map)
+    
+    public IEnumerator SpawnPlayerToActiveMap()
     {
-        yield return new WaitUntil(() => MapManager.Instances.ContainsKey(map.sceneName));
-        map.SpawnPlayer();
+        var activeSceneName = GetActiveSceneName();
+        if (string.IsNullOrEmpty(activeSceneName)) yield break;
+        
+        yield return new WaitUntil(() => MapManager.Instances.ContainsKey(activeSceneName));
+        
+        var map = MapManager.Instances[activeSceneName];
+        map.InitialSpawnPlayer(activeSceneName);
     }
 }
 

@@ -16,6 +16,7 @@ TagManager:
   - Spawner
   - TeleDoor
   - Ability
+  - CheckPoint
   layers:
   - Default
   - TransparentFX

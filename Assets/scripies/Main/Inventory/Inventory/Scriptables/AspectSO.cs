@@ -5,7 +5,7 @@ public class AspectSO : CollectableSOBase
 {
     public AspectProperty[] aspectProperties;
     
-    public override void Collect(GameObject objectCollected)
+    public override void Collect()
     {
         var invManager = FindAnyObjectByType<InvManager>();
         if (invManager != null)

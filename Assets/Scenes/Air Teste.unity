@@ -535,83 +535,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cc97ed734e75884fb517367b974c940, type: 3}
---- !u!1001 &644119922
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 762519565}
-    m_Modifications:
-    - target: {fileID: 550122312589149946, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_Name
-      value: point
-      objectReference: {fileID: 0}
-    - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: oneTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_Size.x
-      value: 20.563484
-      objectReference: {fileID: 0}
-    - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_Size.y
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_Offset.x
-      value: 8.218258
-      objectReference: {fileID: 0}
-    - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_Offset.y
-      value: 5.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -52.808853
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 40.787804
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
 --- !u!1 &762519564
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +565,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1054873554}
-  - {fileID: 908794099}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &870999329
@@ -694,7 +616,7 @@ MonoBehaviour:
   canTeleport: 0
   tagsToIgnore:
   - Player
-  teleportTarget: {fileID: 908794099}
+  teleportTarget: {fileID: 0}
   forcePlayerTeleport: 0
   isTeledoor: 0
   teleportType: 0
@@ -814,11 +736,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!4 &908794099 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8774341393383474498, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-  m_PrefabInstance: {fileID: 644119922}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1054873552
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -829,7 +746,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 550122312589149946, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Name
-      value: spawn (6)
+      value: spawn
       objectReference: {fileID: 0}
     - target: {fileID: 1043682906074359370, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: spawnPoint
@@ -845,11 +762,11 @@ PrefabInstance:
       objectReference: {fileID: 102900000, guid: 0aa6d8d28337fc84781eeca2a6d3f87e, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Size.x
-      value: 20.100986
+      value: 40.10099
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Size.y
@@ -857,7 +774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Offset.x
-      value: 0.1598835
+      value: 2.1598854
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Offset.y
@@ -972,17 +889,17 @@ MonoBehaviour:
   - 1
   sectionObj: {fileID: 0}
   mainSpawnPoint: {fileID: 1793379175}
-  currentSpawnPoint: {fileID: 0}
   undiscoveredMap: 1
   sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
   doorSpawnerObjects: []
+  checkPointObjects: []
   enemySceneData: []
   enemyIds: 
-  bossHealth: {fileID: 0}
   bossSceneData:
+    bossHealth: {fileID: 0}
     activeBoss: 
     isDead: 0
     willBeNpc: 0
@@ -991,6 +908,7 @@ MonoBehaviour:
   doorSceneData: []
   spawnerSceneData: []
   doorSpawnerHybridSceneData: []
+  checkPointSceneData: []
 --- !u!61 &1317523870
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1499,7 +1417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canTeleport: 0
   tagsToIgnore: []
-  teleportTarget: {fileID: 908794099}
+  teleportTarget: {fileID: 0}
   forcePlayerTeleport: 0
   isTeledoor: 0
   teleportType: 0
@@ -1623,10 +1541,10 @@ SpriteRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1684957087}
   - {fileID: 762519565}
   - {fileID: 1560809729}
   - {fileID: 1317523871}
   - {fileID: 870999330}
   - {fileID: 79575888}
+  - {fileID: 1684957087}
   - {fileID: 522193590}

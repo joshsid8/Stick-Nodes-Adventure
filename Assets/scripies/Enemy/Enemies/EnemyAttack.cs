@@ -102,7 +102,7 @@ namespace scripies.Enemy
 
         [SerializeField] private bool canSpare = true;
         public float spareTimer = 10;
-        private float currentSpareTimer;
+        public float currentSpareTimer;
 
         private void Awake()
         {
@@ -120,7 +120,6 @@ namespace scripies.Enemy
         {
             originalDefensiveModeRadius = defensiveModeRadius;
             originalPassiveModeRadius = passiveModeRadius;
-            currentSpareTimer = spareTimer;
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
             em.enabled = true;
         }

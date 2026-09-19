@@ -780,7 +780,7 @@ GameObject:
   - component: {fileID: 800901566}
   m_Layer: 0
   m_Name: CheckPoints
-  m_TagString: Untagged
+  m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -837,7 +837,7 @@ PrefabInstance:
       objectReference: {fileID: 102900000, guid: 7f20e3033c28f84429296cd7a255a114, type: 3}
     - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: id
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Size.x
@@ -965,10 +965,11 @@ MonoBehaviour:
   doorObjects: []
   spawnerObjects: []
   doorSpawnerObjects: []
+  checkPointObjects: []
   enemySceneData: []
   enemyIds: 
-  bossHealth: {fileID: 0}
   bossSceneData:
+    bossHealth: {fileID: 0}
     activeBoss: 
     isDead: 0
     willBeNpc: 0
@@ -977,6 +978,7 @@ MonoBehaviour:
   doorSceneData: []
   spawnerSceneData: []
   doorSpawnerHybridSceneData: []
+  checkPointSceneData: []
 --- !u!61 &944811996
 BoxCollider2D:
   m_ObjectHideFlags: 0

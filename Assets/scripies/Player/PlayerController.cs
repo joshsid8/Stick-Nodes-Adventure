@@ -153,6 +153,8 @@ namespace scripies.Player
             originalMovementSpeed = movementSpeed;
             originalJumpForce = jumpForce;
             availableWallsLeft = availableWalls;
+
+            if (currentCheckPoint == null) currentCheckPoint = currentSpawnPoint;
             
             GameHUD.Instance.ActivateShader();
             #if UNITY_EDITOR
@@ -569,17 +571,30 @@ namespace scripies.Player
             data.abilities = ph.CurrentAbilities;
             data.wallJumpAbility = canWallJump;
             data.doubleJumpAbility = canDoubleJump;
+            
+            if (currentCheckPoint != null)
+            {
+                var ident = currentCheckPoint.GetComponent<Identifier>();
+                if (ident != null) data.currentCheckPointId = ident.id;
+            }
         }
 
         public void Load(PlayerSaveCurrentData data)
         {
-            if (data.position == Vector3.zero || data.position == default) transform.position = data.position;
+            if (data.position != Vector3.zero && data.position != default) transform.position = data.position;
             ph.playerHealth = data.health;
             pab.energy = data.energy;
             pm.nodeBucks = data.money;
             pab.ability.objects = data.abilities;
             canWallJump = data.wallJumpAbility;
             canDoubleJump = data.doubleJumpAbility;
+
+            if (data.currentCheckPointId != 0)
+            {
+                // We'll search for the checkpoint in the scene when it's loaded.
+                // For now, we just store the ID to be used by MapManager.InitialSpawnPlayer
+                PlayerPrefs.SetInt("LoadedCheckPointId", data.currentCheckPointId);
+            }
         }
     }
 
@@ -595,5 +610,7 @@ namespace scripies.Player
 
         public bool wallJumpAbility;
         public bool doubleJumpAbility;
+
+        public int currentCheckPointId;
     }
 }

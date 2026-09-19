@@ -6,7 +6,7 @@ public class AbilitySO : CollectableSOBase
 {
     public AbilityObjSO abilityObject;
     
-    public override void Collect(GameObject objectCollected)
+    public override void Collect()
     {
         if (InvManager.Instance != null)
             InvManager.Instance.AddItem(itemName, 1, itemSprite, itemDescription, 16, "Ability", this);

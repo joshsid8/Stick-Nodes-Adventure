@@ -19,13 +19,11 @@ public class TomFoolery : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.ToggleDoor += ToggleDoor;
-        GameEvents.OnSpawnPointChanged += PlayerSpawnChange;
     }
     
     private void OnDisable()
     {
         GameEvents.ToggleDoor -= ToggleDoor;
-        GameEvents.OnSpawnPointChanged -= PlayerSpawnChange;
     }
 
     private void Awake()
@@ -71,21 +69,5 @@ public class TomFoolery : MonoBehaviour
                 accessManager.CloseDoors();
                 break;
         }
-    }
-
-    private void PlayerSpawnChange(GameObject point, bool spawn)
-    {
-        if (point == null) return;
-        if (spawn)
-        {
-            player.pc.currentSpawnPoint = point;
-            foreach (var map in MapManager.Instances.Values.Where(map => map.activeMap))
-            {
-                map.currentSpawnPoint = point;
-                break;
-            }
-        }
-        player.pc.currentCheckPoint = point;
-        GameEvents.TriggerPersistGameData();
     }
 }

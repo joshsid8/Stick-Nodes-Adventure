@@ -24,7 +24,7 @@ public class Collectable : MonoBehaviour
         if (collectable == null)
             throw new NullReferenceException($"item {gameObject.name} has no collectable. If it were initialised with one, it may mean its data wasnt loaded correctly.");
         GameEvents.TriggerCollect();
-        collectable.Collect(objectCollected);
+        collectable.Collect();
     }
 
     private IEnumerator Start()

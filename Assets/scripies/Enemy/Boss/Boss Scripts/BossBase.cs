@@ -151,16 +151,17 @@ public abstract class BossBase : MonoBehaviour
     
     protected void MeleeAttack(AudioClip sfx = null)
     {
+        PlaySound(sfx);
         hit = Physics2D.CircleCast(attackTransform.position, attackRange, new Vector2(transform.right.x, transform.up.y), 0f, LayerMask.GetMask("Player"));
         if (hit.collider == null) return;
         var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
         if (damageable == null) return;
         damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Boss");
         damageable.Shock(stunTime,  knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
-        PlaySound(sfx);
+        PlaySound();
     }
     
-    private void PlaySound(AudioClip sfx) => GameEvents.TriggerPlaySound(sfx ?? combatSfx[Random.Range(0, combatSfx.Length)], gameObject);
+    private void PlaySound(AudioClip sfx = null) => GameEvents.TriggerPlaySound(sfx ?? combatSfx[Random.Range(0, combatSfx.Length)], gameObject);
     
     protected void FollowupMove(string move) => animator.SetTrigger(move);
 

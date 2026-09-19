@@ -206,9 +206,9 @@ namespace scripies.Dialogue
             if (dialogueObject != null)
             {
                 GameObject speaker;
-                if (currentNpc != null) speaker = ObjectDatabase.Instance.GetEntityObjByName(currentNpc.name);
-                else if (string.IsNullOrEmpty(dialogueObject.speaker)) speaker = GameObject.Find(dialogueObject.speaker) ?? ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.speaker);
-                else if (string.IsNullOrEmpty(dialogueObject.NPCName)) speaker = GameObject.Find(dialogueObject.NPCName) ?? ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.NPCName);
+                if (currentNpc != null) speaker = ObjectDatabase.Instance.GetEntityObjByName(currentNpc.name, true);
+                else if (string.IsNullOrEmpty(dialogueObject.speaker)) speaker = GameObject.Find(dialogueObject.speaker) ?? ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.speaker, true);
+                else if (string.IsNullOrEmpty(dialogueObject.NPCName)) speaker = GameObject.Find(dialogueObject.NPCName) ?? ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.NPCName, true);
                 else goto close;  // we, (yes, WE, US, me AND you) love the goto keyword
                 
                 if (dialogueObject.speakerType == (DialogueObject.SpeakerType) 1)
@@ -217,18 +217,18 @@ namespace scripies.Dialogue
                         shopKeeper.StartShop();
                 }
 
-                if (dialogueObject.doorsToControl.Length > 0)
+                if (dialogueObject.doorsToControl is { Length: > 0 })
                 {
                     foreach (var door in dialogueObject.doorsToControl) TomFoolery.Instance.ToggleDoor(door.doorName, door.openDoor);
                 }
 
-                if (dialogueObject.dialoguesToAdd.Length > 0)
+                if (dialogueObject.dialoguesToAdd is { Length: > 0 })
                 {
                     foreach (var dialogue in dialogueObject.dialoguesToAdd) 
                         GameEvents.TriggerAddDialogue(dialogue, speaker);
                 }
                 
-                if (dialogueObject.dialoguesToRemove.Length > 0)
+                if (dialogueObject.dialoguesToRemove is { Length: > 0 })
                 {
                     foreach (var dialogue in dialogueObject.dialoguesToRemove)
                         GameEvents.TriggerRemoveDialogue(dialogue, speaker);

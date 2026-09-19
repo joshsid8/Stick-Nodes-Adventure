@@ -9,7 +9,7 @@ public class ConsumableSO : CollectableSOBase
     public int restoreCooldown = 5;
     public RestoreAttribute[] restoreAttributes;
     
-    public override void Collect(GameObject objectCollected)
+    public override void Collect()
     {
         if (InvManager.Instance != null)
             InvManager.Instance.AddItem(itemName, itemAmount, itemSprite, itemDescription, maxItemAmount, "Consumable", this);

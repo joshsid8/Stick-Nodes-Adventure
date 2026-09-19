@@ -186,7 +186,7 @@ public class Projectile : AbilityBase
 
     private void Deflect(int factor)
     {
-        SetValues(factor, !isFacingRightDirection, factor == 1 ? abilityCaster : GameObject.FindGameObjectWithTag("Player"));
+        SetValues(factor, !isFacingRightDirection, factor != 1 ? abilityCaster : GameObject.FindGameObjectWithTag("Player"));
         projectileSpeed += 5f;
         if (swapForce)
         {

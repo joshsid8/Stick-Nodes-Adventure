@@ -5,8 +5,9 @@ SNADV Notes
     
     Notices & Priorities:
         
-        Spawn Logic is being annoying
-            Will fix asap
+        Whenever a significant part happens, Jerome the shopper should get new items in his shop
+            For example, when Cynder is defeated, Jerome should be able to sell fire related abilities to the player
+            Ill need to make use of and extend the AddItems function in the shopkeeper script
         
         The danger duo stands before me...
 
@@ -15,26 +16,20 @@ SNADV Notes
         Instability
 
             Issues from Testing
-
+                
             One time occurrences or Rare/Intimidating bugs
-
-                One time after confronting Noxu, i had his decimate ability instead of my normal fireball
-                    Very very weird bug ive never had before, and idk if it can be replicated yet
-
+                
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
                 
                 Blocking and countering is very wonky
-                    I dont know if its because of the new logic the potentally outdated blocking logic is communicating with,
-                    or if the newer logic itself is the issue
-                        Cynderians' fire pillar is unblockable for some reason...
-                            While Cynder himself's pillars (and every other pillar) are
-                    I think ill move the logic to the player's animations to make blocking feel more natural
-                        Ill need to then make a Character_Unblock animation if so                
+                    Cynderians' fire pillar is unblockable for some reason...
+                        While Cynder himself's pillars (and every other pillar) are             
                 
             Junie Help
                 Tackling The Danger Duo
                 
                 Beating up Instability
+                    Ensure not to use all credits (i need em for uni!)
                 
     Things to be added/changed:
         
@@ -54,6 +49,14 @@ SNADV Notes
                             so it can easily switch between or merge together
                     I was also thinking of making music change depending on the distance between the player and things
                         If the player is close to a boss or an enemy, the music will fade into fight music
+                
+                Cleanup Logic
+                    I realised that when i exit the game, i get errors
+                    They do nothing to me, but its not nice that they are there
+                    Also, when pressing the exit button, the game closes
+                        Instead, i want it so that it takes me to the main menu
+                        I did try this once, but i got a bunch of errors
+                            Ill need to find a way to clean up everything before exiting the game
 
         Animation Overhaul (AO):
         
@@ -66,13 +69,13 @@ SNADV Notes
                     First step before walking
                     Wall jumping/climbing
                     Better dashing
-                    Walk blocking
+                    Better Defense
                     Idle (for a long time, thus secret) animations
                     Spawn animation?
+                    
                 Cynder/Cyderians
                     More/Improved animations
                     
-            Make 3 more moves for the fish folk
                 Fishwoman
                     Flying bubble attack
                     Flying dash attack

@@ -172,7 +172,7 @@ MonoBehaviour:
     itemPrice: 100
     itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
     itemAmount: 1
-    badgeSoRequired: {fileID: 0}
+    badgeSoRequired: {fileID: 11400000, guid: c0afdfb270d3b6147b48712b0a7469dc, type: 2}
   inStockDialogue: {fileID: 11400000, guid: da39fe38aa5ae124bad360df7d822a5e, type: 2}
   soldOutDialogue: {fileID: 11400000, guid: 765665ee72c63764cbea02546ecacb26, type: 2}
   canRestock: 1

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using scripies.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +25,15 @@ public class StatsManager : GUIBase
         }
     }
 
+    private void OnEnable()
+    {
+        GameEvents.OnBadgeCollect += AddBadge;
+    }
+    private void OnDisable()
+    {
+        GameEvents.OnBadgeCollect -= AddBadge;
+    }
+    
     private void Start()
     {
         if (isActive) ToggleStats();
@@ -42,11 +52,9 @@ public class StatsManager : GUIBase
         //if (Input.GetButtonDown("Inventory") && isActive || Input.GetButtonDown("Cancel") && isActive) ToggleStats();
     }
     
-    public string GetDisplayName(string rawName) 
+    public string GetDisplayName(string rawName)
     {
-        if (statLookup.TryGetValue(rawName, out var stat))
-            return stat.DisplayName;
-        return rawName; // Fallback to raw name if not found
+        return statLookup.TryGetValue(rawName, out var stat) ? stat.DisplayName : rawName;
     }
 
     public void ToggleStats()
@@ -64,7 +72,7 @@ public class StatsManager : GUIBase
             stat.ClearInfo();
     }
     
-    public void AddBadge(BadgeSO badgeSo)
+    private void AddBadge(BadgeSO badgeSo)
     {
         if (badges.Contains(badgeSo)) return;
         badges.Add(badgeSo);

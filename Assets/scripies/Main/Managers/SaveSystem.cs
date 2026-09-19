@@ -132,8 +132,21 @@ public class SaveSystem
         var path = SaveFileName();
         if (!File.Exists(path))
         {
-            Debug.LogWarning($"[SaveSystem] No save file found at: {path} Creating new save file");
-            Save();
+            Debug.LogWarning($"[SaveSystem] No save file found at: {path}. Initializing default data.");
+            // Initialize default state
+            saveData = new SaveData
+            {
+                sceneData = new SceneData(true),
+                globalNpcData = new GlobalNpcData(),
+                playerCurrentData = new PlayerSaveCurrentData(),
+                playerStats = new PlayerSaveStats(),
+                playerInventory = new PlayerSaveInventory(),
+                playerIndex = PlayerSaveIndex.CreateNew(),
+                playerBadges = new PlayerBadges(),
+                playerQuests = new PlayerSaveQuests(),
+                mainMenuData = new MainMenuData(),
+            };
+            HandleLoadData();
             return;
         }
 
@@ -144,7 +157,7 @@ public class SaveSystem
             HandleLoadData();
             if (Application.isEditor) Debug.Log($"[SaveSystem] Loaded from: {path}");
         }
-        catch (IOException ex)
+        catch (System.Exception ex)
         {
             Debug.LogError($"[SaveSystem] Failed to load: {ex.Message}");
         }

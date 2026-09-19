@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 526109796}
   m_Layer: 0
   m_Name: Checkpoints
-  m_TagString: Untagged
+  m_TagString: CheckPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeMap: 0
+  mapToggle: 0
   mapName: Map
   mapDescription: This is a map mappidy mappy map map
   mapTextColor: {r: 1, g: 1, b: 1, a: 1}
@@ -209,9 +210,13 @@ MonoBehaviour:
   - 1
   sectionObj: {fileID: 1162324168}
   mainSpawnPoint: {fileID: 1088033143}
+  undiscoveredMap: 1
+  sceneName: 
   sceneObjects: []
   doorObjects: []
   spawnerObjects: []
+  doorSpawnerObjects: []
+  checkPointObjects: []
   enemySceneData: []
   enemyIds: 
   bossHealth: {fileID: 0}
@@ -223,6 +228,8 @@ MonoBehaviour:
   collectableSceneData: []
   doorSceneData: []
   spawnerSceneData: []
+  doorSpawnerHybridSceneData: []
+  checkPointSceneData: []
 --- !u!61 &944811996
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -438,6 +445,10 @@ PrefabInstance:
       propertyPath: spawnScene.m_SceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: ba61b6b5fab11524eb4f7631c3b8ed7d, type: 3}
+    - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: typeOfObject
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6268105301424822268, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
       propertyPath: m_Size.x
       value: 30

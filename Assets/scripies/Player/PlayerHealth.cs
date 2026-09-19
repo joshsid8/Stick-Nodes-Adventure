@@ -163,7 +163,8 @@ namespace scripies.Player
             pc.animator.SetBool("isDead", isDead);
         }
 
-
+        [ContextMenu("Debug Spawn")] public void SpawnPlayer() => StartCoroutine(Spawn(0 , true));
+        
         public IEnumerator Spawn(float timer = 0, bool realSpawn = false)
         {
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
@@ -374,7 +375,7 @@ namespace scripies.Player
         
         private void ResetCombat()
         {
-            if (!isActiveAndEnabled) return;
+            if (!isActiveAndEnabled || pc == null) return;
             inCombat = false;
             currentCombatTimer = 0;
             pc.combatIndicator.SetActive(false);

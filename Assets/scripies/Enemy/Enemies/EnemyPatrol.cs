@@ -56,9 +56,9 @@ namespace scripies.Enemy
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if (ec.vegetable || ec.attack.isAttacking || !ec.attack.canAttack) return;
+            if (ec.vegetable || ec.attack.isAttacking) return;
             if (isPatrolling) Patrol();
             
             animator.SetBool("isPatrolling", isPatrolling);
@@ -101,6 +101,7 @@ namespace scripies.Enemy
             isPatrolling = false;
             isWalking = false;
             GameEvents.TriggerAddPlayerCombat(20, false, "EnemySpotted");
+            ec.attack.currentSpareTimer = ec.attack.spareTimer;
             ec.backupSpareTimer = ec.attack.spareTimer;
             if (foundPlayerClip != null) GameEvents.TriggerPlaySound(foundPlayerClip, gameObject);
             yield return new WaitForSeconds(0.5f);

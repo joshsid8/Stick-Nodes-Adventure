@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using scripies.Core;
+using scripies.Player;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -88,58 +89,69 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator ProgressLoading(bool newGame = false)
     {
-        scenesToLoad.Add(SceneManager.LoadSceneAsync(persistentGameplay));
-        var lastActiveScene = "";
+        var persistentLoad = SceneManager.LoadSceneAsync(persistentGameplay);
+        scenesToLoad.Add(persistentLoad);
+        
         yield return new WaitUntil(() => DataManager.Instance != null);
+        
+        string lastActiveScene;
+        
         if (!newGame)
         {
-            // TODO: Make a choice to switch between save slots
             SaveSystem.SetSaveSlot();
             SaveSystem.Load();
-            yield return new WaitUntil(() => DataManager.Instance.sceneData.Count > 0 && PlayerManager.Instance != null);
-            foreach (var scene in DataManager.Instance.sceneData.Where(scene => scene.activeMap))
+            
+            // Wait for data to be loaded into DataManager
+            yield return new WaitUntil(() => DataManager.Instance.sceneData.Count > 0 && DataManager.Instance.sceneData.Exists(x => x.activeMap));
+            print("Data loaded");
+            lastActiveScene = DataManager.Instance.GetActiveSceneName();
+            
+            if (string.IsNullOrEmpty(lastActiveScene))
             {
-                lastActiveScene = scene.sceneName;
-                scenesToLoad.Add(SceneManager.LoadSceneAsync(lastActiveScene, LoadSceneMode.Additive));
-
-                break;
+                Debug.LogWarning($"[MainMenuManager] The last active scene wasn't fetched. using {defaultScene.SceneName}, the default scene");
+                lastActiveScene = defaultScene.SceneName;
             }
+            
+            var mapLoad = SceneManager.LoadSceneAsync(lastActiveScene, LoadSceneMode.Additive);
+            scenesToLoad.Add(mapLoad);
+            
+            yield return new WaitUntil(() => mapLoad is { isDone: true });
+            yield return new WaitForSeconds(0.1f);
         }
-        if (string.IsNullOrEmpty(lastActiveScene) && !newGame)
+        else
         {
-            Debug.LogWarning("theres no scene name data. loading all scenes");
-            scenesToLoad.Add(SceneManager.LoadSceneAsync(defaultScene.SceneName, LoadSceneMode.Additive));
-            scenesToLoad.Add(SceneManager.LoadSceneAsync("Fire Teste", LoadSceneMode.Additive));
-            scenesToLoad.Add(SceneManager.LoadSceneAsync("Water Teste", LoadSceneMode.Additive));
-            scenesToLoad.Add(SceneManager.LoadSceneAsync("Earth Teste", LoadSceneMode.Additive));
-            scenesToLoad.Add(SceneManager.LoadSceneAsync("Air Teste", LoadSceneMode.Additive));
-        }
-        else if (newGame)
-        {
-            scenesToLoad.Add(SceneManager.LoadSceneAsync(defaultScene.SceneName, LoadSceneMode.Additive));
-            yield return new WaitUntil(() => scenesToLoad[0].isDone && MapManager.Instances.ContainsKey(defaultScene.SceneName) && MapManager.Instances.ContainsKey(defaultScene.SceneName)); // Hoping that the first sceneToLoad instance is the loaded map above
-            StartCoroutine(DataManager.Instance.SpawnPlayer(MapManager.Instances[defaultScene.SceneName]));
+            var mapLoad = SceneManager.LoadSceneAsync(defaultScene.SceneName, LoadSceneMode.Additive);
+            scenesToLoad.Add(mapLoad);
+            
+            // For new game, we wait for both persistent and the default map
+            yield return new WaitUntil(() => persistentLoad is { isDone: true } && mapLoad is { isDone: true });
+            
+            // Wait for MapManager to register itself
+            yield return new WaitUntil(() => MapManager.Instances.ContainsKey(defaultScene.SceneName));
+            MapManager.Instances[defaultScene.SceneName].activeMap = true;
+            yield return new WaitForSeconds(0.2f);
+            SaveSystem.Save();
         }
         
-        var allDone = false;
-        
-        while (!allDone)
+        // Final progress bar update
+        while (scenesToLoad.Any(s => !s.isDone))
         {
-            float totalProgress = 0;
-            allDone = true;
-
-            foreach (var scene in scenesToLoad)
-            {
-                totalProgress += scene.progress;
-                if (!scene.isDone) allDone = false;
-            }
-
+            float totalProgress = scenesToLoad.Sum(s => s.progress);
             loadingBarImage.fillAmount = totalProgress / scenesToLoad.Count;
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.1f);
-
+        yield return new WaitForSeconds(0.2f);
+        
+        if (!newGame)
+        {
+            yield return StartCoroutine(DataManager.Instance.SpawnPlayerToActiveMap());
+        }
+        else
+        {
+            yield return StartCoroutine(PlayerHealth.Instance.Spawn(0.1f, true));
+        }
+        
         SceneManager.UnloadSceneAsync(gameObject.scene);
         Destroy(gameObject.transform.root.gameObject);
     }
