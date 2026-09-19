@@ -59,6 +59,7 @@ public class MapManager : MonoBehaviour
     
     [Tooltip("Checks if the scene data has tried to find and load its scene data")]
     public bool sceneLoaded;
+    public bool npcDataInitialised;
     #endregion
 
     private void Awake()
@@ -72,7 +73,7 @@ public class MapManager : MonoBehaviour
         mainCamera = DataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
         weather = GetComponent<WeatherManager>();
         audioManager = AudioManager.Instance;
-        InitialiseSceneData();
+        StartCoroutine(InitialiseSceneData());
         InvokeRepeating(nameof(CollateObjects), 0, 0.1f);
     }
 
@@ -91,6 +92,7 @@ public class MapManager : MonoBehaviour
         {
             print("Loading data");
             LoadSceneData();
+            LoadNpcData();
         }
     }
 
@@ -119,7 +121,6 @@ public class MapManager : MonoBehaviour
         mapToggle = true;
         foreach (var otherMap in Instances.Values.Where(m => m.sceneName != sceneName)) otherMap.activeMap = false;
         StartCoroutine(MapTransition(collision));
-        GameEvents.TriggerPersistGameData();
     }
 
     private IEnumerator MapTransition(Collider2D collision)
@@ -188,7 +189,7 @@ public class MapManager : MonoBehaviour
 
     private void HandleMapExit(GameObject playerObject)
     {
-        GameEvents.TriggerPersistGameData();
+        //GameEvents.TriggerPersistGameData();
         if (!mapToggle) return;
         mapToggle = false;
         weather.ClearDisasters();
@@ -328,11 +329,12 @@ public class MapManager : MonoBehaviour
     
     private static void SaveDataOnDialogueClose(ScriptableObject dialogue = null) => GameEvents.TriggerPersistGameData();
 
-    private void InitialiseSceneData()
+    private IEnumerator InitialiseSceneData()
     {
         ClearSceneData();
         UpdateLists();
         LoadSceneData();
+        yield return new WaitForSeconds(0.5f);
         LoadNpcData();
     }
 
@@ -342,6 +344,7 @@ public class MapManager : MonoBehaviour
         if (!sceneLoaded) return;
         UpdateLists();
         MakeDataPersistent();
+        if (npcDataInitialised) SaveNpcData();
     }
 
     public void UpdateLists()
@@ -642,6 +645,12 @@ public class MapManager : MonoBehaviour
 
     public void SaveNpcData()
     {
+        if (!npcDataInitialised)
+        {
+            print($"Scene data for {sceneName} not loaded");
+            LoadNpcData();
+            return;
+        }
         var manager = DataManager.Instance;
         if (manager == null) return;
         foreach (var nData in npcSceneData)
@@ -669,25 +678,42 @@ public class MapManager : MonoBehaviour
         }
     }
     
-    private void LoadNpcData(string scene = null)
+    public void LoadNpcData()
     {
-        if (DataManager.Instance == null || DataManager.Instance.npcs.Count == 0) return;
-        foreach (var npcData in DataManager.Instance.npcs)
+        if (DataManager.Instance == null) return;
+        print("loadattempt");
+        npcDataInitialised = true;
+        if (DataManager.Instance.npcs.Count == 0) return;
+        for (var i = 0; i < DataManager.Instance.npcs.Count; i++)
         {
+            var npcData = DataManager.Instance.npcs[i];
             var npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
-            if (npc == null || npc.activeNpc == null) continue;
+            if (npc == null)
+            {
+                UpdateLists();
+                npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
+                if (npc == null)
+                {
+                    print($"Npc data for {npcData.activeNpcName} not found");
+                    continue;
+                }
+            }
+
             npc.activeNpc.TryGetComponent<NPChat>(out var dTrigger);
             if (dTrigger != null)
             {
                 dTrigger.dialogue.Clear();
                 dTrigger.dialogue.AddRange(npcData.dialogue);
             }
+
             npc.activeNpc.TryGetComponent<ShopKeeper>(out var shopKeeper);
             if (shopKeeper != null)
             {
                 shopKeeper.shopItems.Clear();
                 shopKeeper.shopItems.AddRange(npcData.shopItems);
             }
+
+            print($"{npc.npcName} has been loaded up");
         }
     }
     #endregion

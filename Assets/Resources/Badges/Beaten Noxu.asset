@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3946a1d852dd20248a61d67d36716b47, type: 3}
-  m_Name: Beat Noxu
+  m_Name: Beaten Noxu
   m_EditorClassIdentifier: scripies::Badge
   itemName: Spar Successfully with Noxu
   itemDescription: You proved yourself worthy!

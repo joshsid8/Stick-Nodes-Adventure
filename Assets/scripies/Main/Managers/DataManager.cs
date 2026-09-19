@@ -71,11 +71,12 @@ public class DataManager : MonoBehaviour
         {
             var map = MapManager.Instances.Values.ElementAt(i);
             map.SaveSceneData();
-            GameEvents.TriggerLoadNpcData(map.sceneName);
-            yield return new WaitUntil(() => map.sceneLoaded);
-            print($"Saving NPC data for {map.sceneName}");
-            map.SaveNpcData();
+            // yield return new WaitUntil(() => map.sceneLoaded);
+            // if (map.npcDataInitialised) 
+            // print($"Saving NPC data for {map.sceneName}");
+            // map.SaveNpcData();
         }
+        yield return null;
     }
 
     #region Scene data classes

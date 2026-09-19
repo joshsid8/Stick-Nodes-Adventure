@@ -149,12 +149,12 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
                     taskStr += item.count;
                     taskStr += item.count switch
                     {
-                        1 when item.objects.itemName.EndsWith("s") => " set of ",
-                        > 1 when item.objects.itemName.EndsWith("s") => " sets of ",
-                        < 1 when item.objects.itemName.EndsWith("s") => " sets of ",
+                        1 when item.objects.name.EndsWith("s") => " set of ",
+                        > 1 when item.objects.name.EndsWith("s") => " sets of ",
+                        < 1 when item.objects.name.EndsWith("s") => " sets of ",
                         _ => " "
                     };
-                    taskStr += item.objects.itemName;
+                    taskStr += item.objects.name;
                     if (item.count > 1) taskStr += "s";
                     if (item != objectsToInteract[^1] && item != objectsToInteract[^2]) taskStr += ", ";
                 }
@@ -167,7 +167,7 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
                 foreach (var item in objectsToInteract)
                 {
                     if (item == objectsToInteract[^1] && objectsToInteract.Count > 1) taskStr += "& ";
-                    taskStr += $"{item.count} {item.objects.itemName}";
+                    taskStr += $"{item.count} {item.objects.name}";
                     if (item.count > 1) taskStr += "s";
                     if (item != objectsToInteract[^1]) taskStr += ", ";
                 }

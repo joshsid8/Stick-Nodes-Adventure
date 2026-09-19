@@ -95,7 +95,7 @@ public class Tomfoolery : MonoBehaviour
             
             if (activeNpc != null)
             {
-                print($"NPC {keeper.name} is already active. adding items directly");
+                //print($"NPC {keeper.name} is already active. adding items directly");
                 activeNpc.TryGetComponent(out ShopKeeper shopKeeper);
                 if (shopKeeper == null) print($"NPC {keeper.name} is not a shopkeeper tho");
                 else
@@ -111,7 +111,7 @@ public class Tomfoolery : MonoBehaviour
         }
         
         print($"Could not find {keeper.name} in the data manager. We'll wait for an artifact of it to load...");
-        yield return new WaitUntil(() => DataManager.Instance.npcs.Any(x =>
+        yield return new WaitUntil(() => DataManager.Instance.npcs.Exists(x =>
             x.activeNpcName.Contains(keeper.name) ||
             ObjectDatabase.Instance.allEntities.Any(y => y.GetComponent<NPChat>().npc == keeper)));
         if (DataManager.Instance.npcs.Any(x => x.activeNpcName.Contains(keeper.name))) goto add;

@@ -9,7 +9,7 @@ public class AspectSO : CollectableSOBase
     {
         var invManager = FindAnyObjectByType<InvManager>();
         if (invManager != null)
-            invManager.AddItem(itemName, 1, itemSprite, SetDescription(), 16, "Aspect", this);
+            invManager.AddItem(name, 1, itemSprite, SetDescription(), 16, "Aspect", this);
         else
             Debug.LogWarning("InvManager not found in scene! Cannot add item.");
     }

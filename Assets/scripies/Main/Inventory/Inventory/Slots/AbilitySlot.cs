@@ -28,7 +28,7 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
             }
             
             abilityStats = autoItem;
-            itemName = autoItem.itemName;
+            itemName = autoItem.name;
             itemSprite = autoItem.itemSprite;
             itemDescription = autoItem.itemDescription;
             usedSlot = true;

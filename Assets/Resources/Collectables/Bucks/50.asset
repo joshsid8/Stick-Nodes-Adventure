@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf0ff2653857c174c8ca13d5b5593a7e, type: 3}
-  m_Name: 50Bucks
+  m_Name: 50
   m_EditorClassIdentifier: 
   itemName: 50
   itemDescription: 

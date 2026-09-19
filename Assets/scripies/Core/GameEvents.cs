@@ -44,7 +44,7 @@ namespace scripies.Core
         
         // Misc events
         public static Action LoadMapData;
-        public static Action<string> LoadNpcData;
+        public static Action LoadNpcData;
         public static Action SaveGameToDisk;
         public static Action PersistGameData;
         
@@ -90,9 +90,13 @@ namespace scripies.Core
         public static void TriggerAddShopItems(ShopItem[] items, NPC npc) => AddShopItems?.Invoke(items, npc);
         
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
-        public static void TriggerLoadNpcData(string sceneName) => LoadNpcData?.Invoke(sceneName);
+        public static void TriggerLoadNpcData() => LoadNpcData?.Invoke();
         public static void TriggerSaveGameToDisk() => SaveGameToDisk?.Invoke();
-        public static void TriggerPersistGameData() => PersistGameData?.Invoke();
+        public static void TriggerPersistGameData()
+        {
+            //Debug.Log("Persisting game data");
+            PersistGameData?.Invoke();
+        }
         
         public static void TriggerPlaySound(AudioClip clip = null, GameObject source = null, float volume = 1, bool randomPitch = true) => PlaySound?.Invoke(clip, source, volume, randomPitch);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);

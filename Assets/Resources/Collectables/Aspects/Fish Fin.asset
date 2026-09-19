@@ -10,18 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a32ff54ed280b44680415a8fecc18fe, type: 3}
-  m_Name: GemOL
+  m_Name: Fish Fin
   m_EditorClassIdentifier: 
-  itemName: Magic Gem of life
-  itemDescription: It magically gives a magically small boost magically to your vitality
-    magically. It doesnt like melee tho
+  itemName: Fish Fin
+  itemDescription: A fin directly from a fishman!
   itemSprite: {fileID: 0}
   aspectProperties:
-  - statName: MaxHealth
+  - statName: DashTime
     statValue: 0.1
-  - statName: MaxEnergy
-    statValue: 0.1
-  - statName: AttackDamageMultiplier
-    statValue: -0.1
-  - statName: AttackPotency
+  - statName: DashSpeed
     statValue: -0.1

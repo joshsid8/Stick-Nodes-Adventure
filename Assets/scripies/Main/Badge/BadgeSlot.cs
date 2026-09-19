@@ -23,7 +23,7 @@ public class BadgeSlot : StatInfo
     {
         statsManager.ClearStatShaders();
         isClicked = true;
-        statName.text = badgeSo.itemName;
+        statName.text = badgeSo.name;
         statDescription.text = badgeSo.itemDescription;
         GetComponent<Image>().sprite = badgeSo.itemSprite;
     }

@@ -113,10 +113,10 @@ public class InvManager : GUIBase
         if (collectable == null) throw new ArgumentNullException(nameof(collectable) + " doent exist!");
         switch (collectable)
         {
-            case ItemSO item: AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, item.itemType, item); break;
-            case ConsumableSO consumable: AddItem(consumable.itemName, 1, consumable.itemSprite, consumable.itemDescription, consumable.maxItemAmount, "Consumable", consumable); break;
-            case AspectSO aspect: AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect); break;
-            case AbilitySO ability: AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability); break;
+            case ItemSO item: AddItem(item.name, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, item.itemType, item); break;
+            case ConsumableSO consumable: AddItem(consumable.name, 1, consumable.itemSprite, consumable.itemDescription, consumable.maxItemAmount, "Consumable", consumable); break;
+            case AspectSO aspect: AddItem(aspect.name, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect); break;
+            case AbilitySO ability: AddItem(ability.name, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability); break;
             default: throw new ArgumentException($"[InvManager] We cant accept type {collectable.GetType()} dawg");
         }
     }
@@ -158,10 +158,10 @@ public class InvManager : GUIBase
         if (item.abilityStats == null) throw new Exception("SwapAbility: Seems like the ability was removed.");
         if (swappingAbilities) swappingAbilities = false;
         var ability = abilitySlots[slot].abilityStats;
-        EquipAbility(item.abilityStats.itemName, item.abilityStats.itemSprite, item.abilityStats.itemDescription, item.abilityStats, slot);
+        EquipAbility(item.abilityStats.name, item.abilityStats.itemSprite, item.abilityStats.itemDescription, item.abilityStats, slot);
         
         if (ability != null) 
-            AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
+            AddItem(ability.name, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
         
         foreach (var slotButton in slotButtons) slotButton.onClick.RemoveAllListeners();
     }
@@ -216,15 +216,15 @@ public class InvManager : GUIBase
                 if (so == null) continue;
                 
                 if (so is ItemSO item) 
-                    AddItem(item.itemName, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, 
+                    AddItem(item.name, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, 
                         item.itemType, item);
                 else if (so is ConsumableSO consumable)
-                    AddItem(consumable.itemName, 1, consumable.itemSprite, consumable.itemDescription, consumable.maxItemAmount, 
+                    AddItem(consumable.name, 1, consumable.itemSprite, consumable.itemDescription, consumable.maxItemAmount, 
                         "Consumable", consumable);
                 else if (so is AspectSO aspect)
-                    AddItem(aspect.itemName, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect);
+                    AddItem(aspect.name, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect);
                 else if (so is AbilitySO ability)
-                    AddItem(ability.itemName, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
+                    AddItem(ability.name, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
             }
         }
 
@@ -235,7 +235,7 @@ public class InvManager : GUIBase
             {
                 if (data.equippedAspects[i] is AspectSO aspect)
                 {
-                    aspectSlots[i].AddAspect(aspect.itemName, aspect.itemSprite, aspect.itemDescription, aspect);
+                    aspectSlots[i].AddAspect(aspect.name, aspect.itemSprite, aspect.itemDescription, aspect);
                 }
             }
         }
@@ -247,7 +247,7 @@ public class InvManager : GUIBase
             {
                 if (data.equippedAbilities[i] is AbilitySO ability)
                 {
-                    abilitySlots[i].AddAbility(ability.itemName, ability.itemSprite, ability.itemDescription, ability, i);
+                    abilitySlots[i].AddAbility(ability.name, ability.itemSprite, ability.itemDescription, ability, i);
                 }
             }
         }

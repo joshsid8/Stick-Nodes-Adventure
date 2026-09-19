@@ -988,6 +988,8 @@ MonoBehaviour:
   spawnerSceneData: []
   doorSpawnerHybridSceneData: []
   checkPointSceneData: []
+  sceneLoaded: 0
+  npcDataInitialised: 0
 --- !u!61 &944811996
 BoxCollider2D:
   m_ObjectHideFlags: 0

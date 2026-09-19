@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3946a1d852dd20248a61d67d36716b47, type: 3}
-  m_Name: Complete Trial
-  m_EditorClassIdentifier: scripies::BadgeSO
-  itemName: Complete Noxu's Trial
-  itemDescription: Youhave successfully up and down the trial in Modai Village!
-  itemSprite: {fileID: 6533358136819214859, guid: 59458430644330c4694cbd09db1baf50, type: 3}
+  m_Name: Beaten Cynder
+  m_EditorClassIdentifier: scripies::Badge
+  itemName: Defeated Cynder
+  itemDescription: You beat that ninjer (with a hard r)
+  itemSprite: {fileID: 6490228292276760131, guid: fceeeae6998ba1c4db66a6b4927676d8, type: 3}
