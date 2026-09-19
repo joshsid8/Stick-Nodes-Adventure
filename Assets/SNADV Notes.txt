@@ -5,9 +5,17 @@ SNADV Notes
     
     Notices & Priorities:
         
-        Whenever a significant part happens, Jerome the shopper should get new items in his shop
+        For scriptable objects (collectables especially) use the object name instead of declaring a name inside
+            Just to make life and naming items easier
+            Problem is that a there are a lot of items with names ill need to replace
+        
+        Whenever a significant part happens, Jerome the shopkeeper should get new items in his shop
             For example, when Cynder is defeated, Jerome should be able to sell fire related abilities to the player
-            Ill need to make use of and extend the AddItems function in the shopkeeper script
+            Ive made all the adding logic, but i need to find a way to trigger the function at a point in time
+                Dilemma: what script should be responsible for this
+                    It cant be the shopkeeper on its own, as NPCs arent persistent
+                    Unless i use a coroutine to wait until said npc is active in a scene
+                Ive successfully made it so that dialogue can add shop items - We now need another way to add shop items so it doesnt just rely on dialogue
         
         The danger duo stands before me...
 
@@ -16,6 +24,9 @@ SNADV Notes
         Instability
 
             Issues from Testing
+                Jeromes data isnt syncing correctly as always, now that ive added the addItems function
+                    The scene data gets overwritten by the initial data again, instead of loading the persisted data from the data manager
+                    Find a way to ensure npc's data is always loaded before saved (if it has data to begin with)
                 
             One time occurrences or Rare/Intimidating bugs
                 

@@ -131,10 +131,6 @@ PrefabInstance:
       propertyPath: id
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
-      propertyPath: shopItems.Array.data[2].itemCollectable
-      value: 
-      objectReference: {fileID: 11400000, guid: 78eb7255c5578d043b060d338de00e1b, type: 2}
     - target: {fileID: 7061657215338624098, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: m_Name
       value: Jerome
@@ -183,6 +179,10 @@ PrefabInstance:
       propertyPath: chatPoint
       value: 
       objectReference: {fileID: 1843804825}
+    - target: {fileID: 8153786567936551107, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ba5ff7e6204354149bb2f5d674625452, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -977,8 +977,8 @@ MonoBehaviour:
   checkPointObjects: []
   enemySceneData: []
   enemyIds: 
-  bossHealth: {fileID: 0}
   bossSceneData:
+    bossHealth: {fileID: 0}
     activeBoss: 
     isDead: 0
     willBeNpc: 0

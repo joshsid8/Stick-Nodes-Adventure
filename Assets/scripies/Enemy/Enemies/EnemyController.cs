@@ -1,6 +1,5 @@
 using System;
 using scripies.Core;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -34,7 +33,7 @@ namespace scripies.Enemy
         private Transform playerTransform;
         private IPlayerStatus ps;
         [SerializeField] private bool isAggressive;
-        public float distToPlayerX;
+        public (float, float) distToPlayer;
         public float backupSpareTimer;
 
         // ITarget implementation
@@ -125,9 +124,10 @@ namespace scripies.Enemy
             if (jump != null && ps.AggressiveEnemies > 1) jump.isJumping = isAggressive; 
             canFacePlayer = attack.canFacePlayer;
 
-            distToPlayerX = transform.position.x - playerTransform.position.x; 
+            distToPlayer.Item1 = transform.position.x - playerTransform.position.x;
+            distToPlayer.Item2 = transform.position.y - playerTransform.position.y;
             
-            if (attack.isAttacking && distToPlayerX >= 50) LostPlayer();
+            if (attack.isAttacking && Mathf.Abs(distToPlayer.Item1) >= 50 || attack.isAttacking && Mathf.Abs(distToPlayer.Item2) >= 50) LostPlayer();
             
             if (backupSpareTimer > 0 && attack.isAttacking) backupSpareTimer -= Time.deltaTime / 1.5f;
             else if (backupSpareTimer <= 0 && enemyState == EnemyState.Attacking) LostPlayer();

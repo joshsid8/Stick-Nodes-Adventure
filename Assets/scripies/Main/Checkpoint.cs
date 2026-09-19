@@ -25,7 +25,7 @@ public class Checkpoint : MonoBehaviour
         if (!spawnPoint) PlayerHealth.Instance.pc.currentCheckPoint = gameObject;
         else PlayerHealth.Instance.pc.currentSpawnPoint = gameObject;
         yield return new WaitUntil(() => collision.gameObject.scene.name != "Persistent Objects");
-        MapManager.Instances[collision.gameObject.scene.name].activeMap = true;
+        if (collision.gameObject.scene.name != "Persistent Objects") MapManager.Instances[collision.gameObject.scene.name].activeMap = true;
         yield return new WaitForSeconds(0.2f);
         GameEvents.TriggerSpawnPointChanged(gameObject, spawnPoint);
         if (oneTime) GetComponent<Collider2D>().enabled = false;

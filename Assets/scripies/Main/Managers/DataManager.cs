@@ -64,12 +64,16 @@ public class DataManager : MonoBehaviour
     }
     
     private static void SaveDisk() => SaveSystem.Save();
-
-    private static void PersistData()
+    private void PersistData() => StartCoroutine(PersistDataC());
+    private static IEnumerator PersistDataC()
     {
-        foreach (var map in MapManager.Instances.Values.Where(map => map != null && SceneManager.GetSceneByName(map.sceneName).isLoaded))
+        for (var i = 0; i < MapManager.Instances.Count; i++)
         {
+            var map = MapManager.Instances.Values.ElementAt(i);
             map.SaveSceneData();
+            GameEvents.TriggerLoadNpcData(map.sceneName);
+            yield return new WaitUntil(() => map.sceneLoaded);
+            print($"Saving NPC data for {map.sceneName}");
             map.SaveNpcData();
         }
     }

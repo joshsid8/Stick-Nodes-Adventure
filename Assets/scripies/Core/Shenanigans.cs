@@ -27,7 +27,6 @@ public class Shenanigans : MonoBehaviour
     [Header("Freeze Camera")]
     public bool freezeCamera;
     [SerializeField] private GameObject camObj;
-    
 
     private void Awake()
     {

@@ -58,7 +58,7 @@ public class MapManager : MonoBehaviour
     public List<CheckPointSceneData> checkPointSceneData = new();
     
     [Tooltip("Checks if the scene data has tried to find and load its scene data")]
-    private bool sceneLoaded;
+    public bool sceneLoaded;
     #endregion
 
     private void Awake()
@@ -669,7 +669,7 @@ public class MapManager : MonoBehaviour
         }
     }
     
-    private void LoadNpcData()
+    private void LoadNpcData(string scene = null)
     {
         if (DataManager.Instance == null || DataManager.Instance.npcs.Count == 0) return;
         foreach (var npcData in DataManager.Instance.npcs)
@@ -703,6 +703,7 @@ public class MapManager : MonoBehaviour
         GameEvents.OnBossDefeated += OnBossDefeated;
         GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
         GameEvents.LoadMapData += LoadSceneData;
+        GameEvents.LoadNpcData += LoadNpcData;
         InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
         GameEvents.OnSpawnPointChanged += SetCurrentCheckPoint;
     }
@@ -713,6 +714,7 @@ public class MapManager : MonoBehaviour
             Instances.Remove(gameObject.scene.name);
         
         GameEvents.OnBossDefeated -= OnBossDefeated;
+        GameEvents.LoadNpcData -= LoadNpcData;
         GameEvents.OnPlayerSpawned -= StartMap;
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
         GameEvents.LoadMapData -= LoadSceneData;

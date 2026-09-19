@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Fire Pillar
   m_EditorClassIdentifier: 
   itemName: Fire Pillar
-  itemDescription: 
+  itemDescription: You'll be able to summon 3 simultaneous scrolls, at the same time,
+    altogether, all at once, in unison. Pretty good for defense and offense
   itemSprite: {fileID: 21300000, guid: 937228273f22f40409982e1b120721fa, type: 3}
   abilityObject: {fileID: 11400000, guid: 07d41cd6ec4515b4393a8f9ea5309070, type: 2}

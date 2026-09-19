@@ -39,25 +39,19 @@ public class ShopKeeper : MonoBehaviour
         foreach (var item in items)
         {
             if (!item.usedSlot) continue;
-            
-            shopItems.Add(new ShopItem
-            {
-                itemName = item.itemName,
-                itemDescription = item.itemDescription,
-                itemSprite = item.itemSprite ?? item.collectableSo.itemSprite,
-                itemCollectable = item.collectableSo,
-                itemPrice = item.itemPrice,
-                itemAmount = item.itemAmount,
-                badgeSoRequired = item.badgeSoRequired
-            });
+            shopItems.Add(item.shopItem);
         }
     }
 
-    public void AddShopItems(ShopItem[] item, bool inNextRestock = false, GameObject keeper = null)
+    public void AddShopItems(ShopItem[] item, GameObject keeper)
     {
-        if (keeper != gameObject) return;
+        if (keeper != gameObject || item.Length == 0) return;
+        backroomItems.Clear();
+        shopItems.Clear();
         backroomItems.AddRange(item);
-        if (!inNextRestock) shopItems.AddRange(item);
+        shopItems.AddRange(item);
+        print($"Added {item.Length} items to shopkeeper {gameObject.name}");
+        GameEvents.TriggerPersistGameData();
     }
     
     /// <summary>

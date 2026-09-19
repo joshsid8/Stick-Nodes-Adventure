@@ -16,6 +16,7 @@ public class ResourceDatabase : MonoBehaviour
     private readonly Dictionary<string, Enemy> enemyDatabase = new();
     private readonly Dictionary<string, QuestSO> questDatabase = new();
     private readonly Dictionary<string, NPC> npcDatabase = new();
+    private readonly Dictionary<string, ShopItem> shopItemDatabase = new();
     private readonly Dictionary<string, BadgeSO> badgeDatabase = new();
     private readonly Dictionary<string, TeleDoor> teleDoorDatabase = new();
 
@@ -38,43 +39,50 @@ public class ResourceDatabase : MonoBehaviour
         var allItems = Resources.LoadAll<CollectableSOBase>("Collectables");
         foreach (var item in allItems)
         {
-            if (!itemDatabase.ContainsKey(item.name)) itemDatabase.Add(item.name, item); 
-            else Debug.LogWarning($"[ItemDatabase] Duplicate item name found: {item.name}."); 
+            if (!itemDatabase.TryAdd(item.name, item))
+                Debug.LogWarning($"[ItemDatabase] Duplicate item name found: {item.name}.");
         }
         
         var allEnemies = Resources.LoadAll<Enemy>("Enemy");
         foreach (var enemy in allEnemies)
         {
-            if (!enemyDatabase.ContainsKey(enemy.name)) enemyDatabase.Add(enemy.name, enemy);
-            else Debug.LogWarning($"[EnemyDatabase] Duplicate enemy name found: {enemy.name}.");
+            if (!enemyDatabase.TryAdd(enemy.name, enemy))
+                Debug.LogWarning($"[EnemyDatabase] Duplicate enemy name found: {enemy.name}.");
         }
         
         var allNpcs = Resources.LoadAll<NPC>("NPC");
         foreach (var npc in allNpcs)
         {
-            if (!npcDatabase.ContainsKey(npc.name)) npcDatabase.Add(npc.name, npc);
-            else Debug.LogWarning($"[NPCDatabase] Duplicate npc name found: {npc.name}.");
+            if (!npcDatabase.TryAdd(npc.name, npc))
+                Debug.LogWarning($"[NPCDatabase] Duplicate npc name found: {npc.name}.");
+        }
+        
+        var allShopItems = Resources.LoadAll<ShopItem>("Shop Items");
+        foreach (var shopItem in allShopItems)
+        {
+            if (!shopItemDatabase.TryAdd(shopItem.name, shopItem))
+                Debug.LogWarning($"[ShopItemDatabase] Duplicate shop item name found: {shopItem.name}.");
         }
         
         var allQuests = Resources.LoadAll<QuestSO>("Quests");
         foreach (var quest in allQuests)
         {
-            if (!questDatabase.ContainsKey(quest.questName)) questDatabase.Add(quest.questName, quest);
-            else Debug.LogWarning($"[QuestDatabase] Duplicate quest name found: {quest.questName}.");
+            if (!questDatabase.TryAdd(quest.questName, quest))
+                Debug.LogWarning($"[QuestDatabase] Duplicate quest name found: {quest.questName}.");
         }
         
         var allBadges = Resources.LoadAll<BadgeSO>("Badges");
         foreach (var badge in allBadges)
         {
-            if (!badgeDatabase.ContainsKey(badge.name)) badgeDatabase.Add(badge.name, badge);
-            else Debug.LogWarning($"[BadgeDatabase] Duplicate badge name found: {badge.name}.");
+            if (!badgeDatabase.TryAdd(badge.name, badge))
+                Debug.LogWarning($"[BadgeDatabase] Duplicate badge name found: {badge.name}.");
         }
         
         var allTeleDoors = Resources.LoadAll<TeleDoor>("TeleDoors");
         foreach (var door in allTeleDoors)
         {
-            if (!teleDoorDatabase.ContainsKey(door.name)) teleDoorDatabase.Add(door.name, door);
-            else Debug.LogWarning($"[TeleDoorDatabase] Duplicate TeleDoor name found: {door.name}.");
+            if (!teleDoorDatabase.TryAdd(door.name, door))
+                Debug.LogWarning($"[TeleDoorDatabase] Duplicate TeleDoor name found: {door.name}.");
         }
     }
     
@@ -119,7 +127,20 @@ public class ResourceDatabase : MonoBehaviour
         npcDatabase.TryGetValue(npcName, out var npc);
         return npc;
     }
-
+    
+    // Shop Items
+    public ShopItem GetShopItemByName(string shopItemName)
+    {
+        if (string.IsNullOrEmpty(shopItemName))
+        {
+            print($"[ShopItemDatabase] Shop item name is null trying to find {shopItemName}");
+            return null;
+        }
+        shopItemDatabase.TryGetValue(shopItemName, out var shopItem);
+        return shopItem;
+    }
+    
+    // Badges
     public BadgeSO GetBadgeByName(string badgeName)
     {
         if (string.IsNullOrEmpty(badgeName)) return null;
@@ -127,6 +148,7 @@ public class ResourceDatabase : MonoBehaviour
         return badge;
     }
 
+    // TeleDoors
     public TeleDoor GetTeleDoorByName(string doorName)
     {
         if (string.IsNullOrEmpty(doorName)) return null;

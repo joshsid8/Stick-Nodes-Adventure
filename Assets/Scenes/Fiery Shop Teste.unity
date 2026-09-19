@@ -183,6 +183,10 @@ PrefabInstance:
       propertyPath: chatPoint
       value: 
       objectReference: {fileID: 1843804825}
+    - target: {fileID: 8153786567936551107, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: 'dialogue.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 425bf11ab11ff56458f3dad609bb95cd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

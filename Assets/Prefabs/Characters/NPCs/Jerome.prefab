@@ -134,45 +134,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: scripies::ShopKeeper
   shopItems:
-  - itemName: Sandwich
-    itemDescription: Delicious sandwich I definitely handmade. Definitely didnt go
-      to aldi to get these for such an amazing price...
-    itemSprite: {fileID: 0}
-    itemPrice: 50
-    itemCollectable: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
-    itemAmount: 10
-    badgeSoRequired: {fileID: 0}
-  - itemName: Bubble Blower
-    itemDescription: This comes from a fish woman, it apparently increases your attack
-      speed by a small bit
-    itemSprite: {fileID: 0}
-    itemPrice: 200
-    itemCollectable: {fileID: 11400000, guid: 3d6a83f08d4c48c419380fa337444060, type: 2}
-    itemAmount: 1
-    badgeSoRequired: {fileID: 0}
-  - itemName: Shuriken Scroll
-    itemDescription: Three lil shurikens. It's prolly an upgrade compared to the
-      fireball scroll
-    itemSprite: {fileID: 0}
-    itemPrice: 300
-    itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
-    itemAmount: 1
-    badgeSoRequired: {fileID: 0}
-  - itemName: Earth Rock Scroll
-    itemDescription: A scroll you can get from a  "down to earth" guy somewhere downward
-    itemSprite: {fileID: 0}
-    itemPrice: 500
-    itemCollectable: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
-    itemAmount: 1
-    badgeSoRequired: {fileID: 0}
-  - itemName: SuperKey
-    itemDescription: A Key to access an earthly place. It'll be yours if you defeat
-      that one fire guy in the valleys
-    itemSprite: {fileID: 0}
-    itemPrice: 100
-    itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
-    itemAmount: 1
-    badgeSoRequired: {fileID: 11400000, guid: c0afdfb270d3b6147b48712b0a7469dc, type: 2}
+  - {fileID: 11400000, guid: fddc806a12f10324c9f30c7da33002bf, type: 2}
+  - {fileID: 11400000, guid: e5aecd5cba545e746bd855278d6e1497, type: 2}
+  - {fileID: 11400000, guid: 1c5a1c1bcf6d71042b7939b6f862d9c5, type: 2}
   inStockDialogue: {fileID: 11400000, guid: da39fe38aa5ae124bad360df7d822a5e, type: 2}
   soldOutDialogue: {fileID: 11400000, guid: 765665ee72c63764cbea02546ecacb26, type: 2}
   canRestock: 1

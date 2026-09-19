@@ -200,7 +200,8 @@ namespace scripies.Dialogue
             if (isActive) CloseDialogue();
         }
         
-        private void CloseDialogue(DialogueObject dialogueObject = null)
+        private void CloseDialogue(DialogueObject dialogueObject = null) => StartCoroutine(CloseDialogueC(dialogueObject));
+        private IEnumerator CloseDialogueC(DialogueObject dialogueObject)
         {
             OnDialogueClose?.Invoke(currentNpc);
             if (dialogueObject != null)
@@ -213,13 +214,17 @@ namespace scripies.Dialogue
                 
                 if (dialogueObject.speakerType == (DialogueObject.SpeakerType) 1)
                 {
-                    if (speaker != null && speaker.TryGetComponent(out ShopKeeper shopKeeper)) 
+                    if (speaker != null && speaker.TryGetComponent(out ShopKeeper shopKeeper))
+                    {
+                        if (dialogueObject.shopItemsToAdd is { Length: > 0 }) GameEvents.TriggerAddShopItems(dialogueObject.shopItemsToAdd, currentNpc);
+                        yield return new WaitForSeconds(0.2f);
                         shopKeeper.StartShop();
+                    }
                 }
 
                 if (dialogueObject.doorsToControl is { Length: > 0 })
                 {
-                    foreach (var door in dialogueObject.doorsToControl) TomFoolery.Instance.ToggleDoor(door.doorName, door.openDoor);
+                    foreach (var door in dialogueObject.doorsToControl) Tomfoolery.Instance.ToggleDoor(door.doorName, door.openDoor);
                 }
 
                 if (dialogueObject.dialoguesToAdd is { Length: > 0 })

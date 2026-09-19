@@ -56,7 +56,7 @@ namespace scripies.Dialogue
             if (playerObject != null) playerTransform = playerObject.transform;
             if (isShopkeeper) shopKeeper = GetComponent<ShopKeeper>();
             
-            if (!fixedDialogue) canHaveNullList = false;
+            if (fixedDialogue) canHaveNullList = false;
             if (dialogue.Count == 0 && !canHaveNullList) throw new ArgumentNullException($"[NPChat] WWHHHAT?! {gameObject.name} HAS NO DIALOGUE!!! HOWWW");
         }
 
@@ -87,10 +87,8 @@ namespace scripies.Dialogue
                             if (priorityDialogue.PendingChoice) dialogue.Remove(priorityDialogue);
                         }
                     }
-                    else if (isShopkeeper && !ShopManager.Instance.isActive)
-                    {
+                    else if (isShopkeeper && !ShopManager.Instance.isActive) 
                         shopKeeper.StartShop();
-                    }
                     if (moveCamToNpc && DialogueManager.Instance.isActive) CameraEventManager.Instance.ChangeTarget(gameObject);
                     CameraEventManager.Instance.ResetCamera();
                 }
@@ -148,7 +146,7 @@ namespace scripies.Dialogue
             var dto = dialogueToRemove as DialogueObject;
             if (dto == null) return;
             if (!spokenDialogue.Contains(dto) && dialogue.Contains(dto) && !dto.respeakable) spokenDialogue.Add(dto);
-            if (dialogue.Count <= 1 && !canHaveNullList || !dialogue.Contains(dto)) return;
+            if (dialogue.Count <= 1 && !canHaveNullList || !dialogue.Contains(dto) || fixedDialogue) return;
             StartCoroutine(RemoveDialogue(dto));
             chatInterval = 0.5f;
         }

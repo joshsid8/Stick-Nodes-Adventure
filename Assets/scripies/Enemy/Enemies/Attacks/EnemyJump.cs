@@ -63,7 +63,7 @@ namespace scripies.Enemy
                     if (ec != null) ec.ChangeState(EnemyController.EnemyState.Zoning);
                 }
                 backupTimers[0] -= Time.deltaTime;
-                if (ec.distToPlayerX >= farAwayDistance) backupTimers[1] -= Time.deltaTime;
+                if (Mathf.Abs(ec.distToPlayer.Item1) >= farAwayDistance || Mathf.Abs(ec.distToPlayer.Item2) >= farAwayDistance) backupTimers[1] -= Time.deltaTime;
                 else backupTimers[1] = 10;
                 if (!myTurn && backupTimers[0] <= 0)
                 {

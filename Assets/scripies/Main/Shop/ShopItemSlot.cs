@@ -6,11 +6,11 @@ using TMPro;
 
 public class ShopItemSlot : SlotBase
 {
-	[CanBeNull] public BadgeSO badgeSoRequired;
-
+	public ShopItem shopItem;
 	public float itemPrice;
     public int itemAmount;
     public CollectableSOBase collectableSo;
+	[CanBeNull] public BadgeSO badgeSoRequired;
     
 	public TMP_Text amountText;
 	

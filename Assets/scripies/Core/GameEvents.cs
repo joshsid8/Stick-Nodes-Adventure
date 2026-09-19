@@ -40,9 +40,11 @@ namespace scripies.Core
         public static Action<ScriptableObject, GameObject> RemoveDialogue;
         public static Action ForceCloseDialogue;
         public static Action<ScriptableObject> OnDialogueClose;
+        public static Action<ShopItem[], NPC> AddShopItems;
         
         // Misc events
         public static Action LoadMapData;
+        public static Action<string> LoadNpcData;
         public static Action SaveGameToDisk;
         public static Action PersistGameData;
         
@@ -61,7 +63,7 @@ namespace scripies.Core
         public static Action<string, bool> ToggleDoor;
         
         // Methods to trigger events
-        public static void TriggerPlayerSpawn(GameObject objectRef = null) =>OnPlayerSpawned?.Invoke(objectRef);
+        public static void TriggerPlayerSpawn(GameObject objectRef = null) => OnPlayerSpawned?.Invoke(objectRef);
         public static void TriggerPlayerHealthChanged(float currentHealth) => OnPlayerHealthChanged?.Invoke(currentHealth);
         public static void TriggerPlayerDeath() => OnPlayerDeath?.Invoke();
         public static void TriggerPlayerAction(string action, bool play = false) => PlayerAction?.Invoke(action, play);
@@ -85,8 +87,10 @@ namespace scripies.Core
         public static void TriggerRemoveDialogue(ScriptableObject dialogue, GameObject npc) => RemoveDialogue?.Invoke(dialogue, npc);
         public static void TriggerForceCloseDialogue() => ForceCloseDialogue?.Invoke();
         public static void TriggerOnDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
+        public static void TriggerAddShopItems(ShopItem[] items, NPC npc) => AddShopItems?.Invoke(items, npc);
         
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
+        public static void TriggerLoadNpcData(string sceneName) => LoadNpcData?.Invoke(sceneName);
         public static void TriggerSaveGameToDisk() => SaveGameToDisk?.Invoke();
         public static void TriggerPersistGameData() => PersistGameData?.Invoke();
         
@@ -95,7 +99,7 @@ namespace scripies.Core
         public static void TriggerMuteMusic(bool toggle = true) => MuteMusic?.Invoke(toggle);
         
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);
-        public static void TriggerCollect() => OnCollect?.Invoke();
+        public static void TriggerOnCollect() => OnCollect?.Invoke();
         public static void TriggerObjectSpawn(GameObject obj = null) => OnObjectSpawn?.Invoke(obj);
         public static void TriggerObjectDestroy(GameObject obj) => OnObjectDestroyed?.Invoke(obj);
 
@@ -103,16 +107,4 @@ namespace scripies.Core
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
         public static void TriggerToggleDoor(string doorName, bool state) => ToggleDoor?.Invoke(doorName, state);
     }
-}
-
-[Serializable]
-public class ShopItem
-{
-    public string itemName;
-    [TextArea(1, 2)] public string itemDescription;
-    public Sprite itemSprite;
-    public float itemPrice;
-    public ScriptableObject itemCollectable;
-    public int itemAmount = 1;
-    public BadgeSO badgeSoRequired;
 }

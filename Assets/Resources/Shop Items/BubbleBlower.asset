@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491934fcc8944984380f7e4eed589bfe, type: 3}
+  m_Name: BubbleBlower
+  m_EditorClassIdentifier: scripies.Core::ShopItem
+  itemName: Bubble Blower
+  itemDescription: 'This comes from a fish woman.
+
+    it apparently increases your
+    attack speed by a small bit.'
+  itemSprite: {fileID: 0}
+  itemPrice: 200
+  itemCollectable: {fileID: 11400000, guid: 3d6a83f08d4c48c419380fa337444060, type: 2}
+  itemAmount: 1
+  badgeSoRequired: {fileID: 0}

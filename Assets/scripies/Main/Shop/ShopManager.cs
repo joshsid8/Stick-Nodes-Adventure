@@ -56,8 +56,13 @@ public class ShopManager : GUIBase
         {
             if (i < items.Length)
             {
-                var collectable = items[i].itemCollectable as CollectableSOBase;
-                if (collectable == null) throw new NullReferenceException($"[ShopManager] Somehow the item {items[i].itemName} collectable is null.");
+                var collectable = items[i]?.itemCollectable as CollectableSOBase;
+                if (collectable == null)
+                {
+                    Debug.LogError($"[ShopManager] Somehow the item {items[i].itemName} collectable is null.");
+                    continue;
+                }
+                shopItems[i].shopItem = items[i];
                 shopItems[i].collectableSo = collectable;
                 shopItems[i].itemName = items[i].itemName;
                 shopItems[i].itemDescription = !string.IsNullOrEmpty(items[i].itemDescription) ? items[i].itemDescription : string.IsNullOrEmpty(collectable.itemDescription) ? collectable.itemDescription : "Missing Desc >:(";
