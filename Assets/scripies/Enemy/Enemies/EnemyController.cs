@@ -14,6 +14,7 @@ namespace scripies.Enemy
             Patrolling,
             Zoning,
             Attacking,
+            Traveling,
             Stunned,
             Dead
         }
@@ -29,6 +30,7 @@ namespace scripies.Enemy
         private EnemyHealth health;
         private EnemyZone zone;
         private EnemyJump jump;
+        private EnemyDomain domain;
         private Rigidbody2D rb;
         private Transform playerTransform;
         private IPlayerStatus ps;
@@ -52,6 +54,8 @@ namespace scripies.Enemy
             health = GetComponent<EnemyHealth>();
             zone = GetComponent<EnemyZone>();
             jump = GetComponent<EnemyJump>();
+            domain = GetComponent<EnemyDomain>();
+            
             backupSpareTimer = attack.spareTimer;
             var player = GameObject.FindGameObjectWithTag("Player");
             playerTransform = player.transform;
@@ -172,6 +176,11 @@ namespace scripies.Enemy
                     zone.enabled = false;
                     attack.enabled = true;
                     break;
+                case EnemyState.Traveling:
+                    //patrol.enabled = false;
+                    // Travelling will just be another Patrolling for now. But will be the manager of Pathfinding later
+                    patrol.enabled = true;
+                    goto lostPlayer;
                 case EnemyState.Dead:
                     patrol.enabled = false;
                     zone.enabled = false;
@@ -185,7 +194,7 @@ namespace scripies.Enemy
             }
         }
 
-        public void LostPlayer()
+        public void LostPlayer(bool outOfBounds = false)
         {
             backupSpareTimer = 10;
             if (jump != null)
@@ -193,7 +202,7 @@ namespace scripies.Enemy
                 jump.backupTimers[0] = 10;
                 jump.backupTimers[1] = 10;
             }
-            ChangeState(EnemyState.Patrolling);
+            ChangeState(!outOfBounds ? EnemyState.Patrolling : EnemyState.Traveling);
             isAggressive = false;
             GameEvents.TriggerAggressiveStatusChanged(this, false);
             if (ps?.AggressiveEnemies <= 0) GameEvents.TriggerAddPlayerCombat(0, false, "EnemyLostPlayer");

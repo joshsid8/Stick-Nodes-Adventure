@@ -17,7 +17,7 @@ namespace scripies.Core
         public static Action OnBossDefeated;
         
         // Player events
-        public static Action<GameObject> OnPlayerSpawned;
+        public static Action OnPlayerSpawned;
         public static Action<float> OnPlayerHealthChanged;
         public static Action OnPlayerDeath;
         public static Action<string, bool> PlayerAction;
@@ -63,7 +63,7 @@ namespace scripies.Core
         public static Action<string, bool> ToggleDoor;
         
         // Methods to trigger events
-        public static void TriggerPlayerSpawn(GameObject objectRef = null) => OnPlayerSpawned?.Invoke(objectRef);
+        public static void TriggerPlayerSpawn() => OnPlayerSpawned?.Invoke();
         public static void TriggerPlayerHealthChanged(float currentHealth) => OnPlayerHealthChanged?.Invoke(currentHealth);
         public static void TriggerPlayerDeath() => OnPlayerDeath?.Invoke();
         public static void TriggerPlayerAction(string action, bool play = false) => PlayerAction?.Invoke(action, play);

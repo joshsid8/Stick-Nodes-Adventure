@@ -147,7 +147,7 @@ public class MapManager : MonoBehaviour
             StartMap(collision.gameObject, targetWeather);
     }
 
-    private void StartMap(GameObject objectRef) => StartMap(objectRef, null);
+    private void StartMap() => StartMap(PlayerHealth.Instance.gameObject, null);
 
     private void StartMap(GameObject objectRef, WeatherManager.WeatherType? forcedWeather)
     {
@@ -647,7 +647,6 @@ public class MapManager : MonoBehaviour
     {
         if (!npcDataInitialised)
         {
-            print($"Scene data for {sceneName} not loaded");
             LoadNpcData();
             return;
         }
@@ -681,7 +680,6 @@ public class MapManager : MonoBehaviour
     public void LoadNpcData()
     {
         if (DataManager.Instance == null) return;
-        print("loadattempt");
         npcDataInitialised = true;
         if (DataManager.Instance.npcs.Count == 0) return;
         for (var i = 0; i < DataManager.Instance.npcs.Count; i++)
@@ -692,11 +690,7 @@ public class MapManager : MonoBehaviour
             {
                 UpdateLists();
                 npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
-                if (npc == null)
-                {
-                    print($"Npc data for {npcData.activeNpcName} not found");
-                    continue;
-                }
+                if (npc == null) continue;
             }
 
             npc.activeNpc.TryGetComponent<NPChat>(out var dTrigger);
@@ -712,8 +706,6 @@ public class MapManager : MonoBehaviour
                 shopKeeper.shopItems.Clear();
                 shopKeeper.shopItems.AddRange(npcData.shopItems);
             }
-
-            print($"{npc.npcName} has been loaded up");
         }
     }
     #endregion

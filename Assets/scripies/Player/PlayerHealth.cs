@@ -184,7 +184,7 @@ namespace scripies.Player
             if (Shenanigans.Instance != null) Shenanigans.Instance.ToggleFreezeCamera(false);
             if (realSpawn)
             {
-                GameEvents.TriggerPlayerSpawn(gameObject);
+                GameEvents.TriggerPlayerSpawn();
                 GameHUD.Instance.ActivateShader(0.5f, 1);
             }
             StartCoroutine(SpawnPeriod());

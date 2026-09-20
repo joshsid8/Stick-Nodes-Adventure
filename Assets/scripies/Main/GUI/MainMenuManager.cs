@@ -93,9 +93,7 @@ public class MainMenuManager : MonoBehaviour
         scenesToLoad.Add(persistentLoad);
         
         yield return new WaitUntil(() => DataManager.Instance != null);
-        
-        string lastActiveScene;
-        
+
         if (!newGame)
         {
             SaveSystem.SetSaveSlot();
@@ -103,8 +101,7 @@ public class MainMenuManager : MonoBehaviour
             
             // Wait for data to be loaded into DataManager
             yield return new WaitUntil(() => DataManager.Instance.sceneData.Count > 0 && DataManager.Instance.sceneData.Exists(x => x.activeMap));
-            print("Data loaded");
-            lastActiveScene = DataManager.Instance.GetActiveSceneName();
+            var lastActiveScene = DataManager.Instance.GetActiveSceneName();
             
             if (string.IsNullOrEmpty(lastActiveScene))
             {

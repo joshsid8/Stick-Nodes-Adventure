@@ -4,26 +4,28 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices & Priorities:
-                
-        Whenever a significant part happens, Jerome the shopkeeper should get new items in his shop
-            Ive made all the adding logic, but i need to find a way to trigger the function at a point in time
-                Ive successfully made it so that dialogue can add shop items - We now need another way to add shop items so it doesnt just rely on dialogue
-        
-        The danger duo stands before me...
+                                    
+        The danger duo has been disbanded, because they arent necessary to do yet
+        Lets just focus on making the game suitable for publishing
 
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from Testing
-                                                
+                
             One time occurrences or Rare/Intimidating bugs
+                Cynder once didnt have his npchat turned on after restarting
+                Another time, he continued to be in his attacking state after restarting also
                 
-            Low Priority or Passive Tasks / Unconfirmed fixed Bugs
-                
+            Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
                 Blocking and countering is very wonky
                     Cynderians' fire pillar is unblockable for some reason...
-                        While Cynder himself's pillars (and every other pillar) are             
+                        While Cynder himself's pillars (and every other pillar) are
+                
+                Whenever a significant part happens, Jerome the shopkeeper should get new items in his shop
+                    Ive made all the adding logic, but i need to find a way to trigger the function at a point in time
+                        Ive successfully made it so that dialogue can add shop items - We now need another way to add shop items so it doesnt just rely on dialogue      
                 
             Junie Help
                 Tackling The Danger Duo
@@ -35,28 +37,26 @@ SNADV Notes
         
         Game Refactor (GRF):
         
-            The Danger Duo
-                
-                Background/Foreground Logic
-                    Make backgrounds similar to Terraria in terms of appearance!
-                    Even tho this is cosmetic, i would like to just get the logic done
-                        I will use placeholder bgs just to test it, then will worry about designs Post-AO
+            Background/Foreground Logic
+                Make backgrounds similar to Terraria in terms of appearance!
+                Even tho this is cosmetic, i would like to just get the logic done
+                    I will use placeholder bgs just to test it, then will worry about designs Post-AO
                         
-                Audio                   
-                    Make it so that the music transitions smoothly
-                        maybe i have to fade the music out and simultaneously fade in the new one?
-                        To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
-                            so it can easily switch between or merge together
-                    I was also thinking of making music change depending on the distance between the player and things
-                        If the player is close to a boss or an enemy, the music will fade into fight music
+            Audio                   
+                Make it so that the music transitions smoothly
+                    maybe i have to fade the music out and simultaneously fade in the new one?
+                    To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
+                        so it can easily switch between or merge together
+                I was also thinking of making music change depending on the distance between the player and things
+                    If the player is close to a boss or an enemy, the music will fade into fight music
                 
-                Cleanup Logic
-                    I realised that when i exit the game, i get errors
-                    They do nothing to me, but its not nice that they are there
-                    Also, when pressing the exit button, the game closes
-                        Instead, i want it so that it takes me to the main menu
-                        I did try this once, but i got a bunch of errors
-                            Ill need to find a way to clean up everything before exiting the game
+            Cleanup Logic
+                I realised that when i exit the game, i get errors
+                They do nothing to me, but its not nice that they are there
+                Also, when pressing the exit button, the game closes
+                    Instead, i want it so that it takes me to the main menu
+                    I did try this once, but i got a bunch of errors
+                        Ill need to find a way to clean up everything before exiting the game
 
         Animation Overhaul (AO):
         
@@ -126,6 +126,7 @@ SNADV Notes
                             The projectiles will be deflected at a near inescapable speed, but this will happen before the freeze/impace frames
                             It will be very funny if done aha
                     I will probably ask people for more ideas
+                    
                 Improve Cynder
                     As a boss, he isnt that bad, but i would like to add some extra stuff to make him even more engaging and difficult
                     I want his style to be based on being hard to predict, making the player hyperaware and intimidated
@@ -139,9 +140,19 @@ SNADV Notes
                             This ultimately leaves her very vulnerable
                     TJ is basically will be split into 2 bosses
                         He will play similarly to Noxu on his first phase, but Cynder on his second
+                        
                 SN Demon
                     Tbh i completely forgot about this one, even tho it is the main antagonist!
                     I think i might just potentially probably perhaps use Machine Learning to make a very difficult boss
+            
+            Enemy AI/Pathfinding Logic
+                Finish off the start of EnemyDomain
+                    It is mean to ensure an enemy stays in their spawn area to ensure they dont wander off
+                    I want to incorporate loose pathfinding so the enemy finds their way back to their domain if they arent there
+                        E.g Fishmen can fly, so theyll just be able fly back to their spawn area
+                        Cynder can teleport, so he can just teleport back, pretty easy
+                        Some enemies cant fly or teleport (like cynderiancs), so pathfinding will be much harder
+                            Maybe if they arent in sight of the player, they can just teleport anyway
         
 When you are done: Find the one piece.
     (This should mean the base has been completed, and I can start on designing everything! [Post-Post-AO])

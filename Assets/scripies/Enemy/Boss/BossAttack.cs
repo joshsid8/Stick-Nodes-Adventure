@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using scripies.Core;
 using scripies.Dialogue;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -90,6 +89,7 @@ public class BossAttack : MonoBehaviour
         
         GameEvents.OnDialogueClose += StartFightOnDialogueClose;
         GameEvents.OnPlayerDeath += ResetBoss;
+        GameEvents.OnPlayerSpawned += ResetBoss;
 
         yield return new WaitForSeconds(1f);
         GameEvents.TriggerToggleNpChat(gameObject, true);
@@ -99,6 +99,7 @@ public class BossAttack : MonoBehaviour
     {
         GameEvents.OnDialogueClose -= StartFightOnDialogueClose;
         GameEvents.OnPlayerDeath -= ResetBoss;
+        GameEvents.OnPlayerSpawned -= ResetBoss;
     }
 
     // Update is called once per frame
@@ -106,13 +107,9 @@ public class BossAttack : MonoBehaviour
     {
         FacePlayer();
         FactorCheck();
-    }
-
-    private void LateUpdate()
-    {
         Checks();
     }
-
+    
     private void FactorCheck() => closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
 
     private void StartFightOnDialogueClose(ScriptableObject dialogueToDerive)
