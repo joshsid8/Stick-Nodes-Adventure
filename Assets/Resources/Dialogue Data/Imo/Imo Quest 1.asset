@@ -63,7 +63,10 @@ MonoBehaviour:
   speaker: 
   dialoguesToAdd: []
   dialoguesToRemove: []
-  externalInstance: Izuno
-  alteredExternalDialogues: []
-  openShopOnClose: 0
+  externalInstance: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
+  externalDialoguesToAdd: []
+  externalDialoguesToRemove: []
+  speakerType: 0
+  doorsToControl: []
+  shopItemsToAdd: []
   respeakable: 0

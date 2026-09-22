@@ -90,7 +90,6 @@ namespace scripies.Player
             var hasEnoughEnergy = energy >= energyReq * totalAmount;
             if (!hasEnoughEnergy || ability.unavailable) return;
             ability.isActivated = true;
-            ability.currentBlastType = blastType;
             ability.currentSlot = slot;
             isPerformingAbility = true;
 

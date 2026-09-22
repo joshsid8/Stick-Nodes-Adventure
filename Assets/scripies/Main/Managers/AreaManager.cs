@@ -13,10 +13,11 @@ public class AreaManager : MonoBehaviour
     public TMP_Text sectionTitle;
     
     public Animator animator;
-    
+
+    public string currentArea;
     [SerializeField] private float lerpTime = 5f;
     private Coroutine colorCoroutine;
-
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -28,28 +29,28 @@ public class AreaManager : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     
-    public void Announce(string title = "", string description = "", Color textColor = default, Color bgColor = default)
+    public void Announce(string title = "", string description = "", Color textColor = default, Color bgColor = default, bool announceSection = false)
     {
-        switch (string.IsNullOrEmpty(title), string.IsNullOrEmpty(description))
+        currentArea = title;
+        switch (announceSection)
         {
-            case (false, false):
+            case false:
                 titleText.text = title;
                 titleText.color = textColor;
                 descriptionText.text = description;
+                descriptionText.color = new Color(textColor.r + 0.5f, textColor.g + 0.5f, textColor.b + 0.5f, 1);
                 animator.SetTrigger("Announce");
                 break;
-            case (true, false):
+            case true:
                 sectionTitle.text = title;
                 sectionTitle.color = textColor;
                 animator.SetTrigger("SectionAnnounce");
-                break;
-            case (true, true):
                 break;
         }
         
         if (actualCamera.backgroundColor != bgColor && bgColor != default)
         {
-            //Maybe change background logic into an active sprite/image behind the player, and use CrossFadeColor to efficiently change it
+            //Maybe change background logic into an active sprite/image behind the player, and use CrossFadeColor to easily change it
             TriggerColorFade(bgColor);
         }
     }
@@ -76,7 +77,7 @@ public class AreaManager : MonoBehaviour
         colorCoroutine = null;
     }
 
-    private float ColorDistance(Color a, Color b)
+    private static float ColorDistance(Color a, Color b)
     {
         return Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b) + Mathf.Abs(a.a - b.b);
     }

@@ -7,6 +7,7 @@ namespace scripies.Core
     /// <summary>
     /// A central hub for global game events to facilitate decoupling between assemblies.
     /// Ensure, when calling methods, it starts with "Trigger"; otherwise you'll be calling a static Action.
+    /// AKA: Antics, the father of Shenanigans and Tomfoolery
     /// </summary>
     public static class GameEvents
     {
@@ -40,6 +41,7 @@ namespace scripies.Core
         public static Action<ScriptableObject, GameObject> RemoveDialogue;
         public static Action ForceCloseDialogue;
         public static Action<ScriptableObject> OnDialogueClose;
+        public static Action<ExternalDialogue[]> ChangeDialogue;
         public static Action<ShopItem[], NPC> AddShopItems;
         
         // Misc events
@@ -47,6 +49,7 @@ namespace scripies.Core
         public static Action LoadNpcData;
         public static Action SaveGameToDisk;
         public static Action PersistGameData;
+        public static Action<string, bool> OnEnterMap;
         
         public static Action<AudioClip, GameObject, float, bool> PlaySound;
         public static Action<int, bool> PlayMusic;
@@ -87,6 +90,7 @@ namespace scripies.Core
         public static void TriggerRemoveDialogue(ScriptableObject dialogue, GameObject npc) => RemoveDialogue?.Invoke(dialogue, npc);
         public static void TriggerForceCloseDialogue() => ForceCloseDialogue?.Invoke();
         public static void TriggerOnDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
+        public static void TriggerChangeDialogue(ExternalDialogue[] externalInstance) => ChangeDialogue?.Invoke(externalInstance);
         public static void TriggerAddShopItems(ShopItem[] items, NPC npc) => AddShopItems?.Invoke(items, npc);
         
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
@@ -97,6 +101,7 @@ namespace scripies.Core
             //Debug.Log("Persisting game data");
             PersistGameData?.Invoke();
         }
+        public static void TriggerOnEnterMap(string sceneName, bool firstTime) => OnEnterMap?.Invoke(sceneName, firstTime);
         
         public static void TriggerPlaySound(AudioClip clip = null, GameObject source = null, float volume = 1, bool randomPitch = true) => PlaySound?.Invoke(clip, source, volume, randomPitch);
         public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);

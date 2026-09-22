@@ -21,6 +21,8 @@ public class DataManager : MonoBehaviour
     {
         public string sceneName;
         public bool activeMap;
+        public WeatherManager.WeatherType currentWeatherType;
+        public float currentWeatherDuration;
         public List<EnemySceneData> enemies = new();
         public List<CollectableSceneData> collectables = new();
         

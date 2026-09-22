@@ -59,11 +59,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c0afdfb270d3b6147b48712b0a7469dc, type: 2}
   canBeColoured: 1
   canBeBold: 1
+  respeakable: 0
   speaker: Cynder
   dialoguesToAdd: []
   dialoguesToRemove: []
-  externalInstance: Izuno
-  alteredExternalDialogues:
-  - {fileID: 11400000, guid: 516c1cf6f9f147643a27a447b568c531, type: 2}
-  openShopOnClose: 0
-  respeakable: 0
+  externalInstances:
+  - externalInstance: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
+    externalDialoguesToAdd:
+    - {fileID: 11400000, guid: 516c1cf6f9f147643a27a447b568c531, type: 2}
+    externalDialoguesToRemove: []
+  - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
+    externalDialoguesToAdd:
+    - {fileID: 11400000, guid: ba5ff7e6204354149bb2f5d674625452, type: 2}
+    externalDialoguesToRemove: []
+  speakerType: 0
+  doorsToControl: []
+  shopItemsToAdd: []

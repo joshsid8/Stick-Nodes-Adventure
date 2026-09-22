@@ -203,7 +203,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     {
         if (damageable == null) return;
         string aggressor;
-        if (abilityCaster.CompareTag("Boss")) aggressor = "BossAbility";
+        if (abilityCaster != null && abilityCaster.CompareTag("Boss")) aggressor = "BossAbility";
         else aggressor = typeFactor switch { 0 => "Ability", 1 => "PlayerAbility", 2 => "EnemyAbility", _ => "Ability" };
         
         damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType,

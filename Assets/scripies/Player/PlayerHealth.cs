@@ -286,7 +286,7 @@ namespace scripies.Player
             if (playerExtraHealth > 0 && !isTrue) playerExtraHealth -= damageAmount;
             else playerHealth -= damageAmount;
             GameEvents.TriggerPlayerHealthChanged(damageAmount);
-            if (blockBreak || isTrue)
+            if (blockBreak)
             {
                 spriteRenderer.color = damageTint;
                 pd.StopBlocking();

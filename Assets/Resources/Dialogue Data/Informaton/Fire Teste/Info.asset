@@ -22,8 +22,8 @@ MonoBehaviour:
     disablePreviousEvents: 0
     cameraDistance: 10
     zoomSpeed: 1
-    cameraTarget: Boss Section
-    cameraLookupType: 2
+    cameraTarget: Cynder Section
+    cameraLookupType: 0
   - thread: He's a quick one, so be careful!
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
@@ -50,8 +50,12 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  openShopOnClose: 0
   speaker: 
-  alteredDialogue: {fileID: 0}
+  dialoguesToAdd: []
+  dialoguesToRemove: []
   externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  alteredExternalDialogues: []
+  speakerType: 0
+  doorsToControl: []
+  shopItemsToAdd: []
+  respeakable: 0

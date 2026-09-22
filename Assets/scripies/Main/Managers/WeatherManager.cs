@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using scripies.Core;
 using scripies.Player;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class WeatherManager : MonoBehaviour
@@ -12,9 +11,11 @@ public class WeatherManager : MonoBehaviour
     public enum WeatherType {Clear, Hot, Cold, Rainy}
     [EnumButtons] public WeatherType weatherType;
     public WeatherProperties[] weatherProperties = new WeatherProperties[3];
+    
     private MapManager mm;
-    [SerializeField] private SectionManager sm;
-
+    private SectionManager sm;
+    public bool freezeWeather;
+    public float weatherDurationTimer = 60;
     [SerializeField] private bool randomWeather;
     [SerializeField] private float weatherChance = 10;
     public Dictionary<string, float> disasters = new(4);
@@ -30,13 +31,39 @@ public class WeatherManager : MonoBehaviour
     
     private void Awake()
     {
-        mm ??= GetComponent<MapManager>();
-        if (mm == null) sm ??= GetComponent<SectionManager>();
-
+        mm = GetComponent<MapManager>();
+        if (mm == null) sm = GetComponent<SectionManager>();
+        
+        // Initialise disasters
         disasters.Add("Temperature", 0);
         disasters.Add("Thunderstorm", 0);
         disasters.Add("Wind", 0);
         disasters.Add("Earthquake", 0);
+    }
+
+    private void Update()
+    {
+        if (freezeWeather) return;
+        weatherDurationTimer -= Time.deltaTime;
+        if (weatherDurationTimer <= 0) WeatherClockChime();
+    }
+
+    private void WeatherClockChime()
+    {
+        ClearDisasters();
+        
+        weatherType = GetTargetWeather();
+        
+        TryGetComponent(out MapManager mapManager);
+        if (mapManager != null && mapManager.activeMap) ChangeWeather();
+        
+        if (weatherType == WeatherType.Clear) 
+            weatherDurationTimer = 60;
+        else
+        {
+            var index = (int)weatherType - 1;
+            weatherDurationTimer = index >= 0 && index < weatherProperties.Length ? weatherProperties[index].weatherDuration : 60;
+        }
     }
 
     private void Start()
@@ -51,21 +78,27 @@ public class WeatherManager : MonoBehaviour
         var rng = Random.Range(0, 101);
         var targetWeather = weatherType;
         
-        if (randomWeather && rng <= weatherChance) 
-            targetWeather = mm.undiscoveredMap ? WeatherType.Clear : (WeatherType)Random.Range(1, 4);
-        else if (randomWeather && weatherType != WeatherType.Clear)
+        switch (randomWeather)
         {
-            var rng2 = Random.Range(0, 101);
-            if (rng2 <= 50) targetWeather = WeatherType.Clear;
+            case true when rng <= weatherChance:
+                targetWeather = mm.undiscoveredMap ? WeatherType.Clear : (WeatherType)Random.Range(1, 4);
+                break;
+            case true when weatherType != WeatherType.Clear:
+            {
+                var rng2 = Random.Range(0, 101);
+                if (rng2 <= 50) targetWeather = WeatherType.Clear;
+                break;
+            }
         }
-        
         return targetWeather;
     }
 
-    public void SetWeather(WeatherType? forcedWeather = null)
+    public void ChangeWeather(WeatherType? forcedWeather = null)
     {
         if (forcedWeather.HasValue) weatherType = forcedWeather.Value;
         else weatherType = GetTargetWeather();
+        
+        var announce = (mm != null && mm.activeMap) || (sm != null && sm.announceDetails);
         
         switch (weatherType)
         {
@@ -75,19 +108,19 @@ public class WeatherManager : MonoBehaviour
                 break;
             case WeatherType.Hot:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
-                    weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
+                    weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume, announce);
                 else sm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
                 break;
             case WeatherType.Cold:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
-                    weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
+                    weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume, announce);
                 else sm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
                 break;
             case WeatherType.Rainy:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,
-                    weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume);
+                    weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume, announce);
                 else sm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherTextColor,
                     weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume);
                 InvokeRepeating(nameof(Thunderstorm), 0, thunderTimer);
@@ -108,7 +141,7 @@ public class WeatherManager : MonoBehaviour
                 else disasters[mm.mapDisasterNames[i]] = mm.mapDisasterFactors[i];
             }
         }
-        else
+        else if (sm != null)
         {
             for (var i = 0; i < sm.mapDisasterNames.Length; i++)
             {
@@ -117,12 +150,28 @@ public class WeatherManager : MonoBehaviour
                 else disasters[sm.mapDisasterNames[i]] = sm.mapDisasterFactors[i];
             }
         }
+        SetPassiveDisasters();
+    }
+
+    private void SetPassiveDisasters()
+    {
         InvokeRepeating(nameof(EarthQuake), 0, earthquakeTimer);
         InvokeRepeating(nameof(Temperature), 0, 0.001f);
         StartCoroutine(Wind());
         Invoke(nameof(SetProperties), 1f);
     }
 
+    public void ClearDisasters()
+    {
+        CancelInvoke(nameof(Thunderstorm));
+        CancelInvoke(nameof(EarthQuake));
+        CancelInvoke(nameof(Temperature));
+        StopCoroutine(Wind());
+        disasters.Clear();
+        player.regenerationMultiplier = preValues[0];
+        player.pc.movementSpeed = preValues[1];
+    }
+    
     private void SetProperties()
     {
         switch (weatherType)
@@ -143,16 +192,6 @@ public class WeatherManager : MonoBehaviour
 
     private void PollingHurtPlayer(float damage = 0.001f) => player.playerHealth -= damage;
 
-    public void ClearDisasters()
-    {
-        CancelInvoke(nameof(Thunderstorm));
-        CancelInvoke(nameof(EarthQuake));
-        CancelInvoke(nameof(Temperature));
-        StopCoroutine(Wind());
-        disasters.Clear();
-        player.regenerationMultiplier = preValues[0];
-        player.pc.movementSpeed = preValues[1];
-    }
 
     private void EarthQuake()
     {
@@ -208,6 +247,7 @@ public class WeatherProperties
 {
     public string weatherMapName = "";
     public string weatherMapDesc = "";
+    public float weatherDuration = 60;
     public Color weatherTextColor = Color.white;
     public Color weatherBgColor = Color.white;
     public AudioClip[] weatherOst = new AudioClip[3];

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using scripies.Core;
 using scripies.Dialogue;
+using Unity.VectorGraphics;
 using UnityEngine;
 
 public class ShopKeeper : MonoBehaviour
@@ -13,12 +15,24 @@ public class ShopKeeper : MonoBehaviour
     
     public bool canRestock = true;
     private readonly List<ShopItem> backroomItems = new();
-
+    
+    [SerializeField] private List<ItemsToAddOnEvent> itemsToAddOnEvent = new();
+    private NPChat npChat;
     private void Start()
     {
         backroomItems.AddRange(shopItems);
+        npChat = GetComponent<NPChat>();
     }
-    
+
+    private void OnEnable()
+    {
+        GameEvents.OnEnterMap += AddItemsOnPlayerMapEnter;
+    }
+    private void OnDisable()
+    {
+        GameEvents.OnEnterMap -= AddItemsOnPlayerMapEnter;
+    }
+
     /// <summary>
     /// me when "Can you check the back?"
     /// </summary>
@@ -61,5 +75,27 @@ public class ShopKeeper : MonoBehaviour
     {
         shopItems.AddRange(backroomItems);
         GameEvents.TriggerAddDialogue(inStockDialogue, gameObject);
+    }
+
+    private void AddItemsOnPlayerMapEnter(string targetScene, bool firstTime)
+    {
+        if (!firstTime) return;
+        foreach (var item in itemsToAddOnEvent.Where(i => i.type == ItemsToAddOnEvent.EventType.PlayerMapEnter && i.targetScene == targetScene))
+        {
+            foreach (var dialogue in item.dialoguesToAdd) npChat.AddDialogue(dialogue);
+            AddShopItems(item.itemsToAdd, gameObject);
+        }
+    }
+    
+    [Serializable]
+    public struct ItemsToAddOnEvent
+    {
+        public enum EventType { PlayerMapEnter /* More later*/}
+        public EventType type;
+        
+        public SceneField targetScene;
+        public bool firstTime;
+        public DialogueObject[] dialoguesToAdd;
+        public ShopItem[] itemsToAdd;
     }
 }

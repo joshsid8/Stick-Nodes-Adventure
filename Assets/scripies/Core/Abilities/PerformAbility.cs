@@ -7,11 +7,12 @@ using UnityEngine;
 
 public class PerformAbility : MonoBehaviour
 {
-    public enum CasterType { Player, Enemy }
-    public CasterType casterType;
+    public enum CasterType { Player, Enemy, None }
+    public CasterType casterType = CasterType.None;
 
     public Transform abilityPoint;
     public LayerMask terrainLayers;
+    [Tooltip("Ability Objects to spawn. Only the Player uses this (unless something else needs to hold its abilities)")]
     public AbilityObjSO[] objects;
 
     [Header("Player Properties")]
@@ -26,7 +27,6 @@ public class PerformAbility : MonoBehaviour
     [HideInInspector] public bool isActivated;
     [HideInInspector] public bool unavailable;
     public int currentSlot;
-    public int currentBlastType;
     
     public IPlayerStatus pa;
     public IEnemyStatus es;
@@ -39,19 +39,20 @@ public class PerformAbility : MonoBehaviour
 
     private void Update()
     {
+        //TODO: Either remove or improve this flag. its not good
         unavailable = Physics2D.OverlapCircle(new Vector2(abilityPoint.position.x, abilityPoint.position.y), 1f, terrainLayers);
-        if (casterType == CasterType.Player)
-        {
-            if (isActivated && pa.CurrentAbilityCooldown[currentSlot] >= pa.MaxAbilityCooldown[currentSlot])
-                isActivated = false;
-        }
+        
+        if (casterType != CasterType.Player) return;
+        if (isActivated && pa.CurrentAbilityCooldown[currentSlot] >= pa.MaxAbilityCooldown[currentSlot])
+            isActivated = false;
     }
     
-    public void Perform(AbilityObjSO ability) => StartCoroutine(SpawnRoutine(ability, casterType == CasterType.Player ? currentBlastType : -1));
-
+    public void Perform(AbilityObjSO ability) => StartCoroutine(SpawnRoutine(ability, ability.GetAbility() switch {Projectile => 0, Pillar => 1, Beam => 2, _ => -1}));
+    
+    // For the player only
     public void Blast()
     {
-        if (casterType == CasterType.Player) StartCoroutine(SpawnRoutine(objects[currentSlot], currentBlastType)); 
+        if (casterType == CasterType.Player) StartCoroutine(SpawnRoutine(objects[currentSlot], objects[currentSlot].GetAbility() switch {Projectile => 0, Pillar => 1, Beam => 2, _ => -1})); 
     }
 
     private IEnumerator SpawnRoutine(AbilityObjSO ability, int blastType)
@@ -60,7 +61,7 @@ public class PerformAbility : MonoBehaviour
         var abilityScript = ability.abilityPrefab.GetComponent<AbilityBase>() ?? ability.abilityPrefab.GetComponentInChildren<AbilityBase>();
         var isHoldable = ability.setProperties ? ability.isHoldable : abilityScript.isHoldable;
         var isFacingRight = GetFacingRight();
-        var casterFactor = casterType == CasterType.Player ? 1 : 2;
+        var casterFactor = casterType switch { CasterType.Player => 1, CasterType.Enemy => 2, _ => 0 };
         var amount = casterType == CasterType.Player ? (int)Mathf.Round(ability.amount * abilityAmountMult[currentSlot]) : ability.amount;
         var xOffset = blastType == 1 ? ability.initSeparation : 0f;
         
@@ -106,6 +107,7 @@ public class PerformAbility : MonoBehaviour
 
                     switch (casterType)
                     {
+                        case CasterType.None:
                         case CasterType.Enemy:
                             abScript.direction = abilityDirection;
                             break;
@@ -135,6 +137,7 @@ public class PerformAbility : MonoBehaviour
 
                 switch (casterType)
                 {
+                    case CasterType.None:
                     case CasterType.Enemy:
                         abScript.direction = abilityDirection;
                         break;
@@ -168,6 +171,12 @@ public class PerformAbility : MonoBehaviour
     
     private bool GetFacingRight()
     {
-        return casterType == CasterType.Player ? pa.IsFacingRight : es.IsFacingRight;
+        //return casterType == CasterType.Player ? pa.IsFacingRight : es.IsFacingRight;
+        return casterType switch
+        {
+            CasterType.Player => pa.IsFacingRight,
+            CasterType.Enemy => es.IsFacingRight,
+            _ => transform.rotation.y == 0
+        };
     }
 }

@@ -4,28 +4,35 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices & Priorities:
-                                    
-        The danger duo has been disbanded, because they arent necessary to do yet
-        Lets just focus on making the game suitable for publishing
-
+        
+        Refactored Weather logic to be dependant on a timer, making it more realistic!
+        
+        Whenever a significant part happens, Jerome the shopkeeper should get new items in his shop
+            Ive made a couple of methods: dialogue and currently whenever a player enters a new map
+                More needs to be added, but this is good enough for now
+                
+        Update the dialogue to use the new ExternalInstance struct and update each Instance of Jerome to ensure the dialogue changes whenever the player enters a new area
+                                      
     Optimisations & Hotfixes:
         
         Instability
 
-            Issues from Testing
-                
+            Issues from testing
+
             One time occurrences or Rare/Intimidating bugs
                 Cynder once didnt have his npchat turned on after restarting
                 Another time, he continued to be in his attacking state after restarting also
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
-                Blocking and countering is very wonky
-                    Cynderians' fire pillar is unblockable for some reason...
-                        While Cynder himself's pillars (and every other pillar) are
                 
-                Whenever a significant part happens, Jerome the shopkeeper should get new items in his shop
-                    Ive made all the adding logic, but i need to find a way to trigger the function at a point in time
-                        Ive successfully made it so that dialogue can add shop items - We now need another way to add shop items so it doesnt just rely on dialogue      
+                Shuriken throws, because 3 is thrown at once, collide and destroy each other if they are neutral
+                I have to find some way to ensure projectile abilities that shoot out more than 1 dont collide with each other
+                    Possible Solutions:
+                        Give an initial interval to ignore all collisions
+                        Let projectiles ignore any other projectiles that have nearly the same properties
+                We REALLY need another way to add shop items so it doesnt just rely on dialogue
+                    Jerome needs to know whenever the player enters a new area, but i dont know how to do this efficiently
+                    so ill rely on dialogue for now and think about it later
                 
             Junie Help
                 Tackling The Danger Duo

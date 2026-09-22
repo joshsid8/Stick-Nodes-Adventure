@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using scripies.Dialogue;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace scripies.Dialogue
 {
@@ -57,22 +59,19 @@ namespace scripies.Dialogue
         public bool canBeBold;
 
         [Header("NPC Control")]
+        public bool respeakable = true;
+        
         public string speaker;
         [Tooltip("Adds these dialogues to the current speaker. Make sure the desired topmost dialogue is the last one in the array.")]
         public DialogueObject[] dialoguesToAdd;
         public DialogueObject[] dialoguesToRemove;
         [Space]
-        [Tooltip("Anyone else needs to be affected by this dialogue?")]
-        public string externalInstance;
-        [Tooltip("Adds this dialogue to another npc. Ensure this is filled if the quest type SpeakTo/GiveTo")]
-        public DialogueObject[] alteredExternalDialogues;
+        public ExternalDialogue[] externalInstances = new ExternalDialogue[1];
         
         public enum SpeakerType {Default, ShopOpen, BossFight}
         [EnumButtons] public SpeakerType speakerType;
         public ControlDoor[] doorsToControl;
         public ShopItem[] shopItemsToAdd;
-        
-        public bool respeakable;
     }
 
     [Serializable]
@@ -94,6 +93,7 @@ namespace scripies.Dialogue
         public enum LookupType {RawName, Tag, Section, Spawner}
         [EnumButtons] public LookupType cameraLookupType;
     }
+    
     [Serializable]
     public struct ApplyFloat
     {
@@ -117,4 +117,18 @@ namespace scripies.Dialogue
         public string doorName;
         public bool openDoor;
     }
+}
+
+/// <summary>
+/// Another way to change dialogue for an NPC,
+/// It's more bruteforce by waiting for anything of the target to be available
+/// </summary>
+[Serializable]
+public class ExternalDialogue
+{
+    [Tooltip("Anyone else needs to be affected by this dialogue?")]
+    public NPC externalInstance;
+    [Tooltip("Adds this dialogue to another npc. Ensure this is filled if the quest is of type SpeakTo/GiveTo")]
+    public DialogueObject[] externalDialoguesToAdd;
+    public DialogueObject[] externalDialoguesToRemove;
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using scripies.Core;
 using scripies.Player;
 using UnityEngine;
@@ -49,11 +50,13 @@ namespace scripies.Dialogue
         {
             GameEvents.ShowDialogue += ShowDialogue;
             GameEvents.ForceCloseDialogue += ForceCloseDialogue;
+            GameEvents.ChangeDialogue += ChangeDialogues;
         }
         private void OnDisable()
         {
             GameEvents.ShowDialogue -= ShowDialogue;
             GameEvents.ForceCloseDialogue -= ForceCloseDialogue;
+            GameEvents.ChangeDialogue -= ChangeDialogues;
         }
 
         private void Update() => textLabel.fontStyle = isBold ? FontStyles.Bold : FontStyles.Normal;
@@ -239,7 +242,7 @@ namespace scripies.Dialogue
                         GameEvents.TriggerRemoveDialogue(dialogue, speaker);
                 }
                 
-                if (dialogueObject.alteredExternalDialogues != null) StartCoroutine(ChangeDialogues(dialogueObject));
+                if (dialogueObject.externalInstances != null || dialogueObject.dialoguesToRemove != null) ChangeDialogues(dialogueObject.externalInstances);
                 
                 CameraEventManager.Instance.ResetCamera();
             }
@@ -248,20 +251,47 @@ namespace scripies.Dialogue
             //GameEvents.TriggerPlaySound(dialoguePings[1], false);
             ClearData();
         }
-
-        private static IEnumerator ChangeDialogues(DialogueObject dialogueObject)
+        
+        private void ChangeDialogues(ExternalDialogue[] externalInstances) => StartCoroutine(ChangeDialoguesC(externalInstances));
+        private static IEnumerator ChangeDialoguesC(ExternalDialogue[] externalDialogues)
         {
-            GameObject externalInstance = null;
-            
-            while (externalInstance == null)
+            foreach (var extIn in externalDialogues)
             {
-                externalInstance = ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.externalInstance, true);
-                yield return null;
+                var instance = extIn;
+                var externalInstance = ObjectDatabase.Instance.GetEntityObjByName(instance.externalInstance.name, true);
+                found:
+                if (externalInstance != null)
+                {
+                    //print($"found our instance: {instance.externalInstance} is already loaded!");
+                    yield return new WaitForSeconds(0.05f);
+                    foreach (var dialogue in instance.externalDialoguesToRemove)
+                        GameEvents.TriggerRemoveDialogue(dialogue, externalInstance);
+                    foreach (var dialogue in instance.externalDialoguesToAdd)
+                        GameEvents.TriggerAddDialogue(dialogue, externalInstance);
+                }
+                else
+                {
+                    var inData = DataManager.Instance.npcs.Exists(i => i.activeNpcName == instance.externalInstance.name);
+                    if (inData)
+                    {
+                        var dataDialogue = DataManager.Instance.npcs.Find(i => i.activeNpcName == instance.externalInstance.name);
+                        var newDialogue = dataDialogue.dialogue.ToList();
+                        newDialogue.AddRange(instance.externalDialoguesToAdd);
+                        dataDialogue.dialogue = newDialogue.ToArray();
+                        print($"found our instance: {instance.externalInstance} is not loaded yet, but it's data is present");
+                        continue;
+                    }
+
+                    while (externalInstance == null)
+                    {
+                        externalInstance = ObjectDatabase.Instance.GetEntityObjByName(instance.externalInstance.name, true);
+                        yield return null;
+                    }
+
+                    print($"found our instance: {instance.externalInstance} is now loaded!");
+                    goto found;
+                }
             }
-            //print("found our instance");
-            yield return new WaitForSeconds(0.05f);
-            foreach (var dialogue in dialogueObject.alteredExternalDialogues)
-                GameEvents.TriggerAddDialogue(dialogue, externalInstance);
         }
         private void ClearData()
         {

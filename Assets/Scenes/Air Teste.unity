@@ -909,6 +909,8 @@ MonoBehaviour:
   spawnerSceneData: []
   doorSpawnerHybridSceneData: []
   checkPointSceneData: []
+  sceneLoaded: 0
+  npcDataInitialised: 0
 --- !u!61 &1317523870
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -995,6 +997,7 @@ MonoBehaviour:
   weatherProperties:
   - weatherMapName: Heat Place
     weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
+    weatherDuration: 60
     weatherTextColor: {r: 0.9528302, g: 0.72387344, b: 0.50787646, a: 1}
     weatherBgColor: {r: 0.7254902, g: 0.5176471, b: 0.31764707, a: 1}
     weatherOst:
@@ -1007,6 +1010,7 @@ MonoBehaviour:
     - 0.7
   - weatherMapName: Cold Place
     weatherMapDesc: '*Freeze gun mk!! sound effect*'
+    weatherDuration: 60
     weatherTextColor: {r: 0.50980395, g: 0.9529412, b: 0.93078697, a: 1}
     weatherBgColor: {r: 0.31764707, g: 0.65114826, b: 0.7254902, a: 1}
     weatherOst:
@@ -1019,6 +1023,7 @@ MonoBehaviour:
     - 1
   - weatherMapName: Thunder strom
     weatherMapDesc: ah!
+    weatherDuration: 60
     weatherTextColor: {r: 0.36863655, g: 0.7169812, b: 0.698485, a: 1}
     weatherBgColor: {r: 0, g: 0.34697014, b: 0.4245283, a: 1}
     weatherOst:
@@ -1029,9 +1034,10 @@ MonoBehaviour:
     - 1
     - 1
     - 1
-  sm: {fileID: 0}
+  freezeWeather: 0
+  weatherDurationTimer: 60
   randomWeather: 1
-  weatherChance: 15
+  weatherChance: 30
   earthquakeTimer: 0.2
   thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
   thunderTimer: 0.75

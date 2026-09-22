@@ -20,12 +20,14 @@ public class Tomfoolery : MonoBehaviour
     {
         GameEvents.ToggleDoor += ToggleDoor;
         GameEvents.AddShopItems += AddShopItems;
+        GameEvents.OnEnterMap += AddShopItemsOnPlayerMapEnter;
     }
     
     private void OnDisable()
     {
         GameEvents.ToggleDoor -= ToggleDoor;
         GameEvents.AddShopItems -= AddShopItems;
+        GameEvents.OnEnterMap -= AddShopItemsOnPlayerMapEnter;
     }
 
     private void Awake()
@@ -98,10 +100,7 @@ public class Tomfoolery : MonoBehaviour
                 //print($"NPC {keeper.name} is already active. adding items directly");
                 activeNpc.TryGetComponent(out ShopKeeper shopKeeper);
                 if (shopKeeper == null) print($"NPC {keeper.name} is not a shopkeeper tho");
-                else
-                {
-                    shopKeeper.AddShopItems(newShopItems.ToArray(), activeNpc);
-                }
+                else shopKeeper.AddShopItems(newShopItems.ToArray(), activeNpc);
             }
             else npc.shopItems = newShopItems.ToArray();
             
@@ -120,5 +119,12 @@ public class Tomfoolery : MonoBehaviour
             GameEvents.TriggerPersistGameData();
             goto add;
         }
+    }
+    
+    private void AddShopItemsOnPlayerMapEnter(string sceneName, bool firstTime) => StartCoroutine(AddShopItemsOnPlayerMapEnterC(sceneName, firstTime));
+    private static IEnumerator AddShopItemsOnPlayerMapEnterC(string sceneName, bool firstTime)
+    {
+        // Not sure what to add here yet...
+        yield return null;
     }
 }

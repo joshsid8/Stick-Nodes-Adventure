@@ -60,4 +60,16 @@ public class AbilityObjSO : ScriptableObject
           ab.minHoldTime = minHoldTime;
           ab.abilityOnCollide = abilityOnCollide;
      }
+
+     public AbilityBase GetAbility()
+     {
+          if (abilityPrefab.TryGetComponent(out Projectile projectile)) return projectile;
+
+          return abilityPrefab.GetComponentInChildren<AbilityBase>() switch
+          {
+               Pillar pillar => pillar,
+               Beam beam => beam,
+               _ => null
+          };
+     }
 }

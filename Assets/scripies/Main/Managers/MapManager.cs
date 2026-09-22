@@ -130,7 +130,7 @@ public class MapManager : MonoBehaviour
         SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
         mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
             
-        var targetWeather = weather.GetTargetWeather();
+        var targetWeather = weather.weatherType;
         var targetColor = mapBgColor;
             
         if (targetWeather != WeatherManager.WeatherType.Clear)
@@ -144,20 +144,20 @@ public class MapManager : MonoBehaviour
         if (audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene) audioManager.TriggerFadeIn(0.5f);
         yield return new WaitForSeconds(0.8f);
         if (collision.gameObject.scene == gameObject.scene) 
-            StartMap(collision.gameObject, targetWeather);
+            StartMap(targetWeather);
     }
 
-    private void StartMap() => StartMap(PlayerHealth.Instance.gameObject, null);
-
-    private void StartMap(GameObject objectRef, WeatherManager.WeatherType? forcedWeather)
+    private void StartMapO() => StartMap(null);
+    private void StartMap(WeatherManager.WeatherType? forcedWeather)
     {
-        if (objectRef == null || objectRef.scene.name != gameObject.scene.name)
+        var player = PlayerHealth.Instance.gameObject;
+        if (player == null || player.scene.name != gameObject.scene.name)
         {
-            if (objectRef != null && objectRef.scene.name != "Persistent Objects") StartCoroutine(TryStartMapAgain(objectRef));
+            if (player != null && player.scene.name != "Persistent Objects") StartCoroutine(TryStartMapAgain(player));
             return;
         }
-        weather.SetWeather(forcedWeather);
-        if (undiscoveredMap) undiscoveredMap = false;
+        activeMap = true;
+        weather.ChangeWeather(forcedWeather);
     }
 
     private IEnumerator TryStartMapAgain(GameObject objectRef)
@@ -169,15 +169,22 @@ public class MapManager : MonoBehaviour
     }
     
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
-    public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume)
+    public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume, bool weatherChanged = false)
     {
-        AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor);
+        if (mName == AreaManager.Instance.currentArea) return;
+        
+        if (weatherChanged || undiscoveredMap) AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor);
+        else if (!undiscoveredMap) AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor, true);
+        
         for (var i = 0; i < audioManager.backgroundMusic.Length; i++)
         {
             audioManager.backgroundMusic[i] = mOst[i];
             audioManager.backgroundMusicVolume[i] = mOstVolume[i];
         }
+        
         GameEvents.TriggerMusic(0, false);
+        GameEvents.TriggerOnEnterMap(sceneName, undiscoveredMap);
+        if (undiscoveredMap) undiscoveredMap = false;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -484,6 +491,8 @@ public class MapManager : MonoBehaviour
         
         list.activeMap = activeMap;
         list.undiscoveredMap = undiscoveredMap;
+        list.currentWeatherType = weather.weatherType;
+        list.currentWeatherDuration = weather.weatherDurationTimer;
         
         foreach (var eData in enemySceneData)
         {
@@ -573,6 +582,9 @@ public class MapManager : MonoBehaviour
         var sceneData = manager.sceneData.Find(x => x.sceneName == sceneName);
         activeMap = sceneData.activeMap;
         undiscoveredMap = sceneData.undiscoveredMap;
+        weather.weatherDurationTimer = sceneData.currentWeatherDuration;
+        //weather.SetWeather(sceneData.currentWeatherType);
+        weather.weatherType = sceneData.currentWeatherType;
         
         foreach (var list in manager.sceneData.Where(list => list.sceneName == sceneName))
         {
@@ -709,7 +721,6 @@ public class MapManager : MonoBehaviour
         }
     }
     #endregion
-
     
     private void OnEnable()
     {
@@ -717,7 +728,7 @@ public class MapManager : MonoBehaviour
             Instances.Add(gameObject.scene.name, this);
         if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
         
-        GameEvents.OnPlayerSpawned += StartMap;
+        GameEvents.OnPlayerSpawned += StartMapO;
         GameEvents.OnBossDefeated += OnBossDefeated;
         GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
         GameEvents.LoadMapData += LoadSceneData;
@@ -733,7 +744,7 @@ public class MapManager : MonoBehaviour
         
         GameEvents.OnBossDefeated -= OnBossDefeated;
         GameEvents.LoadNpcData -= LoadNpcData;
-        GameEvents.OnPlayerSpawned -= StartMap;
+        GameEvents.OnPlayerSpawned -= StartMapO;
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
         GameEvents.LoadMapData -= LoadSceneData;
         InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;

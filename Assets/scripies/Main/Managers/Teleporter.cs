@@ -22,10 +22,10 @@ public class Teleporter : MonoBehaviour
     [EnumButtons] public TeleportType teleportType;
     private TeleDoor thisTeleDoor;
     [Space]
-    [Tooltip("For Scene Teleporting")]
+    [Tooltip("Can be for both Scene and InterScene Teleporting")]
     [SerializeField] private TeleDoor targetTeleDoor;
     [Space]
-    [Tooltip("For InterScene Teleporting")]
+    [Tooltip("For InterScene Teleporting IF targetTeleDoor is not set")]
     [SerializeField] private SceneField sceneToTeleport;
     [Space]
     [Tooltip("This will be automaticaly filled in, but we can initialise the field if the type is PreviousDoor")]
@@ -251,7 +251,13 @@ public class Teleporter : MonoBehaviour
     
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.dodgerBlue;
+        Gizmos.color = teleportType switch {TeleportType.Scene => Color.chartreuse, TeleportType.InterScene => Color.deepSkyBlue, TeleportType.PreviousDoor => Color.orangeRed, _ => Color.white};
         Gizmos.DrawWireCube(transform.position, teleporterSize);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = teleportType switch {TeleportType.Scene => Color.chartreuse, TeleportType.InterScene => Color.deepSkyBlue, TeleportType.PreviousDoor => Color.orangeRed, _ => Color.white};
+        if (teleportType == TeleportType.Scene && teleportTarget != null) Gizmos.DrawLine(transform.position, teleportTarget.position);
     }
 }

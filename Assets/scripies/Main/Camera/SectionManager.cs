@@ -36,7 +36,7 @@ public class SectionManager : MonoBehaviour
     public void UpdateAreaInfo(string mName, Color mTextColor = default, Color mBgColor = default, AudioClip[] mOst = null, float[] mOstVolume = null)
     {
         if (!announceDetails) return;
-        AreaManager.Instance.Announce(mName, "", mTextColor, mBgColor);
+        AreaManager.Instance.Announce(mName, "", mTextColor, mBgColor, true);
         
         if (mOst == null || mOstVolume == null || muteMusic) return;
         if (mOst.Length == 0) return;
@@ -51,7 +51,7 @@ public class SectionManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
-        if (weather != null) weather.SetWeather();
+        //if (weather != null) weather.SetWeather();
         if (cameraObject != null) cameraObject.SetActive(true);
         prevMapBgColor = AreaManager.Instance.actualCamera.backgroundColor;
         if (muteMusic) audioManager.ToggleMuteMusic();

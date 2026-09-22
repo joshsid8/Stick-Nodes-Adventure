@@ -54,15 +54,7 @@ public class Projectile : AbilityBase
             projectileHeight = Random.Range(upwardOnly ? 0 : -projectileHeight - randomAngle, projectileHeight + randomAngle);
         }
 
-        if (swapForce)
-        {
-            var temp = projectileSpeed;
-            var temp2 = projectileHeight;
-            projectileSpeed = temp2;
-            projectileHeight = temp;
-        }
-
-        ApplyForce();
+        ApplyForce(isDirectional,!swapForce ? projectileSpeed : projectileHeight, swapForce ? projectileSpeed : projectileHeight);
         Destroy(gameObject, lifeTime);
         objectRange = ccoll.radius / 3 * sizeMult + 0.3f;
         transform.localScale *= sizeMult;
@@ -119,7 +111,7 @@ public class Projectile : AbilityBase
     protected override void OnTriggerExit2D(Collider2D collision){}
     protected override void HitBox(){}
     
-    private void ApplyForce()
+    public void ApplyForce(bool directional, float projSpeed, float projHeight)
     {
         rb.gravityScale = gravityScale;
         rb.linearDamping = airResistance;
@@ -133,8 +125,8 @@ public class Projectile : AbilityBase
         else
         {
             transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, direction);
+            // Holy maths bro
             var angleRad = direction * Mathf.Deg2Rad;
-            
             rb.linearVelocity = new Vector2(Mathf.Cos(angleRad) * (isFacingRightDirection ? 1 : -1), Mathf.Sin(angleRad)) * projectileSpeed;
         }
     }
@@ -150,18 +142,29 @@ public class Projectile : AbilityBase
             if (hit.collider == null || hit.collider.gameObject == abilityCaster) continue;
             var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
             var pStatus = hit.collider.gameObject.GetComponent<IPlayerStatus>();
-            if (pStatus != null && pStatus.IsCountering)
+            if (pStatus is { IsCountering: true })
             {
-                deflected = true;
-                typeFactor = 1;
-                GameEvents.TriggerPlayerAction("Counter");
-                GameEvents.TriggerPlayerCounter();
+                var facingProj = pStatus.IsFacingRight && rb.linearVelocity.x < 0 || !pStatus.IsFacingRight && rb.linearVelocity.x > 0;
+                if (facingProj)
+                {
+                    deflected = true;
+                    typeFactor = 1;
+                    GameEvents.TriggerPlayerAction("Counter");
+                    GameEvents.TriggerPlayerCounter();
+                    break;
+                }
             }
-                
-            if (!deflected) Damageable(damageable);
+            Damageable(damageable);
         }
-        if (!deflected && pierceAmount <= 0) Crash();
-        else if (deflected) Deflect(typeFactor);
+        switch (deflected)
+        {
+            case false when pierceAmount <= 0:
+                Crash();
+                break;
+            case true:
+                Deflect(typeFactor);
+                break;
+        }
     }
     
     private void Crash()
@@ -188,14 +191,7 @@ public class Projectile : AbilityBase
     {
         SetValues(factor, !isFacingRightDirection, factor != 1 ? abilityCaster : GameObject.FindGameObjectWithTag("Player"));
         projectileSpeed += 5f;
-        if (swapForce)
-        {
-            var temp = projectileSpeed;
-            var temp2 = projectileHeight;
-            projectileSpeed = temp2;
-            projectileHeight = temp;
-        }
-        ApplyForce();
+        ApplyForce(isDirectional, !swapForce ? projectileSpeed : projectileHeight, swapForce ? projectileSpeed : projectileHeight);
     }
 
     private void OnDrawGizmosSelected()
