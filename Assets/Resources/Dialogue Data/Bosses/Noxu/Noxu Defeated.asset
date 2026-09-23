@@ -60,15 +60,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 42fc952e064a1b445a0382282774002e, type: 2}
   canBeColoured: 1
   canBeBold: 1
+  respeakable: 0
   speaker: Noxu
   dialoguesToAdd:
   - {fileID: 11400000, guid: 408731244617b5a4aa7445798dc0d4ea, type: 2}
   dialoguesToRemove:
   - {fileID: 11400000, guid: 9d5aa68ce2711fa4c96f2d57cbcea2cb, type: 2}
-  externalInstance: 
-  alteredExternalDialogues: []
+  externalInstances:
+  - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
+    externalDialoguesToAdd:
+    - {fileID: 11400000, guid: d9f6dc516e245d743bac63814b48f80f, type: 2}
+    externalDialoguesToRemove: []
   speakerType: 0
   doorsToControl:
   - doorName: Noxu Section
     openDoor: 1
-  respeakable: 0
+  shopItemsToAdd: []

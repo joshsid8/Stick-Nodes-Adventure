@@ -60,6 +60,7 @@ namespace scripies.Core
         public static Action<GameObject> OnObjectSpawn;
         public static Action<GameObject> OnObjectDestroyed;
         public static Action<BadgeSO> OnBadgeCollect;
+        public static Action<float, float> OnDamageDealt;
 
         public static Action<float> StopTime;
         public static Action<Image, float, float> JumpScare;
@@ -111,9 +112,16 @@ namespace scripies.Core
         public static void TriggerOnCollect() => OnCollect?.Invoke();
         public static void TriggerObjectSpawn(GameObject obj = null) => OnObjectSpawn?.Invoke(obj);
         public static void TriggerObjectDestroy(GameObject obj) => OnObjectDestroyed?.Invoke(obj);
+        public static void TriggerToggleDoor(string doorName, bool state) => ToggleDoor?.Invoke(doorName, state);
 
         public static void TriggerStopTime(float time) => StopTime?.Invoke(time);
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
-        public static void TriggerToggleDoor(string doorName, bool state) => ToggleDoor?.Invoke(doorName, state);
+        public static void TriggerOnDamageDealt(float damage, float threshold = 50) => OnDamageDealt?.Invoke(damage, threshold);
+
+        public static void TriggerBoom(AudioClip boomSound = null, Image jumpScareImage = null)
+        {
+            TriggerPlaySound(boomSound);
+            TriggerJumpScare(jumpScareImage);
+        }
     }
 }

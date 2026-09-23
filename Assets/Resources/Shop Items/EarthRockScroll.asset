@@ -19,6 +19,6 @@ MonoBehaviour:
     honestly op, which is why it''s costly'
   itemSprite: {fileID: 0}
   itemPrice: 400
-  itemCollectable: {fileID: 11400000, guid: 78eb7255c5578d043b060d338de00e1b, type: 2}
+  itemCollectable: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
   itemAmount: 1
   badgeSoRequired: {fileID: 0}

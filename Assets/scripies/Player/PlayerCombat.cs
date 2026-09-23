@@ -118,6 +118,8 @@ namespace scripies.Player
 
             comboInterval[0]++;
             currentAttackCooldown = attackCooldown * attackCooldownMult;
+            
+            GameEvents.TriggerOnDamageDealt(damageAmount);
         }
 
         private void AirAttack()
@@ -146,6 +148,8 @@ namespace scripies.Player
             hasAirBoosted = true;
             comboInterval[1]++;
             currentAttackCooldown = airAttackCooldown * attackCooldownMult;
+            
+            GameEvents.TriggerOnDamageDealt(damageAmount);
         }
 
         private IEnumerator AirCombo(GameObject target)

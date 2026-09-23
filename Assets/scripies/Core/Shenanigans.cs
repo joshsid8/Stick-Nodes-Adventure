@@ -15,11 +15,13 @@ public class Shenanigans : MonoBehaviour
 {
     public static Shenanigans Instance {get; private set;}
 
-    [Header("Jump Scare Object")] 
+    [Header("Jump Scaring")] 
     [SerializeField] private Image jsObjImage;
     
     [SearchContext("dir:Sprites/unn", "t:Sprite")] 
     [SerializeField] private Sprite[] jsImages;
+
+    public AudioClip[] jumpScareClips;
     
     [Header("Stored Object")]
     public GameObject storedObj;

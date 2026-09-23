@@ -242,7 +242,7 @@ namespace scripies.Dialogue
                         GameEvents.TriggerRemoveDialogue(dialogue, speaker);
                 }
                 
-                if (dialogueObject.externalInstances != null || dialogueObject.dialoguesToRemove != null) ChangeDialogues(dialogueObject.externalInstances);
+                if (dialogueObject.externalInstances is { Length: > 0 }) ChangeDialogues(dialogueObject.externalInstances);
                 
                 CameraEventManager.Instance.ResetCamera();
             }
@@ -255,8 +255,11 @@ namespace scripies.Dialogue
         private void ChangeDialogues(ExternalDialogue[] externalInstances) => StartCoroutine(ChangeDialoguesC(externalInstances));
         private static IEnumerator ChangeDialoguesC(ExternalDialogue[] externalDialogues)
         {
+            if (externalDialogues == null) yield break;
+            yield return new WaitForSeconds(0.15f);
             foreach (var extIn in externalDialogues)
             {
+                if (extIn.externalInstance == null) continue;
                 var instance = extIn;
                 var externalInstance = ObjectDatabase.Instance.GetEntityObjByName(instance.externalInstance.name, true);
                 found:

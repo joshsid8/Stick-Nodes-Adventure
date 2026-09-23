@@ -60,13 +60,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 324dc0839a888484da1b58cbf1ccaadd, type: 2}
   canBeColoured: 0
   canBeBold: 0
+  respeakable: 0
   speaker: 
   dialoguesToAdd: []
   dialoguesToRemove: []
-  externalInstance: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
-  externalDialoguesToAdd: []
-  externalDialoguesToRemove: []
+  externalInstances:
+  - externalInstance: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
+    externalDialoguesToAdd:
+    - {fileID: 11400000, guid: d764165b30177764590650f359c01bf3, type: 2}
+    externalDialoguesToRemove: []
   speakerType: 0
   doorsToControl: []
   shopItemsToAdd: []
-  respeakable: 0

@@ -5,6 +5,7 @@ using scripies.Player;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour, IAudioStatus
@@ -18,7 +19,8 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
     public AudioClip[] backgroundMusic;
     public float[] backgroundMusicVolume;
-    public AudioClip[] sFXMusic;
+    [FormerlySerializedAs("sfxMusic")]
+    public AudioClip[] backupSfx;
 
     public GameObject[] gUI;
     private Coroutine fadeCoroutine;
@@ -158,7 +160,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         }
         else sfxSource.volume = volume;
 
-        sfxSource.clip = clip != null ? clip : sFXMusic[Random.Range(0, sFXMusic.Length)];
+        sfxSource.clip = clip != null ? clip : backupSfx[Random.Range(0, backupSfx.Length)];
         sfxSource.pitch = randomPitch ? Random.Range(0.85f, 1.15f) : 1;
 
         sfxSource.Play();

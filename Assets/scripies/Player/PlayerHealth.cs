@@ -303,6 +303,9 @@ namespace scripies.Player
                 GameEvents.TriggerPlayerHealthChanged(procAmount);
                 yield return new WaitForSeconds(procInterval);
             }
+            
+            // We dont worry about this
+            GameEvents.TriggerOnDamageDealt(damageAmount);
         }
 
         public void Shock(float stunDuration = 0f, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f, bool targetPosition = false)

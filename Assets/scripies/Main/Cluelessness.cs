@@ -1,11 +1,11 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-
     
 /// <summary>
+/// This is a script for some sort of debugging. If im CLUELESS on a bug in a script, use this.
 /// Displays the value of a variable as gui text. '=' Gets added for ya
+/// Kinda like a friend of Tomfoolery this script is
 /// </summary>
 public class Cluelessness : MonoBehaviour
 {

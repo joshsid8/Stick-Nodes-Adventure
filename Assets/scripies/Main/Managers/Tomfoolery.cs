@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using scripies.Core;
 using scripies.Dialogue;
 using scripies.Player;
 using UnityEngine;
+using static UnityEngine.Random;
+
 /// <summary>
 /// This is Shenanigans' brother
 /// If there is a function that's inconvenient to place, AS WELL as not being fit for Shenanigans (because of assembly references), add it here!
@@ -15,12 +19,16 @@ public class Tomfoolery : MonoBehaviour
     public static Tomfoolery Instance {get; private set;}
     private Shenanigans shenanigans;
     private PlayerHealth player;
+    
+    [SerializeField] private List<ItemsOnEvent> itemsToAddOnEvent = new();
+
 
     private void OnEnable()
     {
         GameEvents.ToggleDoor += ToggleDoor;
         GameEvents.AddShopItems += AddShopItems;
         GameEvents.OnEnterMap += AddShopItemsOnPlayerMapEnter;
+        GameEvents.OnDamageDealt += IsDamageTooHigh;
     }
     
     private void OnDisable()
@@ -28,6 +36,7 @@ public class Tomfoolery : MonoBehaviour
         GameEvents.ToggleDoor -= ToggleDoor;
         GameEvents.AddShopItems -= AddShopItems;
         GameEvents.OnEnterMap -= AddShopItemsOnPlayerMapEnter;
+        GameEvents.OnDamageDealt -= IsDamageTooHigh;
     }
 
     private void Awake()
@@ -121,10 +130,49 @@ public class Tomfoolery : MonoBehaviour
         }
     }
     
-    private void AddShopItemsOnPlayerMapEnter(string sceneName, bool firstTime) => StartCoroutine(AddShopItemsOnPlayerMapEnterC(sceneName, firstTime));
-    private static IEnumerator AddShopItemsOnPlayerMapEnterC(string sceneName, bool firstTime)
+    private void AddShopItemsOnPlayerMapEnter(string sceneName, bool firstTime)
     {
-        // Not sure what to add here yet...
-        yield return null;
+        foreach (var itemsOnEvent in itemsToAddOnEvent)
+        {
+            foreach (var item in itemsOnEvent.itemsToAdd.Where(i => i.targetScene.SceneName == sceneName && i.type == EventType.PlayerMapEnter))
+            {
+                if (!firstTime && item.requireFirstTime)
+                {
+                    //print($"Skipping {item.targetScene.SceneName} because it requires first time, and the player has entered {sceneName} before");
+                    continue;
+                }
+                
+                if (item.itemsToAdd.Length > 0)
+                    AddShopItems(item.itemsToAdd, itemsOnEvent.targetNpc);
+                if (item.dialogueToUse.Length > 0) 
+                    GameEvents.TriggerChangeDialogue(item.dialogueToUse);
+                //print($"{itemsOnEvent.targetNpc.name} has been updated because the player entered {sceneName} (for the first time!)");
+            }
+        }
+    }
+
+    private void IsDamageTooHigh(float damage, float threshold = 50)
+    {
+        if (damage > threshold) GameEvents.TriggerBoom(shenanigans.jumpScareClips[Range(0, shenanigans.jumpScareClips.Length)]);
+    }
+    
+    public enum EventType { PlayerMapEnter /* More later*/}
+
+    [Serializable]
+    public struct ItemsOnEvent
+    {
+        public NPC targetNpc;
+        public ItemsToAdd[] itemsToAdd;
+    }
+    
+    [Serializable]
+    public struct ItemsToAdd
+    {
+        public EventType type;
+        [Tooltip("For PlayerMapEnter")] public SceneField targetScene;
+        [Tooltip("For PlayerMapEnter")] public bool requireFirstTime;
+        
+        public ExternalDialogue[] dialogueToUse;
+        public ShopItem[] itemsToAdd;
     }
 }

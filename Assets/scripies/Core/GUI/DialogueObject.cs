@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using scripies.Dialogue;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace scripies.Dialogue
 {
-    [CreateAssetMenu(menuName = "Dialogue/Dialogue Object")]
+    [CreateAssetMenu(menuName = "Dialogue Object")]
     public class DialogueObject : ScriptableObject
     {
         [SerializeField] private string npcName;
@@ -66,7 +65,7 @@ namespace scripies.Dialogue
         public DialogueObject[] dialoguesToAdd;
         public DialogueObject[] dialoguesToRemove;
         [Space]
-        public ExternalDialogue[] externalInstances = new ExternalDialogue[1];
+        public ExternalDialogue[] externalInstances;
         
         public enum SpeakerType {Default, ShopOpen, BossFight}
         [EnumButtons] public SpeakerType speakerType;

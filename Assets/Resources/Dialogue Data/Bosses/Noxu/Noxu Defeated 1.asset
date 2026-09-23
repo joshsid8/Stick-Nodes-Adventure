@@ -37,17 +37,19 @@ MonoBehaviour:
   willGiveQuest: 0
   questToOffer: {fileID: 0}
   itemCheckFailureDialogue: {fileID: 0}
-  itemType:
-  - {fileID: 11400000, guid: 42fc952e064a1b445a0382282774002e, type: 2}
+  itemType: []
   canBeColoured: 1
   canBeBold: 1
+  respeakable: 1
   speaker: Noxu
   dialoguesToAdd: []
   dialoguesToRemove: []
-  externalInstance: 
-  alteredExternalDialogues: []
+  externalInstances:
+  - externalInstance: {fileID: 0}
+    externalDialoguesToAdd: []
+    externalDialoguesToRemove: []
   speakerType: 0
   doorsToControl:
   - doorName: Noxu Section
     openDoor: 1
-  respeakable: 1
+  shopItemsToAdd: []

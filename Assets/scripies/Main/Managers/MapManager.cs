@@ -582,7 +582,7 @@ public class MapManager : MonoBehaviour
         var sceneData = manager.sceneData.Find(x => x.sceneName == sceneName);
         activeMap = sceneData.activeMap;
         undiscoveredMap = sceneData.undiscoveredMap;
-        weather.weatherDurationTimer = sceneData.currentWeatherDuration;
+        weather.weatherDurationTimer = Mathf.Clamp(sceneData.currentWeatherDuration, 5, sceneData.currentWeatherDuration);
         //weather.SetWeather(sceneData.currentWeatherType);
         weather.weatherType = sceneData.currentWeatherType;
         
@@ -640,11 +640,11 @@ public class MapManager : MonoBehaviour
                 }
                 cp.isCurrent = cpData.isCurrent;
             }
-
             bossSceneData.activeBoss = list.activeBoss;
             if (list.isBossDead && bossSceneData.bossHealth != null) 
                 Destroy(bossSceneData.bossHealth.gameObject);
             bossSceneData.willBeNpc = list.willBeNpc;
+            print("Loaded !boss! and everything else");
             
             sceneLoaded = true;
             break;
