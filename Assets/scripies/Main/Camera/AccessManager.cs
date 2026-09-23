@@ -3,10 +3,10 @@ using System.Linq;
 using scripies.Core;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Collider2D))]
 public class AccessManager : MonoBehaviour
 {
-    private enum Objectives { DefeatEnemy, FindKeys, DefeatBoss, UnlockBadge }
+    private enum Objectives {DefeatEnemy, FindKeys, DefeatBoss, UnlockBadge, None }
     public bool isOpen;
     
     private List<DoorObject> doorObjs = new();
@@ -72,8 +72,8 @@ public class AccessManager : MonoBehaviour
     {
         if (isOpen) return;
         isOpen = true;
-        foreach (var door in doorObjs) if (door != null)
-                StartCoroutine(door.Open());
+        foreach (var door in doorObjs.Where(door => door != null))
+            StartCoroutine(door.Open());
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.OnDoorStatusChanged(this, true);
         GameEvents.TriggerPersistGameData();
@@ -84,7 +84,7 @@ public class AccessManager : MonoBehaviour
     {
         if (!isOpen) return;
         isOpen = false;
-        foreach (var door in doorObjs) if (door != null)
+        foreach (var door in doorObjs.Where(door => door != null))
             door.Close();
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.OnDoorStatusChanged(this, false);
@@ -127,6 +127,9 @@ public class AccessManager : MonoBehaviour
                     var bh = boss.GetComponent<BossHealth>();
                     if (bh != null && bh.isDead) OpenDoors();
                 }
+                else OpenDoors();
+                break;
+            case Objectives.None:
                 break;
             default:
                 print("Just clueless.");

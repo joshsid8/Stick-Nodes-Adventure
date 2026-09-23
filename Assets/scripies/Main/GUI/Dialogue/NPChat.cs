@@ -47,7 +47,7 @@ namespace scripies.Dialogue
         public bool IsForced { get => isForced; set => isForced = value; }
         public Transform ChatPoint => chatPoint;
         public float ChatRadius => chatRadius;
-        public Entity Speaker => npc;
+        public NPC Speaker => npc;
         
         private void Start()
         {
@@ -72,26 +72,25 @@ namespace scripies.Dialogue
             {
                 if (canTurn) FacePlayer();
                 if (indicator != null) indicator.SetActive(true);
-                if (!isForced && inputDirection > 0 && !isTriggered || isForced && !isTriggered)
+                
+                if ((isForced || !(inputDirection > 0) || isTriggered) && (!isForced || isTriggered)) return;
+                isTriggered = true;
+                isForced = false;
+                // '^' means "from the end of a list datatype" WHICH IS SO COOL
+                if (dialogue.Count >= 1)
                 {
-                    isTriggered = true;
-                    isForced = false;
-                    // '^' means "from the end of a list datatype" WHICH IS SO COOL
-                    if (dialogue.Count >= 1)
+                    var priorityDialogue = dialogue[^1];
+                    if (priorityDialogue != null)
                     {
-                        var priorityDialogue = dialogue[^1];
-                        if (priorityDialogue != null)
-                        {
-                            DialogueManager.Instance.ShowDialogue(priorityDialogue, npc);
-                            if (!spokenDialogue.Contains(priorityDialogue) && !priorityDialogue.respeakable) spokenDialogue.Add(priorityDialogue);
-                            if (priorityDialogue.PendingChoice) dialogue.Remove(priorityDialogue);
-                        }
+                        DialogueManager.Instance.ShowDialogue(priorityDialogue, npc);
+                        if (!spokenDialogue.Contains(priorityDialogue) && !priorityDialogue.respeakable) spokenDialogue.Add(priorityDialogue);
+                        if (priorityDialogue.PendingChoice) dialogue.Remove(priorityDialogue);
                     }
-                    else if (isShopkeeper && !ShopManager.Instance.isActive) 
-                        shopKeeper.StartShop();
-                    if (moveCamToNpc && DialogueManager.Instance.isActive) CameraEventManager.Instance.ChangeTarget(gameObject);
-                    CameraEventManager.Instance.ResetCamera();
                 }
+                else if (isShopkeeper && !ShopManager.Instance.isActive) 
+                    shopKeeper.StartShop();
+                if (moveCamToNpc && DialogueManager.Instance.isActive) CameraEventManager.Instance.ChangeTarget(gameObject);
+                CameraEventManager.Instance.ResetCamera();
             }
             else if (indicator != null) indicator.SetActive(false);
         }
@@ -101,13 +100,7 @@ namespace scripies.Dialogue
             if (speaker != gameObject || spokenDialogue.Contains(dialogueObject as DialogueObject)) return;
             if (!dialogue.Contains(dialogueObject as DialogueObject)) dialogue.Add(dialogueObject as DialogueObject);
             //else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
-            StartCoroutine(SaveGame());
-        }
-
-        private IEnumerator SaveGame(float time = 0.2f)
-        {
-            yield return new WaitForSeconds(time);
-            if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm)) mm.UpdateLists();
+            GameEvents.TriggerPersistGameData();
         }
         
         public void ClearDialogue() => dialogue.Clear();
@@ -126,10 +119,12 @@ namespace scripies.Dialogue
             GameEvents.RemoveDialogue -= RemoveDialogue;
             GameEvents.OnDialogueClose -= RemoveSpokenDialogue;
         }
-        
+
         private void ToggleDialogueTrigger(GameObject obj, bool state)
         {
-            if (obj == gameObject) isActive = state;
+            if (obj != gameObject) return;
+            if (!state && indicator != null) indicator.SetActive(false);
+            isActive = state;
         }
 
         public void RemoveDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
@@ -140,7 +135,7 @@ namespace scripies.Dialogue
             chatInterval = 0.5f;
         }
         
-        private void RemoveSpokenDialogue(ScriptableObject dialogueToRemove)
+        private void RemoveSpokenDialogue(ScriptableObject dialogueToRemove, NPC targetNpc = null)
         {
             if (dialogueToRemove == null) return;
             var dto = dialogueToRemove as DialogueObject;
@@ -154,8 +149,8 @@ namespace scripies.Dialogue
         private IEnumerator RemoveDialogue(DialogueObject dto)
         {
             yield return new WaitForSeconds(0.01f);
-            dialogue.RemoveAt(dialogue.IndexOf(dto));
-            StartCoroutine(SaveGame());
+            dialogue.RemoveAt(dialogue.IndexOf(dto)); 
+            GameEvents.TriggerPersistGameData();
         }
         
         private void OnDrawGizmosSelected()

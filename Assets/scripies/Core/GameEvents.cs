@@ -40,7 +40,7 @@ namespace scripies.Core
         public static Action<ScriptableObject, GameObject> AddDialogue;
         public static Action<ScriptableObject, GameObject> RemoveDialogue;
         public static Action ForceCloseDialogue;
-        public static Action<ScriptableObject> OnDialogueClose;
+        public static Action<ScriptableObject, NPC> OnDialogueClose;
         public static Action<ExternalDialogue[]> ChangeDialogue;
         public static Action<ShopItem[], NPC> AddShopItems;
         
@@ -90,7 +90,7 @@ namespace scripies.Core
         public static void TriggerAddDialogue(ScriptableObject dialogue, GameObject npc) => AddDialogue?.Invoke(dialogue, npc);
         public static void TriggerRemoveDialogue(ScriptableObject dialogue, GameObject npc) => RemoveDialogue?.Invoke(dialogue, npc);
         public static void TriggerForceCloseDialogue() => ForceCloseDialogue?.Invoke();
-        public static void TriggerOnDialogueClose(ScriptableObject dialogue) => OnDialogueClose?.Invoke(dialogue);
+        public static void TriggerOnDialogueClose(ScriptableObject dialogue, NPC npc) => OnDialogueClose?.Invoke(dialogue, npc);
         public static void TriggerChangeDialogue(ExternalDialogue[] externalInstance) => ChangeDialogue?.Invoke(externalInstance);
         public static void TriggerAddShopItems(ShopItem[] items, NPC npc) => AddShopItems?.Invoke(items, npc);
         

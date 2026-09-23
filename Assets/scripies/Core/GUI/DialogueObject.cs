@@ -60,7 +60,7 @@ namespace scripies.Dialogue
         [Header("NPC Control")]
         public bool respeakable = true;
         
-        public string speaker;
+        //public Entity speaker;
         [Tooltip("Adds these dialogues to the current speaker. Make sure the desired topmost dialogue is the last one in the array.")]
         public DialogueObject[] dialoguesToAdd;
         public DialogueObject[] dialoguesToRemove;

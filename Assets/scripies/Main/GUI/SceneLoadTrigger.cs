@@ -13,14 +13,13 @@ public class SceneLoadTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == player)
-        { 
-            LoadScenes();
-            StartCoroutine(UnloadScenes());
-        }
+        if (collision.gameObject != player) return;
+        LoadScenes();
+        UnloadScenes();
     }
 
-    private void LoadScenes()
+    [ContextMenu("Load Scenes")]
+    public void LoadScenes()
     {
         foreach (var scene in scenesToLoad)
         {
@@ -28,18 +27,16 @@ public class SceneLoadTrigger : MonoBehaviour
             for (var j = 0; j < SceneManager.sceneCount; j++)
             {
                 var loadedScene = SceneManager.GetSceneAt(j);
-                if (loadedScene.name == scene.SceneName)
-                {
-                    isSceneLoaded = true;
-                    break;
-                }
-                
+                if (loadedScene.name != scene.SceneName) continue;
+                isSceneLoaded = true;
+                break;
             }
             if (!isSceneLoaded) SceneManager.LoadSceneAsync(scene.SceneName, LoadSceneMode.Additive);
         }
     }
-
-    private IEnumerator UnloadScenes()
+    
+    [ContextMenu("Unload Scenes")] private void UnloadScenes() => StartCoroutine(UnloadScenesC());
+    private IEnumerator UnloadScenesC()
     {
         foreach (var scene in scenesToUnload)
         {

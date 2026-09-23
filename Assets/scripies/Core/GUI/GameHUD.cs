@@ -17,12 +17,11 @@ public class GameHUD : MonoBehaviour
     [SerializeField] private Image screenShader;
     [SerializeField] private Color screenShaderColour;
     
-    private IEnemyStatus boss;
     public Image bossHealthBar;
     [SerializeField] private Image bossHealthBackBar;
     public TMP_Text bossTitleText;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {

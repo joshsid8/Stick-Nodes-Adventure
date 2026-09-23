@@ -81,21 +81,22 @@ public class BossAttack : MonoBehaviour
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private IEnumerator Start()
+    private void Start()
     {
         ps = GameObject.FindGameObjectWithTag("Player").GetComponent<IPlayerStatus>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         originalPosition = transform.position;
-        
-        GameEvents.OnDialogueClose += StartFightOnDialogueClose;
-        GameEvents.OnPlayerDeath += ResetBoss;
-        GameEvents.OnPlayerSpawned += ResetBoss;
-
-        yield return new WaitForSeconds(1f);
         GameEvents.TriggerToggleNpChat(gameObject, true);
     }
 
-    private void OnDestroy()
+    private void OnEnable()
+    {
+        GameEvents.OnDialogueClose += StartFightOnDialogueClose;
+        GameEvents.OnPlayerDeath += ResetBoss;
+        GameEvents.OnPlayerSpawned += ResetBoss;
+    }
+
+    private void OnDisable()
     {
         GameEvents.OnDialogueClose -= StartFightOnDialogueClose;
         GameEvents.OnPlayerDeath -= ResetBoss;
@@ -112,10 +113,10 @@ public class BossAttack : MonoBehaviour
     
     private void FactorCheck() => closeRange = Physics2D.OverlapCircle(transform.position, rangeRadius, playerLayer);
 
-    private void StartFightOnDialogueClose(ScriptableObject dialogueToDerive)
+    private void StartFightOnDialogueClose(ScriptableObject dialogueToDerive, NPC npc)
     {
+        if (bh.bossHealth <= 0 || npc != dt.Speaker) return;
         if (dialogueToDerive == null || dt.Dialogue.Length == 0) return; 
-        if (bh.bossHealth <= 0) return;
         var dto = dialogueToDerive as DialogueObject;
         if (dto == null || dto.speakerType != DialogueObject.SpeakerType.BossFight) return;
         StartFight();
@@ -125,10 +126,10 @@ public class BossAttack : MonoBehaviour
     {
         isAttacking = true;
         canFacePlayer = true;
-        GameEvents.TriggerToggleNpChat(gameObject, false);
         GameEvents.TriggerAddPlayerCombat(690, false, "Boss");
         GameEvents.TriggerForceCloseDialogue();
         GameEvents.TriggerToggleDoor(gameObject.name, false);
+        GameEvents.TriggerToggleNpChat(gameObject, false);
         if (useMovement) InvokeRepeating(nameof(Movement), 0, 1.5f);
         GameHUD.Instance.ToggleBossHealth(true);
         StartCoroutine(bh.PhaseToggle(false));
@@ -142,7 +143,8 @@ public class BossAttack : MonoBehaviour
     }
     
     public void AttackSystem()
-    {
+    {       
+        GameEvents.TriggerToggleNpChat(gameObject, false);
         if (!isPerformingAttack && !bh.isStunned && !bh.isDead && isAttacking && !testing)
         {
             if (isGrounded) animator.Play("Idle");

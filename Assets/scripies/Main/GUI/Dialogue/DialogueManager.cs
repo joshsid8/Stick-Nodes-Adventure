@@ -206,14 +206,17 @@ namespace scripies.Dialogue
         private void CloseDialogue(DialogueObject dialogueObject = null) => StartCoroutine(CloseDialogueC(dialogueObject));
         private IEnumerator CloseDialogueC(DialogueObject dialogueObject)
         {
-            OnDialogueClose?.Invoke(currentNpc);
+            OnDialogueClose?.Invoke(currentNpc as NPC);
             if (dialogueObject != null)
             {
                 GameObject speaker;
                 if (currentNpc != null) speaker = ObjectDatabase.Instance.GetEntityObjByName(currentNpc.name, true);
-                else if (string.IsNullOrEmpty(dialogueObject.speaker)) speaker = GameObject.Find(dialogueObject.speaker) ?? ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.speaker, true);
                 else if (string.IsNullOrEmpty(dialogueObject.NPCName)) speaker = GameObject.Find(dialogueObject.NPCName) ?? ObjectDatabase.Instance.GetEntityObjByName(dialogueObject.NPCName, true);
-                else goto close;  // we, (yes, WE, US, me AND you) love the goto keyword
+                else 
+                {
+                    Debug.LogError($"There isn't an npc Object (even after looking up {currentNpc?.name})");
+                    goto close;  // we, (yes, WE, US, me AND you) love the goto keyword
+                }
                 
                 if (dialogueObject.speakerType == (DialogueObject.SpeakerType) 1)
                 {
@@ -247,7 +250,7 @@ namespace scripies.Dialogue
                 CameraEventManager.Instance.ResetCamera();
             }
             close:
-            GameEvents.TriggerOnDialogueClose(dialogueObject);
+            GameEvents.TriggerOnDialogueClose(dialogueObject, currentNpc);
             //GameEvents.TriggerPlaySound(dialoguePings[1], false);
             ClearData();
         }

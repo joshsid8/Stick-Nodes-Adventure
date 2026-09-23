@@ -11387,8 +11387,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 609.40894, y: -1116.3865}
-  m_SizeDelta: {x: 587.02, y: 210.8598}
+  m_AnchoredPosition: {x: 451.46, y: -1116.3865}
+  m_SizeDelta: {x: 902.92, y: 210.8598}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1177921409
 MonoBehaviour:
@@ -11413,7 +11413,7 @@ MonoBehaviour:
   m_text: The Place?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11447,7 +11447,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 2.75
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -21173,6 +21173,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
+      propertyPath: damageAmount
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: hitSfx.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -21310,11 +21314,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 256.23
+      value: 55.9
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 66.97
+      value: 30.1
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22761,7 +22765,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 256.61685, y: 67.02388, z: -0.059539795}
+  m_LocalPosition: {x: 56.28684, y: 30.153873, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23693,7 +23697,27 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  backupSfx: []
+  backupSfx:
+  - {fileID: 8300000, guid: 1dd702b4d549b5a4bb8e282e1324250d, type: 3}
+  - {fileID: 8300000, guid: d09fa1fdee98e5a428444328f7162794, type: 3}
+  - {fileID: 8300000, guid: 0a518944207189746ab45d7a00f14c48, type: 3}
+  - {fileID: 8300000, guid: a8aeaf6b6d7ecb0458d430b1b23d5288, type: 3}
+  - {fileID: 8300000, guid: 39164ea2d4a2dd843921f8a9725722d8, type: 3}
+  - {fileID: 8300000, guid: f19e78ccbf0a5fc4886d1a0827b3fb15, type: 3}
+  - {fileID: 8300000, guid: db93aeae00a2e464c8d8d4841ebc7bb5, type: 3}
+  - {fileID: 8300000, guid: 89cf8e233f32f5f4ea4374cc7eb79457, type: 3}
+  - {fileID: 8300000, guid: 0c9ea7abb8979e74b9057f1c8da17229, type: 3}
+  - {fileID: 8300000, guid: d19c4a36dfc80f046941d2ce3230ddbb, type: 3}
+  - {fileID: 8300000, guid: a2760c89c2a875d42b0faf9836e08bfe, type: 3}
+  - {fileID: 8300000, guid: 8a543f4ab10741340aea9e17371d83b9, type: 3}
+  - {fileID: 8300000, guid: 360f9ffbf1a39cd4e9bfcc48af87cc79, type: 3}
+  - {fileID: 8300000, guid: 54fd543d913e0a94eb8d354ff5265f94, type: 3}
+  - {fileID: 8300000, guid: 3519acd6c7b723547bc2f22224d62b83, type: 3}
+  - {fileID: 8300000, guid: 5d0adfcdbfe1d4d4481fb22b0ded1118, type: 3}
+  - {fileID: 8300000, guid: f1a5c1e28b5acf74fa31a101585e5354, type: 3}
+  - {fileID: 8300000, guid: 0e3361d1050b4944f834ee843970a8fd, type: 3}
+  - {fileID: 8300000, guid: 8b5faa6821c0ad04cb4a39a6a572e276, type: 3}
+  - {fileID: 8300000, guid: ef80d456acbcb0f4f905a31ead7f08b1, type: 3}
   gUI:
   - {fileID: 8025661200280666599}
 --- !u!222 &1633741404616133041
@@ -23916,7 +23940,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 258.59717, y: 71.247955, z: -0.059539795}
+  m_LocalPosition: {x: 58.267162, y: 34.377956, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

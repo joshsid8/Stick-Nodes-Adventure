@@ -334,14 +334,14 @@ public class MapManager : MonoBehaviour
         StartCoroutine(PlayerHealth.Instance.Spawn(0.2f, true));
     }
     
-    private static void SaveDataOnDialogueClose(ScriptableObject dialogue = null) => GameEvents.TriggerPersistGameData();
+    private static void SaveDataOnDialogueClose(ScriptableObject dialogue = null, NPC npc = null) => GameEvents.TriggerPersistGameData();
 
     private IEnumerator InitialiseSceneData()
     {
         ClearSceneData();
         UpdateLists();
         LoadSceneData();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSecondsRealtime(0.4f);
         LoadNpcData();
     }
 
@@ -562,13 +562,14 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    private void LoadSceneData()
+    private void LoadSceneData() => StartCoroutine(LoadSceneDataC());
+    private IEnumerator LoadSceneDataC()
     {
         var manager = DataManager.Instance;
         if (manager == null || manager.sceneData.Count == 0)
         {
             sceneLoaded = true;
-            return;
+            yield break;
         }
         var hasSceneData = manager.sceneData.Exists(x => x.sceneName == sceneName);
         if (!hasSceneData)
@@ -577,8 +578,10 @@ public class MapManager : MonoBehaviour
             // print($"Scene data for {sceneName} not found, saving current scene data to data manager.");
             sceneLoaded = true;
             SaveSceneData();
-            return;
+            yield break;
         }
+        yield return new WaitUntil(() => manager.sceneData.Exists(x => x.sceneName == sceneName));
+        yield return new WaitForSecondsRealtime(0.1f);
         var sceneData = manager.sceneData.Find(x => x.sceneName == sceneName);
         activeMap = sceneData.activeMap;
         undiscoveredMap = sceneData.undiscoveredMap;
@@ -641,10 +644,12 @@ public class MapManager : MonoBehaviour
                 cp.isCurrent = cpData.isCurrent;
             }
             bossSceneData.activeBoss = list.activeBoss;
-            if (list.isBossDead && bossSceneData.bossHealth != null) 
+            if (list.isBossDead)
+            {
+                yield return new WaitUntil(() => bossSceneData.bossHealth != null);
                 Destroy(bossSceneData.bossHealth.gameObject);
+            }
             bossSceneData.willBeNpc = list.willBeNpc;
-            print("Loaded !boss! and everything else");
             
             sceneLoaded = true;
             break;

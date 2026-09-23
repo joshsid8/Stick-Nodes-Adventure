@@ -51,13 +51,13 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 1
-  speaker: Noxu
-  dialoguesToAdd: []
+  respeakable: 0
+  dialoguesToAdd:
+  - {fileID: 0}
   dialoguesToRemove: []
-  externalInstance: 
-  alteredExternalDialogues: []
+  externalInstances: []
   speakerType: 0
   doorsToControl:
   - doorName: Noxu Section
     openDoor: 0
-  respeakable: 0
+  shopItemsToAdd: []

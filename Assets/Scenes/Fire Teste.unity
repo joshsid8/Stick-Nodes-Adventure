@@ -314,7 +314,7 @@ MonoBehaviour:
   isOpen: 0
   objective: 2
   enemies: []
-  boss: {fileID: 0}
+  boss: {fileID: 939708580}
   keys: []
   badgeSo: {fileID: 0}
   checkOnTrigger: 1
@@ -2651,6 +2651,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cynder
       objectReference: {fileID: 0}
+    - target: {fileID: 5091673864341810346, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+      propertyPath: entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 64bdf0433a722e1418b87f4f3b106c73, type: 2}
     - target: {fileID: 8195243039380430539, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 91.29951
@@ -5433,6 +5437,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6217457163881888616, guid: b17d52db56c24c9438832b139eea0e7f, type: 3}
   m_PrefabInstance: {fileID: 947632545}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &939708580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 156917591073942580, guid: 419a4def424853340a5b5f6d0c3fbf58, type: 3}
+  m_PrefabInstance: {fileID: 417921666}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &947632545
 PrefabInstance:
@@ -8469,14 +8478,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2479902616594427839, guid: f283c487c77e003499e04c5e0d747125, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3525188997114740657, guid: f283c487c77e003499e04c5e0d747125, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: canTurn
       value: 0
@@ -8607,6 +8608,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8349917977139155280, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479902616594427839, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525188997114740657, guid: f283c487c77e003499e04c5e0d747125, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:

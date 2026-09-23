@@ -62,8 +62,6 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     // Start is called before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        healthBar = GameHUD.Instance.bossHealthBar;
-        bossTitle = GameHUD.Instance.bossTitleText;
         ba = GetComponent<BossAttack>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -72,6 +70,8 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
 
     private void Start()
     {
+        healthBar = GameHUD.Instance.bossHealthBar;
+        bossTitle = GameHUD.Instance.bossTitleText;
         originalColor = spriteRenderer.color;
         bossMaxHealth = bossHealth;
     }

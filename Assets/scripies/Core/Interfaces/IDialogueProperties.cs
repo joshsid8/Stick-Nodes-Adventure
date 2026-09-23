@@ -9,7 +9,7 @@ namespace scripies.Core
         bool IsForced { get; set; }
         Transform ChatPoint { get; }
         float ChatRadius { get; }
-        Entity Speaker { get; }
+        NPC Speaker { get; }
 
         void AddDialogue(ScriptableObject dialogue, GameObject speaker = null);
         void RemoveDialogue(ScriptableObject dialogue, GameObject speaker = null);

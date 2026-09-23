@@ -114,12 +114,11 @@ namespace scripies.Player
                 
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)], hit.collider.gameObject);
+                GameEvents.TriggerOnDamageDealt(damageAmount);
             }
-
+            
             comboInterval[0]++;
             currentAttackCooldown = attackCooldown * attackCooldownMult;
-            
-            GameEvents.TriggerOnDamageDealt(damageAmount);
         }
 
         private void AirAttack()

@@ -5,20 +5,33 @@ SNADV Notes
     
     Notices & Priorities:
         
-        Map manager doesnt wanna load everything yet again
-            When leaving cynder valley and coming back later, Cynder's boss door was closed, and cynder was still alive
-            Whats worse is that the data manager did save the boss to be dead, and when i pressed the load button, cynder disappeared (as he should have right when the scene loads again)
-                Something's wrong with the load function...
-                                              
+        Map manager didnt wanna load everything yet again
+            Made the load function into a coroutine, allowing it to wait for certain stuff the data manager has saved before making changes
+            
+        Main task: MAKE THE GAME PUBLISHABLE!!!
+            We are oh so close!
+            No errors are flying at me, so i think i can begin recording gameplay
+            Modai Village in general is the main source of errors
+            
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from testing
-
+                I think shop logic, or communications between it has issues
+                    Jerome's shop in Modai Village offered 2 earth scrolls (instead of 1), and removed MOST of the previous items from other areas
+                        In the dark here, so ill test this in the editor should it happen again
+                        
+                Noxu's trial doors arent being opened
+                    The player did have the right badge, so theres a new issue in the access manager
+                
+                Whenever replaying from Modai Village, trying to return to Origo just cant happen because the door is closed
+                    data logic is obviously the problem, and always will be :(
+                
             One time occurrences or Rare/Intimidating bugs
                 Cynder once didnt have his npchat turned on after restarting
                 Another time, he continued to be in his attacking state after restarting also
+                    This hasnt happened in a while, maybe because of the extra safety invokation i implemented
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
                 
@@ -28,7 +41,7 @@ SNADV Notes
                         Give an initial interval to ignore all collisions
                         Let projectiles ignore any other projectiles that have nearly the same properties
                 
-                Ive found a pretty nice way to make jerome's shop items be added on to
+                Ive found a pretty nice way to make jerome's shop have new items on specific events
                     Im using Tomfoolery, another event system script to handle it all
                     Right now it only has the type of if the player has entered a map
                     Ill try add more when i think about it
