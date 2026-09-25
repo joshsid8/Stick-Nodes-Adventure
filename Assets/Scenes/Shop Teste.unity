@@ -127,18 +127,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1519757417351354542, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
-      propertyPath: id
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1519757417351354542, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
-      propertyPath: typeOfObject
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
-      propertyPath: shopItems.Array.data[2].itemCollectable
-      value: 
-      objectReference: {fileID: 11400000, guid: 78eb7255c5578d043b060d338de00e1b, type: 2}
     - target: {fileID: 7061657215338624098, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: m_Name
       value: Jerome
@@ -183,16 +171,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8153786567936551107, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
-      propertyPath: chatPoint
-      value: 
-      objectReference: {fileID: 1843804825}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7492753003960238534, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1843804825}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
 --- !u!1001 &123635838
@@ -814,11 +795,6 @@ Transform:
   - {fileID: 765422695}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &848207639 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7492753003960238534, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
-  m_PrefabInstance: {fileID: 46618446}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &862144347 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7815146938817235339, guid: e032d07ebd12df04a837818ec5978618, type: 3}
@@ -892,8 +868,8 @@ MonoBehaviour:
   checkPointObjects: []
   enemySceneData: []
   enemyIds: 
-  bossHealth: {fileID: 0}
   bossSceneData:
+    bossHealth: {fileID: 0}
     activeBoss: 
     isDead: 0
     willBeNpc: 0
@@ -903,6 +879,8 @@ MonoBehaviour:
   spawnerSceneData: []
   doorSpawnerHybridSceneData: []
   checkPointSceneData: []
+  sceneLoaded: 0
+  npcDataInitialised: 0
 --- !u!61 &944811996
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -984,6 +962,7 @@ MonoBehaviour:
   weatherProperties:
   - weatherMapName: Heat Place
     weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
+    weatherDuration: 60
     weatherTextColor: {r: 0.9528302, g: 0.72387344, b: 0.50787646, a: 1}
     weatherBgColor: {r: 0.7254902, g: 0.5176471, b: 0.31764707, a: 1}
     weatherOst:
@@ -996,6 +975,7 @@ MonoBehaviour:
     - 0.7
   - weatherMapName: Cold Place
     weatherMapDesc: '*Freeze gun mk!! sound effect*'
+    weatherDuration: 60
     weatherTextColor: {r: 0.50980395, g: 0.9529412, b: 0.93078697, a: 1}
     weatherBgColor: {r: 0.31764707, g: 0.65114826, b: 0.7254902, a: 1}
     weatherOst:
@@ -1008,6 +988,7 @@ MonoBehaviour:
     - 1
   - weatherMapName: Thunder strom
     weatherMapDesc: ah!
+    weatherDuration: 60
     weatherTextColor: {r: 0.36863655, g: 0.7169812, b: 0.698485, a: 1}
     weatherBgColor: {r: 0, g: 0.34697014, b: 0.4245283, a: 1}
     weatherOst:
@@ -1018,7 +999,8 @@ MonoBehaviour:
     - 1
     - 1
     - 1
-  sm: {fileID: 0}
+  freezeWeather: 0
+  weatherDurationTimer: 60
   randomWeather: 0
   weatherChance: 10
   earthquakeTimer: 0.2
@@ -1454,37 +1436,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &1843804824
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1843804825}
-  m_Layer: 11
-  m_Name: chatPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1843804825
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843804824}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 848207639}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2395310599726173090
 PrefabInstance:
   m_ObjectHideFlags: 0

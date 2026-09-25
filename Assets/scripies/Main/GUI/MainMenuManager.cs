@@ -126,14 +126,12 @@ public class MainMenuManager : MonoBehaviour
             // Wait for MapManager to register itself
             yield return new WaitUntil(() => MapManager.Instances.ContainsKey(defaultScene.SceneName));
             MapManager.Instances[defaultScene.SceneName].activeMap = true;
-            yield return new WaitForSeconds(0.2f);
-            SaveSystem.Save();
         }
         
         // Final progress bar update
         while (scenesToLoad.Any(s => !s.isDone))
         {
-            float totalProgress = scenesToLoad.Sum(s => s.progress);
+            var totalProgress = scenesToLoad.Sum(s => s.progress);
             loadingBarImage.fillAmount = totalProgress / scenesToLoad.Count;
             yield return null;
         }
@@ -149,6 +147,7 @@ public class MainMenuManager : MonoBehaviour
             yield return StartCoroutine(PlayerHealth.Instance.Spawn(0.1f, true));
         }
         
+        SaveSystem.Save();
         SceneManager.UnloadSceneAsync(gameObject.scene);
         Destroy(gameObject.transform.root.gameObject);
     }

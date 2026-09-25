@@ -1,3 +1,4 @@
+using scripies.Core;
 using UnityEngine;
 
 namespace scripies.Core
@@ -16,3 +17,18 @@ namespace scripies.Core
         void Heal(float amount);
     }
 }
+
+    [System.Serializable]
+    public class Damage
+    {
+        public float damageAmount;
+        public bool facingRight;
+        public int damageFactor;
+        [EnumButtons] public IDamageable.ElementType elementType;
+        public float elementFactor = 1;
+        public bool isTrue;
+        public bool damageOverTime;
+        public float procDmg;
+        public float procInterval;
+        public string aggressor;
+    }

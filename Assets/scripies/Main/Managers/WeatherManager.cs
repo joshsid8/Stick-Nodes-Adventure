@@ -48,7 +48,7 @@ public class WeatherManager : MonoBehaviour
         if (weatherDurationTimer <= 0) WeatherClockChime();
     }
 
-    private void WeatherClockChime()
+    [ContextMenu("Set Weather to enum chosen")] public void WeatherClockChime()
     {
         ClearDisasters();
         
@@ -190,7 +190,7 @@ public class WeatherManager : MonoBehaviour
         }
     }
 
-    private void PollingHurtPlayer(float damage = 0.001f) => player.playerHealth -= damage;
+    private void PollingHurtPlayer(float damage = 0.001f) => player.health -= damage;
 
 
     private void EarthQuake()

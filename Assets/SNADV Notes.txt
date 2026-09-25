@@ -5,13 +5,12 @@ SNADV Notes
     
     Notices & Priorities:
         
-        Map manager didnt wanna load everything yet again
-            Made the load function into a coroutine, allowing it to wait for certain stuff the data manager has saved before making changes
-            
-        Main task: MAKE THE GAME PUBLISHABLE!!!
+        Main task: Record gameplay!
             We are oh so close!
-            No errors are flying at me, so i think i can begin recording gameplay
-            Modai Village in general is the main source of errors
+            No errors are flying at me, so i think i can begin
+            
+        Finish off the inheritance of health scripts and use the new damage classes
+            This might be done after recording the gameplay
             
     Optimisations & Hotfixes:
         
@@ -21,17 +20,16 @@ SNADV Notes
                 I think shop logic, or communications between it has issues
                     Jerome's shop in Modai Village offered 2 earth scrolls (instead of 1), and removed MOST of the previous items from other areas
                         In the dark here, so ill test this in the editor should it happen again
-                        
-                Noxu's trial doors arent being opened
-                    The player did have the right badge, so theres a new issue in the access manager
-                
+                                        
                 Whenever replaying from Modai Village, trying to return to Origo just cant happen because the door is closed
                     data logic is obviously the problem, and always will be :(
+                        Tested this in the editor, but the problem didnt happen
+                        This annoyingly means this only happens in the build. unsure what the issue is...
                 
             One time occurrences or Rare/Intimidating bugs
                 Cynder once didnt have his npchat turned on after restarting
                 Another time, he continued to be in his attacking state after restarting also
-                    This hasnt happened in a while, maybe because of the extra safety invokation i implemented
+                    This hasnt happened in a while, maybe because of the extra safety invocation i implemented
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
                 

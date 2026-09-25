@@ -40,14 +40,10 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  speaker: Jerome
+  respeakable: 1
   dialoguesToAdd: []
   dialoguesToRemove: []
-  externalInstance: 
-  alteredExternalDialogues: []
+  externalInstances: []
   speakerType: 1
   doorsToControl: []
-  shopItemsToAdd:
-  - {fileID: 11400000, guid: a6c01ddea726c82438bc0da85f80ae22, type: 2}
-  - {fileID: 11400000, guid: 3e37a52098f87274d92145ebff59f019, type: 2}
-  respeakable: 1
+  shopItemsToAdd: []

@@ -3,53 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace scripies.Player
 {
-    public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerStatus
+    public class PlayerHealth : HealthBase, IPlayerStatus
     {
         public static PlayerHealth Instance { get; private set; }
 
-        [Header("Health & Damage Resistance")] public Image[] healthBars;
-        public float playerMaxHealth = 100;
-        public float playerHealth = 100;
+        public Image[] healthBars;
         public float playerExtraHealth;
         public float rawDamageResistance = 1f;
         public float regenerationMultiplier;
 
-        [Tooltip("0 = normal, 1 = fire, 2 = earth, 3 = water, 4 = wind")]
+        [Tooltip("0 = normal, 1 = fire, 2 = earth, 3 = water, 4 = air")]
         public List<float> defElementFactors = new(5) { 1, 1, 1, 1, 1 };
 
-        [Header("Death!")] public bool isDead;
+        [Header("Death!")]
         public AudioClip deathClip;
         public float respawnTime;
         public bool justSpawned;
 
         [Header("Shock")] [SerializeField] private bool getStunned;
-        [HideInInspector] public bool isStunned;
-        public float stunTime;
-        private float currentStunTime;
         public float originalShockMultiplier;
         public float shockMultiplier = 1;
-
-        [Header("Tinting")] public Color damageTint = Color.red;
-        public float tintSpeed = 5f;
-        private Color originalColor;
-        [SerializeField] private bool isTinting;
-        private SpriteRenderer spriteRenderer;
-        public bool spawnOnAwake = true;
-
-        [Header("Combat & Jumping")] public bool inCombat;
+        
+        [Header("Combat & Jumping")] public bool endangered;
         public float combatTimer;
         public float currentCombatTimer;
-        private List<ITarget> aggressiveEnemies = new();
+        private readonly List<ITarget> aggressiveEnemies = new();
         public int aggressiveEnemyID;
         public float jumpRotationTimer;
         
         // Components
-        private Knockback kb;
         [HideInInspector] public PlayerController pc;
         [HideInInspector] public PlayerDefense pd;
         [HideInInspector] public PlayerAbility pa;
@@ -57,13 +44,7 @@ namespace scripies.Player
         [HideInInspector] public PlayerCurrency pm;
 
         #region Getters and Setters
-        [Header("Getters and Setters")] 
-        public float CurrentHealth => playerHealth;
-        public float MaxHealth => playerMaxHealth;
         public bool JustSpawned => justSpawned;
-        public bool IsDead => isDead;
-        public bool IsStunned => isStunned;
-        public Vector3 Position => transform.position;
         public bool IsGrounded => pc != null && pc.isGrounded;
         public bool IsFacingRight => pc != null && pc.isFacingRight;
         public bool IsCountering => pd != null && pd.counterWindow;
@@ -78,7 +59,7 @@ namespace scripies.Player
         public AbilityObjSO[] CurrentAbilities => pa.ability.objects; 
         #endregion
 
-        private void Awake()
+        protected override void Awake()
         {
             if (Instance != null && Instance != this)
             {
@@ -97,13 +78,11 @@ namespace scripies.Player
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        private void Start()
+        protected override void Start()
         {
             currentStunTime = stunTime * shockMultiplier;
             originalColor = spriteRenderer.color;
             originalShockMultiplier = shockMultiplier;
-
-            //if (spawnOnAwake) StartCoroutine(Spawn(1, true));
             
             GameEvents.OnPlayerDeath += ResetCombat;
             GameEvents.OnEnemyDefeated += ResetCombatViaEnemy;
@@ -120,15 +99,15 @@ namespace scripies.Player
             Tint();
             Regeneration();
             JumpRotate();
-            playerHealth = Mathf.Clamp(playerHealth, 0, playerMaxHealth);
+            health = Mathf.Clamp(health, 0, maxHealth);
             if (isDead)
             {
                 pc.canAct = false;
                 gameObject.layer = LayerMask.NameToLayer("Dead");
                 spriteRenderer.color = Color.white;
             }
-            healthBars[0].fillAmount = playerHealth / playerMaxHealth;
-            healthBars[1].fillAmount = playerExtraHealth / playerMaxHealth;
+            healthBars[0].fillAmount = health / maxHealth;
+            healthBars[1].fillAmount = playerExtraHealth / maxHealth;
         }
 
         private void OnValidate()
@@ -139,8 +118,7 @@ namespace scripies.Player
         private void OnDestroy()
         {
            if (Application.isEditor) return;
-           GameEvents.TriggerJumpScare();
-           GameEvents.TriggerPlaySound();
+           GameEvents.TriggerBoom();
            throw new MissingMemberException("THE PLAYER GOT DESTROYED?! WHAT THE HAIL HAPPENED!?");
         }
         private void OnDisable()
@@ -190,12 +168,6 @@ namespace scripies.Player
             StartCoroutine(SpawnPeriod());
         }
 
-        public void CheckStatus(float damage = 0)
-        {
-            if (playerHealth > 0 || isDead) return;
-            StartCoroutine(Death());
-        }
-
         private IEnumerator SpawnPeriod()
         {
             justSpawned = true;
@@ -204,10 +176,10 @@ namespace scripies.Player
             GameHUD.Instance.SetShaderColour(Color.black);
         }
         [ContextMenu("End the Player's Life!")] public void Kill() => StartCoroutine(Death());
-        private IEnumerator Death()
+        protected override IEnumerator Death()
         {
             isDead = true;
-            playerHealth = 0;
+            health = 0;
             GameEvents.TriggerPlayerDeath();
             var deathSound = (deathClip, true);
             if (pc.debugMode && Application.isEditor)
@@ -226,19 +198,20 @@ namespace scripies.Player
             
             StartCoroutine(Spawn(0, true));
             GameEvents.TriggerMuteMusic(false);
-            playerHealth = playerMaxHealth * 0.25f;
+            health = maxHealth * 0.25f;
             isDead = false;
             pc.canAct = true;
             ResetCombat();
         }
 
-        public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
+        public override void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
             IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
             bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F, string aggressor = "")
         {
             var calcDamage = damageAmount * elementFactor;
             if (elementType != 0)
             {
+                // No! I am NNNNNNOTTT turning this into a LINQ expression!!!
                 for (var i = 0; i < defElementFactors.Count; i++)
                 {
                     if ((int)elementType == i) continue;
@@ -272,10 +245,9 @@ namespace scripies.Player
                     break;
             }
             
-            if (aggressor.Contains("Enemy")) ApplyCombat(30, true, aggressor);
-            else if (aggressor.Contains("Boss")) ApplyCombat(30, true, aggressor);
+            if (aggressor.Contains("Enemy") || aggressor.Contains("Boss")) ApplyCombat(30, true, aggressor);
             else if (aggressor.Contains("End")) ResetCombat();
-            
+
             pc.currentDashTime = 0f;
             pa.isPerformingAbility = false;
         }
@@ -284,7 +256,7 @@ namespace scripies.Player
             float procDmg = 0f, float procInterval = 0.2f, bool isTrue = false)
         {
             if (playerExtraHealth > 0 && !isTrue) playerExtraHealth -= damageAmount;
-            else playerHealth -= damageAmount;
+            else health -= damageAmount;
             GameEvents.TriggerPlayerHealthChanged(damageAmount);
             if (blockBreak)
             {
@@ -298,7 +270,7 @@ namespace scripies.Player
             while (procTaken > 0 && dOt)
             {
                 if (playerExtraHealth > 0 && !isTrue) playerExtraHealth -= procAmount;
-                else playerHealth -= procAmount;
+                else health -= procAmount;
                 procTaken -= procAmount;
                 GameEvents.TriggerPlayerHealthChanged(procAmount);
                 yield return new WaitForSeconds(procInterval);
@@ -308,14 +280,14 @@ namespace scripies.Player
             GameEvents.TriggerOnDamageDealt(damageAmount);
         }
 
-        public void Shock(float stunDuration = 0f, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f, bool targetPosition = false)
+        public override void Shock(float stunDuration = 0f, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f, bool targetPosition = false)
         {
             var force = knockbackForce * shockMultiplier;
             if (pd.isBlocking) force = knockbackForce * pd.blockDamageResistance;
             else if (pd.counterWindow) force = knockbackForce * pd.counterDamageResistance;
             stunTime = stunDuration * shockMultiplier;
             if (stunTime > 0 && !pd.isBlocking) getStunned = true;
-            kb.CallKnockback(knockbackDirection, force, knockbackTime * shockMultiplier, targetPosition);
+            kb.ApplyKnockback(knockbackDirection, force, knockbackTime * shockMultiplier, targetPosition);
         }
 
         private void Stunned()
@@ -331,19 +303,15 @@ namespace scripies.Player
                 }
             }
 
-            if (isStunned)
-            {
-                pc.canAct = false;
-                currentStunTime -= Time.deltaTime;
-                if (currentStunTime <= 0)
-                {
-                    pc.canAct = true;
-                    pf.canAttack = true;
-                    shockMultiplier = originalShockMultiplier;
-                    isStunned = false;
-                    pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
-                }
-            }
+            if (!isStunned) return;
+            pc.canAct = false;
+            currentStunTime -= Time.deltaTime;
+            if (!(currentStunTime <= 0)) return;
+            pc.canAct = true;
+            pf.canAttack = true;
+            shockMultiplier = originalShockMultiplier;
+            isStunned = false;
+            pc.rb.linearVelocity = new Vector2(0, pc.rb.linearVelocity.y);
         }
         
         public void ApplyCombat(float combatDuration = 5, bool additive = false, string aggressor = "")
@@ -357,55 +325,48 @@ namespace scripies.Player
             pc.combatIndicator.SetActive(true);
             var am = GameObject.Find("AudioManager").GetComponent<IAudioStatus>();
             if (am.musicType == IAudioStatus.MusicType.Area && aggressor.Contains("Enemy")) 
-                GameEvents.TriggerMusic(1, false);
+                GameEvents.TriggerPlayMusic(1, false);
             else if (aggressor.Contains("Boss"))
-                GameEvents.TriggerMusic(2, false);
+                GameEvents.TriggerPlayMusic(2, false);
                 
-            if (!inCombat) StartCoroutine(CombatTimer());
+            if (!endangered) StartCoroutine(CombatTimer());
         }
 
         private IEnumerator CombatTimer()
         {
             while (currentCombatTimer > 0)
             {
-                inCombat = true;
+                endangered = true;
                 currentCombatTimer -= Time.deltaTime;
                 yield return null;
             }
-            inCombat = false;
+            endangered = false;
             ResetCombat();
         }
         
         private void ResetCombat()
         {
             if (!isActiveAndEnabled || pc == null) return;
-            inCombat = false;
+            endangered = false;
             currentCombatTimer = 0;
             pc.combatIndicator.SetActive(false);
-            GameEvents.TriggerMusic(0, false);
+            GameEvents.TriggerPlayMusic(0, false);
         }
         private void ResetCombatViaEnemy(GameObject enemy)
         {
             if (aggressiveEnemies.Count > 1) return;
             ResetCombat();
         }
-        
-        private void Tint()
-        {
-            if (!isTinting) return;
-            spriteRenderer.color = Color.Lerp(spriteRenderer.color, originalColor, tintSpeed * Time.deltaTime);
-            if (spriteRenderer.color == originalColor) isTinting = false;
-        }
 
         private void Regeneration()
         {
-            if (playerHealth > 0 && playerHealth < playerMaxHealth)
+            if (health > 0 && health < maxHealth)
             {
-                if (!inCombat) playerHealth += Time.deltaTime * 1.5f * regenerationMultiplier;
-                else playerHealth += Time.deltaTime * regenerationMultiplier;
+                if (!endangered) health += Time.deltaTime * 1.5f * regenerationMultiplier;
+                else health += Time.deltaTime * regenerationMultiplier;
             }
 
-            if (playerHealth > playerMaxHealth) playerHealth = playerMaxHealth;
+            if (health > maxHealth) health = maxHealth;
         }
         
         private void UpdateAggressiveEnemies(ITarget target, bool isAggressive)
@@ -423,35 +384,33 @@ namespace scripies.Player
         private void JumpRotate()
         {
             if (jumpRotationTimer > 0) jumpRotationTimer -= Time.deltaTime;
-            
-            if (aggressiveEnemies.Count > 1 && jumpRotationTimer <= 0)
-            {
-                var aggTarget = aggressiveEnemies[aggressiveEnemyID];
-                foreach (var target in aggressiveEnemies)
-                {
-                    if (!target.Transform.TryGetComponent<IEnemyJump>(out var jump)) return;
-                    if (target != aggTarget)
-                    {
-                        jump.MyTurn = false;
-                        jump.SetState("Zoning", jumpRotationTimer);
-                    }
-                    else
-                    {
-                        jump.MyTurn = true;
-                        jump.SetState("Attacking");
-                        jump.SetPrevStyle();
-                        jumpRotationTimer = jump.TurnTime;
-                    }
-                }
 
-                aggressiveEnemyID++;
-                if (aggressiveEnemyID >= aggressiveEnemies.Count) aggressiveEnemyID = 0;
+            if (aggressiveEnemies.Count <= 1 || !(jumpRotationTimer <= 0)) return;
+            var aggTarget = aggressiveEnemies[aggressiveEnemyID];
+            foreach (var target in aggressiveEnemies)
+            {
+                if (!target.Transform.TryGetComponent<IEnemyJump>(out var jump)) return;
+                if (target != aggTarget)
+                {
+                    jump.MyTurn = false;
+                    jump.SetState("Zoning", jumpRotationTimer);
+                }
+                else
+                {
+                    jump.MyTurn = true;
+                    jump.SetState("Attacking");
+                    jump.SetPrevStyle();
+                    jumpRotationTimer = jump.TurnTime;
+                }
             }
+
+            aggressiveEnemyID++;
+            if (aggressiveEnemyID >= aggressiveEnemies.Count) aggressiveEnemyID = 0;
         }
 
-        public void Heal(float amount)
+        public override void Heal(float amount)
         {
-            if (playerHealth < playerMaxHealth) playerHealth += amount;
+            if (health < maxHealth) health += amount;
             else playerExtraHealth += amount;
         }
     }

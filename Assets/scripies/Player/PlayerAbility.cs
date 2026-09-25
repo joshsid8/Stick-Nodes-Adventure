@@ -172,7 +172,7 @@ namespace scripies.Player
                 if (spamAmount >= 3) energy -= Time.deltaTime * 3f;
                 else
                 {
-                    if (PlayerHealth.Instance.inCombat) energy += Time.deltaTime * 2 * energyRefill;
+                    if (PlayerHealth.Instance.endangered) energy += Time.deltaTime * 2 * energyRefill;
                     else energy += Time.deltaTime * 5 * energyRefill;
                 }
             }

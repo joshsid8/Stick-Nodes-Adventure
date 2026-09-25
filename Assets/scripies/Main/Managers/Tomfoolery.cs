@@ -84,9 +84,9 @@ public class Tomfoolery : MonoBehaviour
         }
     }
     
-    private void AddShopItems(ShopItem[] shopItems, NPC keeper) => StartCoroutine(AddShopItemsC(shopItems, keeper));
+    private void AddShopItems(ShopKeeperItem[] shopItems, NPC keeper) => StartCoroutine(AddShopItemsC(shopItems, keeper));
 
-    private static IEnumerator AddShopItemsC(ShopItem[] shopItems, NPC keeper)
+    private static IEnumerator AddShopItemsC(ShopKeeperItem[] shopItems, NPC keeper)
     {
         add:
         foreach (var npc in DataManager.Instance.npcs)
@@ -173,6 +173,6 @@ public class Tomfoolery : MonoBehaviour
         [Tooltip("For PlayerMapEnter")] public bool requireFirstTime;
         
         public ExternalDialogue[] dialogueToUse;
-        public ShopItem[] itemsToAdd;
+        public ShopKeeperItem[] itemsToAdd;
     }
 }

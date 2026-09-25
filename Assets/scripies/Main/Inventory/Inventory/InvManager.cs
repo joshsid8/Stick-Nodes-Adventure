@@ -11,8 +11,8 @@ public class InvManager : GUIBase
     public GameObject inventoryMenu;
     public ItemSlot[] itemSlots;
     public AspectSlot[] aspectSlots;
-    public AbilitySlot[] abilitySlots;
     public InvIndex invIndex;
+    public AbilitySlot[] abilitySlots;
 
     public Button useButton;
     public Button destroyButton;

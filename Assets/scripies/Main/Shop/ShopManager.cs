@@ -49,27 +49,29 @@ public class ShopManager : GUIBase
         CloseCurrentMenus();
     }
 
-    public void LoadShopItems(ShopItem[] items, ShopKeeper shopKeeper)
+    public void LoadShopItems(ShopKeeperItem[] items, ShopKeeper shopKeeper)
     {
         currentShopKeeper = shopKeeper;
         for (var i = 0; i < shopItems.Count; i++)
         {
             if (i < items.Length)
             {
-                var collectable = items[i]?.itemCollectable as CollectableSOBase;
+                var collectable = items[i].shopItem?.itemCollectable as CollectableSOBase;
                 if (collectable == null)
                 {
-                    Debug.LogError($"[ShopManager] Somehow the item {items[i].itemName} collectable is null.");
+                    Debug.LogError($"[ShopManager] Somehow the item {items[i].shopItem?.itemName} collectable is null.");
                     continue;
                 }
                 shopItems[i].shopItem = items[i];
                 shopItems[i].collectableSo = collectable;
-                shopItems[i].itemName = items[i].itemName;
-                shopItems[i].itemDescription = !string.IsNullOrEmpty(items[i].itemDescription) ? items[i].itemDescription : string.IsNullOrEmpty(collectable.itemDescription) ? collectable.itemDescription : "Missing Desc >:(";
-                shopItems[i].itemPrice = items[i].itemPrice;
-                if (items[i].itemSprite != null) shopItems[i].itemSprite = items[i].itemSprite;
-                shopItems[i].itemAmount = items[i].itemAmount;
-                shopItems[i].badgeSoRequired = items[i].badgeSoRequired;
+                shopItems[i].itemName = items[i].shopItem.itemName;
+                shopItems[i].itemDescription = !string.IsNullOrEmpty(items[i].overwrittenDescription) ? items[i].overwrittenDescription : 
+                    !string.IsNullOrEmpty(items[i].shopItem.itemDescription) ? items[i].shopItem.itemDescription : 
+                    !string.IsNullOrEmpty(collectable.itemDescription) ? collectable.itemDescription : "Missing Desc >:(";
+                shopItems[i].itemPrice = items[i].price;
+                if (items[i].shopItem.itemSprite != null) shopItems[i].itemSprite = items[i].shopItem.itemSprite;
+                shopItems[i].itemAmount = items[i].amount;
+                shopItems[i].badgeSoRequired = items[i].shopItem.badgeSoRequired;
                 shopItems[i].usedSlot = true;
                 shopItems[i].gameObject.SetActive(true);
             }

@@ -10,15 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 491934fcc8944984380f7e4eed589bfe, type: 3}
-  m_Name: Sandwich
+  m_Name: EarthRockScroll
   m_EditorClassIdentifier: scripies.Core::ShopItem
-  itemName: Sandwich
-  itemDescription: 'Delicious sandwich I definitely handmade.
+  itemName: Earth Rock Scroll
+  itemDescription: 'A scroll you can get from somewhere in the underground village.
 
-    Definitely didnt
-    go to aldi to get these for such an amazing price...'
+    It''s
+    honestly op, which is why it''s costly'
   itemSprite: {fileID: 0}
-  itemPrice: 50
-  itemCollectable: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
-  itemAmount: 1
+  itemCollectable: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
   badgeSoRequired: {fileID: 0}

@@ -42,7 +42,7 @@ namespace scripies.Core
         public static Action ForceCloseDialogue;
         public static Action<ScriptableObject, NPC> OnDialogueClose;
         public static Action<ExternalDialogue[]> ChangeDialogue;
-        public static Action<ShopItem[], NPC> AddShopItems;
+        public static Action<ShopKeeperItem[], NPC> AddShopItems;
         
         // Misc events
         public static Action LoadMapData;
@@ -92,7 +92,7 @@ namespace scripies.Core
         public static void TriggerForceCloseDialogue() => ForceCloseDialogue?.Invoke();
         public static void TriggerOnDialogueClose(ScriptableObject dialogue, NPC npc) => OnDialogueClose?.Invoke(dialogue, npc);
         public static void TriggerChangeDialogue(ExternalDialogue[] externalInstance) => ChangeDialogue?.Invoke(externalInstance);
-        public static void TriggerAddShopItems(ShopItem[] items, NPC npc) => AddShopItems?.Invoke(items, npc);
+        public static void TriggerAddShopItems(ShopKeeperItem[] items, NPC npc) => AddShopItems?.Invoke(items, npc);
         
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
         public static void TriggerLoadNpcData() => LoadNpcData?.Invoke();
@@ -105,7 +105,7 @@ namespace scripies.Core
         public static void TriggerOnEnterMap(string sceneName, bool firstTime) => OnEnterMap?.Invoke(sceneName, firstTime);
         
         public static void TriggerPlaySound(AudioClip clip = null, GameObject source = null, float volume = 1, bool randomPitch = true) => PlaySound?.Invoke(clip, source, volume, randomPitch);
-        public static void TriggerMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
+        public static void TriggerPlayMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
         public static void TriggerMuteMusic(bool toggle = true) => MuteMusic?.Invoke(toggle);
         
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);

@@ -165,7 +165,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (ph != null) // health
         {
-            ph.playerMaxHealth = GetCurrentFloat("MaxHealth");
+            ph.maxHealth = GetCurrentFloat("MaxHealth");
             ph.regenerationMultiplier = GetCurrentFloat("RegenerationMultiplier");
             ph.shockMultiplier = GetCurrentFloat("ShockMultiplier");
             ph.rawDamageResistance = GetCurrentFloat("RawDamageResistance");
@@ -209,10 +209,10 @@ public class PlayerManager : MonoBehaviour
         switch (variableName)
         {
             case "PlayerMaxHealth":
-                ph.playerMaxHealth = additive ? ph.playerMaxHealth + value : value;
+                ph.maxHealth = additive ? ph.maxHealth + value : value;
                 break;
             case "PlayerHealth":
-                ph.playerHealth = additive ? ph.playerHealth + value : value;
+                ph.health = additive ? ph.health + value : value;
                 ph.CheckStatus();
                 break;
             case "PlayerRegen":
@@ -283,8 +283,8 @@ public class PlayerManager : MonoBehaviour
         switch (variableName)
         {
             case "PlayerHealth":
-                ph.playerHealth += value;
-                ph.playerHealth = Mathf.Clamp(ph.playerHealth, 0, ph.playerMaxHealth);
+                ph.health += value;
+                ph.health = Mathf.Clamp(ph.health, 0, ph.maxHealth);
                 break;
             case "PlayerEnergy":
                 if (pa != null) pa.energy += value;
@@ -307,8 +307,8 @@ public class PlayerManager : MonoBehaviour
 
     public void Save(ref PlayerSaveStats data)
     {
-        data.playerMaxHealth = ph.playerMaxHealth;
-        data.playerHealth = ph.playerHealth;
+        data.playerMaxHealth = ph.maxHealth;
+        data.playerHealth = ph.health;
         data.regenerationMult = ph.regenerationMultiplier;
         data.shockMultiplier = ph.shockMultiplier;
         data.rawDamageResistance = ph.rawDamageResistance;
@@ -359,8 +359,8 @@ public class PlayerManager : MonoBehaviour
         ph.rawDamageResistance = data.rawDamageResistance;
         ph.shockMultiplier = data.shockMultiplier;
         ph.regenerationMultiplier = data.regenerationMult;
-        ph.playerHealth = data.playerHealth;
-        ph.playerMaxHealth = data.playerMaxHealth;
+        ph.health = data.playerHealth;
+        ph.maxHealth = data.playerMaxHealth;
     }
 }
 [System.Serializable]

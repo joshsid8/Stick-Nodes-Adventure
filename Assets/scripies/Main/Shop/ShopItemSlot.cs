@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using scripies.Player;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using TMPro;
 
 public class ShopItemSlot : SlotBase
 {
-	public ShopItem shopItem;
+	public ShopKeeperItem shopItem;
 	public float itemPrice;
     public int itemAmount;
     public CollectableSOBase collectableSo;
@@ -71,8 +72,17 @@ public class ShopItemSlot : SlotBase
 	    shopManager.displayImage.sprite = itemSprite ?? (collectableSo != null
 		    ? collectableSo.itemSprite : shopManager.defaultSprite);
 	    shopManager.selectedAmountText.text = itemAmount.ToString();
-	    shopManager.selectedPriceText.text = "N" + itemPrice.ToString("F0");
-	    if (badgeSoRequired != null) shopManager.buyButton.interactable = StatsManager.Instance.HasBadge(badgeSoRequired);
+	    
+	    var randomFreePriceText = new List<string> {"FREE", "ITS FREEEEE", "CHARGELESS", "0 COST!", "A STEAL!", "Unbound from the chains of monetary value"};
+	    var randomFreeBuyText = new List<string> {"GRAB", "GET", "YOINK", "TAKE", "SNATCH", "STEAL ATP"};
+	    shopManager.selectedPriceText.text = itemPrice > 0 ? "N" + itemPrice.ToString("F0") : randomFreePriceText[UnityEngine.Random.Range(0, randomFreePriceText.Count)];
+	    shopManager.buyButton.GetComponentInChildren<TMP_Text>().text =
+		    itemPrice > 0 ? "BUY" : randomFreeBuyText[UnityEngine.Random.Range(0, randomFreeBuyText.Count)];
+	    
+	    if (badgeSoRequired == null) return;
+	    shopManager.buyButton.interactable = StatsManager.Instance.HasBadge(badgeSoRequired);
+	    shopManager.selectedPriceText.text = !StatsManager.Instance.HasBadge(badgeSoRequired) ? $"'{badgeSoRequired.name}' Required!" : "";
+	    shopManager.buyButton.GetComponentInChildren<TMP_Text>().text = "OBTAIN";
     }
     
     protected override void UpdateSlotUI()

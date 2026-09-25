@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using scripies.Core;
 using scripies.Dialogue;
@@ -5,13 +6,13 @@ using UnityEngine;
 
 public class ShopKeeper : MonoBehaviour
 {
-    public List<ShopItem> shopItems = new();
+    public List<ShopKeeperItem> shopItems = new();
     
     [SerializeField] private DialogueObject inStockDialogue;
     [SerializeField] private DialogueObject soldOutDialogue;
     
     public bool canRestock = true;
-    private readonly List<ShopItem> backroomItems = new();
+    private readonly List<ShopKeeperItem> backroomItems = new();
     
     private NPChat npChat;
     private void Start()
@@ -44,7 +45,7 @@ public class ShopKeeper : MonoBehaviour
         }
     }
 
-    public void AddShopItems(ShopItem[] item, GameObject keeper)
+    public void AddShopItems(ShopKeeperItem[] item, GameObject keeper)
     {
         if (keeper != gameObject || item.Length == 0) return;
         backroomItems.Clear();
@@ -63,4 +64,15 @@ public class ShopKeeper : MonoBehaviour
         shopItems.AddRange(backroomItems);
         GameEvents.TriggerAddDialogue(inStockDialogue, gameObject);
     }
+
+    private static ShopKeeperItem ConvertToSkItem(ShopItem itemToConvert)
+    {
+        var item = new ShopKeeperItem
+        {
+            shopItem = itemToConvert,
+        };
+        return item;
+    }
 }
+
+

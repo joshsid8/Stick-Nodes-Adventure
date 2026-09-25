@@ -97,7 +97,7 @@ public class DataManager : MonoBehaviour
         public bool willTravel;
         public DialogueObject[] dialogue;
         public DialogueObject[] spokenDialogue;
-        public ShopItem[] shopItems;
+        public ShopKeeperItem[] shopItems;
     }
 
     [Serializable]

@@ -70,7 +70,7 @@ namespace scripies.Dialogue
         public enum SpeakerType {Default, ShopOpen, BossFight}
         [EnumButtons] public SpeakerType speakerType;
         public ControlDoor[] doorsToControl;
-        public ShopItem[] shopItemsToAdd;
+        public ShopKeeperItem[] shopItemsToAdd;
     }
 
     [Serializable]

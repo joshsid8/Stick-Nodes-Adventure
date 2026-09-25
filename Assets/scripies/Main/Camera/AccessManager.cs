@@ -84,8 +84,7 @@ public class AccessManager : MonoBehaviour
     {
         if (!isOpen) return;
         isOpen = false;
-        foreach (var door in doorObjs.Where(door => door != null))
-            door.Close();
+        foreach (var door in doorObjs.Where(door => door != null)) door.Close();
         if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
             mm.OnDoorStatusChanged(this, false);
         GameEvents.TriggerPersistGameData();
@@ -103,8 +102,10 @@ public class AccessManager : MonoBehaviour
             case Objectives.FindKeys:
                 if (playerDetected)
                 {
-                    foreach (var key in keys) if (!InvManager.Instance.invIndex.HasAtLeast(key, 1)) 
+                    if (keys.Any(key => !InvManager.Instance.invIndex.HasAtLeast(key, 1)))
+                    {
                         return;
+                    }
                     
                     foreach (var key in keys)
                     {
@@ -119,7 +120,7 @@ public class AccessManager : MonoBehaviour
                 }
                 break;
             case Objectives.UnlockBadge:
-                if (StatsManager.Instance.HasBadge(badgeSo) && playerDetected) OpenDoors();
+                if (StatsManager.Instance.HasBadge(badgeSo)) OpenDoors();
                 break;
             case Objectives.DefeatBoss:
                 if (boss != null)
@@ -130,9 +131,7 @@ public class AccessManager : MonoBehaviour
                 else OpenDoors();
                 break;
             case Objectives.None:
-                break;
             default:
-                print("Just clueless.");
                 break;
         }
     }
@@ -159,6 +158,7 @@ public class AccessManager : MonoBehaviour
                 break;
             case Objectives.FindKeys:
             case Objectives.UnlockBadge:
+            case Objectives.None:
             default:
                 break;
         }

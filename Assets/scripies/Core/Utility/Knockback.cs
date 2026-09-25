@@ -45,7 +45,7 @@ public class Knockback : MonoBehaviour
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
     }
     
-    public void CallKnockback(Vector2 hitDirection, float force = 20f, float time = 0.2f, bool targetPosition = false)
+    public void ApplyKnockback(Vector2 hitDirection, float force = 20f, float time = 0.2f, bool targetPosition = false)
     {
         StopAllCoroutines();
         StartCoroutine(KnockbackAction(hitDirection, force, time, targetPosition));

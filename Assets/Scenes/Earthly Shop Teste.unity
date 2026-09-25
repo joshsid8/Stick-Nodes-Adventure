@@ -136,6 +136,46 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[0].price
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[1].price
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[0].amount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[1].amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[3].amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[0].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: fddc806a12f10324c9f30c7da33002bf, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[1].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: e5aecd5cba545e746bd855278d6e1497, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: fddc806a12f10324c9f30c7da33002bf, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[3].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: fddc806a12f10324c9f30c7da33002bf, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: shopItems.Array.data[2].itemCollectable
       value: 
       objectReference: {fileID: 11400000, guid: 78eb7255c5578d043b060d338de00e1b, type: 2}

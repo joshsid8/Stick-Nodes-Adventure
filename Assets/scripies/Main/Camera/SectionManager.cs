@@ -18,10 +18,14 @@ public class SectionManager : MonoBehaviour
     
     public string[] mapDisasterNames = { "Temperature", "Earthquake", "Wind", "Thunderstorm" };
     public float[] mapDisasterFactors = new float[4];
+    #endregion
+    
+    public enum SectionType {Default, Endangerment, Boss}
+    [EnumButtons] public SectionType sectionType;
+    [SerializeField] private AudioClip endangeredOst;
     
     private WeatherManager weather;
     private AudioManager audioManager;
-    #endregion
     
     [SerializeField] private GameObject cameraObject;
     private Color prevMapBgColor;
@@ -45,7 +49,7 @@ public class SectionManager : MonoBehaviour
             audioManager.backgroundMusic[i] = mOst[i];
             audioManager.backgroundMusicVolume[i] = mOstVolume[i];
         }
-        GameEvents.TriggerMusic(0, false);
+        GameEvents.TriggerPlayMusic(0, false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

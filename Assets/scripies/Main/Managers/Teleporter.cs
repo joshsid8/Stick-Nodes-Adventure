@@ -67,7 +67,7 @@ public class Teleporter : MonoBehaviour
                 else /*collision.GetComponent<Rigidbody2D>().MovePosition(teleportTarget.position);*/ collision.transform.position = teleportTarget.position;
                 if (doesDamage)
                 {
-                    collision.GetComponent<PlayerHealth>().playerHealth -= damage;
+                    collision.GetComponent<PlayerHealth>().health -= damage;
                     GameEvents.TriggerPlayerHealthChanged(damage);
                 }
                 break;

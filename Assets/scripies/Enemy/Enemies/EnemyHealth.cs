@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
 using UnityEngine;
-using UnityEngine.Scripting;
-using UnityEngine.Serialization;
 
 namespace scripies.Enemy
 {
@@ -17,7 +15,7 @@ namespace scripies.Enemy
         public bool isDead;
 
         [Tooltip("0 = normal, 1 = fire, 2 = earth, 3 = water, 4 = wind")]
-        public List<float> defElementFactors = new List<float>(5) { 1, 1, 1, 1, 1 };
+        public List<float> defElementFactors = new(5) { 1, 1, 1, 1, 1 };
 
         [Header("Shock")] private bool getStunned;
         public bool isStunned;
@@ -30,7 +28,6 @@ namespace scripies.Enemy
         [Header("Defense status")] public bool isCountering;
         public bool isBlocking;
 
-        [FormerlySerializedAs("damageResistance")]
         public float blockResistance;
 
         [Header("Damage Tinting")] public Color damageTint = Color.red;
@@ -46,7 +43,6 @@ namespace scripies.Enemy
         private EnemyController ec;
         private EnemyAttack ea;
         private EnemyPatrol ep;
-        public bool isLight;
         public bool isOneTime;
         [SerializeField] private AudioClip deathClip;
 
@@ -60,7 +56,7 @@ namespace scripies.Enemy
         public bool IsFacingRight => ec.isFacingRight;
 
         // Start is called before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
             animator = GetComponent<Animator>();
             currentStunTime = stunTime * stunMultiplier;
@@ -103,8 +99,8 @@ namespace scripies.Enemy
 
         private IEnumerator Death()
         {
-            if (!isDead) yield break;
-
+            if (isDead) yield break;
+            isDead = true;
             OnEnemyKilled?.Invoke(ec.id.entity as Enemy);
             GameEvents.TriggerDropLoot(gameObject);
             GameEvents.TriggerEnemyDefeated(gameObject);
@@ -189,7 +185,7 @@ namespace scripies.Enemy
             stunTime = stunDuration * stunMultiplier;
             if (stunTime > 0) getStunned = true;
             if (movable)
-                kb.CallKnockback(knockbackDirection * (isBlocking ? blockResistance : 1f), knockbackForce, knockbackTime, targetPosition);
+                kb.ApplyKnockback(knockbackDirection * (isBlocking ? blockResistance : 1f), knockbackForce, knockbackTime, targetPosition);
         }
 
         private void CheckStatus()
@@ -197,7 +193,6 @@ namespace scripies.Enemy
             if (!Application.isPlaying) return;
             if (enemyHealth > 0) return;
             enemyHealth = 0;
-            isDead = true;
             StartCoroutine(Death());
         }
         

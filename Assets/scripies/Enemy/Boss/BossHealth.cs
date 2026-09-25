@@ -38,8 +38,8 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     public float dmgRes;
     public bool isCountering;
     
-    [Header("Shock")]
-    float stunTime;
+    [Header("Shock")] 
+    private float stunTime;
     public bool isStunned;
     private Knockback kb;
     public bool movable = true;
@@ -223,8 +223,8 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         if (stunTime >= 69) print("jump yourself");
         if (movable)
         {
-            if (isBlocking && shieldHealth > 0) kb.CallKnockback(knockbackDirection, knockbackForce / 4, knockbackTime, targetPosition);
-            else kb.CallKnockback(knockbackDirection, knockbackForce / 2 , knockbackTime, targetPosition);
+            if (isBlocking && shieldHealth > 0) kb.ApplyKnockback(knockbackDirection, knockbackForce / 4, knockbackTime, targetPosition);
+            else kb.ApplyKnockback(knockbackDirection, knockbackForce / 2 , knockbackTime, targetPosition);
         }
     }
     public void Heal(float amount) => bossHealth += amount;

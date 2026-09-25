@@ -40,10 +40,10 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  speaker: 
+  respeakable: 1
   dialoguesToAdd: []
   dialoguesToRemove: []
-  externalInstance: 
-  alteredExternalDialogues: []
-  openShopOnClose: 0
-  respeakable: 1
+  externalInstances: []
+  speakerType: 0
+  doorsToControl: []
+  shopItemsToAdd: []

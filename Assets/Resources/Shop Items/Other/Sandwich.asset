@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 491934fcc8944984380f7e4eed589bfe, type: 3}
-  m_Name: BankBuffer
+  m_Name: Sandwich
   m_EditorClassIdentifier: scripies.Core::ShopItem
-  itemName: Bank Buffer
-  itemDescription: 
+  itemName: Sandwich
+  itemDescription: 'Delicious sandwich I definitely handmade.
+
+    Definitely didnt
+    go to aldi to get these for such an amazing price...'
   itemSprite: {fileID: 0}
-  itemPrice: 100
-  itemCollectable: {fileID: 11400000, guid: bdf3b059d84eb0b42b21968314acd27d, type: 2}
-  itemAmount: 5
+  itemCollectable: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
   badgeSoRequired: {fileID: 0}

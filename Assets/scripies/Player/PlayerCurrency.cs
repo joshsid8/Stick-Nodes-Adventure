@@ -1,3 +1,4 @@
+using scripies.Core;
 using UnityEngine;
 
 namespace scripies.Player
@@ -12,14 +13,20 @@ namespace scripies.Player
             if (nodeBucks <= 0) nodeBucks = 0;
         }
         
-        
         /// <summary>
         /// Call this to manage cash flow, whether it be trade of assets or reserving funds
         /// </summary>
         public bool CashFlow(float amount, bool outflow)
         {
+
             switch (outflow)
             {
+                case true when Application.isEditor && amount == 0:
+                {
+                    print("You just got something for free!!!");
+                    GameEvents.TriggerBoom();
+                    return true;
+                }
                 case true:
                     if (Mathf.Abs(amount) > nodeBucks)
                     {

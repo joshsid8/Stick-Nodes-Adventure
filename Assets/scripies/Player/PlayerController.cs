@@ -163,11 +163,10 @@ namespace scripies.Player
             var isFalling = rb.linearVelocity.y < 0;
             if (isFalling)
             {
-                Debug.LogWarning("Player is falling out of the world?!");
                 yield return new WaitForSeconds(1);
                 if (rb.linearVelocity.y < 0)
                 {
-                    Debug.LogWarning("respawning");
+                    Debug.LogWarning("Falling for a bit too long! respawning");
                     StartCoroutine(ph.Spawn());
                 }
             }
@@ -177,11 +176,10 @@ namespace scripies.Player
         
         [ContextMenu("Debug Mode")] public void SetDebugMode()
         {
-            ph.playerMaxHealth = 1000;
-            ph.playerHealth = 1000;
+            ph.maxHealth = 1000;
+            ph.health = 1000;
             ph.respawnTime = 2;
             ph.pm.nodeBucks = 1000;
-            ph.spawnOnAwake = false;
             ph.deathClip = null;
             pab.energyRefill = 50;
             canWallJump = true;
@@ -565,7 +563,7 @@ namespace scripies.Player
         public void Save(ref PlayerSaveCurrentData data)
         {
             if (currentSpawnPoint != null) data.position = currentSpawnPoint.transform.position;
-            data.health = ph.playerHealth;
+            data.health = ph.health;
             data.energy = pab.energy;
             data.money = pm.nodeBucks;
             data.abilities = ph.CurrentAbilities;
@@ -582,7 +580,7 @@ namespace scripies.Player
         public void Load(PlayerSaveCurrentData data)
         {
             if (data.position != Vector3.zero && data.position != default) transform.position = data.position;
-            ph.playerHealth = data.health;
+            ph.health = data.health;
             pab.energy = data.energy;
             pm.nodeBucks = data.money;
             pab.ability.objects = data.abilities;

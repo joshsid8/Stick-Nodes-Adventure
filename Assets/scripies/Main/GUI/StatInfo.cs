@@ -52,7 +52,7 @@ public class StatInfo : MonoBehaviour, IPointerClickHandler
         }
         switch (stat.name)
         {
-            case "MaxHealth": getValue = () => ph.playerMaxHealth; break;
+            case "MaxHealth": getValue = () => ph.maxHealth; break;
             case "RegenerationMultiplier": getValue = () => ph.regenerationMultiplier; isPercent = true; break;
             case "MovementSpeedMultiplier": getValue = () => pc.movementSpeedMult; break;
             case "JumpForceMultiplier": getValue = () => pc.jumpForceMult; break;

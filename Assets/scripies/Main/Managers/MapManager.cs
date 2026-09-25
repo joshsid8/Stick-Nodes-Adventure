@@ -182,7 +182,7 @@ public class MapManager : MonoBehaviour
             audioManager.backgroundMusicVolume[i] = mOstVolume[i];
         }
         
-        GameEvents.TriggerMusic(0, false);
+        GameEvents.TriggerPlayMusic(0, false);
         GameEvents.TriggerOnEnterMap(sceneName, undiscoveredMap);
         if (undiscoveredMap) undiscoveredMap = false;
     }
@@ -732,14 +732,18 @@ public class MapManager : MonoBehaviour
         if (!Instances.ContainsKey(gameObject.scene.name))
             Instances.Add(gameObject.scene.name, this);
         if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
-        
+        Invoke(nameof(Invocation), 0.1f);
+    }
+
+    private void Invocation()
+    {
         GameEvents.OnPlayerSpawned += StartMapO;
         GameEvents.OnBossDefeated += OnBossDefeated;
         GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
         GameEvents.LoadMapData += LoadSceneData;
         GameEvents.LoadNpcData += LoadNpcData;
-        InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
         GameEvents.OnSpawnPointChanged += SetCurrentCheckPoint;
+        InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
     }
 
     private void OnDisable()
@@ -752,8 +756,8 @@ public class MapManager : MonoBehaviour
         GameEvents.OnPlayerSpawned -= StartMapO;
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
         GameEvents.LoadMapData -= LoadSceneData;
-        InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
         GameEvents.OnSpawnPointChanged -= SetCurrentCheckPoint;
+        InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
     }
     
     #region Door and Spawner Stuff
@@ -794,7 +798,7 @@ public class MapManager : MonoBehaviour
         public bool willTravel;
         public List<DialogueObject> dialogue = new();
         public List<DialogueObject> spokenDialogue = new();
-        public ShopItem[] shopItems;
+        public ShopKeeperItem[] shopItems;
     }
 
     [Serializable]

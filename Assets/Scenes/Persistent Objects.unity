@@ -8654,6 +8654,8 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  sectionType: 0
+  endangeredOst: {fileID: 0}
   cameraObject: {fileID: 395559665}
 --- !u!61 &911366084
 BoxCollider2D:
@@ -13891,6 +13893,25 @@ MonoBehaviour:
     itemsToAdd:
     - type: 0
       targetScene:
+        m_SceneAsset: {fileID: 102900000, guid: 7f20e3033c28f84429296cd7a255a114, type: 3}
+        m_SceneName: Fiery Shop Teste
+      requireFirstTime: 1
+      dialogueToUse:
+      - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
+        externalDialoguesToAdd:
+        - {fileID: 11400000, guid: 425bf11ab11ff56458f3dad609bb95cd, type: 2}
+        externalDialoguesToRemove: []
+      itemsToAdd:
+      - overwrittenDescription: 
+        shopItem: {fileID: 11400000, guid: a6c01ddea726c82438bc0da85f80ae22, type: 2}
+        amount: 1
+        price: 250
+      - overwrittenDescription: 
+        shopItem: {fileID: 11400000, guid: 3e37a52098f87274d92145ebff59f019, type: 2}
+        amount: 1
+        price: 150
+    - type: 0
+      targetScene:
         m_SceneAsset: {fileID: 102900000, guid: 8824045789d114e479dae4c4e136ef50, type: 3}
         m_SceneName: Watery Shop Teste
       requireFirstTime: 1
@@ -13899,7 +13920,15 @@ MonoBehaviour:
         externalDialoguesToAdd:
         - {fileID: 11400000, guid: ba5ff7e6204354149bb2f5d674625452, type: 2}
         externalDialoguesToRemove: []
-      itemsToAdd: []
+      itemsToAdd:
+      - overwrittenDescription: 
+        shopItem: {fileID: 11400000, guid: a29b705eefcd7cc4ea0bd89a2c74368f, type: 2}
+        amount: 1
+        price: 200
+      - overwrittenDescription: 
+        shopItem: {fileID: 11400000, guid: 9293e370275a1174d931c84f2118d943, type: 2}
+        amount: 1
+        price: 200
     - type: 0
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: c17717ef050b59f438f8b80ae4861300, type: 3}
@@ -13910,7 +13939,11 @@ MonoBehaviour:
         externalDialoguesToAdd:
         - {fileID: 11400000, guid: d9f6dc516e245d743bac63814b48f80f, type: 2}
         externalDialoguesToRemove: []
-      itemsToAdd: []
+      itemsToAdd:
+      - overwrittenDescription: 
+        shopItem: {fileID: 11400000, guid: 2287c489c21d7f343b42d105d5de025f, type: 2}
+        amount: 1
+        price: 300
 --- !u!114 &1398734160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21174,7 +21207,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: damageAmount
-      value: 50
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 114786552731468920, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: hitSfx.Array.size
@@ -21314,11 +21347,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 42561e27451f5b84b8458f6ec1469445, type: 2}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 55.9
+      value: 261.9
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.1
+      value: 66.18
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22765,7 +22798,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 56.28684, y: 30.153873, z: -0.059539795}
+  m_LocalPosition: {x: 262.28683, y: 66.23387, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23940,7 +23973,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 58.267162, y: 34.377956, z: -0.059539795}
+  m_LocalPosition: {x: 264.26715, y: 70.45796, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

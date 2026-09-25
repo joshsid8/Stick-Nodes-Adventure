@@ -41,7 +41,6 @@ MonoBehaviour:
   canBeColoured: 0
   canBeBold: 0
   respeakable: 1
-  speaker: Jerome
   dialoguesToAdd: []
   dialoguesToRemove: []
   externalInstances: []

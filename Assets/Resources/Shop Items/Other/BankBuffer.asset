@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 491934fcc8944984380f7e4eed589bfe, type: 3}
-  m_Name: EarthRockScroll
+  m_Name: BankBuffer
   m_EditorClassIdentifier: scripies.Core::ShopItem
-  itemName: Earth Rock Scroll
-  itemDescription: 'A scroll you can get from a "down to earth" guy somewhere underground.
-
-    It''s
-    honestly op, which is why it''s costly'
+  itemName: Bank Buffer
+  itemDescription: 100 Bucks for 100 Bucks, but in your inventory to use. The economical
+    political state of the world has caused this item to exist. All i can say
   itemSprite: {fileID: 0}
-  itemPrice: 400
-  itemCollectable: {fileID: 11400000, guid: 858bc835dca99a3468a076f2dc8037c1, type: 2}
-  itemAmount: 1
+  itemCollectable: {fileID: 11400000, guid: bdf3b059d84eb0b42b21968314acd27d, type: 2}
   badgeSoRequired: {fileID: 0}
