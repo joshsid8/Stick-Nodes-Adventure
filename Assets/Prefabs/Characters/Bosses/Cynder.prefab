@@ -125,19 +125,7 @@ MonoBehaviour:
   currencyType: {fileID: 11400000, guid: 3caca639c8826094ea6293f1f4ecd3e2, type: 2}
   minMoneyAmount: 5
   maxMoneyAmount: 6
-  lootItems:
-  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-    item: {fileID: 11400000, guid: 7b8c055e63be5cd419517bba08b8b673, type: 2}
-    amount: 1
-    chance: 100
-  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-    item: {fileID: 11400000, guid: 78eb7255c5578d043b060d338de00e1b, type: 2}
-    amount: 1
-    chance: 100
-  - obj: {fileID: 5073680930954534561, guid: b6c7b8cf534461448b04da8953d92f3e, type: 3}
-    item: {fileID: 11400000, guid: 619807cf4a3de5745a10a564311b843e, type: 2}
-    amount: 1
-    chance: 100
+  lootItems: []
   minPopX: -20
   maxPopX: 20
   minPopY: 10
@@ -334,7 +322,6 @@ MonoBehaviour:
   isActivated: 0
   unavailable: 0
   currentSlot: 0
-  currentBlastType: 0
 --- !u!114 &1670248596730534493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,11 +338,12 @@ MonoBehaviour:
   chatRadius: 5.8
   chatPoint: {fileID: 5176110196987568372}
   isInRange: 0
+  fixedDialogue: 0
   isTriggered: 0
   isForced: 1
   willTravel: 0
   indicator: {fileID: 0}
-  npc: {fileID: 11400000, guid: 13aeb5d497c72af4488fe4d2c03bedc9, type: 2}
+  npc: {fileID: 0}
   dialogue:
   - {fileID: 11400000, guid: 280a30c3225a86940b8114d7af080f05, type: 2}
   - {fileID: 11400000, guid: 5e9fa701ed7cb5c4bb0087e02cab4e09, type: 2}
@@ -479,7 +467,7 @@ MonoBehaviour:
   id: 0
   spawnId: 0
   typeOfObject: 0
-  entity: {fileID: 11400000, guid: dd76fe4437f68314393251f0161dd53f, type: 2}
+  entity: {fileID: 0}
   mapManager: {fileID: 0}
 --- !u!1 &574601484991319404
 GameObject:

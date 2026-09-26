@@ -113,10 +113,10 @@ public class InvManager : GUIBase
         if (collectable == null) throw new ArgumentNullException(nameof(collectable) + " doent exist!");
         switch (collectable)
         {
-            case ItemSO item: AddItem(item.name, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, item.itemType, item); break;
-            case ConsumableSO consumable: AddItem(consumable.name, 1, consumable.itemSprite, consumable.itemDescription, consumable.maxItemAmount, "Consumable", consumable); break;
-            case AspectSO aspect: AddItem(aspect.name, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect); break;
-            case AbilitySO ability: AddItem(ability.name, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability); break;
+            case ItemSO item: AddItem(item.name, item.itemAmount, item.itemSprite, item.SetDescription(), item.maxItemAmount, item.itemType, item); break;
+            case ConsumableSO consumable: AddItem(consumable.name, 1, consumable.itemSprite, consumable.SetDescription(), consumable.maxItemAmount, "Consumable", consumable); break;
+            case AspectSO aspect: AddItem(aspect.name, 1, aspect.itemSprite, aspect.SetDescription(), 16, "Aspect", aspect); break;
+            case AbilitySO ability: AddItem(ability.name, 1, ability.itemSprite, ability.SetDescription(), 16, "Ability", ability); break;
             default: throw new ArgumentException($"[InvManager] We cant accept type {collectable.GetType()} dawg");
         }
     }

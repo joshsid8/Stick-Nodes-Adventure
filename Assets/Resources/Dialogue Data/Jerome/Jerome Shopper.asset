@@ -14,8 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: scripies.Core::scripies.Dialogue.DialogueObject
   npcName: 
   dialogueThread:
-  - thread: Wassup dawg, got some stuff for ya
+  - thread: Wassup, Im Jerome. Ill be moving around the place, adding to my shop
+      the more areas you discover
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
+  - thread: Check out what i got for now. Ill give ya a free sample of one of my
+      homemade delicacies too
+    dialogueColour: {r: 0, g: 0, b: 0.4528302, a: 1}
     isBold: 0
     useCameraEvents: 0
     disablePreviousEvents: 0

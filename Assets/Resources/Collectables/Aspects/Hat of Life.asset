@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a32ff54ed280b44680415a8fecc18fe, type: 3}
   m_Name: Hat of Life
   m_EditorClassIdentifier: 
-  itemName: Magic Hat of life
-  itemDescription: 'It magically gives a magically small boost magically to your
-    vitality magically. It doesnt like melee tho
-
-'
+  itemDescription: It magically gives a magically small boost magically to your vitality
+    magically. It doesnt like melee tho
   itemSprite: {fileID: 0}
   aspectProperties:
   - statName: MaxHealth

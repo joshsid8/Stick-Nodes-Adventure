@@ -125,6 +125,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8698436349063629657, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: minMoneyAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8698436349063629657, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: itemLoot.Array.size
       value: 4
       objectReference: {fileID: 0}

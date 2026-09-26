@@ -14,8 +14,9 @@ public class ShopItem : ScriptableObject
 [System.Serializable]
 public class ShopKeeperItem
 {
-    public string overwrittenDescription;
     public ShopItem shopItem;
     public int amount = 1;
     public float price;
+    [TextArea(3, 10)]
+    public string overwrittenDescription;
 }

@@ -9,21 +9,32 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
     // Ability Scroll Data
     public AbilitySO abilityStats;
     public int slotIndex;
-
+    
     public Button abilitySlotButton;
     public Image abilitySlotShader;
+    [SerializeField] private GameObject abilitySlotActiveShader;
     [SerializeField] private Image playerAbilitySlotImage;
 
+    private PlayerAbility player;
+    
+    private void Start()
+    {
+        player = PlayerHealth.Instance.pa ?? FindAnyObjectByType<PlayerAbility>();
+    }
+    
     private void Update()
     {
-        if (PlayerHealth.Instance == null || PlayerHealth.Instance.pa == null) return;
-
-        if (abilityStats == null && PlayerHealth.Instance.pa.ability.objects[slotIndex] != null)
+        if (PlayerHealth.Instance == null || player == null) return;
+        
+        abilitySlotButton.GetComponent<Image>().enabled = player.ability.objects[slotIndex] != null;
+        abilitySlotActiveShader.SetActive(player.blastIndex == slotIndex);
+        
+        if (abilityStats == null && player.ability.objects[slotIndex] != null && player.ability.objects.Length >= slotIndex)
         {
-            var autoItem = ResourceDatabase.Instance.GetItemByName(PlayerHealth.Instance.pa.ability.objects[slotIndex]?.abilityPrefab.name) as AbilitySO;
+            var autoItem = ResourceDatabase.Instance.GetItemByName(player.ability.objects[slotIndex]?.abilityPrefab.name) as AbilitySO;
             if (autoItem == null)
             {
-                Debug.LogError($"[AbilitySlot.Update] Dayum, we cant find {PlayerHealth.Instance.pa.ability.objects[slotIndex].name} as an abilitySO");
+                Debug.LogError($"[AbilitySlot.Update] Dayum, we cant find {player.ability.objects[slotIndex].name} as an abilitySO");
                 return;
             }
             
@@ -35,23 +46,23 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
             UpdateSlotUI();
         }
 
-        var currentCooldown = PlayerHealth.Instance.pa.currentAbilityCooldowns[slotIndex];
-        var maxCooldown = PlayerHealth.Instance.pa.maxAbilityCooldowns[slotIndex];
+        var currentCooldown = player.currentAbilityCooldowns[slotIndex];
+        var maxCooldown = player.maxAbilityCooldowns[slotIndex];
         
         if (abilitySlotShader != null)
             abilitySlotShader.fillAmount = maxCooldown > 0 ? currentCooldown / maxCooldown : 0;
         else if (maxCooldown <= 0) abilitySlotShader.fillAmount = 1;
 
-        if (playerAbilitySlotImage != null && PlayerHealth.Instance.pa.ability.objects[slotIndex] != null)
+        if (playerAbilitySlotImage != null && player.ability.objects[slotIndex] != null)
         {
-            if (PlayerHealth.Instance.pa.ability.objects[slotIndex].abilityPrefab.TryGetComponent<SpriteRenderer>(out var s))
+            if (player.ability.objects[slotIndex].abilityPrefab.TryGetComponent<SpriteRenderer>(out var s))
                 playerAbilitySlotImage.sprite = s.sprite;
             else
-                playerAbilitySlotImage.sprite = PlayerHealth.Instance.pa.ability.objects[slotIndex]?.abilityPrefab
+                playerAbilitySlotImage.sprite = player.ability.objects[slotIndex]?.abilityPrefab
                     ?.GetComponentInChildren<SpriteRenderer>()?.sprite;
         }
-        else if (PlayerHealth.Instance.pa.ability.objects[slotIndex] == null && abilityStats != null) 
-            PlayerHealth.Instance.pa.ability.objects[slotIndex] = abilityStats.abilityObject;
+        else if (player.ability.objects[slotIndex] == null && abilityStats != null) 
+            player.ability.objects[slotIndex] = abilityStats.abilityObject;
     }
 
     public void OnPointerClick(PointerEventData eventData)

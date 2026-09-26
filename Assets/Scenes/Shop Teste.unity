@@ -127,6 +127,99 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: inStockDialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 2505697deb33a8547af04e931a7f872b, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[0].price
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[1].price
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].price
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[3].price
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[0].amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[1].amount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].amount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[3].amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[4].amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[0].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: fddc806a12f10324c9f30c7da33002bf, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[1].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: fddc806a12f10324c9f30c7da33002bf, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 24e0a5c66034ae14ebff87194caa5cf1, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[3].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 22676d4427ad80b4ebe5152394b96e64, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[4].shopItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 1c5a1c1bcf6d71042b7939b6f862d9c5, type: 2}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[0].overwrittenDescription
+      value: 'The aforementioned handmade delicacy!
+
+        On me'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[1].overwrittenDescription
+      value: 'Delicious sandwich I definitely handmade.
+
+        Definitely didnt
+        go to aldi to get these for such an amazing price...'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[2].overwrittenDescription
+      value: 'MY favourite meal of all time, you should know why >:(
+
+        I dont
+        even wanna sell this to you, its meant to be my comfort food for later'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[3].overwrittenDescription
+      value: Medicine...
+      objectReference: {fileID: 0}
+    - target: {fileID: 1625248635774358433, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
+      propertyPath: shopItems.Array.data[4].overwrittenDescription
+      value: A Key to access an earthly place. It'll be yours if you defeat that
+        one fire guy in the valleys
+      objectReference: {fileID: 0}
     - target: {fileID: 7061657215338624098, guid: 0b03598c936584b468cd17bef25c14a8, type: 3}
       propertyPath: m_Name
       value: Jerome

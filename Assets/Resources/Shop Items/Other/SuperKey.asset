@@ -13,10 +13,7 @@ MonoBehaviour:
   m_Name: SuperKey
   m_EditorClassIdentifier: scripies.Core::ShopItem
   itemName: SuperKey
-  itemDescription: A Key to access an earthly place. It'll be yours if you defeat
-    that one fire guy in the valleys
+  itemDescription: 
   itemSprite: {fileID: 0}
-  itemPrice: 100
   itemCollectable: {fileID: 11400000, guid: fe4ce5860bdcb5e409d36f28395b0528, type: 2}
-  itemAmount: 1
   badgeSoRequired: {fileID: 11400000, guid: c0afdfb270d3b6147b48712b0a7469dc, type: 2}

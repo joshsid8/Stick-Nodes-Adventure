@@ -5,4 +5,8 @@ using UnityEngine;
 public class BadgeSO : CollectableSOBase
 {
     public override void Collect() => GameEvents.OnBadgeCollect?.Invoke(this);
+    public override string SetDescription()
+    {
+        return itemDescription;
+    }
 }

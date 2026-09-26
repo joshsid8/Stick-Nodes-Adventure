@@ -172,18 +172,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: scripies::ShopKeeper
   shopItems:
-  - overwrittenDescription: 
-    shopItem: {fileID: 11400000, guid: fddc806a12f10324c9f30c7da33002bf, type: 2}
+  - shopItem: {fileID: 11400000, guid: fddc806a12f10324c9f30c7da33002bf, type: 2}
     amount: 10
     price: 50
-  - overwrittenDescription: 
-    shopItem: {fileID: 11400000, guid: e5aecd5cba545e746bd855278d6e1497, type: 2}
-    amount: 5
+    overwrittenDescription: 'Delicious sandwich I definitely handmade.
+
+      Definitely
+      didnt go to aldi to get these for such an amazing price...'
+  - shopItem: {fileID: 11400000, guid: 24e0a5c66034ae14ebff87194caa5cf1, type: 2}
+    amount: 3
     price: 100
-  - overwrittenDescription: 
-    shopItem: {fileID: 11400000, guid: 1c5a1c1bcf6d71042b7939b6f862d9c5, type: 2}
+    overwrittenDescription: 'MY favourite meal of all time, you should know why >:(
+
+      I
+      dont even wanna sell this to you, its meant to be my comfort food for later'
+  - shopItem: {fileID: 11400000, guid: 22676d4427ad80b4ebe5152394b96e64, type: 2}
+    amount: 5
+    price: 300
+    overwrittenDescription: 
+  - shopItem: {fileID: 11400000, guid: 1c5a1c1bcf6d71042b7939b6f862d9c5, type: 2}
     amount: 1
     price: 0
+    overwrittenDescription: A Key to access an earthly place. It'll be yours if you
+      defeat that one fire guy in the valleys
   inStockDialogue: {fileID: 11400000, guid: da39fe38aa5ae124bad360df7d822a5e, type: 2}
   soldOutDialogue: {fileID: 11400000, guid: 765665ee72c63764cbea02546ecacb26, type: 2}
   canRestock: 1

@@ -48,11 +48,12 @@ public class WeatherManager : MonoBehaviour
         if (weatherDurationTimer <= 0) WeatherClockChime();
     }
 
-    [ContextMenu("Set Weather to enum chosen")] public void WeatherClockChime()
+    [ContextMenu("Set Weather to enum chosen")] public void SetWeather() => WeatherClockChime(true);
+    public void WeatherClockChime(bool forced = false)
     {
         ClearDisasters();
         
-        weatherType = GetTargetWeather();
+        weatherType = GetTargetWeather(forced);
         
         TryGetComponent(out MapManager mapManager);
         if (mapManager != null && mapManager.activeMap) ChangeWeather();
@@ -73,10 +74,11 @@ public class WeatherManager : MonoBehaviour
         preValues[1] = player.pc.movementSpeed;
     }
 
-    public WeatherType GetTargetWeather()
+    public WeatherType GetTargetWeather(bool forced = false)
     {
         var rng = Random.Range(0, 101);
         var targetWeather = weatherType;
+        if (forced) return targetWeather;
         
         switch (randomWeather)
         {

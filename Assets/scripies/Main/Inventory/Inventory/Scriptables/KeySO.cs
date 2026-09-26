@@ -15,4 +15,9 @@ public class KeySO : CollectableSOBase
         else 
             Debug.LogWarning("InvManager not found in scene! Cannot add item.");
     }
+
+    public override string SetDescription()
+    {
+        return itemDescription;
+    }
 }

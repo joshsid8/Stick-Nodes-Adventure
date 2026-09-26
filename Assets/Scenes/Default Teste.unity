@@ -983,6 +983,8 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  sectionType: 0
+  endangeredOst: {fileID: 0}
   cameraObject: {fileID: 1570814978}
 --- !u!114 &227789835
 MonoBehaviour:
@@ -3519,8 +3521,8 @@ Transform:
   m_GameObject: {fileID: 948219908}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -99.8604, y: 38.5343, z: 0}
-  m_LocalScale: {x: 62.660324, y: -34.41686, z: 0.3}
+  m_LocalPosition: {x: -99.8604, y: 53.5055, z: 0}
+  m_LocalScale: {x: 62.660324, y: -4.4741917, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 944811997}
@@ -7072,7 +7074,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3896614092649104574, guid: edac96a8e0e3a0840af04ac529cefdfb, type: 3}
       propertyPath: dialogue.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3896614092649104574, guid: edac96a8e0e3a0840af04ac529cefdfb, type: 3}
       propertyPath: 'dialogue.Array.data[1]'

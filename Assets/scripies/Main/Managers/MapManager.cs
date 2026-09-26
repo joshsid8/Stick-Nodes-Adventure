@@ -64,17 +64,48 @@ public class MapManager : MonoBehaviour
 
     private void Awake()
     {
-        if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
+        sceneName = gameObject.scene.name;
+        weather = GetComponent<WeatherManager>();
     }
 
     private void Start()
     {
-        sceneName = gameObject.scene.name;
-        mainCamera = DataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
-        weather = GetComponent<WeatherManager>();
         audioManager = AudioManager.Instance;
+        mainCamera = DataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
+    }
+    
+    private void OnEnable()
+    {
         StartCoroutine(InitialiseSceneData());
         InvokeRepeating(nameof(CollateObjects), 0, 0.1f);
+        if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
+        if (!Instances.ContainsKey(gameObject.scene.name)) Instances.Add(gameObject.scene.name, this);
+        Invoke(nameof(Invocation), 0.1f);
+    }
+
+    private void Invocation()
+    {
+        GameEvents.OnPlayerSpawned += StartMapO;
+        GameEvents.OnBossDefeated += OnBossDefeated;
+        GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
+        GameEvents.LoadMapData += LoadSceneData;
+        GameEvents.LoadNpcData += LoadNpcData;
+        GameEvents.OnSpawnPointChanged += SetCurrentCheckPoint;
+        InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
+    }
+
+    private void OnDisable()
+    {
+        if (Instances.ContainsKey(gameObject.scene.name) && Instances[gameObject.scene.name] == this)
+            Instances.Remove(gameObject.scene.name);
+        CancelInvoke(nameof(CollateObjects));
+        GameEvents.OnBossDefeated -= OnBossDefeated;
+        GameEvents.LoadNpcData -= LoadNpcData;
+        GameEvents.OnPlayerSpawned -= StartMapO;
+        GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
+        GameEvents.LoadMapData -= LoadSceneData;
+        GameEvents.OnSpawnPointChanged -= SetCurrentCheckPoint;
+        InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
     }
 
     private void LateUpdate()
@@ -340,8 +371,9 @@ public class MapManager : MonoBehaviour
     {
         ClearSceneData();
         UpdateLists();
+        yield return new WaitForSecondsRealtime(0.1f);
         LoadSceneData();
-        yield return new WaitForSecondsRealtime(0.4f);
+        yield return new WaitForSecondsRealtime(0.3f);
         LoadNpcData();
     }
 
@@ -582,6 +614,7 @@ public class MapManager : MonoBehaviour
         }
         yield return new WaitUntil(() => manager.sceneData.Exists(x => x.sceneName == sceneName));
         yield return new WaitForSecondsRealtime(0.1f);
+        print($"Loading scene data for {sceneName}");
         var sceneData = manager.sceneData.Find(x => x.sceneName == sceneName);
         activeMap = sceneData.activeMap;
         undiscoveredMap = sceneData.undiscoveredMap;
@@ -622,8 +655,9 @@ public class MapManager : MonoBehaviour
                 if (ssd != null && ssd.spawner != null) StartCoroutine(ssd.spawner.Despawn());
             }
 
-            foreach (var dshData in list.doorSpawnerHybrids)
+            for (var i = 0; i < list.doorSpawnerHybrids.Count; i++)
             {
+                var dshData = list.doorSpawnerHybrids[i];
                 var dsh = doorSpawnerHybridSceneData.Find(d => d.id == dshData.activeDsh);
                 if (dsh == null) continue;
                 if (dshData.isOpen) dsh.accessManager.InstantOpen();
@@ -726,39 +760,6 @@ public class MapManager : MonoBehaviour
         }
     }
     #endregion
-    
-    private void OnEnable()
-    {
-        if (!Instances.ContainsKey(gameObject.scene.name))
-            Instances.Add(gameObject.scene.name, this);
-        if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
-        Invoke(nameof(Invocation), 0.1f);
-    }
-
-    private void Invocation()
-    {
-        GameEvents.OnPlayerSpawned += StartMapO;
-        GameEvents.OnBossDefeated += OnBossDefeated;
-        GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
-        GameEvents.LoadMapData += LoadSceneData;
-        GameEvents.LoadNpcData += LoadNpcData;
-        GameEvents.OnSpawnPointChanged += SetCurrentCheckPoint;
-        InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
-    }
-
-    private void OnDisable()
-    {
-        if (Instances.ContainsKey(gameObject.scene.name) && Instances[gameObject.scene.name] == this)
-            Instances.Remove(gameObject.scene.name);
-        
-        GameEvents.OnBossDefeated -= OnBossDefeated;
-        GameEvents.LoadNpcData -= LoadNpcData;
-        GameEvents.OnPlayerSpawned -= StartMapO;
-        GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
-        GameEvents.LoadMapData -= LoadSceneData;
-        GameEvents.OnSpawnPointChanged -= SetCurrentCheckPoint;
-        InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
-    }
     
     #region Door and Spawner Stuff
     public void RegisterDoor(GameObject door) { if (!doorObjects.Contains(door)) doorObjects.Add(door); }

@@ -10,4 +10,9 @@ public class CurrencySO : CollectableSOBase
         var rng = Random.Range(minItem, maxItem);
         PlayerManager.Instance.AlterGlobalFloat("Money", rng);
     }
+
+    public override string SetDescription()
+    {
+        return itemDescription;
+    }
 }

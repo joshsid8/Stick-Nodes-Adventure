@@ -64,15 +64,6 @@ public class ShopKeeper : MonoBehaviour
         shopItems.AddRange(backroomItems);
         GameEvents.TriggerAddDialogue(inStockDialogue, gameObject);
     }
-
-    private static ShopKeeperItem ConvertToSkItem(ShopItem itemToConvert)
-    {
-        var item = new ShopKeeperItem
-        {
-            shopItem = itemToConvert,
-        };
-        return item;
-    }
 }
 
 

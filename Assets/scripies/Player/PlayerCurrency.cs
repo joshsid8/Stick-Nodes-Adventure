@@ -21,7 +21,7 @@ namespace scripies.Player
 
             switch (outflow)
             {
-                case true when Application.isEditor && amount == 0:
+                case true when Application.isEditor && amount == 0 && PlayerHealth.Instance.pc.debugMode:
                 {
                     print("You just got something for free!!!");
                     GameEvents.TriggerBoom();

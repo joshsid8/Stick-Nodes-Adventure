@@ -12,13 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d01125979b33547a5540738c2076bf, type: 3}
   m_Name: Sandwich
   m_EditorClassIdentifier: scripies::ConsumableSO
-  itemName: Sandwich
-  itemDescription: 'sanwich?
-
-    ---
-
-    Restores a lesser amount of energy and
-    health.'
+  itemDescription: sanwich?
   itemSprite: {fileID: 0}
   itemAmount: 1
   maxItemAmount: 99

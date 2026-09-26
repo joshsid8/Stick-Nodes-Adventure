@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
+  m_Name: Jerome Restock
+  m_EditorClassIdentifier: scripies.Core::scripies.Dialogue.DialogueObject
+  npcName: 
+  dialogueThread:
+  - thread: Wassup dawg, got some stuff for ya
+    dialogueColour: {r: 0, g: 0, b: 0, a: 1}
+    isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
+  pendingChoice: 0
+  isAnimated: 0
+  yesResponse:
+    responseText: 
+    dialogueObject: {fileID: 0}
+  noResponse:
+    responseText: 
+    dialogueObject: {fileID: 0}
+  nameColour: {r: 0, g: 0, b: 0, a: 1}
+  applyBools: []
+  applyFloats: []
+  willGiveQuest: 0
+  questToOffer: {fileID: 0}
+  itemCheckFailureDialogue: {fileID: 0}
+  itemType: []
+  canBeColoured: 0
+  canBeBold: 0
+  respeakable: 1
+  dialoguesToAdd: []
+  dialoguesToRemove: []
+  externalInstances: []
+  speakerType: 1
+  doorsToControl: []
+  shopItemsToAdd: []

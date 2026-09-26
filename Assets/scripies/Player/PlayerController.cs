@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using scripies.Core;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace scripies.Player
@@ -519,14 +517,14 @@ namespace scripies.Player
             
             if (playerBelowPlatform)
             {
-                while (distToPlayer <= 0)
+                while (distToPlayer <= 0 && platformCollider != null)
                 {
                     distToPlayer = transform.position.y - platformCollider.transform.position.y;
                     yield return new WaitForFixedUpdate();
                 }
             } 
             yield return new WaitForSeconds(0.1f);
-            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), platformCollider, false);
+            if (platformCollider != null) Physics2D.IgnoreCollision(GetComponent<Collider2D>(), platformCollider, false);
         }
 
         private void CheckEnvironment()

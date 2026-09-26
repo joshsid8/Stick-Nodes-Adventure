@@ -6,8 +6,7 @@ SNADV Notes
     Notices & Priorities:
         
         Main task: Record gameplay!
-            We are oh so close!
-            No errors are flying at me, so i think i can begin
+            Recordings done????
             
         Finish off the inheritance of health scripts and use the new damage classes
             This might be done after recording the gameplay
@@ -19,7 +18,9 @@ SNADV Notes
             Issues from testing
                 I think shop logic, or communications between it has issues
                     Jerome's shop in Modai Village offered 2 earth scrolls (instead of 1), and removed MOST of the previous items from other areas
-                        In the dark here, so ill test this in the editor should it happen again
+                        Similar happened again when moving from the water shop to the default shop in the editor
+                        But then when moving from the default shop to the fire shop, it worked fine
+                        I feel like some overwriting is happening somewhere,
                                         
                 Whenever replaying from Modai Village, trying to return to Origo just cant happen because the door is closed
                     data logic is obviously the problem, and always will be :(

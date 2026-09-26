@@ -12,23 +12,23 @@ public class ConsumableSO : CollectableSOBase
     public override void Collect()
     {
         if (InvManager.Instance != null)
-            InvManager.Instance.AddItem(name, itemAmount, itemSprite, itemDescription, maxItemAmount, "Consumable", this);
+            InvManager.Instance.AddItem(name, itemAmount, itemSprite, SetDescription(), maxItemAmount, "Consumable", this);
         else 
             Debug.LogWarning("InvManager not found in scene! Cannot add item.");
     }
+
+    public override string SetDescription()
+    {
+        var desc = $"{itemDescription}\n\n---\n\n\n";
     
-    // it dont work, it was unnecessary anyway
-    // private string SetDescription()
-    // {
-    //     var desc = $"{itemDescription}\n\n---\n\n\n";
-    //
-    //     foreach (var att in restoreAttributes)
-    //     {
-    //         desc += att.restoreValue > 0 ? $"+{att.restoreValue}" : $"{att.restoreValue}";
-    //         if (att != restoreAttributes[^1]) desc += "\n";
-    //     }
-    //     return desc;
-    // }
+        foreach (var att in restoreAttributes)
+        {
+            desc += att.restoreValue > 0 ? $"+{att.restoreValue}" : $"{att.restoreValue}";
+            desc += $" {StatsManager.Instance.GetDisplayName(att.attributeName) ?? att.attributeName}";
+            if (att != restoreAttributes[^1]) desc += "\n";
+        }
+        return desc;
+    }
 }
 
 [System.Serializable]

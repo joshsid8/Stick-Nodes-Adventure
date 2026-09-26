@@ -13,10 +13,7 @@ MonoBehaviour:
   m_Name: Sandwich
   m_EditorClassIdentifier: scripies.Core::ShopItem
   itemName: Sandwich
-  itemDescription: 'Delicious sandwich I definitely handmade.
-
-    Definitely didnt
-    go to aldi to get these for such an amazing price...'
+  itemDescription: 
   itemSprite: {fileID: 0}
   itemCollectable: {fileID: 11400000, guid: f76d355106b781a4786299fc1a78a5cc, type: 2}
   badgeSoRequired: {fileID: 0}

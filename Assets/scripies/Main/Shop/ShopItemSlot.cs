@@ -74,14 +74,14 @@ public class ShopItemSlot : SlotBase
 	    shopManager.selectedAmountText.text = itemAmount.ToString();
 	    
 	    var randomFreePriceText = new List<string> {"FREE", "ITS FREEEEE", "CHARGELESS", "0 COST!", "A STEAL!", "Unbound from the chains of monetary value"};
-	    var randomFreeBuyText = new List<string> {"GRAB", "GET", "YOINK", "TAKE", "SNATCH", "STEAL ATP"};
+	    var randomFreeBuyText = new List<string> {"GRAB", "GET", "YOINK", "TAKE", "SNATCH", "STEAL ATP", "PERMITTED THIEVERY"};
 	    shopManager.selectedPriceText.text = itemPrice > 0 ? "N" + itemPrice.ToString("F0") : randomFreePriceText[UnityEngine.Random.Range(0, randomFreePriceText.Count)];
 	    shopManager.buyButton.GetComponentInChildren<TMP_Text>().text =
 		    itemPrice > 0 ? "BUY" : randomFreeBuyText[UnityEngine.Random.Range(0, randomFreeBuyText.Count)];
 	    
 	    if (badgeSoRequired == null) return;
 	    shopManager.buyButton.interactable = StatsManager.Instance.HasBadge(badgeSoRequired);
-	    shopManager.selectedPriceText.text = !StatsManager.Instance.HasBadge(badgeSoRequired) ? $"'{badgeSoRequired.name}' Required!" : "";
+	    shopManager.selectedPriceText.text = !StatsManager.Instance.HasBadge(badgeSoRequired) ? $"'{badgeSoRequired.name}' Badge Required!" : "";
 	    shopManager.buyButton.GetComponentInChildren<TMP_Text>().text = "OBTAIN";
     }
     

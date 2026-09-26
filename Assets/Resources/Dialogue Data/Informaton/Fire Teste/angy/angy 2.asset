@@ -58,14 +58,14 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 0
-  speaker: 
+  respeakable: 0
   dialoguesToAdd: []
   dialoguesToRemove: []
-  externalInstance: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
-  externalDialoguesToAdd:
-  - {fileID: 11400000, guid: b8bdcc227971c624e8d67da75903b581, type: 2}
-  externalDialoguesToRemove: []
+  externalInstances:
+  - externalInstance: {fileID: 11400000, guid: 6f57145e5ba01cf438df637563068da4, type: 2}
+    externalDialoguesToAdd:
+    - {fileID: 11400000, guid: b8bdcc227971c624e8d67da75903b581, type: 2}
+    externalDialoguesToRemove: []
   speakerType: 0
   doorsToControl: []
   shopItemsToAdd: []
-  respeakable: 0
