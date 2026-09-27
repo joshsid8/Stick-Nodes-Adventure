@@ -39,7 +39,7 @@ public class AbilityObjSO : ScriptableObject
      public void SetProperties(AbilityBase ab)
      {
           if (!setProperties) return;
-          ab.damage *= damageMult;
+          ab.abilityDamage *= damageMult;
           ab.procDmg *= damageMult;
           ab.knockbackDirection *= potency;
           ab.stunTime *= potency;

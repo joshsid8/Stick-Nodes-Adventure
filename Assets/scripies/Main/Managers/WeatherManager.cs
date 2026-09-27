@@ -197,8 +197,9 @@ public class WeatherManager : MonoBehaviour
 
     private void EarthQuake()
     {
-        if (disasters.ContainsKey("Earthquake") && disasters["Earthquake"] > 0 && player.pc.isGrounded) 
-            player.GetComponent<IDamageable>().Damage(0.5f * disasters["Earthquake"], false, 3, IDamageable.ElementType.Earth, 1.2f);
+        if (!disasters.ContainsKey("Earthquake") || !(disasters["Earthquake"] > 0) || !player.pc.isGrounded) return;
+        var damage = Shenanigans.Instance.RawDamage(0.5f * disasters["Earthquake"], 3, IDamageable.ElementType.Earth);
+        player.GetComponent<IDamageable>().Damage(damage, false, "Earthquake");
     }
 
     private void Temperature()

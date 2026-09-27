@@ -5,32 +5,15 @@ SNADV Notes
     
     Notices & Priorities:
         
-        Main task: Record gameplay!
-            Recordings done????
-            
-        Finish off the inheritance of health scripts and use the new damage classes
-            This might be done after recording the gameplay
+        Made the save/load npc functions more global by migrating them to the Data Manager
             
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from testing
-                I think shop logic, or communications between it has issues
-                    Jerome's shop in Modai Village offered 2 earth scrolls (instead of 1), and removed MOST of the previous items from other areas
-                        Similar happened again when moving from the water shop to the default shop in the editor
-                        But then when moving from the default shop to the fire shop, it worked fine
-                        I feel like some overwriting is happening somewhere,
-                                        
-                Whenever replaying from Modai Village, trying to return to Origo just cant happen because the door is closed
-                    data logic is obviously the problem, and always will be :(
-                        Tested this in the editor, but the problem didnt happen
-                        This annoyingly means this only happens in the build. unsure what the issue is...
-                
+                                                        
             One time occurrences or Rare/Intimidating bugs
-                Cynder once didnt have his npchat turned on after restarting
-                Another time, he continued to be in his attacking state after restarting also
-                    This hasnt happened in a while, maybe because of the extra safety invocation i implemented
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
                 
@@ -39,12 +22,7 @@ SNADV Notes
                     Possible Solutions:
                         Give an initial interval to ignore all collisions
                         Let projectiles ignore any other projectiles that have nearly the same properties
-                
-                Ive found a pretty nice way to make jerome's shop have new items on specific events
-                    Im using Tomfoolery, another event system script to handle it all
-                    Right now it only has the type of if the player has entered a map
-                    Ill try add more when i think about it
-                
+                                
             Junie Help
                 Tackling The Danger Duo
                 

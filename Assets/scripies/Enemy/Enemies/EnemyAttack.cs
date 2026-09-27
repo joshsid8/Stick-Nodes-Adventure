@@ -54,8 +54,8 @@ namespace scripies.Enemy
         public float passiveModeRadius;
         public float modPassiveModeRadius;
         private float originalPassiveModeRadius;
-        
-        [Space] [Header("Melee Attack")]
+
+        [Space] [Header("Melee Attack")] 
         public float stunTime;
         public float damageAmount;
         public int elementType;
@@ -274,7 +274,9 @@ namespace scripies.Enemy
             if (hit.collider == null) return;
             var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
             if (damageable == null) return;
-            damageable.Damage(damageAmount, ec.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, 1, isTrue, damageOverTime, procDmg, procInterval, "Enemy");
+            var dm = Shenanigans.Instance.RawDamage(damageAmount, damageFactor, (IDamageable.ElementType)elementType, 1,
+                isTrue, damageOverTime, procDmg, procInterval);
+            GameEvents.TriggerApplyDamage(damageable, dm, ec.isFacingRight, "Enemy");
             damageable.Shock(stunTime, knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
             PlaySound(sfx);
         }

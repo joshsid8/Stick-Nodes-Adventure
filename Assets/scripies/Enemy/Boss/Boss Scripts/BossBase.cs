@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public abstract class BossBase : MonoBehaviour
 {
-     [Header("Strafing/Dashing")]
+    [Header("Strafing/Dashing")]
     [FormerlySerializedAs("dashSpeed")]
     public float strafeSpeed = 10f;
     public bool isStrafing;
@@ -156,7 +156,8 @@ public abstract class BossBase : MonoBehaviour
         if (hit.collider == null) return;
         var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
         if (damageable == null) return;
-        damageable.Damage(damageAmount, ba.isFacingRight, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Boss");
+        var damage = Shenanigans.Instance.RawDamage(damageAmount, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
+        damageable.Damage(damage, ba.isFacingRight, "Boss");
         damageable.Shock(stunTime,  knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
         PlaySound();
     }

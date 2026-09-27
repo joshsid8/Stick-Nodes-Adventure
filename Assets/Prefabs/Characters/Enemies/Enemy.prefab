@@ -342,6 +342,15 @@ MonoBehaviour:
   modDefensiveModeRadius: 6
   passiveModeRadius: 15
   modPassiveModeRadius: 25
+  damage:
+    damageAmount: 10
+    damageFactor: 0
+    elementType: 0
+    elementFactor: 1
+    isTrue: 0
+    damageOverTime: 0
+    procDmg: 0
+    procInterval: 0
   stunTime: 0.5
   damageAmount: 10
   elementType: 0

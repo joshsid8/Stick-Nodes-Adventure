@@ -88,6 +88,7 @@ public class Tomfoolery : MonoBehaviour
 
     private static IEnumerator AddShopItemsC(ShopKeeperItem[] shopItems, NPC keeper)
     {
+        yield return new WaitUntil(() => DataManager.Instance.npcDataLoaded);
         add:
         foreach (var npc in DataManager.Instance.npcs)
         {

@@ -7,6 +7,7 @@ public class SceneLoadTrigger : MonoBehaviour
 {
     [SerializeField] private SceneField[] scenesToLoad;
     [SerializeField] private SceneField[] scenesToUnload;
+    [SerializeField] private bool unloadEveryOtherScene;
     
     private GameObject player;
     private void Start() => player = PlayerHealth.Instance.gameObject;
@@ -14,8 +15,13 @@ public class SceneLoadTrigger : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject != player) return;
-        LoadScenes();
-        UnloadScenes();
+        if (unloadEveryOtherScene) 
+            StartCoroutine(LoadSingularScene());
+        else
+        {
+            LoadScenes();
+            UnloadScenes();
+        }
     }
 
     [ContextMenu("Load Scenes")]
@@ -43,17 +49,31 @@ public class SceneLoadTrigger : MonoBehaviour
             for (var j = 0; j < SceneManager.sceneCount; j++)
             {
                 var loadedScene = SceneManager.GetSceneAt(j);
-                if (loadedScene.name == scene.SceneName && loadedScene.isLoaded)
+                if (loadedScene.name != scene.SceneName || !loadedScene.isLoaded) continue;
+                if (MapManager.Instances.TryGetValue(scene.SceneName, out var mapManager))
                 {
-                    if (MapManager.Instances.TryGetValue(scene.SceneName, out var mapManager))
-                    {
-                        mapManager.SaveSceneData();
-                        mapManager.DisableSpawners();
-                        yield return new WaitForSeconds(0.1f);
-                    }
-                    SceneManager.UnloadSceneAsync(scene);
+                    mapManager.SaveSceneData();
+                    mapManager.DisableSpawners();
+                    yield return new WaitForSeconds(0.1f);
                 }
+                SceneManager.UnloadSceneAsync(scene);
             }
         }
     }
+    
+    [ContextMenu("Singularise target Scene")] private IEnumerator LoadSingularScene()
+    {
+        for (var i = 0; i < SceneManager.sceneCount; i++)
+        {
+            var scene = SceneManager.GetSceneAt(i);
+            if (!scene.isLoaded || scene.name == gameObject.scene.name || scene.name == "Persistent Objects") continue;
+            if (MapManager.Instances.TryGetValue(scene.name, out var mapManager))
+            {
+                mapManager.SaveSceneData();
+                mapManager.DisableSpawners();
+                yield return new WaitForSeconds(0.1f);
+            }
+            SceneManager.UnloadSceneAsync(scene);
+        }
+    } 
 }

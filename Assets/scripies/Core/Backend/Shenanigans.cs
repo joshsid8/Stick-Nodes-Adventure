@@ -45,11 +45,13 @@ public class Shenanigans : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.JumpScare += JumpScare;
+        GameEvents.OnApplyDamage += ApplyDamage;
     }
     
     private void OnDisable()
     {
         GameEvents.JumpScare -= JumpScare;
+        GameEvents.OnApplyDamage -= ApplyDamage;
     }
     
     private void Update()
@@ -120,7 +122,9 @@ public class Shenanigans : MonoBehaviour
         switch (rng)
         {
             case 0:
-                target?.Damage(rng2[0] * fidelity, true, 2, IDamageable.ElementType.Normal, 1, true, rng2[1] == 0, rng2[2], 0.1f);
+                var dm = RawDamage(rng2[0] * fidelity, 2, IDamageable.ElementType.Normal, 1, true,
+                    rng2[1] == 0, rng2[2], 0.1f);
+                GameEvents.TriggerApplyDamage(target, dm, true);
                 target?.Shock(rng2[3]);
                 break;
             case 1:
@@ -136,5 +140,25 @@ public class Shenanigans : MonoBehaviour
     {
         if (!repeating) Invoke(method, time);
         else InvokeRepeating(method, time, interval);
+    }
+
+    private static void ApplyDamage(IDamageable target, Damage damage, bool facingRight, string aggressor = "") => target?.Damage(damage, facingRight, aggressor);
+
+    public Damage RawDamage(float damageAmount, int damageFactor = 0,
+        IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
+        bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F)
+    {
+        var damage = new Damage
+        {
+            damageAmount = damageAmount,
+            damageFactor = damageFactor,
+            elementType = elementType,
+            damageOverTime = damageOverTime,
+            procDmg = procDmg,
+            procInterval = procInterval,
+            elementFactor = elementFactor,
+            isTrue = isTrue,
+        };
+        return damage;
     }
 }

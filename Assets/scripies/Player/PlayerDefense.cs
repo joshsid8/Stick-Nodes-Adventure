@@ -111,8 +111,9 @@ namespace scripies.Player
                     if (eDamageable != null)
                     {
                         pa.energy += 10f;
-                        eDamageable.Damage(counterDamage, pc.isFacingRight, GetComponent<PlayerCombat>().damageFactor,
+                        var counterDm = Shenanigans.Instance.RawDamage(counterDamage, GetComponent<PlayerCombat>().damage.damageFactor,
                             0, 1, true);
+                        GameEvents.TriggerApplyDamage(eDamageable, counterDm, pc.isFacingRight);
                         eDamageable.Shock(counterStun * pf.attackPotency,
                             counterKnockbackForce * dir * pf.attackPotency * transform.right);
                     }

@@ -11,6 +11,7 @@ namespace scripies.Core
     /// </summary>
     public static class GameEvents
     {
+        
         // Enemy events
         public static Action<GameObject> OnEnemySpawned;
         public static Action<GameObject> OnEnemyDefeated;
@@ -46,9 +47,10 @@ namespace scripies.Core
         
         // Misc events
         public static Action LoadMapData;
+        public static Action SaveNpcData;
         public static Action LoadNpcData;
         public static Action SaveGameToDisk;
-        public static Action PersistGameData;
+        public static Action<bool> PersistGameData;
         public static Action<string, bool> OnEnterMap;
         
         public static Action<AudioClip, GameObject, float, bool> PlaySound;
@@ -61,6 +63,7 @@ namespace scripies.Core
         public static Action<GameObject> OnObjectDestroyed;
         public static Action<BadgeSO> OnBadgeCollect;
         public static Action<float, float> OnDamageDealt;
+        public static Action<IDamageable, Damage, bool, string> OnApplyDamage;
 
         public static Action<float> StopTime;
         public static Action<Image, float, float> JumpScare;
@@ -96,11 +99,13 @@ namespace scripies.Core
         
         public static void TriggerLoadMapData() => LoadMapData?.Invoke();
         public static void TriggerLoadNpcData() => LoadNpcData?.Invoke();
+        public static void TriggerSaveNpcData() => SaveNpcData?.Invoke();
         public static void TriggerSaveGameToDisk() => SaveGameToDisk?.Invoke();
-        public static void TriggerPersistGameData()
+        public static void TriggerPersistGameData(bool withNpcData = true)
         {
             //Debug.Log("Persisting game data");
-            PersistGameData?.Invoke();
+            PersistGameData?.Invoke(withNpcData);
+            if (withNpcData) TriggerSaveNpcData();
         }
         public static void TriggerOnEnterMap(string sceneName, bool firstTime) => OnEnterMap?.Invoke(sceneName, firstTime);
         
@@ -117,6 +122,7 @@ namespace scripies.Core
         public static void TriggerStopTime(float time) => StopTime?.Invoke(time);
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
         public static void TriggerOnDamageDealt(float damage, float threshold = 50) => OnDamageDealt?.Invoke(damage, threshold);
+        public static void TriggerApplyDamage(IDamageable target, Damage damage, bool facingRight, string aggressor = "") => OnApplyDamage?.Invoke(target, damage, facingRight, aggressor);
 
         public static void TriggerBoom(AudioClip boomSound = null, Image jumpScareImage = null)
         {

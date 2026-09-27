@@ -57,6 +57,14 @@ PrefabInstance:
       value: 2.89
       objectReference: {fileID: 0}
     - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: damage.elementType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
+      propertyPath: damage.elementFactor
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774492939275019919, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: modPassiveModeRadius
       value: 12
       objectReference: {fileID: 0}
@@ -190,7 +198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8698436349063629657, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: lootItems.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8698436349063629657, guid: 3065b6d389d8baf43acdf9e85cd3cb42, type: 3}
       propertyPath: itemChance.Array.size

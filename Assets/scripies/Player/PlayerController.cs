@@ -174,6 +174,7 @@ namespace scripies.Player
         
         [ContextMenu("Debug Mode")] public void SetDebugMode()
         {
+            debugMode = true;
             ph.maxHealth = 1000;
             ph.health = 1000;
             ph.respawnTime = 2;

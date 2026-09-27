@@ -124,25 +124,23 @@ namespace scripies.Enemy
             Destroy(gameObject);
         }
 
-        public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
-            IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
-            bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F, string aggressor = "")
+        public void Damage(Damage dm, bool facingRight, string aggressor = "")
         {
-            var calcDamage = damageAmount * elementFactor;
-            if (elementType != IDamageable.ElementType.Normal)
+            var calcDamage = dm.damageAmount * dm.elementFactor;
+            if (dm.elementType != IDamageable.ElementType.Normal)
             {
                 for (var i = 0; i < defElementFactors.Count; i++)
                 {
-                    if ((int)elementType == i) continue;
+                    if ((int)dm.elementType == i) continue;
                     calcDamage *= defElementFactors[i];
                 }
             }
 
-            if (isBlocking && !isTrue && damageFactor < 1)
+            if (isBlocking && !dm.isTrue && dm.damageFactor < 1)
             {
                 enemyHealth -= calcDamage * blockResistance;
             }
-            else if (isCountering && !isTrue && damageFactor < 2) animator.SetTrigger("Counter");
+            else if (isCountering && !dm.isTrue && dm.damageFactor < 2) animator.SetTrigger("Counter");
             else
             {
                 enemyHealth -= calcDamage;
@@ -159,7 +157,7 @@ namespace scripies.Enemy
             //else print($"aggressor doesnt contain player: {aggressor}");
 
             Flash();
-            if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
+            if (dm.damageOverTime) StartCoroutine(DamageOverTime(dm.procDmg, dm.procInterval));
             if (GetComponent<EnemyPatrol>().enabled) ec.ChangeState(EnemyController.EnemyState.Attacking);
             
         }
@@ -177,7 +175,6 @@ namespace scripies.Enemy
                 yield return new WaitForSeconds(procInterval);
             }
         }
-
 
         public void Shock(float stunDuration = 0.5F, Vector2 knockbackDirection = default, float knockbackForce = 20f,
             float knockbackTime = 0.2f, bool targetPosition = false)

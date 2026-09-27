@@ -47,8 +47,7 @@ public abstract class HealthBase : MonoBehaviour, IDamageable
             originalColor = spriteRenderer.color;
     }
 
-    public virtual void Damage(float damageAmount, bool facingRight, int damageFactor = 0, 
-        IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false, bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F, string aggressor = "") {
+    public virtual void Damage(Damage damage, bool facingRight, string aggressor = "") {
     }
 
     public virtual void Shock(float stunDuration = 0, Vector2 knockbackDirection = default, float knockbackForce = 20,

@@ -6,7 +6,9 @@ namespace scripies.Player
 {
     public class PlayerCombat : MonoBehaviour
     {
-        [Header("Ground Attack")] public float damageAmount = 20f;
+        [SerializeField]
+        public Damage damage = new();
+        [Header("Ground Attack")]
         [SerializeField] private float attackRange = 1.5f;
         [HideInInspector] public bool isAttacking;
         public float attackCooldown;
@@ -37,14 +39,6 @@ namespace scripies.Player
         [Space] public float attackPotency = 1f;
         public float attackDamageMult = 1f;
         public float attackCooldownMult = 1f;
-
-        [Space] public int damageFactor;
-        public int elementType;
-        public float elementFactor = 1;
-        public bool isTrue;
-        public bool damageOverTime;
-        public float procDmg;
-        public float procInterval;
         
         [SerializeField] private AudioClip[] hitSfx = new AudioClip[2];
         [SerializeField] private AudioClip[] whooshSfx = new AudioClip[2];
@@ -107,14 +101,15 @@ namespace scripies.Player
                 var eDamageable = hit.collider.gameObject.GetComponent<IDamageable>();
 
                 if (eDamageable == null) return;
-                eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
-                    (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Player");
+                var dm = Shenanigans.Instance.RawDamage(damage.damageAmount * attackDamageMult, damage.damageFactor,
+                    damage.elementType, damage.elementFactor, damage.isTrue, damage.damageOverTime, damage.procDmg, damage.procInterval);
+                GameEvents.TriggerApplyDamage(eDamageable, dm, pc.isFacingRight, "Player");
                 eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right,
                     knockbackForces[0], knockbackTimes[0] * attackPotency);
                 
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)], hit.collider.gameObject);
-                GameEvents.TriggerOnDamageDealt(damageAmount);
+                GameEvents.TriggerOnDamageDealt(damage.damageAmount);
             }
             
             comboInterval[0]++;
@@ -134,8 +129,9 @@ namespace scripies.Player
                 var eDamageable = hit.collider.gameObject.GetComponent<IDamageable>();
 
                 if (eDamageable == null) return;
-                eDamageable.Damage(damageAmount * attackDamageMult, pc.isFacingRight, damageFactor,
-                    (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval, "Player"); 
+                var dm = Shenanigans.Instance.RawDamage(damage.damageAmount * attackDamageMult, damage.damageFactor,
+                    damage.elementType, damage.elementFactor, damage.isTrue, damage.damageOverTime, damage.procDmg, damage.procInterval);
+                GameEvents.TriggerApplyDamage(eDamageable, dm, pc.isFacingRight, "Player");
                 eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[1].x * attackPotency,
                         knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], knockbackTimes[1] * attackPotency);
                 
@@ -148,7 +144,7 @@ namespace scripies.Player
             comboInterval[1]++;
             currentAttackCooldown = airAttackCooldown * attackCooldownMult;
             
-            GameEvents.TriggerOnDamageDealt(damageAmount);
+            GameEvents.TriggerOnDamageDealt(damage.damageAmount);
         }
 
         private IEnumerator AirCombo(GameObject target)

@@ -17,7 +17,10 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public int damageFactor;
     public bool trueDamage;
     
-    public float damage;
+    [Space]
+    [Header("Damage")]
+    [FormerlySerializedAs("damage")]
+    public float abilityDamage;
     public bool damageOverTime;
     public float procDmg;
     public float procInterval;
@@ -206,8 +209,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (abilityCaster != null && abilityCaster.CompareTag("Boss")) aggressor = "BossAbility";
         else aggressor = typeFactor switch { 0 => "Ability", 1 => "PlayerAbility", 2 => "EnemyAbility", _ => "Ability" };
         
-        damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType,
-            elementFactor, trueDamage, damageOverTime, procDmg, procInterval, aggressor);
+        var abDamage = Shenanigans.Instance.RawDamage(abilityDamage, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+        GameEvents.TriggerApplyDamage(damageable, abDamage, isFacingRightDirection, aggressor);
         
         Vector2 calcDirection;
         if (useRadialKnockback) calcDirection = damageable.Position - transform.position;
@@ -233,8 +236,9 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             if (damageable == null || !(currentProcTimer <= 0) || !activeHitbox) continue;
             var radialDir = new Vector2(damageable.Position.x - transform.position.x, 
                 (damageable.Position.y - transform.position.y) + explosionUpwardForce).normalized;
-
-            damageable.Damage(damage, isFacingRightDirection, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval, typeFactor switch { 0 => "", 1 => "Player", 2 => "Enemy", _ => "" });
+            
+            var dm = Shenanigans.Instance.RawDamage(abilityDamage, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
+            GameEvents.TriggerApplyDamage(damageable, dm, isFacingRightDirection, typeFactor switch { 0 => "", 1 => "Player", 2 => "Enemy", _ => "" });
             damageable.Shock(explosionTime, radialDir, explosionForce, explosionTime);
             currentProcTimer = procTime;
         }

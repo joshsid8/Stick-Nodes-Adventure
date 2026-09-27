@@ -120,21 +120,19 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
         GameEvents.TriggerShowDialogue(deathDialogue, ba.dt.Speaker as NPC);
     }
 
-    public void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
-        IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
-        bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F, string aggressor = "")
+    public void Damage(Damage dm, bool facingRight, string aggressor = "")
     {
-        switch (isBlocking, shieldHealth > 0, isTrue, damageFactor, isCountering) // where '_' means null/ignore
+        switch (isBlocking, shieldHealth > 0, dm.isTrue, dm.damageFactor, isCountering) // where '_' means null/ignore
         {
             case (true, true, _, < 1, _):
-                bossHealth -= damageAmount * dmgRes;
-                shieldHealth -= damageAmount;
+                bossHealth -= dm.damageAmount * dmgRes;
+                shieldHealth -= dm.damageAmount;
                 spriteRenderer.color = damageTint / 2;
                 isTinting = true;
                 break;
             case (true, false, false, < 1, _):
                 animator.SetTrigger("Damaged");
-                bossHealth -= damageAmount * 1.2f;
+                bossHealth -= dm.damageAmount * 1.2f;
                 spriteRenderer.color = damageTint;
                 isTinting = true;
                 break;
@@ -143,7 +141,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
                 isCountering = false;
                 break;
             default:
-                bossHealth -= damageAmount;
+                bossHealth -= dm.damageAmount;
                 if (ba.stunnable && movable)
                 {
                     var rng = Random.Range(0, 3);
@@ -154,7 +152,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
                 isTinting = true;
                 break;
         }
-        if (damageOverTime) StartCoroutine(DamageOverTime(procDmg, procInterval));
+        if (dm.damageOverTime) StartCoroutine(DamageOverTime(dm.procDmg, dm.procInterval));
         if (!ba.isAttacking && bossHealth > 0) ba.StartFight();
         CheckStatus();
     }

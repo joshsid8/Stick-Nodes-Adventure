@@ -59,7 +59,6 @@ public class MapManager : MonoBehaviour
     
     [Tooltip("Checks if the scene data has tried to find and load its scene data")]
     public bool sceneLoaded;
-    public bool npcDataInitialised;
     #endregion
 
     private void Awake()
@@ -89,7 +88,6 @@ public class MapManager : MonoBehaviour
         GameEvents.OnBossDefeated += OnBossDefeated;
         GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
         GameEvents.LoadMapData += LoadSceneData;
-        GameEvents.LoadNpcData += LoadNpcData;
         GameEvents.OnSpawnPointChanged += SetCurrentCheckPoint;
         InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
     }
@@ -100,7 +98,7 @@ public class MapManager : MonoBehaviour
             Instances.Remove(gameObject.scene.name);
         CancelInvoke(nameof(CollateObjects));
         GameEvents.OnBossDefeated -= OnBossDefeated;
-        GameEvents.LoadNpcData -= LoadNpcData;
+        
         GameEvents.OnPlayerSpawned -= StartMapO;
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
         GameEvents.LoadMapData -= LoadSceneData;
@@ -123,7 +121,7 @@ public class MapManager : MonoBehaviour
         {
             print("Loading data");
             LoadSceneData();
-            LoadNpcData();
+            GameEvents.TriggerLoadNpcData();
         }
     }
 
@@ -322,7 +320,7 @@ public class MapManager : MonoBehaviour
                 obj.GetComponent<Checkpoint>().isCurrent = obj == checkPoint;
             }
         }
-        GameEvents.TriggerPersistGameData();
+        GameEvents.TriggerPersistGameData(false);
     }
     
     public void InitialSpawnPlayer(string scene)
@@ -373,8 +371,6 @@ public class MapManager : MonoBehaviour
         UpdateLists();
         yield return new WaitForSecondsRealtime(0.1f);
         LoadSceneData();
-        yield return new WaitForSecondsRealtime(0.3f);
-        LoadNpcData();
     }
 
     public void SaveSceneData()
@@ -383,7 +379,6 @@ public class MapManager : MonoBehaviour
         if (!sceneLoaded) return;
         UpdateLists();
         MakeDataPersistent();
-        if (npcDataInitialised) SaveNpcData();
     }
 
     public void UpdateLists()
@@ -424,6 +419,7 @@ public class MapManager : MonoBehaviour
                         {
                             activeNpc = obj,
                             npcName = npcId,
+                            isActive = obj.activeSelf,
                             willTravel = npChat.willTravel,
                             dialogue = new List<DialogueObject>(npChat.dialogue),
                             spokenDialogue = new List<DialogueObject>(npChat.spokenDialogue),
@@ -613,8 +609,7 @@ public class MapManager : MonoBehaviour
             yield break;
         }
         yield return new WaitUntil(() => manager.sceneData.Exists(x => x.sceneName == sceneName));
-        yield return new WaitForSecondsRealtime(0.1f);
-        print($"Loading scene data for {sceneName}");
+        //yield return new WaitForSecondsRealtime(0.1f);
         var sceneData = manager.sceneData.Find(x => x.sceneName == sceneName);
         activeMap = sceneData.activeMap;
         undiscoveredMap = sceneData.undiscoveredMap;
@@ -644,13 +639,16 @@ public class MapManager : MonoBehaviour
             {
                 var doorData = list.doors[i];
                 if (!doorData.isOpen) continue;
+                yield return new WaitUntil(() => doorSceneData.Exists(d => d.id == doorData.activeDoor));
                 var door = doorSceneData.Find(d => d.id == doorData.activeDoor);
                 if (door != null && door.accessManager != null) door.accessManager.InstantOpen();
+                else print($"Door {doorData.activeDoor} not found in scene data");
             }
 
             foreach (var spawnerData in list.spawners)
             {
                 if (!spawnerData.isOneTime) continue;
+                yield return new WaitUntil(() => spawnerSceneData.Exists(s => s.id == spawnerData.activeSpawner));
                 var ssd = spawnerSceneData.Find(s => s.id == spawnerData.activeSpawner);
                 if (ssd != null && ssd.spawner != null) StartCoroutine(ssd.spawner.Despawn());
             }
@@ -658,6 +656,7 @@ public class MapManager : MonoBehaviour
             for (var i = 0; i < list.doorSpawnerHybrids.Count; i++)
             {
                 var dshData = list.doorSpawnerHybrids[i];
+                yield return new WaitUntil(() => doorSpawnerHybridSceneData.Exists(d => d.id == dshData.activeDsh));
                 var dsh = doorSpawnerHybridSceneData.Find(d => d.id == dshData.activeDsh);
                 if (dsh == null) continue;
                 if (dshData.isOpen) dsh.accessManager.InstantOpen();
@@ -667,6 +666,7 @@ public class MapManager : MonoBehaviour
 
             foreach (var cpData in list.checkPoints)
             {
+                yield return new WaitUntil(() => checkPointSceneData.Exists(c => c.id == cpData.activeCheckpoint));
                 var cp = checkPointSceneData.Find(c => c.id == cpData.activeCheckpoint);
                 if (cp == null) continue;
                 if (!cpData.activated)
@@ -693,72 +693,7 @@ public class MapManager : MonoBehaviour
             
         sceneLoaded = true;
     }
-
-    public void SaveNpcData()
-    {
-        if (!npcDataInitialised)
-        {
-            LoadNpcData();
-            return;
-        }
-        var manager = DataManager.Instance;
-        if (manager == null) return;
-        foreach (var nData in npcSceneData)
-        {
-            if (nData.activeNpc == null || string.IsNullOrEmpty(nData.npcName)) continue;
-            var npc = manager.npcs.Find(x => x.activeNpcName.Contains(nData.npcName));
-            if (npc == null)
-            {
-                manager.npcs.Add(new DataManager.NpcData
-                {
-                    activeNpcName = nData.npcName,
-                    willTravel = nData.willTravel,
-                    dialogue = nData.dialogue.ToArray(),
-                    spokenDialogue = nData.spokenDialogue.ToArray(),
-                    shopItems = nData.shopItems
-                });
-            }
-            else
-            {
-                npc.willTravel = nData.willTravel;
-                npc.dialogue = nData.dialogue.ToArray();
-                npc.spokenDialogue = nData.spokenDialogue.ToArray();
-                npc.shopItems = nData.shopItems;
-            }
-        }
-    }
     
-    public void LoadNpcData()
-    {
-        if (DataManager.Instance == null) return;
-        npcDataInitialised = true;
-        if (DataManager.Instance.npcs.Count == 0) return;
-        for (var i = 0; i < DataManager.Instance.npcs.Count; i++)
-        {
-            var npcData = DataManager.Instance.npcs[i];
-            var npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
-            if (npc == null)
-            {
-                UpdateLists();
-                npc = npcSceneData.Find(n => n.npcName == npcData.activeNpcName);
-                if (npc == null) continue;
-            }
-
-            npc.activeNpc.TryGetComponent<NPChat>(out var dTrigger);
-            if (dTrigger != null)
-            {
-                dTrigger.dialogue.Clear();
-                dTrigger.dialogue.AddRange(npcData.dialogue);
-            }
-
-            npc.activeNpc.TryGetComponent<ShopKeeper>(out var shopKeeper);
-            if (shopKeeper != null)
-            {
-                shopKeeper.shopItems.Clear();
-                shopKeeper.shopItems.AddRange(npcData.shopItems);
-            }
-        }
-    }
     #endregion
     
     #region Door and Spawner Stuff
@@ -795,6 +730,7 @@ public class MapManager : MonoBehaviour
         [Tooltip("Any NPCs that are active get detected here")]
         public GameObject activeNpc;
         public string npcName;
+        public bool isActive;
         [Tooltip("Will this NPC travel throughout scenes (areas)?")] 
         public bool willTravel;
         public List<DialogueObject> dialogue = new();

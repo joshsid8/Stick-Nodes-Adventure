@@ -22,8 +22,8 @@ public class Checkpoint : MonoBehaviour
     {
         if (!collision.CompareTag("Player") || PlayerHealth.Instance.justSpawned) yield break;
         
-        if (!spawnPoint) PlayerHealth.Instance.pc.currentCheckPoint = gameObject;
-        else PlayerHealth.Instance.pc.currentSpawnPoint = gameObject;
+        PlayerHealth.Instance.pc.currentCheckPoint = gameObject;
+        if (spawnPoint) PlayerHealth.Instance.pc.currentSpawnPoint = gameObject;
         yield return new WaitUntil(() => collision.gameObject.scene.name != "Persistent Objects");
         if (collision.gameObject.scene.name != "Persistent Objects") MapManager.Instances[collision.gameObject.scene.name].activeMap = true;
         yield return new WaitForSeconds(0.2f);

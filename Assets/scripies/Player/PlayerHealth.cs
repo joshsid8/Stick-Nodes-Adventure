@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace scripies.Player
 {
-    public class PlayerHealth : HealthBase, IPlayerStatus
+    public class PlayerHealth : HealthBase, IPlayerStatus, IDamageable
     {
         public static PlayerHealth Instance { get; private set; }
 
@@ -204,42 +204,40 @@ namespace scripies.Player
             ResetCombat();
         }
 
-        public override void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
-            IDamageable.ElementType elementType = IDamageable.ElementType.Normal, float elementFactor = 1F, bool isTrue = false,
-            bool damageOverTime = false, float procDmg = 0F, float procInterval = 0F, string aggressor = "")
+        public override void Damage(Damage dm, bool isFacingRight, string aggressor = "")
         {
-            var calcDamage = damageAmount * elementFactor;
-            if (elementType != 0)
+            var calcDamage = dm.damageAmount * dm.elementFactor;
+            if (dm.elementType != 0)
             {
                 // No! I am NNNNNNOTTT turning this into a LINQ expression!!!
                 for (var i = 0; i < defElementFactors.Count; i++)
                 {
-                    if ((int)elementType == i) continue;
+                    if ((int)dm.elementType == i) continue;
                     calcDamage *= defElementFactors[i];
                 }
             }
 
-            var isFacingAttacker = facingRight && !pc.isFacingRight || !facingRight && pc.isFacingRight;
+            var isFacingAttacker = isFacingRight && !pc.isFacingRight || !isFacingRight && pc.isFacingRight;
             switch (isFacingAttacker)
             {
-                case true when pd.isBlocking && !pd.counterWindow && damageFactor < 1:
+                case true when pd.isBlocking && !pd.counterWindow && dm.damageFactor < 1:
                     // blocking successfully
-                    StartCoroutine(ApplyDamage(calcDamage * pd.blockDamageResistance, false, damageOverTime, procDmg * pd.blockDamageResistance,
-                        procInterval, isTrue));
+                    StartCoroutine(ApplyDamage(calcDamage * pd.blockDamageResistance, false, dm.damageOverTime, dm.procDmg * pd.blockDamageResistance,
+                        dm.procInterval, dm.isTrue));
                     break;
-                case true when pd.isBlocking && pd.counterWindow && damageFactor < 2:
+                case true when pd.isBlocking && pd.counterWindow && dm.damageFactor < 2:
                     // perfect blocking / counter
                     pc.animator.SetTrigger("Counter");
                     pd.counterWindow = false;
-                    StartCoroutine(ApplyDamage(calcDamage * pd.counterDamageResistance, false, damageOverTime, procDmg * pd.counterDamageResistance,
-                        procInterval, isTrue));
+                    StartCoroutine(ApplyDamage(calcDamage * pd.counterDamageResistance, false, dm.damageOverTime, dm.procDmg * pd.counterDamageResistance,
+                        dm.procInterval, dm.isTrue));
                     GameEvents.TriggerStopTime(0.5f);
                     break;
                 case true:
                 case false:
                     // the player blocking but getting hit at the back / the player not blocking at all
-                    StartCoroutine(ApplyDamage(calcDamage * rawDamageResistance, true, damageOverTime, procDmg * rawDamageResistance,
-                        procInterval, isTrue));
+                    StartCoroutine(ApplyDamage(calcDamage * rawDamageResistance, true, dm.damageOverTime, dm.procDmg * rawDamageResistance,
+                        dm.procInterval, dm.isTrue));
                     pc.animator.SetTrigger("Damaged");
                     pa.isPerformingAbility = false;
                     break;

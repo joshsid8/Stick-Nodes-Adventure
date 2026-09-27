@@ -11,8 +11,7 @@ namespace scripies.Core
         bool IsDead { get; }
         Vector3 Position { get; }
 
-        void Damage(float damageAmount, bool facingRight, int damageFactor = 0,
-            ElementType elementType = ElementType.Normal, float elementFactor = 1, bool isTrue = false, bool damageOverTime = false, float procDmg = 0f, float procInterval = 0, string aggressor = "");
+        void Damage(Damage damage, bool facingRight, string aggressor = "");
         void Shock(float stunDuration = 0, Vector2 knockbackDirection = default, float knockbackForce = 20f, float knockbackTime = 0.2f, bool targetPosition = false);
         void Heal(float amount);
     }
@@ -22,7 +21,6 @@ namespace scripies.Core
     public class Damage
     {
         public float damageAmount;
-        public bool facingRight;
         public int damageFactor;
         [EnumButtons] public IDamageable.ElementType elementType;
         public float elementFactor = 1;
@@ -30,5 +28,4 @@ namespace scripies.Core
         public bool damageOverTime;
         public float procDmg;
         public float procInterval;
-        public string aggressor;
     }

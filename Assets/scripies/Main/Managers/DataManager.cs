@@ -15,6 +15,8 @@ public class DataManager : MonoBehaviour
     public List<SceneList> sceneData = new();
     [Header("NPC Data")]
     public List<NpcData> npcs = new();
+
+    public bool npcDataLoaded;
     
     [Serializable]
     public class SceneList
@@ -53,20 +55,89 @@ public class DataManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        
+        GameEvents.SaveNpcData += SaveNpcData;
+        GameEvents.LoadNpcData += LoadNpcData;
         GameEvents.SaveGameToDisk += SaveDisk;
         GameEvents.PersistGameData += PersistData;
+        GameEvents.OnEnterMap += StuffOnMapEnter;
     }
     
     private void OnDestroy()
     {
         if (Instance != this) return;
+        GameEvents.SaveNpcData -= SaveNpcData;
         GameEvents.SaveGameToDisk -= SaveDisk;
         GameEvents.PersistGameData -= PersistData;
+        GameEvents.LoadNpcData -= LoadNpcData;
+        GameEvents.OnEnterMap -= StuffOnMapEnter;
+    }
+    
+    private void SaveNpcData() => StartCoroutine(SaveNpcDataC());
+    private IEnumerator SaveNpcDataC()
+    {
+        if (npcs.Count > 0)
+        {
+            yield return new WaitUntil(() => npcDataLoaded);
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+        foreach (var map in MapManager.Instances.Values)
+        {
+            foreach (var nData in map.npcSceneData)
+            {
+                if (nData.activeNpc == null || string.IsNullOrEmpty(nData.npcName)) continue;
+                var npc = npcs.Find(x => x.activeNpcName.Contains(nData.npcName));
+                if (npc == null)
+                {
+                    npcs.Add(new NpcData
+                    {
+                        activeNpcName = nData.npcName,
+                        willTravel = nData.willTravel,
+                        dialogue = nData.dialogue.ToArray(),
+                        spokenDialogue = nData.spokenDialogue.ToArray(),
+                        shopItems = nData.shopItems
+                    });
+                }
+                else
+                {
+                    npc.willTravel = nData.willTravel;
+                    npc.dialogue = nData.dialogue.ToArray();
+                    npc.spokenDialogue = nData.spokenDialogue.ToArray();
+                    npc.shopItems = nData.shopItems;
+                }
+            }
+        }
+    }
+
+    private void StuffOnMapEnter(string mapName, bool firstTime)
+    {
+        Invoke(nameof(LoadNpcData), 0.1f);
+    }
+    
+    private void LoadNpcData()
+    {
+        npcDataLoaded = false;
+        // That's a whole sentence bro
+        foreach (var npcData in from npc in npcs
+                 from map in MapManager.Instances.Values
+                 from npcData in map.npcSceneData.Where(x => x.npcName == npc.activeNpcName)
+                 select npcData)
+        {
+            var dataNpc = npcs.Find(x => x.activeNpcName.Contains(npcData.npcName));
+            if (npcData.activeNpc.TryGetComponent<NPChat>(out var dTrigger))
+            {
+                dTrigger.dialogue.Clear();
+                dTrigger.dialogue.AddRange(dataNpc.dialogue);
+            }
+            
+            if (!npcData.activeNpc.TryGetComponent<ShopKeeper>(out var shopKeeper)) continue;
+            shopKeeper.shopItems.Clear();
+            shopKeeper.shopItems.AddRange(dataNpc.shopItems);
+        }
+        npcDataLoaded = true;
     }
     
     private static void SaveDisk() => SaveSystem.Save();
-    private void PersistData() => StartCoroutine(PersistDataC());
+    private void PersistData(bool _) => StartCoroutine(PersistDataC());
     private static IEnumerator PersistDataC()
     {
         for (var i = 0; i < MapManager.Instances.Count; i++)
