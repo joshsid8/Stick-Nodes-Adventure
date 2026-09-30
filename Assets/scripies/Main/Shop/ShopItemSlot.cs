@@ -17,10 +17,15 @@ public class ShopItemSlot : SlotBase
 	
 	public ShopManager shopManager;
 
-	protected void Start()
+	protected override void Start()
 	{
-		base.Awake();
-		shopManager = ShopManager.Instance;
+		base.Start();
+		shopManager = ShopManager.Instance ?? FindAnyObjectByType<ShopManager>();
+	}
+
+	private void EnsureShopManager()
+	{
+		if (shopManager == null) shopManager = ShopManager.Instance ?? FindAnyObjectByType<ShopManager>();
 	}
 
 	protected override void LateUpdate() { }
@@ -29,6 +34,7 @@ public class ShopItemSlot : SlotBase
 
     private void BuyItem()
     {
+	    EnsureShopManager();
 	    if (!usedSlot || collectableSo == null) return;
 	    var bought = PlayerHealth.Instance.pm.CashFlow(itemPrice, true);
 	    if (!bought) return;

@@ -64,7 +64,10 @@ public class DataManager : MonoBehaviour
     
     private void OnDestroy()
     {
-        if (Instance != this) return;
+        if (Instance == this)
+        {
+            Instance = null;
+        }
         GameEvents.SaveNpcData -= SaveNpcData;
         GameEvents.SaveGameToDisk -= SaveDisk;
         GameEvents.PersistGameData -= PersistData;

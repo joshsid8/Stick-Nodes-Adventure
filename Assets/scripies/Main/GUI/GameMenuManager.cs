@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using scripies.Core;
 using scripies.Player;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -60,7 +64,52 @@ public class GameMenuManager : MonoBehaviour
         if (menuPrompt.choice == 2)
         {
             SaveSystem.Save();
-            Application.Quit();
+            
+            var aud = AudioManager.Instance;
+            if (aud != null) aud.TriggerFadeOut();
+            GameHUD.Instance.ActivateShader(.2f, 0.75f);
+            yield return new WaitForSecondsRealtime(1.5f);
+            
+            // Collect all persistent objects to destroy
+            var persistentObjects = new List<GameObject>();
+            
+            // Find common persistent objects by singleton instances
+            if (AudioManager.Instance != null) persistentObjects.Add(AudioManager.Instance.gameObject);
+            if (Shenanigans.Instance != null) persistentObjects.Add(Shenanigans.Instance.gameObject);
+            if (DataManager.Instance != null) persistentObjects.Add(DataManager.Instance.gameObject);
+            if (InvManager.Instance != null) persistentObjects.Add(InvManager.Instance.transform.root.gameObject);
+            if (PlayerHealth.Instance != null) persistentObjects.Add(PlayerHealth.Instance.gameObject);
+            if (StatsManager.Instance != null) persistentObjects.Add(StatsManager.Instance.gameObject);
+            if (QuestLogManager.Instance != null) persistentObjects.Add(QuestLogManager.Instance.gameObject);
+            if (ResourceDatabase.Instance != null) persistentObjects.Add(ResourceDatabase.Instance.gameObject);
+            if (ObjectDatabase.Instance != null)
+            {
+                ObjectDatabase.Instance.ClearAll();
+                persistentObjects.Add(ObjectDatabase.Instance.gameObject);
+            }
+
+            // Load main menu additively first to keep the manager alive
+            yield return SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
+            
+            // Unload all scenes except Main Menu
+            var scenesToUnload = new List<AsyncOperation>();
+            for (var i = 0; i < SceneManager.sceneCount; i++)
+            {
+                var scene = SceneManager.GetSceneAt(i);
+                if (scene.name == "Main Menu") continue;
+                scenesToUnload.Add(SceneManager.UnloadSceneAsync(scene));
+            }
+            
+            while (scenesToUnload.Any(s => !s.isDone)) yield return null;
+
+            // Destroy persistent objects
+            foreach (var obj in persistentObjects.Where(obj => obj != null))
+            {
+                Destroy(obj);
+            }
+            
+            yield return new WaitForSecondsRealtime(0.1f);
+            print("Cleaned up thus exited game");
         }
         else OnMenuToggle(false);
     }

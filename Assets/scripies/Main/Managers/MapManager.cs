@@ -229,14 +229,15 @@ public class MapManager : MonoBehaviour
         if (!mapToggle) return;
         mapToggle = false;
         weather.ClearDisasters();
-        if (!audioManager.gameObject.IsDestroyed())
+        if (audioManager != null && !audioManager.gameObject.IsDestroyed())
         {
             audioManager.TriggerFadeOut();
             audioManager.previousScene = playerObject.scene;
         }
         if (playerObject != null && SceneManager.GetSceneByName("Persistent Objects").isLoaded) 
             SceneManager.MoveGameObjectToScene(playerObject, SceneManager.GetSceneByName("Persistent Objects"));
-        mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
+        if (mainCamera != null) 
+            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
     }
     #endregion
 

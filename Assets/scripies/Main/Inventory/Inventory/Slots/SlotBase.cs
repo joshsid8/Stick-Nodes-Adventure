@@ -30,16 +30,24 @@ public abstract class SlotBase : MonoBehaviour
         if (itemImage.enabled != usedSlot) itemImage.enabled = usedSlot;
     }
     
-    protected virtual void Awake()
+    protected virtual void Start()
     {
-        playerManager = FindAnyObjectByType<PlayerManager>();
+        playerManager = PlayerManager.Instance ?? FindAnyObjectByType<PlayerManager>();
         invManager = InvManager.Instance ?? FindAnyObjectByType<InvManager>();
+    }
+
+    protected void EnsureManagers()
+    {
+        if (playerManager == null) playerManager = PlayerManager.Instance ?? FindAnyObjectByType<PlayerManager>();
+        if (invManager == null) invManager = InvManager.Instance ?? FindAnyObjectByType<InvManager>();
     }
     
     public void ItemSelect() => OnLeftClick();
 
     protected virtual void OnLeftClick()
     {
+        EnsureManagers();
+        if (invManager == null) return;
         invManager.DeselectAllSlots();
         UpdateSlotUI();
         if (selectedShader != null) selectedShader.SetActive(true);

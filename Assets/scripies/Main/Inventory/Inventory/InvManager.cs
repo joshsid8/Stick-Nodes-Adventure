@@ -36,6 +36,11 @@ public class InvManager : GUIBase
         InitializeAllSlots();
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     private void Start()
     {
         if (input == null)

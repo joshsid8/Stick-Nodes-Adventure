@@ -28,9 +28,9 @@ public class ItemSlot : SlotBase, IPointerClickHandler
 
     [HideInInspector] public CollectableSOBase itemScriptableObject;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         if (invManager == null) Debug.LogError("ItemSlot: InvManager not found on Awake!", this);
         if (equippedAspectSlots == null || equippedAspectSlots.Length == 0)
             Debug.LogWarning($"ItemSlot {gameObject.name}: No equippedAspectSlots assigned. Aspects cannot be equipped from this slot.");

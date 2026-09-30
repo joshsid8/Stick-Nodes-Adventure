@@ -64,7 +64,7 @@ namespace scripies.Dialogue
         {
             var inputDirection = Input.GetAxisRaw("Vertical");
             if (chatInterval <= 0) isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
-            if (!DialogueManager.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
+            if (DialogueManager.Instance.dialogueBox != null && !DialogueManager.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
             chatInterval -= Time.deltaTime;
             
             if (!isActive) return;

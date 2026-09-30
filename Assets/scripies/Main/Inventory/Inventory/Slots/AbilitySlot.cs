@@ -17,7 +17,7 @@ public class AbilitySlot : SlotBase, IPointerClickHandler
 
     private PlayerAbility player;
     
-    private void Start()
+    protected override void Start()
     {
         player = PlayerHealth.Instance.pa ?? FindAnyObjectByType<PlayerAbility>();
     }

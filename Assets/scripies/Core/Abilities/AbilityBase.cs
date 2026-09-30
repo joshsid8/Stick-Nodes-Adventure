@@ -67,7 +67,7 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public bool abilityOnCollide;
     public AbilityObjSO[] subAbilities;
     
-    private List<GameObject> inContact = new();
+    private readonly List<GameObject> inContact = new();
     [Space]
     [Header("References")]
     public Animator animator;
@@ -84,8 +84,10 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
     public AudioClip loopingSfx;
     public AudioClip endSfx;
     public AudioClip contactSfx;
-
-    public virtual void SetValues(int factor, bool facingRight, GameObject caster = null)
+    
+    [HideInInspector] public AbilityObjSO abilityId;
+    public bool perceiveAllObjects;    
+    public virtual void SetValues(int factor, bool facingRight, GameObject caster = null, AbilityObjSO id = null)
     {
         typeFactor = factor;
         isFacingRightDirection = facingRight;

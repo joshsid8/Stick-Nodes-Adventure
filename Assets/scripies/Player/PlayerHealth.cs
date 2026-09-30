@@ -77,6 +77,19 @@ namespace scripies.Player
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+        }
+        private void OnDisable()
+        {
+            GameEvents.OnPlayerDeath -= ResetCombat;
+            GameEvents.OnEnemyDefeated -= ResetCombatViaEnemy;
+            GameEvents.OnAggressiveStatusChanged -= UpdateAggressiveEnemies;
+            GameEvents.AddPlayerCombat -= ApplyCombat;
+            GameEvents.OnPlayerHealthChanged -= CheckStatus;
+        }
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         protected override void Start()
         {
@@ -113,26 +126,6 @@ namespace scripies.Player
         private void OnValidate()
         {
             if (!isDead && Application.isPlaying) CheckStatus();
-        }
-
-        private void OnDestroy()
-        {
-           if (Application.isEditor) return;
-           GameEvents.TriggerBoom();
-           throw new MissingMemberException("THE PLAYER GOT DESTROYED?! WHAT THE HAIL HAPPENED!?");
-        }
-        private void OnDisable()
-        {
-            GameEvents.OnPlayerDeath -= ResetCombat;
-            GameEvents.OnEnemyDefeated -= ResetCombatViaEnemy;
-            GameEvents.OnAggressiveStatusChanged -= UpdateAggressiveEnemies;
-            GameEvents.AddPlayerCombat -= ApplyCombat;
-            GameEvents.OnPlayerHealthChanged -= CheckStatus;
-            
-            //if (!Application.isEditor) throw new NullReferenceException("Wth? why is player disabled??");
-            // gameObject.SetActive(true);
-            // GameEvents.TriggerJumpScare();
-            // Debug.LogError("no!");
         }
 
         private void Animation()

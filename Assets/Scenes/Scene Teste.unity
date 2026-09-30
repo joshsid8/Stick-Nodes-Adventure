@@ -906,7 +906,6 @@ MonoBehaviour:
   doorSpawnerHybridSceneData: []
   checkPointSceneData: []
   sceneLoaded: 0
-  npcDataInitialised: 0
 --- !u!61 &944811996
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -988,6 +987,7 @@ MonoBehaviour:
   weatherProperties:
   - weatherMapName: Heat Place
     weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
+    weatherDuration: 10
     weatherTextColor: {r: 0.9528302, g: 0.72387344, b: 0.50787646, a: 1}
     weatherBgColor: {r: 0.7254902, g: 0.5176471, b: 0.31764707, a: 1}
     weatherOst:
@@ -1000,6 +1000,7 @@ MonoBehaviour:
     - 0.7
   - weatherMapName: Cold Place
     weatherMapDesc: '*Freeze gun mk!! sound effect*'
+    weatherDuration: 10
     weatherTextColor: {r: 0.50980395, g: 0.9529412, b: 0.93078697, a: 1}
     weatherBgColor: {r: 0.31764707, g: 0.65114826, b: 0.7254902, a: 1}
     weatherOst:
@@ -1012,6 +1013,7 @@ MonoBehaviour:
     - 1
   - weatherMapName: Thunder strom
     weatherMapDesc: ah!
+    weatherDuration: 10
     weatherTextColor: {r: 0.36863655, g: 0.7169812, b: 0.698485, a: 1}
     weatherBgColor: {r: 0, g: 0.34697014, b: 0.4245283, a: 1}
     weatherOst:
@@ -1022,9 +1024,10 @@ MonoBehaviour:
     - 1
     - 1
     - 1
-  sm: {fileID: 0}
-  randomWeather: 0
-  weatherChance: 10
+  freezeWeather: 0
+  weatherDurationTimer: 10
+  randomWeather: 1
+  weatherChance: 80
   earthquakeTimer: 0.2
   thunderbolt: {fileID: 4635439681108189195, guid: a88d7a37d7bccac46ab6f511414720c4, type: 3}
   thunderTimer: 0.75
@@ -1794,17 +1797,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 156366622674528350, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
+      propertyPath: dispenserInterval
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 156366622674528350, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
+      propertyPath: abilitiesToDispense.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 156366622674528350, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
+      propertyPath: 'abilitiesToDispense.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 59341cf8fb5dc044cb5636127ae1be5f, type: 2}
     - target: {fileID: 2450106500031775277, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
       propertyPath: m_Name
       value: Dispenser
       objectReference: {fileID: 0}
     - target: {fileID: 5440309642905652936, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -64.31095
+      value: -45.627106
       objectReference: {fileID: 0}
     - target: {fileID: 5440309642905652936, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 35.57333
+      value: 36.67509
       objectReference: {fileID: 0}
     - target: {fileID: 5440309642905652936, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
       propertyPath: m_LocalPosition.z

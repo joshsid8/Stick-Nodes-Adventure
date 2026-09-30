@@ -6,9 +6,9 @@ public class AspectSlot : SlotBase, IPointerClickHandler
     // Aspect Data
     public AspectSO aspectStats;
     
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         if (invManager == null) Debug.LogError("AspectSlot: InvManager not found on Awake!", this);
         if (playerManager == null) Debug.LogError("AspectSlot: PlayerManager not found on Awake!", this);
     }

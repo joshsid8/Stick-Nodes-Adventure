@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using scripies.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -36,6 +38,7 @@ public class Projectile : AbilityBase
     private bool collided;
     private CircleCollider2D ccoll;
     [SerializeField] private float objectRange;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -71,19 +74,18 @@ public class Projectile : AbilityBase
         };
         
         // This makes the object point to where its moving - something to learn (MAFFS)
-        if (!collided)
-        {
-            var velocity = rb.linearVelocity;
-            if (velocity.sqrMagnitude > 0.001f)
-            {
-                var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
-            }
-        }
+        if (collided) return;
+        var velocity = rb.linearVelocity;
+        if (!(velocity.sqrMagnitude > 0.001f)) return;
+        var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
     }
     
     protected void OnTriggerEnter2D(Collider2D collision)
     {
+        if (typeFactor == 0 && collision.GetComponentInChildren<AbilityBase>() != null)
+            if (abilityId == collision.GetComponentInChildren<AbilityBase>().abilityId && !perceiveAllObjects) return;
+        
         switch (typeFactor)
         {
             case 1:
@@ -101,7 +103,8 @@ public class Projectile : AbilityBase
             default:
                 if (collision.CompareTag("Player") || collision.CompareTag("Enemy") || collision.CompareTag("Boss")) Collided();
                 else if (collision.CompareTag("Terrain") || collision.gameObject.layer == 
-                         LayerMask.NameToLayer(typeFactor == 0 ? "FX" : typeFactor == 1 ? "PVFX" : "EVFX")) Crash();
+                         LayerMask.NameToLayer(typeFactor switch { 0 => "FX", 1 => "PVFX", _ => "EVFX" })) 
+                    Crash();
                 break; 
         }
     }
@@ -189,7 +192,7 @@ public class Projectile : AbilityBase
 
     private void Deflect(int factor)
     {
-        SetValues(factor, !isFacingRightDirection, factor != 1 ? abilityCaster : GameObject.FindGameObjectWithTag("Player"));
+        SetValues(factor, !isFacingRightDirection, factor != 1 ? abilityCaster : GameObject.FindGameObjectWithTag("Player"), abilityId);
         projectileSpeed += 5f;
         ApplyForce(isDirectional, !swapForce ? projectileSpeed : projectileHeight, swapForce ? projectileSpeed : projectileHeight);
     }

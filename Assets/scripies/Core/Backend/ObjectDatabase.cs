@@ -49,6 +49,14 @@ public class ObjectDatabase : MonoBehaviour
         }
     }
 
+    public void ClearAll()
+    {
+        allItems.Clear();
+        allEntities.Clear();
+        allTeleDoors.Clear();
+        everything.Clear();
+    }
+
     private void UpdateLists()
     {
         loaded = false;

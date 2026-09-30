@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using scripies.Core;
 using scripies.Player;
 
@@ -28,8 +29,9 @@ public class MainMenuManager : MonoBehaviour
     [Header("Settings")] 
     private int fps = 60;
     private bool vsync;
-
     [SerializeField] private SceneField defaultScene;
+    
+    private Animator animator;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -41,7 +43,16 @@ public class MainMenuManager : MonoBehaviour
         
         if (SceneManager.GetSceneByName("Persistent Objects").isLoaded) SceneManager.UnloadSceneAsync("Persistent Objects");
         
+        // Ensure static instances are cleared if they were destroyed
+        if (DataManager.Instance != null && DataManager.Instance.gameObject == null)
+        {
+            // This is a weird case in Unity where the reference is not truly null but the object is destroyed
+            // However, since we use Instance = this in Awake with Destroy(gameObject), it should be fine.
+            // But let's be safe.
+        }
+        
         input = new PlayerInput();
+        animator = GetComponent<Animator>();
     }
 
     private IEnumerator Start()
@@ -59,10 +70,11 @@ public class MainMenuManager : MonoBehaviour
         input.Player.Disable();
     }
 
-    public void StartGame()
+    public void StartGame(int saveSlot = 0)
     {  
         HideMenu();
         loadingBar.SetActive(true);
+        SaveSystem.SetSaveSlot(saveSlot);
         StartCoroutine(ProgressLoading());
     }
 

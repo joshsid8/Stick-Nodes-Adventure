@@ -11,7 +11,7 @@ public class PerformAbility : MonoBehaviour
     public CasterType casterType = CasterType.None;
 
     public Transform abilityPoint;
-    public LayerMask terrainLayers;
+    //public LayerMask terrainLayers;
     [Tooltip("Ability Objects to spawn. Only the Player uses this (unless something else needs to hold its abilities)")]
     public AbilityObjSO[] objects;
 
@@ -39,8 +39,8 @@ public class PerformAbility : MonoBehaviour
 
     private void Update()
     {
-        //TODO: Either remove or improve this flag. its not good
-        unavailable = Physics2D.OverlapCircle(new Vector2(abilityPoint.position.x, abilityPoint.position.y), 1f, terrainLayers);
+        //WE dont need this anymore; we never did...
+        //unavailable = Physics2D.OverlapCircle(new Vector2(abilityPoint.position.x, abilityPoint.position.y), 1f, terrainLayers);
         
         if (casterType != CasterType.Player) return;
         if (isActivated && pa.CurrentAbilityCooldown[currentSlot] >= pa.MaxAbilityCooldown[currentSlot])
@@ -103,7 +103,7 @@ public class PerformAbility : MonoBehaviour
 
                     if (abScript == null) continue;
                     ability.SetProperties(abScript);
-                    abScript.SetValues(casterFactor, isFacingRight, gameObject);
+                    abScript.SetValues(casterFactor, isFacingRight, gameObject, ability);
 
                     switch (casterType)
                     {
@@ -133,7 +133,7 @@ public class PerformAbility : MonoBehaviour
                 var abScript = newObjs[0].GetComponent<AbilityBase>() ?? newObjs[0].GetComponentInChildren<AbilityBase>();
                 if (abScript == null) yield break;
                 ability.SetProperties(abScript);
-                abScript.SetValues(casterFactor, isFacingRight, gameObject);
+                abScript.SetValues(casterFactor, isFacingRight, gameObject, ability);
 
                 switch (casterType)
                 {
