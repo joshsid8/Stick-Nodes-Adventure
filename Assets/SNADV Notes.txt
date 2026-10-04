@@ -6,12 +6,10 @@ SNADV Notes
     Notices & Priorities:
         
         Cleanup logic is in shambles
-            A lot of missingrefs and some nullrefs whenever i try exit the game
-            The game keeps thinking that there are 2 audio listeners and 2 event systems
-                Spoiler alert: LIES!
-            Animations also dont work when exiting to the main menu as well
-                DOTween and the animator controller doesnt work
-                Maybe because of the other errors im getting...
+            We are pretty close, errors are erratic, but not abundant
+                Getting some missingrefs here and there, which can be fixed easily (albeit annoying)
+                The new scene made(Nothing Scene - Where it contains absolutely nothing to act as a placeholder), doesnt get unloaded when i call the method to do so
+                The animation problem still persists too
             
     Optimisations & Hotfixes:
         
@@ -20,6 +18,8 @@ SNADV Notes
             Issues from testing
                                                         
             One time occurrences or Rare/Intimidating bugs
+                Idk if its the software, but the fps has been damaged.
+                    Worried if building the game will cause the previously built one to be broken...
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
                                                 

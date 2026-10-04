@@ -41,6 +41,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Earthly Shop Teste.unity
     guid: c17717ef050b59f438f8b80ae4861300
+  - enabled: 1
+    path: Assets/Scenes/Nothing Scene.unity
+    guid: 35f744831369ae345b0175994d2ef12a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 17a3c72a5b633e1489eab7d307b4b86b, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

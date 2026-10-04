@@ -22,9 +22,13 @@ public class GameSettingsManager : MonoBehaviour
             return;
         }
         Instance = this;
+    }
+
+    private void OnEnable()
+    {
         menuManager = GameMenuManager.Instance ?? FindAnyObjectByType<GameMenuManager>();
     }
-    
+
     // We don't know what Log10 is, but apparently it just makes volume more "linear" when being set
     public void SetMasterVolume(float volume) => audioMixerSettings.audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
     public void SetMusicVolume(float volume) => audioMixerSettings.audioMixer.SetFloat("MusicVolume", Mathf.Log10(volume) * 20);
@@ -34,6 +38,7 @@ public class GameSettingsManager : MonoBehaviour
     {
         isActive = toggle;
         settingsMenu.SetActive(toggle);
+        menuManager = GameMenuManager.Instance ?? FindAnyObjectByType<GameMenuManager>();
         if (menuManager.pausedGame) menuManager.gameMenu.SetActive(!toggle);
     }
     

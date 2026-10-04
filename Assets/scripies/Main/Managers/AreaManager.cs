@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class AreaManager : MonoBehaviour
 {
@@ -58,11 +59,13 @@ public class AreaManager : MonoBehaviour
     public void TriggerColorFade(Color targetColor)
     {
         if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-        colorCoroutine = StartCoroutine(LerpColours(targetColor));
+        if (actualCamera != null) colorCoroutine = StartCoroutine(LerpColours(targetColor));
     }
 
     public IEnumerator LerpColours(Color bgColor)
     {
+        if (actualCamera == null || actualCamera.IsDestroyed() || actualCamera.backgroundColor == bgColor) yield break;
+        //print(actualCamera);
         while (actualCamera.backgroundColor != bgColor)
         {
             actualCamera.backgroundColor = Color.Lerp(actualCamera.backgroundColor, bgColor, lerpTime * Time.deltaTime);

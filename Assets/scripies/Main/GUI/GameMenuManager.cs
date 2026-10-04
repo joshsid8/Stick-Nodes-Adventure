@@ -66,8 +66,8 @@ public class GameMenuManager : MonoBehaviour
             SaveSystem.Save();
             
             var aud = AudioManager.Instance;
-            if (aud != null) aud.TriggerFadeOut();
-            GameHUD.Instance.ActivateShader(.2f, 0.75f);
+            if (aud != null) aud.StopAudio();
+            //GameHUD.Instance.ActivateShader(.2f, 0.75f);
             yield return new WaitForSecondsRealtime(1.5f);
             
             // Collect all persistent objects to destroy
@@ -87,26 +87,35 @@ public class GameMenuManager : MonoBehaviour
                 ObjectDatabase.Instance.ClearAll();
                 persistentObjects.Add(ObjectDatabase.Instance.gameObject);
             }
-
-            // Load main menu additively first to keep the manager alive
-            yield return SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
+            // Idea: adding a scene with absolutely nothing, so we have can allow main menu to take over after everythings gone
+            yield return SceneManager.LoadSceneAsync("Nothing Scene", LoadSceneMode.Additive);
             
             // Unload all scenes except Main Menu
             var scenesToUnload = new List<AsyncOperation>();
             for (var i = 0; i < SceneManager.sceneCount; i++)
             {
                 var scene = SceneManager.GetSceneAt(i);
-                if (scene.name == "Main Menu") continue;
+                if (scene.name is "Main Menu" or "Nothing Scene") continue; // holy pseudocode!!!
                 scenesToUnload.Add(SceneManager.UnloadSceneAsync(scene));
             }
             
             while (scenesToUnload.Any(s => !s.isDone)) yield return null;
-
+            
             // Destroy persistent objects
-            foreach (var obj in persistentObjects.Where(obj => obj != null))
-            {
+            foreach (var obj in persistentObjects.Where(obj => obj != null)) 
                 Destroy(obj);
+            
+            yield return SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => SceneManager.GetSceneByName("Main Menu").isLoaded);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Main Menu"));
+            SceneManager.UnloadSceneAsync("Nothing Scene");
+            if (SceneManager.GetSceneByName("Nothing Scene").isLoaded)
+            {
+                print("son");
+                SceneManager.UnloadSceneAsync("Nothing Scene");
+                if (SceneManager.GetSceneByName("Nothing Scene").isLoaded) print("SON");
             }
+
             
             yield return new WaitForSecondsRealtime(0.1f);
             print("Cleaned up thus exited game");

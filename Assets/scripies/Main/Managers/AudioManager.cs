@@ -37,15 +37,41 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         Instance = this;
 
         DontDestroyOnLoad(gameObject);
+
+
+        if (backgroundMusic.Length > 2 && backgroundMusic[1] == null && backgroundMusic[2] == null ||
+            backgroundMusic.Length > 0 && musicSource.clip == null)
+            PlayMusic(0, false);
+    }
+
+    private void OnEnable()
+    {
         GameEvents.PlayMusic += PlayMusic;
         GameEvents.PlaySound += PlaySfx;
         GameEvents.OnDisableGUI += QuietOnGUI;
         GameEvents.OnEnableGUI += QuietOnGUI;
         GameEvents.MuteMusic += ToggleMuteMusic;
+    }
 
-        if (backgroundMusic.Length > 2 && backgroundMusic[1] == null && backgroundMusic[2] == null ||
-            backgroundMusic.Length > 0 && musicSource.clip == null)
-            PlayMusic(0, false);
+    private void OnDisable()
+    {
+        GameEvents.PlayMusic -= PlayMusic;
+        GameEvents.PlaySound -= PlaySfx;
+        GameEvents.OnDisableGUI -= QuietOnGUI;
+        GameEvents.OnEnableGUI -= QuietOnGUI;
+        GameEvents.MuteMusic -= ToggleMuteMusic;
+        StopAudio();
+    }
+
+    private void OnDestroy()
+    {
+        StopAudio();
+    }
+
+    public void StopAudio()
+    {
+        musicSource.Stop();
+        globalSfxSource.Stop();
     }
 
     #region Music

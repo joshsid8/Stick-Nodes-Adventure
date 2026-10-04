@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using scripies.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -142,6 +143,9 @@ namespace scripies.Player
             yield return new WaitForSeconds(timer);
             gameObject.layer = LayerMask.NameToLayer("Player");
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+
+            if (pc.currentSpawnPoint.gameObject.name == "Default SpawnPoint" && !SceneManager.GetSceneByName("Default Teste").isLoaded) 
+                SceneManager.LoadSceneAsync("Default Teste", LoadSceneMode.Additive);
             
             var spawnTarget = realSpawn ? pc.currentSpawnPoint : pc.currentCheckPoint;
             if (spawnTarget != null) transform.position = spawnTarget.transform.position;
