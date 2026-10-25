@@ -8,6 +8,7 @@ using UnityEngine;
 public class SaveSystem
 {
     public static int SaveSlot;
+    public static bool isSaving;
     private static SaveData saveData = new()
     {
         sceneData = new SceneData(true),
@@ -92,6 +93,7 @@ public class SaveSystem
     public static void Save()
     {
         if (DataManager.Instance == null || Application.isEditor && PlayerHealth.Instance.pc.debugMode) return;
+        isSaving = true;
         HandleSaveData();
 
         try
@@ -104,6 +106,7 @@ public class SaveSystem
         {
             Debug.LogError($"[SaveSystem] Failed to save: {ex.Message}");
         }
+        isSaving = false;
     }
     
     public static void SaveSettings() => HandleSettingsSaveData();

@@ -81,9 +81,6 @@ namespace scripies.Player
         private void OnDestroy()
         {
             if (Instance == this) Instance = null;
-        }
-        private void OnDisable()
-        {
             GameEvents.OnPlayerDeath -= ResetCombat;
             GameEvents.OnEnemyDefeated -= ResetCombatViaEnemy;
             GameEvents.OnAggressiveStatusChanged -= UpdateAggressiveEnemies;

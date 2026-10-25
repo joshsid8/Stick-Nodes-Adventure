@@ -5,27 +5,33 @@ SNADV Notes
     
     Notices & Priorities:
         
-        Cleanup logic is in shambles
-            We are pretty close, errors are erratic, but not abundant
-                Getting some missingrefs here and there, which can be fixed easily (albeit annoying)
-                The new scene made(Nothing Scene - Where it contains absolutely nothing to act as a placeholder), doesnt get unloaded when i call the method to do so
-                The animation problem still persists too
+        After replaying, i entered and left the watery shop, tried entering Cynder valley, and the data wasnt loaded
+            In the data manager, however, the data was there, but not loaded into the map
+            When i tried to press the load button, it did nothing
+            Good thing is that data doesnt get lost, but it just needs to actually load
+        
+        Cleanup logic is basically done!
+            Seems like no immediate errors appear when i quit and play, so thats nice
+            But i also fall into the void if i play a new game
+                probably a spawnpoint issue, good thing i can replicate this in the editor
+            The animation problem still persists, ill need to ask Junie about this
+                This also stops me from playing from a save file, so there could be more unlerlying issues once i get this problem fixed
             
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from testing
-                                                        
-            One time occurrences or Rare/Intimidating bugs
-                Idk if its the software, but the fps has been damaged.
-                    Worried if building the game will cause the previously built one to be broken...
                 
+            One time occurrences or Rare/Intimidating bugs
+                On my laptop, the fps was very bad, never happened before...
+                    Thing to note was that the build of the game was completely fine
+                    ill sync the newer changes from my pc to the laptop to see if that helps
+                    If this persists, ill no longer be able to dev properly on my laptop D:
+
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
-                                                
+                
             Junie Help
-                Beating up Instability
-                    Ensure not to use all credits (i need em for uni!)
                 
     Things to be added/changed:
         
@@ -37,10 +43,10 @@ SNADV Notes
                     I will use placeholder bgs just to test it, then will worry about designs Post-AO
                         
             Audio                   
-                Make it so that the music transitions smoothly
-                    maybe i have to fade the music out and simultaneously fade in the new one?
-                    To make this work (along with the unrelated bg logic ill do) i think ill need 2 separate audio buffers
-                        so it can easily switch between or merge together
+                A new idea: instead of fading between musics like Hollow Knight, make short clips to shift between music like Cuphead (kinda)
+                    I wont need multiple audio sources for this, but i feel as if this may be a bit less ambient and more forced
+                    I think ill try this out and see what happens!
+                    
                 I was also thinking of making music change depending on the distance between the player and things
                     If the player is close to a boss or an enemy, the music will fade into fight music
 
@@ -74,13 +80,14 @@ SNADV Notes
                     the player dapping up a friendly character
                     fishfolk successfully decieving the player by fakely asking for forgiveness
                     cynder's dash attack clashing with the player
+                This can introduce finishers!
+                    e.g Cynder chopping the player up with his sword once the player's health is low enough
+                    Really, any enemy would just do a brutal combo on the player to portray a finisher
             
             OSTs
                 I need to make new boss music to fit the new map music
                     Cynder Valley is all done
                     I think ill focus on Noxu's temple next
-                Ive made shop music, but i want to make variants of it
-                    I just have earth and air's variants to do
             
             Animate HUD
                 Like how i animated the Map's title
@@ -100,7 +107,7 @@ SNADV Notes
             
             Boss Logic
                 Improve/Remake Noxu
-                    He is a very very boring boss fight, so i need to add more functionality to his moves
+                    His boss fight is very very boring, so i need to add more functionality to his moves
                     I want his style to be based on the player using spatial awareness
                         An idea would be his rocks bouncing on surfaces (like dung defender in hk) 
                             to make the player worry about those and move around more
@@ -109,7 +116,7 @@ SNADV Notes
                             He can probably resize the area to make it easier/harder for the player to do certain things while fighting him
                         Make him deathly parry any projectiles that come in contact if he uses the baseball bat
                             This will mean baseball bat will need some sort of counter variant
-                            The projectiles will be deflected at a near inescapable speed, but this will happen before the freeze/impace frames
+                            The projectiles will be deflected at a near inescapable speed, but this will happen before the freeze/impact frames
                             It will be very funny if done aha
                     I will probably ask people for more ideas
                     
@@ -122,7 +129,7 @@ SNADV Notes
                 Sira & TJ
                     I THHHHIIIIINNNKK i will do Sira last, as it is the most unique boss out of all of them (that isnt the last boss)
                         Still thinking how her moves will be implemented, but i have an idea on what she'd do
-                            She will be intangible for the initial few moments, before summoning a lot of pawns
+                            She will be intangible for the first few moments, before summoning a lot of pawns
                             This ultimately leaves her very vulnerable
                     TJ is basically will be split into 2 bosses
                         He will play similarly to Noxu on his first phase, but Cynder on his second
@@ -133,11 +140,11 @@ SNADV Notes
             
             Enemy AI/Pathfinding Logic
                 Finish off the start of EnemyDomain
-                    It is mean to ensure an enemy stays in their spawn area to ensure they dont wander off
+                    It is meant to ensure an enemy stays in their spawn area so they dont wander off
                     I want to incorporate loose pathfinding so the enemy finds their way back to their domain if they arent there
                         E.g Fishmen can fly, so theyll just be able fly back to their spawn area
                         Cynder can teleport, so he can just teleport back, pretty easy
-                        Some enemies cant fly or teleport (like cynderiancs), so pathfinding will be much harder
+                        Some enemies cant fly or teleport (like cynderians), so pathfinding will be much harder
                             Maybe if they arent in sight of the player, they can just teleport anyway
         
 When you are done: Find the one piece.

@@ -36,10 +36,8 @@ namespace scripies.Player
             pc = GetComponent<PlayerController>();
             pd = GetComponent<PlayerDefense>();
             ability = GetComponent<PerformAbility>();
-
+            
             maxEnergy = energy;
-            GameEvents.AddPlayerEnergy += AddEnergy;
-            GameEvents.PlayerPerformAbility += TogglePa;
             
             pc.input.Player.Ability.started += _ =>
             {
@@ -49,6 +47,18 @@ namespace scripies.Player
             };
             pc.input.Player.Ability.canceled += _ => isHolding = false;
             pc.input.Player.AbilitySwap.performed += _ => AbilitySwap();
+        }
+
+        private void OnEnable()
+        {
+            GameEvents.AddPlayerEnergy += AddEnergy;
+            GameEvents.PlayerPerformAbility += TogglePa;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.AddPlayerEnergy -= AddEnergy;
+            GameEvents.PlayerPerformAbility -= TogglePa;
         }
 
         private float backupTimer;
@@ -152,7 +162,10 @@ namespace scripies.Player
         private void TogglePa(bool state)
         {
             isPerformingAbility = state;
-            if (!state) StopAllCoroutines(); // Stop any pending safety resets if we manually release
+            if (!state) {
+                StopAllCoroutines();
+                // Stop any pending safety resets if we manually release
+            }
             else StartCoroutine(AbilitySafetyReset());
         }
 

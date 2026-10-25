@@ -5,6 +5,8 @@ using System.Linq;
 using scripies.Dialogue;
 using UnityEngine;
 using scripies.Core;
+using scripies.Player;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
 public class DataManager : MonoBehaviour
@@ -60,19 +62,18 @@ public class DataManager : MonoBehaviour
         GameEvents.SaveGameToDisk += SaveDisk;
         GameEvents.PersistGameData += PersistData;
         GameEvents.OnEnterMap += StuffOnMapEnter;
+        GameEvents.OnQuitToMainMenu += Cleanup;
     }
     
     private void OnDestroy()
     {
-        if (Instance == this)
-        {
-            Instance = null;
-        }
+        if (Instance == this) Instance = null;
         GameEvents.SaveNpcData -= SaveNpcData;
         GameEvents.SaveGameToDisk -= SaveDisk;
         GameEvents.PersistGameData -= PersistData;
         GameEvents.LoadNpcData -= LoadNpcData;
         GameEvents.OnEnterMap -= StuffOnMapEnter;
+        GameEvents.OnQuitToMainMenu -= Cleanup;
     }
     
     private void SaveNpcData() => StartCoroutine(SaveNpcDataC());
@@ -153,6 +154,20 @@ public class DataManager : MonoBehaviour
             // map.SaveNpcData();
         }
         yield return null;
+    }
+
+    private void Cleanup() => StartCoroutine(CleanupC());
+    private IEnumerator CleanupC()
+    {
+        SaveDisk();
+        yield return new WaitUntil(() => !SaveSystem.isSaving);
+        foreach (var thing in ObjectDatabase.Instance.everything.Where(x => x.name != "Player"))
+        {
+            // DESTROY EVERYTHING!!!
+            Destroy(thing);
+            yield return new WaitUntil(() => thing.IsDestroyed());
+        }
+        Destroy(PlayerHealth.Instance.gameObject);
     }
 
     #region Scene data classes
