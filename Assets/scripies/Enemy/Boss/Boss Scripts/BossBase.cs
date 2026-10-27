@@ -159,6 +159,7 @@ public abstract class BossBase : MonoBehaviour
         var damage = Shenanigans.Instance.RawDamage(damageAmount, damageFactor, (IDamageable.ElementType)elementType, elementFactor, isTrue, damageOverTime, procDmg, procInterval);
         damageable.Damage(damage, ba.isFacingRight, "Boss");
         damageable.Shock(stunTime,  knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
+        GameEvents.TriggerHitImpact(gameObject, hit.collider.gameObject, damage);
         PlaySound();
     }
     

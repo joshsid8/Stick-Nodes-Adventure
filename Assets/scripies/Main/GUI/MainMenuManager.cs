@@ -34,6 +34,8 @@ public class MainMenuManager : MonoBehaviour
     private Animator animator;
     private void Awake()
     {
+        Time.timeScale = 1f;
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -43,16 +45,22 @@ public class MainMenuManager : MonoBehaviour
         
         if (SceneManager.GetSceneByName("Persistent Objects").isLoaded) SceneManager.UnloadSceneAsync("Persistent Objects");
         
-        // Ensure static instances are cleared if they were destroyed
-        if (DataManager.Instance != null && DataManager.Instance.gameObject == null)
-        {
-            // This is a weird case in Unity where the reference is not truly null but the object is destroyed
-            // However, since we use Instance = this in Awake with Destroy(gameObject), it should be fine.
-            // But let's be safe.
-        }
-        
         input = new PlayerInput();
         animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = true;
+            animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (input != null)
+        {
+            input.Disable();
+            input.Dispose();
+        }
     }
 
     private IEnumerator Start()
@@ -82,6 +90,7 @@ public class MainMenuManager : MonoBehaviour
     {
         HideMenu();
         loadingBar.SetActive(true);
+        PlayerPrefs.DeleteKey("LoadedCheckPointId");
         StartCoroutine(ProgressLoading(true));
     }
     
@@ -104,40 +113,47 @@ public class MainMenuManager : MonoBehaviour
         var persistentLoad = SceneManager.LoadSceneAsync(persistentGameplay);
         scenesToLoad.Add(persistentLoad);
         
-        yield return new WaitUntil(() => DataManager.Instance != null);
+        yield return new WaitUntil(() => persistentLoad is { isDone: true } && DataManager.Instance != null);
 
+        string targetSceneName;
         if (!newGame)
         {
-            SaveSystem.SetSaveSlot();
             SaveSystem.Load();
             
-            // Wait for data to be loaded into DataManager
-            yield return new WaitUntil(() => DataManager.Instance.sceneData.Count > 0 && DataManager.Instance.sceneData.Exists(x => x.activeMap));
             var lastActiveScene = DataManager.Instance.GetActiveSceneName();
+            if (string.IsNullOrEmpty(lastActiveScene) && DataManager.Instance.sceneData.Count > 0)
+            {
+                lastActiveScene = DataManager.Instance.sceneData[0].sceneName;
+                DataManager.Instance.sceneData[0].activeMap = true;
+            }
             
             if (string.IsNullOrEmpty(lastActiveScene))
             {
-                Debug.LogWarning($"[MainMenuManager] The last active scene wasn't fetched. using {defaultScene.SceneName}, the default scene");
+                Debug.LogWarning($"[MainMenuManager] The last active scene wasn't fetched. Using {defaultScene.SceneName}, the default scene");
                 lastActiveScene = defaultScene.SceneName;
             }
-            
-            var mapLoad = SceneManager.LoadSceneAsync(lastActiveScene, LoadSceneMode.Additive);
+
+            targetSceneName = lastActiveScene;
+            var mapLoad = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
             scenesToLoad.Add(mapLoad);
             
             yield return new WaitUntil(() => mapLoad is { isDone: true });
+            yield return new WaitUntil(() => MapManager.Instances.ContainsKey(targetSceneName));
+            MapManager.Instances[targetSceneName].activeMap = true;
             yield return new WaitForSeconds(0.1f);
         }
         else
         {
-            var mapLoad = SceneManager.LoadSceneAsync(defaultScene.SceneName, LoadSceneMode.Additive);
+            targetSceneName = defaultScene.SceneName;
+            var mapLoad = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
             scenesToLoad.Add(mapLoad);
             
             // For new game, we wait for both persistent and the default map
             yield return new WaitUntil(() => persistentLoad is { isDone: true } && mapLoad is { isDone: true });
             
             // Wait for MapManager to register itself
-            yield return new WaitUntil(() => MapManager.Instances.ContainsKey(defaultScene.SceneName));
-            MapManager.Instances[defaultScene.SceneName].activeMap = true;
+            yield return new WaitUntil(() => MapManager.Instances.ContainsKey(targetSceneName));
+            MapManager.Instances[targetSceneName].activeMap = true;
         }
         
         // Final progress bar update
@@ -148,16 +164,14 @@ public class MainMenuManager : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.2f);
+        if (MapManager.Instances.TryGetValue(targetSceneName, out var activeMapManager))
+        {
+            yield return new WaitUntil(() => activeMapManager.sceneLoaded);
+        }
+
+        yield return new WaitForSeconds(0.1f);
         
-        if (!newGame)
-        {
-            yield return StartCoroutine(DataManager.Instance.SpawnPlayerToActiveMap());
-        }
-        else
-        {
-            yield return StartCoroutine(PlayerHealth.Instance.Spawn(0.1f, true));
-        }
+        yield return StartCoroutine(DataManager.Instance.SpawnPlayerToActiveMap());
         
         SaveSystem.Save();
         SceneManager.UnloadSceneAsync(gameObject.scene);
@@ -166,13 +180,21 @@ public class MainMenuManager : MonoBehaviour
 
     public void Save(ref MainMenuData data)
     {
-        data.fps = fps;
+        data.fps = fps > 0 ? fps : 60;
         data.vsync = vsync;
+        if (!data.initialized)
+        {
+            data.masterVolume = 1f;
+            data.musicVolume = 1f;
+            data.sfxVolume = 1f;
+            data.initialized = true;
+        }
     }
     
     public void Load(MainMenuData data)
     {
-        fps = data.fps;
+        if (!data.initialized) return;
+        fps = data.fps > 0 ? data.fps : 60;
         vsync = data.vsync;
     }
 }
@@ -180,6 +202,10 @@ public class MainMenuManager : MonoBehaviour
 [Serializable]
 public struct MainMenuData
 {
+    public bool initialized;
     public int fps;
     public bool vsync;
+    public float masterVolume;
+    public float musicVolume;
+    public float sfxVolume;
 }

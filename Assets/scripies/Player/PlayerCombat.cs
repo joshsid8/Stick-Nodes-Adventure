@@ -58,7 +58,7 @@ namespace scripies.Player
             canAttack = true;
             pc.input.Player.Attack.performed += _ =>
             {
-                if (currentAttackCooldown <= 0 && m1Ability && !pc.isPerformingAction && canAttack) 
+                if (currentAttackCooldown <= 0 && m1Ability && !pc.isPerformingAction && !pc.IsHitstopOrForceFrozen && canAttack) 
                     Attack();
             };
         }
@@ -81,7 +81,8 @@ namespace scripies.Player
             if (comboInterval[0] > maxComboInterval[0]) comboInterval[0] = 0;
             if (comboInterval[1] > maxComboInterval[1]) comboInterval[1] = 0;
             
-            currentAttackCooldown -= Time.deltaTime * 0.5f;
+            if (!pc.IsHitstopOrForceFrozen)
+                currentAttackCooldown -= Time.deltaTime * 0.5f;
             if (currentAttackCooldown <= 0) canAttack = true;
         }
         
@@ -106,6 +107,7 @@ namespace scripies.Player
                 GameEvents.TriggerApplyDamage(eDamageable, dm, pc.isFacingRight, "Player");
                 eDamageable.Shock(stunTime * attackPotency, knockbackDirections[0] * transform.right,
                     knockbackForces[0], knockbackTimes[0] * attackPotency);
+                GameEvents.TriggerHitImpact(gameObject, hit.collider.gameObject, dm);
                 
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)], hit.collider.gameObject);
@@ -118,7 +120,7 @@ namespace scripies.Player
 
         private void AirAttack()
         {
-            if (pc.rb.linearVelocity.y < 0 && !hasAirBoosted && !pc.isGrounded)
+            if (pc.rb.linearVelocity.y <= 0 && !hasAirBoosted && !pc.isGrounded)
                 pc.rb.linearVelocity = new Vector2(pc.rb.linearVelocity.x, airAttackForce);
 
             hits = Physics2D.CircleCastAll(airAttackTransform.position, airAttackRange,
@@ -134,6 +136,7 @@ namespace scripies.Player
                 GameEvents.TriggerApplyDamage(eDamageable, dm, pc.isFacingRight, "Player");
                 eDamageable.Shock(stunTime * attackPotency, new Vector2(knockbackDirections[1].x * attackPotency,
                         knockbackDirections[1].y * attackPotency) * transform.right, knockbackForces[1], knockbackTimes[1] * attackPotency);
+                GameEvents.TriggerHitImpact(gameObject, hit.collider.gameObject, dm);
                 
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 airComboAmount--;

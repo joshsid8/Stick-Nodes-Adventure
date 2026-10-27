@@ -30,6 +30,7 @@ namespace scripies.Core
         public static Action<float, bool, string> AddPlayerCombat;
         public static Action<ITarget, bool> OnAggressiveStatusChanged;
         public static Action<GameObject, bool> OnSpawnPointChanged;
+        public static Action<bool, bool> OnForceFreezePlayer;
         public static Action OnQuitToMainMenu;
         
         // GUI events
@@ -65,6 +66,7 @@ namespace scripies.Core
         public static Action<BadgeSO> OnBadgeCollect;
         public static Action<float, float> OnDamageDealt;
         public static Action<IDamageable, Damage, bool, string> OnApplyDamage;
+        public static Action<GameObject, GameObject, Damage> OnHitImpact;
 
         public static Action<float> StopTime;
         public static Action<Image, float, float> JumpScare;
@@ -82,6 +84,7 @@ namespace scripies.Core
         public static void TriggerAddPlayerCombat(float time = 5, bool additive = true, string type = "") => AddPlayerCombat?.Invoke(time, additive, type);
         public static void TriggerAggressiveStatusChanged(ITarget target, bool isAggressive) => OnAggressiveStatusChanged?.Invoke(target, isAggressive);
         public static void TriggerSpawnPointChanged(GameObject point, bool spawn = false) => OnSpawnPointChanged?.Invoke(point, spawn);
+        public static void TriggerForceFreezePlayer(bool freeze, bool preserveMomentum = true) => OnForceFreezePlayer?.Invoke(freeze, preserveMomentum);
         public static void TriggerQuitToMainMenu() => OnQuitToMainMenu?.Invoke();
         
         public static void TriggerEnemyDefeated(GameObject enemy) => OnEnemyDefeated?.Invoke(enemy);
@@ -125,6 +128,7 @@ namespace scripies.Core
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
         public static void TriggerOnDamageDealt(float damage, float threshold = 50) => OnDamageDealt?.Invoke(damage, threshold);
         public static void TriggerApplyDamage(IDamageable target, Damage damage, bool facingRight, string aggressor = "") => OnApplyDamage?.Invoke(target, damage, facingRight, aggressor);
+        public static void TriggerHitImpact(GameObject attacker, GameObject victim, Damage damage) => OnHitImpact?.Invoke(attacker, victim, damage);
 
         public static void TriggerBoom(AudioClip boomSound = null, Image jumpScareImage = null)
         {

@@ -49,7 +49,7 @@ public class EntitySpawner : SpawnerBase
             var prevPoint = 0;
             for (var i = 0; i < spawn.spawnAmount; i++)
             {
-                if (!spawnOnStart) continue;
+                if (!spawnOnStart || isOneTime || !canSpawn) continue;
                 var rng = 0;
                 while (rng == prevPoint)
                 {
@@ -59,12 +59,15 @@ public class EntitySpawner : SpawnerBase
                 }
                 if (i == 0) rng = 0;
                 prevPoint = rng;
+                if (isOneTime || !canSpawn) yield break;
                 var instance = Instantiate(spawn.objectToSpawn, spawnPoints[rng].transform.position, Quaternion.identity);
                 var targetScene = SceneManager.GetSceneByName(scene);
                 if (!targetScene.IsValid() || !targetScene.isLoaded) continue;
                 SceneManager.MoveGameObjectToScene(instance, targetScene);
                 instance.GetComponent<Identifier>().AutomateID(targetScene);
                 if (spawn.settings != null) instance.GetComponent<EnemyController>().enemy = spawn.settings;
+                if (instance.TryGetComponent<EnemyDomain>(out var domain) && domain.domainCollider == null)
+                    domain.domainCollider = GetComponent<Collider2D>();
                 currentEnemies.Add(instance);
             }
         }
@@ -72,20 +75,22 @@ public class EntitySpawner : SpawnerBase
 
     protected override IEnumerator Spawn()
     {
-        if (!canSpawn || !spawnAbility) yield break;
+        if (!canSpawn || !spawnAbility || isOneTime) yield break;
         foreach (var spawn in eSpawn)
         {
             var prevPoint = 0;
             for (var i = 0; i < spawn.spawnAmount; i++)
             {
-                if (currentEnemies.Count >= spawn.spawnAmount || playerIsClose) break;
+                if (currentEnemies.Count >= spawn.spawnAmount || playerIsClose || isOneTime || !canSpawn) break;
                 var rng = 0;
                 while (rng == prevPoint)
                 {
+                    if (spawnPoints.Length <= 1) break;
                     rng = Random.Range(0, spawnPoints.Length);
                     yield return null;
                 }
                 prevPoint = rng;
+                if (isOneTime || !canSpawn) yield break;
                 var instance = Instantiate(spawn.objectToSpawn, spawnPoints[rng].transform.position, Quaternion.identity);
                 var targetScene = SceneManager.GetSceneByName(scene);
                 if (targetScene.IsValid() && targetScene.isLoaded)
@@ -93,6 +98,8 @@ public class EntitySpawner : SpawnerBase
                     SceneManager.MoveGameObjectToScene(instance, targetScene);
                     instance.GetComponent<Identifier>().AutomateID(targetScene);
                     if (spawn.settings != null) instance.GetComponent<EnemyController>().enemy = spawn.settings;
+                    if (instance.TryGetComponent<EnemyDomain>(out var domain) && domain.domainCollider == null)
+                        domain.domainCollider = GetComponent<Collider2D>();
                     currentEnemies.Add(instance);
                 }
                 yield return new WaitForSeconds(spawnTime);
@@ -102,8 +109,14 @@ public class EntitySpawner : SpawnerBase
 
     public override IEnumerator Despawn()
     {
-        yield return new WaitUntil(() => currentEnemies.Count == 0);
-        foreach (var obj in currentEnemies) Destroy(obj);
+        isOneTime = true;
+        canSpawn = false;
+        yield return null;
+        foreach (var obj in currentEnemies)
+        {
+            if (obj != null) Destroy(obj);
+        }
+        currentEnemies.Clear();
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -120,6 +133,7 @@ public class EntitySpawner : SpawnerBase
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) playerIsClose = false;
         if (collision.gameObject.layer != LayerMask.NameToLayer("EDead") && (!collision.CompareTag("Enemy") || !isActiveAndEnabled)) yield break;
+        if (isOneTime) yield break;
         canSpawn = true;
         currentEnemies.Remove(collision.gameObject);
         yield return new WaitForSeconds(respawnTime);

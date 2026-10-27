@@ -21,6 +21,7 @@ public abstract class GUIBase : MonoBehaviour
     protected virtual void Awake()
     {
         ActiveGUICount = 0;
+        ActiveGuis.Clear();
         rt = GetComponent<RectTransform>();
         allGuis = FindObjectsByType<GUIBase>(FindObjectsSortMode.None);
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using scripies.Core;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
@@ -44,24 +45,37 @@ public class ItemSpawner : SpawnerBase
     
     [ContextMenu("Spawn")] private void StraySpawn() => StartCoroutine(Spawn());
     
-    private void OnDestroyedItem(GameObject obj) => CheckItemsStatus();
+    private void OnDestroyedItem(GameObject obj)
+    {
+        if (!gameObject.scene.isLoaded || !isActiveAndEnabled) return;
+        if (spawnedObjects.Contains(obj))
+            StartCoroutine(CheckItemsStatusDelayed(obj));
+    }
     
     private void CheckItemsStatus()
     {
-        if (!disableOnCollect) return;
-        var allCollected = false;
-        foreach (var obj in spawnedObjects)
-        {
-            if (!obj.IsDestroyed()) continue;
-            allCollected = true;
-        }
-        if (allCollected) isOneTime = true;
+        if (!disableOnCollect || !isActiveAndEnabled) return;
+        StartCoroutine(CheckItemsStatusDelayed(null));
     }
+
+    private IEnumerator CheckItemsStatusDelayed(GameObject destroyedObj)
+    {
+        yield return new WaitForEndOfFrame();
+        if (!disableOnCollect || spawnedObjects.Count == 0) yield break;
+        var allCollected = spawnedObjects.All(obj => obj == null || obj.IsDestroyed() || obj == destroyedObj);
+        if (allCollected && !isOneTime)
+        {
+            isOneTime = true;
+            GameEvents.TriggerPersistGameData(false);
+        }
+    }
+
     protected override IEnumerator Spawn()
     {
         scene = gameObject.scene.name;
         if (isOneTime) yield break;
         yield return new WaitForSeconds(spawnInterval);
+        if (isOneTime) yield break;
         foreach (var spawn in itemSpawner)
         {
             var spawnChoice = randomiseSpawn ? Random.Range(0, spawnPoints.Length) : Array.IndexOf(itemSpawner, spawn);
@@ -92,9 +106,13 @@ public class ItemSpawner : SpawnerBase
 
     public override IEnumerator Despawn()
     {
-        yield return new WaitUntil(() => spawnedObjects.Count == 0);
-        foreach (var obj in spawnedObjects) Destroy(obj);
-        CheckItemsStatus();
+        isOneTime = true;
+        yield return null;
+        foreach (var obj in spawnedObjects)
+        {
+            if (obj != null && !obj.IsDestroyed()) Destroy(obj);
+        }
+        spawnedObjects.Clear();
     }
 
     private void OnDrawGizmosSelected()

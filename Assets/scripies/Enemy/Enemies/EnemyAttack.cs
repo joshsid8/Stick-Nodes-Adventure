@@ -278,6 +278,7 @@ namespace scripies.Enemy
                 isTrue, damageOverTime, procDmg, procInterval);
             GameEvents.TriggerApplyDamage(damageable, dm, ec.isFacingRight, "Enemy");
             damageable.Shock(stunTime, knockbackTransform != null && positionKnockback ? knockbackTransform.position : knockbackDirection * transform.right, knockbackForce, knockbackTime, positionKnockback);
+            GameEvents.TriggerHitImpact(gameObject, hit.collider.gameObject, dm);
             PlaySound(sfx);
         }
 

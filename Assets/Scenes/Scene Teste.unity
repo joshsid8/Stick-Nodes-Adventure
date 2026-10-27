@@ -1813,6 +1813,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dispenser
       objectReference: {fileID: 0}
+    - target: {fileID: 2450106500031775277, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5440309642905652936, guid: 7c3c37368738d4043885ede0f9f4361f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -45.627106

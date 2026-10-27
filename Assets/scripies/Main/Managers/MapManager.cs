@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using scripies.Core;
 using scripies.Dialogue;
+using scripies.Enemy;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;
@@ -21,7 +22,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] private string mapName;
     [SerializeField] [TextArea] private string mapDescription;
     [SerializeField] private Color mapTextColor = Color.white;
-    [SerializeField] private Color mapBgColor = Color.white;
+    [SerializeField] internal Color mapBgColor = Color.white;
     
     [SerializeField] private AudioClip[] newOst;
     public float[] ostVolume = {0.5f,0.5f,0.5f};
@@ -40,7 +41,7 @@ public class MapManager : MonoBehaviour
 
     #region Scene Data
     [HideInInspector] public string sceneName; 
-    public GameObject[] sceneObjects;
+    public GameObject[] sceneObjects = Array.Empty<GameObject>();
     [SerializeField] private List<GameObject> doorObjects = new();
     [SerializeField] private List<GameObject> spawnerObjects = new();
     [SerializeField] private List<GameObject> doorSpawnerObjects = new();
@@ -70,26 +71,37 @@ public class MapManager : MonoBehaviour
     private void Start()
     {
         audioManager = AudioManager.Instance;
-        mainCamera = DataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
+        if (DataManager.Instance != null && DataManager.Instance.mainCamera != null)
+            mainCamera = DataManager.Instance.mainCamera.GetComponent<CinemachineCamera>();
     }
     
     private void OnEnable()
     {
-        StartCoroutine(InitialiseSceneData());
-        InvokeRepeating(nameof(CollateObjects), 0, 0.1f);
+        sceneName = gameObject.scene.name;
         if (sectionObj == null || sectionObj.IsDestroyed()) sectionObj = GameObject.Find("Sections");
-        if (!Instances.ContainsKey(gameObject.scene.name)) Instances.Add(gameObject.scene.name, this);
+        if (!Instances.ContainsKey(sceneName)) Instances.Add(sceneName, this);
+        else Instances[sceneName] = this;
+
+        GameEvents.OnPlayerSpawned += StartMapO;
+        GameEvents.OnBossDefeated += OnBossDefeated;
+        GameEvents.OnEnemyDefeated += OnEnemyDefeated;
+        GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
+        GameEvents.LoadMapData += LoadSceneData;
+        GameEvents.OnSpawnPointChanged += SetCurrentCheckPoint;
+
+        CollateObjects();
+        InvokeRepeating(nameof(CollateObjects), 0.1f, 0.25f);
         Invoke(nameof(Invocation), 0.1f);
+        StartCoroutine(InitialiseSceneData());
     }
 
     private void Invocation()
     {
-        GameEvents.OnPlayerSpawned += StartMapO;
-        GameEvents.OnBossDefeated += OnBossDefeated;
-        GameEvents.OnDialogueClose += SaveDataOnDialogueClose;
-        GameEvents.LoadMapData += LoadSceneData;
-        GameEvents.OnSpawnPointChanged += SetCurrentCheckPoint;
-        InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
+        if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
+        {
+            InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
+            InvManager.Instance.invIndex.OnInventoryChanged += SaveSceneData;
+        }
     }
 
     private void OnDisable()
@@ -97,13 +109,15 @@ public class MapManager : MonoBehaviour
         if (Instances.ContainsKey(gameObject.scene.name) && Instances[gameObject.scene.name] == this)
             Instances.Remove(gameObject.scene.name);
         CancelInvoke(nameof(CollateObjects));
+        CancelInvoke(nameof(Invocation));
         GameEvents.OnBossDefeated -= OnBossDefeated;
-        
+        GameEvents.OnEnemyDefeated -= OnEnemyDefeated;
         GameEvents.OnPlayerSpawned -= StartMapO;
         GameEvents.OnDialogueClose -= SaveDataOnDialogueClose;
         GameEvents.LoadMapData -= LoadSceneData;
         GameEvents.OnSpawnPointChanged -= SetCurrentCheckPoint;
-        InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
+        if (InvManager.Instance != null && InvManager.Instance.invIndex != null)
+            InvManager.Instance.invIndex.OnInventoryChanged -= SaveSceneData;
     }
 
     private void LateUpdate()
@@ -132,6 +146,18 @@ public class MapManager : MonoBehaviour
         GameEvents.TriggerPersistGameData();
     }
 
+    private void OnEnemyDefeated(GameObject enemy)
+    {
+        if (enemy == null || enemy.scene.name != sceneName) return;
+        if (enemy.TryGetComponent<Identifier>(out var ident))
+        {
+            var eData = enemySceneData.Find(e => e.spawnId == ident.spawnId);
+            if (eData != null) eData.activeEnemy = null;
+            else enemySceneData.Add(new EnemySceneData { activeEnemy = null, spawnId = ident.spawnId });
+        }
+        SaveSceneData();
+    }
+
     public void OnDoorStatusChanged(AccessManager accessManager, bool isOpen)
     {
         var dData = doorSceneData.Find(x => x.accessManager == accessManager);
@@ -157,7 +183,8 @@ public class MapManager : MonoBehaviour
         // FIIIIINNEEEE
         if (AreaManager.Instance.titleText.text == mapName && AreaManager.Instance.titleText.text == null) yield break;
         SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
-        mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
+        if (mainCamera != null)
+            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
             
         var targetWeather = weather.weatherType;
         var targetColor = mapBgColor;
@@ -170,15 +197,17 @@ public class MapManager : MonoBehaviour
             
         AreaManager.Instance.TriggerColorFade(targetColor);
             
-        if (audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene) audioManager.TriggerFadeIn(0.5f);
+        if (audioManager != null && audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene)
+            audioManager.TriggerFadeIn(0.5f);
         yield return new WaitForSeconds(0.8f);
-        if (collision.gameObject.scene == gameObject.scene) 
+        if (collision != null && collision.gameObject.scene == gameObject.scene) 
             StartMap(targetWeather);
     }
 
     private void StartMapO() => StartMap(null);
     private void StartMap(WeatherManager.WeatherType? forcedWeather)
     {
+        if (PlayerHealth.Instance == null) return;
         var player = PlayerHealth.Instance.gameObject;
         if (player == null || player.scene.name != gameObject.scene.name)
         {
@@ -192,23 +221,33 @@ public class MapManager : MonoBehaviour
     private IEnumerator TryStartMapAgain(GameObject objectRef)
     {
         yield return new WaitForSeconds(0.5f);
+        if (objectRef == null) yield break;
         Instances.TryGetValue(objectRef.gameObject.scene.name, out var otherMap);
-        StartCoroutine(otherMap?.MapTransition(objectRef.GetComponent<Collider2D>()));
-        audioManager.TriggerFadeIn(0.5f);
+        if (otherMap != null) StartCoroutine(otherMap.MapTransition(objectRef.GetComponent<Collider2D>()));
+        if (audioManager != null) audioManager.TriggerFadeIn(0.5f);
     }
     
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
     public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume, bool weatherChanged = false)
     {
-        if (mName == AreaManager.Instance.currentArea) return;
+        if (mName == AreaManager.Instance.currentArea)
+        {
+            GameEvents.TriggerOnEnterMap(sceneName, undiscoveredMap);
+            return;
+        }
         
         if (weatherChanged || undiscoveredMap) AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor);
         else if (!undiscoveredMap) AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor, true);
         
-        for (var i = 0; i < audioManager.backgroundMusic.Length; i++)
+        if (audioManager != null && mOst != null)
         {
-            audioManager.backgroundMusic[i] = mOst[i];
-            audioManager.backgroundMusicVolume[i] = mOstVolume[i];
+            var count = Mathf.Min(audioManager.backgroundMusic.Length, mOst.Length);
+            for (var i = 0; i < count; i++)
+            {
+                audioManager.backgroundMusic[i] = mOst[i];
+                if (mOstVolume != null && i < mOstVolume.Length)
+                    audioManager.backgroundMusicVolume[i] = mOstVolume[i];
+            }
         }
         
         GameEvents.TriggerPlayMusic(0, false);
@@ -225,7 +264,7 @@ public class MapManager : MonoBehaviour
 
     private void HandleMapExit(GameObject playerObject)
     {
-        //GameEvents.TriggerPersistGameData();
+        SaveSceneData();
         if (!mapToggle) return;
         mapToggle = false;
         weather.ClearDisasters();
@@ -236,7 +275,7 @@ public class MapManager : MonoBehaviour
         }
         if (playerObject != null && SceneManager.GetSceneByName("Persistent Objects").isLoaded) 
             SceneManager.MoveGameObjectToScene(playerObject, SceneManager.GetSceneByName("Persistent Objects"));
-        if (mainCamera != null) 
+        if (mainCamera != null && PlayerHealth.Instance != null) 
             mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = PlayerHealth.Instance.gameObject.GetComponentInChildren<PolygonCollider2D>();
     }
     #endregion
@@ -245,49 +284,50 @@ public class MapManager : MonoBehaviour
     private void CollateObjects()
     {
         var scene = SceneManager.GetSceneByName(sceneName);
+        if (!scene.IsValid() || !scene.isLoaded) return;
         sceneObjects = scene.GetRootGameObjects();
         
         doorSpawnerObjects.Clear();
         doorObjects.Clear();
         foreach (var obj in sceneObjects)
         {
-            if (!obj.CompareTag("Section")) continue;
+            if (obj == null || !obj.CompareTag("Section")) continue;
             foreach (var section in obj.GetComponentsInChildren<AccessManager>())
             {
-                doorObjects.Add(section.gameObject);
-                if (section.gameObject.GetComponent<SpawnerBase>() == null || doorSpawnerObjects.Contains(obj)) continue;
-                doorSpawnerObjects.Add(section.gameObject);
-                if (doorObjects.Contains(section.gameObject)) doorObjects.Remove(section.gameObject);
+                if (!doorObjects.Contains(section.gameObject)) doorObjects.Add(section.gameObject);
+                if (section.gameObject.GetComponent<SpawnerBase>() == null) continue;
+                if (!doorSpawnerObjects.Contains(section.gameObject)) doorSpawnerObjects.Add(section.gameObject);
+                doorObjects.Remove(section.gameObject);
             }
         }
         
         spawnerObjects.Clear();
         foreach (var obj in sceneObjects)
         {
-            if (!obj.CompareTag("Spawner")) continue;
+            if (obj == null || !obj.CompareTag("Spawner")) continue;
             foreach (var spawner in obj.GetComponentsInChildren<SpawnerBase>())
             {
-                spawnerObjects.Add(spawner.gameObject);
-                if (spawner.gameObject.GetComponent<AccessManager>() == null || doorSpawnerObjects.Contains(obj)) continue;
-                doorSpawnerObjects.Add(spawner.gameObject);
-                if (spawnerObjects.Contains(spawner.gameObject)) spawnerObjects.Remove(spawner.gameObject);
+                if (!spawnerObjects.Contains(spawner.gameObject)) spawnerObjects.Add(spawner.gameObject);
+                if (spawner.gameObject.GetComponent<AccessManager>() == null) continue;
+                if (!doorSpawnerObjects.Contains(spawner.gameObject)) doorSpawnerObjects.Add(spawner.gameObject);
+                spawnerObjects.Remove(spawner.gameObject);
             }
         }
         
         checkPointObjects.Clear();
         foreach (var obj in sceneObjects)
         {
-            if (!obj.CompareTag("CheckPoint")) continue;
+            if (obj == null || !obj.CompareTag("CheckPoint")) continue;
             foreach (var checkPoint in obj.GetComponentsInChildren<Checkpoint>())
             {
-                checkPointObjects.Add(checkPoint.gameObject);
+                if (!checkPointObjects.Contains(checkPoint.gameObject))
+                    checkPointObjects.Add(checkPoint.gameObject);
             }
         }
     }
 
     private void ClearSceneData()
     {
-        enemySceneData.Clear();
         npcSceneData.Clear();
         collectableSceneData.Clear();
         doorSceneData.Clear();
@@ -327,15 +367,21 @@ public class MapManager : MonoBehaviour
     public void InitialSpawnPlayer(string scene)
     {
         if (scene != sceneName) return;
+        CollateObjects();
         
         var spawn = mainSpawnPoint;
+        if (spawn == null)
+        {
+            var foundSpawn = GameObject.Find("spawnPoint") ?? GameObject.Find("Default SpawnPoint");
+            if (foundSpawn != null) spawn = foundSpawn;
+        }
         
         // Priority 1: Check if we have a checkpoint ID loaded from save file
         var loadedCpId = PlayerPrefs.GetInt("LoadedCheckPointId", 0);
         if (loadedCpId != 0)
         {
             PlayerPrefs.DeleteKey("LoadedCheckPointId"); // Clear it so it doesn't persist forever
-            var foundCp = checkPointObjects.Find(obj => obj.GetComponent<Identifier>().id == loadedCpId);
+            var foundCp = checkPointObjects.Find(obj => obj != null && obj.TryGetComponent<Identifier>(out var ident) && ident.id == loadedCpId);
             if (foundCp != null)
             {
                 spawn = foundCp;
@@ -345,7 +391,7 @@ public class MapManager : MonoBehaviour
 
         // Priority 2: Check current scene data for active checkpoint
         DataManager.CheckPointSceneData targetSpawnPoint = null;
-        var sceneList = DataManager.Instance.sceneData.Find(list => list.sceneName == sceneName);
+        var sceneList = DataManager.Instance != null ? DataManager.Instance.sceneData.Find(list => list.sceneName == sceneName) : null;
         if (sceneList != null)
         {
             targetSpawnPoint = sceneList.checkPoints.Find(cp => cp.isCurrent) ?? sceneList.checkPoints.Find(cp => cp.activated);
@@ -353,30 +399,31 @@ public class MapManager : MonoBehaviour
 
         if (targetSpawnPoint != null)
         {
-            var foundCp = checkPointObjects.Find(obj => obj.GetComponent<Identifier>().id == targetSpawnPoint.activeCheckpoint);
+            var foundCp = checkPointObjects.Find(obj => obj != null && obj.TryGetComponent<Identifier>(out var ident) && ident.id == targetSpawnPoint.activeCheckpoint);
             if (foundCp != null) spawn = foundCp;
         }
 
         performSpawn:
-        PlayerHealth.Instance.pc.currentSpawnPoint = spawn;
-        PlayerHealth.Instance.pc.currentCheckPoint = spawn;
-        //print($"Spawning player at {spawn.name}");
-        StartCoroutine(PlayerHealth.Instance.Spawn(0.2f, true));
+        if (PlayerHealth.Instance != null && PlayerHealth.Instance.pc != null)
+        {
+            PlayerHealth.Instance.pc.currentSpawnPoint = spawn;
+            PlayerHealth.Instance.pc.currentCheckPoint = spawn;
+            StartCoroutine(PlayerHealth.Instance.Spawn(0.2f, true));
+        }
     }
     
     private static void SaveDataOnDialogueClose(ScriptableObject dialogue = null, NPC npc = null) => GameEvents.TriggerPersistGameData();
 
     private IEnumerator InitialiseSceneData()
     {
-        ClearSceneData();
-        UpdateLists();
-        yield return new WaitForSecondsRealtime(0.1f);
-        LoadSceneData();
+        yield return new WaitUntil(() => gameObject.scene.isLoaded);
+        // Wait a short moment so EntitySpawner/ItemSpawner Start() methods finish spawning initial scene entities
+        yield return new WaitForSecondsRealtime(0.15f);
+        yield return StartCoroutine(LoadSceneDataC());
     }
 
     public void SaveSceneData()
     {
-        //print("Saving data");
         if (!sceneLoaded) return;
         UpdateLists();
         MakeDataPersistent();
@@ -384,66 +431,80 @@ public class MapManager : MonoBehaviour
 
     public void UpdateLists()
     {
+        CollateObjects();
         ClearSceneData();
+
+        foreach (var eData in enemySceneData)
+        {
+            if (eData.activeEnemy != null && (eData.activeEnemy.IsDestroyed() || eData.activeEnemy.CompareTag("Dead")))
+                eData.activeEnemy = null;
+        }
+
         foreach (var obj in sceneObjects)
         {
-            if (obj != null)
-                switch (obj.tag)
-                {
-                    case "Enemy":
-                        if (obj.name == "Imo")
-                        {
-                            // Imo is a character who is a test dummy, thus having the enemy layer and tag, but also is an NPC.
-                            goto npcStuff;
-                        }
-                        var enemyId = obj.GetComponent<Identifier>();
-                        var newEnemy = new EnemySceneData
+            if (obj == null || obj.IsDestroyed()) continue;
+            switch (obj.tag)
+            {
+                case "Enemy":
+                    if (obj.name == "Imo")
+                    {
+                        // Imo is a character who is a test dummy, thus having the enemy layer and tag, but also is an NPC.
+                        goto npcStuff;
+                    }
+                    if (!obj.TryGetComponent<Identifier>(out var enemyId)) break;
+                    var existingEnemy = enemySceneData.Find(e => e.spawnId == enemyId.spawnId);
+                    if (existingEnemy != null)
+                    {
+                        existingEnemy.activeEnemy = obj;
+                    }
+                    else
+                    {
+                        enemySceneData.Add(new EnemySceneData
                         {
                             activeEnemy = obj,
                             spawnId = enemyId.spawnId
-                        };
-                        enemySceneData.Add(newEnemy);
-                        if (!enemyIds.Contains(enemyId.spawnId))
-                            enemyIds.Add(enemyId.spawnId);
-                        break;
-                    case "Boss":
-                        bossSceneData.bossHealth = obj.GetComponent<BossHealth>();
-                        bossSceneData.activeBoss = obj.name;
-                        break;
-                    case "NPC":
-                        npcStuff:
-                        obj.TryGetComponent<NPChat>(out var npChat);
-                        if (npChat == null || npChat.fixedDialogue) continue;
-                        var npcId = npChat.name;
-                        obj.TryGetComponent<ShopKeeper>(out var shopKeeper);
-                        var newNpc = new NpcSceneData
-                        {
-                            activeNpc = obj,
-                            npcName = npcId,
-                            isActive = obj.activeSelf,
-                            willTravel = npChat.willTravel,
-                            dialogue = new List<DialogueObject>(npChat.dialogue),
-                            spokenDialogue = new List<DialogueObject>(npChat.spokenDialogue),
-                            shopItems = shopKeeper != null ? shopKeeper.shopItems.ToArray() : null
-                        };
-                        npcSceneData.Add(newNpc);
-                        break;
-                    case "Item":
-                        var collectable = obj.GetComponent<Collectable>();
-                        var newCollectable = new CollectableSceneData
-                        {
-                            collectable = collectable.collectable,
-                            position = obj.transform.position,
-                            isStray = collectable.isStray
-                        };
-                        collectableSceneData.Add(newCollectable);
-                        break;
-                }
+                        });
+                    }
+                    if (!enemyIds.Contains(enemyId.spawnId))
+                        enemyIds.Add(enemyId.spawnId);
+                    break;
+                case "Boss":
+                    bossSceneData.bossHealth = obj.GetComponent<BossHealth>();
+                    bossSceneData.activeBoss = obj.name;
+                    break;
+                case "NPC":
+                    npcStuff:
+                    obj.TryGetComponent<NPChat>(out var npChat);
+                    if (npChat == null || npChat.fixedDialogue) continue;
+                    var npcId = npChat.name;
+                    obj.TryGetComponent<ShopKeeper>(out var shopKeeper);
+                    var newNpc = new NpcSceneData
+                    {
+                        activeNpc = obj,
+                        npcName = npcId,
+                        isActive = obj.activeSelf,
+                        willTravel = npChat.willTravel,
+                        dialogue = new List<DialogueObject>(npChat.dialogue),
+                        spokenDialogue = new List<DialogueObject>(npChat.spokenDialogue),
+                        shopItems = shopKeeper != null ? shopKeeper.shopItems.ToArray() : null
+                    };
+                    npcSceneData.Add(newNpc);
+                    break;
+                case "Item":
+                    if (!obj.TryGetComponent<Collectable>(out var collectable)) break;
+                    var newCollectable = new CollectableSceneData
+                    {
+                        collectable = collectable.collectable,
+                        position = obj.transform.position,
+                        isStray = collectable.isStray
+                    };
+                    collectableSceneData.Add(newCollectable);
+                    break;
+            }
         }
         foreach (var door in doorObjects)
         {
-            var doorId = door.GetComponent<Identifier>();
-            var accManager = door.GetComponent<AccessManager>();
+            if (door == null || !door.TryGetComponent<Identifier>(out var doorId) || !door.TryGetComponent<AccessManager>(out var accManager)) continue;
             var newDoor = new DoorSceneData
             {
                 accessManager = accManager,
@@ -454,8 +515,7 @@ public class MapManager : MonoBehaviour
         }
         foreach (var spawner in spawnerObjects)
         {
-            var spawnerId = spawner.GetComponent<Identifier>();
-            var spawnerBase = spawner.GetComponent<SpawnerBase>();
+            if (spawner == null || !spawner.TryGetComponent<Identifier>(out var spawnerId) || !spawner.TryGetComponent<SpawnerBase>(out var spawnerBase)) continue;
             var newSpawner = new SpawnerSceneData
             {
                 spawner = spawnerBase,
@@ -467,9 +527,7 @@ public class MapManager : MonoBehaviour
 
         foreach (var dsh in doorSpawnerObjects)
         {
-            var id = dsh.GetComponent<Identifier>();
-            var accManager = dsh.GetComponent<AccessManager>();
-            var spawnerBase = dsh.GetComponent<SpawnerBase>();
+            if (dsh == null || !dsh.TryGetComponent<Identifier>(out var id) || !dsh.TryGetComponent<AccessManager>(out var accManager) || !dsh.TryGetComponent<SpawnerBase>(out var spawnerBase)) continue;
             var newDsh = new DoorSpawnerHybridData
             {
                 id = id.id,
@@ -483,9 +541,7 @@ public class MapManager : MonoBehaviour
 
         foreach (var checkPoint in checkPointObjects)
         {
-            checkPoint.TryGetComponent<Identifier>(out var checkPointId);
-            if (checkPointId == null) continue;
-            var checkPointScript = checkPoint.GetComponent<Checkpoint>();
+            if (checkPoint == null || !checkPoint.TryGetComponent<Identifier>(out var checkPointId) || !checkPoint.TryGetComponent<Checkpoint>(out var checkPointScript)) continue;
             var newCheckPoint = new CheckPointSceneData
             {
                 activeCheckpoint = checkPoint,
@@ -499,16 +555,28 @@ public class MapManager : MonoBehaviour
     
     private void MakeDataPersistent()
     {
-        //print("Persisting data");
-        if (!sceneLoaded || PlayerHealth.Instance == null) return;
+        if (!sceneLoaded || DataManager.Instance == null) return;
         var manager = DataManager.Instance;
         var list = manager.sceneData.Find(x => x.sceneName == sceneName);
 
         if (list == null)
         {
-            list = new DataManager.SceneList();
+            list = new DataManager.SceneList { sceneName = sceneName };
             manager.sceneData.Add(list);
-            list.sceneName = sceneName;
+        }
+
+        var deadEnemyIds = new HashSet<int>();
+        foreach (var prevDead in list.enemies)
+        {
+            if (prevDead.activeEnemyID != 0) deadEnemyIds.Add(prevDead.activeEnemyID);
+        }
+        foreach (var eData in enemySceneData)
+        {
+            if (eData.spawnId == 0) continue;
+            if (eData.activeEnemy == null || eData.activeEnemy.IsDestroyed() || eData.activeEnemy.CompareTag("Dead"))
+                deadEnemyIds.Add(eData.spawnId);
+            else
+                deadEnemyIds.Remove(eData.spawnId);
         }
 
         list.enemies.Clear();
@@ -523,15 +591,12 @@ public class MapManager : MonoBehaviour
         list.currentWeatherType = weather.weatherType;
         list.currentWeatherDuration = weather.weatherDurationTimer;
         
-        foreach (var eData in enemySceneData)
+        foreach (var deadId in deadEnemyIds)
         {
-            if (eData.activeEnemy == null)
+            list.enemies.Add(new DataManager.EnemySceneData
             {
-                list.enemies.Add(new DataManager.EnemySceneData
-                {
-                    activeEnemyID = eData.spawnId
-                });
-            }
+                activeEnemyID = deadId
+            });
         }
 
         foreach (var cData in collectableSceneData)
@@ -545,7 +610,7 @@ public class MapManager : MonoBehaviour
             list.collectables.Add(newCollectable);
         }
         
-        if (bossSceneData.activeBoss != null)
+        if (!string.IsNullOrEmpty(bossSceneData.activeBoss))
         {
             list.activeBoss = bossSceneData.activeBoss;
             if (bossSceneData.isDead) list.isBossDead = true;
@@ -594,105 +659,133 @@ public class MapManager : MonoBehaviour
     private void LoadSceneData() => StartCoroutine(LoadSceneDataC());
     private IEnumerator LoadSceneDataC()
     {
+        yield return new WaitUntil(() => gameObject.scene.isLoaded);
+        UpdateLists();
+
         var manager = DataManager.Instance;
-        if (manager == null || manager.sceneData.Count == 0)
+        if (manager == null)
         {
             sceneLoaded = true;
             yield break;
         }
-        var hasSceneData = manager.sceneData.Exists(x => x.sceneName == sceneName);
-        if (!hasSceneData)
+
+        var list = manager.sceneData.Find(x => x.sceneName == sceneName);
+        if (list == null)
         {
-            // if there isnt any found scene data, it should save the current new state into the data manager
-            // print($"Scene data for {sceneName} not found, saving current scene data to data manager.");
+            // If there isn't any saved scene data for this map yet, save its initial state to DataManager
             sceneLoaded = true;
             SaveSceneData();
             yield break;
         }
-        yield return new WaitUntil(() => manager.sceneData.Exists(x => x.sceneName == sceneName));
-        //yield return new WaitForSecondsRealtime(0.1f);
-        var sceneData = manager.sceneData.Find(x => x.sceneName == sceneName);
-        activeMap = sceneData.activeMap;
-        undiscoveredMap = sceneData.undiscoveredMap;
-        weather.weatherDurationTimer = Mathf.Clamp(sceneData.currentWeatherDuration, 5, sceneData.currentWeatherDuration);
-        //weather.SetWeather(sceneData.currentWeatherType);
-        weather.weatherType = sceneData.currentWeatherType;
-        
-        foreach (var list in manager.sceneData.Where(list => list.sceneName == sceneName))
-        {
-            foreach (var enemyData in list.enemies)
-            {
-                var enemy = enemySceneData.Find(e => e.spawnId == enemyData.activeEnemyID);
-                if (enemy != null && enemy.activeEnemy != null) 
-                    Destroy(enemy.activeEnemy);
-            }
 
+        activeMap = list.activeMap;
+        undiscoveredMap = list.undiscoveredMap;
+        weather.weatherDurationTimer = Mathf.Clamp(list.currentWeatherDuration, 5, Mathf.Max(5, list.currentWeatherDuration));
+        weather.weatherType = list.currentWeatherType;
+        
+        foreach (var enemyData in list.enemies)
+        {
+            var enemy = enemySceneData.Find(e => e.spawnId == enemyData.activeEnemyID);
+            if (enemy != null)
+            {
+                if (enemy.activeEnemy != null) Destroy(enemy.activeEnemy);
+                enemy.activeEnemy = null;
+            }
+            else if (enemyData.activeEnemyID != 0)
+            {
+                enemySceneData.Add(new EnemySceneData
+                {
+                    activeEnemy = null,
+                    spawnId = enemyData.activeEnemyID
+                });
+            }
+        }
+
+        // Remove existing stray items in the scene before restoring saved stray items so they don't duplicate
+        foreach (var obj in sceneObjects)
+        {
+            if (obj == null || obj.IsDestroyed() || !obj.CompareTag("Item")) continue;
+            if (obj.TryGetComponent<Collectable>(out var col) && col.isStray)
+                Destroy(obj);
+        }
+
+        var itemPrefab = list.ItemToStore != null
+            ? list.ItemToStore
+            : InvManager.Instance != null ? InvManager.Instance.persistentItem : null;
+
+        if (itemPrefab != null)
+        {
             foreach (var collectableData in list.collectables)
             {
-                if (!collectableData.isStray) continue;
-                var item = Instantiate(list.ItemToStore, collectableData.position, Quaternion.identity);
-                item.GetComponent<SpriteRenderer>().color = collectableData.colour;
-                item.GetComponent<Collectable>().collectable = collectableData.activeCollectable;
+                if (!collectableData.isStray || collectableData.activeCollectable == null) continue;
+                var item = Instantiate(itemPrefab, collectableData.position, Quaternion.identity);
+                if (item.TryGetComponent<SpriteRenderer>(out var sr)) sr.color = collectableData.colour;
+                if (item.TryGetComponent<Collectable>(out var col))
+                {
+                    col.collectable = collectableData.activeCollectable;
+                    col.isStray = true;
+                }
                 SceneManager.MoveGameObjectToScene(item, SceneManager.GetSceneByName(sceneName));
             }
+        }
 
-            for (var i = 0; i < list.doors.Count; i++)
+        foreach (var doorData in list.doors)
+        {
+            if (!doorData.isOpen) continue;
+            var door = doorSceneData.Find(d => d.id == doorData.activeDoor);
+            if (door != null && door.accessManager != null) door.accessManager.InstantOpen();
+            else Debug.LogWarning($"[MapManager] Door {doorData.activeDoor} not found in {sceneName}");
+        }
+
+        foreach (var spawnerData in list.spawners)
+        {
+            if (!spawnerData.isOneTime) continue;
+            var ssd = spawnerSceneData.Find(s => s.id == spawnerData.activeSpawner);
+            if (ssd != null && ssd.spawner != null)
             {
-                var doorData = list.doors[i];
-                if (!doorData.isOpen) continue;
-                yield return new WaitUntil(() => doorSceneData.Exists(d => d.id == doorData.activeDoor));
-                var door = doorSceneData.Find(d => d.id == doorData.activeDoor);
-                if (door != null && door.accessManager != null) door.accessManager.InstantOpen();
-                else print($"Door {doorData.activeDoor} not found in scene data");
+                ssd.spawner.isOneTime = true;
+                StartCoroutine(ssd.spawner.Despawn());
             }
+        }
 
-            foreach (var spawnerData in list.spawners)
+        foreach (var dshData in list.doorSpawnerHybrids)
+        {
+            var dsh = doorSpawnerHybridSceneData.Find(d => d.id == dshData.activeDsh);
+            if (dsh == null) continue;
+            if (dshData.isOpen && dsh.accessManager != null) dsh.accessManager.InstantOpen();
+            if (dshData.isOneTime && dsh.spawner != null)
             {
-                if (!spawnerData.isOneTime) continue;
-                yield return new WaitUntil(() => spawnerSceneData.Exists(s => s.id == spawnerData.activeSpawner));
-                var ssd = spawnerSceneData.Find(s => s.id == spawnerData.activeSpawner);
-                if (ssd != null && ssd.spawner != null) StartCoroutine(ssd.spawner.Despawn());
-            }
-
-            for (var i = 0; i < list.doorSpawnerHybrids.Count; i++)
-            {
-                var dshData = list.doorSpawnerHybrids[i];
-                yield return new WaitUntil(() => doorSpawnerHybridSceneData.Exists(d => d.id == dshData.activeDsh));
-                var dsh = doorSpawnerHybridSceneData.Find(d => d.id == dshData.activeDsh);
-                if (dsh == null) continue;
-                if (dshData.isOpen) dsh.accessManager.InstantOpen();
-                if (!dshData.isOneTime) continue;
+                dsh.spawner.isOneTime = true;
                 StartCoroutine(dsh.spawner.Despawn());
             }
-
-            foreach (var cpData in list.checkPoints)
-            {
-                yield return new WaitUntil(() => checkPointSceneData.Exists(c => c.id == cpData.activeCheckpoint));
-                var cp = checkPointSceneData.Find(c => c.id == cpData.activeCheckpoint);
-                if (cp == null) continue;
-                if (!cpData.activated)
-                {
-                    cp.activeCheckpoint.GetComponent<Collider2D>().enabled = false;
-                    cp.isCurrent = false;
-                    continue;
-                }
-                cp.isCurrent = cpData.isCurrent;
-            }
-            bossSceneData.activeBoss = list.activeBoss;
-            if (list.isBossDead)
-            {
-                yield return new WaitUntil(() => bossSceneData.bossHealth != null);
-                Destroy(bossSceneData.bossHealth.gameObject);
-            }
-            bossSceneData.willBeNpc = list.willBeNpc;
-            
-            sceneLoaded = true;
-            break;
         }
-        if (bossSceneData.bossHealth != null && bossSceneData.isDead) 
+
+        foreach (var cpData in list.checkPoints)
+        {
+            var cp = checkPointSceneData.Find(c => c.id == cpData.activeCheckpoint);
+            if (cp == null || cp.activeCheckpoint == null) continue;
+            var cpComponent = cp.activeCheckpoint.GetComponent<Checkpoint>();
+            if (!cpData.activated)
+            {
+                if (cp.activeCheckpoint.TryGetComponent<Collider2D>(out var col)) col.enabled = false;
+                cp.isCurrent = false;
+                if (cpComponent != null) cpComponent.isCurrent = false;
+                continue;
+            }
+            cp.isCurrent = cpData.isCurrent;
+            if (cpComponent != null) cpComponent.isCurrent = cpData.isCurrent;
+        }
+
+        bossSceneData.activeBoss = list.activeBoss;
+        bossSceneData.isDead = list.isBossDead;
+        bossSceneData.willBeNpc = list.willBeNpc;
+        if (list.isBossDead && bossSceneData.bossHealth != null)
+        {
             Destroy(bossSceneData.bossHealth.gameObject);
+        }
             
         sceneLoaded = true;
+        GameEvents.TriggerLoadNpcData();
     }
     
     #endregion

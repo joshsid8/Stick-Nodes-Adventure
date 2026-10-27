@@ -910,7 +910,6 @@ MonoBehaviour:
   doorSpawnerHybridSceneData: []
   checkPointSceneData: []
   sceneLoaded: 0
-  npcDataInitialised: 0
 --- !u!61 &1317523870
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1306,6 +1305,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 747642969072967609, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 747642969072967609, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: vegetable
       value: 1
       objectReference: {fileID: 0}
@@ -1325,13 +1328,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Imo
       objectReference: {fileID: 0}
+    - target: {fileID: 5629469084799020678, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 111.04982
+      value: 147.02
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 115.79071
+      value: 114.91
       objectReference: {fileID: 0}
     - target: {fileID: 6671282002503159600, guid: 4684f0e6b68055245993b81a1433f709, type: 3}
       propertyPath: m_LocalPosition.z

@@ -14205,6 +14205,13 @@ MonoBehaviour:
   storedObj: {fileID: 0}
   freezeCamera: 0
   camObj: {fileID: 1237144381337846748}
+  hitstopMode: 2
+  minDamageThreshold: 20
+  heavyDamageThreshold: 40
+  maxDamageReference: 50
+  minFreezeDuration: 0.1
+  maxFreezeDuration: 0.8
+  victimShakeIntensity: 0.03
 --- !u!1001 &1402132692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21591,15 +21598,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 51.9701
+      value: 139.5
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.654716
+      value: 121.6
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.00006490946
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23042,7 +23049,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 52.356937, y: 9.7085905, z: -0.059604645}
+  m_LocalPosition: {x: 139.88684, y: 121.65387, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24217,7 +24224,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 54.33724, y: 13.932671, z: -0.059604645}
+  m_LocalPosition: {x: 141.86717, y: 125.87796, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26653,7 +26660,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

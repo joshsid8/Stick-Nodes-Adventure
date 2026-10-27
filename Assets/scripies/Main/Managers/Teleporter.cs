@@ -97,12 +97,19 @@ public class Teleporter : MonoBehaviour
 
     private void UnloadCurrentScenes(string sceneToIgnore = "")
     {
+        if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var currentMap) && currentMap != null)
+        {
+            currentMap.SaveSceneData();
+        }
+        GameEvents.TriggerSaveNpcData();
+
         for (var i = 0; i < SceneManager.sceneCount; i++)
         {
             var scene = SceneManager.GetSceneAt(i);
             if (!scene.isLoaded || scene.name == gameObject.scene.name || scene.name == sceneToIgnore || scene.name == "Persistent Objects") continue;
             MapManager.Instances.TryGetValue(scene.name, out var mapManager);
             if (mapManager == null) continue;
+            mapManager.SaveSceneData();
             mapManager.DisableSpawners();
             SceneManager.UnloadSceneAsync(scene.name);
         }

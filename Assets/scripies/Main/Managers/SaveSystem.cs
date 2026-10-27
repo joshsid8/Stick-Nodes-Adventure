@@ -12,14 +12,22 @@ public class SaveSystem
     private static SaveData saveData = new()
     {
         sceneData = new SceneData(true),
-        globalNpcData = new GlobalNpcData(),
+        globalNpcData = new GlobalNpcData(true),
         playerCurrentData = new PlayerSaveCurrentData(),
         playerStats = new PlayerSaveStats(),
         playerInventory = new PlayerSaveInventory(),
         playerIndex = PlayerSaveIndex.CreateNew(),
         playerBadges = new PlayerBadges(),
         playerQuests = new PlayerSaveQuests(),
-        mainMenuData = new MainMenuData(),
+        mainMenuData = new MainMenuData
+        {
+            initialized = true,
+            fps = 60,
+            vsync = false,
+            masterVolume = 1f,
+            musicVolume = 1f,
+            sfxVolume = 1f
+        },
     };
 
     [System.Serializable]
@@ -68,10 +76,16 @@ public class SaveSystem
         if (StatsManager.Instance != null) StatsManager.Instance.Save(ref saveData.playerBadges);
     }
 
-    public static void HandleSettingsSaveData() => MainMenuManager.Instance.Save(ref saveData.mainMenuData);
+    public static void HandleSettingsSaveData()
+    {
+        if (MainMenuManager.Instance != null) MainMenuManager.Instance.Save(ref saveData.mainMenuData);
+        if (GameSettingsManager.Instance != null) GameSettingsManager.Instance.Save(ref saveData.mainMenuData);
+    }
+
     public static void HandleSettingsLoadData()
     {
-        MainMenuManager.Instance.Load(saveData.mainMenuData);
+        if (MainMenuManager.Instance != null) MainMenuManager.Instance.Load(saveData.mainMenuData);
+        if (GameSettingsManager.Instance != null) GameSettingsManager.Instance.Load(saveData.mainMenuData);
     }
 
     public static void HandleLoadData()
@@ -92,7 +106,7 @@ public class SaveSystem
 
     public static void Save()
     {
-        if (DataManager.Instance == null || Application.isEditor && PlayerHealth.Instance.pc.debugMode) return;
+        if (DataManager.Instance == null || Application.isEditor && PlayerHealth.Instance != null && PlayerHealth.Instance.pc != null && PlayerHealth.Instance.pc.debugMode) return;
         isSaving = true;
         HandleSaveData();
 
@@ -109,7 +123,21 @@ public class SaveSystem
         isSaving = false;
     }
     
-    public static void SaveSettings() => HandleSettingsSaveData();
+    public static void SaveSettings()
+    {
+        HandleSettingsSaveData();
+        try
+        {
+            var json = JsonUtility.ToJson(saveData.mainMenuData, true);
+            File.WriteAllText(SettingsSaveFileName(), json);
+            if (Application.isEditor) Debug.Log($"[SaveSystem] Saved settings to: {SettingsSaveFileName()}");
+        }
+        catch (IOException ex)
+        {
+            Debug.LogError($"[SaveSystem] Failed to save settings: {ex.Message}");
+        }
+    }
+
     public static void LoadSettings()
     {
         var path = SettingsSaveFileName();
@@ -118,7 +146,9 @@ public class SaveSystem
             try
             {
                 var json = File.ReadAllText(path);
-                saveData = JsonUtility.FromJson<SaveData>(json);
+                var loadedSettings = JsonUtility.FromJson<MainMenuData>(json);
+                if (loadedSettings.initialized)
+                    saveData.mainMenuData = loadedSettings;
                 Debug.Log($"[SaveSystem] Loaded settings from: {path}");
             }
             catch (IOException ex)
@@ -134,28 +164,17 @@ public class SaveSystem
         var path = SaveFileName();
         if (!File.Exists(path))
         {
-            Debug.LogWarning($"[SaveSystem] No save file found at: {path}. Initializing default data.");
-            // Initialize default state
-            saveData = new SaveData
-            {
-                sceneData = new SceneData(true),
-                globalNpcData = new GlobalNpcData(),
-                playerCurrentData = new PlayerSaveCurrentData(),
-                playerStats = new PlayerSaveStats(),
-                playerInventory = new PlayerSaveInventory(),
-                playerIndex = PlayerSaveIndex.CreateNew(),
-                playerBadges = new PlayerBadges(),
-                playerQuests = new PlayerSaveQuests(),
-                mainMenuData = new MainMenuData(),
-            };
-            HandleLoadData();
+            Debug.LogWarning($"[SaveSystem] No save file found at: {path}. Keeping default game state.");
             return;
         }
 
         try
         {
             var saveDataString = File.ReadAllText(path);
+            var currentSettings = saveData.mainMenuData;
             saveData = JsonUtility.FromJson<SaveData>(saveDataString);
+            if (currentSettings.initialized)
+                saveData.mainMenuData = currentSettings;
             HandleLoadData();
             if (Application.isEditor) Debug.Log($"[SaveSystem] Loaded from: {path}");
         }

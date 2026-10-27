@@ -218,6 +218,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
         if (useRadialKnockback) calcDirection = damageable.Position - transform.position;
         else calcDirection = new Vector2(isFacingRightDirection ? knockbackDirection.x : -knockbackDirection.x, knockbackDirection.y).normalized;
         damageable.Shock(stunTime, calcDirection, knockbackForce, knockbackTime);
+        if (damageable is MonoBehaviour targetMb)
+            GameEvents.TriggerHitImpact(gameObject, targetMb.gameObject, abDamage);
         if (contactSfx != null) GameEvents.TriggerPlaySound(contactSfx, gameObject);
     }
 
@@ -242,6 +244,8 @@ public abstract class AbilityBase : MonoBehaviour //at this point this is just t
             var dm = Shenanigans.Instance.RawDamage(abilityDamage, damageFactor, (IDamageable.ElementType)elementType, elementFactor, trueDamage, damageOverTime, procDmg, procInterval);
             GameEvents.TriggerApplyDamage(damageable, dm, isFacingRightDirection, typeFactor switch { 0 => "", 1 => "Player", 2 => "Enemy", _ => "" });
             damageable.Shock(explosionTime, radialDir, explosionForce, explosionTime);
+            if (damageable is MonoBehaviour targetMb)
+                GameEvents.TriggerHitImpact(gameObject, targetMb.gameObject, dm);
             currentProcTimer = procTime;
         }
     }

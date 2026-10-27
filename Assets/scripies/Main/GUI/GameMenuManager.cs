@@ -63,6 +63,9 @@ public class GameMenuManager : MonoBehaviour
         yield return new WaitUntil(() => menuPrompt.choice != 0);
         if (menuPrompt.choice == 2)
         {
+            pausedGame = false;
+            if (Shenanigans.Instance != null) Shenanigans.Instance.ToggleFreezeCamera(false);
+            Time.timeScale = 1f;
             GameEvents.TriggerQuitToMainMenu();
             
             var aud = AudioManager.Instance;

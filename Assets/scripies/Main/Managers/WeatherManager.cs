@@ -28,6 +28,7 @@ public class WeatherManager : MonoBehaviour
     
     private readonly float[] preValues = new float[3];
     private PlayerHealth player;
+    private bool preValuesInitialized;
     
     private void Awake()
     {
@@ -69,9 +70,18 @@ public class WeatherManager : MonoBehaviour
 
     private void Start()
     {
-        player = PlayerHealth.Instance;
-        preValues[0] = player.regenerationMultiplier;
-        preValues[1] = player.pc.movementSpeed;
+        EnsurePlayerReference();
+    }
+
+    private void EnsurePlayerReference()
+    {
+        if (player == null) player = PlayerHealth.Instance;
+        if (player != null && !preValuesInitialized && player.pc != null)
+        {
+            preValues[0] = player.regenerationMultiplier;
+            preValues[1] = player.pc.movementSpeed;
+            preValuesInitialized = true;
+        }
     }
 
     public WeatherType GetTargetWeather(bool forced = false)
@@ -83,7 +93,7 @@ public class WeatherManager : MonoBehaviour
         switch (randomWeather)
         {
             case true when rng <= weatherChance:
-                targetWeather = mm.undiscoveredMap ? WeatherType.Clear : (WeatherType)Random.Range(1, 4);
+                targetWeather = mm != null && mm.undiscoveredMap ? WeatherType.Clear : (WeatherType)Random.Range(1, 4);
                 break;
             case true when weatherType != WeatherType.Clear:
             {
@@ -97,6 +107,7 @@ public class WeatherManager : MonoBehaviour
 
     public void ChangeWeather(WeatherType? forcedWeather = null)
     {
+        EnsurePlayerReference();
         if (forcedWeather.HasValue) weatherType = forcedWeather.Value;
         else weatherType = GetTargetWeather();
         
@@ -106,32 +117,35 @@ public class WeatherManager : MonoBehaviour
         {
             case WeatherType.Clear:
                 if (mm != null) mm.UpdateNormalAreaInfo();
-                else sm.UpdateNormalAreaInfo();
+                else if (sm != null) sm.UpdateNormalAreaInfo();
                 break;
             case WeatherType.Hot:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume, announce);
-                else sm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherTextColor,
+                else if (sm != null) sm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
                 break;
             case WeatherType.Cold:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume, announce);
-                else sm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherTextColor,
+                else if (sm != null) sm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
                 break;
             case WeatherType.Rainy:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,
                     weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume, announce);
-                else sm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherTextColor,
+                else if (sm != null) sm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherTextColor,
                     weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume);
                 InvokeRepeating(nameof(Thunderstorm), 0, thunderTimer);
                 break;
             default:
                 if (mm != null) mm.UpdateNormalAreaInfo();
-                else sm.UpdateNormalAreaInfo();
-                player.regenerationMultiplier = preValues[0];
-                player.pc.movementSpeed = preValues[1];
+                else if (sm != null) sm.UpdateNormalAreaInfo();
+                if (player != null && preValuesInitialized)
+                {
+                    player.regenerationMultiplier = preValues[0];
+                    if (player.pc != null) player.pc.movementSpeed = preValues[1];
+                }
                 break;
         }
         if (mm != null)
@@ -165,29 +179,35 @@ public class WeatherManager : MonoBehaviour
 
     public void ClearDisasters()
     {
+        EnsurePlayerReference();
         CancelInvoke(nameof(Thunderstorm));
         CancelInvoke(nameof(EarthQuake));
         CancelInvoke(nameof(Temperature));
         StopCoroutine(Wind());
         disasters.Clear();
-        player.regenerationMultiplier = preValues[0];
-        player.pc.movementSpeed = preValues[1];
+        if (player != null && preValuesInitialized)
+        {
+            player.regenerationMultiplier = preValues[0];
+            if (player.pc != null) player.pc.movementSpeed = preValues[1];
+        }
     }
     
     private void SetProperties()
     {
+        EnsurePlayerReference();
+        if (player == null || !preValuesInitialized) return;
         switch (weatherType)
         {
             case WeatherType.Hot:
             case WeatherType.Cold:
                 player.regenerationMultiplier = 0.5f;
-                player.pc.movementSpeed = preValues[1] * 0.9f;
+                if (player.pc != null) player.pc.movementSpeed = preValues[1] * 0.9f;
                 break;
             case WeatherType.Clear:
             case WeatherType.Rainy:
             default:
                 player.regenerationMultiplier = preValues[0];
-                player.pc.movementSpeed = preValues[1];
+                if (player.pc != null) player.pc.movementSpeed = preValues[1];
                 break;
         }
     }
@@ -197,6 +217,7 @@ public class WeatherManager : MonoBehaviour
 
     private void EarthQuake()
     {
+        if (player == null || player.pc == null) return;
         if (!disasters.ContainsKey("Earthquake") || !(disasters["Earthquake"] > 0) || !player.pc.isGrounded) return;
         var damage = Shenanigans.Instance.RawDamage(0.5f * disasters["Earthquake"], 3, IDamageable.ElementType.Earth);
         player.GetComponent<IDamageable>().Damage(damage, false, "Earthquake");
@@ -204,6 +225,7 @@ public class WeatherManager : MonoBehaviour
 
     private void Temperature()
     {
+        if (player == null) return;
         if (disasters.ContainsKey("Temperature") && disasters["Temperature"] > 0)
         {
             switch (weatherType)
@@ -219,6 +241,7 @@ public class WeatherManager : MonoBehaviour
     
     public void Thunderstorm()
     {
+        if (player == null || player.pc == null) return;
         if (disasters.ContainsKey("Thunderstorm") && disasters["Thunderstorm"] > 0)
         {
             var rng = Random.Range(0, 101);
@@ -237,7 +260,8 @@ public class WeatherManager : MonoBehaviour
         var windDirection = rng == 0;
         while (disasters.ContainsKey("Wind") && disasters["Wind"] > 0)
         {
-            player.pc.rb.AddForce(new Vector2(windDirection ? 1 : -1, 0) * 50 * disasters["Wind"]);
+            if (player != null && player.pc != null && player.pc.rb != null)
+                player.pc.rb.AddForce(new Vector2(windDirection ? 1 : -1, 0) * 50 * disasters["Wind"]);
             yield return new WaitForFixedUpdate();
         }
         yield return null;

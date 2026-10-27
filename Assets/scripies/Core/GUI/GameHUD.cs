@@ -44,15 +44,6 @@ public class GameHUD : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        GameEvents.StopTime += FakeFreezeTime;
-    }
-    private void OnDisable()
-    {
-        GameEvents.StopTime -= FakeFreezeTime;
-    }
-
     private void Update()
     {
         if (player != null)
@@ -60,45 +51,6 @@ public class GameHUD : MonoBehaviour
             currencyText.text = "₦odeBucks: " + player.NodeBucks.ToString("F0");
         }
         bossHealthBackBar.color = new Color(bossHealthBar.color.r * 0.4f, bossHealthBar.color.g * 0.4f, bossHealthBar.color.b * 0.4f, 1);
-    }
-
-    private void FakeFreezeTime(float freezeTime)
-    {
-        StartCoroutine(FakeFreezeTimeC(freezeTime));
-    }
-
-    private static IEnumerator FakeFreezeTimeC(float freezeTime)
-    {
-        var freezeBuffer = freezeTime;
-        var prevAnimSpeed = new Dictionary<string, float>();
-        var prevVelocity = new Dictionary<string, Vector2>();
-        var targets = new Dictionary<string, GameObject>();
-        foreach (var obj in ObjectDatabase.Instance.everything)
-        {
-            if (!obj.TryGetComponent<Animator>(out var anim) || !obj.TryGetComponent<Rigidbody2D>(out var rb)) continue;
-            prevAnimSpeed[obj.name] = anim.speed;
-            prevVelocity[obj.name] = rb.linearVelocity;
-            targets[obj.name] = obj.gameObject;
-        }
-
-        while (freezeBuffer > 0)
-        {
-            foreach (var target in targets)
-            {
-                target.Value.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-                target.Value.GetComponent<Animator>().speed = 0;
-            }
-            freezeBuffer -= Time.unscaledDeltaTime;
-            yield return null;
-        }
-        
-        foreach (var target in targets.Values)
-        {
-            if (!target.TryGetComponent<Animator>(out var anim) || !target.TryGetComponent<Rigidbody2D>(out var rb)) continue;
-            if (!prevAnimSpeed.ContainsKey(target.name) || !prevVelocity.ContainsKey(target.name)) continue;
-            rb.linearVelocity = prevVelocity.TryGetValue(target.name, out var velocity) ? velocity : Vector2.zero;
-            anim.speed = prevAnimSpeed.GetValueOrDefault(target.name, 1);
-        }
     }
     
     #region Shader Stuff

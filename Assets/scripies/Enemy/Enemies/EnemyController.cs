@@ -90,6 +90,8 @@ namespace scripies.Enemy
                 case EnemyState.Patrolling:
                     InactiveState(2);
                     break;
+                case EnemyState.Traveling:
+                    break;
                 case EnemyState.Stunned:
                     if (!health.isStunned)
                     {
@@ -137,8 +139,8 @@ namespace scripies.Enemy
             else if (backupSpareTimer <= 0 && enemyState == EnemyState.Attacking) LostPlayer();
             
             if (enemyState != EnemyState.Idle && enemyState != EnemyState.Patrolling &&
-                enemyState != EnemyState.Dead) FacePlayer();
-            if (ps.IsDead && enemyState != EnemyState.Patrolling) ChangeState(EnemyState.Patrolling);
+                enemyState != EnemyState.Traveling && enemyState != EnemyState.Dead) FacePlayer();
+            if (ps.IsDead && enemyState != EnemyState.Patrolling && enemyState != EnemyState.Traveling) ChangeState(EnemyState.Patrolling);
         }
 
         private void OnDestroy()
@@ -164,7 +166,7 @@ namespace scripies.Enemy
                     zone.enabled = false;
                     attack.canAttack = true;
                     attack.enabled = false;
-                    jump.isJumping = false;
+                    if (jump != null) jump.isJumping = false;
                     break;
                 case EnemyState.Zoning:
                     patrol.enabled = false;
@@ -177,15 +179,24 @@ namespace scripies.Enemy
                     attack.enabled = true;
                     break;
                 case EnemyState.Traveling:
-                    //patrol.enabled = false;
-                    // Travelling will just be another Patrolling for now. But will be the manager of Pathfinding later
+                    if (domain != null)
+                    {
+                        patrol.hasFoundPlayer = false;
+                        patrol.isPatrolling = false;
+                        patrol.enabled = false;
+                        zone.enabled = false;
+                        attack.canAttack = true;
+                        attack.enabled = false;
+                        if (jump != null) jump.isJumping = false;
+                        break;
+                    }
                     patrol.enabled = true;
                     goto lostPlayer;
                 case EnemyState.Dead:
                     patrol.enabled = false;
                     zone.enabled = false;
                     attack.enabled = false;
-                    jump.isJumping = false;
+                    if (jump != null) jump.isJumping = false;
                     isAggressive = false;
                     break;
                 case EnemyState.Stunned:

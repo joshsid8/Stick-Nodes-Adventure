@@ -14,7 +14,16 @@ namespace scripies.Player
         [Header("Settings")] public bool canAct = true;
         public bool canFlip = true;
         public bool isFrozen;
+        public bool isForceFrozen;
         public bool isPerformingAction;
+
+        private Vector2 preFreezeVelocity;
+        private float preFreezeGravityScale;
+        private bool preFreezeIsJumping;
+        private bool preFreezeIsWallJumping;
+        private bool hasStoredFreezeState;
+
+        public bool IsHitstopOrForceFrozen => isForceFrozen || (kb != null && kb.IsFrozenInHitstop);
 
         [Space] [Header("Movement")] public bool canMove = true;
         public float movementSpeed = 10f;
@@ -129,17 +138,75 @@ namespace scripies.Player
         {
             GameEvents.PlayerAction += OnPlayerAction;
             GameEvents.AddPlayerTime += AddCooldown;
+            GameEvents.OnForceFreezePlayer += ForceFreeze;
             input.Enable();
             input.Player.Enable();
             input.Player.Jump.performed += _ => jumpBufferCounter = jumpBufferTime;
-            input.Player.Dash.performed += _ => StartCoroutine(Dash());
+            input.Player.Dash.performed += _ =>
+            {
+                if (!IsHitstopOrForceFrozen) StartCoroutine(Dash());
+            };
         }
         private void OnDisable() 
         {
             GameEvents.PlayerAction -= OnPlayerAction;
             GameEvents.AddPlayerTime -= AddCooldown;
+            GameEvents.OnForceFreezePlayer -= ForceFreeze;
+            isForceFrozen = false;
+            hasStoredFreezeState = false;
             input.Disable(); 
             //input.Player.RemoveCallbacks();
+        }
+
+        public void ForceFreeze(bool freeze, bool preserveMomentum = true)
+        {
+            if (rb == null) return;
+
+            if (freeze)
+            {
+                if (!isForceFrozen)
+                {
+                    isForceFrozen = true;
+                    if (preserveMomentum && !hasStoredFreezeState)
+                    {
+                        preFreezeVelocity = rb.linearVelocity;
+                        preFreezeGravityScale = rb.gravityScale > 0f ? rb.gravityScale : defaultGravity;
+                        preFreezeIsJumping = isJumping;
+                        preFreezeIsWallJumping = isWallJumping;
+                        hasStoredFreezeState = true;
+                    }
+                }
+                else if (preserveMomentum && hasStoredFreezeState)
+                {
+                    if (rb.linearVelocity.y > preFreezeVelocity.y)
+                        preFreezeVelocity.y = rb.linearVelocity.y;
+                    if (Mathf.Abs(rb.linearVelocity.x) > Mathf.Abs(preFreezeVelocity.x))
+                        preFreezeVelocity.x = rb.linearVelocity.x;
+                }
+
+                rb.linearVelocity = Vector2.zero;
+                rb.gravityScale = 0f;
+            }
+            else
+            {
+                isForceFrozen = false;
+                if (hasStoredFreezeState)
+                {
+                    hasStoredFreezeState = false;
+                    isJumping = preFreezeIsJumping;
+                    isWallJumping = preFreezeIsWallJumping;
+                    rb.gravityScale = preFreezeGravityScale > 0f ? preFreezeGravityScale : defaultGravity;
+
+                    if (preserveMomentum && (kb == null || !kb.IsBeingKnocked))
+                    {
+                        rb.linearVelocity = preFreezeVelocity;
+                    }
+                }
+                else
+                {
+                    rb.gravityScale = isDashing ? 0f : defaultGravity;
+                }
+            }
         }
 
         // Start is called before the first frame update
@@ -188,6 +255,14 @@ namespace scripies.Player
         // Update is called once per frame
         private void Update()
         {
+            if (IsHitstopOrForceFrozen)
+            {
+                CheckInput();
+                rb.linearVelocity = Vector2.zero;
+                rb.gravityScale = 0f;
+                return;
+            }
+
             UpdateAnimation();
             if (rb.bodyType == RigidbodyType2D.Static) return;
             CheckInput();
@@ -210,6 +285,13 @@ namespace scripies.Player
 
         private void FixedUpdate()
         {
+            if (IsHitstopOrForceFrozen)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.gravityScale = 0f;
+                return;
+            }
+
             CheckEnvironment();
             ApplyMovement();
             WallSlide();
@@ -220,13 +302,13 @@ namespace scripies.Player
         {
             moveInputDir = input.Player.Move.ReadValue<Vector2>().x;
 
-            if (jumpBufferCounter > -0.5) jumpBufferCounter -= Time.deltaTime;
+            if (!IsHitstopOrForceFrozen && jumpBufferCounter > -0.5) jumpBufferCounter -= Time.deltaTime;
         }
 
         #region Dashing
         private IEnumerator Dash()
         {
-            if (!canDash || !dashAbility || isPerformingAction || pab.energy < dashEnergyCost) yield break;
+            if (!canDash || !dashAbility || isPerformingAction || IsHitstopOrForceFrozen || pab.energy < dashEnergyCost) yield break;
             canDash = false;
             pab.energy -= dashEnergyCost;
             currentDashTime = dashTime;
@@ -243,6 +325,12 @@ namespace scripies.Player
             var currentDashSpeed = dashSpeed;
             while (currentDashTime > 0)
             {
+                if (IsHitstopOrForceFrozen)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                    yield return null;
+                    continue;
+                }
                 rb.linearVelocity = new Vector2(currentDashSpeed, 0) * transform.right;
                 currentDashTime -= Time.deltaTime * 1.75f;
                 if (currentDashTime <= dashTime * 0.25f) currentDashSpeed -= Time.deltaTime;
@@ -276,7 +364,7 @@ namespace scripies.Player
             if (!isWallSliding) return;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
             if (pab.isPerformingAbility) pab.isPerformingAbility = false;
-            if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen)
+            if (!kb.IsBeingKnocked && !pab.isPerformingAbility && !isFrozen && !IsHitstopOrForceFrozen)
                 StartCoroutine(WallJump());
         }
 
@@ -296,6 +384,12 @@ namespace scripies.Player
             Flip(true);
             while (wallJumpTimer > 0)
             {
+                if (IsHitstopOrForceFrozen)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                    yield return null;
+                    continue;
+                }
                 canFlip = false;
                 rb.linearVelocity = availableWallsLeft > 0 ? wjForce : weakForce;
                 wallJumpTimer -= Time.deltaTime;
@@ -310,6 +404,12 @@ namespace scripies.Player
             var velocityAtEnd = rb.linearVelocity;
             while (elapsed < easeDuration && moveInputDir == 0 && !isGrounded)
             {
+                if (IsHitstopOrForceFrozen)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                    yield return null;
+                    continue;
+                }
                 elapsed += Time.fixedDeltaTime;
                 var t = elapsed / easeDuration;
                 var newX = Mathf.Lerp(velocityAtEnd.x, 0, t);
@@ -375,7 +475,7 @@ namespace scripies.Player
 
         private void ApplyMovement()
         {
-            if (!canMove || isFrozen || kb.IsBeingKnocked || isWallJumping || isDashing || rb.bodyType == RigidbodyType2D.Static) return;
+            if (!canMove || isFrozen || IsHitstopOrForceFrozen || kb.IsBeingKnocked || isWallJumping || isDashing || rb.bodyType == RigidbodyType2D.Static) return;
 
             if (moveInputDir != 0)
             {
@@ -483,6 +583,7 @@ namespace scripies.Player
 
         private void Flip(bool forced = false)
         {
+            if (IsHitstopOrForceFrozen) return;
             if ((!canFlip || forced) && !forced) return;
             isFacingRight = !isFacingRight;
             transform.Rotate(0.0f, 180.0f, 0.0f);
