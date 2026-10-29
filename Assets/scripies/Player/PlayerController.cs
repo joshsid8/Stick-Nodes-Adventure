@@ -84,6 +84,14 @@ namespace scripies.Player
         private bool hasDashedInAir;
         public float dashEnergyCost;
 
+        [Space] [Header("Corner Correction")]
+        public bool enableCornerCorrection = true;
+        [Tooltip("Maximum vertical distance the player can be clipped upward onto a ledge corner.")]
+        public float cornerCorrectionDistance = 0.55f;
+        [Tooltip("Distance forward to check for ledge corners.")]
+        public float cornerCorrectionForwardCheck = 0.35f;
+        private Collider2D playerCollider;
+
         [Space] [Header("Physics and QoL")] [HideInInspector]
         public float defaultGravity;
 
@@ -132,6 +140,17 @@ namespace scripies.Player
             pdf = GetComponent<PlayerDefense>();
             pm = GetComponent<PlayerCurrency>();
             input = new PlayerInput();
+
+            var colliders = GetComponents<Collider2D>();
+            foreach (var c in colliders)
+            {
+                if (!c.isTrigger)
+                {
+                    playerCollider = c;
+                    break;
+                }
+            }
+            if (playerCollider == null) playerCollider = GetComponent<Collider2D>();
         }
 
         private void OnEnable()
@@ -300,7 +319,8 @@ namespace scripies.Player
 
         private void CheckInput()
         {
-            moveInputDir = input.Player.Move.ReadValue<Vector2>().x;
+            var rawMoveX = input.Player.Move.ReadValue<Vector2>().x;
+            moveInputDir = Mathf.Abs(rawMoveX) > 0.01f ? Mathf.Sign(rawMoveX) : 0f;
 
             if (!IsHitstopOrForceFrozen && jumpBufferCounter > -0.5) jumpBufferCounter -= Time.deltaTime;
         }
@@ -308,7 +328,7 @@ namespace scripies.Player
         #region Dashing
         private IEnumerator Dash()
         {
-            if (!canDash || !dashAbility || isPerformingAction || IsHitstopOrForceFrozen || pab.energy < dashEnergyCost) yield break;
+            if (!canDash || !dashAbility || (isPerformingAction && !isWallSliding) || IsHitstopOrForceFrozen || pab.energy < dashEnergyCost) yield break;
             canDash = false;
             pab.energy -= dashEnergyCost;
             currentDashTime = dashTime;
@@ -331,6 +351,7 @@ namespace scripies.Player
                     yield return null;
                     continue;
                 }
+                CheckCornerCorrection();
                 rb.linearVelocity = new Vector2(currentDashSpeed, 0) * transform.right;
                 currentDashTime -= Time.deltaTime * 1.75f;
                 if (currentDashTime <= dashTime * 0.25f) currentDashSpeed -= Time.deltaTime;
@@ -339,6 +360,70 @@ namespace scripies.Player
             isDashing = false;
             rb.gravityScale = defaultGravity;
             if (!isRunning) rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
+
+        private void CheckCornerCorrection()
+        {
+            if (!enableCornerCorrection) return;
+            if (playerCollider == null)
+            {
+                var cols = GetComponents<Collider2D>();
+                foreach (var c in cols)
+                {
+                    if (!c.isTrigger) { playerCollider = c; break; }
+                }
+                if (playerCollider == null) playerCollider = GetComponent<Collider2D>();
+                if (playerCollider == null) return;
+            }
+
+            Vector2 dir = isFacingRight ? Vector2.right : Vector2.left;
+            Bounds b = playerCollider.bounds;
+            float frontX = isFacingRight ? b.max.x : b.min.x;
+            float bottomY = b.min.y;
+            float topY = b.max.y;
+            float height = b.size.y;
+            LayerMask checkMask = whatIsGround | whatIsWall;
+
+            float checkDist = Mathf.Max(cornerCorrectionForwardCheck, Mathf.Abs(rb.linearVelocity.x) * Time.fixedDeltaTime + 0.1f);
+
+            // If an obstacle blocks the head/upper level, upward ledge correction should not apply
+            RaycastHit2D headHit = Physics2D.Raycast(new Vector2(frontX, topY + 0.05f), dir, checkDist, checkMask);
+            if (headHit.collider != null) return;
+
+            // Check if lower or mid body is hitting an obstacle corner
+            RaycastHit2D hitLow = Physics2D.Raycast(new Vector2(frontX, bottomY + 0.08f), dir, checkDist, checkMask);
+            RaycastHit2D hitMid = Physics2D.Raycast(new Vector2(frontX, (bottomY + topY) * 0.5f), dir, checkDist, checkMask);
+
+            RaycastHit2D wallHit = hitLow.collider != null ? hitLow : hitMid;
+            if (wallHit.collider == null) return;
+
+            // Find the top surface of the ledge by raycasting downward
+            float obstacleX = wallHit.point.x + (isFacingRight ? 0.06f : -0.06f);
+            float startY = topY + cornerCorrectionDistance + 0.1f;
+            float rayLength = height + cornerCorrectionDistance + 0.3f;
+            RaycastHit2D ledgeHit = Physics2D.Raycast(new Vector2(obstacleX, startY), Vector2.down, rayLength, checkMask);
+
+            if (ledgeHit.collider != null)
+            {
+                float ledgeY = ledgeHit.point.y;
+                float diff = ledgeY - bottomY;
+
+                // If the ledge corner is above the player's feet and within the tolerance:
+                if (diff > 0.02f && diff <= cornerCorrectionDistance)
+                {
+                    float nudgeUp = diff + 0.06f;
+
+                    // Ensure there is room above the player to avoid clipping into a ceiling
+                    Vector2 targetCenter = new Vector2(b.center.x, b.center.y + nudgeUp);
+                    Collider2D ceilingCheck = Physics2D.OverlapBox(targetCenter, new Vector2(b.size.x * 0.85f, b.size.y * 0.9f), 0f, checkMask);
+
+                    if (ceilingCheck == null)
+                    {
+                        transform.position += new Vector3(0, nudgeUp, 0);
+                        rb.position += new Vector2(0, nudgeUp);
+                    }
+                }
+            }
         }
 
         private void DashSettings()
@@ -543,6 +628,10 @@ namespace scripies.Player
                 hasDashedInAir = false;
                 availableWallsLeft = availableWalls;
             }
+            else if (isWallSliding)
+            {
+                hasDashedInAir = false;
+            }
 
             if (Input.GetAxisRaw("Vertical") < 0 && input.Player.Jump.WasPressedThisFrame() && isGrounded)
             {
@@ -658,6 +747,20 @@ namespace scripies.Player
             Gizmos.color = Color.green;
             Vector3 rayDirection = Vector2.up * transform.localScale.y * wallCheckRay;
             Gizmos.DrawLine(wallCheck.position, wallCheck.position + rayDirection);
+
+            if (enableCornerCorrection)
+            {
+                Gizmos.color = Color.yellow;
+                var colToDraw = playerCollider != null ? playerCollider : GetComponent<Collider2D>();
+                if (colToDraw != null)
+                {
+                    Bounds b = colToDraw.bounds;
+                    float fx = isFacingRight ? b.max.x : b.min.x;
+                    Vector3 d = (isFacingRight ? Vector3.right : Vector3.left) * cornerCorrectionForwardCheck;
+                    Gizmos.DrawLine(new Vector3(fx, b.min.y + 0.08f, 0), new Vector3(fx, b.min.y + 0.08f, 0) + d);
+                    Gizmos.DrawLine(new Vector3(fx, (b.min.y + b.max.y) * 0.5f, 0), new Vector3(fx, (b.min.y + b.max.y) * 0.5f, 0) + d);
+                }
+            }
         }
 
         public void Save(ref PlayerSaveCurrentData data)

@@ -200,6 +200,9 @@ public class Shenanigans : MonoBehaviour
 
     private void HandleHitImpact(GameObject attacker, GameObject victim, Damage damage)
     {
+        if (victim != null && victim.TryGetComponent<IEnemyStatus>(out var enemyStatus) && !enemyStatus.IsMovable)
+            return;
+
         var duration = CalculateHitstopDuration(damage);
         if (duration <= 0f) return;
 
@@ -273,6 +276,8 @@ public class Shenanigans : MonoBehaviour
     private void FreezeEntity(GameObject obj, float duration, bool isVictim)
     {
         if (obj == null) return;
+        if (isVictim && obj.TryGetComponent<IEnemyStatus>(out var enemyStatus) && !enemyStatus.IsMovable)
+            return;
 
         obj.TryGetComponent<Rigidbody2D>(out var rb);
 
@@ -347,7 +352,7 @@ public class Shenanigans : MonoBehaviour
         {
             GameEvents.TriggerForceFreezePlayer(false, !state.IsVictim);
         }
-        else if (state.Rb != null && !state.IsVictim && (state.Knockback == null || !state.Knockback.IsBeingKnocked))
+        else if (state.Rb != null && (state.Knockback == null || !state.Knockback.IsBeingKnocked))
         {
             state.Rb.linearVelocity = state.StoredVelocity;
         }

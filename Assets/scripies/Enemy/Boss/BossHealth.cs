@@ -58,6 +58,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
     public Vector3 Position => transform.position;
     public bool IsGrounded => ba.isGrounded;
     public bool IsFacingRight => ba.isFacingRight;
+    public bool IsMovable => movable && (ba == null || ba.isGrounded);
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
     private void Awake()

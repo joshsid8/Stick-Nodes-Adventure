@@ -59,6 +59,8 @@ namespace scripies.Dialogue
 
         [Header("NPC Control")]
         public bool respeakable = true;
+        [Tooltip("If true, this dialogue is added to the top (played first) of the dialogue list. If false, it is added to the bottom so intro/prior dialogues play first.")]
+        public bool addToTop;
         
         //public Entity speaker;
         [Tooltip("Adds these dialogues to the current speaker. Make sure the desired topmost dialogue is the last one in the array.")]

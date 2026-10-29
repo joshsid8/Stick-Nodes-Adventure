@@ -29,12 +29,9 @@ public class SectionManager : MonoBehaviour
     
     [SerializeField] private GameObject cameraObject;
     private Color prevMapBgColor;
-    private string prevAreaName;
-    private bool playerInSection;
-
     private void Start()
     {
-        if (cameraObject != null) cameraObject.SetActive(false);
+        cameraObject.SetActive(false);
         weather = GetComponent<WeatherManager>();
         audioManager = AudioManager.Instance;
     }
@@ -43,19 +40,14 @@ public class SectionManager : MonoBehaviour
     public void UpdateAreaInfo(string mName, Color mTextColor = default, Color mBgColor = default, AudioClip[] mOst = null, float[] mOstVolume = null)
     {
         if (!announceDetails) return;
-        if (AreaManager.Instance != null)
-            AreaManager.Instance.Announce(mName, "", mTextColor, mBgColor, true);
+        AreaManager.Instance.Announce(mName, "", mTextColor, mBgColor, true);
         
-        if (audioManager == null) audioManager = AudioManager.Instance;
-        if (mOst == null || mOstVolume == null || muteMusic || audioManager == null) return;
+        if (mOst == null || mOstVolume == null || muteMusic) return;
         if (mOst.Length == 0) return;
-
-        var count = Mathf.Min(audioManager.backgroundMusic.Length, mOst.Length);
-        for (var i = 0; i < count; i++)
+        for (var i = 0; i < audioManager.backgroundMusic.Length; i++)
         {
             audioManager.backgroundMusic[i] = mOst[i];
-            if (i < mOstVolume.Length)
-                audioManager.backgroundMusicVolume[i] = mOstVolume[i];
+            audioManager.backgroundMusicVolume[i] = mOstVolume[i];
         }
         GameEvents.TriggerPlayMusic(0, false);
     }
@@ -63,44 +55,17 @@ public class SectionManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
-        if (playerInSection) return;
-        playerInSection = true;
-
+        //if (weather != null) weather.SetWeather();
         if (cameraObject != null) cameraObject.SetActive(true);
-        if (AreaManager.Instance != null)
-        {
-            prevAreaName = AreaManager.Instance.currentArea;
-            if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
-                prevMapBgColor = mm.mapBgColor;
-            else if (AreaManager.Instance.actualCamera != null)
-                prevMapBgColor = AreaManager.Instance.actualCamera.backgroundColor;
-        }
-
-        if (weather != null) weather.ChangeWeather(weather.weatherType);
-        else if (announceDetails) UpdateNormalAreaInfo();
-
-        if (audioManager == null) audioManager = AudioManager.Instance;
-        if (muteMusic && audioManager != null) audioManager.ToggleMuteMusic();
+        prevMapBgColor = AreaManager.Instance.actualCamera.backgroundColor;
+        if (muteMusic) audioManager.ToggleMuteMusic();
     }
-
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
-        if (TryGetComponent<Collider2D>(out var col) && col.OverlapPoint(collision.transform.position)) return;
-        if (!playerInSection) return;
-        playerInSection = false;
-
         if (cameraObject != null) cameraObject.SetActive(false);
-        if (weather != null) weather.ClearDisasters();
-        if (audioManager == null) audioManager = AudioManager.Instance;
-        if (muteMusic && audioManager != null) audioManager.ToggleMuteMusic(false);
-
-        if (announceDetails && AreaManager.Instance != null)
-        {
-            if (!string.IsNullOrEmpty(prevAreaName))
-                AreaManager.Instance.currentArea = prevAreaName;
-            if (prevMapBgColor != default)
-                AreaManager.Instance.TriggerColorFade(prevMapBgColor);
-        }
+        if (muteMusic) audioManager.ToggleMuteMusic(false);
+        // Below is inefficient.
+        //AreaManager.Instance.Announce(bgColor: prevMapBgColor);
     }
 }

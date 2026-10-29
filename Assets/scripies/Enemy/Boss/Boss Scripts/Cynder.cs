@@ -23,7 +23,8 @@ public class Cynder : BossBase
         
         animator.SetBool("isFalling", isFalling);
         
-        animator.speed = bh.phase2 ? 1.15f : 1;
+        if (!TryGetComponent<Knockback>(out var kb) || !kb.IsFrozenInHitstop)
+            animator.speed = bh.phase2 ? 1.15f : 1;
     }
 
     private void BackFlip() => rb.linearVelocity = ba.isFacingRight ? new Vector2(-backflipForceX, backflipForceY) :

@@ -158,10 +158,10 @@ public class PerformAbility : MonoBehaviour
                         Debug.LogError($"How did you choose {casterType} as a caster type???");
                         break;
                 }
-                while (!newObjs[0].IsDestroyed() && abScript is Beam)
+                while (!newObjs[0].IsDestroyed() && abScript is Beam beamScript)
                 {
-                    if (!ability.moveWithCaster) newObjs[0].transform.position = Vector2.MoveTowards(newObjs[0].transform.position, abilityPoint.position, Time.deltaTime * 10f);
-                    else newObjs[0].transform.position = abilityPoint.position;
+                    if (beamScript.moveWithCaster && abilityPoint != null)
+                        newObjs[0].transform.position = abilityPoint.position;
                     yield return null;
                 }
                 break;

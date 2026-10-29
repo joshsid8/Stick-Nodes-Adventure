@@ -282,7 +282,15 @@ namespace scripies.Dialogue
                     {
                         var dataDialogue = DataManager.Instance.npcs.Find(i => i.activeNpcName == instance.externalInstance.name);
                         var newDialogue = dataDialogue.dialogue.ToList();
-                        newDialogue.AddRange(instance.externalDialoguesToAdd);
+                        foreach (var d in instance.externalDialoguesToAdd)
+                        {
+                            if (d == null) continue;
+                            if (!newDialogue.Contains(d))
+                            {
+                                if (d.addToTop) newDialogue.Add(d);
+                                else newDialogue.Insert(0, d);
+                            }
+                        }
                         dataDialogue.dialogue = newDialogue.ToArray();
                         print($"found our instance: {instance.externalInstance} is not loaded yet, but it's data is present");
                         continue;

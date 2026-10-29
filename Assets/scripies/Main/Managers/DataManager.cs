@@ -80,12 +80,15 @@ public class DataManager : MonoBehaviour
     private IEnumerator SaveNpcDataC()
     {
         yield return new WaitForSecondsRealtime(0.05f);
-        foreach (var map in MapManager.Instances.Values)
+        var maps = MapManager.Instances.Values.ToArray();
+        for (var m = 0; m < maps.Length; m++)
         {
+            var map = maps[m];
             if (map == null || !map.sceneLoaded) continue;
             map.UpdateLists();
-            foreach (var nData in map.npcSceneData)
+            for (var n = 0; n < map.npcSceneData.Count; n++)
             {
+                var nData = map.npcSceneData[n];
                 if (nData.activeNpc == null || string.IsNullOrEmpty(nData.npcName)) continue;
                 var npc = npcs.Find(x =>
                     x.activeNpcName == nData.npcName &&
@@ -123,12 +126,15 @@ public class DataManager : MonoBehaviour
     private void LoadNpcData()
     {
         npcDataLoaded = false;
-        foreach (var map in MapManager.Instances.Values)
+        var maps = MapManager.Instances.Values.ToArray();
+        for (var m = 0; m < maps.Length; m++)
         {
+            var map = maps[m];
             if (map == null) continue;
             map.UpdateLists();
-            foreach (var npcData in map.npcSceneData)
+            for (var n = 0; n < map.npcSceneData.Count; n++)
             {
+                var npcData = map.npcSceneData[n];
                 if (npcData.activeNpc == null || npcData.activeNpc.IsDestroyed()) continue;
                 var dataNpc = npcs.Find(x =>
                     x.activeNpcName == npcData.npcName &&
@@ -163,9 +169,10 @@ public class DataManager : MonoBehaviour
     private void PersistData(bool _) => StartCoroutine(PersistDataC());
     private static IEnumerator PersistDataC()
     {
-        for (var i = 0; i < MapManager.Instances.Count; i++)
+        var maps = MapManager.Instances.Values.ToArray();
+        for (var i = 0; i < maps.Length; i++)
         {
-            var map = MapManager.Instances.Values.ElementAt(i);
+            var map = maps[i];
             if (map != null) map.SaveSceneData();
         }
         yield return null;
@@ -176,11 +183,20 @@ public class DataManager : MonoBehaviour
     {
         SaveDisk();
         yield return new WaitUntil(() => !SaveSystem.isSaving);
-        foreach (var thing in ObjectDatabase.Instance.everything.Where(x => x != null && x.name != "Player"))
+        if (ObjectDatabase.Instance != null)
         {
-            // DESTROY EVERYTHING!!!
-            Destroy(thing);
-            yield return new WaitUntil(() => thing.IsDestroyed());
+            ObjectDatabase.Instance.StopUpdating();
+            var thingsToDestroy = ObjectDatabase.Instance.everything
+                .Where(x => x != null && x.name != "Player")
+                .ToArray();
+            for (var i = 0; i < thingsToDestroy.Length; i++)
+            {
+                var thing = thingsToDestroy[i];
+                if (thing == null || thing.IsDestroyed()) continue;
+                // DESTROY EVERYTHING!!!
+                Destroy(thing);
+                yield return new WaitUntil(() => thing == null || thing.IsDestroyed());
+            }
         }
         if (PlayerHealth.Instance != null) Destroy(PlayerHealth.Instance.gameObject);
     }

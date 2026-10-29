@@ -141,13 +141,12 @@ namespace scripies.Player
                 GetComponent<PlayerAbility>().energy += attackEnergy;
                 airComboAmount--;
                 GameEvents.TriggerPlaySound(hitSfx[Random.Range(0, hitSfx.Length)], hit.collider.gameObject);
+                GameEvents.TriggerOnDamageDealt(damage.damageAmount);
             }
 
             hasAirBoosted = true;
             comboInterval[1]++;
             currentAttackCooldown = airAttackCooldown * attackCooldownMult;
-            
-            GameEvents.TriggerOnDamageDealt(damage.damageAmount);
         }
 
         private IEnumerator AirCombo(GameObject target)

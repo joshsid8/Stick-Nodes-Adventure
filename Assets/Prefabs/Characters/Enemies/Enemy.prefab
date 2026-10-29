@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 8698436349063629657}
   - component: {fileID: 2131039031582443626}
   - component: {fileID: -2052741742867292352}
+  - component: {fileID: -9124993563318141240}
   - component: {fileID: 9002268324909943343}
   - component: {fileID: 8172104874274776891}
   - component: {fileID: 5774492939275019919}
@@ -251,6 +252,30 @@ MonoBehaviour:
   attack: {fileID: 0}
   isAggressive: 0
   backupSpareTimer: 0
+--- !u!114 &-9124993563318141240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953562033605771950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f96b3d115e456a4fb86c577366c4845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: scripies.Enemy::EnemyDomain
+  enemyInBounds: 1
+  domainCollider: {fileID: 0}
+  playerBounds:
+    playerInBounds: 0
+    playerCollider: {fileID: 0}
+    aggroPeriod: 5
+    aggroTimer: 0
+  parkourFeatures:
+    running: 0
+    speed: 10
+  returnMethod: 1
+  returnAnim: Flydle
 --- !u!114 &9002268324909943343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,15 +367,6 @@ MonoBehaviour:
   modDefensiveModeRadius: 6
   passiveModeRadius: 15
   modPassiveModeRadius: 25
-  damage:
-    damageAmount: 10
-    damageFactor: 0
-    elementType: 0
-    elementFactor: 1
-    isTrue: 0
-    damageOverTime: 0
-    procDmg: 0
-    procInterval: 0
   stunTime: 0.5
   damageAmount: 10
   elementType: 0
@@ -523,9 +539,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PerformAbility
   casterType: 1
   abilityPoint: {fileID: 1248520969832997338}
-  terrainLayers:
-    serializedVersion: 2
-    m_Bits: 65728
   objects: []
   abilityDamageMult: 1
   abilityPotency: 1

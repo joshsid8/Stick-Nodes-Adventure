@@ -116,7 +116,7 @@ public class BossAttack : MonoBehaviour
     private void StartFightOnDialogueClose(ScriptableObject dialogueToDerive, NPC npc)
     {
         if (bh.bossHealth <= 0 || npc != dt.Speaker) return;
-        if (dialogueToDerive == null || dt.Dialogue.Length == 0) return; 
+        if (dialogueToDerive == null) return; 
         var dto = dialogueToDerive as DialogueObject;
         if (dto == null || dto.speakerType != DialogueObject.SpeakerType.BossFight) return;
         StartFight();
@@ -204,7 +204,8 @@ public class BossAttack : MonoBehaviour
         currentAttackCooldown -= Time.deltaTime;
         if (currentAttackCooldown < 0) currentAttackCooldown = 0;
 
-        if (inRange && dt.Dialogue.Length == 0 && forceStart && !bh.isDead && !bh.deathToggle)
+        var hasAlreadySpokenIntro = dt != null && dt.HasSpokenDialogue;
+        if (inRange && dt.Dialogue.Length == 0 && (forceStart || hasAlreadySpokenIntro) && !isAttacking && !bh.isDead && !bh.deathToggle)
         {
             forceStart = false;
             StartFight();

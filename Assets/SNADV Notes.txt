@@ -4,69 +4,25 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices & Priorities:
+        Lets try focus on GRF
         
-        Discovered Antigravity...
-            Its basically junie but better tenfold
-            Just fixed all my data issues bruhhh 
-                I want to complain but i just cant man, its too cool
-        
-        Literally have no terrifying bugs in the game as it stands (apart from the small ones in Instability)
-            We can finish off GRF, the background logic especially
-            Audio improvements could even be moved to AO or post AO, because i havent made minibosses yet for most of it to be used
-                    
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from testing
-                After beating a couple of cynderians, they never came back!
-                    I think gemini mightve made it so that enemies dont return if the scene reloads
-                    This is only meant to happen to one time enemies, not all of them!
-                    
-                Ive lost the ability to dash off a wall.
-                    maybe gemini's fault (or mine lol)
-                
-                After fighting and losing to Noxu, the camera was still fixed to the boss section
-                    Beforehand, i spoke to him, left and came back, the dialogue was reset to the initial state
-                    This camera issue also happens with Cynder
-                
+                                    
                 During the fight with Cynder, since he has a section (Cynder's Lair) that changes the background and mutes the current music
                     The game thought the player left the section during the fight
                         The regular music started playing, and the background reverted to normal
                     I realised the section just FEELS LIKE switching off when i enter it
                         e.g, when entering the section, a couple seconds/MINUTES later, it switches off
                         it sometimes doesnt switch off at all                    
-                
-                Enemies that cant be knocked back shouldnt trigger the hitstop
-                    Cynder when jumping for example
-                        He isnt meant to be moved during it, because he can yet, his jump momentum dies
-                
-                When exiting the game, i get an InvalidOperation exception
-                    Its because i use a foreach loop to destroy things in the scene
-                    I dont think this causes any issues, but ill fix it anyway
-                        By using a for loop instead - so it doesnt care about the collection being modified       
-                                 
-                Beams such as earch beams arent meant to stick with the caster during its lifetime
-                    Water beams are fine, but i need the feature for certain beams to be stationary on spawn
-                
+                                                                                 
             One time occurrences or Rare/Intimidating bugs
-                After Quitting and playing the game again, i got a nullref after beating the first Cynderian
-                    The door didnt open, and i was still in combat
-                        The cynderian also didnt despawn, maybe thats why the door didnt open
-                        I could also still hit the enemy too!
-                        When i left Cynder Valley and came back, the cynderian seemed to reset, and everything returned to normal...
-                            Meaning i dont think i can replicate this easily; this can JUST happen
-                    The nullref came from EnemyHealth when trying to start the death coroutine
-                    This prolly happened cuz cleanup logic or maybe restart logic isnt reassigning everything
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
-                New game should allow the player to choose which save slot to clear
-                    I think slot number 0 gets overwritten when you pick a new game
-                    
-                When holding the downwards OR upwards button (down/up arrow or s/w), i walk a bit slower
-                    This isnt intended, i dont know whats causing this
-                    This mightve been a thing ever since i started making the game, i just never noticed till not too long ago
-                
+                                    
                 Angy informaton's dialogue is paradoxed
                     It keeps doing the one before the roast dialogue
 
@@ -76,16 +32,7 @@ SNADV Notes
     Things to be added/changed:
         
         Game Refactor (GRF):
-            
-            For the feature to add dialogue, make a flag to choose whether it should be top of bottom most in the current dialogue list
-                For the sake of managing priority
-                Some npcs have intro dialogue. that should always be first
-                    Either all dialogue should be added at the bottom, or the dialogue itself should have a flag to remain on top                
-            
-            Corner correction!
-                Jeez the hitbox on the player is trash!
-                When dashing to a corner, when its "meant" to, its supposed to clip the player upward so the hitboxes make sense!!
-            
+                                    
             Background/Foreground Logic
                 Make backgrounds similar to Terraria in terms of appearance!
                 Even tho this is cosmetic, i would like to just get the logic done

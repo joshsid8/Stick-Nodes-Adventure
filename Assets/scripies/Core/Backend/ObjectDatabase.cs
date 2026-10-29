@@ -33,19 +33,28 @@ public class ObjectDatabase : MonoBehaviour
     }
 
     private void Start() => InvokeRepeating(nameof(UpdateLists), 0, 0.1f);
+
+    public void StopUpdating() => CancelInvoke(nameof(UpdateLists));
     
     private void Update()
     {
         for (var i = 0; i < SceneManager.sceneCount; i++)
         {
             var scene = SceneManager.GetSceneAt(i);
-            if (!allScenesList.Contains(scene.name)) allScenes.Add(scene);
+            if (!allScenesList.Contains(scene.name))
+            {
+                if (!allScenes.Contains(scene)) allScenes.Add(scene);
+            }
             else allScenes.Remove(scene);
         }
 
-        foreach (var scene in allScenes.Where(scene => !allScenesList.Contains(scene.name))) //WHERE?!?!!?!??
+        for (var i = 0; i < allScenes.Count; i++)
         {
-            allScenesList.Add(scene.name);
+            var scene = allScenes[i];
+            if (!allScenesList.Contains(scene.name))
+            {
+                allScenesList.Add(scene.name);
+            }
         }
     }
 
@@ -67,7 +76,8 @@ public class ObjectDatabase : MonoBehaviour
         everything.AddRange(allItems);
         everything.AddRange(allTeleDoors);
         everything.AddRange(allEntities);
-        everything.Add(GameObject.FindGameObjectWithTag("Player"));
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null) everything.Add(playerObj);
         loaded = true;
     }
 
@@ -75,8 +85,9 @@ public class ObjectDatabase : MonoBehaviour
     {
         if (string.IsNullOrEmpty(entityName)) return null;
         GameObject target = null;
-        foreach (var entity in allEntities)
+        for (var i = 0; i < allEntities.Count; i++)
         {
+            var entity = allEntities[i];
             if (entity == null || entity.IsDestroyed()) continue;
             if (entity.GetComponent<Identifier>().name != entityName) continue;
             target = entity;
@@ -106,7 +117,8 @@ public class ObjectDatabase : MonoBehaviour
             var door = allTeleDoors[i];
             if (door == null || door.IsDestroyed())
             {
-                allTeleDoors.Remove(door);
+                allTeleDoors.RemoveAt(i);
+                i--;
                 continue;
             }
 

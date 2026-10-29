@@ -55,6 +55,14 @@ public class AbilityObjSO : ScriptableObject
                if ((int)speedMult != 1) proj.projectileSpeed *= speedMult;
                if (swapForce) proj.swapForce = true;
           }
+          if (ab is Beam beam)
+          {
+               beam.moveWithCaster = moveWithCaster;
+          }
+          else if (ab.gameObject.TryGetComponent<Beam>(out var childBeam))
+          {
+               childBeam.moveWithCaster = moveWithCaster;
+          }
           ab.sizeMult = sizeMult;
           ab.isHoldable = isHoldable;
           ab.minHoldTime = minHoldTime;

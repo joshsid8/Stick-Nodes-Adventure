@@ -149,11 +149,24 @@ public class MapManager : MonoBehaviour
     private void OnEnemyDefeated(GameObject enemy)
     {
         if (enemy == null || enemy.scene.name != sceneName) return;
+        var isOneTimeEnemy = enemy.TryGetComponent<EnemyHealth>(out var eh) && eh.isOneTime;
         if (enemy.TryGetComponent<Identifier>(out var ident))
         {
             var eData = enemySceneData.Find(e => e.spawnId == ident.spawnId);
-            if (eData != null) eData.activeEnemy = null;
-            else enemySceneData.Add(new EnemySceneData { activeEnemy = null, spawnId = ident.spawnId });
+            if (eData != null)
+            {
+                eData.activeEnemy = null;
+                eData.isOneTime |= isOneTimeEnemy;
+            }
+            else if (isOneTimeEnemy)
+            {
+                enemySceneData.Add(new EnemySceneData
+                {
+                    activeEnemy = null,
+                    spawnId = ident.spawnId,
+                    isOneTime = true
+                });
+            }
         }
         SaveSceneData();
     }
@@ -452,17 +465,20 @@ public class MapManager : MonoBehaviour
                         goto npcStuff;
                     }
                     if (!obj.TryGetComponent<Identifier>(out var enemyId)) break;
+                    var isOneTimeEnemy = obj.TryGetComponent<EnemyHealth>(out var eh) && eh.isOneTime;
                     var existingEnemy = enemySceneData.Find(e => e.spawnId == enemyId.spawnId);
                     if (existingEnemy != null)
                     {
                         existingEnemy.activeEnemy = obj;
+                        existingEnemy.isOneTime |= isOneTimeEnemy;
                     }
                     else
                     {
                         enemySceneData.Add(new EnemySceneData
                         {
                             activeEnemy = obj,
-                            spawnId = enemyId.spawnId
+                            spawnId = enemyId.spawnId,
+                            isOneTime = isOneTimeEnemy
                         });
                     }
                     if (!enemyIds.Contains(enemyId.spawnId))
@@ -471,6 +487,8 @@ public class MapManager : MonoBehaviour
                 case "Boss":
                     bossSceneData.bossHealth = obj.GetComponent<BossHealth>();
                     bossSceneData.activeBoss = obj.name;
+                    if (obj.TryGetComponent<NPChat>(out _))
+                        goto npcStuff;
                     break;
                 case "NPC":
                     npcStuff:
@@ -568,11 +586,17 @@ public class MapManager : MonoBehaviour
         var deadEnemyIds = new HashSet<int>();
         foreach (var prevDead in list.enemies)
         {
-            if (prevDead.activeEnemyID != 0) deadEnemyIds.Add(prevDead.activeEnemyID);
+            if (prevDead.activeEnemyID != 0 && prevDead.isOneTime)
+                deadEnemyIds.Add(prevDead.activeEnemyID);
         }
         foreach (var eData in enemySceneData)
         {
             if (eData.spawnId == 0) continue;
+            if (!eData.isOneTime)
+            {
+                deadEnemyIds.Remove(eData.spawnId);
+                continue;
+            }
             if (eData.activeEnemy == null || eData.activeEnemy.IsDestroyed() || eData.activeEnemy.CompareTag("Dead"))
                 deadEnemyIds.Add(eData.spawnId);
             else
@@ -595,7 +619,8 @@ public class MapManager : MonoBehaviour
         {
             list.enemies.Add(new DataManager.EnemySceneData
             {
-                activeEnemyID = deadId
+                activeEnemyID = deadId,
+                isOneTime = true
             });
         }
 
@@ -685,18 +710,23 @@ public class MapManager : MonoBehaviour
         
         foreach (var enemyData in list.enemies)
         {
+            if (!enemyData.isOneTime) continue;
             var enemy = enemySceneData.Find(e => e.spawnId == enemyData.activeEnemyID);
             if (enemy != null)
             {
-                if (enemy.activeEnemy != null) Destroy(enemy.activeEnemy);
-                enemy.activeEnemy = null;
+                if (enemy.activeEnemy != null && enemy.isOneTime)
+                {
+                    Destroy(enemy.activeEnemy);
+                    enemy.activeEnemy = null;
+                }
             }
             else if (enemyData.activeEnemyID != 0)
             {
                 enemySceneData.Add(new EnemySceneData
                 {
                     activeEnemy = null,
-                    spawnId = enemyData.activeEnemyID
+                    spawnId = enemyData.activeEnemyID,
+                    isOneTime = true
                 });
             }
         }
@@ -805,6 +835,7 @@ public class MapManager : MonoBehaviour
     {
         public GameObject activeEnemy; 
         public int spawnId;
+        public bool isOneTime;
     }
 
     [Serializable]

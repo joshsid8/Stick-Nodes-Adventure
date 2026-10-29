@@ -184,5 +184,34 @@ public class SaveSystem
         }
     }
     
-    public static void DeleteSave(){}
+    public static void DeleteSave()
+    {
+        var path = SaveFileName();
+        if (File.Exists(path))
+        {
+            try
+            {
+                File.Delete(path);
+                if (Application.isEditor) Debug.Log($"[SaveSystem] Deleted save file at: {path}");
+            }
+            catch (IOException ex)
+            {
+                Debug.LogError($"[SaveSystem] Failed to delete save file: {ex.Message}");
+            }
+        }
+
+        var currentSettings = saveData.mainMenuData;
+        saveData = new SaveData
+        {
+            sceneData = new SceneData(true),
+            globalNpcData = new GlobalNpcData(true),
+            playerCurrentData = new PlayerSaveCurrentData(),
+            playerStats = new PlayerSaveStats(),
+            playerInventory = new PlayerSaveInventory(),
+            playerIndex = PlayerSaveIndex.CreateNew(),
+            playerBadges = new PlayerBadges(),
+            playerQuests = new PlayerSaveQuests(),
+            mainMenuData = currentSettings
+        };
+    }
 }

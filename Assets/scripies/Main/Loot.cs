@@ -25,7 +25,12 @@ public class Loot : MonoBehaviour
     [SerializeField] private float minPopY;
     [SerializeField] private float maxPopY;
     
-    private void Awake() => persistentItem = GameObject.Find("persistentItem");
+    private void Awake()
+    {
+        persistentItem = GameObject.Find("persistentItem");
+        if (persistentItem == null && InvManager.Instance != null)
+            persistentItem = InvManager.Instance.persistentItem;
+    }
     private void OnEnable() => GameEvents.DropLoot += DropLoot;
     private void OnDisable() => GameEvents.DropLoot -= DropLoot;
 
@@ -36,26 +41,38 @@ public class Loot : MonoBehaviour
         {
             dropping = false;
             var targetScene = gameObject.scene;
+            if (persistentItem == null)
+            {
+                persistentItem = GameObject.Find("persistentItem");
+                if (persistentItem == null && InvManager.Instance != null)
+                    persistentItem = InvManager.Instance.persistentItem;
+            }
             
             foreach (var lootItem in lootItems)
             {
+                if (lootItem == null || lootItem.item == null) continue;
                 var iRng = Random.Range(0.00f, 100.00f);
                 if (iRng <= lootItem.chance)
                 {
-                    var item = Instantiate(lootItem.obj ?? persistentItem, transform.position, transform.rotation);
+                    var prefabToSpawn = lootItem.obj != null ? lootItem.obj : persistentItem;
+                    if (prefabToSpawn == null) continue;
+                    var item = Instantiate(prefabToSpawn, transform.position, transform.rotation);
                     SceneManager.MoveGameObjectToScene(item, targetScene);
                     item.GetComponent<Collectable>().collectable = lootItem.item;
                     item.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
                 }
             }
 
-            var rng = Random.Range(minMoneyAmount, maxMoneyAmount);
-            for (var i = 0; i < rng; i++)
+            if (moneyLoot != null && currencyType != null)
             {
-                var money = Instantiate(moneyLoot, transform.position, transform.rotation);
-                SceneManager.MoveGameObjectToScene(money, targetScene);
-                money.GetComponent<Collectable>().collectable = currencyType;
-                money.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
+                var rng = Random.Range(minMoneyAmount, maxMoneyAmount);
+                for (var i = 0; i < rng; i++)
+                {
+                    var money = Instantiate(moneyLoot, transform.position, transform.rotation);
+                    SceneManager.MoveGameObjectToScene(money, targetScene);
+                    money.GetComponent<Collectable>().collectable = currencyType;
+                    money.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(minPopX, maxPopX), Random.Range(minPopY, maxPopY));
+                }
             }
         }
     }

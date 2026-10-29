@@ -13,6 +13,6 @@ namespace scripies.Core
         Vector3 Position { get; }
         bool IsGrounded { get; }
         bool IsFacingRight { get; }
-        
+        bool IsMovable { get; }
     }
 }

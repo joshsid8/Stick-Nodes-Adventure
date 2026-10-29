@@ -8574,7 +8574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: fixedDialogue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2926252053825727027, guid: e376e949e70d1ca46a5cf8dd93722fbb, type: 3}
       propertyPath: pLayer.m_Bits

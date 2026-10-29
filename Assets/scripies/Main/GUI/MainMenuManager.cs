@@ -8,6 +8,7 @@ using System.Linq;
 using DG.Tweening;
 using scripies.Core;
 using scripies.Player;
+using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private SceneField defaultScene;
     
     private Animator animator;
+    private bool isNewGameMode;
+
     private void Awake()
     {
         Time.timeScale = 1f;
@@ -80,6 +83,13 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartGame(int saveSlot = 0)
     {  
+        if (isNewGameMode)
+        {
+            isNewGameMode = false;
+            StartNewGameInSlot(saveSlot);
+            return;
+        }
+
         HideMenu();
         loadingBar.SetActive(true);
         SaveSystem.SetSaveSlot(saveSlot);
@@ -88,10 +98,39 @@ public class MainMenuManager : MonoBehaviour
 
     public void NewGame()
     {
+        isNewGameMode = !isNewGameMode;
+        if (animator != null) animator.Play("PickSlot");
+        UpdateSlotButtonsForMode();
+    }
+
+    public void StartNewGameInSlot(int saveSlot)
+    {
         HideMenu();
         loadingBar.SetActive(true);
+        SaveSystem.SetSaveSlot(saveSlot);
+        SaveSystem.DeleteSave();
         PlayerPrefs.DeleteKey("LoadedCheckPointId");
         StartCoroutine(ProgressLoading(true));
+    }
+
+    private void UpdateSlotButtonsForMode()
+    {
+        var slotsTransform = transform.Find("Slots");
+        if (slotsTransform != null)
+        {
+            foreach (var img in slotsTransform.GetComponentsInChildren<Image>())
+            {
+                img.color = isNewGameMode
+                    ? new Color(1f, 0.72f, 0.42f, 1f)
+                    : new Color(0.487f, 0.868f, 0.506f, 1f);
+            }
+        }
+
+        var newGameTransform = transform.Find("New Game/Text (TMP)");
+        if (newGameTransform != null && newGameTransform.TryGetComponent<TMP_Text>(out var label))
+        {
+            label.text = isNewGameMode ? "Pick a Slot!" : "New Game";
+        }
     }
     
     public void QuitGame()

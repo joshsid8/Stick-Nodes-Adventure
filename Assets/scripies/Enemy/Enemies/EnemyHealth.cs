@@ -54,6 +54,7 @@ namespace scripies.Enemy
         public Vector3 Position => transform.position;
         public bool IsGrounded => ep.isGrounded;
         public bool IsFacingRight => ec.isFacingRight;
+        public bool IsMovable => movable;
 
         // Start is called before the first execution of Update after the MonoBehaviour is created
         private void Start()
@@ -101,22 +102,33 @@ namespace scripies.Enemy
         {
             if (isDead) yield break;
             isDead = true;
-            OnEnemyKilled?.Invoke(ec.id.entity as Enemy);
+            try
+            {
+                if (ec != null && ec.id != null)
+                    OnEnemyKilled?.Invoke(ec.id.entity as Enemy);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[EnemyHealth] OnEnemyKilled subscriber threw an exception: {ex.Message}");
+            }
             GameEvents.TriggerDropLoot(gameObject);
             GameEvents.TriggerEnemyDefeated(gameObject);
-            ec.ChangeState(EnemyController.EnemyState.Dead);
-            GetComponent<Rigidbody2D>().gravityScale = 8;
-            spriteRenderer.color = Color.white;
+            if (ec != null) ec.ChangeState(EnemyController.EnemyState.Dead);
+            if (TryGetComponent<Rigidbody2D>(out var rb)) rb.gravityScale = 8;
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = Color.white;
+                spriteRenderer.enabled = true;
+            }
             gameObject.layer = LayerMask.NameToLayer("EDead");
             gameObject.tag = "Dead";
-            spriteRenderer.enabled = true;
             GameEvents.TriggerPlaySound(deathClip, gameObject, randomPitch: false, volume: 0.5f);
             yield return new WaitForSeconds(2f);
             for (var i = 0; i < 25; i++)
             {
-                spriteRenderer.enabled = false;
+                if (spriteRenderer != null) spriteRenderer.enabled = false;
                 yield return new WaitForSeconds(0.025f);
-                spriteRenderer.enabled = true;
+                if (spriteRenderer != null) spriteRenderer.enabled = true;
                 yield return new WaitForSeconds(0.025f);
             }
 

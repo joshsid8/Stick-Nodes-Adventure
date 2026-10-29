@@ -38,10 +38,16 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
         RefreshQuestState();
     }
 
+    private void OnDestroy()
+    {
+        OnCleared();
+    }
+
     private void OnEnemyKilled(Enemy enemy)
     {
+        if (this == null || gameObject == null) return;
         if (questType != QuestType.DefeatEnemy || questCompleted) return;
-        if (!currentEnemiesToDefeat.ContainsKey(enemy) || enemy == null) return;
+        if (enemy == null || !currentEnemiesToDefeat.ContainsKey(enemy)) return;
         if (currentEnemyKills[enemy] >= currentEnemiesToDefeat[enemy]) return;
         currentEnemyKills[enemy]++;
         CheckCompletion();
@@ -49,12 +55,14 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
 
     private void OnInventoryChanged()
     {
+        if (this == null || gameObject == null) return;
         if (questType != QuestType.HaveInInventory || questCompleted) return;
         CheckCompletion();
     }
 
     private void OnDialogueClosed(NPC npc)
     {
+        if (this == null || gameObject == null) return;
         if (questType != QuestType.SpeakTo && questType != QuestType.GiveTo) return;
         npcBuffer = npc;
         CheckCompletion(); 
@@ -105,7 +113,8 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler // SlotBase: Join t
     
     private void OnAssigned()
     {
-        summaryText.text = questTitle;
+        OnCleared();
+        if (summaryText != null) summaryText.text = questTitle;
         DialogueManager.OnDialogueClose += OnDialogueClosed;
         EnemyHealth.OnEnemyKilled += OnEnemyKilled;
         if (InvManager.Instance != null && InvManager.Instance.invIndex != null)

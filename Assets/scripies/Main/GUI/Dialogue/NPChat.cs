@@ -44,6 +44,7 @@ namespace scripies.Dialogue
         // Getters and Setters
         public bool Enabled { get => enabled; set => enabled = value; }
         public DialogueObject[] Dialogue => dialogue.ToArray();
+        public bool HasSpokenDialogue => spokenDialogue != null && spokenDialogue.Count > 0;
         public bool IsForced { get => isForced; set => isForced = value; }
         public Transform ChatPoint => chatPoint;
         public float ChatRadius => chatRadius;
@@ -95,10 +96,30 @@ namespace scripies.Dialogue
             else if (indicator != null) indicator.SetActive(false);
         }
         
-        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker = null)
+        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker = null) => AddDialogue(dialogueObject, speaker, null);
+        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker, bool addToTop) => AddDialogue(dialogueObject, speaker, (bool?)addToTop);
+
+        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker, bool? addToTop)
         {
-            if (speaker != gameObject || spokenDialogue.Contains(dialogueObject as DialogueObject)) return;
-            if (!dialogue.Contains(dialogueObject as DialogueObject)) dialogue.Add(dialogueObject as DialogueObject);
+            if (speaker != gameObject || dialogueObject == null) return;
+            var dto = dialogueObject as DialogueObject;
+            if (dto == null || spokenDialogue.Contains(dto)) return;
+
+            bool shouldAddToTop = addToTop ?? dto.addToTop;
+
+            if (dialogue.Contains(dto))
+            {
+                if (shouldAddToTop && dialogue.Count > 0 && dialogue[^1] != dto)
+                {
+                    dialogue.Remove(dto);
+                    dialogue.Add(dto);
+                }
+            }
+            else
+            {
+                if (shouldAddToTop) dialogue.Add(dto);
+                else dialogue.Insert(0, dto);
+            }
             //else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
             GameEvents.TriggerPersistGameData();
         }
@@ -108,17 +129,21 @@ namespace scripies.Dialogue
         private void OnEnable()
         {
             GameEvents.OnToggleDialogueTrigger += ToggleDialogueTrigger;
-            GameEvents.AddDialogue += AddDialogue;
+            GameEvents.AddDialogue += OnAddDialogue;
+            GameEvents.AddDialoguePriority += AddDialogue;
             GameEvents.RemoveDialogue += RemoveDialogue;
             GameEvents.OnDialogueClose += RemoveSpokenDialogue;
         }
         private void OnDisable()
         {
             GameEvents.OnToggleDialogueTrigger -= ToggleDialogueTrigger;
-            GameEvents.AddDialogue -= AddDialogue;
+            GameEvents.AddDialogue -= OnAddDialogue;
+            GameEvents.AddDialoguePriority -= AddDialogue;
             GameEvents.RemoveDialogue -= RemoveDialogue;
             GameEvents.OnDialogueClose -= RemoveSpokenDialogue;
         }
+
+        private void OnAddDialogue(ScriptableObject dialogueObject, GameObject speaker) => AddDialogue(dialogueObject, speaker, null);
 
         private void ToggleDialogueTrigger(GameObject obj, bool state)
         {
@@ -139,9 +164,10 @@ namespace scripies.Dialogue
         {
             if (dialogueToRemove == null) return;
             var dto = dialogueToRemove as DialogueObject;
-            if (dto == null) return;
-            if (!spokenDialogue.Contains(dto) && dialogue.Contains(dto) && !dto.respeakable) spokenDialogue.Add(dto);
-            if (dialogue.Count <= 1 && !canHaveNullList || !dialogue.Contains(dto) || fixedDialogue) return;
+            if (dto == null || dto.respeakable) return;
+            if (!spokenDialogue.Contains(dto) && dialogue.Contains(dto)) spokenDialogue.Add(dto);
+            if (!dialogue.Contains(dto)) return;
+            if (dialogue.Count <= 1 && (!canHaveNullList || fixedDialogue)) return;
             StartCoroutine(RemoveDialogue(dto));
             chatInterval = 0.5f;
         }
@@ -149,8 +175,11 @@ namespace scripies.Dialogue
         private IEnumerator RemoveDialogue(DialogueObject dto)
         {
             yield return new WaitForSeconds(0.01f);
-            dialogue.RemoveAt(dialogue.IndexOf(dto)); 
-            GameEvents.TriggerPersistGameData();
+            if (dialogue.Contains(dto))
+            {
+                dialogue.RemoveAt(dialogue.IndexOf(dto)); 
+                GameEvents.TriggerPersistGameData();
+            }
         }
         
         private void OnDrawGizmosSelected()

@@ -97,6 +97,8 @@ public class AccessManager : MonoBehaviour
         switch (objective)
         {
             case Objectives.DefeatEnemy:
+                enemies ??= new List<GameObject>();
+                //enemies.RemoveAll(e => e == null || e.layer == LayerMask.NameToLayer("EDead") || e.CompareTag("Dead"));
                 if (enemies.Count == 0) OpenDoors();
                 break;
             case Objectives.FindKeys:
@@ -144,6 +146,7 @@ public class AccessManager : MonoBehaviour
         switch (objective)
         {
             case Objectives.DefeatEnemy:
+                enemies ??= new List<GameObject>();
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
                     if (enemies.Count < 1) enemies.Add(collision.gameObject);
@@ -168,19 +171,20 @@ public class AccessManager : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("EDead") && objective == Objectives.DefeatEnemy)
         {
-            foreach (var enemy in enemies)
+            enemies ??= new List<GameObject>();
+            for (var i = enemies.Count - 1; i >= 0; i--)
             {
+                var enemy = enemies[i];
                 if (collision.gameObject == enemy)
                 {
-                    enemies.Remove(enemy);
-                    if (enemies.Count == 0) enemies = null;
+                    enemies.RemoveAt(i);
                     break;
                 }
                 print($"{enemy} is NNNNNOT the same as {collision.gameObject}");
             }
         }
         else if (collision.gameObject.CompareTag("Player")) playerDetected = false;
-        else if (collision.gameObject.CompareTag("Boss"))
+        else if (collision.gameObject.CompareTag("Boss") && boss != null)
             boss.transform.position =
                 new Vector2(GetComponent<Collider2D>().bounds.center.x, boss.transform.position.y);
     }
