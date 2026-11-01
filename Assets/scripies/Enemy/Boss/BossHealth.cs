@@ -123,19 +123,24 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
 
     public void Damage(Damage dm, bool facingRight, string aggressor = "")
     {
+        var isCrit = dm.damageFactor >= 1 || dm.isTrue;
         switch (isBlocking, shieldHealth > 0, dm.isTrue, dm.damageFactor, isCountering) // where '_' means null/ignore
         {
             case (true, true, _, < 1, _):
-                bossHealth -= dm.damageAmount * dmgRes;
+                var shieldDmg = dm.damageAmount * dmgRes;
+                bossHealth -= shieldDmg;
                 shieldHealth -= dm.damageAmount;
                 spriteRenderer.color = damageTint / 2;
                 isTinting = true;
+                GameEvents.TriggerDamageText(transform.position + Vector3.up * 1.2f, shieldDmg, Color.gray, false);
                 break;
             case (true, false, false, < 1, _):
                 animator.SetTrigger("Damaged");
-                bossHealth -= dm.damageAmount * 1.2f;
+                var weakDmg = dm.damageAmount * 1.2f;
+                bossHealth -= weakDmg;
                 spriteRenderer.color = damageTint;
                 isTinting = true;
+                GameEvents.TriggerDamageText(transform.position + Vector3.up * 1.2f, weakDmg, new Color(1f, 0.85f, 0.2f), true);
                 break;
             case (_, _, _, < 2, true):
                 animator.SetTrigger("CSuccess");
@@ -151,6 +156,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
                 }
                 spriteRenderer.color = damageTint;
                 isTinting = true;
+                GameEvents.TriggerDamageText(transform.position + Vector3.up * 1.2f, dm.damageAmount, isCrit ? new Color(1f, 0.85f, 0.2f) : Color.white, isCrit);
                 break;
         }
         if (dm.damageOverTime) StartCoroutine(DamageOverTime(dm.procDmg, dm.procInterval));
@@ -168,6 +174,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             spriteRenderer.color = damageTint;
             isTinting = true;
             procTaken -= procAmount;
+            GameEvents.TriggerDamageText(transform.position + Vector3.up * 1f, procAmount, new Color(0.85f, 0.45f, 1f), false);
             CheckStatus();
             yield return new WaitForSeconds(procInterval);
         }

@@ -33,6 +33,9 @@ public class GameHUD : MonoBehaviour
         ToggleBossHealth(false);
         ToggleShader(true);
         SetShaderColour(screenShaderColour, 0.75f);
+
+        if (DamageTextManager.Instance == null && FindAnyObjectByType<DamageTextManager>() == null)
+            gameObject.AddComponent<DamageTextManager>();
     }
     
     private void Start()

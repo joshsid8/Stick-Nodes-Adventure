@@ -13,6 +13,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
     public int itemAmount;
     public int maxItemAmount;
     public string itemType;
+    public int restoreCooldown;
     public List<RestoreAttribute> restoreAttributes;
     [Space]
     [SerializeField] private TMP_Text amountText;
@@ -37,6 +38,28 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         choice = Prompt.Instance ?? FindAnyObjectByType<Prompt>();
     }
 
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+        if (usedSlot && selectedShader != null && selectedShader.activeSelf && itemType == "Consumable" && restoreCooldown > 0)
+        {
+            UpdateUseButtonCooldownUI();
+        }
+    }
+
+    private void UpdateUseButtonCooldownUI()
+    {
+        if (invManager == null || invManager.useButton == null) return;
+        var onCooldown = invManager.IsConsumableOnCooldown;
+        invManager.useButton.interactable = !onCooldown;
+        if (useButtonText != null)
+        {
+            useButtonText.text = onCooldown
+                ? $"Wait ({Mathf.CeilToInt(invManager.consumableCooldownTimer)}s)"
+                : "Use";
+        }
+    }
+
     public void AddItem(string item, int amount, Sprite sprite, string itemDesc, int maxAmount, string type, CollectableSOBase collectable)
     {
         itemName = item;
@@ -50,18 +73,24 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             {
                 case ItemSO itemSo:
                     itemScriptableObject = itemSo;
+                    restoreCooldown = 0;
                     break;
                 case ConsumableSO consumable:
                     itemScriptableObject = consumable;
-                    restoreAttributes.AddRange(consumable.restoreAttributes);
+                    restoreCooldown = consumable.restoreCooldown;
+                    restoreAttributes.Clear();
+                    if (consumable.restoreAttributes != null)
+                        restoreAttributes.AddRange(consumable.restoreAttributes);
                     break;
                 case AspectSO aspect:
                     itemScriptableObject = aspect;
                     aspectStats = aspect;
+                    restoreCooldown = 0;
                     break;
                 case AbilitySO ability:
                     itemScriptableObject = ability;
                     abilityStats = ability;
+                    restoreCooldown = 0;
                     break;
             }
         }
@@ -102,6 +131,7 @@ public class ItemSlot : SlotBase, IPointerClickHandler
         itemAmount = 0;
         maxItemAmount = 0;
         itemType = string.Empty;
+        restoreCooldown = 0;
         restoreAttributes.Clear();
         aspectStats = null;
         abilityStats = null;
@@ -135,6 +165,11 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             invManager.useButton.gameObject.SetActive(true);
             invManager.useButton.onClick.AddListener(() => ItemTypeAction());
             invManager.destroyButton.onClick.AddListener(() => StartCoroutine(DropItem()));
+
+            if (itemType == "Consumable" && restoreCooldown > 0)
+                UpdateUseButtonCooldownUI();
+            else
+                invManager.useButton.interactable = true;
         }
         else
         {
@@ -155,17 +190,38 @@ public class ItemSlot : SlotBase, IPointerClickHandler
             invManager.swappingAbilities = true;
             print("Choose an ability to swap!");
         }
-        else if (itemType != "Key") DecrementItem();
+        else if (itemType != "Key") UseConsumable();
     }
 
-    public void DecrementItem(bool itemRemoval = true)
+    private void UseConsumable()
     {
-        if (invManager.playerManager != null && restoreAttributes.Count > 0)
+        if (restoreCooldown > 0 && invManager != null && invManager.IsConsumableOnCooldown)
+        {
+            Debug.Log($"Consumable is on cooldown! {Mathf.CeilToInt(invManager.consumableCooldownTimer)}s left.");
+            return;
+        }
+
+        if (invManager != null && invManager.playerManager != null && restoreAttributes.Count > 0)
         {
             foreach (var restoreAttribute in restoreAttributes) 
                 invManager.playerManager.AlterGlobalFloat(restoreAttribute.attributeName, restoreAttribute.restoreValue);
         }
-        else if (invManager.playerManager == null) Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
+        else if (invManager == null || invManager.playerManager == null)
+        {
+            Debug.LogError("PlayerManager not found in InvManager! Cannot restore item stat.");
+        }
+
+        if (restoreCooldown > 0 && invManager != null)
+            invManager.TriggerConsumableCooldown(restoreCooldown);
+
+        DecrementItem(true);
+
+        if (usedSlot && itemType == "Consumable" && restoreCooldown > 0)
+            UpdateUseButtonCooldownUI();
+    }
+
+    public void DecrementItem(bool itemRemoval = true)
+    {
         if (invManager.invIndex != null && itemRemoval) invManager.invIndex.RemoveItem(itemScriptableObject);
         itemAmount--;
         if (itemAmount <= 0)

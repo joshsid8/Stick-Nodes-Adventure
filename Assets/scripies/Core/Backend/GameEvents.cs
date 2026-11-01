@@ -66,6 +66,7 @@ namespace scripies.Core
         public static Action<GameObject> OnObjectDestroyed;
         public static Action<BadgeSO> OnBadgeCollect;
         public static Action<float, float> OnDamageDealt;
+        public static Action<Vector3, float, Color, bool> OnDamageText;
         public static Action<IDamageable, Damage, bool, string> OnApplyDamage;
         public static Action<GameObject, GameObject, Damage> OnHitImpact;
 
@@ -129,6 +130,7 @@ namespace scripies.Core
         public static void TriggerStopTime(float time) => StopTime?.Invoke(time);
         public static void TriggerJumpScare(Image img = null, float duration = 0.08f, float fadeMult = 1.5f) => JumpScare?.Invoke(img, duration, fadeMult);
         public static void TriggerOnDamageDealt(float damage, float threshold = 50) => OnDamageDealt?.Invoke(damage, threshold);
+        public static void TriggerDamageText(Vector3 position, float amount, Color color = default, bool isCritical = false) => OnDamageText?.Invoke(position, amount, color, isCritical);
         public static void TriggerApplyDamage(IDamageable target, Damage damage, bool facingRight, string aggressor = "") => OnApplyDamage?.Invoke(target, damage, facingRight, aggressor);
         public static void TriggerHitImpact(GameObject attacker, GameObject victim, Damage damage) => OnHitImpact?.Invoke(attacker, victim, damage);
 

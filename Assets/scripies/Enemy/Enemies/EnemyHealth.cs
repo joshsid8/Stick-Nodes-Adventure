@@ -148,15 +148,20 @@ namespace scripies.Enemy
                 }
             }
 
+            var isCrit = dm.damageFactor >= 1 || dm.isTrue;
             if (isBlocking && !dm.isTrue && dm.damageFactor < 1)
             {
-                enemyHealth -= calcDamage * blockResistance;
+                var blockedDmg = calcDamage * blockResistance;
+                enemyHealth -= blockedDmg;
+                GameEvents.TriggerDamageText(transform.position + Vector3.up * 0.7f, blockedDmg, Color.gray, false);
             }
             else if (isCountering && !dm.isTrue && dm.damageFactor < 2) animator.SetTrigger("Counter");
             else
             {
                 enemyHealth -= calcDamage;
                 if (ea.stunnable) ea.currentAttackCooldown = 0.1f;
+                var textColor = isCrit ? new Color(1f, 0.85f, 0.2f) : Color.white;
+                GameEvents.TriggerDamageText(transform.position + Vector3.up * 0.7f, calcDamage, textColor, isCrit);
             }
             
             CheckStatus();
@@ -183,6 +188,7 @@ namespace scripies.Enemy
                 enemyHealth -= procAmount;
                 Flash();
                 procTaken -= procAmount;
+                GameEvents.TriggerDamageText(transform.position + Vector3.up * 0.5f, procAmount, new Color(0.85f, 0.45f, 1f), false);
                 CheckStatus();
                 yield return new WaitForSeconds(procInterval);
             }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91997ca3a32a764e9104c6a5d1cb03a, type: 3}
   m_Name: Jerome EarthlyShopper
   m_EditorClassIdentifier: scripies.Core::scripies.Dialogue.DialogueObject
-  npcName: 
+  npcName: Jerome
   dialogueThread:
   - thread: 'Got more stuff for ya! '
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
@@ -31,7 +31,7 @@ MonoBehaviour:
   noResponse:
     responseText: 
     dialogueObject: {fileID: 0}
-  nameColour: {r: 0, g: 0, b: 0, a: 1}
+  nameColour: {r: 0.05900677, g: 0.05900677, b: 0.735849, a: 1}
   applyBools: []
   applyFloats: []
   willGiveQuest: 0
@@ -40,7 +40,8 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  respeakable: 1
+  respeakable: 0
+  addToTop: 0
   dialoguesToAdd: []
   dialoguesToRemove: []
   externalInstances: []

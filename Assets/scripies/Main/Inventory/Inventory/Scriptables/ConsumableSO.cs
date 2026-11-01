@@ -24,9 +24,11 @@ public class ConsumableSO : CollectableSOBase
         foreach (var att in restoreAttributes)
         {
             desc += att.restoreValue > 0 ? $"+{att.restoreValue}" : $"{att.restoreValue}";
-            desc += $" {StatsManager.Instance.GetDisplayName(att.attributeName) ?? att.attributeName}";
+            var displayName = StatsManager.Instance != null ? StatsManager.Instance.GetDisplayName(att.attributeName) : att.attributeName;
+            desc += $" {displayName ?? att.attributeName}";
             if (att != restoreAttributes[^1]) desc += "\n";
         }
+        if (restoreCooldown > 0) desc += $"\nCooldown: {restoreCooldown}s";
         return desc;
     }
 }

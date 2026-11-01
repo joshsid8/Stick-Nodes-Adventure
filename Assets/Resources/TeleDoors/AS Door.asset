@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AS Door
   m_EditorClassIdentifier: scripies.Core::TeleDoor
   sceneToLoad:
-    m_SceneAsset: {fileID: 0}
-    m_SceneName: Air Teste
+    m_SceneAsset: {fileID: 102900000, guid: 33f66858f4115224089d315b369e51ef, type: 3}
+    m_SceneName: Airy Shop Teste

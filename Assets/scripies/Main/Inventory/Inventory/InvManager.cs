@@ -20,6 +20,10 @@ public class InvManager : GUIBase
 
     public bool swappingAbilities;
 
+    [Header("Consumable Cooldown")]
+    public float consumableCooldownTimer;
+    public bool IsConsumableOnCooldown => consumableCooldownTimer > 0f;
+
     public GameObject persistentItem;
     
     public PlayerManager playerManager;
@@ -63,9 +67,18 @@ public class InvManager : GUIBase
 
     private void Update()
     {
+        if (consumableCooldownTimer > 0f)
+            consumableCooldownTimer = Mathf.Max(0f, consumableCooldownTimer - Time.deltaTime);
+
         if (!Application.isEditor) return;
         if (Input.GetKeyDown("o")) SaveSystem.Save();
         if (Input.GetKeyDown("p")) SaveSystem.Load();
+    }
+
+    public void TriggerConsumableCooldown(float cooldown)
+    {
+        if (cooldown > 0f)
+            consumableCooldownTimer = Mathf.Max(consumableCooldownTimer, cooldown);
     }
 
     public void ToggleInventory()
@@ -184,6 +197,7 @@ public class InvManager : GUIBase
         useButton.onClick.RemoveAllListeners();
         destroyButton.onClick.RemoveAllListeners();
         
+        useButton.interactable = true;
         useButton.gameObject.SetActive(true);
         destroyButton.gameObject.SetActive(true);
     }
@@ -192,6 +206,7 @@ public class InvManager : GUIBase
     {
         foreach (var slot in itemSlots) if (slot != null) slot.Deselect();
         foreach (var slot in aspectSlots) if (slot != null) slot.Deselect();
+        useButton.interactable = true;
         useButton.gameObject.SetActive(false);
         destroyButton.gameObject.SetActive(false);
     }
@@ -221,15 +236,15 @@ public class InvManager : GUIBase
                 if (so == null) continue;
                 
                 if (so is ItemSO item) 
-                    AddItem(item.name, item.itemAmount, item.itemSprite, item.itemDescription, item.maxItemAmount, 
+                    AddItem(item.name, item.itemAmount, item.itemSprite, item.SetDescription(), item.maxItemAmount, 
                         item.itemType, item);
                 else if (so is ConsumableSO consumable)
-                    AddItem(consumable.name, 1, consumable.itemSprite, consumable.itemDescription, consumable.maxItemAmount, 
+                    AddItem(consumable.name, 1, consumable.itemSprite, consumable.SetDescription(), consumable.maxItemAmount, 
                         "Consumable", consumable);
                 else if (so is AspectSO aspect)
-                    AddItem(aspect.name, 1, aspect.itemSprite, aspect.itemDescription, 16, "Aspect", aspect);
+                    AddItem(aspect.name, 1, aspect.itemSprite, aspect.SetDescription(), 16, "Aspect", aspect);
                 else if (so is AbilitySO ability)
-                    AddItem(ability.name, 1, ability.itemSprite, ability.itemDescription, 16, "Ability", ability);
+                    AddItem(ability.name, 1, ability.itemSprite, ability.SetDescription(), 16, "Ability", ability);
             }
         }
 
@@ -240,7 +255,7 @@ public class InvManager : GUIBase
             {
                 if (data.equippedAspects[i] is AspectSO aspect)
                 {
-                    aspectSlots[i].AddAspect(aspect.name, aspect.itemSprite, aspect.itemDescription, aspect);
+                    aspectSlots[i].AddAspect(aspect.name, aspect.itemSprite, aspect.SetDescription(), aspect);
                 }
             }
         }
@@ -252,7 +267,7 @@ public class InvManager : GUIBase
             {
                 if (data.equippedAbilities[i] is AbilitySO ability)
                 {
-                    abilitySlots[i].AddAbility(ability.name, ability.itemSprite, ability.itemDescription, ability, i);
+                    abilitySlots[i].AddAbility(ability.name, ability.itemSprite, ability.SetDescription(), ability, i);
                 }
             }
         }

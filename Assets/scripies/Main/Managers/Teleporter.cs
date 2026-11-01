@@ -133,7 +133,7 @@ public class Teleporter : MonoBehaviour
             TeleportType.PreviousDoor => previousTeleDoor != null ? previousTeleDoor.sceneToLoad.SceneName : "",
             _ => ""
         };
-
+        if (targetSceneName == gameObject.scene.name) Debug.LogError($"[Teleporter {gameObject.name}] Target scene name is the same as the current scene!");
         UnloadCurrentScenes(targetSceneName);
         
         switch (teleportType)

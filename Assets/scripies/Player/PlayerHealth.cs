@@ -250,6 +250,7 @@ namespace scripies.Player
             if (playerExtraHealth > 0 && !isTrue) playerExtraHealth -= damageAmount;
             else health -= damageAmount;
             GameEvents.TriggerPlayerHealthChanged(damageAmount);
+            GameEvents.TriggerDamageText(transform.position + Vector3.up * 0.8f, damageAmount, new Color(1f, 0.35f, 0.35f), false);
             if (blockBreak)
             {
                 spriteRenderer.color = damageTint;
@@ -265,6 +266,7 @@ namespace scripies.Player
                 else health -= procAmount;
                 procTaken -= procAmount;
                 GameEvents.TriggerPlayerHealthChanged(procAmount);
+                GameEvents.TriggerDamageText(transform.position + Vector3.up * 0.8f, procAmount, new Color(0.85f, 0.45f, 1f), false);
                 yield return new WaitForSeconds(procInterval);
             }
             

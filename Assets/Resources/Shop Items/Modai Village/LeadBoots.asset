@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491934fcc8944984380f7e4eed589bfe, type: 3}
+  m_Name: LeadBoots
+  m_EditorClassIdentifier: scripies.Core::ShopItem
+  itemName: Lead Boots
+  itemDescription: Incredibly heavy, but they sure keep you planted when attacks come flying in.
+  itemSprite: {fileID: 0}
+  itemPrice: 250
+  itemCollectable: {fileID: 11400000, guid: 64eee5cadda7d3242bbe1ded0a8796cf, type: 2}
+  itemAmount: 1
+  badgeSoRequired: {fileID: 0}

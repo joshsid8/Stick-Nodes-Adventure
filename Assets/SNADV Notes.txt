@@ -22,9 +22,6 @@ SNADV Notes
             One time occurrences or Rare/Intimidating bugs
                 
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
-                                    
-                Angy informaton's dialogue is paradoxed
-                    It keeps doing the one before the roast dialogue
 
             Gemini Help
                 Instability of course!

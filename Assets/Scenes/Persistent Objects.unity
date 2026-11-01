@@ -14175,6 +14175,21 @@ MonoBehaviour:
         amount: 1
         price: 300
         overwrittenDescription: 
+    - type: 0
+      targetScene:
+        m_SceneAsset: {fileID: 102900000, guid: 33f66858f4115224089d315b369e51ef, type: 3}
+        m_SceneName: Airy Shop Teste
+      requireFirstTime: 1
+      dialogueToUse:
+      - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
+        externalDialoguesToAdd:
+        - {fileID: 11400000, guid: ba4623519f88994459eafcd4b7fb51b9, type: 2}
+        externalDialoguesToRemove: []
+      itemsToAdd:
+      - shopItem: {fileID: 11400000, guid: 4920dfcbbeeaf1e47808909d390555a0, type: 2}
+        amount: 1
+        price: 350
+        overwrittenDescription: I dont know where i got this from... They fire tho
 --- !u!114 &1398734160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21598,15 +21613,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 137.3
+      value: 144.6
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 55.3
+      value: 114.9
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -22698,6 +22713,7 @@ MonoBehaviour:
   - {fileID: 622727176}
   - {fileID: 1461130588}
   swappingAbilities: 0
+  consumableCooldownTimer: 0
   persistentItem: {fileID: 2104302405}
   playerManager: {fileID: 4028153189740531409}
 --- !u!114 &949202387291246412
@@ -23049,7 +23065,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 137.68684, y: 55.353874, z: -0.059539795}
+  m_LocalPosition: {x: 144.98685, y: 114.95387, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24224,7 +24240,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 139.66716, y: 59.577957, z: -0.059539795}
+  m_LocalPosition: {x: 255.34813, y: 150.19768, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30564,7 +30580,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 7.48
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
