@@ -1650,6 +1650,7 @@ GameObject:
   m_Component:
   - component: {fileID: 186287390}
   - component: {fileID: 186287391}
+  - component: {fileID: 186287392}
   m_Layer: 0
   m_Name: HUD
   m_TagString: Untagged
@@ -1702,6 +1703,29 @@ MonoBehaviour:
   bossHealthBar: {fileID: 6464437088897952011}
   bossHealthBackBar: {fileID: 3449268023825408440}
   bossTitleText: {fileID: 1068503996809264592}
+--- !u!114 &186287392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186287389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a5e31fa775a7a741a41238fdb34de28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: scripies.Core::scripies.Core.DamageTextManager
+  damageTextPrefab: {fileID: 0}
+  floatSpeed: 2
+  duration: 0.85
+  fontSize: 5.5
+  critFontSize: 7.5
+  sortingOrder: 500
+  sortingLayerName: Default
+  customFont: {fileID: 0}
+  normalDamageColor: {r: 1, g: 1, b: 1, a: 1}
+  criticalDamageColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  playerDamageColor: {r: 1, g: 0.35, b: 0.35, a: 1}
 --- !u!224 &191663658 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2498204215888178016, guid: 51d572b8eeca0394ab90c170c98dea25, type: 3}
@@ -3334,6 +3358,135 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -95.20001}
   m_SizeDelta: {x: 626.4, y: 55.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &312821690
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 312821692}
+  - component: {fileID: 312821691}
+  m_Layer: 0
+  m_Name: BG2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &312821691
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312821690}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -2971266182565919010, guid: 3b8c14220abe4c346957d4802f07e141, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &312821692
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312821690}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8697760185591586673}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &312925058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8797,6 +8950,10 @@ MonoBehaviour:
     - 0.7
     - 1
     - 0.7
+    weatherOstBpm:
+    - 130
+    - 130
+    - 130
   - weatherMapName: Cold Place
     weatherMapDesc: '*Freeze gun mk!! sound effect*'
     weatherDuration: 60
@@ -8810,6 +8967,10 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+    weatherOstBpm:
+    - 130
+    - 130
+    - 130
   - weatherMapName: Thunder strom
     weatherMapDesc: ah!
     weatherDuration: 60
@@ -8823,6 +8984,10 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+    weatherOstBpm:
+    - 130
+    - 130
+    - 130
   freezeWeather: 0
   weatherDurationTimer: 60
   randomWeather: 0
@@ -21613,11 +21778,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 144.6
+      value: 70.3
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 114.9
+      value: 50.04
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
@@ -23065,7 +23230,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 144.98685, y: 114.95387, z: -0.059539795}
+  m_LocalPosition: {x: 70.686844, y: 50.093876, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23988,6 +24153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousScene: {}
   musicSource: {fileID: 3026628980759326563}
+  secondaryMusicSource: {fileID: 312821691}
   globalSfxSource: {fileID: 2209087731487205237, guid: f15af1e1acb04c94ea602223295efd70, type: 3}
   backgroundMusic:
   - {fileID: 0}
@@ -23997,6 +24163,79 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  backgroundMusicBpm:
+  - 130
+  - 130
+  - 130
+  playSlotImmediately: 000001
+  trackBpmData:
+  - clip: {fileID: 8300000, guid: 4ce7f5177ccbeaf48acc3fc90841ec29, type: 3}
+    bpm: 130
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: 3752fe360d066c54f98ee63340ab0d2a, type: 3}
+    bpm: 130
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: 5497ff261f9f5f3478f90e508f673ab5, type: 3}
+    bpm: 165
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: d1ab5be2139a2884a815408309a675d2, type: 3}
+    bpm: 125
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: 83d61435bec87964b9c6f49ad4eaffce, type: 3}
+    bpm: 125
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: c669484eb0d37a943bee55cb9de126ad, type: 3}
+    bpm: 165
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: 15ec6ab4e5a27bc458bd6d81eca6199b, type: 3}
+    bpm: 140
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: 583e99ab9497ba64e9553f56ec99da42, type: 3}
+    bpm: 140
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: a4579d3ccc71e2d498a04cda129a100f, type: 3}
+    bpm: 140
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: 25b86c86108058141b317ba059b1cd8f, type: 3}
+    bpm: 150
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: 3af0d0e6e26964f44a915a2b78a5a89e, type: 3}
+    bpm: 165
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: db5d6037a032d6c4a8aace8f4dcfb45d, type: 3}
+    bpm: 165
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: c0f4d9973ecaf2d45bb1ced95721a827, type: 3}
+    bpm: 165
+    beatsPerBar: 4
+    playImmediately: 0
+  - clip: {fileID: 8300000, guid: c67f5258c1a43a64f831eb4d9ad16bb4, type: 3}
+    bpm: 165
+    beatsPerBar: 4
+    playImmediately: 0
+  defaultBpm: 130
+  beatsPerBar: 4
+  musicInterval: 0
+  currentBarTimer: 1.84
+  currentBeatTimer: 0.4615385
+  syncUnit: 0
+  loopSyncMode: 0
+  activeTrackBpm: 130
+  currentBarIndex: 0
+  currentBeatIndex: 0
+  timeUntilNextBar: 0
   backupSfx:
   - {fileID: 8300000, guid: 1dd702b4d549b5a4bb8e282e1324250d, type: 3}
   - {fileID: 8300000, guid: d09fa1fdee98e5a428444328f7162794, type: 3}
@@ -24240,7 +24479,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 255.34813, y: 150.19768, z: -0.059537888}
+  m_LocalPosition: {x: 72.66716, y: 54.31796, z: -0.059539795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30580,7 +30819,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7.48
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -36215,6 +36454,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 227022202740560457}
+  - {fileID: 312821692}
   - {fileID: 1991932837355650091}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -4,23 +4,34 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices & Priorities:
-        Lets try focus on GRF
+        Honestly, we're gonna vibecode with gemini to any flaws ive made 
+            (not TOO much otherwise this game wouldnt really be mine)
+            After, we'll learn what gemini has done, make some tweaks and move onto AO!
         
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from testing
-                                    
+                           
                 During the fight with Cynder, since he has a section (Cynder's Lair) that changes the background and mutes the current music
                     The game thought the player left the section during the fight
                         The regular music started playing, and the background reverted to normal
                     I realised the section just FEELS LIKE switching off when i enter it
                         e.g, when entering the section, a couple seconds/MINUTES later, it switches off
-                        it sometimes doesnt switch off at all                    
-                                                                                 
+                        it sometimes doesnt switch off at all  
+                    This happens often
+                        During another time this happened, a RANDOM Cynderian was stuck in the air!
+                        I also got some nullrefs based on EnemyDomain
+                        It tried to fly i think, which this type of enemy cant do
+                        For all enemies that is meant to use parkour to travel back to their domain, make them just teleport instead
+                        
             One time occurrences or Rare/Intimidating bugs
-                
+                The 0th save slot's npc data was completely mixed up
+                    Izuno had the first Informaton's dialoge, and Jerome had Izuno' final dialogue
+                    Also, i think Jerome's data is saved wrong
+                        His shop data in the Earthly shop, was seperate to the normal shop data
+                    This could be because of the amount of changes to the game i made, but this is very worrying
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
 
             Gemini Help
@@ -35,14 +46,6 @@ SNADV Notes
                 Even tho this is cosmetic, i would like to just get the logic done
                     I will use placeholder bgs just to test it, then will worry about designs Post-AO
                         
-            Audio                   
-                A new idea: instead of fading between musics like Hollow Knight, make short clips to shift between music like Cuphead (kinda)
-                    I will need multiple audio sources for this, but i feel as if this may be a bit less ambient and more forced
-                    I think ill try this out and see what happens!
-                    
-                I was also thinking of making music change depending on the distance between the player and things
-                    If the player is close to a boss or an enemy, the music will fade into fight music
-
         Animation Overhaul (AO):
         
             This is where i will improve almost all animations, along with making some extra characters and FX

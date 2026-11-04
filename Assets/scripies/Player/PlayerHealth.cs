@@ -319,9 +319,9 @@ namespace scripies.Player
             pc.combatIndicator.SetActive(true);
             var am = GameObject.Find("AudioManager").GetComponent<IAudioStatus>();
             if (am.musicType == IAudioStatus.MusicType.Area && aggressor.Contains("Enemy")) 
-                GameEvents.TriggerPlayMusic(1, false);
+                GameEvents.TriggerPlayMusic(1, false, aggressor.Contains("Immediate") || aggressor.Contains("Ambush"));
             else if (aggressor.Contains("Boss"))
-                GameEvents.TriggerPlayMusic(2, false);
+                GameEvents.TriggerPlayMusic(2, false, true);
                 
             if (!endangered) StartCoroutine(CombatTimer());
         }

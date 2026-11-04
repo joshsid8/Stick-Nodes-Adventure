@@ -121,19 +121,19 @@ public class WeatherManager : MonoBehaviour
                 break;
             case WeatherType.Hot:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherMapDesc, weatherProperties[0].weatherTextColor,
-                    weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume, announce);
+                    weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume, announce, weatherProperties[0].weatherOstBpm);
                 else if (sm != null) sm.UpdateAreaInfo(weatherProperties[0].weatherMapName, weatherProperties[0].weatherTextColor,
                     weatherProperties[0].weatherBgColor, weatherProperties[0].weatherOst, weatherProperties[0].weatherOstVolume);
                 break;
             case WeatherType.Cold:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherMapDesc, weatherProperties[1].weatherTextColor,
-                    weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume, announce);
+                    weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume, announce, weatherProperties[1].weatherOstBpm);
                 else if (sm != null) sm.UpdateAreaInfo(weatherProperties[1].weatherMapName, weatherProperties[1].weatherTextColor,
                     weatherProperties[1].weatherBgColor, weatherProperties[1].weatherOst, weatherProperties[1].weatherOstVolume);
                 break;
             case WeatherType.Rainy:
                 if (mm != null) mm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherMapDesc, weatherProperties[2].weatherTextColor,
-                    weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume, announce);
+                    weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume, announce, weatherProperties[2].weatherOstBpm);
                 else if (sm != null) sm.UpdateAreaInfo(weatherProperties[2].weatherMapName, weatherProperties[2].weatherTextColor,
                     weatherProperties[2].weatherBgColor, weatherProperties[2].weatherOst, weatherProperties[2].weatherOstVolume);
                 InvokeRepeating(nameof(Thunderstorm), 0, thunderTimer);
@@ -279,4 +279,5 @@ public class WeatherProperties
     public Color weatherBgColor = Color.white;
     public AudioClip[] weatherOst = new AudioClip[3];
     public float[] weatherOstVolume = {0.7f,0.7f,0.7f};
+    public float[] weatherOstBpm = {130f,130f,130f};
 }

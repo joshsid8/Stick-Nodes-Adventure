@@ -26,6 +26,7 @@ public class MapManager : MonoBehaviour
     
     [SerializeField] private AudioClip[] newOst;
     public float[] ostVolume = {0.5f,0.5f,0.5f};
+    public float[] ostBpm = {130f,130f,130f};
     
     public string[] mapDisasterNames = { "Temperature", "Earthquake", "Wind", "Thunderstorm" };
     public float[] mapDisasterFactors = new float[4];
@@ -240,8 +241,8 @@ public class MapManager : MonoBehaviour
         if (audioManager != null) audioManager.TriggerFadeIn(0.5f);
     }
     
-    public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
-    public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume, bool weatherChanged = false)
+    public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume, false, ostBpm);
+    public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume, bool weatherChanged = false, float[] mOstBpm = null)
     {
         if (mName == AreaManager.Instance.currentArea)
         {
@@ -260,6 +261,8 @@ public class MapManager : MonoBehaviour
                 audioManager.backgroundMusic[i] = mOst[i];
                 if (mOstVolume != null && i < mOstVolume.Length)
                     audioManager.backgroundMusicVolume[i] = mOstVolume[i];
+                if (mOstBpm != null && audioManager.backgroundMusicBpm != null && i < mOstBpm.Length && i < audioManager.backgroundMusicBpm.Length && mOstBpm[i] > 0f)
+                    audioManager.backgroundMusicBpm[i] = mOstBpm[i];
             }
         }
         

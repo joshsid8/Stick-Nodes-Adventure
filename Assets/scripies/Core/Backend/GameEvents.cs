@@ -57,7 +57,7 @@ namespace scripies.Core
         public static Action<string, bool> OnEnterMap;
         
         public static Action<AudioClip, GameObject, float, bool> PlaySound;
-        public static Action<int, bool> PlayMusic;
+        public static Action<int, bool, bool> PlayMusic;
         public static Action<bool> MuteMusic;
         
         public static Action<GameObject> DropLoot;
@@ -118,7 +118,7 @@ namespace scripies.Core
         public static void TriggerOnEnterMap(string sceneName, bool firstTime) => OnEnterMap?.Invoke(sceneName, firstTime);
         
         public static void TriggerPlaySound(AudioClip clip = null, GameObject source = null, float volume = 1, bool randomPitch = true) => PlaySound?.Invoke(clip, source, volume, randomPitch);
-        public static void TriggerPlayMusic(int index, bool preFade = true) => PlayMusic?.Invoke(index, preFade);
+        public static void TriggerPlayMusic(int index, bool preFade = true, bool immediate = false) => PlayMusic?.Invoke(index, preFade, immediate);
         public static void TriggerMuteMusic(bool toggle = true) => MuteMusic?.Invoke(toggle);
         
         public static void TriggerDropLoot(GameObject loot) => DropLoot?.Invoke(loot);
