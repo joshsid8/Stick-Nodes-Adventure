@@ -45,6 +45,9 @@ public class WeatherManager : MonoBehaviour
     private void Update()
     {
         if (freezeWeather) return;
+        if (sm != null && !sm.activeSection) return;
+        if (mm != null && (!mm.activeMap || SectionManager.ActiveSection != null)) return;
+
         weatherDurationTimer -= Time.deltaTime;
         if (weatherDurationTimer <= 0) WeatherClockChime();
     }
@@ -56,8 +59,10 @@ public class WeatherManager : MonoBehaviour
         
         weatherType = GetTargetWeather(forced);
         
-        TryGetComponent(out MapManager mapManager);
-        if (mapManager != null && mapManager.activeMap) ChangeWeather();
+        if (mm != null && mm.activeMap && SectionManager.ActiveSection == null)
+            ChangeWeather(forced ? weatherType : null);
+        else if (sm != null && sm.activeSection)
+            ChangeWeather(forced ? weatherType : null);
         
         if (weatherType == WeatherType.Clear) 
             weatherDurationTimer = 60;

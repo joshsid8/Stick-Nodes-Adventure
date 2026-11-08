@@ -189,7 +189,7 @@ public class BossHealth : MonoBehaviour, IDamageable, IEnemyStatus
             bossHealth = 0;
             isDead = true;
             ba.isAttacking = false;
-            GameEvents.TriggerBossDefeated();
+            GameEvents.TriggerBossDefeated(string.IsNullOrEmpty(bossName) ? gameObject.name : bossName);
             StartCoroutine(Defeat());
         }
         else if (bossHealth <= phase2Health) StartCoroutine(PhaseToggle(true));

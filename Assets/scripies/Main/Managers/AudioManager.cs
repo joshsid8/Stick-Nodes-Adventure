@@ -285,7 +285,8 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
     public void PlayMusic(int index, bool fade, bool immediate = false)
     {
-        ToggleMuteMusic(false);
+        var keepMutedInSection = SectionManager.ActiveSection != null && SectionManager.ActiveSection.MuteMusic && index != (int)IAudioStatus.MusicType.Boss;
+        ToggleMuteMusic(keepMutedInSection);
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
         CancelPendingScheduledSwitch();
         fadeCoroutine = StartCoroutine(BeginMusic(index, fade, immediate));

@@ -141,7 +141,7 @@ public class MapManager : MonoBehaviour
     }
 
     #region Map Announcing
-    private void OnBossDefeated()
+    private void OnBossDefeated(string defeatedBossName = "")
     {
         bossSceneData.isDead = true;
         GameEvents.TriggerPersistGameData();
@@ -244,7 +244,7 @@ public class MapManager : MonoBehaviour
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume, false, ostBpm);
     public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume, bool weatherChanged = false, float[] mOstBpm = null)
     {
-        if (mName == AreaManager.Instance.currentArea)
+        if (mName == AreaManager.Instance.currentArea || SectionManager.ActiveSection != null)
         {
             GameEvents.TriggerOnEnterMap(sceneName, undiscoveredMap);
             return;
@@ -266,7 +266,8 @@ public class MapManager : MonoBehaviour
             }
         }
         
-        GameEvents.TriggerPlayMusic(0, false);
+        if (audioManager == null || audioManager.musicType != IAudioStatus.MusicType.Boss)
+            GameEvents.TriggerPlayMusic(0, false);
         GameEvents.TriggerOnEnterMap(sceneName, undiscoveredMap);
         if (undiscoveredMap) undiscoveredMap = false;
     }

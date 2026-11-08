@@ -6,6 +6,8 @@ using scripies.Core;
 using scripies.Dialogue;
 using scripies.Player;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using static UnityEngine.Random;
 
 /// <summary>
@@ -20,14 +22,17 @@ public class Tomfoolery : MonoBehaviour
     private Shenanigans shenanigans;
     private PlayerHealth player;
     
-    [SerializeField] private List<ItemsOnEvent> itemsToAddOnEvent = new();
+    [FormerlySerializedAs("itemsToAddOnEvent")] 
+    [SerializeField] private List<NpcItemsOnEvent> npcItemsToConfigureOnEvent = new();
+    [SerializeField] private List<ItemsToConfigure> itemsToConfigure = new();
 
 
     private void OnEnable()
     {
         GameEvents.ToggleDoor += ToggleDoor;
         GameEvents.AddShopItems += AddShopItems;
-        GameEvents.OnEnterMap += AddShopItemsOnPlayerMapEnter;
+        GameEvents.OnEnterMap += ConfigureNpcItemsOnMapEnter;
+        GameEvents.OnBossDefeated += ConfigureOnBossDefeat;
         GameEvents.OnDamageDealt += IsDamageTooHigh;
     }
     
@@ -35,7 +40,8 @@ public class Tomfoolery : MonoBehaviour
     {
         GameEvents.ToggleDoor -= ToggleDoor;
         GameEvents.AddShopItems -= AddShopItems;
-        GameEvents.OnEnterMap -= AddShopItemsOnPlayerMapEnter;
+        GameEvents.OnEnterMap -= ConfigureNpcItemsOnMapEnter;
+        GameEvents.OnBossDefeated -= ConfigureOnBossDefeat;
         GameEvents.OnDamageDealt -= IsDamageTooHigh;
     }
 
@@ -130,25 +136,94 @@ public class Tomfoolery : MonoBehaviour
             goto add;
         }
     }
-    
-    private void AddShopItemsOnPlayerMapEnter(string sceneName, bool firstTime)
+
+    private void ExecuteEventConfig(ItemsToConfigure item, NPC fallbackNpc = null)
     {
-        foreach (var itemsOnEvent in itemsToAddOnEvent)
+        var npc = item.targetNpc != null ? item.targetNpc : fallbackNpc;
+        if (npc != null && item.itemsToAdd is { Length: > 0 })
+            AddShopItems(item.itemsToAdd, npc);
+
+        if (item.dialogueToUse is { Length: > 0 })
+            GameEvents.TriggerChangeDialogue(item.dialogueToUse);
+
+        if (item.objectsToToggle is { Length: > 0 })
+            ToggleObjects(item.objectsToToggle);
+    }
+
+    private static bool MatchesBoss(string configuredName, string defeatedBossName)
+    {
+        if (string.IsNullOrEmpty(configuredName) || string.IsNullOrEmpty(defeatedBossName)) return false;
+        return defeatedBossName.Contains(configuredName, StringComparison.OrdinalIgnoreCase) ||
+               configuredName.Contains(defeatedBossName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void ToggleObjects(ObjectToToggle[] objectsToToggle)
+    {
+        foreach (var objectToToggle in objectsToToggle)
         {
-            foreach (var item in itemsOnEvent.itemsToAdd.Where(i => i.targetScene.SceneName == sceneName && i.type == EventType.PlayerMapEnter))
+            if (objectToToggle.obj != null)
             {
-                if (!firstTime && item.requireFirstTime)
-                {
-                    //print($"Skipping {item.targetScene.SceneName} because it requires first time, and the player has entered {sceneName} before");
-                    continue;
-                }
-                
-                if (item.itemsToAdd.Length > 0)
-                    AddShopItems(item.itemsToAdd, itemsOnEvent.targetNpc);
-                if (item.dialogueToUse.Length > 0) 
-                    GameEvents.TriggerChangeDialogue(item.dialogueToUse);
-                //print($"{itemsOnEvent.targetNpc.name} has been updated because the player entered {sceneName} (for the first time!)");
+                objectToToggle.obj.SetActive(objectToToggle.toggle);
+                continue;
             }
+
+            if (string.IsNullOrEmpty(objectToToggle.objectName)) continue;
+            var found = FindObjectAcrossLoadedScenes(objectToToggle.objectName);
+            if (found != null) found.SetActive(objectToToggle.toggle);
+        }
+    }
+
+    private static GameObject FindObjectAcrossLoadedScenes(string objectName)
+    {
+        for (var s = 0; s < SceneManager.sceneCount; s++)
+        {
+            var scene = SceneManager.GetSceneAt(s);
+            if (!scene.IsValid() || !scene.isLoaded) continue;
+            foreach (var root in scene.GetRootGameObjects())
+            {
+                foreach (var t in root.GetComponentsInChildren<Transform>(true))
+                {
+                    if (t.name == objectName || t.name.Contains(objectName))
+                        return t.gameObject;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void ConfigureOnBossDefeat(string bossName)
+    {
+        foreach (var item in itemsToConfigure.Where(i => i.type == EventType.BossDefeated && MatchesBoss(i.bossName, bossName)))
+        {
+            ExecuteEventConfig(item);
+        }
+
+        foreach (var itemsOnEvent in npcItemsToConfigureOnEvent)
+        {
+            if (itemsOnEvent.itemsToConf == null) continue;
+            foreach (var item in itemsOnEvent.itemsToConf.Where(i => i.type == EventType.BossDefeated && MatchesBoss(i.bossName, bossName)))
+            {
+                ExecuteEventConfig(item, itemsOnEvent.targetNpc);
+            }
+        }
+    }
+    
+    private void ConfigureNpcItemsOnMapEnter(string sceneName, bool firstTime)
+    {
+        foreach (var itemsOnEvent in npcItemsToConfigureOnEvent)
+        {
+            if (itemsOnEvent.itemsToConf == null) continue;
+            foreach (var item in itemsOnEvent.itemsToConf.Where(i => i.type == EventType.PlayerMapEnter && i.targetScene != null && i.targetScene.SceneName == sceneName))
+            {
+                if (!firstTime && item.requireFirstTime) continue;
+                ExecuteEventConfig(item, itemsOnEvent.targetNpc);
+            }
+        }
+
+        foreach (var item in itemsToConfigure.Where(i => i.type == EventType.PlayerMapEnter && i.targetScene != null && i.targetScene.SceneName == sceneName))
+        {
+            if (!firstTime && item.requireFirstTime) continue;
+            ExecuteEventConfig(item);
         }
     }
 
@@ -157,23 +232,39 @@ public class Tomfoolery : MonoBehaviour
         if (damage > threshold) GameEvents.TriggerBoom(shenanigans.jumpScareClips[Range(0, shenanigans.jumpScareClips.Length)]);
     }
     
-    public enum EventType { PlayerMapEnter /* More later*/}
+    public enum EventType { PlayerMapEnter, BossDefeated }
 
     [Serializable]
-    public struct ItemsOnEvent
+    public struct NpcItemsOnEvent
     {
         public NPC targetNpc;
-        public ItemsToAdd[] itemsToAdd;
+        [FormerlySerializedAs("itemsToAdd")] public ItemsToConfigure[] itemsToConf;
     }
     
     [Serializable]
-    public struct ItemsToAdd
+    public struct ItemsToConfigure
     {
+        [Header("Trigger Condition")]
         public EventType type;
-        [Tooltip("For PlayerMapEnter")] public SceneField targetScene;
-        [Tooltip("For PlayerMapEnter")] public bool requireFirstTime;
+        public SceneField targetScene;
+        public bool requireFirstTime;
+        [Tooltip("For BossDefeated")] public string bossName;
         
+        [Header("NPC & Shop Actions (Optional)")]
+        public NPC targetNpc;
         public ExternalDialogue[] dialogueToUse;
         public ShopKeeperItem[] itemsToAdd;
+
+        [Header("World Actions (Optional)")]
+        public ObjectToToggle[] objectsToToggle;
+    }
+    
+    [Serializable]
+    public struct ObjectToToggle
+    {
+        public GameObject obj;
+        [Tooltip("Used if the object is in another scene and cannot be dragged into Persistent Objects")]
+        public string objectName;
+        public bool toggle;
     }
 }

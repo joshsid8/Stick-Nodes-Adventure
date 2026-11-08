@@ -348,7 +348,8 @@ namespace scripies.Player
         }
         private void ResetCombatViaEnemy(GameObject enemy)
         {
-            if (aggressiveEnemies.Count > 1) return;
+            var am = GameObject.Find("AudioManager")?.GetComponent<IAudioStatus>();
+            if (aggressiveEnemies.Count > 1 || (am != null && am.musicType == IAudioStatus.MusicType.Boss)) return;
             ResetCombat();
         }
 
