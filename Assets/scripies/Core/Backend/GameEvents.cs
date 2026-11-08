@@ -16,7 +16,7 @@ namespace scripies.Core
         public static Action<GameObject> OnEnemySpawned;
         public static Action<GameObject> OnEnemyDefeated;
         public static Action<float> OnBossHealthChanged;
-        public static Action OnBossDefeated;
+        public static Action<string> OnBossDefeated;
         
         // Player events
         public static Action OnPlayerSpawned;
@@ -91,7 +91,7 @@ namespace scripies.Core
         
         public static void TriggerEnemyDefeated(GameObject enemy) => OnEnemyDefeated?.Invoke(enemy);
         public static void TriggerEnemySpawn(GameObject enemy) => OnEnemySpawned?.Invoke(enemy);
-        public static void TriggerBossDefeated() => OnBossDefeated?.Invoke();
+        public static void TriggerBossDefeated(string bossName = "") => OnBossDefeated?.Invoke(bossName);
         
         public static void TriggerEnableGUI() => OnEnableGUI?.Invoke();
         public static void TriggerDisableGUI() => OnDisableGUI?.Invoke();

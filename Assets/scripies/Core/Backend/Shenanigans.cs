@@ -366,6 +366,7 @@ public class Shenanigans : MonoBehaviour
     }
 
     #endregion
+    
     private void StopTime(float time = 0.2f) => StartCoroutine(StopTimeC(time));
     
     private IEnumerator StopTimeC(float time = 0.2f)

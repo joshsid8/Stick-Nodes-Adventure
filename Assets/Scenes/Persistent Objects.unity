@@ -8817,6 +8817,7 @@ MonoBehaviour:
   - 0
   sectionType: 0
   endangeredOst: {fileID: 0}
+  activeSection: 0
   cameraObject: {fileID: 395559665}
 --- !u!61 &911366084
 BoxCollider2D:
@@ -14284,14 +14285,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4926a3eb005b64aa3d438c5c88c3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: scripies::TomFoolery
-  itemsToAddOnEvent:
+  npcItemsToConfigureOnEvent:
   - targetNpc: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
-    itemsToAdd:
+    itemsToConf:
     - type: 0
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: 7f20e3033c28f84429296cd7a255a114, type: 3}
         m_SceneName: Fiery Shop Teste
       requireFirstTime: 1
+      bossName: 
+      targetNpc: {fileID: 0}
       dialogueToUse:
       - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
         externalDialoguesToAdd:
@@ -14306,11 +14309,14 @@ MonoBehaviour:
         amount: 1
         price: 150
         overwrittenDescription: 
+      objectsToToggle: []
     - type: 0
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: 8824045789d114e479dae4c4e136ef50, type: 3}
         m_SceneName: Watery Shop Teste
       requireFirstTime: 1
+      bossName: 
+      targetNpc: {fileID: 0}
       dialogueToUse:
       - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
         externalDialoguesToAdd:
@@ -14325,11 +14331,14 @@ MonoBehaviour:
         amount: 1
         price: 200
         overwrittenDescription: 
+      objectsToToggle: []
     - type: 0
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: c17717ef050b59f438f8b80ae4861300, type: 3}
         m_SceneName: Earthly Shop Teste
       requireFirstTime: 1
+      bossName: 
+      targetNpc: {fileID: 0}
       dialogueToUse:
       - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
         externalDialoguesToAdd:
@@ -14340,11 +14349,14 @@ MonoBehaviour:
         amount: 1
         price: 300
         overwrittenDescription: 
+      objectsToToggle: []
     - type: 0
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: 33f66858f4115224089d315b369e51ef, type: 3}
         m_SceneName: Airy Shop Teste
       requireFirstTime: 1
+      bossName: 
+      targetNpc: {fileID: 0}
       dialogueToUse:
       - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
         externalDialoguesToAdd:
@@ -14355,6 +14367,21 @@ MonoBehaviour:
         amount: 1
         price: 350
         overwrittenDescription: I dont know where i got this from... They fire tho
+      objectsToToggle: []
+  itemsToConfigure:
+  - type: 1
+    targetScene:
+      m_SceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
+      m_SceneName: Fire Teste
+    requireFirstTime: 0
+    bossName: Cynder
+    targetNpc: {fileID: 0}
+    dialogueToUse: []
+    itemsToAdd: []
+    objectsToToggle:
+    - obj: {fileID: 0}
+      objectName: Cynder Section
+      toggle: 0
 --- !u!114 &1398734160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21778,15 +21805,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 70.3
+      value: 70.57086
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 50.04
+      value: 51.33652
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 0.00030517578
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23230,7 +23257,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 70.686844, y: 50.093876, z: -0.059539795}
+  m_LocalPosition: {x: 70.9577, y: 51.390396, z: -0.05923462}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24190,7 +24217,7 @@ MonoBehaviour:
     beatsPerBar: 4
     playImmediately: 0
   - clip: {fileID: 8300000, guid: c669484eb0d37a943bee55cb9de126ad, type: 3}
-    bpm: 165
+    bpm: 140
     beatsPerBar: 4
     playImmediately: 0
   - clip: {fileID: 8300000, guid: 15ec6ab4e5a27bc458bd6d81eca6199b, type: 3}
@@ -24479,7 +24506,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 72.66716, y: 54.31796, z: -0.059539795}
+  m_LocalPosition: {x: 72.93802, y: 55.614483, z: -0.05923462}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36544,6 +36571,7 @@ MonoBehaviour:
   allItems: []
   allEntities: []
   allTeleDoors: []
+  allSections: []
   everything: []
   loaded: 0
 --- !u!114 &8754919029274191491

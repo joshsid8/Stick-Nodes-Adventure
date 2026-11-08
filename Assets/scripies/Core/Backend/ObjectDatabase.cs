@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using scripies.Core;
 using scripies.Enemy;
@@ -14,9 +15,11 @@ public class ObjectDatabase : MonoBehaviour
     public static ObjectDatabase Instance { get; private set; }
     [SerializeField] private List<string> allScenesList = new();
     [HideInInspector] public List<Scene> allScenes = new();
+    
     public List<GameObject> allItems = new();
     public List<GameObject> allEntities = new();
     public List<GameObject> allTeleDoors = new();
+    public List<GameObject> allSections = new();
     
     public List<GameObject> everything = new();
 
@@ -63,22 +66,48 @@ public class ObjectDatabase : MonoBehaviour
         allItems.Clear();
         allEntities.Clear();
         allTeleDoors.Clear();
+        allSections.Clear();
         everything.Clear();
     }
 
     private void UpdateLists()
     {
         loaded = false;
+        
         allItems = new List<GameObject>(GameObject.FindGameObjectsWithTag("Item"));
         allEntities = new List<GameObject>(FindObjectsByType<Identifier>(FindObjectsSortMode.None).Where(entity => entity.typeOfObject == Identifier.ObjectType.Entity).Select(entity => entity.gameObject));
         allTeleDoors = new List<GameObject>(GameObject.FindGameObjectsWithTag("TeleDoor"));
+        allSections = new List<GameObject>(UpdateSectionsList());
+        
         everything.Clear();
         everything.AddRange(allItems);
         everything.AddRange(allTeleDoors);
         everything.AddRange(allEntities);
+        everything.AddRange(allSections);
+        
         var playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) everything.Add(playerObj);
         loaded = true;
+    }
+
+    private static List<GameObject> UpdateSectionsList()
+    {
+        var sections =  new List<GameObject>();
+        var sectionParents = GameObject.FindGameObjectsWithTag("Section");
+        
+        foreach (var sect in sectionParents) 
+            sections.AddRange(sect.GetComponentsInChildren<GameObject>());
+        
+        return sections;
+    }
+
+    public GameObject GetAnythingByName(string entityName)
+    {
+        if (string.IsNullOrEmpty(entityName)) return null;
+        var target = allEntities.Find(i => i != null && i.gameObject.name == entityName);
+        if (target != null) return target;
+        Debug.LogWarning($"[ObjectDatabase] Object with name {entityName} not found in ANY of our lists!");
+        return null;
     }
 
     public GameObject GetEntityObjByName(string entityName, bool looped = false)
@@ -89,7 +118,7 @@ public class ObjectDatabase : MonoBehaviour
         {
             var entity = allEntities[i];
             if (entity == null || entity.IsDestroyed()) continue;
-            if (entity.GetComponent<Identifier>().name != entityName) continue;
+            if (entity.gameObject.name != entityName) continue;
             target = entity;
             break;
         }
@@ -102,7 +131,7 @@ public class ObjectDatabase : MonoBehaviour
     public GameObject GetItemObjByName(string itemName)
     {
         if (string.IsNullOrEmpty(itemName)) return null;
-        var target = allItems.Find(i => i != null && i.GetComponent<CollectableSOBase>().name == itemName);
+        var target = allItems.Find(i => i != null && i.gameObject.name == itemName);
         if (target != null) return target;
         Debug.LogWarning($"[ObjectDatabase] We couldn't find an item with name {itemName} in our item list");
         return null;
@@ -135,5 +164,14 @@ public class ObjectDatabase : MonoBehaviour
         if (!targetDoorId) target = target.transform.parent.gameObject;
         return target;
 
+    }
+
+    public GameObject GetSectionObjByName(string sectionName)
+    {
+        if (string.IsNullOrEmpty(sectionName)) return null;
+        var target = allSections.Find(i => i != null && i.gameObject.name == sectionName);
+        if (target != null) return target;
+        Debug.LogWarning($"[ObjectDatabase] We couldn't find an item with name {sectionName} in our section list");
+        return null;
     }
 }
