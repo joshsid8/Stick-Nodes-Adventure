@@ -96,7 +96,7 @@ public class ObjectDatabase : MonoBehaviour
         var sectionParents = GameObject.FindGameObjectsWithTag("Section");
         
         foreach (var sect in sectionParents) 
-            sections.AddRange(sect.GetComponentsInChildren<GameObject>());
+            sections.AddRange(sect.GetComponentsInChildren<Transform>().Select(t => t.gameObject));
         
         return sections;
     }

@@ -72,7 +72,7 @@ public class SectionManager : MonoBehaviour
                 audioManager.backgroundMusicVolume[i] = mOstVolume[i];
         }
         if (audioManager.musicType != IAudioStatus.MusicType.Boss)
-            GameEvents.TriggerPlayMusic(0, false);
+            GameEvents.TriggerPlayMusic(0, false, true);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -82,7 +82,7 @@ public class SectionManager : MonoBehaviour
         ActiveSection = this;
 
         if (cameraObject != null) cameraObject.SetActive(true);
-        if (AreaManager.Instance != null)
+        if (announceDetails && AreaManager.Instance != null)
         {
             prevAreaName = AreaManager.Instance.currentArea;
             if (MapManager.Instances.TryGetValue(gameObject.scene.name, out var mm))
@@ -91,8 +91,11 @@ public class SectionManager : MonoBehaviour
                 prevMapBgColor = AreaManager.Instance.actualCamera.backgroundColor;
         }
 
-        if (weather != null) weather.ChangeWeather(weather.weatherType);
-        else if (announceDetails) UpdateNormalAreaInfo();
+        if (announceDetails)
+        {
+            if (weather != null) weather.ChangeWeather(weather.weatherType);
+            else UpdateNormalAreaInfo();
+        }
 
         if (audioManager == null) audioManager = AudioManager.Instance;
         if (muteMusic && audioManager != null && audioManager.musicType != IAudioStatus.MusicType.Boss)
@@ -113,7 +116,7 @@ public class SectionManager : MonoBehaviour
         if (audioManager == null) audioManager = AudioManager.Instance;
         if (muteMusic && audioManager != null) audioManager.ToggleMuteMusic(false);
 
-        if (AreaManager.Instance != null)
+        if (announceDetails && AreaManager.Instance != null)
         {
             if (!string.IsNullOrEmpty(prevAreaName))
                 AreaManager.Instance.currentArea = prevAreaName;

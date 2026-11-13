@@ -276,11 +276,14 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         isSwitchScheduled = false;
 
         if (secondaryMusicSource != null)
+        {
             secondaryMusicSource.Stop();
+            secondaryMusicSource.SetScheduledEndTime(0);
+        }
 
         // Reset scheduled end time on the currently playing musicSource so it continues looping
         if (musicSource != null && musicSource.isPlaying)
-            musicSource.SetScheduledEndTime(AudioSettings.dspTime + 3600000.0);
+            musicSource.SetScheduledEndTime(0);
     }
 
     public void PlayMusic(int index, bool fade, bool immediate = false)
@@ -329,11 +332,13 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             yield break;
         }
 
-        // Case 2: Nothing is currently playing OR immediate flag is set -> start immediately without waiting for a bar/beat
-        var skipBeatSync = immediate || ShouldPlayImmediately(nextClip, index);
+        // Case 2: Nothing is currently playing, not starting a normal battle, OR immediate flag is set -> start immediately without waiting for a bar/beat
+        var isNormalBattleStart = index == (int)IAudioStatus.MusicType.Combat;
+        var skipBeatSync = !isNormalBattleStart || immediate || ShouldPlayImmediately(nextClip, index);
         if (skipBeatSync || !musicSource.isPlaying || musicSource.clip == null)
         {
             musicSource.Stop();
+            musicSource.SetScheduledEndTime(0);
             musicSource.clip = nextClip;
             musicType = (IAudioStatus.MusicType)index;
             UpdateBarTimerForClip(nextClip, index);
@@ -341,6 +346,17 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             musicSource.time = 0f;
             musicSource.Play();
             musicInterval = 0f;
+
+            // Pre-warm the combat track on secondaryMusicSource when Area music starts so PlayScheduled has zero decode lag
+            EnsureSecondaryMusicSource();
+            if (index == (int)IAudioStatus.MusicType.Area && secondaryMusicSource != null && backgroundMusic.Length > 1 && backgroundMusic[1] != null)
+            {
+                if (backgroundMusic[1].loadState == AudioDataLoadState.Unloaded)
+                    backgroundMusic[1].LoadAudioData();
+                secondaryMusicSource.Stop();
+                secondaryMusicSource.SetScheduledEndTime(0);
+                secondaryMusicSource.clip = backgroundMusic[1];
+            }
 
             if (fade) yield return StartCoroutine(FadeInMusic(2f));
             fadeCoroutine = null;
@@ -351,9 +367,10 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         // then updating currentBarTimer to the NEW track's bar length as soon as the handoff occurs!
         EnsureSecondaryMusicSource();
 
-        var outgoingBarLength = GetActiveBarLength();
+        CalculateBarLengthForClip(musicSource.clip, (int)musicType, out var outBpm, out var outBeats);
+        var outgoingBarLength = (60.0 / Math.Max(1.0, outBpm)) * Math.Max(1, outBeats);
         var syncLength = syncUnit == SyncUnit.Beat
-            ? outgoingBarLength / Mathf.Max(1, beatsPerBar)
+            ? outgoingBarLength / Math.Max(1, outBeats)
             : outgoingBarLength;
 
         var sampleRate = musicSource.clip.frequency > 0 ? (double)musicSource.clip.frequency : 44100.0;
@@ -364,19 +381,23 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         // If we are already within 15ms of the bar boundary, switch immediately
         if (timeToWait < 0.015) timeToWait = 0.0;
 
-        var incomingBarLength = CalculateBarLengthForClip(nextClip, index, out _, out _);
+        CalculateBarLengthForClip(nextClip, index, out var inBpm, out var inBeats);
+        var incomingBarLength = (float)((60.0 / Math.Max(1.0, inBpm)) * Math.Max(1, inBeats));
 
         if (secondaryMusicSource != null && timeToWait > 0.0)
         {
-            var switchDspTime = AudioSettings.dspTime + timeToWait;
+            if (nextClip.loadState == AudioDataLoadState.Unloaded)
+                nextClip.LoadAudioData();
 
             secondaryMusicSource.Stop();
-            secondaryMusicSource.clip = nextClip;
+            secondaryMusicSource.SetScheduledEndTime(0);
+            if (secondaryMusicSource.clip != nextClip)
+                secondaryMusicSource.clip = nextClip;
             secondaryMusicSource.volume = targetVolume;
             secondaryMusicSource.loop = musicSource.loop;
             secondaryMusicSource.mute = musicSource.mute;
 
-            if (loopSyncMode == LoopSyncMode.ContinueBarProgression && outgoingBarLength > 0.01f)
+            if (loopSyncMode == LoopSyncMode.ContinueBarProgression && outgoingBarLength > 0.01)
             {
                 var nextBarNumber = Mathf.FloorToInt((float)((currentClipTime + timeToWait) / outgoingBarLength));
                 secondaryMusicSource.time = (nextBarNumber * incomingBarLength) % nextClip.length;
@@ -385,6 +406,13 @@ public class AudioManager : MonoBehaviour, IAudioStatus
             {
                 secondaryMusicSource.time = 0f;
             }
+
+            // Re-sample right before scheduling so clip assignment overhead doesn't skew switchDspTime
+            currentClipTime = (double)musicSource.timeSamples / sampleRate;
+            elapsedInInterval = currentClipTime % syncLength;
+            timeToWait = syncLength - elapsedInInterval;
+            if (timeToWait < 0.015) timeToWait = 0.0;
+            var switchDspTime = AudioSettings.dspTime + timeToWait;
 
             // Schedule sample-accurate handoff on the audio thread
             musicSource.SetScheduledEndTime(switchDspTime);
@@ -398,12 +426,13 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
             isSwitchScheduled = false;
             musicSource.Stop();
+            musicSource.SetScheduledEndTime(0);
 
             // Swap active musicSource so all external references point to the playing source
             (musicSource, secondaryMusicSource) = (secondaryMusicSource, musicSource);
             musicType = (IAudioStatus.MusicType)index;
             UpdateBarTimerForClip(nextClip, index);
-            musicInterval = musicSource.time;
+            musicInterval = (float)musicSource.timeSamples / Mathf.Max(1, musicSource.clip.frequency);
         }
         else
         {

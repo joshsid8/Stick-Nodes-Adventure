@@ -4,26 +4,39 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices & Priorities:
-        
-        Test out the newly updated event system.
-            One of the main goals is to disable the Cynder Section once Cynder is defeated
-            With this, all sections should save its active state in the map managers so it stays off/on when loading scenes
+        A couple of small little things to look into, then we could get to finishing GRF
             
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from testing
-                                                   
-            One time occurrences or Rare/Intimidating bugs
-                The 0th save slot's npc data was completely mixed up
-                    Izuno had the first Informaton's dialoge, and Jerome had Izuno' final dialogue
-                    Also, i think Jerome's data is saved wrong
-                        His shop data in the Earthly shop, was seperate to the normal shop data
-                    This could be because of the amount of changes to the game i made, but this is very worrying
+                Jerome's intro dialogue doesnt get removed from the active dialogue list after speaking it
+                    I may have accidentally added the respeakable bool on it
                     
-            Low Priority or Passive Tasks / Unconfirmed fixed Bugs                
-
+            One time occurrences or Rare/Intimidating bugs
+                    
+            Low Priority or Passive Tasks / Unconfirmed fixed Bugs
+                
+                We have made a web build of the game!
+                    It seems to work well, except from the underying errors the game has
+                    Aside from fixing those, id like to publish this to Unity Play so anyone with an internet connection can play!
+                        I did try this once but only an old state of the game was released, idk why that happened
+                        But since ive moved to linux, and have made a lot more significant changes to the game, it should be fine...?
+                                
+                When cynder is defeated, the section immediately gets turned off.
+                    This is exactly what the code is supposed to do, but it doesnt look right.
+                    Maybe instead of turning the section off completely, i could alter the state of the section
+                        for example, have a flag to enable camera fixture, or the colours changing
+                    I dont know if ill need to add completely new stuff like scriptables for the states, or just have a method to do all that for me.
+                    I then would have to ensure that all the section data is saved to the map manager, such as the current active state.
+                
+                I noticed that when something of high calibre hits the player, the hitstop activates just before the player reacts
+                so the player's idle animation is stuck until the hitstop finishes, then the animation plays
+                    Either move the hitstop a bit further or activate the animation sooner
+                Also, when doing a counter, the shake during the hitstop is on the player, because they got hit.
+                    It actually needs to be somehow reflected onto any close enemies that gets hit by the parry wave
+                    
             Gemini Help
                 Instability of course!
                 
@@ -34,7 +47,17 @@ SNADV Notes
             Honestly, we're gonna vibecode with gemini to any flaws ive made 
                 (not TOO much otherwise this game wouldnt really be mine)
                 After, we'll learn what gemini has done, make some tweaks and move onto AO!
-                               
+            
+            Damage text and hitstopping improvements
+                Not the biggest things to do, but if i add em, it'd just be a bit more advanced
+                For damage text, i want it so that one current text that is floating gets added onto incoming damage
+                    e.g a fire move that does 5 procs of 2 dmg: one text obj gets incremented instead of 5 seperate text objs,
+                    maybe flashing or bulging as it gets added onto                    
+            
+            We use the raw colour of the sprite to do tint flashing on damage (counter activations too). but we need a differen approach
+                Enemies liek Cynder, who is mostly read already, barely has an effect on damage tinting
+                I forgot how, but we need to make their entire body flash the right colour, as their raw sprite colour isnt the way to go
+            
             Background/Foreground Logic
                 Make backgrounds similar to Terraria in terms of appearance!
                 Even tho this is cosmetic, i would like to just get the logic done
@@ -45,7 +68,7 @@ SNADV Notes
             This is where i will improve almost all animations, along with making some extra characters and FX
             It be after almost all logic is completed, and only the cosmetic/extra logic will remain
         
-            Make better/seperate animations in general
+            Make better/seperate/new animations in general
                 Player
                     Turning around
                     First step before walking
@@ -53,9 +76,9 @@ SNADV Notes
                     Better dashing
                     Better Defense
                     Idle (for a long time, thus secret) animations
-                    Spawn animation?
+                    Spawn animations!
                     
-                Cynder/Cyderians
+                Cynder/Cyderians/Noxu
                     More/Improved animations
                     
                 Fishwoman

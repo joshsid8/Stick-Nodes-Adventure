@@ -47,6 +47,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] private List<GameObject> spawnerObjects = new();
     [SerializeField] private List<GameObject> doorSpawnerObjects = new();
     [SerializeField] private List<GameObject> checkPointObjects = new();
+    [SerializeField] private List<GameObject> sectionObjects = new();
     
     public List<EnemySceneData> enemySceneData = new();
     public List<int> enemyIds = new();
@@ -58,6 +59,7 @@ public class MapManager : MonoBehaviour
     public List<SpawnerSceneData> spawnerSceneData = new();
     public List<DoorSpawnerHybridData> doorSpawnerHybridSceneData = new();
     public List<CheckPointSceneData> checkPointSceneData = new();
+    public List<SectionSceneData> sectionSceneData = new();
     
     [Tooltip("Checks if the scene data has tried to find and load its scene data")]
     public bool sceneLoaded;
@@ -192,13 +194,24 @@ public class MapManager : MonoBehaviour
         StartCoroutine(MapTransition(collision));
     }
 
+    private Collider2D GetMapCollider()
+    {
+        foreach (var col in GetComponents<Collider2D>())
+        {
+            if (col is CompositeCollider2D && col.bounds.size.sqrMagnitude < 0.01f) continue;
+            return col;
+        }
+        return GetComponent<Collider2D>();
+    }
+
     private IEnumerator MapTransition(Collider2D collision)
     {
         // FIIIIINNEEEE
-        if (AreaManager.Instance.titleText.text == mapName && AreaManager.Instance.titleText.text == null) yield break;
+        if (AreaManager.Instance != null && AreaManager.Instance.titleText.text == mapName && AreaManager.Instance.titleText.text == null) yield break;
         SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
-        if (mainCamera != null)
-            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = GetComponent<Collider2D>();
+        var mapCollider = GetMapCollider();
+        if (mainCamera != null && mapCollider != null)
+            mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = mapCollider;
             
         var targetWeather = weather.weatherType;
         var targetColor = mapBgColor;
@@ -214,8 +227,14 @@ public class MapManager : MonoBehaviour
         if (audioManager != null && audioManager.musicSource.volume == 0 && collision.gameObject.scene == audioManager.previousScene)
             audioManager.TriggerFadeIn(0.5f);
         yield return new WaitForSeconds(0.8f);
-        if (collision != null && collision.gameObject.scene == gameObject.scene) 
+        if (collision != null && (collision.gameObject.scene == gameObject.scene || (mapCollider != null && mapCollider.OverlapPoint(collision.transform.position))))
+        {
+            if (collision.gameObject.scene != gameObject.scene)
+                SceneManager.MoveGameObjectToScene(collision.gameObject, SceneManager.GetSceneByName(sceneName));
+            if (mainCamera != null && mapCollider != null)
+                mainCamera.GetComponent<CinemachineConfiner2D>().BoundingShape2D = mapCollider;
             StartMap(targetWeather);
+        }
     }
 
     private void StartMapO() => StartMap(null);
@@ -244,14 +263,19 @@ public class MapManager : MonoBehaviour
     public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume, false, ostBpm);
     public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume, bool weatherChanged = false, float[] mOstBpm = null)
     {
-        if (mName == AreaManager.Instance.currentArea || SectionManager.ActiveSection != null)
+        var sectionOverridesArea = SectionManager.ActiveSection != null &&
+                                   (SectionManager.ActiveSection.announceDetails || SectionManager.ActiveSection.MuteMusic);
+        if ((AreaManager.Instance != null && mName == AreaManager.Instance.currentArea) || sectionOverridesArea)
         {
             GameEvents.TriggerOnEnterMap(sceneName, undiscoveredMap);
             return;
         }
         
-        if (weatherChanged || undiscoveredMap) AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor);
-        else if (!undiscoveredMap) AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor, true);
+        if (AreaManager.Instance != null)
+        {
+            if (weatherChanged || undiscoveredMap) AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor);
+            else if (!undiscoveredMap) AreaManager.Instance.Announce(mName, mDesc, mTextColor, mBgColor, true);
+        }
         
         if (audioManager != null && mOst != null)
         {
@@ -259,6 +283,8 @@ public class MapManager : MonoBehaviour
             for (var i = 0; i < count; i++)
             {
                 audioManager.backgroundMusic[i] = mOst[i];
+                if (mOst[i] != null && mOst[i].loadState == AudioDataLoadState.Unloaded)
+                    mOst[i].LoadAudioData();
                 if (mOstVolume != null && i < mOstVolume.Length)
                     audioManager.backgroundMusicVolume[i] = mOstVolume[i];
                 if (mOstBpm != null && audioManager.backgroundMusicBpm != null && i < mOstBpm.Length && i < audioManager.backgroundMusicBpm.Length && mOstBpm[i] > 0f)
@@ -267,7 +293,7 @@ public class MapManager : MonoBehaviour
         }
         
         if (audioManager == null || audioManager.musicType != IAudioStatus.MusicType.Boss)
-            GameEvents.TriggerPlayMusic(0, false);
+            GameEvents.TriggerPlayMusic(0, false, true);
         GameEvents.TriggerOnEnterMap(sceneName, undiscoveredMap);
         if (undiscoveredMap) undiscoveredMap = false;
     }
@@ -275,7 +301,8 @@ public class MapManager : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
-        if (GetComponent<Collider2D>().OverlapPoint(collision.transform.position)) return;
+        var mapCollider = GetMapCollider();
+        if (mapCollider != null && mapCollider.OverlapPoint(collision.transform.position)) return;
         HandleMapExit(collision.gameObject);
     }
 
@@ -284,11 +311,17 @@ public class MapManager : MonoBehaviour
         SaveSceneData();
         if (!mapToggle) return;
         mapToggle = false;
+        activeMap = false;
         weather.ClearDisasters();
+
+        var enteredAnotherMap = (playerObject != null && playerObject.scene.name != sceneName && playerObject.scene.name != "Persistent Objects") ||
+                                Instances.Values.Any(m => m != null && m != this && (m.mapToggle || m.activeMap));
+        if (enteredAnotherMap) return;
+
         if (audioManager != null && !audioManager.gameObject.IsDestroyed())
         {
             audioManager.TriggerFadeOut();
-            audioManager.previousScene = playerObject.scene;
+            if (playerObject != null) audioManager.previousScene = playerObject.scene;
         }
         if (playerObject != null && SceneManager.GetSceneByName("Persistent Objects").isLoaded) 
             SceneManager.MoveGameObjectToScene(playerObject, SceneManager.GetSceneByName("Persistent Objects"));
@@ -341,6 +374,25 @@ public class MapManager : MonoBehaviour
                     checkPointObjects.Add(checkPoint.gameObject);
             }
         }
+
+        sectionObjects.Clear();
+        foreach (var obj in sceneObjects)
+        {
+            if (obj == null) continue;
+            foreach (var sm in obj.GetComponentsInChildren<SectionManager>(true))
+            {
+                if (!sectionObjects.Contains(sm.gameObject))
+                    sectionObjects.Add(sm.gameObject);
+            }
+        }
+        if (sectionObj != null && !sectionObj.IsDestroyed())
+        {
+            foreach (Transform child in sectionObj.transform)
+            {
+                if (!sectionObjects.Contains(child.gameObject))
+                    sectionObjects.Add(child.gameObject);
+            }
+        }
     }
 
     private void ClearSceneData()
@@ -351,6 +403,7 @@ public class MapManager : MonoBehaviour
         spawnerSceneData.Clear();
         doorSpawnerHybridSceneData.Clear();
         checkPointSceneData.Clear();
+        sectionSceneData.Clear();
     }
 
     public void DisableSpawners()
@@ -573,6 +626,17 @@ public class MapManager : MonoBehaviour
             };
             checkPointSceneData.Add(newCheckPoint);
         }
+
+        foreach (var sect in sectionObjects)
+        {
+            if (sect == null || sect.IsDestroyed()) continue;
+            sectionSceneData.Add(new SectionSceneData
+            {
+                sectionObject = sect,
+                sectionName = sect.name,
+                isActive = sect.activeSelf
+            });
+        }
     }
     
     private void MakeDataPersistent()
@@ -613,6 +677,7 @@ public class MapManager : MonoBehaviour
         list.spawners.Clear();
         list.doorSpawnerHybrids.Clear();
         list.checkPoints.Clear();
+        list.sections.Clear();
         
         list.activeMap = activeMap;
         list.undiscoveredMap = undiscoveredMap;
@@ -681,6 +746,15 @@ public class MapManager : MonoBehaviour
                 activeCheckpoint = cpData.id,
                 isCurrent = cpData.isCurrent,
                 activated = cpData.activated
+            });
+        }
+
+        foreach (var secData in sectionSceneData)
+        {
+            list.sections.Add(new DataManager.SectionSceneData
+            {
+                sectionName = secData.sectionName,
+                isActive = secData.isActive
             });
         }
     }
@@ -810,6 +884,17 @@ public class MapManager : MonoBehaviour
             if (cpComponent != null) cpComponent.isCurrent = cpData.isCurrent;
         }
 
+        if (list.sections != null)
+        {
+            foreach (var secData in list.sections)
+            {
+                var sec = sectionSceneData.Find(s => s.sectionName == secData.sectionName);
+                if (sec == null || sec.sectionObject == null) continue;
+                sec.isActive = secData.isActive;
+                sec.sectionObject.SetActive(secData.isActive);
+            }
+        }
+
         bossSceneData.activeBoss = list.activeBoss;
         bossSceneData.isDead = list.isBossDead;
         bossSceneData.willBeNpc = list.willBeNpc;
@@ -898,6 +983,14 @@ public class MapManager : MonoBehaviour
         public int id;
         public bool isCurrent;
         public bool activated;
+    }
+
+    [Serializable]
+    public class SectionSceneData
+    {
+        public GameObject sectionObject;
+        public string sectionName;
+        public bool isActive;
     }
 
     [Serializable]

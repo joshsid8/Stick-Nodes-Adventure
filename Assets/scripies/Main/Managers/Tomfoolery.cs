@@ -94,21 +94,26 @@ public class Tomfoolery : MonoBehaviour
 
     private static IEnumerator AddShopItemsC(ShopKeeperItem[] shopItems, NPC keeper)
     {
-        yield return new WaitUntil(() => DataManager.Instance.npcDataLoaded);
+        if (keeper == null || shopItems == null) yield break;
+        yield return new WaitUntil(() => DataManager.Instance != null && DataManager.Instance.npcDataLoaded);
         add:
         foreach (var npc in DataManager.Instance.npcs)
         {
-            if (!npc.activeNpcName.Contains(keeper.name)) continue;
-            var newShopItems = npc.shopItems.ToList();
+            if (string.IsNullOrEmpty(npc.activeNpcName) || !npc.activeNpcName.Contains(keeper.name)) continue;
+            var newShopItems = npc.shopItems != null ? npc.shopItems.ToList() : new List<ShopKeeperItem>();
             newShopItems.AddRange(shopItems);
 
             GameObject activeNpc = null;
-            foreach (var entity in ObjectDatabase.Instance.allEntities)
+            if (ObjectDatabase.Instance != null)
             {
-                entity.TryGetComponent(out NPChat npcChat);
-                if (npcChat == null || npcChat.npc != keeper) continue;
-                activeNpc = entity.gameObject;
-                break;
+                foreach (var entity in ObjectDatabase.Instance.allEntities)
+                {
+                    if (entity == null) continue;
+                    entity.TryGetComponent(out NPChat npcChat);
+                    if (npcChat == null || npcChat.npc != keeper) continue;
+                    activeNpc = entity.gameObject;
+                    break;
+                }
             }
             
             if (activeNpc != null)
@@ -126,11 +131,11 @@ public class Tomfoolery : MonoBehaviour
         }
         
         print($"Could not find {keeper.name} in the data manager. We'll wait for an artifact of it to load...");
-        yield return new WaitUntil(() => DataManager.Instance.npcs.Exists(x =>
-            x.activeNpcName.Contains(keeper.name) ||
-            ObjectDatabase.Instance.allEntities.Any(y => y.GetComponent<NPChat>().npc == keeper)));
-        if (DataManager.Instance.npcs.Any(x => x.activeNpcName.Contains(keeper.name))) goto add;
-        if (ObjectDatabase.Instance.allEntities.Any(y => y.GetComponent<NPChat>().npc == keeper))
+        yield return new WaitUntil(() => DataManager.Instance != null && DataManager.Instance.npcs.Exists(x =>
+            (!string.IsNullOrEmpty(x.activeNpcName) && x.activeNpcName.Contains(keeper.name)) ||
+            (ObjectDatabase.Instance != null && ObjectDatabase.Instance.allEntities.Any(y => y != null && y.TryGetComponent<NPChat>(out var chat) && chat.npc == keeper))));
+        if (DataManager.Instance.npcs.Any(x => !string.IsNullOrEmpty(x.activeNpcName) && x.activeNpcName.Contains(keeper.name))) goto add;
+        if (ObjectDatabase.Instance != null && ObjectDatabase.Instance.allEntities.Any(y => y != null && y.TryGetComponent<NPChat>(out var chat) && chat.npc == keeper))
         {
             GameEvents.TriggerPersistGameData();
             goto add;

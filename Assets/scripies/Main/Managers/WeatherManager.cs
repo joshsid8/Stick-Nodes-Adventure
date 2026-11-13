@@ -29,6 +29,7 @@ public class WeatherManager : MonoBehaviour
     private readonly float[] preValues = new float[3];
     private PlayerHealth player;
     private bool preValuesInitialized;
+    private Coroutine windCoroutine;
     
     private void Awake()
     {
@@ -42,11 +43,15 @@ public class WeatherManager : MonoBehaviour
         disasters.Add("Earthquake", 0);
     }
 
+    private static bool ActiveSectionOverridesArea =>
+        SectionManager.ActiveSection != null &&
+        (SectionManager.ActiveSection.announceDetails || SectionManager.ActiveSection.MuteMusic);
+
     private void Update()
     {
         if (freezeWeather) return;
-        if (sm != null && !sm.activeSection) return;
-        if (mm != null && (!mm.activeMap || SectionManager.ActiveSection != null)) return;
+        if (sm != null && (!sm.activeSection || !sm.announceDetails)) return;
+        if (mm != null && (!mm.activeMap || ActiveSectionOverridesArea)) return;
 
         weatherDurationTimer -= Time.deltaTime;
         if (weatherDurationTimer <= 0) WeatherClockChime();
@@ -59,9 +64,9 @@ public class WeatherManager : MonoBehaviour
         
         weatherType = GetTargetWeather(forced);
         
-        if (mm != null && mm.activeMap && SectionManager.ActiveSection == null)
+        if (mm != null && mm.activeMap && !ActiveSectionOverridesArea)
             ChangeWeather(forced ? weatherType : null);
-        else if (sm != null && sm.activeSection)
+        else if (sm != null && sm.activeSection && sm.announceDetails)
             ChangeWeather(forced ? weatherType : null);
         
         if (weatherType == WeatherType.Clear) 
@@ -78,16 +83,23 @@ public class WeatherManager : MonoBehaviour
         EnsurePlayerReference();
     }
 
+    private void OnDisable() => ClearDisasters();
+
     private void EnsurePlayerReference()
     {
         if (player == null) player = PlayerHealth.Instance;
         if (player != null && !preValuesInitialized && player.pc != null)
         {
             preValues[0] = player.regenerationMultiplier;
-            preValues[1] = player.pc.movementSpeed;
+            preValues[1] = player.pc.originalMovementSpeed > 0f ? player.pc.originalMovementSpeed : player.pc.movementSpeed;
             preValuesInitialized = true;
         }
     }
+
+    private float BaseMovementSpeed =>
+        player != null && player.pc != null && player.pc.originalMovementSpeed > 0f
+            ? player.pc.originalMovementSpeed
+            : preValues[1];
 
     public WeatherType GetTargetWeather(bool forced = false)
     {
@@ -149,7 +161,7 @@ public class WeatherManager : MonoBehaviour
                 if (player != null && preValuesInitialized)
                 {
                     player.regenerationMultiplier = preValues[0];
-                    if (player.pc != null) player.pc.movementSpeed = preValues[1];
+                    if (player.pc != null) player.pc.movementSpeed = BaseMovementSpeed;
                 }
                 break;
         }
@@ -176,9 +188,14 @@ public class WeatherManager : MonoBehaviour
 
     private void SetPassiveDisasters()
     {
+        CancelInvoke(nameof(EarthQuake));
+        CancelInvoke(nameof(Temperature));
+        CancelInvoke(nameof(SetProperties));
+        if (windCoroutine != null) StopCoroutine(windCoroutine);
+
         InvokeRepeating(nameof(EarthQuake), 0, earthquakeTimer);
         InvokeRepeating(nameof(Temperature), 0, 0.001f);
-        StartCoroutine(Wind());
+        windCoroutine = StartCoroutine(Wind());
         Invoke(nameof(SetProperties), 1f);
     }
 
@@ -188,12 +205,17 @@ public class WeatherManager : MonoBehaviour
         CancelInvoke(nameof(Thunderstorm));
         CancelInvoke(nameof(EarthQuake));
         CancelInvoke(nameof(Temperature));
-        StopCoroutine(Wind());
+        CancelInvoke(nameof(SetProperties));
+        if (windCoroutine != null)
+        {
+            StopCoroutine(windCoroutine);
+            windCoroutine = null;
+        }
         disasters.Clear();
         if (player != null && preValuesInitialized)
         {
             player.regenerationMultiplier = preValues[0];
-            if (player.pc != null) player.pc.movementSpeed = preValues[1];
+            if (player.pc != null) player.pc.movementSpeed = BaseMovementSpeed;
         }
     }
     
@@ -206,13 +228,13 @@ public class WeatherManager : MonoBehaviour
             case WeatherType.Hot:
             case WeatherType.Cold:
                 player.regenerationMultiplier = 0.5f;
-                if (player.pc != null) player.pc.movementSpeed = preValues[1] * 0.9f;
+                if (player.pc != null) player.pc.movementSpeed = BaseMovementSpeed * 0.9f;
                 break;
             case WeatherType.Clear:
             case WeatherType.Rainy:
             default:
                 player.regenerationMultiplier = preValues[0];
-                if (player.pc != null) player.pc.movementSpeed = preValues[1];
+                if (player.pc != null) player.pc.movementSpeed = BaseMovementSpeed;
                 break;
         }
     }

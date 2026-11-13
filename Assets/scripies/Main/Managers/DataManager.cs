@@ -34,6 +34,7 @@ public class DataManager : MonoBehaviour
         public List<SpawnerSceneData> spawners = new();
         public List<DoorSpawnerHybridSceneData> doorSpawnerHybrids = new();
         public List<CheckPointSceneData> checkPoints = new();
+        public List<SectionSceneData> sections = new();
         public bool undiscoveredMap;
         public GameObject ItemToStore => GameObject.Find("persistentItem");
 
@@ -258,6 +259,13 @@ public class DataManager : MonoBehaviour
         public int activeCheckpoint;
         public bool isCurrent;
         public bool activated;
+    }
+
+    [Serializable]
+    public class SectionSceneData
+    {
+        public string sectionName;
+        public bool isActive;
     }
     #endregion
 
