@@ -4,15 +4,15 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices & Priorities:
-        A couple of small little things to look into, then we could get to finishing GRF
-            
+        I remade a bit of Cynder Valley, to make heading to Origo's shop easier to see
+        
     Optimisations & Hotfixes:
         
         Instability
 
             Issues from testing
-                Jerome's intro dialogue doesnt get removed from the active dialogue list after speaking it
-                    I may have accidentally added the respeakable bool on it
+                After losing to Cynder, the camera was still fixed to his section's camera
+                    Gemini fixed this before, but somehow it came back
                     
             One time occurrences or Rare/Intimidating bugs
                     

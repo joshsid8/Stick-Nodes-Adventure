@@ -60,8 +60,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 42fc952e064a1b445a0382282774002e, type: 2}
   canBeColoured: 1
   canBeBold: 1
-  respeakable: 0
-  speaker: Noxu
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
+  addToTop: 0
   dialoguesToAdd:
   - {fileID: 11400000, guid: 408731244617b5a4aa7445798dc0d4ea, type: 2}
   dialoguesToRemove:

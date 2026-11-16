@@ -40,8 +40,9 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 1
-  respeakable: 1
-  speaker: Noxu
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
+  addToTop: 0
   dialoguesToAdd: []
   dialoguesToRemove: []
   externalInstances:

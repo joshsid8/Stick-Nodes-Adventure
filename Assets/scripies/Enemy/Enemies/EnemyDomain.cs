@@ -306,7 +306,7 @@ public class EnemyDomain : MonoBehaviour
         returnElapsed = 0f;
         playerBounds.aggroTimer = playerBounds.aggroPeriod;
 
-        if (ef != null) ef.CeaseFlying();
+        if (ef != null && returnMethod == ReturnType.Flying) ef.CeaseFlying();
         else if (rb != null && rb.gravityScale == 0f) rb.gravityScale = 8f;
 
         if (ec != null && ec.enemyState != EnemyController.EnemyState.Dead)

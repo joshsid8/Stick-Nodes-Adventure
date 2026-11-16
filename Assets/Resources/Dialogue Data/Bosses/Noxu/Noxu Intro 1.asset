@@ -60,14 +60,15 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 1
-  speaker: Noxu
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
+  addToTop: 0
   dialoguesToAdd:
   - {fileID: 11400000, guid: 6cfa5a20770f557408dd62bd9a6c7ea6, type: 2}
   dialoguesToRemove: []
-  externalInstance: 
-  alteredExternalDialogues: []
+  externalInstances: []
   speakerType: 2
   doorsToControl:
   - doorName: Noxu Section
     openDoor: 0
-  respeakable: 0
+  shopItemsToAdd: []

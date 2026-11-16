@@ -17,9 +17,21 @@ MonoBehaviour:
   - thread: Yeah, i do, actually.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   - thread: Would you like an aspect based on extra strength or health?
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
+    useCameraEvents: 0
+    disablePreviousEvents: 0
+    cameraDistance: 0
+    zoomSpeed: 0
+    cameraTarget: 
+    cameraLookupType: 0
   pendingChoice: 1
   isAnimated: 1
   yesResponse:
@@ -37,7 +49,12 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  speaker: 
-  alteredDialogue: {fileID: 0}
-  externalInstance: 
-  alteredExternalDialogue: {fileID: 0}
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
+  addToTop: 0
+  dialoguesToAdd: []
+  dialoguesToRemove: []
+  externalInstances: []
+  speakerType: 0
+  doorsToControl: []
+  shopItemsToAdd: []

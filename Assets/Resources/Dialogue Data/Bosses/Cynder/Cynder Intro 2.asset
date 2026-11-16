@@ -58,10 +58,12 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 1
-  speaker: Cynder
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
+  addToTop: 0
   dialoguesToAdd: []
   dialoguesToRemove: []
-  externalInstance: 
-  alteredExternalDialogues: []
+  externalInstances: []
   speakerType: 2
-  respeakable: 0
+  doorsToControl: []
+  shopItemsToAdd: []

@@ -14,11 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: scripies.Core::scripies.Dialogue.DialogueObject
   npcName: Informaton
   dialogueThread:
-  - thread: 'Upwards lead you to the upper area of Origo, where a shop resides!
-
-
-      Right
-      is the path toward the boss of this area.'
+  - thread: Translucent platforms can be jumped through! Hold down and press the
+      jump button to descend off one.
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
     useCameraEvents: 0
@@ -27,13 +24,12 @@ MonoBehaviour:
     zoomSpeed: 1
     cameraTarget: 
     cameraLookupType: 0
-  - thread: Check the shop out first to further stand ready for the boss you're about
-      to face!
+  - thread: '#Does He Know?'
     dialogueColour: {r: 0, g: 0, b: 0, a: 1}
     isBold: 0
     useCameraEvents: 0
     disablePreviousEvents: 0
-    cameraDistance: 10
+    cameraDistance: 6
     zoomSpeed: 1
     cameraTarget: 
     cameraLookupType: 0
@@ -54,7 +50,9 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  respeakable: 1
+  fixedDialogue: 1
+  bypassSpokenDialogue: 0
+  addToTop: 0
   dialoguesToAdd: []
   dialoguesToRemove: []
   externalInstances: []

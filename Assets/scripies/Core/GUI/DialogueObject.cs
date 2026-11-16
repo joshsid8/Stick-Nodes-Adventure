@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using scripies.Dialogue;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace scripies.Dialogue
 {
@@ -58,7 +59,10 @@ namespace scripies.Dialogue
         public bool canBeBold;
 
         [Header("NPC Control")]
-        public bool respeakable = true;
+        [Tooltip("This will prevent the dialogue from being removed from the speaker's dialogue list. most useful for npcs with only 1 piece of dialogue")]
+        public bool fixedDialogue = true;
+        [Tooltip("Lesser version of fixedDialogue. if true, npcs can use spoken dialogue again. good for repeatable quests & shopkeepers")]
+        public bool bypassSpokenDialogue;
         [Tooltip("If true, this dialogue is added to the top (played first) of the dialogue list. If false, it is added to the bottom so intro/prior dialogues play first.")]
         public bool addToTop;
         

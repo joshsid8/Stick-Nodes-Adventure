@@ -60,8 +60,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 324dc0839a888484da1b58cbf1ccaadd, type: 2}
   canBeColoured: 0
   canBeBold: 0
-  respeakable: 0
-  speaker: 
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
+  addToTop: 0
   dialoguesToAdd: []
   dialoguesToRemove: []
   externalInstances:

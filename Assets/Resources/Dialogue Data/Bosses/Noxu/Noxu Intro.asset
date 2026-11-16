@@ -51,7 +51,9 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 1
   canBeBold: 1
-  respeakable: 0
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
+  addToTop: 0
   dialoguesToAdd:
   - {fileID: 0}
   dialoguesToRemove: []

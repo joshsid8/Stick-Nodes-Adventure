@@ -40,7 +40,8 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  respeakable: 0
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
   addToTop: 0
   dialoguesToAdd: []
   dialoguesToRemove: []

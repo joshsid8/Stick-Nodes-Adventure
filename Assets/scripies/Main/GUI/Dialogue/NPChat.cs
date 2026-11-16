@@ -84,7 +84,7 @@ namespace scripies.Dialogue
                     if (priorityDialogue != null)
                     {
                         DialogueManager.Instance.ShowDialogue(priorityDialogue, npc);
-                        if (!spokenDialogue.Contains(priorityDialogue) && !priorityDialogue.respeakable) spokenDialogue.Add(priorityDialogue);
+                        if (!spokenDialogue.Contains(priorityDialogue) && !priorityDialogue.fixedDialogue) spokenDialogue.Add(priorityDialogue);
                         if (priorityDialogue.PendingChoice) dialogue.Remove(priorityDialogue);
                     }
                 }
@@ -96,20 +96,17 @@ namespace scripies.Dialogue
             else if (indicator != null) indicator.SetActive(false);
         }
         
-        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker = null) => AddDialogue(dialogueObject, speaker, null);
-        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker, bool addToTop) => AddDialogue(dialogueObject, speaker, (bool?)addToTop);
+        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker, bool addToTop) => AddDialogue(dialogueObject, speaker);
 
-        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker, bool? addToTop)
+        public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker)
         {
             if (speaker != gameObject || dialogueObject == null) return;
             var dto = dialogueObject as DialogueObject;
-            if (dto == null || spokenDialogue.Contains(dto)) return;
-
-            bool shouldAddToTop = addToTop ?? dto.addToTop;
+            if (dto == null || spokenDialogue.Contains(dto) && !dto.bypassSpokenDialogue) return;
 
             if (dialogue.Contains(dto))
             {
-                if (shouldAddToTop && dialogue.Count > 0 && dialogue[^1] != dto)
+                if (dto.addToTop && dialogue.Count > 0 && dialogue[^1] != dto)
                 {
                     dialogue.Remove(dto);
                     dialogue.Add(dto);
@@ -117,7 +114,7 @@ namespace scripies.Dialogue
             }
             else
             {
-                if (shouldAddToTop) dialogue.Add(dto);
+                if (dto.addToTop) dialogue.Add(dto);
                 else dialogue.Insert(0, dto);
             }
             //else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
@@ -130,7 +127,6 @@ namespace scripies.Dialogue
         {
             GameEvents.OnToggleDialogueTrigger += ToggleDialogueTrigger;
             GameEvents.AddDialogue += OnAddDialogue;
-            GameEvents.AddDialoguePriority += AddDialogue;
             GameEvents.RemoveDialogue += RemoveDialogue;
             GameEvents.OnDialogueClose += RemoveSpokenDialogue;
         }
@@ -138,12 +134,11 @@ namespace scripies.Dialogue
         {
             GameEvents.OnToggleDialogueTrigger -= ToggleDialogueTrigger;
             GameEvents.AddDialogue -= OnAddDialogue;
-            GameEvents.AddDialoguePriority -= AddDialogue;
             GameEvents.RemoveDialogue -= RemoveDialogue;
             GameEvents.OnDialogueClose -= RemoveSpokenDialogue;
         }
 
-        private void OnAddDialogue(ScriptableObject dialogueObject, GameObject speaker) => AddDialogue(dialogueObject, speaker, null);
+        private void OnAddDialogue(ScriptableObject dialogueObject, GameObject speaker) => AddDialogue(dialogueObject, speaker);
 
         private void ToggleDialogueTrigger(GameObject obj, bool state)
         {
@@ -164,7 +159,7 @@ namespace scripies.Dialogue
         {
             if (dialogueToRemove == null) return;
             var dto = dialogueToRemove as DialogueObject;
-            if (dto == null || dto.respeakable) return;
+            if (dto == null || dto.fixedDialogue) return;
             if (!spokenDialogue.Contains(dto) && dialogue.Contains(dto)) spokenDialogue.Add(dto);
             if (!dialogue.Contains(dto)) return;
             if (dialogue.Count <= 1 && (!canHaveNullList || fixedDialogue)) return;

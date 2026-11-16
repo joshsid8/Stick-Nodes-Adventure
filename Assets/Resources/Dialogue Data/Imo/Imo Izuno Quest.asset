@@ -67,11 +67,13 @@ MonoBehaviour:
   itemType: []
   canBeColoured: 0
   canBeBold: 0
-  speaker: Imo
+  fixedDialogue: 0
+  bypassSpokenDialogue: 0
+  addToTop: 0
   dialoguesToAdd:
   - {fileID: 11400000, guid: 12252039249f50147b5d5a547b8070ff, type: 2}
   dialoguesToRemove: []
-  externalInstance: 
-  alteredExternalDialogues: []
-  openShopOnClose: 0
-  respeakable: 0
+  externalInstances: []
+  speakerType: 0
+  doorsToControl: []
+  shopItemsToAdd: []
