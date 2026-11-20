@@ -136,7 +136,7 @@ namespace scripies.Enemy
         private void OnDisable()
         {
             isAttacking = false;
-            if (canFly) ef.CeaseFlying();
+            if (canFly && ef.isFlying && eh.isDead) ef.CeaseFlying();
         }
 
         private void Update()

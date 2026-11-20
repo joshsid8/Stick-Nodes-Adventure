@@ -807,6 +807,10 @@ MonoBehaviour:
   - 0.7
   - 0.7
   - 0.7
+  ostBpm:
+  - 130
+  - 130
+  - 130
   mapDisasterNames:
   - Temperature
   - Earthquake
@@ -826,6 +830,7 @@ MonoBehaviour:
   spawnerObjects: []
   doorSpawnerObjects: []
   checkPointObjects: []
+  sectionObjects: []
   enemySceneData: []
   enemyIds: 01000000
   bossSceneData:
@@ -839,6 +844,8 @@ MonoBehaviour:
   spawnerSceneData: []
   doorSpawnerHybridSceneData: []
   checkPointSceneData: []
+  sectionSceneData: []
+  sceneLoaded: 0
 --- !u!114 &289567851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -855,6 +862,7 @@ MonoBehaviour:
   weatherProperties:
   - weatherMapName: Heat Place
     weatherMapDesc: JESUS CHRIST ITS HOT OUT HERE >:(
+    weatherDuration: 60
     weatherTextColor: {r: 0.9528302, g: 0.72387344, b: 0.50787646, a: 1}
     weatherBgColor: {r: 0.7254902, g: 0.5176471, b: 0.31764707, a: 1}
     weatherOst:
@@ -865,8 +873,13 @@ MonoBehaviour:
     - 0.7
     - 1
     - 0.7
+    weatherOstBpm:
+    - 130
+    - 130
+    - 130
   - weatherMapName: Cold Place
     weatherMapDesc: '*Freeze gun mk!! sound effect*'
+    weatherDuration: 60
     weatherTextColor: {r: 0.50980395, g: 0.9529412, b: 0.93078697, a: 1}
     weatherBgColor: {r: 0.31764707, g: 0.65114826, b: 0.7254902, a: 1}
     weatherOst:
@@ -877,7 +890,12 @@ MonoBehaviour:
     - 1
     - 1
     - 1
-  sm: {fileID: 0}
+    weatherOstBpm:
+    - 130
+    - 130
+    - 130
+  freezeWeather: 0
+  weatherDurationTimer: 60
   randomWeather: 0
   weatherChance: 10
   earthquakeTimer: 0.2
@@ -1504,7 +1522,7 @@ Transform:
   m_GameObject: {fileID: 441747041}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.5791855, y: -7.8302994, z: 0}
+  m_LocalPosition: {x: 8.5791855, y: -7.8302994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1656,14 +1674,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 361743893}
     m_Modifications:
-    - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: id
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
-      propertyPath: typeOfObject
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 2761374905458116818, guid: 5a307994f5833684fa9b6227f0484829, type: 3}
       propertyPath: m_Name
       value: checkPoint
@@ -1723,6 +1733,14 @@ PrefabInstance:
     - target: {fileID: 8578506282792491476, guid: 5a307994f5833684fa9b6227f0484829, type: 3}
       propertyPath: m_Offset.y
       value: -3.8222504
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: id
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154066909178485593, guid: 75a0d31bf09d8ff45a5013cc31bca53f, type: 3}
+      propertyPath: typeOfObject
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2776,8 +2794,8 @@ Transform:
   m_GameObject: {fileID: 889806016}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -28.516779, y: -12.667791, z: 0}
-  m_LocalScale: {x: -2.8625793, y: 4.1210666, z: 0.3}
+  m_LocalPosition: {x: -25.016779, y: -12.667791, z: 0}
+  m_LocalScale: {x: -7.8621016, y: 4.1210666, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 289567847}
@@ -3336,7 +3354,7 @@ Transform:
   m_GameObject: {fileID: 1041742246}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.179184, y: -5.6302986, z: 0}
+  m_LocalPosition: {x: 27.179184, y: -5.6302986, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3689,8 +3707,8 @@ Transform:
   m_GameObject: {fileID: 1345525635}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.544222, y: -16.634804, z: 0}
-  m_LocalScale: {x: -38.777267, y: -3.8141074, z: 0.3}
+  m_LocalPosition: {x: -22.044222, y: -16.634804, z: 0}
+  m_LocalScale: {x: -43.775658, y: -3.8141074, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 289567847}
@@ -3827,8 +3845,8 @@ Transform:
   m_GameObject: {fileID: 1352014754}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -48.16634, y: 41.6165, z: 0}
-  m_LocalScale: {x: 2.4359233, y: -13.324937, z: 0.3}
+  m_LocalPosition: {x: -48.16634, y: 41.5256, z: 0}
+  m_LocalScale: {x: 2.4359233, y: -13.1423855, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 289567847}
@@ -4502,7 +4520,7 @@ Transform:
   m_GameObject: {fileID: 1710120111}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5620322, y: -14.886901, z: 0}
+  m_LocalPosition: {x: 5.562032, y: -14.886901, z: 0}
   m_LocalScale: {x: 11.441407, y: 7.310277, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []

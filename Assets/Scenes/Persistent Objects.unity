@@ -14289,11 +14289,12 @@ MonoBehaviour:
   - targetNpc: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
     itemsToConf:
     - type: 0
+      requireFirstTime: 1
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: 7f20e3033c28f84429296cd7a255a114, type: 3}
         m_SceneName: Fiery Shop Teste
-      requireFirstTime: 1
       bossName: 
+      dialogueSpoken: {fileID: 0}
       targetNpc: {fileID: 0}
       dialogueToUse:
       - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
@@ -14311,11 +14312,12 @@ MonoBehaviour:
         overwrittenDescription: 
       objectsToToggle: []
     - type: 0
+      requireFirstTime: 1
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: 8824045789d114e479dae4c4e136ef50, type: 3}
         m_SceneName: Watery Shop Teste
-      requireFirstTime: 1
       bossName: 
+      dialogueSpoken: {fileID: 0}
       targetNpc: {fileID: 0}
       dialogueToUse:
       - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
@@ -14333,11 +14335,12 @@ MonoBehaviour:
         overwrittenDescription: 
       objectsToToggle: []
     - type: 0
+      requireFirstTime: 1
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: c17717ef050b59f438f8b80ae4861300, type: 3}
         m_SceneName: Earthly Shop Teste
-      requireFirstTime: 1
       bossName: 
+      dialogueSpoken: {fileID: 0}
       targetNpc: {fileID: 0}
       dialogueToUse:
       - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
@@ -14351,11 +14354,12 @@ MonoBehaviour:
         overwrittenDescription: 
       objectsToToggle: []
     - type: 0
+      requireFirstTime: 1
       targetScene:
         m_SceneAsset: {fileID: 102900000, guid: 33f66858f4115224089d315b369e51ef, type: 3}
         m_SceneName: Airy Shop Teste
-      requireFirstTime: 1
       bossName: 
+      dialogueSpoken: {fileID: 0}
       targetNpc: {fileID: 0}
       dialogueToUse:
       - externalInstance: {fileID: 11400000, guid: f76b8cbc1204a1d4d9424481452854d4, type: 2}
@@ -14369,12 +14373,13 @@ MonoBehaviour:
         overwrittenDescription: I dont know where i got this from... They fire tho
       objectsToToggle: []
   itemsToConfigure:
-  - type: 1
-    targetScene:
-      m_SceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
-      m_SceneName: Fire Teste
+  - type: 2
     requireFirstTime: 0
-    bossName: Cynder
+    targetScene:
+      m_SceneAsset: {fileID: 0}
+      m_SceneName: Fire Teste
+    bossName: 
+    dialogueSpoken: {fileID: 11400000, guid: 0b22e34c35f938b44ac0a55b5b4d5013, type: 2}
     targetNpc: {fileID: 0}
     dialogueToUse: []
     itemsToAdd: []
@@ -21805,15 +21810,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36.73057
+      value: 73.621506
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.9775906
+      value: 49.897545
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.00007200241
+      value: -0.00041288137
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23257,7 +23262,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 37.11741, y: 7.0314655, z: -0.05961132}
+  m_LocalPosition: {x: 74.00835, y: 49.95142, z: -0.059952736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24506,7 +24511,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 255.34813, y: 86.897675, z: -0.059537888}
+  m_LocalPosition: {x: 75.98866, y: 54.175503, z: -0.059952736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30846,7 +30851,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7.48
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

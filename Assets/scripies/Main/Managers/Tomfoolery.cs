@@ -33,6 +33,7 @@ public class Tomfoolery : MonoBehaviour
         GameEvents.AddShopItems += AddShopItems;
         GameEvents.OnEnterMap += ConfigureNpcItemsOnMapEnter;
         GameEvents.OnBossDefeated += ConfigureOnBossDefeat;
+        GameEvents.OnDialogueClose += ConfigureOnDialogueSpoken;
         GameEvents.OnDamageDealt += IsDamageTooHigh;
     }
     
@@ -42,6 +43,7 @@ public class Tomfoolery : MonoBehaviour
         GameEvents.AddShopItems -= AddShopItems;
         GameEvents.OnEnterMap -= ConfigureNpcItemsOnMapEnter;
         GameEvents.OnBossDefeated -= ConfigureOnBossDefeat;
+        GameEvents.OnDialogueClose -= ConfigureOnDialogueSpoken;
         GameEvents.OnDamageDealt -= IsDamageTooHigh;
     }
 
@@ -232,12 +234,32 @@ public class Tomfoolery : MonoBehaviour
         }
     }
 
+    private void ConfigureOnDialogueSpoken(ScriptableObject dialogue, NPC npcWeDontWorryAbout)
+    {
+        var dia = dialogue as DialogueObject;
+        if (dia == null) return;
+        
+        foreach (var item in itemsToConfigure.Where(i => i.type == EventType.OnDialogueSpoken && i.dialogueSpoken == dia))
+        {
+            ExecuteEventConfig(item);
+        }
+
+        foreach (var itemsOnEvent in npcItemsToConfigureOnEvent)
+        {
+            if (itemsOnEvent.itemsToConf == null) continue;
+            foreach (var item in itemsToConfigure.Where(i => i.type == EventType.OnDialogueSpoken && i.dialogueSpoken == dia))
+            {
+                ExecuteEventConfig(item, itemsOnEvent.targetNpc);
+            }
+        }
+    }
+
     private void IsDamageTooHigh(float damage, float threshold = 50)
     {
         if (damage > threshold) GameEvents.TriggerBoom(shenanigans.jumpScareClips[Range(0, shenanigans.jumpScareClips.Length)]);
     }
     
-    public enum EventType { PlayerMapEnter, BossDefeated }
+    public enum EventType { PlayerMapEnter, BossDefeated, OnDialogueSpoken }
 
     [Serializable]
     public struct NpcItemsOnEvent
@@ -249,11 +271,11 @@ public class Tomfoolery : MonoBehaviour
     [Serializable]
     public struct ItemsToConfigure
     {
-        [Header("Trigger Condition")]
         public EventType type;
-        public SceneField targetScene;
-        public bool requireFirstTime;
-        [Tooltip("For BossDefeated")] public string bossName;
+        [Tooltip("For OnMapEnter for now, but others later")] public bool requireFirstTime;
+        [Header("For OnMapEnter")] public SceneField targetScene;
+        [Header("For BossDefeated")] public string bossName;
+        [Header("For DialogueSpoken")] public DialogueObject dialogueSpoken;
         
         [Header("NPC & Shop Actions (Optional)")]
         public NPC targetNpc;

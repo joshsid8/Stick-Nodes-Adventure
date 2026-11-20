@@ -105,7 +105,9 @@ public class SectionManager : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player") || !activeSection) return;
-        if (TryGetComponent<Collider2D>(out var col) && col.OverlapPoint(collision.transform.position)) return;
+        
+        // below isnt consistent and breaks boss section stuff from time to time
+        //if (TryGetComponent<Collider2D>(out var col) && col.OverlapPoint(collision.transform.position)) return;
 
         activeSection = false;
         if (ActiveSection == this) ActiveSection = null;
