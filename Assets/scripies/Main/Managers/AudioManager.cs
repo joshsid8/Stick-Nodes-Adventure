@@ -45,8 +45,8 @@ public class AudioManager : MonoBehaviour, IAudioStatus
 
     public AudioClip[] backgroundMusic;
     public float[] backgroundMusicVolume;
-    [Tooltip("Manual BPM for each slot in backgroundMusic (0 = Area, 1 = Combat, 2 = Boss).")]
-    public float[] backgroundMusicBpm = { 130f, 130f, 130f };
+    //[Tooltip("Manual BPM for each slot in backgroundMusic (0 = Area, 1 = Combat, 2 = Boss).")]
+    //public float[] backgroundMusicBpm = { 130f, 130f, 130f };
     [Tooltip("If true for a slot (0 = Area, 1 = Combat, 2 = Boss), switching to that slot skips beat sync and plays immediately.")]
     public bool[] playSlotImmediately = { false, false, true };
 
@@ -213,10 +213,10 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         }
 
         // 2. Otherwise check the per-slot BPM array (0 = Area, 1 = Combat, 2 = Boss)
-        if (!foundInDatabase && backgroundMusicBpm != null && trackIndex >= 0 && trackIndex < backgroundMusicBpm.Length && backgroundMusicBpm[trackIndex] > 0f)
-        {
-            resolvedBpm = backgroundMusicBpm[trackIndex];
-        }
+        // if (!foundInDatabase && backgroundMusicBpm != null && trackIndex >= 0 && trackIndex < backgroundMusicBpm.Length && backgroundMusicBpm[trackIndex] > 0f)
+        // {
+        //     resolvedBpm = backgroundMusicBpm[trackIndex];
+        // }
 
         var beatLength = 60f / resolvedBpm;
         return beatLength * resolvedBeatsPerBar;
@@ -294,7 +294,7 @@ public class AudioManager : MonoBehaviour, IAudioStatus
         CancelPendingScheduledSwitch();
         fadeCoroutine = StartCoroutine(BeginMusic(index, fade, immediate));
     }
-
+    // Gemini went crazy here... cant do everything amirite! HA!
     private IEnumerator BeginMusic(int index, bool fade, bool immediate = false)
     {
         if (index < 0 || index >= backgroundMusic.Length) yield break;

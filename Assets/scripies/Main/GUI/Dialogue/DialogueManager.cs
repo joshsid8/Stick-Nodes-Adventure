@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using scripies.Core;
 using scripies.Player;
@@ -264,16 +265,34 @@ namespace scripies.Dialogue
             {
                 if (extIn.externalInstance == null) continue;
                 var instance = extIn;
-                var externalInstance = ObjectDatabase.Instance.GetEntityObjByName(instance.externalInstance.name, true);
+                var matchedInstances = new List<GameObject>();
+                if (ObjectDatabase.Instance != null)
+                {
+                    foreach (var entity in ObjectDatabase.Instance.allEntities)
+                    {
+                        if (entity == null) continue;
+                        if (entity.TryGetComponent<NPChat>(out var chat) && chat.npc == instance.externalInstance)
+                            matchedInstances.Add(entity);
+                        else if (entity.name == instance.externalInstance.name)
+                            matchedInstances.Add(entity);
+                    }
+                }
+                var externalInstance = matchedInstances.Count > 0
+                    ? matchedInstances[0]
+                    : ObjectDatabase.Instance.GetEntityObjByName(instance.externalInstance.name, true);
                 found:
                 if (externalInstance != null)
                 {
-                    //print($"found our instance: {instance.externalInstance} is already loaded!");
+                    if (!matchedInstances.Contains(externalInstance)) matchedInstances.Add(externalInstance);
                     yield return new WaitForSeconds(0.05f);
-                    foreach (var dialogue in instance.externalDialoguesToRemove)
-                        GameEvents.TriggerRemoveDialogue(dialogue, externalInstance);
-                    foreach (var dialogue in instance.externalDialoguesToAdd)
-                        GameEvents.TriggerAddDialogue(dialogue, externalInstance);
+                    foreach (var targetObj in matchedInstances)
+                    {
+                        if (targetObj == null) continue;
+                        foreach (var dialogue in instance.externalDialoguesToRemove)
+                            GameEvents.TriggerRemoveDialogue(dialogue, targetObj);
+                        foreach (var dialogue in instance.externalDialoguesToAdd)
+                            GameEvents.TriggerAddDialogue(dialogue, targetObj);
+                    }
                 }
                 else
                 {

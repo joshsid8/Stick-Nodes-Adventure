@@ -77,23 +77,60 @@ public class DataManager : MonoBehaviour
         GameEvents.OnQuitToMainMenu -= Cleanup;
     }
     
+    private void DeduplicateNpcs()
+    {
+        for (var i = 0; i < npcs.Count; i++)
+        {
+            var primary = npcs[i];
+            if (primary == null || string.IsNullOrEmpty(primary.activeNpcName)) continue;
+            for (var j = npcs.Count - 1; j > i; j--)
+            {
+                var dup = npcs[j];
+                if (dup == null || dup.activeNpcName != primary.activeNpcName) continue;
+                var mergedSpoken = (primary.spokenDialogue ?? Array.Empty<DialogueObject>())
+                    .Union(dup.spokenDialogue ?? Array.Empty<DialogueObject>())
+                    .Where(d => d != null)
+                    .ToArray();
+                var mergedDialogue = (primary.dialogue ?? Array.Empty<DialogueObject>())
+                    .Union(dup.dialogue ?? Array.Empty<DialogueObject>())
+                    .Where(d => d != null)
+                    .ToArray();
+                primary.spokenDialogue = mergedSpoken;
+                primary.dialogue = mergedDialogue;
+                if ((primary.shopItems == null || primary.shopItems.Length == 0) && dup.shopItems is { Length: > 0 })
+                    primary.shopItems = dup.shopItems;
+                npcs.RemoveAt(j);
+            }
+        }
+    }
+
     private void SaveNpcData() => StartCoroutine(SaveNpcDataC());
     private IEnumerator SaveNpcDataC()
     {
         yield return new WaitForSecondsRealtime(0.05f);
-        var maps = MapManager.Instances.Values.ToArray();
+        DeduplicateNpcs();
+        var maps = MapManager.Instances.Values
+            .Where(m => m != null && m.sceneLoaded && m.npcDataInitialised)
+            .OrderBy(m => m.activeMap ? 1 : 0)
+            .ToArray();
+        var anyActiveMap = maps.Any(m => m.activeMap);
+
         for (var m = 0; m < maps.Length; m++)
         {
             var map = maps[m];
-            if (map == null || !map.sceneLoaded) continue;
             map.UpdateLists();
             for (var n = 0; n < map.npcSceneData.Count; n++)
             {
                 var nData = map.npcSceneData[n];
                 if (nData.activeNpc == null || string.IsNullOrEmpty(nData.npcName)) continue;
-                var npc = npcs.Find(x =>
-                    x.activeNpcName == nData.npcName &&
-                    (nData.willTravel || string.IsNullOrEmpty(x.sceneName) || x.sceneName == map.sceneName));
+                var npc = npcs.Find(x => x.activeNpcName == nData.npcName);
+
+                // If another loaded map is currently the active map and also contains this NPC, let only the active map overwrite it
+                if (npc != null && anyActiveMap && !map.activeMap)
+                {
+                    var existsInActiveMap = maps.Any(am => am.activeMap && am.npcSceneData.Any(nd => nd.npcName == nData.npcName));
+                    if (existsInActiveMap) continue;
+                }
 
                 if (npc == null)
                 {
@@ -101,7 +138,7 @@ public class DataManager : MonoBehaviour
                     {
                         activeNpcName = nData.npcName,
                         sceneName = map.sceneName,
-                        willTravel = nData.willTravel,
+                        willTravel = true,
                         dialogue = nData.dialogue != null ? nData.dialogue.ToArray() : Array.Empty<DialogueObject>(),
                         spokenDialogue = nData.spokenDialogue != null ? nData.spokenDialogue.ToArray() : Array.Empty<DialogueObject>(),
                         shopItems = nData.shopItems
@@ -110,23 +147,42 @@ public class DataManager : MonoBehaviour
                 else
                 {
                     npc.sceneName = map.sceneName;
-                    npc.willTravel = nData.willTravel;
+                    npc.willTravel = true;
                     npc.dialogue = nData.dialogue != null ? nData.dialogue.ToArray() : Array.Empty<DialogueObject>();
                     npc.spokenDialogue = nData.spokenDialogue != null ? nData.spokenDialogue.ToArray() : Array.Empty<DialogueObject>();
                     npc.shopItems = nData.shopItems;
                 }
             }
         }
+        DialogueCleanup();
+    }
+    
+    private void DialogueCleanup()
+    {
+        foreach (var npc in npcs)
+        {
+            var dialogueList = (npc.dialogue ?? Array.Empty<DialogueObject>()).Where(d => d != null).ToList();
+            var spokenDialogueList = (npc.spokenDialogue ?? Array.Empty<DialogueObject>()).Where(d => d != null).ToList();
+            for (var i = dialogueList.Count - 1; i >= 0; i--)
+            {
+                var d = dialogueList[i];
+                if (d.bypassSpokenDialogue || d.fixedDialogue || !spokenDialogueList.Contains(d)) continue;
+                print($"[DataManager] dialogue from {npc.activeNpcName} had unrepeatable dialogue that's already been spoken! Removing...");
+                dialogueList.RemoveAt(i);
+            }
+            npc.dialogue = dialogueList.ToArray();
+        }
     }
 
     private void StuffOnMapEnter(string mapName, bool firstTime)
     {
-        Invoke(nameof(LoadNpcData), 0.1f);
+        LoadNpcData();
     }
     
     private void LoadNpcData()
     {
         npcDataLoaded = false;
+        DeduplicateNpcs();
         var maps = MapManager.Instances.Values.ToArray();
         for (var m = 0; m < maps.Length; m++)
         {
@@ -137,10 +193,24 @@ public class DataManager : MonoBehaviour
             {
                 var npcData = map.npcSceneData[n];
                 if (npcData.activeNpc == null || npcData.activeNpc.IsDestroyed()) continue;
-                var dataNpc = npcs.Find(x =>
-                    x.activeNpcName == npcData.npcName &&
-                    (npcData.willTravel || string.IsNullOrEmpty(x.sceneName) || x.sceneName == map.sceneName));
-                if (dataNpc == null) continue;
+                var dataNpc = npcs.Find(x => x.activeNpcName == npcData.npcName);
+                if (dataNpc == null)
+                {
+                    dataNpc = new NpcData
+                    {
+                        activeNpcName = npcData.npcName,
+                        sceneName = map.sceneName,
+                        willTravel = true,
+                        dialogue = npcData.dialogue != null ? npcData.dialogue.ToArray() : Array.Empty<DialogueObject>(),
+                        spokenDialogue = npcData.spokenDialogue != null ? npcData.spokenDialogue.ToArray() : Array.Empty<DialogueObject>(),
+                        shopItems = npcData.shopItems
+                    };
+                    npcs.Add(dataNpc);
+                    continue;
+                }
+
+                dataNpc.sceneName = map.sceneName;
+                dataNpc.willTravel = true;
 
                 if (npcData.activeNpc.TryGetComponent<NPChat>(out var dTrigger))
                 {
@@ -162,7 +232,9 @@ public class DataManager : MonoBehaviour
                     shopKeeper.shopItems.AddRange(dataNpc.shopItems);
                 }
             }
+            map.npcDataInitialised = true;
         }
+        DialogueCleanup();
         npcDataLoaded = true;
     }
     

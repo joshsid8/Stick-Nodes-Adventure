@@ -55,7 +55,11 @@ namespace scripies.Dialogue
             npc = GetComponent<Identifier>().entity as NPC;
             var playerObject = PlayerHealth.Instance.gameObject;
             if (playerObject != null) playerTransform = playerObject.transform;
-            if (isShopkeeper) shopKeeper = GetComponent<ShopKeeper>();
+            if (isShopkeeper)
+            {
+                shopKeeper = GetComponent<ShopKeeper>();
+                canHaveNullList = true;
+            }
             
             if (fixedDialogue) canHaveNullList = false;
             if (dialogue.Count == 0 && !canHaveNullList) throw new ArgumentNullException($"[NPChat] WWHHHAT?! {gameObject.name} HAS NO DIALOGUE!!! HOWWW");
@@ -64,7 +68,7 @@ namespace scripies.Dialogue
         private void LateUpdate()
         {
             var inputDirection = Input.GetAxisRaw("Vertical");
-            if (chatInterval <= 0) isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
+            if (chatInterval <= 0 && !ShopManager.Instance.isActive) isInRange = Physics2D.OverlapCircle(chatPoint.position, chatRadius, pLayer);
             if (DialogueManager.Instance.dialogueBox != null && !DialogueManager.Instance.dialogueBox.activeInHierarchy && isTriggered) isTriggered = false;
             chatInterval -= Time.deltaTime;
             
@@ -95,6 +99,17 @@ namespace scripies.Dialogue
             }
             else if (indicator != null) indicator.SetActive(false);
         }
+
+        private void DialogueCleanup()
+        {
+            for (var i = 0; i < dialogue.Count; i++)
+            {
+                var d = dialogue[i];
+                if (d.bypassSpokenDialogue || d.fixedDialogue || !dialogue.Contains(d) || !spokenDialogue.Contains(d)) continue;
+                print($"[NPChat] dialogue from {gameObject.name} had unrepeatable dialogue that's already been spoken! Removing...");
+                dialogue.Remove(d);
+            }
+        }
         
         public void AddDialogue(ScriptableObject dialogueObject, GameObject speaker, bool addToTop) => AddDialogue(dialogueObject, speaker);
 
@@ -118,6 +133,8 @@ namespace scripies.Dialogue
                 else dialogue.Insert(0, dto);
             }
             //else print($"Tried to add some existing dialogue ({dialogueObject.name}) to {gameObject.name}");
+            
+            DialogueCleanup();
             GameEvents.TriggerPersistGameData();
         }
         
@@ -170,11 +187,10 @@ namespace scripies.Dialogue
         private IEnumerator RemoveDialogue(DialogueObject dto)
         {
             yield return new WaitForSeconds(0.01f);
-            if (dialogue.Contains(dto))
-            {
-                dialogue.RemoveAt(dialogue.IndexOf(dto)); 
-                GameEvents.TriggerPersistGameData();
-            }
+            if (!dialogue.Contains(dto)) yield break;
+            dialogue.RemoveAt(dialogue.IndexOf(dto));
+            DialogueCleanup();
+            GameEvents.TriggerPersistGameData();
         }
         
         private void OnDrawGizmosSelected()

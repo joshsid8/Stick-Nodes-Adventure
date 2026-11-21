@@ -21810,15 +21810,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 73.621506
+      value: 255.6215
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 49.897545
+      value: 85.89755
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.00041288137
+      value: -0.00044614077
       objectReference: {fileID: 0}
     - target: {fileID: 8190457864786111480, guid: e88585536c850ce4385fa5ec67559865, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23262,7 +23262,7 @@ Transform:
   m_GameObject: {fileID: 1237144381337846748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 74.00835, y: 49.95142, z: -0.059952736}
+  m_LocalPosition: {x: 256.00833, y: 85.95143, z: -0.059986115}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24195,10 +24195,6 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  backgroundMusicBpm:
-  - 130
-  - 130
-  - 130
   playSlotImmediately: 000001
   trackBpmData:
   - clip: {fileID: 8300000, guid: 4ce7f5177ccbeaf48acc3fc90841ec29, type: 3}
@@ -24511,7 +24507,7 @@ Transform:
   m_GameObject: {fileID: 4086155424785609643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 75.98866, y: 54.175503, z: -0.059952736}
+  m_LocalPosition: {x: 255.34813, y: 107.897675, z: -0.059537888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30851,7 +30847,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 7.48
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

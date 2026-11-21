@@ -105,7 +105,7 @@ public class Tomfoolery : MonoBehaviour
             var newShopItems = npc.shopItems != null ? npc.shopItems.ToList() : new List<ShopKeeperItem>();
             newShopItems.AddRange(shopItems);
 
-            GameObject activeNpc = null;
+            var matchedNpcs = new List<GameObject>();
             if (ObjectDatabase.Instance != null)
             {
                 foreach (var entity in ObjectDatabase.Instance.allEntities)
@@ -113,19 +113,17 @@ public class Tomfoolery : MonoBehaviour
                     if (entity == null) continue;
                     entity.TryGetComponent(out NPChat npcChat);
                     if (npcChat == null || npcChat.npc != keeper) continue;
-                    activeNpc = entity.gameObject;
-                    break;
+                    matchedNpcs.Add(entity.gameObject);
                 }
             }
-            
-            if (activeNpc != null)
+
+            npc.shopItems = newShopItems.ToArray();
+            foreach (var activeNpc in matchedNpcs)
             {
-                //print($"NPC {keeper.name} is already active. adding items directly");
                 activeNpc.TryGetComponent(out ShopKeeper shopKeeper);
                 if (shopKeeper == null) print($"NPC {keeper.name} is not a shopkeeper tho");
                 else shopKeeper.AddShopItems(newShopItems.ToArray(), activeNpc);
             }
-            else npc.shopItems = newShopItems.ToArray();
             
             GameEvents.TriggerPersistGameData();
             //print($"Added {shopItems.Length} items to {keeper.name}");

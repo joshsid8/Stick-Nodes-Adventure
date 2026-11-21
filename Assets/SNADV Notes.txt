@@ -4,41 +4,35 @@ SNADV Notes
     This will be the notes of what will be Fixed, Added, and potentially changed in the upcoming game.
     
     Notices & Priorities:
-        The preference issue with Cynder's section being turned off immediately has been easily fixed
-            Instead of changing the states of the section right when the boss dies, 
-            i added a new event type to disable the section once the boss dialogue has been spoken
-                With this i can manipulate a lot of things in game once dialogue has been spoken.
-                    I should make events happen DURING dialogue or something: add an event to be triggered if i want part of a dialogue to cause an event
-        
+        Small fixes here and there, we are prolly gonna focus on refactoring the Weather Manager next
+    
     Optimisations & Hotfixes:
         
         Instability
 
-            Issues from testing
-                Jerome's intro dialogue was spread across each shop for some reason
-                    The other elements intro was synced too, but the intro dialogue is meant to never be spoken again
-                    
-                When the weather timer gets reset, if it is the same weather as prior,
-                it sometimes can cause a different map that the player isnt in to announce its details
+            Issues from testing                    
                         
             One time occurrences or Rare/Intimidating bugs
-                    
+                When the weather timer gets reset, if it is the same weather as prior,
+                it sometimes can cause a different map that the player isnt in to announce its details
+
             Low Priority or Passive Tasks / Unconfirmed fixed Bugs
-                
-                We have made a web build of the game!
-                    It seems to work well, except from the underying errors the game has
-                    Aside from fixing those, id like to publish this to Unity Play so anyone with an internet connection can play!
-                        I did try this once but only an old state of the game was released, idk why that happened
-                        But since ive moved to linux, and have made a lot more significant changes to the game, it should be fine...?
-                                                
+                                                                
                 When doing a counter, the shake during the hitstop is on the player, because they got hit.
                     It actually needs to be somehow reflected onto any close enemies that gets hit by the parry wave
+                
+                    i added a new event type to disable the section once the boss dialogue has been spoken
+                        With this i can manipulate a lot of things in game once dialogue has been spoken.
+                            I should make events happen DURING dialogue or something: add an event to be triggered if i want part of a dialogue to cause an event
                     
             Gemini Help
                 Honestly, we're gonna vibecode with gemini to any flaws ive made 
                     (not TOO much otherwise this game wouldnt really be mine)
                     After, we'll learn what gemini has done, make some tweaks and move onto AO!
-
+                Things to ask:
+                    I want 'Damage' to be more universally manageable. for each entity that can use atacks, i have a list of properties that change up damage. I wanted to fit all that into a Damage struct/class so its more portable across scripts.
+                    Can you look over my snadv notes and check out the Weather Manager Improvements section? I want the manager to be more flexible. ive made a small start by making an event Scriptable Object, now we need to refactor everything
+                    
     Things to be added/changed:
         
         Game Refactor (GRF):

@@ -49,11 +49,11 @@ public class ShopItemSlot : SlotBase
 
     protected override void OnLeftClick()
     {
-	    //print("Selected " + (collectableSo != null ? collectableSo.itemName : itemName));
+	    EnsureShopManager();
 	    if (!usedSlot) return;
+	    shopManager.DeselectAllSlots();
 	    if (selectedShader != null) selectedShader.SetActive(true);
 	    shopManager.currentlySelectedItem = this;
-	    shopManager.DeselectAllSlots();
 	    shopManager.SelectSlot();
 	    UpdateSlotUI();
     }
@@ -93,9 +93,9 @@ public class ShopItemSlot : SlotBase
     
     protected override void UpdateSlotUI()
     {
+	    EnsureShopManager();
 	    if (!usedSlot)
 	    {
-		    if (shopManager.isActive) shopManager.SelectProximalSlot();
 		    ClearSlotVisuals();
 		    gameObject.SetActive(false);
 		    return;
@@ -103,8 +103,11 @@ public class ShopItemSlot : SlotBase
         if (collectableSo != null && itemSprite == null) itemSprite = collectableSo.itemSprite ?? shopManager.defaultSprite;
         if (itemSprite != null) itemImage.sprite = itemSprite;
 	    if (amountText != null) amountText.text = usedSlot ? itemAmount.ToString() : "";
-	    if (usedSlot) CheckLiquidity();
-        if (shopManager.currentlySelectedItem == this) UpdateGlobalDetails();
+	    if (shopManager != null && shopManager.currentlySelectedItem == this)
+	    {
+		    CheckLiquidity();
+		    UpdateGlobalDetails();
+	    }
     }
 
     public override void ClearSlot()

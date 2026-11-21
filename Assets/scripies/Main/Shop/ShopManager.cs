@@ -124,13 +124,15 @@ public class ShopManager : GUIBase
         selectedPriceText.text = "";
         selectedAmountText.text = "";
         displayImage.sprite = defaultSprite;
-        if (!withSelectedItem) return;
-        currentlySelectedItem.ClearSlot();
-        currentlySelectedItem = null;
+        if (!withSelectedItem || currentlySelectedItem == null) return;
+        var depletedSlot = currentlySelectedItem;
+        depletedSlot.ClearSlot();
+        SelectNextAvailableSlot(depletedSlot);
     }
 
     private void ClearEverything()
     {
+        currentlySelectedItem = null;
         foreach (var item in shopItems) item.ClearSlot();
         DeselectAllSlots();
     }
@@ -139,28 +141,67 @@ public class ShopManager : GUIBase
     {
         foreach (var item in shopItems)
         {
-            if (item.usedSlot)
-                return; //true;
-            if (item != shopItems[^1] || item.usedSlot) continue;
-            CloseShop();
-            return; // false;
+            if (item != null && item.usedSlot)
+                return;
         }
-
-        return; // true;
+        CloseShop();
     }
 
-    public void SelectProximalSlot()
+    public void SelectProximalSlot() => SelectNextAvailableSlot(currentlySelectedItem);
+
+    public void SelectNextAvailableSlot(ShopItemSlot referenceSlot)
     {
-        if (currentlySelectedItem == null)
+        var startIndex = referenceSlot != null ? shopItems.IndexOf(referenceSlot) : -1;
+        ShopItemSlot nextSlot = null;
+
+        // 1. Look forward from the depleted slot for the next available item
+        if (startIndex >= 0)
         {
-            CheckStock();
-            return;
+            for (var i = startIndex + 1; i < shopItems.Count; i++)
+            {
+                if (shopItems[i] != null && shopItems[i].usedSlot)
+                {
+                    nextSlot = shopItems[i];
+                    break;
+                }
+            }
         }
-        var index = shopItems.IndexOf(currentlySelectedItem);
-        if (index == -1 || index == 0) return;
-        if (currentlySelectedItem == shopItems[^1]) shopItems[index - 1].ItemSelect();
-        else shopItems[index + 1].ItemSelect();
-        CheckStock();
+
+        // 2. If none forward, look backward for the closest previous available item
+        if (nextSlot == null && startIndex > 0)
+        {
+            for (var i = startIndex - 1; i >= 0; i--)
+            {
+                if (shopItems[i] != null && shopItems[i].usedSlot)
+                {
+                    nextSlot = shopItems[i];
+                    break;
+                }
+            }
+        }
+
+        // 3. Fallback: pick any remaining used slot
+        if (nextSlot == null)
+        {
+            foreach (var slot in shopItems)
+            {
+                if (slot != null && slot.usedSlot)
+                {
+                    nextSlot = slot;
+                    break;
+                }
+            }
+        }
+
+        if (nextSlot != null)
+        {
+            nextSlot.ItemSelect();
+        }
+        else
+        {
+            currentlySelectedItem = null;
+            CloseShop();
+        }
     }
 }
 

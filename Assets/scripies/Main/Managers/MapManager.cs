@@ -63,6 +63,7 @@ public class MapManager : MonoBehaviour
     
     [Tooltip("Checks if the scene data has tried to find and load its scene data")]
     public bool sceneLoaded;
+    [HideInInspector] public bool npcDataInitialised;
     #endregion
 
     private void Awake()
@@ -260,8 +261,8 @@ public class MapManager : MonoBehaviour
         if (audioManager != null) audioManager.TriggerFadeIn(0.5f);
     }
     
-    public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume, false, ostBpm);
-    public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume, bool weatherChanged = false, float[] mOstBpm = null)
+    public void UpdateNormalAreaInfo() => UpdateAreaInfo(mapName, mapDescription, mapTextColor, mapBgColor, newOst, ostVolume);
+    public void UpdateAreaInfo(string mName, string mDesc, Color mTextColor, Color mBgColor, AudioClip[] mOst, float[] mOstVolume, bool weatherChanged = false)
     {
         var sectionOverridesArea = SectionManager.ActiveSection != null &&
                                    (SectionManager.ActiveSection.announceDetails || SectionManager.ActiveSection.MuteMusic);
@@ -287,8 +288,8 @@ public class MapManager : MonoBehaviour
                     mOst[i].LoadAudioData();
                 if (mOstVolume != null && i < mOstVolume.Length)
                     audioManager.backgroundMusicVolume[i] = mOstVolume[i];
-                if (mOstBpm != null && audioManager.backgroundMusicBpm != null && i < mOstBpm.Length && i < audioManager.backgroundMusicBpm.Length && mOstBpm[i] > 0f)
-                    audioManager.backgroundMusicBpm[i] = mOstBpm[i];
+                // if (mOstBpm != null && audioManager.backgroundMusicBpm != null && i < mOstBpm.Length && i < audioManager.backgroundMusicBpm.Length && mOstBpm[i] > 0f)
+                //     audioManager.backgroundMusicBpm[i] = mOstBpm[i];
             }
         }
         
@@ -551,7 +552,8 @@ public class MapManager : MonoBehaviour
                     npcStuff:
                     obj.TryGetComponent<NPChat>(out var npChat);
                     if (npChat == null || npChat.fixedDialogue) continue;
-                    var npcId = npChat.name;
+                    var npcSo = npChat.npc != null ? npChat.npc : (obj.TryGetComponent<Identifier>(out var identComp) ? identComp.entity as NPC : null);
+                    var npcId = npcSo != null ? npcSo.name : npChat.name;
                     obj.TryGetComponent<ShopKeeper>(out var shopKeeper);
                     var newNpc = new NpcSceneData
                     {
@@ -775,8 +777,9 @@ public class MapManager : MonoBehaviour
         var list = manager.sceneData.Find(x => x.sceneName == sceneName);
         if (list == null)
         {
-            // If there isn't any saved scene data for this map yet, save its initial state to DataManager
+            // Sync any existing global NPCs (e.g., Jerome) into this scene before saving initial state
             sceneLoaded = true;
+            GameEvents.TriggerLoadNpcData();
             SaveSceneData();
             yield break;
         }
